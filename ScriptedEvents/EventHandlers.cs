@@ -1,4 +1,5 @@
 ﻿using MEC;
+using ScriptedEvents.API.Helpers;
 
 namespace ScriptedEvents
 {

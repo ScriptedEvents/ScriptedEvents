@@ -2,9 +2,13 @@
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.IO;
-
+using System.Reflection;
 using ServerHandler = Exiled.Events.Handlers.Server;
+using ScriptedEvents.API.Features.Aliases;
+using ScriptedEvents.API.Helpers;
+using ScriptedEvents.Handlers;
 
 namespace ScriptedEvents
 {
@@ -12,7 +16,7 @@ namespace ScriptedEvents
     {
         public override string Name => "ScriptedEvents";
         public override string Author => "Thunder";
-        public override Version Version => new(0, 1, 0);
+        public override Version Version => new(0, 2, 0);
         public override Version RequiredExiledVersion => new(6, 0, 0);
         public override PluginPriority Priority => PluginPriority.High;
 
@@ -33,7 +37,7 @@ namespace ScriptedEvents
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;
 
-            ScriptHelper.Setup();
+            ScriptHelper.RegisterActions(Assembly.GetExecutingAssembly());
             base.OnEnabled();
         }
 
@@ -54,5 +58,15 @@ namespace ScriptedEvents
     {
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
+
+        public List<Alias> Aliases { get; set; } = new()
+        {
+            new("TURNOFFLIGHTS", "COMMAND /blackout", "zone", "seconds"),
+            new("LOCKDOOR", "COMMAND /lock", "door"),
+            new("OPENDOOR", "COMMAND /open", "door"),
+            new("CLOSEDOOR", "COMMAND /close", "door"),
+            new("LOCK", "COMMAND /lock", "door"),
+            new("UNLOCK", "COMMAND /unlock", "door")
+        };
     }
 }
