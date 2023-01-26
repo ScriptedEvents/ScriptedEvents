@@ -45,10 +45,10 @@ namespace ScriptedEvents
                     continue;
 
                 string[] actionParts = action.Split(' ');
-                ActionTypes.TryGetValue(actionParts[0], out Type actionType);
+                ActionTypes.TryGetValue(actionParts[0].Trim(), out Type actionType);
                 if (actionType is null)
                 {
-                    Log.Warn($"Invalid action '{actionParts[0]}' detected in script '{scriptName}'");
+                    Log.Warn($"Invalid action '{actionParts[0].Trim()}' detected in script '{scriptName}'");
                     continue;
                 }
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
