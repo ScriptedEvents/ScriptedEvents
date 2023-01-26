@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Enums;
+using Exiled.API.Features;
 using MEC;
 using ScriptedEvents.Actions;
 using System;
@@ -146,6 +147,24 @@ namespace ScriptedEvents
 
             plys = null;
             return false;
+        }
+
+        public static bool TryGetDoors(string input, out List<Door> doors)
+        {
+            doors = new();
+            if (input == "*")
+            {
+                doors = Door.List.ToList();
+            }
+            else if (Enum.TryParse<ZoneType>(input, true, out ZoneType zt))
+            {
+                doors = Door.List.Where(d => d.Zone == zt).ToList();
+            }
+            else if (Enum.TryParse<DoorType>(input, true, out DoorType dt))
+            {
+                doors = Door.List.Where(d => d.Type == dt).ToList();
+            }
+            return doors.Count > 0;
         }
     }
 }
