@@ -1,0 +1,7 @@
+﻿-- Configuration --
+blackout_lights: true
+
+-- Actions --
+WAIT UNTIL RoundStart
+WAIT 30 SEC
+SPAWN 5 0
