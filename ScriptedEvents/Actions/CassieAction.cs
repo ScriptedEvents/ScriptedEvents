@@ -20,7 +20,11 @@ namespace ScriptedEvents.Actions
             if (Arguments.Length < 1) return new(false, "Missing CASSIE text!");
 
             string text = string.Join(" ", Arguments);
-            Cassie.MessageTranslated(text, text);
+            string[] cassieArgs = text.Split('|');
+            if (cassieArgs.Length == 1)
+                Cassie.MessageTranslated(text, text);
+            else
+                Cassie.MessageTranslated(cassieArgs[0], cassieArgs[1]);
             return new(true, string.Empty);
         }
     }
