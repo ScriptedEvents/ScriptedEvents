@@ -29,6 +29,7 @@ namespace ScriptedEvents
         public static readonly string ScriptPath = Path.Combine(Paths.Configs, "ScriptedEvents");
 
         public static Dictionary<string, Type> ActionTypes { get; } = new();
+        public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
         public static string ReadScriptText(string scriptName)
             => File.ReadAllText(Path.Combine(ScriptPath, scriptName + ".txt"));
@@ -62,7 +63,11 @@ namespace ScriptedEvents
             return script;
         }
 
-        public static void RunScript(Script scr) => Timing.RunCoroutine(RunScriptInternal(scr));
+        public static void RunScript(Script scr)
+        {
+            CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr));
+            RunningScripts.Add(scr, handle);
+        }
 
         public static IEnumerator<float> RunScriptInternal(Script scr)
         {
@@ -102,6 +107,11 @@ namespace ScriptedEvents
             }
 
             Log.Info($"Finished running script {scr.ScriptName}.");
+
+            if (RunningScripts.ContainsKey(scr))
+            {
+                RunningScripts.Remove(scr);
+            }
         }
 
         // Convert number or number range to a number

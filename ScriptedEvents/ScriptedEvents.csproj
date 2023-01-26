@@ -59,6 +59,7 @@
     <Compile Include="Actions\WaitForSecondsAction.cs" />
     <Compile Include="Actions\WaitUntilAction.cs" />
     <Compile Include="Commands\ExecuteScript.cs" />
+    <Compile Include="EventHandlers.cs" />
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
