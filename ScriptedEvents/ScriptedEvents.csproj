@@ -54,6 +54,7 @@
     <Compile Include="Actions\ITimingAction.cs" />
     <Compile Include="Actions\TurnOffLightsAction.cs" />
     <Compile Include="Actions\WaitForSecondsAction.cs" />
+    <Compile Include="Actions\WaitUntilAction.cs" />
     <Compile Include="Commands\ExecuteEvent.cs" />
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

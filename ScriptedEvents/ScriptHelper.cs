@@ -23,12 +23,6 @@ namespace ScriptedEvents
                     ActionTypes.Add(temp.Name, type);
                 }
             }
-            Log.Error(ActionTypes.Count);
-            foreach (var action in ActionTypes)
-            {
-                Log.Info(action.Key);
-                Log.Info(action.Value);
-            }
         }
 
         public static readonly string ScriptPath = Path.Combine(Paths.Configs, "ScriptedEvents");
@@ -120,6 +114,8 @@ namespace ScriptedEvents
                     break;
                 }
             }
+
+            Log.Info($"Finished running script {scr.ScriptName}.");
         }
 
         // Convert number or number range to a number
@@ -137,6 +133,18 @@ namespace ScriptedEvents
                 return true;
             }
 
+            return false;
+        }
+
+        public static bool TryGetPlayers(string input, out List<Player> plys)
+        {
+            if (input is "*")
+            {
+                plys = Player.List.ToList();
+                return true;
+            }
+
+            plys = null;
             return false;
         }
     }
