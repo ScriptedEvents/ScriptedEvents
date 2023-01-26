@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ScriptedEvents.Actions
 {
-    public class LockDoorAction : IAction
+    public class CloseDoorAction : IAction
     {
-        public string Name => "LOCKDOOR";
+        public string Name => "CLOSEDOOR";
 
         public string[] Aliases => Array.Empty<string>();
 
@@ -26,20 +26,17 @@ namespace ScriptedEvents.Actions
 
             foreach (var door in doors)
             {
-                var locks = (DoorLockType)door.Base.NetworkActiveLocks;
-                locks |= DoorLockType.AdminCommand;
-                door.Base.NetworkActiveLocks = (ushort)locks;
                 if (Arguments.Length == 2)
                 {
+                    bool previousState = door.IsOpen;
                     if (!ScriptHelper.TryConvertNumber(Arguments[1], out int duration))
                         return new(false, "Second argument must be an int or range of ints!");
                     Timing.CallDelayed(duration, () =>
                     {
-                        var locks = (DoorLockType)door.Base.NetworkActiveLocks;
-                        locks &= ~DoorLockType.AdminCommand;
-                        door.Base.NetworkActiveLocks = (ushort)locks;
+                        door.IsOpen = previousState;
                     });
                 }
+                door.IsOpen = false;
             }
             return new(true, string.Empty);
         }

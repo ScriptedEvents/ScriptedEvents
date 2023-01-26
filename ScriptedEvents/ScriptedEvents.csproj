@@ -50,8 +50,10 @@
   <ItemGroup>
     <Compile Include="ActionResponse.cs" />
     <Compile Include="Actions\CassieAction.cs" />
+    <Compile Include="Actions\CloseDoorAction.cs" />
     <Compile Include="Actions\IAction.cs" />
     <Compile Include="Actions\ITimingAction.cs" />
+    <Compile Include="Actions\OpenDoorAction.cs" />
     <Compile Include="Actions\LockDoorAction.cs" />
     <Compile Include="Actions\TurnOffLightsAction.cs" />
     <Compile Include="Actions\WaitForSecondsAction.cs" />

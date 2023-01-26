@@ -19,6 +19,12 @@ namespace ScriptedEvents
             ScriptHelper.Setup();
             base.OnEnabled();
         }
+
+        public override void OnDisabled()
+        {
+            ScriptHelper.ActionTypes.Clear();
+            base.OnDisabled();
+        }
     }
 
     public class Config : IConfig
