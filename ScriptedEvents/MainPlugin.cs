@@ -59,14 +59,17 @@ namespace ScriptedEvents
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
 
+        // todo: un-alias door commands, because they dont have duration anymore
         public List<Alias> Aliases { get; set; } = new()
         {
-            new("TURNOFFLIGHTS", "COMMAND /blackout", "zone", "seconds"),
+            new("TURNOFFLIGHTS", "COMMAND /overcharge", "zone", "seconds"),
             new("LOCKDOOR", "COMMAND /lock", "door"),
             new("OPENDOOR", "COMMAND /open", "door"),
             new("CLOSEDOOR", "COMMAND /close", "door"),
-            new("LOCK", "COMMAND /lock", "door"),
-            new("UNLOCK", "COMMAND /unlock", "door")
+            new("LOCKDOOR", "COMMAND /lock", "door"),
+            new("UNLOCKDOOR", "COMMAND /unlock", "door"),
+            new("DESTROY", "COMMAND /destroy", "door"),
+            new("DETONATEWARHEAD", "COMMAND /SERVER_EVENT DETONATION_INSTANT")
         };
     }
 }

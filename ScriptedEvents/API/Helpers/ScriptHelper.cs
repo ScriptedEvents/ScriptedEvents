@@ -67,8 +67,6 @@ namespace ScriptedEvents.API.Helpers
             }
 
             script.ScriptName = scriptName;
-
-
             return script;
         }
 

@@ -50,13 +50,9 @@
   <ItemGroup>
     <Compile Include="API\Features\Actions\ActionResponse.cs" />
     <Compile Include="Handlers\DefaultActions\CassieAction.cs" />
-    <Compile Include="Handlers\DefaultActions\CloseDoorAction.cs" />
     <Compile Include="Handlers\DefaultActions\CommandAction.cs" />
     <Compile Include="API\Features\Actions\IAction.cs" />
     <Compile Include="API\Features\Actions\ITimingAction.cs" />
-    <Compile Include="Handlers\DefaultActions\OpenDoorAction.cs" />
-    <Compile Include="Handlers\DefaultActions\LockDoorAction.cs" />
-    <Compile Include="Handlers\DefaultActions\TurnOffLightsAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitForSecondsAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitUntilAction.cs" />
     <Compile Include="API\Features\Aliases\Alias.cs" />
