@@ -7,7 +7,7 @@ namespace ScriptedEvents.API.Helpers
         // e.g.
         // OnEnabled: GetType().RegisterActions();
 
-        // maybe move ScriptHelper to this file?
+        // maybe move this to ScriptHelper
         public static void RegisterActions(this Type plugin)
         {
             ScriptHelper.RegisterActions(plugin.Assembly);

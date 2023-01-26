@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 using Random = UnityEngine.Random;
 using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Actions;
@@ -51,12 +50,18 @@ namespace ScriptedEvents.API.Helpers
 
                 var alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
                 if (alias != null)
-                    keyword = alias.Unalias(action).Split(' ')[0]; // optimize
+                {
+                    actionParts = alias.Unalias(action).Split(' ');
+                    keyword = actionParts[0];
+                }
 
+#if DEBUG
+                Log.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}");
+#endif
                 ActionTypes.TryGetValue(keyword, out Type actionType);
                 if (actionType is null && alias == null)
                 {
-                    Log.Info($"Invalid action '{actionParts[0]}' detected in script '{scriptName}'");
+                    Log.Info($"Invalid action '{keyword}' detected in script '{scriptName}'");
                     continue;
                 }
 
@@ -91,7 +96,15 @@ namespace ScriptedEvents.API.Helpers
                     }
                     else
                     {
-                        resp = action.Execute();
+                        try
+                        {
+                            Log.Debug($"Running {action.Name} action...");
+                            resp = action.Execute();
+                        } catch (Exception e)
+                        {
+                            Log.Error($"Ran into an error while running {action.Name} action:\n{e}");
+                            continue;
+                        }
                     }
 
                     if (!resp.Success)
@@ -114,11 +127,7 @@ namespace ScriptedEvents.API.Helpers
             }
 
             Log.Info($"Finished running script {scr.ScriptName}.");
-
-            if (RunningScripts.ContainsKey(scr))
-            {
-                RunningScripts.Remove(scr);
-            }
+            RunningScripts.Remove(scr);
         }
 
         // Convert number or number range to a number

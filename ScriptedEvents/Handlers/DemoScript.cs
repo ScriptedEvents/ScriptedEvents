@@ -16,11 +16,15 @@ WAITUNTIL ROUNDSTART
 WAITSEC 5
 
 # Open and lock all doors
+# OPENDOOR and LOCKDOOR are just shorthands for COMMAND /lock door
 OPENDOOR **
 LOCKDOOR **
 
 # CASSIE Announcement (note that there is no delay here between this instruction and the last two)
 CASSIE All doors have been locked opened
+
+# Wait for announcement to finish before making new one
+WAITUNTIL CASSIENOTSPEAKING
 
 # CASSIE Announcement (cassie can support subtitles, if you add the | seperator to seperate from announcement and subtitle).
 CASSIE MtfUnit Epsilon 11 Designated Alpha 1 HasEntered|Mobile Task Force Unit Epsilon 11 Designated Alpha-01 has entered the facility.
@@ -31,7 +35,7 @@ WAITSEC 10
 # Destroy all doors
 DESTROYDOOR **
 
-# Lights off for anywhere for 10 seconds (random).
+# Lights off for anywhere for 10 seconds.
 LIGHTSOFF none 10
 
 # Run a command. It needs / before it if it's a RA command, or . before it if its a console command.

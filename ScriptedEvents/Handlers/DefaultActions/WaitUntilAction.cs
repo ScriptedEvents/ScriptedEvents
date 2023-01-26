@@ -21,6 +21,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
         {
             { "ROUNDSTART", () => Round.IsStarted },
             { "ROUNDEND", () => Round.IsEnded },
+            { "CASSIENOTSPEAKING", () => !Cassie.IsSpeaking }
         };
 
         public ActionResponse Execute()

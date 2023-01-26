@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.API.Features;
+using System.Linq;
 
 namespace ScriptedEvents.Handlers.Commands
 {
@@ -30,16 +31,24 @@ namespace ScriptedEvents.Handlers.Commands
                 return false;
             }
 
+            var arg0 = arguments.At(0);
+            if (arg0 == "list")
+            {
+                var files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.TopDirectoryOnly);
+                response = $"All found scripts: \n\n{string.Join(",\n", files.Select(x => Path.GetFileName(x)))}";
+                return true;
+            }
+
             try
             {
-                Script scr = ScriptHelper.ReadScript(arguments.At(0));
+                Script scr = ScriptHelper.ReadScript(arg0);
 
                 ScriptHelper.RunScript(scr);
                 response = $"Executed {scr.ScriptName} successfully.";
             }
             catch (FileNotFoundException _)
             {
-                response = $"Script '{arguments.At(0)}' not found.";
+                response = $"Script '{arg0}' not found.";
                 return false;
             }
 

@@ -62,7 +62,7 @@ namespace ScriptedEvents
         // todo: un-alias door commands, because they dont have duration anymore
         public List<Alias> Aliases { get; set; } = new()
         {
-            new("TURNOFFLIGHTS", "COMMAND /overcharge", "zone", "seconds"),
+            new("LIGHTSOFF", "COMMAND /overcharge", "zone", "seconds"),
             new("LOCKDOOR", "COMMAND /lock", "door"),
             new("OPENDOOR", "COMMAND /open", "door"),
             new("CLOSEDOOR", "COMMAND /close", "door"),
