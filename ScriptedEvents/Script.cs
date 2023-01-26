@@ -10,7 +10,6 @@ namespace ScriptedEvents
     public class Script
     {
         public string ScriptName { get; set; } = "";
-        public Dictionary<string, string> Configuration { get; set; } = new Dictionary<string, string>();
         public Queue<IAction> Actions { get; set; } = new();
     }
 }

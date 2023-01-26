@@ -14,7 +14,10 @@ namespace ScriptedEvents
         public override void OnEnabled()
         {
             if (!Directory.Exists(ScriptHelper.ScriptPath))
-                Directory.CreateDirectory(ScriptHelper.ScriptPath);
+            {
+                var info = Directory.CreateDirectory(ScriptHelper.ScriptPath);
+                File.WriteAllText(Path.Combine(info.FullName, "DemoScript.txt"), DemoScript.Demo);
+            }
 
             ScriptHelper.Setup();
             base.OnEnabled();

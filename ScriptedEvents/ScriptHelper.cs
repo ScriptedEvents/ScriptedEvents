@@ -37,27 +37,12 @@ namespace ScriptedEvents
         {
             Script script = new();
             string allText = ReadScriptText(scriptName);
-            string[] sections = allText.Split(new string[] { "--" }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (sections.Length < 4)
-                throw new InvalidOperationException("Script is invalid. Missing appropriate sections.");
-
-            string configSection = sections[1].Trim();
-            string actionsSections = sections[3].Trim();
-
-            foreach (string config in configSection.Split('\n'))
+            foreach (string action in allText.Split('\n'))
             {
-                string[] configParts = config.Split(':');
-                if (configParts.Length < 2)
-                {
-                    Log.Info($"Malformed config '{configParts}' detected in script '{scriptName}'");
+                if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#"))
                     continue;
-                }
-                script.Configuration.Add(configParts[0], configParts[1]);
-            }
 
-            foreach (string action in actionsSections.Split('\n'))
-            {
                 string[] actionParts = action.Split(' ');
                 ActionTypes.TryGetValue(actionParts[0], out Type actionType);
                 if (actionType is null)
@@ -101,12 +86,12 @@ namespace ScriptedEvents
                     {
                         if (resp.Fatal)
                         {
-                            Log.Error($"Fatal action error! {resp.Message}");
+                            Log.Error($"[{action.Name}] Fatal action error! {resp.Message}");
                             break;
                         }
                         else
                         {
-                            Log.Warn($"Action error! {resp.Message}");
+                            Log.Warn($"[{action.Name}] Action error! {resp.Message}");
                         }
                     }
                 }
