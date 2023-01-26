@@ -21,6 +21,8 @@ namespace ScriptedEvents.Handlers.DefaultActions
         {
             { "ROUNDSTART", () => Round.IsStarted },
             { "ROUNDEND", () => Round.IsEnded },
+            { "DECONTAMINATED", () => Map.IsLczDecontaminated },
+            { "WARHEADDETONATED", () => Warhead.IsDetonated },
             { "CASSIENOTSPEAKING", () => !Cassie.IsSpeaking }
         };
 

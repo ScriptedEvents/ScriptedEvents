@@ -17,13 +17,11 @@ namespace ScriptedEvents.Handlers.DefaultActions
             if (Arguments.Length < 1) return new(false, "Missing text!");
 
             string text = string.Join(" ", Arguments);
-            string subtitle = text;
-
-            var split = text.Split(new char[] { '|' }, 2);
-            if (split.Length > 1)
-                subtitle = split[1];
-
-            Cassie.MessageTranslated(text, subtitle);
+            string[] cassieArgs = text.Split('|');
+            if (cassieArgs.Length == 1)
+                Cassie.MessageTranslated(text, text);
+            else
+                Cassie.MessageTranslated(cassieArgs[0], cassieArgs[1]);
             return new(true, string.Empty);
         }
     }

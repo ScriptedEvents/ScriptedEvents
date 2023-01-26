@@ -9,6 +9,7 @@ using ServerHandler = Exiled.Events.Handlers.Server;
 using ScriptedEvents.API.Features.Aliases;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.Handlers;
+using System.ComponentModel;
 
 namespace ScriptedEvents
 {
@@ -36,6 +37,7 @@ namespace ScriptedEvents
             }
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;
+            ServerHandler.RoundStarted += Handlers.OnRoundStarted;
 
             ScriptHelper.RegisterActions(Assembly.GetExecutingAssembly());
             base.OnEnabled();
@@ -44,6 +46,7 @@ namespace ScriptedEvents
         public override void OnDisabled()
         {
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
+            ServerHandler.RoundStarted -= Handlers.OnRoundStarted;
 
             ScriptHelper.ActionTypes.Clear();
 
@@ -56,8 +59,12 @@ namespace ScriptedEvents
 
     public class Config : IConfig
     {
+        [Description("Whether or not to enable the Scripted Events plugin.")]
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
+
+        [Description("List of scripts to run as soon as the round starts.")]
+        public List<string> AutoRunScripts { get; set; } = new();
 
         // todo: un-alias door commands, because they dont have duration anymore
         public List<Alias> Aliases { get; set; } = new()
