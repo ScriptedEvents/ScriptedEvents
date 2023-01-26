@@ -21,6 +21,7 @@ namespace ScriptedEvents.Actions
             { "ROUNDSTART", () => Round.IsStarted },
             { "ROUNDEND", () => Round.IsEnded },
             { "DECONTAMINATED", () => Map.IsLczDecontaminated },
+            { "WARHEADDETONATED", () => Warhead.IsDetonated },
         };
 
         public ActionResponse Execute()
