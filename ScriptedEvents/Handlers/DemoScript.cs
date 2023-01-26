@@ -28,6 +28,9 @@ CASSIE MtfUnit Epsilon 11 Designated Alpha 1 HasEntered|Mobile Task Force Unit E
 # Wait 10 seconds.
 WAITSEC 10
 
+# Destroy all doors
+DESTROYDOOR **
+
 # Lights off for anywhere for 10 seconds (random).
 LIGHTSOFF none 10
 

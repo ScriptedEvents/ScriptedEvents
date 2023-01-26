@@ -68,8 +68,8 @@ namespace ScriptedEvents
             new("CLOSEDOOR", "COMMAND /close", "door"),
             new("LOCKDOOR", "COMMAND /lock", "door"),
             new("UNLOCKDOOR", "COMMAND /unlock", "door"),
-            new("DESTROY", "COMMAND /destroy", "door"),
-            new("DETONATEWARHEAD", "COMMAND /SERVER_EVENT DETONATION_INSTANT")
+            new("DESTROYDOOR", "COMMAND /destroy", "door"),
+            new("DETONATEWARHEAD", "COMMAND /SERVER_EVENT DETONATION_INSTANT"),
         };
     }
 }
