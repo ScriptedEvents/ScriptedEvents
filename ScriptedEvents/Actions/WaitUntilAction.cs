@@ -19,6 +19,7 @@ namespace ScriptedEvents.Actions
         public Dictionary<string, Func<bool>> ValidInputs = new()
         {
             { "ROUNDSTART", () => Round.IsStarted },
+            { "ROUNDEND", () => Round.IsEnded },
         };
 
         public ActionResponse Execute()
