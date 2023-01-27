@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using YamlDotNet.Serialization;
 
 namespace ScriptedEvents.API.Features.Aliases
 {
@@ -11,6 +12,7 @@ namespace ScriptedEvents.API.Features.Aliases
         public string Execute { get; set; } = "COMMAND /bc";
         // args exist for a documentation or something generator, that could help the user understand the plugin's actions
         // in the future
+        [YamlIgnore]
         public string[] Arguments { get; set; } = new[] { "DURATION", "MESSAGE" }; 
 
         public Alias() { }

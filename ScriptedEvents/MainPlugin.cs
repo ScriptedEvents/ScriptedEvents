@@ -67,6 +67,7 @@ namespace ScriptedEvents
         public List<string> AutoRunScripts { get; set; } = new();
 
         // todo: un-alias door commands, because they dont have duration anymore
+        [Description("Define a custom set of actions and the action they run when used.")]
         public List<Alias> Aliases { get; set; } = new()
         {
             new("LIGHTSOFF", "COMMAND /overcharge", "zone", "duration"),
