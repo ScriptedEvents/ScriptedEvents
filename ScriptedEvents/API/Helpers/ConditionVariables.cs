@@ -33,6 +33,8 @@ namespace ScriptedEvents.API.Helpers
             // Floats
             .Replace("PLAYERSALIVE", Player.Get(ply => ply.IsAlive).Count())
             .Replace("PLAYERSDEAD", Player.Get(ply => ply.IsDead).Count())
+            .Replace("ROUNDSECONDS", Round.ElapsedTime.TotalSeconds)
+            .Replace("ROUNDMINUTES", Round.ElapsedTime.TotalMinutes)
             .Replace("CHANCE", Random.value)
             ;
     }
