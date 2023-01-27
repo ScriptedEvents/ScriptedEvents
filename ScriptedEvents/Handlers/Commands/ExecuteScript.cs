@@ -6,6 +6,8 @@ using ScriptedEvents.API.Helpers;
 using ScriptedEvents.API.Features;
 using System.Text;
 using Exiled.API.Features.Pools;
+using MEC;
+using Exiled.API.Features;
 
 namespace ScriptedEvents.Handlers.Commands
 {
@@ -51,6 +53,23 @@ namespace ScriptedEvents.Handlers.Commands
                 }
 
                 response = $"All found scripts: \n\n{StringBuilderPool.Pool.ToStringReturn(bldr)}";
+                return true;
+            }
+
+            if (arg0 == "stopall")
+            {
+                if (!sender.CheckPermission("es.execute.stopall"))
+                {
+                    response = "Missing permission: es.execute.stopall";
+                    return false;
+                }
+                foreach (var script in ScriptHelper.RunningScripts)
+                {
+                    Timing.KillCoroutines(script.Value);
+                    Log.Info($"Ended execution of {script.Key.ScriptName}.");
+                }
+                ScriptHelper.RunningScripts.Clear();
+                response = "Done!";
                 return true;
             }
 
