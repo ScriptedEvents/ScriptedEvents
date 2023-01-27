@@ -1,4 +1,6 @@
 ﻿using Exiled.API.Features;
+using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.API.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ScriptedEvents.Actions
 {
-    public class TurnOffLightsAction : IAction
+    public class BroadcastAction : IAction
     {
-        public string Name => "LIGHTSOFF";
+        public string Name => "BROADCAST";
 
         public string[] Aliases => Array.Empty<string>();
 
@@ -17,15 +19,13 @@ namespace ScriptedEvents.Actions
 
         public ActionResponse Execute()
         {
-            if (Arguments.Length < 1) return new(false, "Missing argument: duration");
+            if (Arguments.Length < 2) return new(false, "Missing argument: duration, message");
             if (!ScriptHelper.TryConvertNumber(Arguments[0], out int duration))
                 return new(false, "First argument must be an int or range of ints!");
 
-            foreach (var room in Room.List)
-            {
-                room.TurnOffLights(duration);
-            }
-            return new(true, string.Empty);
+            string message = string.Join(" ", Arguments.Skip(1));
+            Map.Broadcast((ushort)duration, message);
+            return new(true);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace ScriptedEvents
+namespace ScriptedEvents.API.Helpers
 {
     public static class ConditionVariables
     {
