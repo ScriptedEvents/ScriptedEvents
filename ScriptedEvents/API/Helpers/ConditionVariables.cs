@@ -30,11 +30,11 @@ namespace ScriptedEvents.API.Helpers
             .Replace("ROUNDSTARTED", Round.IsStarted)
             .Replace("!ROUNDSTARTED", !Round.IsStarted)
 
-            .Replace("WARHEADCOUNTING", Warhead.IsInProgress)
-            .Replace("!WARHEADCOUNTING", !Warhead.IsInProgress)
-
             .Replace("SCP914ACTIVE", Exiled.API.Features.Scp914.IsWorking)
             .Replace("!SCP914ACTIVE", !Exiled.API.Features.Scp914.IsWorking)
+
+            .Replace("WARHEADCOUNTING", Warhead.IsInProgress)
+            .Replace("!WARHEADCOUNTING", !Warhead.IsInProgress)
 
             .Replace("WARHEADDETONATED", Warhead.IsDetonated)
             .Replace("!WARHEADDETONATED", !Warhead.IsDetonated)
@@ -44,7 +44,7 @@ namespace ScriptedEvents.API.Helpers
             .Replace("CHANCE", UnityEngine.Random.value)
 
             //-- WORLD TIME
-            .Replace("DAYOFWEEK", DateTime.UtcNow.DayOfWeek)
+            .Replace("DAYOFWEEK", ((int)DateTime.UtcNow.DayOfWeek)+1)
             .Replace("DAYOFMONTH", DateTime.UtcNow.Day)
             .Replace("DAYOFYEAR", DateTime.UtcNow.DayOfYear)
             .Replace("MONTH", DateTime.UtcNow.Month)
@@ -54,9 +54,11 @@ namespace ScriptedEvents.API.Helpers
             .Replace("CDP", Player.Get(RoleTypeId.ClassD).Count())
             .Replace("CHI", Player.Get(Team.ChaosInsurgency).Count())
             .Replace("MTF", Player.Get(Team.FoundationForces).Count())
+            .Replace("RSC", Player.Get(RoleTypeId.Scientist).Count())
             .Replace("SCPS", Player.Get(Side.Scp).Count())
 
             //-- PLAYER COUNT
+            .Replace("PLAYERS", Player.List.Count())
             .Replace("PLAYERSALIVE", Player.Get(ply => ply.IsAlive).Count())
             .Replace("PLAYERSDEAD", Player.Get(ply => ply.IsDead).Count())
 
