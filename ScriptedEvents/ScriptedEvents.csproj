@@ -72,6 +72,7 @@
     <Compile Include="Handlers\DefaultActions\DebugConditionLogAction.cs" />
     <Compile Include="Handlers\DefaultActions\DecontaminateAction.cs" />
     <Compile Include="Handlers\DefaultActions\DoorAction.cs" />
+    <Compile Include="Handlers\DefaultActions\IfAction.cs" />
     <Compile Include="Handlers\DefaultActions\LightsOutAction.cs" />
     <Compile Include="Handlers\DefaultActions\LogAction.cs" />
     <Compile Include="Handlers\DefaultActions\RoundlockAction.cs" />

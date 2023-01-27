@@ -19,7 +19,7 @@ namespace ScriptedEvents
     {
         public override string Name => "ScriptedEvents";
         public override string Author => "Thunder";
-        public override Version Version => new(0, 2, 0);
+        public override Version Version => new(0, 1, 0);
         public override Version RequiredExiledVersion => new(6, 0, 0);
         public override PluginPriority Priority => PluginPriority.High;
 
