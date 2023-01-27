@@ -39,6 +39,15 @@ namespace ScriptedEvents.Handlers.Commands
                 return true;
             }
 
+            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(arg0, out string perm))
+            {
+                if (!sender.CheckPermission("es.execute." + perm))
+                {
+                    response = $"Missing permission: es.execute.{perm}";
+                    return false;
+                }
+            }
+
             try
             {
                 Script scr = ScriptHelper.ReadScript(arg0);

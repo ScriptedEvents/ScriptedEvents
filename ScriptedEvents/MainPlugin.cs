@@ -72,5 +72,11 @@ namespace ScriptedEvents
         {
             new("LOCKDOORBRIEF", "DOOR LOCK * 10")
         };
+
+        [Description("Define a custom set of permissions used to run a certain script. The provided permission will be added AFTER es.execute (eg. es.execute.examplepermission for the provided example).")]
+        public Dictionary<string, string> RequiredPermissions { get; set; } = new()
+        {
+            { "ExampleScriptNameHere", "examplepermission" },
+        };
     }
 }
