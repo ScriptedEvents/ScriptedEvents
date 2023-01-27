@@ -39,7 +39,7 @@ namespace ScriptedEvents
             ServerHandler.RestartingRound += Handlers.OnRestarting;
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
 
-            ScriptHelper.RegisterActions(Assembly.GetExecutingAssembly());
+            ApiHelper.RegisterActions(GetType());
             base.OnEnabled();
         }
 
@@ -69,7 +69,7 @@ namespace ScriptedEvents
         // todo: un-alias door commands, because they dont have duration anymore
         public List<Alias> Aliases { get; set; } = new()
         {
-            new("LIGHTSOFF", "COMMAND /overcharge", "zone", "seconds"),
+            new("LIGHTSOFF", "COMMAND /overcharge", "zone", "duration"),
             new("LOCKDOOR", "COMMAND /lock", "door"),
             new("OPENDOOR", "COMMAND /open", "door"),
             new("CLOSEDOOR", "COMMAND /close", "door"),
