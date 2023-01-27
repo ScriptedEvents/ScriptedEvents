@@ -34,6 +34,14 @@ namespace ScriptedEvents.API.Helpers
         {
             input = ConditionVariables.ReplaceVariables(input.Replace(" ", "")); // Kill all whitespace & replace variables
 
+            // Code for simple checks
+            if (input.ToLower() is "true")
+                return new(true, true, string.Empty);
+
+            else if (input.ToLower() is "false")
+                return new(true, false, string.Empty);
+
+            // Code for conditions with boolean operator
             IBooleanCondition condition = null;
             foreach (IBooleanCondition con in BooleanConditions)
             {

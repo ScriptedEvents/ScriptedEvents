@@ -11,6 +11,19 @@ namespace ScriptedEvents.API.Helpers
 
         // Replacer
         public static string ReplaceVariables(string input) => input
+            // Bools
+            .Replace("WARHEADDETONATED", Warhead.IsDetonated)
+            .Replace("!WARHEADDETONATED", !Warhead.IsDetonated)
+
+            .Replace("DECONTAMINATED", Map.IsLczDecontaminated)
+            .Replace("!DECONTAMINATED", !Map.IsLczDecontaminated)
+
+            .Replace("ROUNDINPROGRESS", Round.InProgress)
+
+            .Replace("CASSIESPEAKING", Cassie.IsSpeaking)
+            .Replace("!CASSIESPEAKING", !Cassie.IsSpeaking)
+
+            // Floats
             .Replace("PLAYERSALIVE", Player.Get(ply => ply.IsAlive).Count())
             .Replace("PLAYERSDEAD", Player.Get(ply => ply.IsDead).Count())
             .Replace("CHANCE", Random.value)
