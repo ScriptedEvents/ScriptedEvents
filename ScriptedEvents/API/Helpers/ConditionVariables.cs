@@ -12,11 +12,14 @@ namespace ScriptedEvents.API.Helpers
         // Replacer
         public static string ReplaceVariables(string input) => input
             // Bools
-            .Replace("WARHEADDETONATED", Warhead.IsDetonated)
-            .Replace("!WARHEADDETONATED", !Warhead.IsDetonated)
+            .Replace("CASSIESPEAKING", Cassie.IsSpeaking)
+            .Replace("!CASSIESPEAKING", !Cassie.IsSpeaking)
 
             .Replace("DECONTAMINATED", Map.IsLczDecontaminated)
             .Replace("!DECONTAMINATED", !Map.IsLczDecontaminated)
+
+            .Replace("ROUNDENDED", Round.IsEnded)
+            .Replace("!ROUNDENDED", !Round.IsEnded)
 
             .Replace("ROUNDINPROGRESS", Round.InProgress)
             .Replace("!ROUNDINPROGRESS", !Round.InProgress)
@@ -24,11 +27,8 @@ namespace ScriptedEvents.API.Helpers
             .Replace("ROUNDSTARTED", Round.IsStarted)
             .Replace("!ROUNDSTARTED", !Round.IsStarted)
 
-            .Replace("ROUNDENDED", Round.IsEnded)
-            .Replace("!ROUNDENDED", !Round.IsEnded)
-
-            .Replace("CASSIESPEAKING", Cassie.IsSpeaking)
-            .Replace("!CASSIESPEAKING", !Cassie.IsSpeaking)
+            .Replace("WARHEADDETONATED", Warhead.IsDetonated)
+            .Replace("!WARHEADDETONATED", !Warhead.IsDetonated)
 
             // Floats
             .Replace("PLAYERSALIVE", Player.Get(ply => ply.IsAlive).Count())
