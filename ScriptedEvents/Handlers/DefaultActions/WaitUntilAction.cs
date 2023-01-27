@@ -37,6 +37,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 else
                 {
                     Log.Warn($"WaitUntil condition error: {response.Message}");
+                    break;
                 }
                 yield return Timing.WaitForSeconds(1f);
             }
