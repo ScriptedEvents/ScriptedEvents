@@ -4,7 +4,8 @@ using System;
 using System.IO;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.API.Features;
-using System.Linq;
+using System.Text;
+using Exiled.API.Features.Pools;
 
 namespace ScriptedEvents.Handlers.Commands
 {
@@ -35,7 +36,21 @@ namespace ScriptedEvents.Handlers.Commands
             if (arg0 == "list")
             {
                 var files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.TopDirectoryOnly);
-                response = $"All found scripts: \n\n{string.Join(",\n", files.Select(x => Path.GetFileName(x)))}";
+                StringBuilder bldr = StringBuilderPool.Pool.Get();
+
+                foreach (string file in files)
+                {
+                    string scriptName = Path.GetFileNameWithoutExtension(file);
+                    string permission = "es.execute";
+                    DateTime edited = File.GetLastWriteTime(file);
+                    if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2))
+                    {
+                        permission += $".{perm2}";
+                    }
+                    bldr.AppendLine($"{scriptName} (perm: {permission}) (edited: {edited:g})");
+                }
+
+                response = $"All found scripts: \n\n{StringBuilderPool.Pool.ToStringReturn(bldr)}";
                 return true;
             }
 
