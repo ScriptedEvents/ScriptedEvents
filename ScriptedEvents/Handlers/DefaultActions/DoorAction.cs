@@ -35,7 +35,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
             Action<Door> action;
             Action<Door, int> revertAction;
-            switch (Arguments[0])
+            switch (Arguments[0].ToLower())
             {
                 case "open":
                     action = (door) => door.IsOpen = true;
