@@ -57,12 +57,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Features\Actions\ActionResponse.cs" />
+    <Compile Include="Handlers\DefaultActions\BroadcastAction.cs" />
     <Compile Include="Handlers\DefaultActions\CassieAction.cs" />
     <Compile Include="Handlers\DefaultActions\CommandAction.cs" />
     <Compile Include="API\Features\Actions\IAction.cs" />
     <Compile Include="API\Features\Actions\ITimingAction.cs" />
+    <Compile Include="Handlers\DefaultActions\DebugConditionLogAction.cs" />
+    <Compile Include="Handlers\DefaultActions\DecontaminateAction.cs" />
     <Compile Include="Handlers\DefaultActions\DoorAction.cs" />
     <Compile Include="Handlers\DefaultActions\LightsOutAction.cs" />
+    <Compile Include="Handlers\DefaultActions\LogAction.cs" />
+    <Compile Include="Handlers\DefaultActions\RoundlockAction.cs" />
+    <Compile Include="Handlers\DefaultActions\StopIfAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitForSecondsAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitUntilAction.cs" />
     <Compile Include="API\Features\Aliases\Alias.cs" />
