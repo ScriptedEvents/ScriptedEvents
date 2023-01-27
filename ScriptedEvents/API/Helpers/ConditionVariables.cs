@@ -58,9 +58,9 @@ namespace ScriptedEvents.API.Helpers
             .Replace("SCPS", Player.Get(Side.Scp).Count())
 
             //-- PLAYER COUNT
-            .Replace("PLAYERS", Player.List.Count())
             .Replace("PLAYERSALIVE", Player.Get(ply => ply.IsAlive).Count())
             .Replace("PLAYERSDEAD", Player.Get(ply => ply.IsDead).Count())
+            .Replace("PLAYERS", Player.List.Count()) // This needs to go afte the other players ones, otherwise skill issue
 
             //-- ROUND TIME
             .Replace("ROUNDMINUTES", Round.ElapsedTime.TotalMinutes)
