@@ -12,6 +12,7 @@ namespace ScriptedEvents
         {
             foreach (var kvp in ScriptHelper.RunningScripts)
             {
+                kvp.Key.IsRunning = false;
                 Timing.KillCoroutines(kvp.Value);
             }
             foreach (string key in Handlers.DefaultActions.WaitUntilAction.Coroutines)

@@ -12,5 +12,6 @@ namespace ScriptedEvents.API.Features
     {
         public string ScriptName { get; set; } = "";
         public Queue<IAction> Actions { get; set; } = new();
+        public bool IsRunning { get; internal set; } = false;
     }
 }

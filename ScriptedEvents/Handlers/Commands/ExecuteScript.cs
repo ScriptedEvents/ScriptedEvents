@@ -66,6 +66,7 @@ namespace ScriptedEvents.Handlers.Commands
                 int count = 0;
                 foreach (var script in ScriptHelper.RunningScripts)
                 {
+                    script.Key.IsRunning = false;
                     Timing.KillCoroutines(script.Value);
                     Log.Info($"Ended execution of {script.Key.ScriptName}.");
                     count++;
