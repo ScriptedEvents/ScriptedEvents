@@ -89,7 +89,7 @@ namespace ScriptedEvents
 
                     if (!resp.Success)
                     {
-                        if (resp.Fatal)
+                        if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                         {
                             Log.Error($"[{action.Name}] Fatal action error! {resp.Message}");
                             break;

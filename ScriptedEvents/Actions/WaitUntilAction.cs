@@ -39,7 +39,7 @@ namespace ScriptedEvents.Actions
 
             if (!ValidInputs.TryGetValue(Arguments.ElementAt(0).Trim(), out Func<bool> executor))
             {
-                message = new(false, "Invalid type provided.", true);
+                message = new(false, "Invalid type provided.", ActionFlags.FatalError);
                 return -1;
             }
 
