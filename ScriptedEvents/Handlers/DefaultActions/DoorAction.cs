@@ -26,15 +26,15 @@ namespace ScriptedEvents.Handlers.DefaultActions
             if (!ScriptHelper.TryGetDoors(Arguments[1], out List<Door> doors))
                 return new(false, "Invalid door(s) provided!");
 
-            int duration = 0;
+            float duration = 0;
             if (Arguments.Length > 2)
             {
                 if (!ScriptHelper.TryConvertNumber(Arguments[2], out duration))
-                    return new(false, "Third argument must be an int or range of ints!");
+                    return new(false, "Third argument must be a number or range of numbers!");
             }
 
             Action<Door> action;
-            Action<Door, int> revertAction;
+            Action<Door, float> revertAction;
             switch (Arguments[0].ToLower())
             {
                 case "open":
@@ -71,13 +71,13 @@ namespace ScriptedEvents.Handlers.DefaultActions
             return new(true, string.Empty);
         }
 
-        public void RevertOpened(Door door, int duration)
+        public void RevertOpened(Door door, float duration)
         {
             var state = door.IsOpen;
             Timing.CallDelayed(duration, () => door.IsOpen = state);
         }
 
-        public void RevertLock(Door door, int duration)
+        public void RevertLock(Door door, float duration)
         {
             var state = door.DoorLockType;
             Timing.CallDelayed(duration, () => door.ChangeLock(state));

@@ -134,15 +134,15 @@ namespace ScriptedEvents.API.Helpers
         }
 
         // Convert number or number range to a number
-        public static bool TryConvertNumber(string number, out int result)
+        public static bool TryConvertNumber(string number, out float result)
         {
-            if (int.TryParse(number, out result))
+            if (float.TryParse(number, out result))
             {
                 return true;
             }
 
             var dashSplit = number.Split('-');
-            if (dashSplit.Length == 2 && int.TryParse(dashSplit[0], out int min) && int.TryParse(dashSplit[1], out int max))
+            if (dashSplit.Length == 2 && float.TryParse(dashSplit[0], out float min) && float.TryParse(dashSplit[1], out float max))
             {
                 result = Random.Range(min, max+1);
                 return true;

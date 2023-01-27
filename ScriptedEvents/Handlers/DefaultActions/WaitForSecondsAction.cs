@@ -25,9 +25,9 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 message = new(false, "Missing argument: duration");
                 return -1;
             }
-            if (!ScriptHelper.TryConvertNumber(Arguments[0], out int duration))
+            if (!ScriptHelper.TryConvertNumber(Arguments[0], out float duration))
             {
-                message = new(false, "First argument must be an int or range of ints!");
+                message = new(false, "First argument must be a number or range of numbers!");
                 return -1;
             }
 

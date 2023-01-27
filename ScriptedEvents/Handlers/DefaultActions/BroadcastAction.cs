@@ -20,8 +20,8 @@ namespace ScriptedEvents.Actions
         public ActionResponse Execute()
         {
             if (Arguments.Length < 2) return new(false, "Missing argument: duration, message");
-            if (!ScriptHelper.TryConvertNumber(Arguments[0], out int duration))
-                return new(false, "First argument must be an int or range of ints!");
+            if (!ScriptHelper.TryConvertNumber(Arguments[0], out float duration))
+                return new(false, "First argument must be a number or range of nubers!");
 
             string message = string.Join(" ", Arguments.Skip(1));
             Map.Broadcast((ushort)duration, message);
