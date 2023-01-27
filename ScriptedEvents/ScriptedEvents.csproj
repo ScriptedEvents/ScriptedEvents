@@ -37,6 +37,9 @@
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
+    <Reference Include="Mirror">
+      <HintPath>..\..\..\scpslfiles\SCPSL_Data\Managed\Mirror.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,6 +50,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\..\..\scpslfiles\SCPSL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +69,29 @@
     <Compile Include="API\Features\Aliases\AliasExtensions.cs" />
     <Compile Include="API\Helpers\ApiHelper.cs" />
     <Compile Include="Handlers\Commands\ExecuteScript.cs" />
+    <Compile Include="ActionResponse.cs" />
+    <Compile Include="Actions\BroadcastAction.cs" />
+    <Compile Include="Actions\CassieAction.cs" />
+    <Compile Include="Actions\CloseDoorAction.cs" />
+    <Compile Include="Actions\DebugConditionLogAction.cs" />
+    <Compile Include="Actions\DecontaminateAction.cs" />
+    <Compile Include="Actions\IAction.cs" />
+    <Compile Include="Actions\ITimingAction.cs" />
+    <Compile Include="Actions\LogAction.cs" />
+    <Compile Include="Actions\OpenDoorAction.cs" />
+    <Compile Include="Actions\LockDoorAction.cs" />
+    <Compile Include="Actions\RoundlockAction.cs" />
+    <Compile Include="Actions\StopIfAction.cs" />
+    <Compile Include="Actions\TurnOffLightsAction.cs" />
+    <Compile Include="Actions\WaitForSecondsAction.cs" />
+    <Compile Include="Actions\WaitUntilAction.cs" />
+    <Compile Include="Commands\ExecuteScript.cs" />
+    <Compile Include="ConditionHelper.cs" />
+    <Compile Include="Conditions\Equal.cs" />
+    <Compile Include="Conditions\LessThan.cs" />
+    <Compile Include="Conditions\GreaterThan.cs" />
+    <Compile Include="Conditions\Interfaces\IBooleanCondition.cs" />
+    <Compile Include="ConditionVariables.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

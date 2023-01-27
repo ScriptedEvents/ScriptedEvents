@@ -1,4 +1,4 @@
-﻿using Exiled.API.Enums;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using MEC;
 using System;
@@ -119,6 +119,9 @@ namespace ScriptedEvents.API.Helpers
                             Log.Warn($"[{action.Name}] Action error! {resp.Message}");
                         }
                     }
+
+                    if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
+                        break;
                 }
                 else
                 {
