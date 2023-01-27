@@ -65,6 +65,7 @@
     <Compile Include="Handlers\DefaultActions\CommandAction.cs" />
     <Compile Include="API\Features\Actions\IAction.cs" />
     <Compile Include="API\Features\Actions\ITimingAction.cs" />
+    <Compile Include="Handlers\DefaultActions\DebugMathAction.cs" />
     <Compile Include="Handlers\DefaultActions\DebugConditionLogAction.cs" />
     <Compile Include="Handlers\DefaultActions\DecontaminateAction.cs" />
     <Compile Include="Handlers\DefaultActions\DoorAction.cs" />

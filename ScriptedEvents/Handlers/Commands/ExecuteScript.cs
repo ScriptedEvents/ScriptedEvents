@@ -91,7 +91,7 @@ namespace ScriptedEvents.Handlers.Commands
                 ScriptHelper.RunScript(scr);
                 response = $"Executed {scr.ScriptName} successfully.";
             }
-            catch (FileNotFoundException _)
+            catch (FileNotFoundException)
             {
                 response = $"Script '{arg0}' not found.";
                 return false;

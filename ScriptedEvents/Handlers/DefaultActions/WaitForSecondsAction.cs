@@ -2,6 +2,9 @@
 using System;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.API.Features.Actions;
+using System.Linq;
+using System.Data;
+using Exiled.API.Features;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
@@ -18,17 +21,25 @@ namespace ScriptedEvents.Handlers.DefaultActions
             return new(true);
         }
 
-        public float GetDelay(out ActionResponse message)
+        public float? GetDelay(out ActionResponse message)
         {
             if (Arguments.Length < 1)
             {
                 message = new(false, "Missing argument: duration");
-                return -1;
+                return null;
             }
-            if (!ScriptHelper.TryConvertNumber(Arguments[0], out float duration))
+
+            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));
+            float duration;
+
+            try
             {
-                message = new(false, "First argument must be a number or range of numbers!");
-                return -1;
+                duration = (float)ConditionHelper.Math(formula);
+            }
+            catch (Exception ex)
+            {
+                message = new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+                return null;
             }
 
             message = new(true);

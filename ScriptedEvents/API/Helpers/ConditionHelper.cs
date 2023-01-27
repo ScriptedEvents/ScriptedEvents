@@ -51,21 +51,21 @@ namespace ScriptedEvents.API.Helpers
                 }
             }
             if (condition is null)
-                return new(false, false, "Invalid condition operator provided!");
+                return new(false, false, $"Invalid condition operator provided! Condition: '{input}'");
 
             string[] split = input.Split(condition.Symbol);
 
             if (split.Length != 2)
-                return new(false, false, "Malformed condition provided!");
+                return new(false, false, $"Malformed condition provided! Condition: '{input}'");
 
             double left;
             try
             {
                 left = Math(split[0]);
             }
-            catch (SyntaxErrorException)
+            catch (Exception ex)
             {
-                return new(false, false, "Provided expression on the lefthand side is invalid.");
+                return new(false, false, $"Provided expression on the lefthand side is invalid. Lefthand: '{split[0]}' Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
             }
 
             double right;
@@ -73,9 +73,9 @@ namespace ScriptedEvents.API.Helpers
             {
                 right = Math(split[1]);
             }
-            catch (SyntaxErrorException)
+            catch (Exception ex)
             {
-                return new(false, false, "Provided expression on the righthand side is invalid.");
+                return new(false, false, $"Provided expression on the righthand side is invalid. Righthand: '{split[1]}' Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
             }
 
             return new(true, condition.Execute((float)left, (float)right), string.Empty);

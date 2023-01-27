@@ -31,7 +31,7 @@ namespace ScriptedEvents
                     Script scr = ScriptHelper.ReadScript(name);
                     ScriptHelper.RunScript(scr);
                 }
-                catch (FileNotFoundException _)
+                catch (FileNotFoundException)
                 {
                     Log.Warn($"The '{name}' script is set to run each round, but the script is not found!");
                 }

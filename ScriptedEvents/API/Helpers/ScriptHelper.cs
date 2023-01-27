@@ -90,9 +90,10 @@ namespace ScriptedEvents.API.Helpers
                 if (scr.Actions.TryDequeue(out IAction action))
                 {
                     ActionResponse resp;
+                    float? delay = null;
                     if (action is ITimingAction timed)
                     {
-                        yield return timed.GetDelay(out resp);
+                        delay = timed.GetDelay(out resp);
                     }
                     else
                     {
@@ -118,6 +119,13 @@ namespace ScriptedEvents.API.Helpers
                         {
                             Log.Warn($"[{action.Name}] Action error! {resp.Message}");
                         }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(resp.Message))
+                            Log.Info($"[{action.Name}] Response: {resp.Message}");
+                        if (delay.HasValue)
+                            yield return delay.Value;
                     }
 
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))

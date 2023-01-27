@@ -36,19 +36,19 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 }
                 else
                 {
-                    Log.Warn($"WaitUntil condition error: {response.Message}");
+                    Log.Warn($"[WAITUNTIL] WaitUntil condition error: {response.Message}");
                     break;
                 }
                 yield return Timing.WaitForSeconds(1f);
             }
         }
 
-        public float GetDelay(out ActionResponse message)
+        public float? GetDelay(out ActionResponse message)
         {
             if (Arguments.Length < 1)
             {
                 message = new(false, "Missing argument: condition");
-                return -1;
+                return null;
             }
 
             string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
