@@ -7,17 +7,25 @@ using ScriptedEvents;
 
 namespace ScriptedEvents.API.Features.Actions
 {
+    [Flags]
+    public enum ActionFlags
+    {
+        None = 0,
+        FatalError = 1,
+        StopEventExecution,
+    }
+
     public class ActionResponse
     {
         public bool Success { get; set; }
         public string Message { get; set; }
-        public bool Fatal { get; set; }
+        public ActionFlags ResponseFlags { get; set; }
 
-        public ActionResponse(bool success, string message = "", bool fatal = false)
+        public ActionResponse(bool success, string message = "", ActionFlags flags = ActionFlags.None)
         {
             Success = success;
             Message = message;
-            Fatal = fatal;
+            ResponseFlags = flags;
         }
     }
 }
