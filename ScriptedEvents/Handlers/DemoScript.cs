@@ -6,10 +6,10 @@ namespace ScriptedEvents.Handlers
         public static readonly string Demo = @$"# This is an example of a script that you can create to automate random events and/or admin events in your server.
 # All scripts in this folder can be loaded by running ""executescript/es [filename]"" in-game (without the .txt extension).
 # Example: To run this file, type ""executescript/es DemoScript"" in the RemoteAdmin panel.
-# 'es.execute' permission is required to execute scripts.
+# 'es.execute' permission is required to execute scripts (unless specified otherwise in config).
 # Any line starting with a # will be ignored.
 
-# Wait until the round starts (only action here is ROUNDSTART, more soon).
+# Wait until the round starts.
 WAITUNTIL ROUNDSTART
 
 # Wait 5 seconds.

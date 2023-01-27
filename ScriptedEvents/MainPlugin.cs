@@ -70,14 +70,7 @@ namespace ScriptedEvents
         [Description("Define a custom set of actions and the action they run when used.")]
         public List<Alias> Aliases { get; set; } = new()
         {
-            new("LIGHTSOFF", "COMMAND /overcharge", "zone", "duration"),
-            new("LOCKDOOR", "COMMAND /lock", "door"),
-            new("OPENDOOR", "COMMAND /open", "door"),
-            new("CLOSEDOOR", "COMMAND /close", "door"),
-            new("LOCKDOOR", "COMMAND /lock", "door"),
-            new("UNLOCKDOOR", "COMMAND /unlock", "door"),
-            new("DESTROYDOOR", "COMMAND /destroy", "door"),
-            new("DETONATEWARHEAD", "COMMAND /SERVER_EVENT DETONATION_INSTANT"),
+            new("LOCKDOORBRIEF", "DOOR LOCK * 10")
         };
     }
 }
