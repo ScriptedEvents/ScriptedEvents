@@ -22,7 +22,7 @@ namespace ScriptedEvents.Actions
             if (!outcome.Success)
                 return new(false, $"STOPIF execution error: {outcome.Message}", ActionFlags.FatalError);
 
-            if (!outcome.Passed)
+            if (outcome.Passed)
                 return new(true, flags: ActionFlags.StopEventExecution);
 
             return new(true);
