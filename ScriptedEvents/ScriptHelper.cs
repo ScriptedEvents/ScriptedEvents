@@ -99,6 +99,9 @@ namespace ScriptedEvents
                             Log.Warn($"[{action.Name}] Action error! {resp.Message}");
                         }
                     }
+
+                    if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
+                        break;
                 }
                 else
                 {
