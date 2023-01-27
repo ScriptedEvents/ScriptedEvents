@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScriptedEvents
+namespace ScriptedEvents.API.Helpers
 {
     public static class ConditionHelper
     {

@@ -75,12 +75,12 @@
     <Compile Include="API\Features\Aliases\AliasExtensions.cs" />
     <Compile Include="API\Helpers\ApiHelper.cs" />
     <Compile Include="Handlers\Commands\ExecuteScript.cs" />
-    <Compile Include="ConditionHelper.cs" />
+    <Compile Include="API\Helpers\ConditionHelper.cs" />
     <Compile Include="Conditions\Equal.cs" />
     <Compile Include="Conditions\LessThan.cs" />
     <Compile Include="Conditions\GreaterThan.cs" />
     <Compile Include="Conditions\Interfaces\IBooleanCondition.cs" />
-    <Compile Include="ConditionVariables.cs" />
+    <Compile Include="API\Helpers\ConditionVariables.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
