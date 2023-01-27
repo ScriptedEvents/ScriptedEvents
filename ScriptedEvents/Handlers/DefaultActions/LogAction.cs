@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.API.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace ScriptedEvents.Actions
 
         public ActionResponse Execute()
         {
-            Log.Info(string.Join(" ", Arguments));
+            Log.Info(string.Join(" ", Arguments.Select(r => ConditionVariables.ReplaceVariables(r))));
             return new(true);
         }
     }
