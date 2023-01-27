@@ -6,53 +6,54 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.API.Helpers;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
     public class WaitUntilAction : ITimingAction
     {
+        public static List<string> Coroutines { get; } = new();
         public string Name => "WAITUNTIL";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
 
-        public Dictionary<string, Func<bool>> ValidInputs = new()
-        {
-            { "ROUNDSTART", () => Round.IsStarted },
-            { "ROUNDEND", () => Round.IsEnded },
-
-            { "DECONTAMINATED", () => Map.IsLczDecontaminated },
-            { "!DECONTAMINATED", () => !Map.IsLczDecontaminated },
-
-            { "WARHEADDETONATED", () => Warhead.IsDetonated },
-            { "!WARHEADDETONATED", () => !Warhead.IsDetonated },
-
-            { "CASSIESPEAKING", () => Cassie.IsSpeaking },
-            { "!CASSIESPEAKING", () => !Cassie.IsSpeaking },
-        };
-
         public ActionResponse Execute()
         {
             return new(true);
+        }
+
+        private IEnumerator<float> InternalWaitUntil(string input)
+        {
+            while (true)
+            {
+                var response = ConditionHelper.Evaluate(input);
+                if (response.Success)
+                {
+                    if (response.Passed)
+                        break;
+                }
+                else
+                {
+                    Log.Warn($"WaitUntil condition error: {response.Message}");
+                }
+                yield return Timing.WaitForSeconds(1f);
+            }
         }
 
         public float GetDelay(out ActionResponse message)
         {
             if (Arguments.Length < 1)
             {
-                message = new(false, "Missing argument: type");
+                message = new(false, "Missing argument: condition");
                 return -1;
             }
 
-            if (!ValidInputs.TryGetValue(Arguments.ElementAt(0).Trim(), out Func<bool> executor))
-            {
-                message = new(false, "Invalid type provided.", ActionFlags.FatalError);
-                return -1;
-            }
-
+            string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
+            Coroutines.Add(coroutineKey);
             message = new(true);
-            return Timing.WaitUntilTrue(executor);
+            return Timing.WaitUntilDone(InternalWaitUntil(string.Join(" ", Arguments)), coroutineKey);
         }
     }
 }

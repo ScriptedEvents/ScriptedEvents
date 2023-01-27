@@ -19,6 +19,8 @@ namespace ScriptedEvents.API.Helpers
             .Replace("!DECONTAMINATED", !Map.IsLczDecontaminated)
 
             .Replace("ROUNDINPROGRESS", Round.InProgress)
+            .Replace("ROUNDSTARTED", Round.IsStarted)
+            .Replace("RONDENDED", Round.IsEnded)
 
             .Replace("CASSIESPEAKING", Cassie.IsSpeaking)
             .Replace("!CASSIESPEAKING", !Cassie.IsSpeaking)
