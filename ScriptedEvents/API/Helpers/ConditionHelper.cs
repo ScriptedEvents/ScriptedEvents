@@ -32,13 +32,13 @@ namespace ScriptedEvents.API.Helpers
 
         public static ConditionResponse Evaluate(string input)
         {
-            input = ConditionVariables.ReplaceVariables(input.Replace(" ", "")); // Kill all whitespace & replace variables
+            input = ConditionVariables.ReplaceVariables(input.Replace(" ", "")).Trim(); // Kill all whitespace & replace variables
 
             // Code for simple checks
-            if (input.ToLower() is "true")
+            if (input.ToLowerInvariant() is "true")
                 return new(true, true, string.Empty);
 
-            else if (input.ToLower() is "false")
+            if (input.ToLowerInvariant() is "false")
                 return new(true, false, string.Empty);
 
             // Code for conditions with boolean operator
