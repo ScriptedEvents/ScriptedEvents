@@ -16,8 +16,18 @@ namespace ScriptedEvents.Actions
         public ActionResponse Execute()
         {
             if (Arguments.Length < 1) return new(false, "Missing argument: duration");
-            if (!ScriptHelper.TryConvertNumber(Arguments[0], out float duration))
-                return new(false, "First argument must be a number or range of numbers!");
+
+            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));
+            float duration;
+
+            try
+            {
+                duration = (float)ConditionHelper.Math(formula);
+            }
+            catch (Exception ex)
+            {
+                return new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+            }
 
             foreach (var room in Room.List)
                 room.TurnOffLights(duration);

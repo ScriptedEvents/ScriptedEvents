@@ -1,16 +1,15 @@
 ﻿using ScriptedEvents;
+using ScriptedEvents.DemoScripts;
+
 namespace ScriptedEvents.Handlers
 {
-    public class DemoScript
+    public class DemoScript : IDemoScript
     {
-        public static readonly string Demo = @$"# This is an example of a script that you can create to automate random events and/or admin events in your server.
-# All scripts in this folder can be loaded by running ""executescript/es [filename]"" in-game (without the .txt extension).
-# Example: To run this file, type ""executescript/es DemoScript"" in the RemoteAdmin panel.
-# 'es.execute' permission is required to execute scripts (unless specified otherwise in config).
-# Any line starting with a # will be ignored.
+        public string FileName => "DemoScript";
+        public string Contents => @$"# This is an example of a script that you can create to automate random events and/or admin events in your server.
 
 # Wait until the round starts.
-WAITUNTIL ROUNDSTART
+WAITUNTIL ROUNDSTARTED
 
 # Wait 5 seconds.
 WAITSEC 5
@@ -23,7 +22,7 @@ DOOR LOCK * 5
 CASSIE All doors have been locked opened
 
 # Wait for announcement to finish before making new one
-WAITUNTIL CASSIENOTSPEAKING
+WAITUNTIL !CASSIESPEAKING
 
 # CASSIE Announcement (cassie can support subtitles, if you add the | seperator to seperate from announcement and subtitle).
 CASSIE MtfUnit Epsilon 11 Designated Alpha 1 HasEntered|Mobile Task Force Unit Epsilon 11 Designated Alpha-01 has entered the facility.
@@ -34,8 +33,8 @@ WAITSEC 10
 # Destroy all doors
 DOOR DESTROY *
 
-# Lights off for anywhere for 10 seconds.
-LIGHTSOFF none 10
+# Lights off for 10 seconds.
+LIGHTSOFF 10
 
 # Run a command. It needs / before it if it's a RA command, or . before it if its a console command.
 COMMAND /cleanup ragdolls

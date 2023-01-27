@@ -60,6 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Features\Actions\ActionResponse.cs" />
+    <Compile Include="DemoScripts\About.cs" />
+    <Compile Include="DemoScripts\ConditionSamples.cs" />
+    <Compile Include="DemoScripts\IDemoScript.cs" />
     <Compile Include="Handlers\DefaultActions\BroadcastAction.cs" />
     <Compile Include="Handlers\DefaultActions\CassieAction.cs" />
     <Compile Include="Handlers\DefaultActions\CommandAction.cs" />
@@ -97,7 +100,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\DemoScript.cs" />
+    <Compile Include="DemoScripts\DemoScript.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

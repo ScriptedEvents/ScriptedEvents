@@ -10,6 +10,8 @@ using ScriptedEvents.API.Features.Aliases;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.Handlers;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
+using ScriptedEvents.DemoScripts;
 
 namespace ScriptedEvents
 {
@@ -21,6 +23,12 @@ namespace ScriptedEvents
         public override Version RequiredExiledVersion => new(6, 0, 0);
         public override PluginPriority Priority => PluginPriority.High;
 
+        public static ReadOnlyCollection<IDemoScript> DemoScripts { get; } = new List<IDemoScript>()
+        {
+            new About(),
+            new DemoScript(),
+            new ConditionSamples(),
+        }.AsReadOnly();
 
         public static MainPlugin Singleton;
         public static EventHandlers Handlers;
@@ -33,7 +41,10 @@ namespace ScriptedEvents
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
                 var info = Directory.CreateDirectory(ScriptHelper.ScriptPath);
-                File.WriteAllText(Path.Combine(info.FullName, "DemoScript.txt"), DemoScript.Demo);
+                foreach (var demo in DemoScripts)
+                {
+                    File.WriteAllText(Path.Combine(info.FullName, $"{demo.FileName}.txt"), demo.Contents);
+                }
             }
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;

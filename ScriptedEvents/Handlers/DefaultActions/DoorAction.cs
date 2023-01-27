@@ -29,8 +29,16 @@ namespace ScriptedEvents.Handlers.DefaultActions
             float duration = 0;
             if (Arguments.Length > 2)
             {
-                if (!ScriptHelper.TryConvertNumber(Arguments[2], out duration))
-                    return new(false, "Third argument must be a number or range of numbers!");
+                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)));
+
+                try
+                {
+                    duration = (float)ConditionHelper.Math(formula);
+                }
+                catch (Exception ex)
+                {
+                    return new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+                }
             }
 
             Action<Door> action;
