@@ -178,6 +178,10 @@ namespace ScriptedEvents.API.Helpers
             {
                 doors = Door.List.Where(d => d.Type == dt).ToList();
             }
+            else
+            {
+                doors = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
+            }
             return doors.Count > 0;
         }
     }
