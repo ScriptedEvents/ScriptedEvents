@@ -15,10 +15,9 @@ WAITUNTIL ROUNDSTART
 # Wait 5 seconds.
 WAITSEC 5
 
-# Open and lock all doors
-# OPENDOOR and LOCKDOOR are just shorthands for COMMAND /lock door
-OPENDOOR **
-LOCKDOOR **
+# Open and lock all doors for 5secs
+DOOR OPEN * 5
+DOOR LOCK * 5
 
 # CASSIE Announcement (note that there is no delay here between this instruction and the last two)
 CASSIE All doors have been locked opened
@@ -33,7 +32,7 @@ CASSIE MtfUnit Epsilon 11 Designated Alpha 1 HasEntered|Mobile Task Force Unit E
 WAITSEC 10
 
 # Destroy all doors
-DESTROYDOOR **
+DOOR DESTROY *
 
 # Lights off for anywhere for 10 seconds.
 LIGHTSOFF none 10
