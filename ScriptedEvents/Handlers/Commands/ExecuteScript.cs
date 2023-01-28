@@ -34,6 +34,12 @@ namespace ScriptedEvents.Handlers.Commands
                 return false;
             }
 
+            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            {
+                response = "Critical error: Missing script path. Please reload plugin.";
+                return true;
+            }
+
             var arg0 = arguments.At(0);
             if (arg0 == "list")
             {
