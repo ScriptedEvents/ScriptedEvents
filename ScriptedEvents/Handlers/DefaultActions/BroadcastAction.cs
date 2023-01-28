@@ -26,7 +26,7 @@ namespace ScriptedEvents.Actions
                 return new(false, "Invalid duration provided!");
             }
 
-            string message = string.Join(" ", Arguments.Skip(1));
+            string message = string.Join(" ", Arguments.Skip(1).Select(arg => ConditionVariables.ReplaceVariables(arg)));
             Map.Broadcast((ushort)duration, message);
             return new(true);
         }
