@@ -192,6 +192,8 @@ namespace ScriptedEvents.API.Helpers
             {
                 doors = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
             }
+
+            doors = doors.Where(d => d.IsElevator is false).ToList();
             return doors.Count > 0;
         }
     }
