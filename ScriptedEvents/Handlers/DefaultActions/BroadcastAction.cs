@@ -21,16 +21,9 @@ namespace ScriptedEvents.Actions
         {
             if (Arguments.Length < 2) return new(false, "Missing argument: duration, message");
 
-            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));
-            float duration;
-
-            try
+            if (!ScriptHelper.TryConvertNumber(Arguments[0], out float duration))
             {
-                duration = (float)ConditionHelper.Math(formula);
-            }
-            catch (Exception ex)
-            {
-                return new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+                return new(false, "Invalid duration provided!");
             }
 
             string message = string.Join(" ", Arguments.Skip(1));
