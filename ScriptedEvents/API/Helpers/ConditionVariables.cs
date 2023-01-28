@@ -56,6 +56,8 @@ namespace ScriptedEvents.API.Helpers
             .Replace("{MTF}", Player.Get(Team.FoundationForces).Count())
             .Replace("{RSC}", Player.Get(RoleTypeId.Scientist).Count())
             .Replace("{SCPS}", Player.Get(Side.Scp).Count())
+            .Replace("{SH}", Player.Get(player => player.SessionVariables.ContainsKey("IsSH")))
+            .Replace("{UIU}", Player.Get(player => player.SessionVariables.ContainsKey("IsUIU")))
 
             //-- PLAYER COUNT
             .Replace("{PLAYERSALIVE}", Player.Get(ply => ply.IsAlive).Count())
