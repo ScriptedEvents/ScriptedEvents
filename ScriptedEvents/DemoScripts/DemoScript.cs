@@ -6,10 +6,10 @@ namespace ScriptedEvents.Handlers
     public class DemoScript : IDemoScript
     {
         public string FileName => "DemoScript";
-        public string Contents => @$"# This is an example of a script that you can create to automate random events and/or admin events in your server.
+        public string Contents => @"# This is an example of a script that you can create to automate random events and/or admin events in your server.
 
 # Wait until the round starts.
-WAITUNTIL ROUNDSTARTED
+WAITUNTIL {ROUNDSTARTED}
 
 # Wait 5 seconds.
 WAITSEC 5
@@ -22,7 +22,7 @@ DOOR LOCK * 5
 CASSIE All doors have been locked opened
 
 # Wait for announcement to finish before making new one
-WAITUNTIL !CASSIESPEAKING
+WAITUNTIL {!CASSIESPEAKING}
 
 # CASSIE Announcement (cassie can support subtitles, if you add the | seperator to seperate from announcement and subtitle).
 CASSIE MtfUnit Epsilon 11 Designated Alpha 1 HasEntered|Mobile Task Force Unit Epsilon 11 Designated Alpha-01 has entered the facility.
