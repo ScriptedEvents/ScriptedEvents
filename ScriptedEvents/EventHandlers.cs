@@ -3,6 +3,7 @@ using ScriptedEvents.API.Helpers;
 using MEC;
 using System.IO;
 using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Features.Exceptions;
 
 namespace ScriptedEvents
 {
@@ -31,6 +32,10 @@ namespace ScriptedEvents
                 {
                     Script scr = ScriptHelper.ReadScript(name);
                     ScriptHelper.RunScript(scr);
+                }
+                catch (DisabledScriptException)
+                {
+                    Log.Warn($"The '{name}' script is set to run each round, but the script is disabled!");
                 }
                 catch (FileNotFoundException)
                 {

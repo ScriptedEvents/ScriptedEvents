@@ -11,6 +11,7 @@ using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Actions;
 using ScriptedEvents.API.Features.Aliases;
 using PlayerRoles;
+using ScriptedEvents.API.Features.Exceptions;
 
 namespace ScriptedEvents.API.Helpers
 {
@@ -43,7 +44,7 @@ namespace ScriptedEvents.API.Helpers
 
             foreach (string action in allText.Split('\n'))
             {
-                if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#"))
+                if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#") || action.StartsWith("!--"))
                     continue;
 
                 string[] actionParts = action.Split(' ');
@@ -73,11 +74,16 @@ namespace ScriptedEvents.API.Helpers
             }
 
             script.ScriptName = scriptName;
+            script.RawText = allText;
             return script;
         }
 
         public static void RunScript(Script scr)
         {
+            if (scr.RawText.StartsWith("!-- DISABLE") || scr.RawText.StartsWith("!--DISABLE"))
+                // Todo: Do this if statement better
+                throw new DisabledScriptException();
+
             CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr));
             RunningScripts.Add(scr, handle);
         }

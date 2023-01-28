@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Features\Actions\ActionResponse.cs" />
+    <Compile Include="API\Features\Exceptions\DisabledScriptException.cs" />
     <Compile Include="DemoScripts\About.cs" />
     <Compile Include="DemoScripts\ConditionSamples.cs" />
     <Compile Include="DemoScripts\IDemoScript.cs" />

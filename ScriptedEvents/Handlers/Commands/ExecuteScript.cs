@@ -8,6 +8,7 @@ using System.Text;
 using Exiled.API.Features.Pools;
 using MEC;
 using Exiled.API.Features;
+using ScriptedEvents.API.Features.Exceptions;
 
 namespace ScriptedEvents.Handlers.Commands
 {
@@ -97,6 +98,11 @@ namespace ScriptedEvents.Handlers.Commands
 
                 ScriptHelper.RunScript(scr);
                 response = $"Executed {scr.ScriptName} successfully.";
+            }
+            catch (DisabledScriptException)
+            {
+                response = $"Script '{arg0}' is disabled.";
+                return false;
             }
             catch (FileNotFoundException)
             {

@@ -10,7 +10,8 @@ namespace ScriptedEvents.API.Features
 {
     public class Script
     {
-        public string ScriptName { get; set; } = "";
+        public string ScriptName { get; set; } = string.Empty;
+        public string RawText { get; set; } = string.Empty;
         public Queue<IAction> Actions { get; set; } = new();
         public bool IsRunning { get; internal set; } = false;
     }
