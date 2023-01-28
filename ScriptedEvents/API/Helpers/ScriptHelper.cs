@@ -10,6 +10,7 @@ using Random = UnityEngine.Random;
 using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Actions;
 using ScriptedEvents.API.Features.Aliases;
+using PlayerRoles;
 
 namespace ScriptedEvents.API.Helpers
 {
@@ -163,14 +164,28 @@ namespace ScriptedEvents.API.Helpers
 
         public static bool TryGetPlayers(string input, out List<Player> plys)
         {
+            plys = new();
             if (input is "*")
             {
                 plys = Player.List.ToList();
                 return true;
             }
+            else if (input.StartsWith("%"))
+            {
+                if (Enum.TryParse<Team>(input.Substring(1), true, out Team team))
+                {
+                    plys = Player.Get(team).ToList();
+                }
+            }
+            else
+            {
+                if (Player.TryGet(input, out Player ply))
+                {
+                    plys.Add(ply);
+                }
+            }
 
-            plys = null;
-            return false;
+            return plys.Count > 0;
         }
 
         public static bool TryGetDoors(string input, out List<Door> doors)
