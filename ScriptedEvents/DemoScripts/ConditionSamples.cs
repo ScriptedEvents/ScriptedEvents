@@ -10,7 +10,8 @@ namespace ScriptedEvents.DemoScripts
     {
 
         public string FileName => "ConditionSamples";
-        public string Contents => @"#Wait until 10 seconds after the round started.
+        public string Contents => @"!-- DISABLE
+#Wait until 10 seconds after the round started.
 WAITUNTIL {ROUNDSECONDS} > 10
 
 #End the script immediately if there are more than 5 players alive.

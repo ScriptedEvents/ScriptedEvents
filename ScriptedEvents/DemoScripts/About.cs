@@ -10,7 +10,8 @@ namespace ScriptedEvents.DemoScripts
     {
         public string FileName => "README";
 
-        public string Contents => @$"# Hello, and thank you for using my plugin, ScriptedEvents!
+        public string Contents => @$"!-- DISABLE
+# Hello, and thank you for using my plugin, ScriptedEvents!
 # I'm going to go over a couple of brief things in here you should know about setting up scripts. It's relatively easy!
 # First and foremost, the GitHub's wiki is stocked full of information about different things you can do! I strongly encourage using this resource.
 # Additionally, this folder will generate on server startup full of already-functioning scripts. You do not have to keep them, and you can delete the ScriptedEvents folder to re-generate them.
@@ -18,6 +19,7 @@ namespace ScriptedEvents.DemoScripts
 # Example: To run this file, type ""es {FileName}"" in the RemoteAdmin panel.
 # 'es.execute' permission is required to execute scripts (unless specified otherwise in config).
 # Any line starting with a # will be ignored and can be used to comment what you're doing, TODOs, etc.
+# Adding ""!-- DISABLE"" at the start of the script will disable its execution in-game.
 # Each action that takes a 'duration' parameter supports math, which means you can use math equations such as '5 * 5'.
 # Each action that supports math also supports variables, eg. '5 * PLAYERSALIVE' to multiply 5 by the amount of players alive.
 # All variables are listed on the plugin's wiki page.
