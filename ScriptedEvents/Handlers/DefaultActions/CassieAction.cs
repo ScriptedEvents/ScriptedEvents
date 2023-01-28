@@ -1,6 +1,7 @@
 ﻿using System;
 using Exiled.API.Features;
 using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.API.Helpers;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
@@ -22,6 +23,12 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 return new(false, "Missing text!");
 
             string[] cassieArgs = text.Split('|');
+
+            for (int i = 0; i < cassieArgs.Length; i++)
+            {
+                cassieArgs[i] = ConditionVariables.ReplaceVariables(cassieArgs[i]);
+            }
+
             if (cassieArgs.Length == 1)
             {
                 Cassie.MessageTranslated(text, text);
