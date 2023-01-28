@@ -76,6 +76,7 @@
     <Compile Include="Handlers\DefaultActions\LightsOutAction.cs" />
     <Compile Include="Handlers\DefaultActions\LogAction.cs" />
     <Compile Include="Handlers\DefaultActions\RoundlockAction.cs" />
+    <Compile Include="Handlers\DefaultActions\SetRoleAction.cs" />
     <Compile Include="Handlers\DefaultActions\StopIfAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitForSecondsAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitUntilAction.cs" />

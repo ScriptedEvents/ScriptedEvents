@@ -71,7 +71,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
             foreach (var door in doors)
             {
-                if (duration == 0 && revertAction != null)
+                if (duration != 0 && revertAction != null)
                         revertAction(door, duration);
 
                 action(door);
