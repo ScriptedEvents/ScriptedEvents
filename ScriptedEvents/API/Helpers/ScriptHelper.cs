@@ -168,7 +168,7 @@ namespace ScriptedEvents.API.Helpers
             return false;
         }
 
-        public static bool TryGetPlayers(string input, out List<Player> plys)
+        public static bool TryGetPlayers(string input, int? amount, out List<Player> plys)
         {
             plys = new();
             if (input is "*")
@@ -176,18 +176,32 @@ namespace ScriptedEvents.API.Helpers
                 plys = Player.List.ToList();
                 return true;
             }
-            else if (input.StartsWith("%"))
+            else if (Enum.TryParse<Team>(input, true, out Team team))
             {
-                if (Enum.TryParse<Team>(input.Substring(1), true, out Team team))
-                {
-                    plys = Player.Get(team).ToList();
-                }
+                plys = Player.Get(team).ToList();
+            }
+            else if (Enum.TryParse<RoleTypeId>(input, true, out RoleTypeId role))
+            {
+                plys = Player.Get(role).ToList();
             }
             else
             {
                 if (Player.TryGet(input, out Player ply))
                 {
                     plys.Add(ply);
+                }
+            }
+
+            plys.ShuffleList();
+
+            if (amount.HasValue && amount.Value > 0)
+            {
+                if (amount.Value < plys.Count)
+                {
+                    for (int i = 0; i < amount.Value; i++)
+                    {
+                        plys.PullRandomItem();
+                    }
                 }
             }
 

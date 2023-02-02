@@ -26,9 +26,6 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 return new(false, "Missing arguments: players, role, max(optional)");
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], out List<Player> players))
-                return new(false, "No players matching the criteria were found.");
-
             if (!Enum.TryParse<RoleTypeId>(Arguments[1], true, out RoleTypeId roleType))
                 return new(false, "Invalid role to spawn as provided.");
 
@@ -61,20 +58,13 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 }
             }
 
-            if (max is -1)
-            {
-                foreach (Player player in players)
-                    player.Role.Set(roleType);
-            }
-            else
-            {
-                players.ShuffleList();
-                for (int i = 0; i < max; i++)
-                {
-                    Player item = players.ElementAtOrDefault(i);
-                    item?.Role?.Set(roleType);
-                }
-            }
+            List<Player> plys;
+
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out plys))
+                return new(false, "No players matching the criteria were found.");
+
+            foreach (Player player in plys)
+                player.Role.Set(roleType);
 
             return new(true);
         }
