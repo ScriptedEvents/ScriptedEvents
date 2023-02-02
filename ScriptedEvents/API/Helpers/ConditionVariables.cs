@@ -4,6 +4,7 @@ using PlayerRoles;
 using System;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace ScriptedEvents.API.Helpers
 {
@@ -41,7 +42,12 @@ namespace ScriptedEvents.API.Helpers
 
             // Floats
             //-- CHANCE
-            .Replace("{CHANCE}", UnityEngine.Random.value)
+            .Replace("{CHANCE}", Random.value)
+            .Replace("{CHANCE3}", Random.Range(1, 4))
+            .Replace("{CHANCE5}", Random.Range(1, 6))
+            .Replace("{CHANCE10}", Random.Range(1, 11))
+            .Replace("{CHANCE20}", Random.Range(1, 21))
+            .Replace("{CHANCE100}", Random.Range(1, 101))
 
             //-- WORLD TIME
             .Replace("{DAYOFWEEK}", ((int)DateTime.UtcNow.DayOfWeek)+1)
@@ -64,13 +70,18 @@ namespace ScriptedEvents.API.Helpers
             .Replace("{PLAYERSDEAD}", Player.Get(ply => ply.IsDead).Count())
             .Replace("{PLAYERS}", Player.List.Count()) // This needs to go afte the other players ones, otherwise skill issue
 
+            //-- KILLS AND DEATHS
+            .Replace("{KILLS}", Round.Kills)
+            .Replace("{SCPKILLS}", Round.KillsByScp)
+
             //-- ROUND TIME
             .Replace("{ROUNDMINUTES}", Round.ElapsedTime.TotalMinutes)
             .Replace("{ROUNDSECONDS}", Round.ElapsedTime.TotalSeconds)
 
-            //-- TICKETS
+            //-- TICKETS & RESPAWNS
             .Replace("{NTFTICKETS}", Respawn.NtfTickets)
             .Replace("{CHAOSTICKETS}", Respawn.ChaosTickets)
+            .Replace("{TIMEUNTILNEXTWAVE}", Respawn.TimeUntilSpawnWave.TotalSeconds)
             ;
     }
 }
