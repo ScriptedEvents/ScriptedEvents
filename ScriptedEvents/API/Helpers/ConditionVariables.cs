@@ -74,6 +74,11 @@ namespace ScriptedEvents.API.Helpers
             .Replace("{KILLS}", Round.Kills)
             .Replace("{SCPKILLS}", Round.KillsByScp)
 
+            //-- Escapes
+            .Replace("{CLASSDESCAPES}", Round.EscapedDClasses)
+            .Replace("{SCIENTISTSCAPES}", Round.EscapedScientists)
+            .Replace("{ESCAPES}", Round.EscapedDClasses + Round.EscapedScientists)
+
             //-- ROUND TIME
             .Replace("{ROUNDMINUTES}", Round.ElapsedTime.TotalMinutes)
             .Replace("{ROUNDSECONDS}", Round.ElapsedTime.TotalSeconds)
