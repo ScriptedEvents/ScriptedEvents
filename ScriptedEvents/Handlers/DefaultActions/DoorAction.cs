@@ -21,7 +21,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public ActionResponse Execute()
         {
-            if (Arguments.Length < 2) return new(false, "Missing arguments: lock/unlock/open/close/destroy, doorType, duration(optional)");
+            if (Arguments.Length < 2) return new(false, "Missing arguments: LOCK/UNLOCK/OPEN/CLOSE/DESTROY, doorType, duration(optional)");
 
             if (!ScriptHelper.TryGetDoors(Arguments[1], out List<Door> doors))
                 return new(false, "Invalid door(s) provided!");
@@ -43,30 +43,30 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
             Action<Door> action;
             Action<Door, float> revertAction;
-            switch (Arguments[0].ToLower())
+            switch (Arguments[0].ToUpper())
             {
-                case "open":
+                case "OPEN":
                     action = (door) => door.IsOpen = true;
                     revertAction = RevertOpened;
                     break;
-                case "close":
+                case "CLOSE":
                     action = (door) => door.IsOpen = false;
                     revertAction = RevertOpened;
                     break;
-                case "lock":
+                case "LOCK":
                     action = (door) => door.Lock(duration, DoorLockType.AdminCommand);
                     revertAction = RevertLock;
                     break;
-                case "unlock":
+                case "UNLOCK":
                     action = (door) => door.Unlock();
                     revertAction = RevertLock;
                     break;
-                case "destroy":
+                case "DESTROY":
                     action = (door) => door.BreakDoor();
                     revertAction = null;
                     break;
                 default:
-                    return new(false, "First argument must be open/close/lock/unlock/destroy!");
+                    return new(false, "First argument must be OPEN/CLOSE/LOCK/UNLOCK/DESTROY!");
             }
 
             foreach (var door in doors)
