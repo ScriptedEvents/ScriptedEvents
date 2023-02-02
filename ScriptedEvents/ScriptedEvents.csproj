@@ -68,6 +68,7 @@
     <Compile Include="DemoScripts\ConditionSamples.cs" />
     <Compile Include="DemoScripts\IDemoScript.cs" />
     <Compile Include="Handlers\DefaultActions\BroadcastAction.cs" />
+    <Compile Include="Handlers\DefaultActions\GiveAction.cs" />
     <Compile Include="Handlers\DefaultActions\SilentCassieAction.cs" />
     <Compile Include="Handlers\DefaultActions\CassieAction.cs" />
     <Compile Include="Handlers\DefaultActions\CommandAction.cs" />
@@ -103,12 +104,12 @@
     <Compile Include="API\Helpers\ScriptHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DemoScripts\DemoScript.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="EXILED">
       <Version>6.0.0-beta.25</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DemoScripts\DemoScript.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

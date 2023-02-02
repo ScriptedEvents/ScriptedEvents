@@ -69,7 +69,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 {
                     player.AddItem(itemType);
                 }
-            }    
+            }
 
             return new(true);
         }
