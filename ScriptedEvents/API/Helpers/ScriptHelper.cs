@@ -223,6 +223,10 @@ namespace ScriptedEvents.API.Helpers
             {
                 doors = Door.List.Where(d => d.Type == dt).ToList();
             }
+            else if (Enum.TryParse<RoomType>(input, true, out RoomType rt))
+            {
+                doors = Door.List.Where(d => d.Room?.Type == rt).ToList();
+            }
             else
             {
                 doors = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
