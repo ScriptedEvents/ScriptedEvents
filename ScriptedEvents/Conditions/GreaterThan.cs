@@ -9,7 +9,7 @@ namespace ScriptedEvents.Conditions
 {
     public class GreaterThan : IBooleanCondition
     {
-        public char Symbol => '>';
+        public string Symbol => ">";
 
         public bool Execute(float left, float right) => left > right;
     }

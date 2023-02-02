@@ -8,7 +8,7 @@ namespace ScriptedEvents.Conditions.Interfaces
 {
     public interface IBooleanCondition
     {
-        public char Symbol { get; }
+        public string Symbol { get; }
         public bool Execute(float left, float right);
     }
 }

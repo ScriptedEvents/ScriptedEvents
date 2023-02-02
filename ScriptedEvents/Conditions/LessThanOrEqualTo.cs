@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ScriptedEvents.Conditions
 {
-    public class LessThan : IBooleanCondition
+    public class LessThanOrEqualTo : IBooleanCondition
     {
-        public string Symbol => "<";
+        public string Symbol => "<=";
 
-        public bool Execute(float left, float right) => left < right;
+        public bool Execute(float left, float right) => left <= right;
     }
 }

@@ -18,6 +18,10 @@ namespace ScriptedEvents.API.Helpers
             new GreaterThan(),
             new LessThan(),
             new Equal(),
+            new NotEqual(),
+
+            new LessThanOrEqualTo(),
+            new GreaterThanOrEqualTo(),
         }.AsReadOnly();
 
         // StackOverflow my beloved
@@ -53,9 +57,11 @@ namespace ScriptedEvents.API.Helpers
             if (condition is null)
                 return new(false, false, $"Invalid condition operator provided! Condition: '{input}'");
 
-            string[] split = input.Split(condition.Symbol);
+            string[] arr = input.Split(condition.Symbol.ToCharArray());
+            var split = arr.ToList();
+            split.RemoveAll(y => string.IsNullOrWhiteSpace(y));
 
-            if (split.Length != 2)
+            if (split.Count != 2)
                 return new(false, false, $"Malformed condition provided! Condition: '{input}'");
 
             double left;
