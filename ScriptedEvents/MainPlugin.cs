@@ -49,6 +49,7 @@ namespace ScriptedEvents
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
+            ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
 
             ApiHelper.RegisterActions(GetType());
             base.OnEnabled();
@@ -58,6 +59,7 @@ namespace ScriptedEvents
         {
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
             ServerHandler.RoundStarted -= Handlers.OnRoundStarted;
+            ServerHandler.RespawningTeam -= Handlers.OnRespawningTeam;
 
             ScriptHelper.ActionTypes.Clear();
 
