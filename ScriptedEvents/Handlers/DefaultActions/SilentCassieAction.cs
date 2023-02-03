@@ -31,7 +31,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
             if (cassieArgs.Length == 1)
             {
-                Cassie.MessageTranslated(text, text);
+                Cassie.MessageTranslated(text, text, isNoisy: false);
             }
             else
             {
