@@ -59,7 +59,7 @@ namespace ScriptedEvents.API.Helpers
             //-- ROLE COUNT
             .Replace("{CDP}", Player.Get(RoleTypeId.ClassD).Count())
             .Replace("{CHI}", Player.Get(Team.ChaosInsurgency).Count())
-            .Replace("{MTF}", Player.Get(Team.FoundationForces).Count())
+            .Replace("{MTF}", Player.Get(Team.FoundationForces).Count() - Player.Get(RoleTypeId.FacilityGuard).Count())
             .Replace("{RSC}", Player.Get(RoleTypeId.Scientist).Count())
             .Replace("{SCPS}", Player.Get(Side.Scp).Count())
             .Replace("{SH}", Player.Get(player => player.SessionVariables.ContainsKey("IsSH")))
@@ -86,6 +86,7 @@ namespace ScriptedEvents.API.Helpers
             //-- TICKETS & RESPAWNS
             .Replace("{NTFTICKETS}", Respawn.NtfTickets)
             .Replace("{CHAOSTICKETS}", Respawn.ChaosTickets)
+            .Replace("{TOTALWAVES}", MainPlugin.Handlers.RespawnWaves)
             .Replace("{TIMEUNTILNEXTWAVE}", Respawn.TimeUntilSpawnWave.TotalSeconds)
             ;
     }

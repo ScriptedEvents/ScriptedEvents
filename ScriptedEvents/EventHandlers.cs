@@ -4,13 +4,18 @@ using MEC;
 using System.IO;
 using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Exceptions;
+using Exiled.Events.EventArgs.Server;
 
 namespace ScriptedEvents
 {
     public class EventHandlers
     {
+        public int RespawnWaves = 0;
+
+
         public void OnRestarting()
         {
+            RespawnWaves = 0;
             foreach (var kvp in ScriptHelper.RunningScripts)
             {
                 kvp.Key.IsRunning = false;
@@ -42,6 +47,12 @@ namespace ScriptedEvents
                     Log.Warn($"The '{name}' script is set to run each round, but the script is not found!");
                 }
             }
+        }
+
+        public void OnRespawningTeam(RespawningTeamEventArgs ev)
+        {
+            if (ev.IsAllowed) return;
+            RespawnWaves++;
         }
     }
 }
