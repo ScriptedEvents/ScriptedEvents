@@ -22,7 +22,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
         public ActionResponse Execute()
         {
             if (Arguments.Length < 1) return new(false, "Missing argument: script name");
-            string scriptName = Arguments.ElementAt(0);
+            string scriptName = Arguments[0];
 
             try
             {
