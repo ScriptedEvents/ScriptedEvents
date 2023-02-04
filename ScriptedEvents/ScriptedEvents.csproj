@@ -94,9 +94,11 @@
     <Compile Include="Handlers\Commands\MainCommand\StopAllScripts.cs" />
     <Compile Include="Handlers\Commands\MainCommand\ListScripts.cs" />
     <Compile Include="Handlers\Commands\MainCommand\ScriptedEvents.cs" />
+    <Compile Include="Handlers\DefaultActions\BroadcastPlayerAction.cs" />
     <Compile Include="Handlers\DefaultActions\BroadcastAction.cs" />
     <Compile Include="Handlers\DefaultActions\ExecuteScriptAction.cs" />
     <Compile Include="Handlers\DefaultActions\GiveAction.cs" />
+    <Compile Include="Handlers\DefaultActions\SavePlayersAction.cs" />
     <Compile Include="Handlers\DefaultActions\SilentCassieAction.cs" />
     <Compile Include="Handlers\DefaultActions\CassieAction.cs" />
     <Compile Include="Handlers\DefaultActions\CommandAction.cs" />

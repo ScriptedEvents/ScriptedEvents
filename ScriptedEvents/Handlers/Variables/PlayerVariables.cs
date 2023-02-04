@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using PlayerRoles;
+using ScriptedEvents.API.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,12 @@ namespace ScriptedEvents.Handlers.Variables
 
         public static void DefineVariable(string name, IEnumerable<Player> input)
         {
+            name = name.RemoveWhitespace();
+
+            if (!name.StartsWith("{"))
+                name = "{" + name;
+            if (!name.EndsWith("}"))
+                name = name + "}";
             definedVariables[name] = input;
         }
 
@@ -26,8 +33,8 @@ namespace ScriptedEvents.Handlers.Variables
         public static Dictionary<string, IEnumerable<Player>> Variables { get; } = new()
         {
             // By role
-            { "{CLASSD}", Player.Get(Team.ClassD) },
-            { "{SCIENTISTS}", Player.Get(Team.Scientists) },
+            //{ "{CLASSD}", Player.Get(Team.ClassD) },
+            //{ "{SCIENTISTS}", Player.Get(Team.Scientists) },
             { "{GUARDS}", Player.Get(RoleTypeId.FacilityGuard) },
             { "{MTFANDGUARDS}", Player.Get(Team.FoundationForces) },
             { "{SCPS}", Player.Get(Team.SCPs) },
@@ -49,14 +56,11 @@ namespace ScriptedEvents.Handlers.Variables
 
             foreach (string str in split)
             {
-                if (Variables.Any(kvp => kvp.Key == str))
-                    result.Add(str);
-            }
-
-            foreach (string str in split)
-            {
-                if (definedVariables.Any(kvp => kvp.Key == str))
-                    result.Add(str);
+                string newStr = str.RemoveWhitespace();
+                if (newStr.StartsWith("{") && newStr.EndsWith("}"))
+                {
+                    result.Add(newStr.ToUpper());
+                }
             }
 
             return result.ToArray();
@@ -64,6 +68,7 @@ namespace ScriptedEvents.Handlers.Variables
 
         public static IEnumerable<Player> Get(string input)
         {
+            input = input.RemoveWhitespace();
             foreach (var variable in Variables)
             {
                 if (variable.Key.Equals(input))
@@ -77,6 +82,15 @@ namespace ScriptedEvents.Handlers.Variables
                 if (variable.Key.Equals(input))
                 {
                     return variable.Value;
+                }
+            }
+
+            foreach (RoleTypeId rt in (RoleTypeId[])Enum.GetValues(typeof(RoleTypeId)))
+            {
+                string roleTypeString = rt.ToString().ToUpper();
+                if (input.Equals($"{{{roleTypeString}}}"))
+                {
+                    return Player.Get(rt);
                 }
             }
 
