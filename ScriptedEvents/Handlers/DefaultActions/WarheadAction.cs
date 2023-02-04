@@ -41,6 +41,8 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 case "BLASTDOORS":
                     Warhead.CloseBlastDoors();
                     break;
+                default:
+                    return new(false, "First argument must be START/STOP/DETONATE/LOCK/UNLOCK/BLASTDOORS!");
             }
 
             return new(true);
