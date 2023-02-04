@@ -16,7 +16,7 @@ namespace ScriptedEvents
         public DateTime LastRespawnWave = DateTime.MinValue;
 
         public TimeSpan TimeSinceWave => DateTime.UtcNow - LastRespawnWave;
-        public bool IsRespawning => TimeSinceWave.TotalSeconds < 2;
+        public bool IsRespawning => TimeSinceWave.TotalSeconds < 5;
 
 
         public void OnRestarting()
@@ -33,6 +33,7 @@ namespace ScriptedEvents
             }
 
             Handlers.DefaultActions.WaitUntilAction.Coroutines.Clear();
+            Handlers.DefaultActions.WaitUntilDebugAction.Coroutines.Clear();
             ScriptHelper.RunningScripts.Clear();
 
             ConditionVariables.ClearVariables();
@@ -66,7 +67,7 @@ namespace ScriptedEvents
             RespawnWaves++;
             LastRespawnWave = DateTime.UtcNow;
 
-            ConditionVariables.DefineVariable("{LASTRESPAWNWAVE}", ev.NextKnownTeam.ToString());
+            ConditionVariables.DefineVariable("{LASTRESPAWNTEAM}", ev.NextKnownTeam.ToString());
             PlayerVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players);
         }
     }
