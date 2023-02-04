@@ -12,9 +12,9 @@ using UnityEngine;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class SavePlayersAction : IAction
+    public class SavePlayerVariableAction : IAction
     {
-        public string Name => "SAVEPLAYERS";
+        public string Name => "SAVEPLAYERVARIABLE";
 
         public string[] Aliases => Array.Empty<string>();
 
