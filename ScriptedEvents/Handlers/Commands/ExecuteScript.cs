@@ -70,16 +70,10 @@ namespace ScriptedEvents.Handlers.Commands
                     response = "Missing permission: es.execute.stopall";
                     return false;
                 }
-                int count = 0;
-                foreach (var script in ScriptHelper.RunningScripts)
-                {
-                    script.Key.IsRunning = false;
-                    Timing.KillCoroutines(script.Value);
-                    Log.Info($"Ended execution of {script.Key.ScriptName}.");
-                    count++;
-                }
-                ScriptHelper.RunningScripts.Clear();
-                response = $"Done! Stopped execution of {count} scripts.";
+
+                int amount = ScriptHelper.StopAllScripts();
+
+                response = $"Done! Stopped execution of {amount} scripts.";
                 return true;
             }
 

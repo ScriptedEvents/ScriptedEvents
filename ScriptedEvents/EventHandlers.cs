@@ -22,20 +22,7 @@ namespace ScriptedEvents
         public void OnRestarting()
         {
             RespawnWaves = 0;
-            foreach (var kvp in ScriptHelper.RunningScripts)
-            {
-                kvp.Key.IsRunning = false;
-                Timing.KillCoroutines(kvp.Value);
-            }
-            foreach (string key in Handlers.DefaultActions.WaitUntilAction.Coroutines)
-            {
-                Timing.KillCoroutines(key);
-            }
-
-            Handlers.DefaultActions.WaitUntilAction.Coroutines.Clear();
-            Handlers.DefaultActions.WaitUntilDebugAction.Coroutines.Clear();
-            ScriptHelper.RunningScripts.Clear();
-
+            ScriptHelper.StopAllScripts();
             ConditionVariables.ClearVariables();
             PlayerVariables.ClearVariables();
         }

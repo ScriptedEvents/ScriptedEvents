@@ -236,5 +236,31 @@ namespace ScriptedEvents.API.Helpers
             doors = doors.Where(d => d.IsElevator is false).ToList();
             return doors.Count > 0;
         }
+
+        public static int StopAllScripts()
+        {
+            int amount = 0;
+            foreach (var kvp in RunningScripts)
+            {
+                amount++;
+                kvp.Key.IsRunning = false;
+                Timing.KillCoroutines(kvp.Value);
+            }
+
+            foreach (string key in Handlers.DefaultActions.WaitUntilAction.Coroutines)
+            {
+                Timing.KillCoroutines(key);
+            }
+
+            foreach (string key in Handlers.DefaultActions.WaitUntilDebugAction.Coroutines)
+            {
+                Timing.KillCoroutines(key);
+            }
+
+            Handlers.DefaultActions.WaitUntilAction.Coroutines.Clear();
+            Handlers.DefaultActions.WaitUntilDebugAction.Coroutines.Clear();
+            RunningScripts.Clear();
+            return amount;
+        }
     }
 }
