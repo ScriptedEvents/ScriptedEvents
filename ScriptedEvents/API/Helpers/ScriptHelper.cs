@@ -209,6 +209,7 @@ namespace ScriptedEvents.API.Helpers
                 }
             }
 
+            plys.RemoveAll(p => !p.IsConnected);
             return plys.Count > 0;
         }
 
