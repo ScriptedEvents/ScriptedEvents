@@ -55,6 +55,7 @@ namespace ScriptedEvents
             LastRespawnWave = DateTime.UtcNow;
 
             ConditionVariables.DefineVariable("{LASTRESPAWNTEAM}", ev.NextKnownTeam.ToString());
+            ConditionVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players.Count);
             PlayerVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players);
         }
     }

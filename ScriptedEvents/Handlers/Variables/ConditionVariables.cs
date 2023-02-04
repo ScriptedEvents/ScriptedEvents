@@ -105,7 +105,7 @@ namespace ScriptedEvents.Handlers.Variables
                     .Replace("{KILLS}", Round.Kills)
                     .Replace("{SCPKILLS}", Round.KillsByScp)
 
-                    //-- Escapes
+                    //-- ESCAPES
                     .Replace("{CLASSDESCAPES}", Round.EscapedDClasses)
                     .Replace("{SCIENTISTSCAPES}", Round.EscapedScientists)
                     .Replace("{ESCAPES}", Round.EscapedDClasses + Round.EscapedScientists)
