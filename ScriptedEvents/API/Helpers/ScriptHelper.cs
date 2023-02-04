@@ -81,7 +81,7 @@ namespace ScriptedEvents.API.Helpers
 
         public static void RunScript(Script scr)
         {
-            if (scr.RawText.RemoveWhitespace().StartsWith("!-- DISABLE"))
+            if (scr.RawText.RemoveWhitespace().StartsWith("!--DISABLE"))
                 throw new DisabledScriptException();
 
             CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr));
