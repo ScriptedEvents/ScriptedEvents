@@ -35,6 +35,8 @@ namespace ScriptedEvents
 
         public override void OnEnabled()
         {
+            base.OnEnabled();
+
             Singleton = this;
             Handlers = new();
 
@@ -55,11 +57,12 @@ namespace ScriptedEvents
             ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
 
             ApiHelper.RegisterActions(GetType());
-            base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
+            base.OnDisabled();
+
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
             ServerHandler.RoundStarted -= Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam -= Handlers.OnRespawningTeam;
@@ -68,8 +71,6 @@ namespace ScriptedEvents
 
             Singleton = null;
             Handlers = null;
-            
-            base.OnDisabled();
         }
 
         public static void Info(string message)
