@@ -9,6 +9,11 @@ SCP:SL Exiled plugin to create event "scripts". These scripts can be set up to r
 ## For server hosts
 All documentation for this plugin can be found on its [wiki](https://github.com/Thundermaker300/ScriptedEvents/wiki). The wiki contains code samples and information about every action, variable, and supported conditions.
 
+### Permissions
+* `script.execute` - Execute a script.
+* `script.list` - View all scripts.
+* `script.stopall` - Stop all running scripts.
+
 ## For developers
 If you're a dev and wanna add your own actions to this, it's rather simple. First of all, add the plugin as reference.
 
