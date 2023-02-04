@@ -12,6 +12,7 @@ using ScriptedEvents.API.Features.Actions;
 using ScriptedEvents.API.Features.Aliases;
 using PlayerRoles;
 using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Handlers.Variables;
 
 namespace ScriptedEvents.API.Helpers
 {
@@ -176,16 +177,16 @@ namespace ScriptedEvents.API.Helpers
                 plys = Player.List.ToList();
                 return true;
             }
-            else if (Enum.TryParse<Team>(input, true, out Team team))
-            {
-                plys = Player.Get(team).ToList();
-            }
-            else if (Enum.TryParse<RoleTypeId>(input, true, out RoleTypeId role))
-            {
-                plys = Player.Get(role).ToList();
-            }
             else
             {
+                string[] variables = PlayerVariables.IsolateVariables(input);
+                foreach (string variable in variables)
+                {
+                    if (PlayerVariables.TryGet(variable, out var playersFromVariable))
+                    {
+                        plys.AddRange(playersFromVariable);
+                    }
+                }
                 if (Player.TryGet(input, out Player ply))
                 {
                     plys.Add(ply);

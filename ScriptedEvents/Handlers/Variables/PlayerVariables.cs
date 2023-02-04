@@ -11,6 +11,18 @@ namespace ScriptedEvents.Handlers.Variables
 {
     public static class PlayerVariables
     {
+        private static Dictionary<string, IEnumerable<Player>> definedVariables { get; } = new();
+
+        public static void DefineVariable(string name, IEnumerable<Player> input)
+        {
+            definedVariables[name] = input;
+        }
+
+        public static void ClearVariables()
+        {
+            definedVariables.Clear();
+        }
+
         public static Dictionary<string, IEnumerable<Player>> Variables { get; } = new()
         {
             // By role
@@ -40,12 +52,26 @@ namespace ScriptedEvents.Handlers.Variables
                     result.Add(str);
             }
 
+            foreach (string str in split)
+            {
+                if (definedVariables.Any(kvp => kvp.Key == str))
+                    result.Add(str);
+            }
+
             return result.ToArray();
         }
 
         public static IEnumerable<Player> Get(string input)
         {
             foreach (var variable in Variables)
+            {
+                if (variable.Key.Equals(input))
+                {
+                    return variable.Value;
+                }
+            }
+
+            foreach (var variable in definedVariables)
             {
                 if (variable.Key.Equals(input))
                 {

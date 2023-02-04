@@ -19,10 +19,9 @@ namespace ScriptedEvents.Handlers.Variables
             definedVariables[name] = input;
         }
 
-        public static void ClearVariables(string name)
+        public static void ClearVariables()
         {
-            if (definedVariables.ContainsKey(name))
-                definedVariables.Remove(name);
+            definedVariables.Clear();
         }
 
         // Useful method so that we don't have to add .ToString() on the end of literally everything
@@ -111,6 +110,11 @@ namespace ScriptedEvents.Handlers.Variables
                     .Replace("{TIMEUNTILNEXTWAVE}", Respawn.TimeUntilSpawnWave.TotalSeconds)
                     .Replace("{TIMESINCELASTWAVE}", MainPlugin.Handlers.TimeSinceWave.TotalSeconds)
                     ;
+
+            foreach (var definedVariable in definedVariables)
+            {
+                input = input.Replace(definedVariable.Key, definedVariable.Value);
+            }
 
             return input;
         }

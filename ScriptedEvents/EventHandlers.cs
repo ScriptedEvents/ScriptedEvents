@@ -6,6 +6,7 @@ using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Exceptions;
 using Exiled.Events.EventArgs.Server;
 using System;
+using ScriptedEvents.Handlers.Variables;
 
 namespace ScriptedEvents
 {
@@ -30,8 +31,12 @@ namespace ScriptedEvents
             {
                 Timing.KillCoroutines(key);
             }
+
             Handlers.DefaultActions.WaitUntilAction.Coroutines.Clear();
             ScriptHelper.RunningScripts.Clear();
+
+            ConditionVariables.ClearVariables();
+            PlayerVariables.ClearVariables();
         }
 
         public void OnRoundStarted()
@@ -57,8 +62,12 @@ namespace ScriptedEvents
         public void OnRespawningTeam(RespawningTeamEventArgs ev)
         {
             if (ev.IsAllowed) return;
+
             RespawnWaves++;
             LastRespawnWave = DateTime.UtcNow;
+
+            ConditionVariables.DefineVariable("{LASTRESPAWNWAVE}", ev.NextKnownTeam.ToString());
+            PlayerVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players);
         }
     }
 }
