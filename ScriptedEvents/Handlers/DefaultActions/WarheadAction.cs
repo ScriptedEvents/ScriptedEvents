@@ -19,7 +19,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
         public ActionResponse Execute()
         {
             if (Arguments.Length < 1)
-                return new(false, "Missing argument: action (START/STOP/DETONATE/BLASTDOORS)");
+                return new(false, "Missing argument: action (START/STOP/LOCK/UNLOCK/DETONATE/BLASTDOORS)");
 
             switch (Arguments[0].ToUpper())
             {
@@ -31,6 +31,12 @@ namespace ScriptedEvents.Handlers.DefaultActions
                     break;
                 case "DETONATE":
                     Warhead.Detonate();
+                    break;
+                case "LOCK":
+                    Warhead.IsLocked = true;
+                    break;
+                case "UNLOCK":
+                    Warhead.IsLocked = false;
                     break;
                 case "BLASTDOORS":
                     Warhead.CloseBlastDoors();
