@@ -40,6 +40,9 @@ namespace ScriptedEvents.API.Helpers
             .Replace("{WARHEADDETONATED}", Warhead.IsDetonated)
             .Replace("{!WARHEADDETONATED}", !Warhead.IsDetonated)
 
+            .Replace("{WAVERESPAWN}", MainPlugin.Handlers.IsRespawning)
+            .Replace("{!WAVERESPAWN}", !MainPlugin.Handlers.IsRespawning)
+
             // Floats
             //-- CHANCE
             .Replace("{CHANCE}", Random.value)
@@ -88,6 +91,7 @@ namespace ScriptedEvents.API.Helpers
             .Replace("{CHAOSTICKETS}", Respawn.ChaosTickets)
             .Replace("{TOTALWAVES}", MainPlugin.Handlers.RespawnWaves)
             .Replace("{TIMEUNTILNEXTWAVE}", Respawn.TimeUntilSpawnWave.TotalSeconds)
+            .Replace("{TIMESINCELASTWAVE}", MainPlugin.Handlers.TimeSinceWave.TotalSeconds)
             ;
     }
 }

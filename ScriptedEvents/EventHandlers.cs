@@ -5,12 +5,17 @@ using System.IO;
 using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Exceptions;
 using Exiled.Events.EventArgs.Server;
+using System;
 
 namespace ScriptedEvents
 {
     public class EventHandlers
     {
         public int RespawnWaves = 0;
+        public DateTime LastRespawnWave = DateTime.MinValue;
+
+        public TimeSpan TimeSinceWave => DateTime.UtcNow - LastRespawnWave;
+        public bool IsRespawning => TimeSinceWave.TotalSeconds < 2;
 
 
         public void OnRestarting()
@@ -53,6 +58,7 @@ namespace ScriptedEvents
         {
             if (ev.IsAllowed) return;
             RespawnWaves++;
+            LastRespawnWave = DateTime.UtcNow;
         }
     }
 }
