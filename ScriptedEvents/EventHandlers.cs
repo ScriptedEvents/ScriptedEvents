@@ -22,6 +22,8 @@ namespace ScriptedEvents
         public void OnRestarting()
         {
             RespawnWaves = 0;
+            LastRespawnWave = DateTime.MinValue;
+
             ScriptHelper.StopAllScripts();
             ConditionVariables.ClearVariables();
             PlayerVariables.ClearVariables();
