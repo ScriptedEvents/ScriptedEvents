@@ -15,7 +15,7 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
 
         public override string Command => "scriptedevents";
 
-        public override string[] Aliases => new[] { "se", "script" };
+        public override string[] Aliases => new[] { "scr", "script" };
 
         public override string Description => "Parent command for the Scripted Events plugin.";
 
