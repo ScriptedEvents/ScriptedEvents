@@ -59,7 +59,7 @@ namespace ScriptedEvents.API.Helpers
                 if (alias != null)
                 {
                     actionParts = alias.Unalias(action).Split(' ');
-                    keyword = actionParts[0];
+                    keyword = actionParts[0].RemoveWhitespace();
                 }
 
 #if DEBUG
@@ -73,7 +73,7 @@ namespace ScriptedEvents.API.Helpers
                 }
 
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
-                newAction.Arguments = actionParts.Skip(1).ToArray();
+                newAction.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
                 script.Actions.Enqueue(newAction);
             }
