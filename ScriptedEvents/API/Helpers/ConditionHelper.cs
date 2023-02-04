@@ -40,9 +40,17 @@ namespace ScriptedEvents.API.Helpers
             return (double)loDataTable.Rows[0]["Eval"];
         }
 
+        // StackOverflow my beloved
+        public static string RemoveWhitespace(this string input)
+        {
+            return new string(input.ToCharArray()
+                .Where(c => !char.IsWhiteSpace(c))
+                .ToArray());
+        }
+
         public static ConditionResponse Evaluate(string input)
         {
-            input = ConditionVariables.ReplaceVariables(input.Replace(" ", "")).Trim(); // Kill all whitespace & replace variables
+            input = ConditionVariables.ReplaceVariables(input.RemoveWhitespace()).Trim(); // Kill all whitespace & replace variables
 
             // Code for simple checks
             if (input.ToLowerInvariant() is "true")
