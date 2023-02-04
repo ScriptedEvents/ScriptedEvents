@@ -91,7 +91,7 @@ namespace ScriptedEvents.API.Helpers
 
         public static IEnumerator<float> RunScriptInternal(Script scr)
         {
-            Log.Info($"Running script {scr.ScriptName}.");
+            MainPlugin.Info($"Running script {scr.ScriptName}.");
             scr.IsRunning = true;
 
             while (true)
@@ -146,7 +146,7 @@ namespace ScriptedEvents.API.Helpers
                 }
             }
 
-            Log.Info($"Finished running script {scr.ScriptName}.");
+            MainPlugin.Info($"Finished running script {scr.ScriptName}.");
             scr.IsRunning = false;
             RunningScripts.Remove(scr);
         }

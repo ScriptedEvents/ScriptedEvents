@@ -68,6 +68,12 @@ namespace ScriptedEvents
             
             base.OnDisabled();
         }
+
+        public static void Info(string message)
+        {
+            if (Singleton.Config.EnableLogs)
+                Log.Info(message);
+        }
     }
 
     public class Config : IConfig
@@ -75,6 +81,9 @@ namespace ScriptedEvents
         [Description("Whether or not to enable the Scripted Events plugin.")]
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
+
+        [Description("Enable logs for starting/stopping scripts.")]
+        public bool EnableLogs { get; set; } = true;
 
         [Description("List of scripts to run as soon as the round starts.")]
         public List<string> AutoRunScripts { get; set; } = new();
