@@ -29,6 +29,7 @@ namespace ScriptedEvents.Handlers.Variables
             { "{CLASSD}", Player.Get(Team.ClassD) },
             { "{SCIENTISTS}", Player.Get(Team.Scientists) },
             { "{GUARDS}", Player.Get(RoleTypeId.FacilityGuard) },
+            { "{MTFANDGUARDS}", Player.Get(Team.FoundationForces) },
             { "{SCPS}", Player.Get(Team.SCPs) },
             { "{MTF}", Player.Get(ply => ply.Role.Team is Team.FoundationForces && ply.Role.Type is not RoleTypeId.FacilityGuard) },
             { "{CI}", Player.Get(Team.ChaosInsurgency) },
