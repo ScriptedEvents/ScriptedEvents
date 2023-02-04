@@ -56,7 +56,7 @@ namespace ScriptedEvents
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
 
-            ApiHelper.RegisterActions(GetType());
+            ApiHelper.RegisterActions();
         }
 
         public override void OnDisabled()

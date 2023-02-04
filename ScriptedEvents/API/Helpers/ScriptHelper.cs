@@ -20,14 +20,18 @@ namespace ScriptedEvents.API.Helpers
     {
         internal static void RegisterActions(Assembly assembly)
         {
+            int i = 0;
             foreach (Type type in assembly.GetTypes())
             {
                 if (typeof(IAction).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
                 {
                     IAction temp = (IAction)Activator.CreateInstance(type);
                     ActionTypes.Add(temp.Name, type);
+                    i++;
                 }
             }
+
+            MainPlugin.Info($"Assembly '{assembly.GetName().Name}' has registered {i} actions.");
         }
 
         public static readonly string ScriptPath = Path.Combine(Paths.Configs, "ScriptedEvents");
