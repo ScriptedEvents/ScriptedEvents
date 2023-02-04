@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScriptedEvents.Conditions
+namespace ScriptedEvents.Conditions.Floats
 {
-    public class NotEqual : IBooleanCondition
+    public class NotEqual : IFloatCondition
     {
         public string Symbol => "!=";
 

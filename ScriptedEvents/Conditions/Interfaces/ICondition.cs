@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ScriptedEvents.Conditions.Interfaces
 {
-    public interface IBooleanCondition
+    public interface ICondition
     {
         public string Symbol { get; }
-        public bool Execute(float left, float right);
     }
 }

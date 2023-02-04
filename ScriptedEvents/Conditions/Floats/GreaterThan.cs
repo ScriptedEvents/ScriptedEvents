@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScriptedEvents.Conditions
+namespace ScriptedEvents.Conditions.Floats
 {
-    public class GreaterThan : IBooleanCondition
+    public class GreaterThan : IFloatCondition
     {
         public string Symbol => ">";
 

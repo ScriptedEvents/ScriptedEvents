@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using ScriptedEvents.Conditions;
+using ScriptedEvents.Conditions.Floats;
 using ScriptedEvents.Conditions.Interfaces;
 using ScriptedEvents.Handlers.Variables;
 using System;
@@ -12,7 +13,7 @@ namespace ScriptedEvents.API.Helpers
 {
     public static class ConditionHelper
     {
-        public static ReadOnlyCollection<IBooleanCondition> BooleanConditions { get; } = new List<IBooleanCondition>()
+        public static ReadOnlyCollection<IFloatCondition> FloatConditions { get; } = new List<IFloatCondition>()
         {
             new GreaterThan(),
             new LessThan(),
@@ -44,9 +45,9 @@ namespace ScriptedEvents.API.Helpers
             if (input.ToLowerInvariant() is "false")
                 return new(true, false, string.Empty);
 
-            // Code for conditions with boolean operator
-            IBooleanCondition condition = null;
-            foreach (IBooleanCondition con in BooleanConditions)
+            // Code for conditions with float operator
+            IFloatCondition condition = null;
+            foreach (IFloatCondition con in FloatConditions)
             {
                 if (input.Contains(con.Symbol))
                 {

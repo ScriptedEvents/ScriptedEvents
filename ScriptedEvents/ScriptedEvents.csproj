@@ -61,9 +61,9 @@
   <ItemGroup>
     <Compile Include="API\Features\Actions\ActionResponse.cs" />
     <Compile Include="API\Features\Exceptions\DisabledScriptException.cs" />
-    <Compile Include="Conditions\GreaterThanOrEqualTo.cs" />
-    <Compile Include="Conditions\LessThanOrEqualTo.cs" />
-    <Compile Include="Conditions\NotEqual.cs" />
+    <Compile Include="Conditions\Floats\GreaterThanOrEqualTo.cs" />
+    <Compile Include="Conditions\Floats\LessThanOrEqualTo.cs" />
+    <Compile Include="Conditions\Floats\NotEqual.cs" />
     <Compile Include="DemoScripts\About.cs" />
     <Compile Include="DemoScripts\ConditionSamples.cs" />
     <Compile Include="DemoScripts\IDemoScript.cs" />
@@ -91,9 +91,9 @@
     <Compile Include="API\Helpers\ApiHelper.cs" />
     <Compile Include="Handlers\Commands\ExecuteScript.cs" />
     <Compile Include="API\Helpers\ConditionHelper.cs" />
-    <Compile Include="Conditions\Equal.cs" />
-    <Compile Include="Conditions\LessThan.cs" />
-    <Compile Include="Conditions\GreaterThan.cs" />
+    <Compile Include="Conditions\Floats\Equal.cs" />
+    <Compile Include="Conditions\Floats\LessThan.cs" />
+    <Compile Include="Conditions\Floats\GreaterThan.cs" />
     <Compile Include="Conditions\Interfaces\IBooleanCondition.cs" />
     <Compile Include="Handlers\Variables\ConditionVariables.cs" />
     <Compile Include="EventHandlers.cs" />
