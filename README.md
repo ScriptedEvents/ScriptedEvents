@@ -21,6 +21,6 @@ If you're a dev and wanna add your own actions to this, it's rather simple. Firs
 
 Create a new class, it needs to inherit `ScriptedEvents.API.Actions.IAction`, then implement this interface
 
-Then, in your OnEnabled, add `ScriptedEvents.API.ApiHelper.RegisterActions(GetType());`
+Then, in your OnEnabled, add `ScriptedEvents.API.ApiHelper.RegisterActions();`
 
 You are done
