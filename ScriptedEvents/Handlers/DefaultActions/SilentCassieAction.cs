@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using ScriptedEvents.API.Features.Actions;
 using ScriptedEvents.API.Helpers;
+using ScriptedEvents.Handlers.Variables;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {

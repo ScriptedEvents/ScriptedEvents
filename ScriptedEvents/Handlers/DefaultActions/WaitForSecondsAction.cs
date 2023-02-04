@@ -5,6 +5,7 @@ using ScriptedEvents.API.Features.Actions;
 using System.Linq;
 using System.Data;
 using Exiled.API.Features;
+using ScriptedEvents.Handlers.Variables;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {

@@ -49,7 +49,7 @@ namespace ScriptedEvents
 
         public void OnRespawningTeam(RespawningTeamEventArgs ev)
         {
-            if (ev.IsAllowed) return;
+            if (!ev.IsAllowed) return;
 
             RespawnWaves++;
             LastRespawnWave = DateTime.UtcNow;

@@ -64,6 +64,9 @@
     <Compile Include="Conditions\Floats\GreaterThanOrEqualTo.cs" />
     <Compile Include="Conditions\Floats\LessThanOrEqualTo.cs" />
     <Compile Include="Conditions\Floats\NotEqual.cs" />
+    <Compile Include="Conditions\Interfaces\ICondition.cs" />
+    <Compile Include="Conditions\Interfaces\IStringCondition.cs" />
+    <Compile Include="Conditions\Strings\StringEqual.cs" />
     <Compile Include="DemoScripts\About.cs" />
     <Compile Include="DemoScripts\ConditionSamples.cs" />
     <Compile Include="DemoScripts\IDemoScript.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="Handlers\DefaultActions\SetRoleAction.cs" />
     <Compile Include="Handlers\DefaultActions\StopIfAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitForSecondsAction.cs" />
+    <Compile Include="Handlers\DefaultActions\WaitUntilDebugAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitUntilAction.cs" />
     <Compile Include="API\Features\Aliases\Alias.cs" />
     <Compile Include="API\Features\Aliases\AliasExtensions.cs" />
@@ -94,7 +98,7 @@
     <Compile Include="Conditions\Floats\Equal.cs" />
     <Compile Include="Conditions\Floats\LessThan.cs" />
     <Compile Include="Conditions\Floats\GreaterThan.cs" />
-    <Compile Include="Conditions\Interfaces\IBooleanCondition.cs" />
+    <Compile Include="Conditions\Interfaces\IFloatCondition.cs" />
     <Compile Include="Handlers\Variables\ConditionVariables.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Handlers\DefaultActions\WarheadAction.cs" />

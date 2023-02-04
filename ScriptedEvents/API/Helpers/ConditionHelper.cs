@@ -2,6 +2,7 @@
 using ScriptedEvents.Conditions;
 using ScriptedEvents.Conditions.Floats;
 using ScriptedEvents.Conditions.Interfaces;
+using ScriptedEvents.Conditions.Strings;
 using ScriptedEvents.Handlers.Variables;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,11 @@ namespace ScriptedEvents.API.Helpers
             new GreaterThanOrEqualTo(),
         }.AsReadOnly();
 
+        public static ReadOnlyCollection<IStringCondition> StringConditions { get; } = new List<IStringCondition>()
+        {
+            new StringEqual(),
+        }.AsReadOnly();
+
         // StackOverflow my beloved
         public static double Math(string expression)
         {
@@ -44,6 +50,28 @@ namespace ScriptedEvents.API.Helpers
 
             if (input.ToLowerInvariant() is "false")
                 return new(true, false, string.Empty);
+
+            // Code for conditions with string operator
+            IStringCondition conditionString = null;
+            foreach (IStringCondition con in StringConditions)
+            {
+                if (input.Contains(con.Symbol))
+                {
+                   conditionString = con;
+                }
+            }
+
+            if (conditionString is not null)
+            {
+                string[] arrString = input.Split(conditionString.Symbol.ToCharArray());
+                var splitString = arrString.ToList();
+                splitString.RemoveAll(y => string.IsNullOrWhiteSpace(y));
+
+                if (splitString.Count != 2)
+                    return new(false, false, $"Malformed condition provided! Condition: '{input}'");
+
+                return new(true, conditionString.Execute(splitString[0], splitString[1]), string.Empty);
+            }
 
             // Code for conditions with float operator
             IFloatCondition condition = null;

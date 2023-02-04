@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ScriptedEvents.API.Features.Actions;
 using ScriptedEvents.API.Helpers;
+using ScriptedEvents.Handlers.Variables;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
@@ -40,7 +41,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
                     break;
                 }
 
-                Log.Info(response.Passed);
+                Log.Info($"CONDITION: {ConditionVariables.ReplaceVariables(input)} \\\\ PASSED: {response.Passed}");
                 yield return Timing.WaitForSeconds(1f);
             }
         }
