@@ -151,6 +151,12 @@ namespace ScriptedEvents.API.Helpers
 
             MainPlugin.Info($"Finished running script {scr.ScriptName}.");
             scr.IsRunning = false;
+
+            if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
+            {
+                RunScript(ReadScript(scr.ScriptName)); // so that it re-reads the content of the text file.
+            }
+
             RunningScripts.Remove(scr);
         }
 

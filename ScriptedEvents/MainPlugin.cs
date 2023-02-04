@@ -92,6 +92,9 @@ namespace ScriptedEvents
         [Description("List of scripts to run as soon as the round starts.")]
         public List<string> AutoRunScripts { get; set; } = new();
 
+        [Description("List of scripts to automatically re-run as soon as they finish.")]
+        public List<string> LoopScripts { get; set; } = new();
+
         // todo: un-alias door commands, because they dont have duration anymore
         [Description("Define a custom set of actions and the action they run when used.")]
         public List<Alias> Aliases { get; set; } = new()
