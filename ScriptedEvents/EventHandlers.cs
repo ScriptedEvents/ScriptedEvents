@@ -7,6 +7,12 @@ using ScriptedEvents.API.Features.Exceptions;
 using Exiled.Events.EventArgs.Server;
 using System;
 using ScriptedEvents.Handlers.Variables;
+using System.Collections.Generic;
+using ScriptedEvents.Structures;
+using Exiled.Events.EventArgs.Player;
+using System.Linq;
+using UnityEngine;
+using Exiled.API.Features.DamageHandlers;
 
 namespace ScriptedEvents
 {
@@ -18,6 +24,7 @@ namespace ScriptedEvents
         public TimeSpan TimeSinceWave => DateTime.UtcNow - LastRespawnWave;
         public bool IsRespawning => TimeSinceWave.TotalSeconds < 5;
 
+        public List<InfectRule> InfectionRules { get; } = new();
 
         public void OnRestarting()
         {
@@ -27,6 +34,8 @@ namespace ScriptedEvents
             ScriptHelper.StopAllScripts();
             ConditionVariables.ClearVariables();
             PlayerVariables.ClearVariables();
+
+            InfectionRules.Clear();
         }
 
         public void OnRoundStarted()
@@ -59,6 +68,29 @@ namespace ScriptedEvents
             ConditionVariables.DefineVariable("{LASTRESPAWNTEAM}", ev.NextKnownTeam.ToString());
             ConditionVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players.Count);
             PlayerVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players);
+        }
+
+        // Infection
+        public void OnDied(DiedEventArgs ev)
+        {
+            if (ev.Player is null || ev.Attacker is null || ev.DamageHandler.Attacker is null)
+                return;
+
+            if (!InfectionRules.Any(r => r.OldRole == ev.TargetOldRole))
+                return;
+
+            InfectRule? ruleNullable = InfectionRules.FirstOrDefault(r => r.OldRole == ev.TargetOldRole);
+
+            InfectRule rule = ruleNullable.Value;
+            Vector3 pos = ev.Attacker.Position;
+
+            Timing.CallDelayed(0.5f, () =>
+            {
+                ev.Player.Role.Set(rule.NewRole);
+
+                if (rule.MovePlayer)
+                    ev.Player.Teleport(pos);
+            });
         }
     }
 }

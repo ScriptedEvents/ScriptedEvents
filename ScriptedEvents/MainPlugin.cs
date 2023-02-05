@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using PlayerHandler = Exiled.Events.Handlers.Player;
 using ServerHandler = Exiled.Events.Handlers.Server;
 using ScriptedEvents.API.Features.Aliases;
 using ScriptedEvents.API.Helpers;
@@ -52,6 +53,8 @@ namespace ScriptedEvents
                 Log.Warn($"Thank you for installing Scripted Events! View the README file located at {ScriptHelper.ScriptPath} for information on how to use and get the most out of this plugin.");
             }
 
+            PlayerHandler.Died += Handlers.OnDied;
+
             ServerHandler.RestartingRound += Handlers.OnRestarting;
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
@@ -62,6 +65,8 @@ namespace ScriptedEvents
         public override void OnDisabled()
         {
             base.OnDisabled();
+
+            PlayerHandler.Died -= Handlers.OnDied;
 
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
             ServerHandler.RoundStarted -= Handlers.OnRoundStarted;
