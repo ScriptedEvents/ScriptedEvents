@@ -13,6 +13,7 @@ using Exiled.Events.EventArgs.Player;
 using System.Linq;
 using UnityEngine;
 using Exiled.API.Features.DamageHandlers;
+using PlayerRoles;
 
 namespace ScriptedEvents
 {
@@ -26,6 +27,8 @@ namespace ScriptedEvents
 
         public List<InfectRule> InfectionRules { get; } = new();
 
+        public Dictionary<RoleTypeId, int> SpawnRules { get; } = new();
+
         public void OnRestarting()
         {
             RespawnWaves = 0;
@@ -36,10 +39,57 @@ namespace ScriptedEvents
             PlayerVariables.ClearVariables();
 
             InfectionRules.Clear();
+            SpawnRules.Clear();
         }
 
         public void OnRoundStarted()
         {
+            if (SpawnRules.Count > 0)
+            {
+                List<Player> players = Player.List.ToList();
+                players.ShuffleList();
+
+                int iterator = 0;
+
+                foreach (var rule in SpawnRules.Where(rule => rule.Value > 0))
+                {
+                    for (int i = iterator; i < iterator+rule.Value; i++)
+                    {
+                        Log.Info(i);
+                        Player p;
+                        try
+                        {
+                            p = players[i];
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
+                            break;
+                        }
+                        catch (ArgumentOutOfRangeException)
+                        {
+                            break;
+                        }
+
+                        if (!p.IsConnected)
+                            continue;
+
+                        p.Role.Set(rule.Key);
+                    }
+                    iterator += rule.Value;
+                }
+
+                if (SpawnRules.Any(rule => rule.Value == -1))
+                {
+                    List<Player> newPlayers = players.Skip(iterator).ToList();
+
+                    var rule = SpawnRules.FirstOrDefault(rule => rule.Value == -1);
+                    foreach (var player in newPlayers)
+                    {
+                        player.Role.Set(rule.Key);
+                    }
+                }
+            }
+
             foreach (string name in MainPlugin.Singleton.Config.AutoRunScripts)
             {
                 try

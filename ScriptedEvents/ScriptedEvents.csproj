@@ -100,6 +100,7 @@
     <Compile Include="Handlers\DefaultActions\ExecuteScriptAction.cs" />
     <Compile Include="Handlers\DefaultActions\GiveAction.cs" />
     <Compile Include="Handlers\DefaultActions\InfectAddAction.cs" />
+    <Compile Include="Handlers\DefaultActions\SpawnRuleAction.cs" />
     <Compile Include="Handlers\DefaultActions\StartRoundAction.cs" />
     <Compile Include="Handlers\DefaultActions\SavePlayerVariableAction.cs" />
     <Compile Include="Handlers\DefaultActions\SilentCassieAction.cs" />
