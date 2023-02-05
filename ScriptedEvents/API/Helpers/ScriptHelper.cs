@@ -203,6 +203,7 @@ namespace ScriptedEvents.API.Helpers
             }
 
             plys.ShuffleList();
+            plys.RemoveAll(p => !p.IsConnected);
 
             if (amount.HasValue && amount.Value > 0)
             {
@@ -215,7 +216,6 @@ namespace ScriptedEvents.API.Helpers
                 }
             }
 
-            plys.RemoveAll(p => !p.IsConnected);
             return plys.Count > 0;
         }
 
