@@ -15,7 +15,7 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
 
         public override string Command => "scriptedevents";
 
-        public override string[] Aliases => new[] { "scr", "script" };
+        public override string[] Aliases => new[] { "scr", "script", "event", "events" };
 
         public override string Description => "Parent command for the Scripted Events plugin.";
 
@@ -31,7 +31,7 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
             StringBuilder sb = StringBuilderPool.Pool.Get();
 
             sb.AppendLine("Available commands:");
-            sb.AppendLine("- SCRIPT EXECUTE <SCRIPTNAME> - Executes the script with the given name.");
+            sb.AppendLine("- SCRIPT EXECUTE <SCRIPTNAME> - Executes the script with the given name. (alias: ex, run)");
             sb.AppendLine("- SCRIPT LIST - Lists all scripts and their respective permissions & last edited time.");
             sb.AppendLine("- SCRIPT STOPALL - Stops all currently executing scripts.");
 
