@@ -16,6 +16,27 @@ The parent command for this plugin is `scriptedevents` (aliases: `script`, `scr`
 * `script.list` - View all scripts.
 * `script.stopall` - Stop all running scripts.
 
+### Default Config
+```yml
+scripted_events:
+  # Whether or not to enable the Scripted Events plugin.
+  is_enabled: true
+  debug: false
+  # Enable logs for starting/stopping scripts.
+  enable_logs: true
+  # List of scripts to run as soon as the round starts.
+  auto_run_scripts: []
+  # List of scripts to automatically re-run as soon as they finish.
+  loop_scripts: []
+  # Define a custom set of actions and the action they run when used.
+  aliases:
+  - command: LOCKDOORBRIEF
+    execute: DOOR LOCK * 10
+  # Define a custom set of permissions used to run a certain script. The provided permission will be added AFTER script.execute (eg. script.execute.examplepermission for the provided example).
+  required_permissions:
+    ExampleScriptNameHere: examplepermission
+```
+
 ## For developers
 If you're a dev and wanna add your own actions to this, it's rather simple. First of all, add the plugin as reference.
 
