@@ -1,5 +1,4 @@
-﻿using ScriptedEvents;
-using ScriptedEvents.DemoScripts;
+﻿using ScriptedEvents.DemoScripts;
 
 namespace ScriptedEvents.Handlers
 {

@@ -87,6 +87,7 @@
     <Compile Include="Conditions\Floats\NotEqual.cs" />
     <Compile Include="Conditions\Interfaces\ICondition.cs" />
     <Compile Include="Conditions\Interfaces\IStringCondition.cs" />
+    <Compile Include="Conditions\Strings\StringNotEqual.cs" />
     <Compile Include="Conditions\Strings\StringEqual.cs" />
     <Compile Include="DemoScripts\About.cs" />
     <Compile Include="DemoScripts\ConditionSamples.cs" />

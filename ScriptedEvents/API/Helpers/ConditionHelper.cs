@@ -1,6 +1,4 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.Conditions;
-using ScriptedEvents.Conditions.Floats;
+﻿using ScriptedEvents.Conditions.Floats;
 using ScriptedEvents.Conditions.Interfaces;
 using ScriptedEvents.Conditions.Strings;
 using ScriptedEvents.Handlers.Variables;

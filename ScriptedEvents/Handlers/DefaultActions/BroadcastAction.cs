@@ -3,10 +3,7 @@ using ScriptedEvents.API.Features.Actions;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.Handlers.Variables;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScriptedEvents.Actions
 {

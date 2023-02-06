@@ -4,10 +4,6 @@ using System;
 using System.IO;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.API.Features;
-using System.Text;
-using Exiled.API.Features.Pools;
-using MEC;
-using Exiled.API.Features;
 using ScriptedEvents.API.Features.Exceptions;
 
 namespace ScriptedEvents.Handlers.Commands.MainCommand

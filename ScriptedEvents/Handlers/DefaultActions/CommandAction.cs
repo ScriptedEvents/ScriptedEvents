@@ -1,5 +1,4 @@
 ﻿using System;
-using Exiled.API.Features;
 using ScriptedEvents.API.Features.Actions;
 
 namespace ScriptedEvents.Handlers.DefaultActions

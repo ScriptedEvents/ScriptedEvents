@@ -4,15 +4,15 @@ using Exiled.API.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using PlayerHandler = Exiled.Events.Handlers.Player;
-using ServerHandler = Exiled.Events.Handlers.Server;
 using ScriptedEvents.API.Features.Aliases;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.Handlers;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using ScriptedEvents.DemoScripts;
+
+using PlayerHandler = Exiled.Events.Handlers.Player;
+using ServerHandler = Exiled.Events.Handlers.Server;
 
 namespace ScriptedEvents
 {

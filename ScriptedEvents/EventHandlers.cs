@@ -12,7 +12,6 @@ using ScriptedEvents.Structures;
 using Exiled.Events.EventArgs.Player;
 using System.Linq;
 using UnityEngine;
-using Exiled.API.Features.DamageHandlers;
 using PlayerRoles;
 
 namespace ScriptedEvents

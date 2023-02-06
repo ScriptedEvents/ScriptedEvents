@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Random = UnityEngine.Random;
 using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Actions;
 using ScriptedEvents.API.Features.Aliases;
-using PlayerRoles;
 using ScriptedEvents.API.Features.Exceptions;
 using ScriptedEvents.Handlers.Variables;
+
+using Random = UnityEngine.Random;
 
 namespace ScriptedEvents.API.Helpers
 {

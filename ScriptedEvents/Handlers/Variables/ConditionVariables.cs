@@ -4,7 +4,7 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+
 using Random = UnityEngine.Random;
 
 namespace ScriptedEvents.Handlers.Variables
