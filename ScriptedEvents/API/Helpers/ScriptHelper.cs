@@ -92,6 +92,13 @@ namespace ScriptedEvents.API.Helpers
             RunningScripts.Add(scr, handle);
         }
 
+        public static void ReadAndRun(string scriptName)
+        {
+            Script scr = ReadScript(scriptName);
+            if (scr is not null)
+                RunScript(scr);
+        }
+
         public static IEnumerator<float> RunScriptInternal(Script scr)
         {
             MainPlugin.Info($"Running script {scr.ScriptName}.");
@@ -154,7 +161,7 @@ namespace ScriptedEvents.API.Helpers
 
             if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
             {
-                RunScript(ReadScript(scr.ScriptName)); // so that it re-reads the content of the text file.
+                ReadAndRun(scr.ScriptName); // so that it re-reads the content of the text file.
             }
 
             RunningScripts.Remove(scr);

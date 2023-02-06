@@ -93,8 +93,7 @@ namespace ScriptedEvents
             {
                 try
                 {
-                    Script scr = ScriptHelper.ReadScript(name);
-                    ScriptHelper.RunScript(scr);
+                    ScriptHelper.ReadAndRun(name);
                 }
                 catch (DisabledScriptException)
                 {

@@ -22,9 +22,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
             try
             {
-                Script scr = ScriptHelper.ReadScript(scriptName);
-
-                ScriptHelper.RunScript(scr);
+                ScriptHelper.ReadAndRun(scriptName);
                 return new(true);
             }
             catch (DisabledScriptException)

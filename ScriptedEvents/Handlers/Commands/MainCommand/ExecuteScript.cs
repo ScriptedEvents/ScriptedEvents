@@ -50,10 +50,8 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
 
             try
             {
-                Script scr = ScriptHelper.ReadScript(arg0);
-
-                ScriptHelper.RunScript(scr);
-                response = $"Executed {scr.ScriptName} successfully.";
+                ScriptHelper.ReadAndRun(arg0);
+                response = $"Executed {arg0} successfully.";
             }
             catch (DisabledScriptException)
             {
