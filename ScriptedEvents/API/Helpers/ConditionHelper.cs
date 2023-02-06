@@ -28,6 +28,7 @@ namespace ScriptedEvents.API.Helpers
         public static ReadOnlyCollection<IStringCondition> StringConditions { get; } = new List<IStringCondition>()
         {
             new StringEqual(),
+            new StringNotEqual(),
         }.AsReadOnly();
 
         // StackOverflow my beloved
