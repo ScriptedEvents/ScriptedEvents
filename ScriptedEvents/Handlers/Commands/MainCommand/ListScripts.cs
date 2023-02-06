@@ -38,12 +38,13 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
             {
                 string scriptName = Path.GetFileNameWithoutExtension(file);
                 string permission = "script.execute";
-                DateTime edited = File.GetLastWriteTime(file);
+                DateTime edited = File.GetLastWriteTimeUtc(file);
+                DateTime read = File.GetLastAccessTimeUtc(file);
                 if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2))
                 {
                     permission += $".{perm2}";
                 }
-                bldr.AppendLine($"{scriptName} (perm: {permission}) (edited: {edited:g})");
+                bldr.AppendLine($"{scriptName} (perm: {permission}) (last ran: {read:g}) (edited: {edited:g})");
             }
 
             response = $"All found scripts: \n\n{StringBuilderPool.Pool.ToStringReturn(bldr)}";
