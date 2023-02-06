@@ -6,10 +6,9 @@ namespace ScriptedEvents.API.Features.Exceptions
     {
         public string ScriptName { get; }
         public DisabledScriptException(string scriptName)
-            : base()
+            : base($"The given script '{scriptName}' is disabled.")
         {
             ScriptName = scriptName;
-            Message = $"The given script '{scriptName}' is disabled.";
         }
     }
 }
