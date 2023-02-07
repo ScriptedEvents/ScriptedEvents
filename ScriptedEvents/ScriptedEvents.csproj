@@ -102,7 +102,7 @@
     <Compile Include="Handlers\DefaultActions\DeletePlayerVariable.cs" />
     <Compile Include="Handlers\DefaultActions\ExecuteScriptAction.cs" />
     <Compile Include="Handlers\DefaultActions\GiveAction.cs" />
-    <Compile Include="Handlers\DefaultActions\Jump.cs" />
+    <Compile Include="Handlers\DefaultActions\Goto.cs" />
     <Compile Include="Handlers\DefaultActions\InfectAddAction.cs" />
     <Compile Include="Handlers\DefaultActions\SpawnRuleAction.cs" />
     <Compile Include="Handlers\DefaultActions\StartRoundAction.cs" />
