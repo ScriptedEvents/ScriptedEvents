@@ -4,13 +4,14 @@ using PlayerRoles;
 using ScriptedEvents.API.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ScriptedEvents.Handlers.Variables
 {
     public static class PlayerVariables
     {
         private static Dictionary<string, IEnumerable<Player>> definedVariables { get; } = new();
-
+        private static readonly Dictionary<string, RoleTypeId> roleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => x.ToString().ToUpper(), x => x);
         public static void DefineVariable(string name, IEnumerable<Player> input)
         {
             name = name.RemoveWhitespace();
@@ -66,31 +67,15 @@ namespace ScriptedEvents.Handlers.Variables
         public static IEnumerable<Player> Get(string input)
         {
             input = input.RemoveWhitespace();
-            foreach (var variable in Variables)
-            {
-                if (variable.Key.Equals(input))
-                {
-                    return variable.Value;
-                }
-            }
 
-            foreach (var variable in definedVariables)
-            {
-                if (variable.Key.Equals(input))
-                {
-                    return variable.Value;
-                }
-            }
+            if (Variables.TryGetValue(input, out IEnumerable<Player> result))
+                return result;
 
-            foreach (RoleTypeId rt in (RoleTypeId[])Enum.GetValues(typeof(RoleTypeId)))
-            {
-                string roleTypeString = rt.ToString().ToUpper();
-                if (input.Equals($"{{{roleTypeString}}}"))
-                {
-                    return Player.Get(rt);
-                }
-            }
+            if (definedVariables.TryGetValue(input, out result))
+                return result;
 
+            if (roleTypeIds.TryGetValue(input, out RoleTypeId rt))
+                return Player.Get(rt);
             return null;
         }
 
