@@ -14,7 +14,8 @@ namespace ScriptedEvents.API.Features
         public Guid UniqueId { get; }
         public string ScriptName { get; set; } = string.Empty;
         public string RawText { get; set; } = string.Empty;
-        public Queue<IAction> Actions { get; set; } = new();
+        public List<IAction> Actions { get; set; } = new();
+        public int CurrentLine { get; set; }
         public bool IsRunning { get; internal set; } = false;
     }
 }

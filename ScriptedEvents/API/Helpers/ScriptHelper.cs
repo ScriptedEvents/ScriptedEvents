@@ -75,7 +75,7 @@ namespace ScriptedEvents.API.Helpers
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
                 newAction.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
-                script.Actions.Enqueue(newAction);
+                script.Actions.Add(newAction);
             }
 
             script.ScriptName = scriptName;
@@ -104,9 +104,9 @@ namespace ScriptedEvents.API.Helpers
             MainPlugin.Info($"Running script {scr.ScriptName}.");
             scr.IsRunning = true;
 
-            while (true)
+            for (; scr.CurrentLine < scr.Actions.Count; scr.CurrentLine++)                                
             {
-                if (scr.Actions.TryDequeue(out IAction action))
+                if (scr.Actions.TryGet(scr.CurrentLine, out IAction action))
                 {
                     ActionResponse resp;
                     float? delay = null;
