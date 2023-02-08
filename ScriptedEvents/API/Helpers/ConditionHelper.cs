@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Conditions.Floats;
+﻿using Exiled.API.Features;
+using ScriptedEvents.Conditions.Floats;
 using ScriptedEvents.Conditions.Interfaces;
 using ScriptedEvents.Conditions.Strings;
 using ScriptedEvents.Handlers.Variables;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ScriptedEvents.API.Helpers
 {
@@ -126,7 +128,7 @@ namespace ScriptedEvents.API.Helpers
             return new(true, condition.Execute((float)left, (float)right), string.Empty);
         }
 
-        public static ConditionResponse Evaluate(string input)
+        private static ConditionResponse EvaluateAndOr(string input)
         {
             string[] andSplit = input.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
             bool stillGo = true;
@@ -155,6 +157,22 @@ namespace ScriptedEvents.API.Helpers
             }
 
             return new(true, stillGo, string.Empty);
+        }
+
+        public static ConditionResponse Evaluate(string input)
+        {
+            string newWholeString = input;
+
+            MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");
+            if (matches.Count > 0)
+            {
+                foreach (Match match in matches)
+                {
+                    newWholeString = newWholeString.Replace($"({match.Groups[1].Value})", EvaluateAndOr(match.Groups[1].Value).Passed.ToString());
+                }
+            }
+
+            return EvaluateAndOr(newWholeString);
         }
     }
 
