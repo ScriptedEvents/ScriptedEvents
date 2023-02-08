@@ -13,6 +13,7 @@ using ScriptedEvents.API.Features.Exceptions;
 using ScriptedEvents.Handlers.Variables;
 
 using Random = UnityEngine.Random;
+using ScriptedEvents.Handlers.DefaultActions;
 
 namespace ScriptedEvents.API.Helpers
 {
@@ -51,7 +52,7 @@ namespace ScriptedEvents.API.Helpers
             {
                 if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#") || action.StartsWith("!--"))
                 {
-                    script.Actions.Add(null);
+                    script.Actions.Add(new NullAction());
                     continue;
                 }
 
@@ -72,7 +73,7 @@ namespace ScriptedEvents.API.Helpers
                 if (actionType is null && alias == null)
                 {
                     Log.Info($"Invalid action '{keyword}' detected in script '{scriptName}'");
-                    script.Actions.Add(null);
+                    script.Actions.Add(new NullAction());
                     continue;
                 }
 
@@ -112,7 +113,6 @@ namespace ScriptedEvents.API.Helpers
             {
                 if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {
-                    Log.Debug($"Running {action.Name} action...");
                     ActionResponse resp;
                     float? delay = null;
 
@@ -120,10 +120,12 @@ namespace ScriptedEvents.API.Helpers
                     {
                         if (action is ITimingAction timed)
                         {
+                            Log.Debug($"Running {action.Name} action...");
                             delay = timed.Execute(scr, out resp);
                         }
                         else if (action is IScriptAction scriptAction)
                         {
+                            Log.Debug($"Running {action.Name} action...");
                             resp = scriptAction.Execute(scr);
                         }
                         else
