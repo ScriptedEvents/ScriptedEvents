@@ -106,6 +106,7 @@
     <Compile Include="Handlers\DefaultActions\Goto.cs" />
     <Compile Include="Handlers\DefaultActions\HelpAction.cs" />
     <Compile Include="Handlers\DefaultActions\InfectAddAction.cs" />
+    <Compile Include="Handlers\DefaultActions\SizeAction.cs" />
     <Compile Include="Handlers\DefaultActions\SpawnRuleAction.cs" />
     <Compile Include="Handlers\DefaultActions\StartRoundAction.cs" />
     <Compile Include="Handlers\DefaultActions\SavePlayerVariableAction.cs" />
