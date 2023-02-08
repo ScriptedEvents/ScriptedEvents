@@ -40,7 +40,15 @@ namespace ScriptedEvents.Handlers.DefaultActions
             if (helpInfo.ExpectedArguments.Length > 0)
             {
                 sb.AppendLine();
-                sb.AppendLine($"{action.Name}: {helpInfo.Description}\n\nArguments:");
+            }
+
+            sb.AppendLine($"{action.Name}: {helpInfo.Description}");
+
+            if (helpInfo.ExpectedArguments.Length > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.Append("Arguments:");
             }
 
             foreach (var arg in helpInfo.ExpectedArguments)
