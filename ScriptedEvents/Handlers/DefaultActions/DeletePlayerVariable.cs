@@ -4,7 +4,7 @@ using System;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class DeletePlayerVariable : IScriptAction
+    public class DeletePlayerVariable : IScriptAction, IHelpInfo
     {
         public string Name => "DELPLAYERVARIABLE";
 
