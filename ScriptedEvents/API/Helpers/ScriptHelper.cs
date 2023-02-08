@@ -50,7 +50,10 @@ namespace ScriptedEvents.API.Helpers
             foreach (string action in allText.Split('\n'))
             {
                 if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#") || action.StartsWith("!--"))
+                {
+                    script.Actions.Add(null);
                     continue;
+                }
 
                 string[] actionParts = action.Split(' ');
                 string keyword = actionParts[0];
@@ -69,6 +72,7 @@ namespace ScriptedEvents.API.Helpers
                 if (actionType is null && alias == null)
                 {
                     Log.Info($"Invalid action '{keyword}' detected in script '{scriptName}'");
+                    script.Actions.Add(null);
                     continue;
                 }
 
@@ -106,7 +110,7 @@ namespace ScriptedEvents.API.Helpers
 
             for (; scr.CurrentLine < scr.Actions.Count; scr.CurrentLine++)                                
             {
-                if (scr.Actions.TryGet(scr.CurrentLine, out IAction action))
+                if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {
                     ActionResponse resp;
                     float? delay = null;
@@ -149,10 +153,6 @@ namespace ScriptedEvents.API.Helpers
 
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
-                }
-                else
-                {
-                    break;
                 }
             }
 
