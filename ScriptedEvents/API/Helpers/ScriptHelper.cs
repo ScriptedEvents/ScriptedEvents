@@ -123,7 +123,10 @@ namespace ScriptedEvents.API.Helpers
                         try
                         {
                             Log.Debug($"Running {action.Name} action...");
-                            resp = action.Execute();
+                            if (action is IScriptAction script)
+                                resp = script.Execute(scr);
+                            else
+                                resp = action.Execute();
                         } catch (Exception e)
                         {
                             Log.Error($"Ran into an error while running {action.Name} action:\n{e}");

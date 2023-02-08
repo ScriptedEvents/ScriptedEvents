@@ -20,20 +20,20 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 case "ADD":
                     if (int.TryParse(Arguments.ElementAtOrDefault(1), out int newline))
                     {
-                        script.CurrentLine += newline;
+                        script.CurrentLine += newline - 1;
                         return new(true);
                     }
-
                     break;
-                case "NUMBER":
-                    if (int.TryParse(Arguments.ElementAtOrDefault(1), out newline))
+                default:
+                    if (int.TryParse(Arguments.ElementAtOrDefault(0), out newline))
                     {
-                        script.CurrentLine = newline;
+                        script.CurrentLine = newline - 1;
                         return new(true);
                     }
                     break;
             }
             return new(false);
         }
+        public ActionResponse Execute() => null;
     }
 }
