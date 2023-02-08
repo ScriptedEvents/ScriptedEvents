@@ -12,6 +12,10 @@ namespace ScriptedEvents.API.Helpers
 {
     public static class ConditionHelper
     {
+
+        public const string AND = "AND";
+        public const string OR = "OR";
+
         public static ReadOnlyCollection<IFloatCondition> FloatConditions { get; } = new List<IFloatCondition>()
         {
             new GreaterThan(),
@@ -47,7 +51,7 @@ namespace ScriptedEvents.API.Helpers
                 .ToArray());
         }
 
-        public static ConditionResponse Evaluate(string input)
+        private static ConditionResponse EvaluateInternal(string input)
         {
             input = ConditionVariables.ReplaceVariables(input.RemoveWhitespace()).Trim(); // Kill all whitespace & replace variables
 
@@ -70,7 +74,7 @@ namespace ScriptedEvents.API.Helpers
 
             if (conditionString is not null)
             {
-                string[] arrString = input.Split(conditionString.Symbol.ToCharArray());
+                string[] arrString = input.Split(new[] { conditionString.Symbol }, StringSplitOptions.RemoveEmptyEntries);
                 var splitString = arrString.ToList();
                 splitString.RemoveAll(y => string.IsNullOrWhiteSpace(y));
 
@@ -92,7 +96,7 @@ namespace ScriptedEvents.API.Helpers
             if (condition is null)
                 return new(false, false, $"Invalid condition operator provided! Condition: '{input}'");
 
-            string[] arr = input.Split(condition.Symbol.ToCharArray());
+            string[] arr = input.Split(new[] { condition.Symbol }, StringSplitOptions.RemoveEmptyEntries);
             var split = arr.ToList();
             split.RemoveAll(y => string.IsNullOrWhiteSpace(y));
 
@@ -120,6 +124,37 @@ namespace ScriptedEvents.API.Helpers
             }
 
             return new(true, condition.Execute((float)left, (float)right), string.Empty);
+        }
+
+        public static ConditionResponse Evaluate(string input)
+        {
+            string[] andSplit = input.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
+            bool stillGo = true;
+            foreach (string fragAnd in andSplit)
+            {
+                string[] orSplit = fragAnd.Split(new[] { OR }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string fragOr in orSplit)
+                {
+                    ConditionResponse conditionResult = EvaluateInternal(fragOr.RemoveWhitespace());
+                    if (!conditionResult.Success)
+                    {
+                        return conditionResult; // Throw the problem to the end-user
+                    }
+                    if (conditionResult.Passed is true)
+                    {
+                        stillGo = true;
+                        break;
+                    }
+                    else
+                    {
+                        stillGo = false;
+                    }
+                }
+                if (!stillGo)
+                    break;
+            }
+
+            return new(true, stillGo, string.Empty);
         }
     }
 
