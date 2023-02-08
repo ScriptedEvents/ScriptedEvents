@@ -137,6 +137,12 @@ namespace ScriptedEvents.Handlers.Variables
                 input = input.Replace($"{{{roleTypeString}}}", Player.Get(rt).Count());
             }
 
+            foreach (ZoneType zt in (ZoneType[])Enum.GetValues(typeof(ZoneType)))
+            {
+                string zoneTypeString = zt.ToString().ToUpper();
+                input = input.Replace($"{{{zoneTypeString}}}", Player.Get(ply => ply.Zone == zt).Count());
+            }
+
             return input;
         }
     }
