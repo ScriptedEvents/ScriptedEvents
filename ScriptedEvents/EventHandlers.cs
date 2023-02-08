@@ -54,7 +54,6 @@ namespace ScriptedEvents
                 {
                     for (int i = iterator; i < iterator+rule.Value; i++)
                     {
-                        Log.Info(i);
                         Player p;
                         try
                         {
