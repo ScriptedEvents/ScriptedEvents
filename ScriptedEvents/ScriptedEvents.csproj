@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Features\Actions\ActionResponse.cs" />
+    <Compile Include="API\Features\Actions\IHelpInfo.cs" />
     <Compile Include="API\Features\Actions\IScriptAction.cs" />
     <Compile Include="API\Features\Exceptions\DisabledScriptException.cs" />
     <Compile Include="Conditions\Floats\GreaterThanOrEqualTo.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Handlers\DefaultActions\ExecuteScriptAction.cs" />
     <Compile Include="Handlers\DefaultActions\GiveAction.cs" />
     <Compile Include="Handlers\DefaultActions\Goto.cs" />
+    <Compile Include="Handlers\DefaultActions\HelpAction.cs" />
     <Compile Include="Handlers\DefaultActions\InfectAddAction.cs" />
     <Compile Include="Handlers\DefaultActions\SpawnRuleAction.cs" />
     <Compile Include="Handlers\DefaultActions\StartRoundAction.cs" />
