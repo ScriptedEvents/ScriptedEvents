@@ -45,6 +45,7 @@ namespace ScriptedEvents.Handlers.Variables
             { "{HCZ}", Player.Get(ply => ply.Zone is ZoneType.HeavyContainment) },
             { "{EZ}", Player.Get(ply => ply.Zone is ZoneType.Entrance) },
             { "{SURFACE}", Player.Get(ply => ply.Zone is ZoneType.Surface) },
+            { "{POCKET}", Player.Get(ply => ply.CurrentRoom?.Type is RoomType.Pocket) },
         };
 
         public static string[] IsolateVariables(string input)
