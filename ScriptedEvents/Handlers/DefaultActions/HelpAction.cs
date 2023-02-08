@@ -26,6 +26,28 @@ namespace ScriptedEvents.Handlers.DefaultActions
         {
             if (Arguments.Length < 1) return new(false, "Missing argument: Action name");
 
+            if (Arguments[0].ToUpper() == "LIST")
+            {
+                StringBuilder sbList = StringBuilderPool.Pool.Get();
+                sbList.AppendLine();
+                sbList.AppendLine($"List of all actions.");
+
+                foreach (var kvp in ScriptHelper.ActionTypes)
+                {
+                    IAction lAction = Activator.CreateInstance(kvp.Value) as IAction;
+                    IHelpInfo lhelpInfo = (lAction as IHelpInfo);
+
+                    if (lAction is IHiddenAction)
+                        continue;
+
+                    sbList.AppendLine($"{lAction.Name} : {lhelpInfo?.Description ?? "No Description"}");
+                }
+
+                Log.Info(StringBuilderPool.Pool.ToStringReturn(sbList));
+
+                return new(true);
+            }
+
             string actionString = Arguments[0];
             if (!ScriptHelper.ActionTypes.TryGetValue(actionString, out Type type))
                 return new(false, $"Invalid action: {actionString}");

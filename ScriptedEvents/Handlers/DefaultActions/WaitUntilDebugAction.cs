@@ -8,7 +8,7 @@ using ScriptedEvents.Handlers.Variables;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class WaitUntilDebugAction : ITimingAction
+    public class WaitUntilDebugAction : ITimingAction, IHiddenAction
     {
         public static List<string> Coroutines { get; } = new();
         public string Name => "WAITUNTILDEBUG";
