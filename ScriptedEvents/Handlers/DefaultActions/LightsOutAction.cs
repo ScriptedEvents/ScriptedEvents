@@ -6,7 +6,7 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class TurnOffLightsAction : IAction
+    public class TurnOffLightsAction : IScriptAction
     {
         public string Name => "LIGHTSOFF";
 
@@ -14,7 +14,7 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(false, "Missing argument: duration");
 

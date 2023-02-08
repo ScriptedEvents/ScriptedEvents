@@ -7,7 +7,7 @@ using System.IO;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class ExecuteScriptAction : IAction
+    public class ExecuteScriptAction : IScriptAction
     {
         public string Name => "EXECUTESCRIPT";
 
@@ -15,7 +15,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(false, "Missing argument: script name");
             string scriptName = Arguments[0];

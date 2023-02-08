@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class DoorAction : IAction
+    public class DoorAction : IScriptAction
     {
         public string Name => "DOOR";
 
@@ -18,7 +18,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 2) return new(false, "Missing arguments: LOCK/UNLOCK/OPEN/CLOSE/DESTROY, doorType, duration(optional)");
 

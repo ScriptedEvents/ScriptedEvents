@@ -112,26 +112,29 @@ namespace ScriptedEvents.API.Helpers
             {
                 if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {
+                    Log.Debug($"Running {action.Name} action...");
                     ActionResponse resp;
                     float? delay = null;
-                    if (action is ITimingAction timed)
+
+                    try
                     {
-                        delay = timed.GetDelay(out resp);
-                    }
-                    else
-                    {
-                        try
+                        if (action is ITimingAction timed)
                         {
-                            Log.Debug($"Running {action.Name} action...");
-                            if (action is IScriptAction script)
-                                resp = script.Execute(scr);
-                            else
-                                resp = action.Execute();
-                        } catch (Exception e)
+                            delay = timed.Execute(scr, out resp);
+                        }
+                        else if (action is IScriptAction scriptAction)
                         {
-                            Log.Error($"Ran into an error while running {action.Name} action:\n{e}");
+                            resp = scriptAction.Execute(scr);
+                        }
+                        else
+                        {
                             continue;
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"Ran into an error while running {action.Name} action:\n{e}");
+                        continue;
                     }
 
                     if (!resp.Success)

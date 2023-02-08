@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class SpawnRuleAction : IAction
+    public class SpawnRuleAction : IScriptAction
     {
         public string Name => "SPAWNRULE";
 
@@ -16,7 +16,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script scr)
         {
             if (Arguments.Length < 1) return new(false, "Missing arguments: role, max(optional)");
 

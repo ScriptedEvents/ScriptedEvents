@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ScriptedEvents.Actions
 {
-    public class LogAction : IAction
+    public class LogAction : IScriptAction
     {
         public string Name => "LOG";
 
@@ -14,7 +14,7 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             Log.Info(string.Join(" ", Arguments.Select(r => ConditionVariables.ReplaceVariables(r))));
             return new(true);

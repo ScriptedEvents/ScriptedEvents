@@ -43,7 +43,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
             }
         }
 
-        public float? GetDelay(out ActionResponse message)
+        public float? Execute(Script scr, out ActionResponse message)
         {
             if (Arguments.Length < 1)
             {

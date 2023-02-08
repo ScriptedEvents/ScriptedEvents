@@ -3,7 +3,7 @@ using ScriptedEvents.API.Features.Actions;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class CommandAction : IAction
+    public class CommandAction : IScriptAction
     {
         public string Name => "COMMAND";
 
@@ -11,7 +11,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(false, "Missing Command!");
 

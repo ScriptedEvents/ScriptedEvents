@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class GiveAction : IAction
+    public class GiveAction : IScriptAction
     {
         public string Name => "GIVE";
 
@@ -17,7 +17,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 2)
             {

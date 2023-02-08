@@ -4,7 +4,7 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class DebugMathAction : IAction
+    public class DebugMathAction : IScriptAction
     {
         public string Name => "DEBUGMATH";
 
@@ -12,7 +12,7 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             try
             {

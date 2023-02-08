@@ -4,7 +4,7 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class StopIfAction : IAction
+    public class StopIfAction : IScriptAction
     {
         public string Name => "STOPIF";
 
@@ -12,7 +12,7 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script scr)
         {
             ConditionResponse outcome = ConditionHelper.Evaluate(string.Join("", Arguments));
             if (!outcome.Success)

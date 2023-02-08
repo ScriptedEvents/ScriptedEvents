@@ -4,7 +4,7 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class StartRoundAction : IAction
+    public class StartRoundAction : IScriptAction
     {
         public string Name => "START";
 
@@ -12,7 +12,7 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script scr)
         {
             Round.Start();
             return new(true);

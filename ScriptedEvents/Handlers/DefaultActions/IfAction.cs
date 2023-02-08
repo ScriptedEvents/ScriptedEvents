@@ -4,7 +4,7 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class IfAction : IAction
+    public class IfAction : IScriptAction
     {
         public string Name => "IF";
 
@@ -12,7 +12,7 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             ConditionResponse outcome = ConditionHelper.Evaluate(string.Join("", Arguments));
             if (!outcome.Success)

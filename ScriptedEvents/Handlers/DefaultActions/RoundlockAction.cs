@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ScriptedEvents.Actions
 {
-    public class RoundlockAction : IAction
+    public class RoundlockAction : IScriptAction
     {
         public string Name => "ROUNDLOCK";
 
@@ -13,7 +13,7 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(false, "Missing argument: true/false");
 

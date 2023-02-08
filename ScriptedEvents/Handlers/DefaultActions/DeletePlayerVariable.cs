@@ -4,7 +4,7 @@ using System;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class DeletePlayerVariable : IAction
+    public class DeletePlayerVariable : IScriptAction
     {
         public string Name => "DELPLAYERVARIABLE";
 
@@ -12,7 +12,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(false, "Missing argument: variableName");
             if (PlayerVariables.Variables.ContainsKey(Arguments[0]))

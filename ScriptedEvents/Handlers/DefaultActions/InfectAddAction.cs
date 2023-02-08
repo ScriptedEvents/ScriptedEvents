@@ -4,7 +4,7 @@ using System;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class InfectAddAction : IAction
+    public class InfectAddAction : IScriptAction
     {
         public string Name => "INFECTADD";
 
@@ -12,7 +12,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 3) return new(false, "Missing arguments: oldrole, newrole, moveplayer");
 

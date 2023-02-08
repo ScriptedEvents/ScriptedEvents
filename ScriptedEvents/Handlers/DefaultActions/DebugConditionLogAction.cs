@@ -5,7 +5,7 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class DebugConditionLogAction : IAction
+    public class DebugConditionLogAction : IScriptAction
     {
         public string Name => "DEBUGCONDITIONLOG";
 
@@ -13,7 +13,7 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             Log.Info(ConditionHelper.Evaluate(string.Join("", Arguments)));
             return new(true);

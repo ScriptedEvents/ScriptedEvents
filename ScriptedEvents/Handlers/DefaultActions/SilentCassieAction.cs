@@ -5,7 +5,7 @@ using ScriptedEvents.Handlers.Variables;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class SilentCassieAction : IAction
+    public class SilentCassieAction : IScriptAction
     {
         public string Name => "SILENTCASSIE";
 
@@ -13,7 +13,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script scr)
         {
             if (Arguments.Length < 1) return new(false, "Missing text!");
 

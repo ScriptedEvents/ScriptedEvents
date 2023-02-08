@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class SavePlayerVariableAction : IAction
+    public class SavePlayerVariableAction : IScriptAction
     {
         public string Name => "SAVEPLAYERVARIABLE";
 
@@ -17,7 +17,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script scr)
         {
             if (Arguments.Length < 2)
             {

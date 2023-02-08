@@ -5,7 +5,7 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class DecontaminateAction : IAction
+    public class DecontaminateAction : IScriptAction
     {
         public string Name => "DECONTAMINATE";
 
@@ -13,16 +13,10 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1)
-                return new(false, "Missing argument: action (FORCE/DISABLE/ENABLE)");
-
             switch (Arguments[0].ToUpper())
             {
-                case "FORCE":
-                    Map.StartDecontamination();
-                    break;
                 case "DISABLE":
                     // Is there an Exiled API for this?
                     DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.Disabled;
@@ -31,8 +25,10 @@ namespace ScriptedEvents.Actions
                     // And this?
                     DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.None;
                     break;
+                case "FORCE":
                 default:
-                    return new(false, "First argument must be FORCE/DISABLE/ENABLE!");
+                    Map.StartDecontamination();
+                    break;
             }
 
             return new(true);

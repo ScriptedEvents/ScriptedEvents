@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using ScriptedEvents.API.Features.Actions;
 using ScriptedEvents.API.Helpers;
+using ScriptedEvents.API.Features;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
@@ -15,11 +16,6 @@ namespace ScriptedEvents.Handlers.DefaultActions
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
-
-        public ActionResponse Execute()
-        {
-            return new(true);
-        }
 
         private IEnumerator<float> InternalWaitUntil(string input)
         {
@@ -40,7 +36,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
             }
         }
 
-        public float? GetDelay(out ActionResponse message)
+        public float? Execute(Script script, out ActionResponse message)
         {
             if (Arguments.Length < 1)
             {

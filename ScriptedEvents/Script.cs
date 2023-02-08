@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ScriptedEvents.API.Features.Actions;
 
-namespace ScriptedEvents.API.Features
+namespace ScriptedEvents
 {
     public class Script
     {

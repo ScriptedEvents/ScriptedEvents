@@ -2,6 +2,6 @@
 {
     public interface ITimingAction : IAction
     {
-        public float? GetDelay(out ActionResponse message);
+        public float? Execute(Script script, out ActionResponse message);
     }
 }

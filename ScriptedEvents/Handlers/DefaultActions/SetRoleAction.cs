@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class SetRoleAction : IAction
+    public class SetRoleAction : IScriptAction
     {
         public string Name => "SETROLE";
 
@@ -18,7 +18,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script scr)
         {
             if (Arguments.Length < 2)
             {
