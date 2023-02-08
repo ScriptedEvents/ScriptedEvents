@@ -20,7 +20,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string Description => "Gets information about a command.";
 
-        public Argument[] ExpectedArguments => new[] { new Argument("action", "The name of the action. Case-sensitive.", true) };
+        public Argument[] ExpectedArguments => new[] { new Argument("action", typeof(string), "The name of the action. Case-sensitive.", true) };
 
         public ActionResponse Execute(Script script)
         {
@@ -37,12 +37,16 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
             StringBuilder sb = StringBuilderPool.Pool.Get();
 
+            sb.AppendLine();
             sb.AppendLine($"{action.Name}: {helpInfo.Description}\n\nArguments:");
 
             foreach (var arg in helpInfo.ExpectedArguments)
             {
-                sb.AppendLine($"{arg.ArgumentName}{(arg.Required ? " [R]" : string.Empty)}");
-                sb.AppendLine($"\t{arg.Description}");
+                sb.AppendLine();
+                sb.AppendLine(arg.ArgumentName);
+                if (arg.Required) sb.AppendLine("  *REQUIRED*");
+                sb.AppendLine($"  Type: {arg.TypeString}");
+                sb.AppendLine($"  {arg.Description}");
             }
 
             Log.Info(StringBuilderPool.Pool.ToStringReturn(sb));

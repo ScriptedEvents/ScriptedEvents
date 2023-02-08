@@ -14,14 +14,18 @@ namespace ScriptedEvents.API.Features.Actions
 
     public class Argument
     {
-        public Argument(string argumentName, string description, bool required)        {
+        public Argument(string argumentName, Type type, string description, bool required)        {
             ArgumentName = argumentName;
+            Type = type;
             Description = description;
             Required = required;
         }
 
         public string ArgumentName { get; }
+        public Type Type { get; }
         public string Description { get; }
         public bool Required { get; }
+
+        public string TypeString => Type.Name;
     }
 }
