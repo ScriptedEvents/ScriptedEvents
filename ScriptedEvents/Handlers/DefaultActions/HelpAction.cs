@@ -37,11 +37,11 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
             StringBuilder sb = StringBuilderPool.Pool.Get();
 
-            sb.AppendLine($"{action.Name}: {helpInfo.Description}\n\nArguments:\n");
+            sb.AppendLine($"{action.Name}: {helpInfo.Description}\n\nArguments:");
 
             foreach (var arg in helpInfo.ExpectedArguments)
             {
-                sb.AppendLine($"{arg.ArgumentName}{(arg.Required ? "[R]" : string.Empty)}");
+                sb.AppendLine($"{arg.ArgumentName}{(arg.Required ? " [R]" : string.Empty)}");
                 sb.AppendLine($"\t{arg.Description}");
             }
 
