@@ -10,13 +10,22 @@ using System.Linq;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class DoorAction : IScriptAction
+    public class DoorAction : IScriptAction, IHelpInfo
     {
         public string Name => "DOOR";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Controls map doors.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("mode", typeof(string), "The mode (LOCK, UNLOCK, OPEN, CLOSE, DESTROY).", true),
+            new Argument("doors", typeof(List<Door>), "The doors to affect.", true),
+            new Argument("duration", typeof(float), "The duration. Leave blank for indefinite duration.", false)
+        };
 
         public ActionResponse Execute(Script script)
         {

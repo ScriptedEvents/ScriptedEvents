@@ -5,13 +5,20 @@ using ScriptedEvents.Handlers.Variables;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class CassieAction : IScriptAction
+    public class CassieAction : IScriptAction, IHelpInfo
     {
         public string Name => "CASSIE";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Makes a loud cassie announcement.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption.", true),
+        };
 
         public ActionResponse Execute(Script script)
         {

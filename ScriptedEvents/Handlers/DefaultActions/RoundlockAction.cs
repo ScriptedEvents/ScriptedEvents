@@ -13,11 +13,18 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
+        public string Description => "Set server's roundlock.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("roundlock", typeof(bool), "Whether or not to lock the round.", true)
+        };
+
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(false, "Missing argument: true/false");
+            if (Arguments.Length < 1) return new(false, "Missing argument: TRUE/FALSE");
 
-            Round.IsLocked = Arguments.ElementAt(0).ToLower() is "true" or "t" or "yes" or "y";
+            Round.IsLocked = Arguments.ElementAt(0).ToUpper() is "TRUE" or "YES";
             return new(true);
         }
     }

@@ -10,13 +10,22 @@ using UnityEngine;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class SetRoleAction : IScriptAction
+    public class SetRoleAction : IScriptAction, IHelpInfo
     {
         public string Name => "SETROLE";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Sets all players to the given role.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("players", typeof(List<Player>), "The players to save as the new variable.", true),
+            new Argument("role", typeof(RoleTypeId), "The role to set all the players as.", true),
+            new Argument("max", typeof(int), "The maximum amount of players to save in this variable (default: unlimited).", false),
+        };
 
         public ActionResponse Execute(Script scr)
         {

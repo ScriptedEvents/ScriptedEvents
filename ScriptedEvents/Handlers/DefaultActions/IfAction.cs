@@ -4,13 +4,20 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class IfAction : IScriptAction
+    public class IfAction : IScriptAction, IHelpInfo
     {
         public string Name => "IF";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Reads the condition and stops execution of the script if the result is FALSE.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("condition", typeof(string), "The condition to check.", true),
+        };
 
         public ActionResponse Execute(Script script)
         {

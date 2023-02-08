@@ -5,13 +5,20 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class DecontaminateAction : IScriptAction
+    public class DecontaminateAction : IScriptAction, IHelpInfo
     {
         public string Name => "DECONTAMINATE";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Enables, disables, or forces decontamination.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("mode", typeof(string), "The action (ENABLE, DISABLE, FORCE). Default: FORCE", false),
+        };
 
         public ActionResponse Execute(Script script)
         {

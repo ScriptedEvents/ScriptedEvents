@@ -4,13 +4,20 @@ using System;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class WarheadAction : IAction
+    public class WarheadAction : IAction, IHelpInfo
     {
         public string Name => "WARHEAD";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Forces a specific warhead action.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("action", typeof(string), "The action to run. Valid options: START, STOP, LOCK, UNLOCK, DETONATE, BLASTDOORS", true),
+        };
 
         public ActionResponse Execute()
         {

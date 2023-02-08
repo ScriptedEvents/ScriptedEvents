@@ -3,13 +3,20 @@ using ScriptedEvents.API.Features.Actions;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class CommandAction : IScriptAction
+    public class CommandAction : IScriptAction, IHelpInfo
     {
         public string Name => "COMMAND";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Runs a server command with full permission.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("message", typeof(string), "The command to run.", true),
+        };
 
         public ActionResponse Execute(Script script)
         {

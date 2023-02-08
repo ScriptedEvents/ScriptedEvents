@@ -7,13 +7,21 @@ using System.Linq;
 
 namespace ScriptedEvents.Actions
 {
-    public class BroadcastAction : IScriptAction
+    public class BroadcastAction : IScriptAction, IHelpInfo
     {
         public string Name => "BROADCAST";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Broadcasts a message to every player.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("duration", typeof(float), "The duration of the message", true),
+            new Argument("message", typeof(string), "The message.", true),
+        };
 
         public ActionResponse Execute(Script script)
         {

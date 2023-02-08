@@ -9,13 +9,22 @@ using UnityEngine;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class GiveAction : IScriptAction
+    public class GiveAction : IScriptAction, IHelpInfo
     {
         public string Name => "GIVE";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Gives the targeted players an item.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("players", typeof(List<Player>), "The players to give the item to.", true),
+            new Argument("item", typeof(ItemType), "The item to give.", true),
+            new Argument("amount", typeof(int), "The amount to give. Default: 1", false)
+        };
 
         public ActionResponse Execute(Script script)
         {

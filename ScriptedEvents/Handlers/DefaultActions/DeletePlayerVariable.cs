@@ -12,6 +12,13 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
+        public string Description => "Deletes a previously-defined player variable.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("variableName", typeof(string), "The name of the variable.", true),
+        };
+
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(false, "Missing argument: variableName");

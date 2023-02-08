@@ -6,13 +6,20 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class TurnOffLightsAction : IScriptAction
+    public class TurnOffLightsAction : IScriptAction, IHelpInfo
     {
         public string Name => "LIGHTSOFF";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Turns all the lights off for a given period of time.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("duration", typeof(float), "The duration of the lights out", true),
+        };
 
         public ActionResponse Execute(Script script)
         {

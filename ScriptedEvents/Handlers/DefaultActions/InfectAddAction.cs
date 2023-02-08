@@ -4,13 +4,22 @@ using System;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class InfectAddAction : IScriptAction
+    public class InfectAddAction : IScriptAction, IHelpInfo
     {
         public string Name => "INFECTADD";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Creates a new infection rule.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("oldRole", typeof(RoleTypeId), "The role a player must die as to be infected.", true),
+            new Argument("newRole", typeof(RoleTypeId), "The role a player will become.", true),
+            new Argument("movePlayer", typeof(bool), "TRUE if the player should be moved to their death position, FALSE (or leave empty) to leave at spawn.", false),
+        };
 
         public ActionResponse Execute(Script script)
         {

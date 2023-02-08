@@ -8,13 +8,21 @@ using UnityEngine;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class SpawnRuleAction : IScriptAction
+    public class SpawnRuleAction : IScriptAction, IHelpInfo
     {
         public string Name => "SPAWNRULE";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Creates a new spawn rule, modifying how players spawn at the start of the game. MUST BE USED BEFORE THE ROUND STARTS.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("role", typeof(RoleTypeId), "The role to create the rule for.", true),
+            new Argument("max", typeof(int), "The maximum amount of players to spawn as this role. If not provided, EVERY player who does not become a role with a different spawn rule will become this role.", false),
+        };
 
         public ActionResponse Execute(Script scr)
         {

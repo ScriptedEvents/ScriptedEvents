@@ -8,13 +8,22 @@ using System.Linq;
 
 namespace ScriptedEvents.Actions
 {
-    public class BroadcastPlayerAction : IScriptAction
+    public class BroadcastPlayerAction : IScriptAction, IHelpInfo
     {
         public string Name => "BROADCASTPLAYER";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Broadcasts a message to specific player(s).";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("players", typeof(List<Player>), "The players to show.", true),
+            new Argument("duration", typeof(float), "The duration of the message", true),
+            new Argument("message", typeof(string), "The message.", true),
+        };
 
         public ActionResponse Execute(Script script)
         {

@@ -6,7 +6,7 @@ using ScriptedEvents.Handlers.Variables;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class WaitForSecondsAction : ITimingAction
+    public class WaitForSecondsAction : ITimingAction, IHelpInfo
     {
         public string Name => "WAITSEC";
 
@@ -14,10 +14,12 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public string Description => "Yields execution of the script for the given number of seconds.";
+
+        public Argument[] ExpectedArguments => new[]
         {
-            return new(true);
-        }
+            new Argument("seconds", typeof(float), "The amount of seconds.", true),
+        };
 
         public float? Execute(Script scr, out ActionResponse message)
         {

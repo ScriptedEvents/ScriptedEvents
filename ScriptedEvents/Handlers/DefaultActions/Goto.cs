@@ -5,13 +5,21 @@ using System.Linq;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class GotoAction : IScriptAction
+    public class GotoAction : IScriptAction, IHelpInfo
     {
         public string Name => "GOTO";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Moves to the provided line.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("mode", typeof(string), "The mode (ADD, do not provide for specific line)", false),
+            new Argument("line", typeof(int), "The line to move to.", true),
+        };
 
         public ActionResponse Execute(Script script)
         {

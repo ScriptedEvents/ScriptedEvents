@@ -14,6 +14,13 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
+        public string Description => "Creates a console log.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("message", typeof(string), "The message.", true),
+        };
+
         public ActionResponse Execute(Script script)
         {
             Log.Info(string.Join(" ", Arguments.Select(r => ConditionVariables.ReplaceVariables(r))));

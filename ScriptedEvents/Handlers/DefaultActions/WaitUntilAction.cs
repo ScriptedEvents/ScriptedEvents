@@ -17,6 +17,13 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
+        public string Description => "Reads the condition and yields execution of the script until the condition is TRUE.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("condition", typeof(string), "The condition to check.", true),
+        };
+
         private IEnumerator<float> InternalWaitUntil(string input)
         {
             while (true)
