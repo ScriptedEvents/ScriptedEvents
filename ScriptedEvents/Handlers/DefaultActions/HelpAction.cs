@@ -37,14 +37,18 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
             StringBuilder sb = StringBuilderPool.Pool.Get();
 
-            sb.AppendLine();
-            sb.AppendLine($"{action.Name}: {helpInfo.Description}\n\nArguments:");
+            if (helpInfo.ExpectedArguments.Length > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine($"{action.Name}: {helpInfo.Description}\n\nArguments:");
+            }
 
             foreach (var arg in helpInfo.ExpectedArguments)
             {
+                string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
                 sb.AppendLine();
-                sb.AppendLine(arg.ArgumentName);
-                if (arg.Required) sb.AppendLine("  *REQUIRED*");
+                sb.AppendLine($"{chars[0]}{arg.ArgumentName}{chars[1]}");
+                sb.AppendLine($"  Required: {(arg.Required ? "YES" : "NO")}");
                 sb.AppendLine($"  Type: {arg.TypeString}");
                 sb.AppendLine($"  {arg.Description}");
             }
