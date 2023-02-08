@@ -128,8 +128,18 @@ namespace ScriptedEvents.API.Helpers
             return new(true, condition.Execute((float)left, (float)right), string.Empty);
         }
 
-        private static ConditionResponse EvaluateAndOr(string input)
+        private static ConditionResponse EvaluateAndOr(string input, bool last = false)
         {
+            try
+            {
+                if (!last)
+                {
+                    float output = (float)Math(ConditionVariables.ReplaceVariables(input));
+                    return new(true, true, string.Empty, output);
+                }
+            }
+            catch { }
+
             string[] andSplit = input.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
             bool stillGo = true;
             foreach (string fragAnd in andSplit)
@@ -168,11 +178,12 @@ namespace ScriptedEvents.API.Helpers
             {
                 foreach (Match match in matches)
                 {
-                    newWholeString = newWholeString.Replace($"({match.Groups[1].Value})", EvaluateAndOr(match.Groups[1].Value).Passed.ToString());
+                    ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value);
+                    newWholeString = newWholeString.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
                 }
             }
 
-            return EvaluateAndOr(newWholeString);
+            return EvaluateAndOr(newWholeString, true);
         }
     }
 
@@ -181,12 +192,14 @@ namespace ScriptedEvents.API.Helpers
         public bool Success { get; set; }
         public bool Passed { get; set; }
         public string Message { get; set; }
+        public object ObjectResult { get; set; }
 
-        public ConditionResponse(bool success, bool passed, string message)
+        public ConditionResponse(bool success, bool passed, string message, object objectResult = null)
         {
             Success = success;
             Passed = passed;
             Message = message;
+            ObjectResult = objectResult;
         }
 
         public override string ToString()
