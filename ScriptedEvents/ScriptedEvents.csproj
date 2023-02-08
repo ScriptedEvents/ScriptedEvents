@@ -76,9 +76,6 @@
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
-    <Reference Include="YamlDotNet">
-      <HintPath>$(EXILED_REFERENCES)\YamlDotNet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Features\Actions\ActionResponse.cs" />
