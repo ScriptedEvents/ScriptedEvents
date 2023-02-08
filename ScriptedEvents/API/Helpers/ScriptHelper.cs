@@ -50,7 +50,10 @@ namespace ScriptedEvents.API.Helpers
             foreach (string action in allText.Split('\n'))
             {
                 if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#") || action.StartsWith("!--"))
+                {
+                    script.Actions.Add(null);
                     continue;
+                }
 
                 string[] actionParts = action.Split(' ');
                 string keyword = actionParts[0];
@@ -69,13 +72,14 @@ namespace ScriptedEvents.API.Helpers
                 if (actionType is null && alias == null)
                 {
                     Log.Info($"Invalid action '{keyword}' detected in script '{scriptName}'");
+                    script.Actions.Add(null);
                     continue;
                 }
 
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
                 newAction.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
-                script.Actions.Enqueue(newAction);
+                script.Actions.Add(newAction);
             }
 
             script.ScriptName = scriptName;
@@ -104,9 +108,9 @@ namespace ScriptedEvents.API.Helpers
             MainPlugin.Info($"Running script {scr.ScriptName}.");
             scr.IsRunning = true;
 
-            while (true)
+            for (; scr.CurrentLine < scr.Actions.Count; scr.CurrentLine++)                                
             {
-                if (scr.Actions.TryDequeue(out IAction action))
+                if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {
                     ActionResponse resp;
                     float? delay = null;
@@ -119,7 +123,10 @@ namespace ScriptedEvents.API.Helpers
                         try
                         {
                             Log.Debug($"Running {action.Name} action...");
-                            resp = action.Execute();
+                            if (action is IScriptAction script)
+                                resp = script.Execute(scr);
+                            else
+                                resp = action.Execute();
                         } catch (Exception e)
                         {
                             Log.Error($"Ran into an error while running {action.Name} action:\n{e}");
@@ -149,10 +156,6 @@ namespace ScriptedEvents.API.Helpers
 
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
-                }
-                else
-                {
-                    break;
                 }
             }
 
