@@ -8,7 +8,7 @@ using ScriptedEvents.API.Features;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class WaitUntilAction : ITimingAction
+    public class WaitUntilAction : ITimingAction, IHelpInfo
     {
         public static List<string> Coroutines { get; } = new();
         public string Name => "WAITUNTIL";

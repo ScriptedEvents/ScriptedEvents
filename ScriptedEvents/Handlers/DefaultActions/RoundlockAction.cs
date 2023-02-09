@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ScriptedEvents.Actions
 {
-    public class RoundlockAction : IScriptAction
+    public class RoundlockAction : IScriptAction, IHelpInfo
     {
         public string Name => "ROUNDLOCK";
 

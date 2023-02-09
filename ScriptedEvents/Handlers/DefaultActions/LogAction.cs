@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ScriptedEvents.Actions
 {
-    public class LogAction : IScriptAction
+    public class LogAction : IScriptAction, IHelpInfo
     {
         public string Name => "LOG";
 

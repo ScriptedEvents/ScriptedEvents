@@ -87,10 +87,10 @@ namespace ScriptedEvents.Handlers.Variables
                     .Replace("{YEAR}", DateTime.UtcNow.Year)
 
                     //-- ZONE COUNT
-                    .Replace("{LCZ}", Player.Get(p => p.Zone is ZoneType.LightContainment).Count())
-                    .Replace("{HCZ}", Player.Get(p => p.Zone is ZoneType.HeavyContainment).Count())
-                    .Replace("{EZ}", Player.Get(p => p.Zone is ZoneType.Entrance).Count())
-                    .Replace("{SURFACE}", Player.Get(p => p.Zone is ZoneType.Surface).Count())
+                    .Replace("{LCZ}", Player.Get(p => p.Zone.HasFlag(ZoneType.LightContainment)).Count())
+                    .Replace("{HCZ}", Player.Get(p => p.Zone.HasFlag(ZoneType.HeavyContainment)).Count())
+                    .Replace("{EZ}", Player.Get(p => p.Zone.HasFlag(ZoneType.Entrance)).Count())
+                    .Replace("{SURFACE}", Player.Get(p => p.Zone.HasFlag(ZoneType.Surface)).Count())
                     .Replace("{POCKET}", Player.Get(p => p.CurrentRoom?.Type is RoomType.Pocket).Count())
 
                     //-- ROLE COUNT

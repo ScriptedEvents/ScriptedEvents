@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class SavePlayerVariableAction : IScriptAction
+    public class SavePlayerVariableAction : IScriptAction, IHelpInfo
     {
         public string Name => "SAVEPLAYERVARIABLE";
 

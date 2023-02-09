@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using YamlDotNet.Serialization;
+//using YamlDotNet.Serialization;
 
 namespace ScriptedEvents.API.Features.Aliases
 {
@@ -12,15 +12,15 @@ namespace ScriptedEvents.API.Features.Aliases
         public string Execute { get; set; } = "COMMAND /bc";
         // args exist for a documentation or something generator, that could help the user understand the plugin's actions
         // in the future
-        [YamlIgnore]
-        public string[] Arguments { get; set; } = new[] { "DURATION", "MESSAGE" }; 
+        //[YamlIgnore]
+        //public string[] Arguments { get; set; } = new[] { "DURATION", "MESSAGE" }; 
 
         public Alias() { }
         public Alias(string command, string execute, params string[] args)
         {
             Command = command;
             Execute = execute;
-            Arguments = args;
+            //Arguments = args;
         }
 
         public string Unalias(string usage)
@@ -53,7 +53,7 @@ namespace ScriptedEvents.API.Features.Aliases
             for (int i = 0; i < usage.Count() - 1; i++)
             {
                 string arg = copy[i + 1 + addedCount];
-                switch (Arguments[i])
+                switch ("duration")//(Arguments[i])
                 {
                     case "duration":
                         var range = arg.Split('-');
@@ -79,6 +79,6 @@ namespace ScriptedEvents.API.Features.Aliases
         }
 
         public override string ToString()
-            => $"{Command} [{string.Join("] [", Arguments)}]";
+            => /*$"{Command} [{string.Join("] [", Arguments)}]"*/ Command;
     }
 }

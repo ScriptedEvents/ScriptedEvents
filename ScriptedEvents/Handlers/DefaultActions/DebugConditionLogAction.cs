@@ -5,7 +5,7 @@ using System;
 
 namespace ScriptedEvents.Actions
 {
-    public class DebugConditionLogAction : IScriptAction
+    public class DebugConditionLogAction : IScriptAction, IHiddenAction
     {
         public string Name => "DEBUGCONDITIONLOG";
 
