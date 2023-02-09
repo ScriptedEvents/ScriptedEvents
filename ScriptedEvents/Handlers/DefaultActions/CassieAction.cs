@@ -38,6 +38,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
             if (cassieArgs.Length == 1)
             {
+                text = ConditionVariables.ReplaceVariables(text);
                 Cassie.MessageTranslated(text, text);
             }
             else
