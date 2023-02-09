@@ -21,11 +21,11 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(List<Player>), "The players to save as the new variable.", true),
+            new Argument("players", typeof(List<Player>), "The players to rescale.", true),
             new Argument("size X", typeof(float), "The X size to put on the player.", true),
             new Argument("size Y", typeof(float), "The Y size to put on the player.", true),
             new Argument("size Z", typeof(float), "The Z size to put on the player.", true),
-            new Argument("max", typeof(int), "The maximum amount of players to save in this variable (default: unlimited).", false),
+            new Argument("max", typeof(int), "The maximum amount of players to rescale (default: unlimited).", false),
         };
 
         public ActionResponse Execute(Script scr)
@@ -35,11 +35,11 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 return new(false, "Missing arguments: players, size X, size Y, size Z, max(optional)");
             }
             if (float.TryParse(Arguments.ElementAt(1), out float x))
-                return new(false, $"Should be a float value {Arguments.ElementAt(1)}");
+                return new(false, $"X-scale '{Arguments.ElementAt(1)}' is not a valid number.");
             if (float.TryParse(Arguments.ElementAt(2), out float y))
-                return new(false, $"Should be a float value {Arguments.ElementAt(2)}");
+                return new(false, $"Y-scale '{Arguments.ElementAt(2)}' is not a valid number.");
             if (float.TryParse(Arguments.ElementAt(3), out float z))
-                return new(false, $"Should be a float value {Arguments.ElementAt(3)}");
+                return new(false, $"Z-scale '{Arguments.ElementAt(3)}' is not a valid number.");
 
             int max = -1;
 
@@ -66,7 +66,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
                 if (max < 0)
                 {
-                    return new(false, "A negative number cannot be used as the max argument of the SETROLE action.");
+                    return new(false, "A negative number cannot be used as the max argument of the SIZE action.");
                 }
             }
 
