@@ -48,7 +48,7 @@ jobs:
         run: | 
           msbuild ScriptedEvents.sln /t:restore /p:configuration="Release" /p:ReferencePath="${{ env.REFERENCES_PATH }}" /p:PublishUrl="_build" 
 
-      - name: Navigate to Workspace
+      - name: Navigate to Build
         run: cd _build
 
       - name: Upload artifacts
