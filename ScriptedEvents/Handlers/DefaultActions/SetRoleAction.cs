@@ -24,7 +24,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
         {
             new Argument("players", typeof(List<Player>), "The players to save as the new variable.", true),
             new Argument("role", typeof(RoleTypeId), "The role to set all the players as.", true),
-            new Argument("max", typeof(int), "The maximum amount of players to save in this variable (default: unlimited).", false),
+            new Argument("max", typeof(int), "The maximum amount of players to save in this variable. Variables & Math are supported. (default: unlimited).", false),
         };
 
         public ActionResponse Execute(Script scr)

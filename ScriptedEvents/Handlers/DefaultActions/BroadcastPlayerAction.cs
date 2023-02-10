@@ -20,9 +20,9 @@ namespace ScriptedEvents.Actions
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(List<Player>), "The players to show.", true),
-            new Argument("duration", typeof(float), "The duration of the message", true),
-            new Argument("message", typeof(string), "The message.", true),
+            new Argument("players", typeof(List<Player>), "The players to show. Variables are supported.", true),
+            new Argument("duration", typeof(float), "The duration of the message. Variables & Math are NOT supported.", true),
+            new Argument("message", typeof(string), "The message. Variables are supported.", true),
         };
 
         public ActionResponse Execute(Script script)

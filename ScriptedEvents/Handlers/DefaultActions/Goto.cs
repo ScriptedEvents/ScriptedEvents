@@ -18,7 +18,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (ADD, do not provide for specific line)", false),
-            new Argument("line", typeof(int), "The line to move to.", true),
+            new Argument("line", typeof(int), "The line to move to. Variables & Math are NOT supported.", true),
         };
 
         public ActionResponse Execute(Script script)

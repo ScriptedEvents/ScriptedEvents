@@ -18,7 +18,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("seconds", typeof(float), "The amount of seconds.", true),
+            new Argument("seconds", typeof(float), "The amount of seconds. Variables & Math are supported.", true),
         };
 
         public float? Execute(Script scr, out ActionResponse message)

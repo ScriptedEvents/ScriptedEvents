@@ -17,7 +17,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption.", true),
+            new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption. Variables are supported.", true),
         };
 
         public ActionResponse Execute(Script scr)

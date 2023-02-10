@@ -14,7 +14,7 @@ namespace ScriptedEvents.Actions
 
         public string[] Arguments { get; set; }
 
-        public string Description => "Creates a console log.";
+        public string Description => "Creates a console log. Variables are supported.";
 
         public Argument[] ExpectedArguments => new[]
         {

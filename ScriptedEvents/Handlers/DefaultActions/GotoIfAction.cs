@@ -16,9 +16,9 @@ namespace ScriptedEvents.Actions
         public string Description => "Reads the condition and jumps to the first provided line if the condition is TRUE, or the second provided line if the condition is FALSE.";
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("trueLine", typeof(int), "The line to jump to if the condition is TRUE.", true),
-            new Argument("falseLine", typeof(int), "The line to jump to if the condition iS FALSE.", true),
-            new Argument("condition", typeof(string), "The condition to check.", true),
+            new Argument("trueLine", typeof(int), "The line to jump to if the condition is TRUE. Variables & Math are NOT supported.", true),
+            new Argument("falseLine", typeof(int), "The line to jump to if the condition iS FALSE. Variables & Math are NOT supported.", true),
+            new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
 
         public ActionResponse Execute(Script script)

@@ -15,7 +15,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("message", typeof(string), "The command to run.", true),
+            new Argument("command", typeof(string), "The command to run.", true),
         };
 
         public ActionResponse Execute(Script script)

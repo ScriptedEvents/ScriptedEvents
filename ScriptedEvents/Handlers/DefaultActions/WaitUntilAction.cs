@@ -21,7 +21,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("condition", typeof(string), "The condition to check.", true),
+            new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
 
         private IEnumerator<float> InternalWaitUntil(string input)

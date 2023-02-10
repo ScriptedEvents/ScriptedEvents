@@ -16,7 +16,7 @@ namespace ScriptedEvents.Actions
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("condition", typeof(string), "The condition to check.", true),
+            new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
 
         public ActionResponse Execute(Script scr)
