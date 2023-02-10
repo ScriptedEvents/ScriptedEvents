@@ -19,7 +19,7 @@ namespace ScriptedEvents
     public class MainPlugin : Plugin<Config>
     {
         public override string Name => "ScriptedEvents";
-        public override string Author => "Thunder+Johnodon";
+        public override string Author => "Thunder + Johnodon";
         public override Version Version => new(1, 1, 0);
         public override Version RequiredExiledVersion => new(6, 0, 0);
         public override PluginPriority Priority => PluginPriority.High;
