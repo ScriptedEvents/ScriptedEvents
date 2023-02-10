@@ -55,8 +55,17 @@ namespace ScriptedEvents.API.Helpers
             {
                 // NoAction
                 string action = array[currentline];
-                if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#") || action.StartsWith("!--"))
+                if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#"))
                 {
+                    script.Actions.Add(new NullAction());
+                    continue;
+                }
+
+                if (action.StartsWith("!--"))
+                {
+                    string flag = action.Substring(3).RemoveWhitespace();
+                    script.Flags.Add(flag);
+
                     script.Actions.Add(new NullAction());
                     continue;
                 }
@@ -104,7 +113,7 @@ namespace ScriptedEvents.API.Helpers
 
         public static void RunScript(Script scr)
         {
-            if (scr.RawText.RemoveWhitespace().StartsWith("!--DISABLE"))
+            if (scr.Disabled)
                 throw new DisabledScriptException(scr.ScriptName);
 
             CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr));

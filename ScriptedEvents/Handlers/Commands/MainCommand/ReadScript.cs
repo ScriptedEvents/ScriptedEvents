@@ -57,6 +57,8 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
 
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine($"Reading file {arg0}...");
+                sb.AppendLine($"Script Name: {scr.ScriptName}");
+                sb.AppendLine($"Script Flags: {string.Join(", ", scr.Flags)}\n");
                 sb.AppendLine("---- START OF FILE ----");
 
                 int curLine = 0;
@@ -69,11 +71,6 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
                 sb.AppendLine("---- END OF FILE ----");
 
                 response = StringBuilderPool.Pool.ToStringReturn(sb);
-            }
-            catch (DisabledScriptException)
-            {
-                response = $"Script '{arg0}' is disabled.";
-                return false;
             }
             catch (FileNotFoundException)
             {
