@@ -9,7 +9,9 @@ on:
     - main
     - dev
   workflow_dispatch:
-
+env:
+  REFERENCES_URL: https://exiled.host/build_deps/Dev.zip
+  REFERENCES_PATH: ${{ github.workspace }}/References
 jobs:
   build:
     runs-on: windows-latest
@@ -23,6 +25,12 @@ jobs:
       - name: Restore Packages
         run: nuget restore
 
+      - name: Get Build References
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri ${{ env.REFERENCES_URL }} -OutFile ${{ github.workspace }}/Dev.zip
+          Expand-Archive -Path Dev.zip -DestinationPath ${{ env.REFERENCES_PATH }}
+
       - name: Setup MSBuild.exe
         uses: microsoft/Setup-MSBuild@v1
         env:
@@ -30,7 +38,7 @@ jobs:
 
       - name: Build
         run: | 
-          msbuild ScriptedEvents\ScriptedEvents.csproj -t:rebuild -verbosity:diag -property:Configuration=Release 
+          msbuild ScriptedEvents\ScriptedEvents.csproj -t:rebuild -verbosity:diag -property:Configuration=Release -property:ReferencePath="${{ env.REFERENCES_PATH }}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
