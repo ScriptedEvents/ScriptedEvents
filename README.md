@@ -14,6 +14,7 @@ The parent command for this plugin is `scriptedevents` (aliases: `script`, `scr`
 ### Permissions
 * `script.execute` - Execute a script.
 * `script.list` - View all scripts.
+* `script.read` - Read a script.
 * `script.stopall` - Stop all running scripts.
 
 ### Default Config
