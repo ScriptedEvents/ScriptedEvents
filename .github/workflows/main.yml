@@ -46,10 +46,13 @@ jobs:
 
       - name: Build
         run: | 
-          msbuild ScriptedEvents.sln /t:restore /p:configuration="Release" /p:ReferencePath="${{ env.REFERENCES_PATH }}" /p:PublishUrl="../_build" 
+          msbuild ScriptedEvents.sln /t:restore /p:configuration="Release" /p:ReferencePath="${{ env.REFERENCES_PATH }}" /p:PublishUrl="_build" 
+
+      - name: Navigate to Workspace
+        run: cd _build
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Scripted Events
-          path: "./_build/ScriptedEvents.dll"
+          path: "ScriptedEvents.dll"
