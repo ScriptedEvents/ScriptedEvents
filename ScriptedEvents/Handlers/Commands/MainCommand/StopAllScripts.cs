@@ -29,6 +29,12 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
                 return true;
             }
 
+            if (ScriptHelper.RunningScripts.Count == 0)
+            {
+                response = "Zero scripts are currently running.";
+                return true;
+            }
+
             int amount = ScriptHelper.StopAllScripts();
 
             response = $"Done! Stopped execution of {amount} scripts.";
