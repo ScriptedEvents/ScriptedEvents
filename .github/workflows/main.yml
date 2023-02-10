@@ -24,7 +24,6 @@ jobs:
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
-
       - name: Setup NuGet.exe for use with actions
         uses: NuGet/setup-nuget@v1.0.6
         env:
@@ -43,7 +42,7 @@ jobs:
           msbuild ScriptedEvents.sln /t:restore /p:ReferencePath="${{ env.REFERENCES_PATH }}" 
 
       - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: Build Results
-        path: Dev.zip
+          uses: actions/upload-artifact@v2
+          with:
+            name: Build Results
+            path: Dev.zip
