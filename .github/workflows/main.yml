@@ -32,14 +32,17 @@ jobs:
       - name: Restore NuGet
         run: nuget restore ScriptedEvents.sln
 
+      - name: Navigate to Workspace
+        run: cd $GITHUB_WORKSPACE
+
+      - name: Create Build Directory
+        run: mkdir _build
+
       - name: Get Build References
         shell: pwsh
         run: |
           Invoke-WebRequest -Uri ${{ env.REFERENCES_URL }} -OutFile ${{ github.workspace }}/Dev.zip
           Expand-Archive -Path Dev.zip -DestinationPath ${{ env.REFERENCES_PATH }}
-
-      - name: Create Build Directory
-        run: mkdir _build
 
       - name: Build
         run: | 
