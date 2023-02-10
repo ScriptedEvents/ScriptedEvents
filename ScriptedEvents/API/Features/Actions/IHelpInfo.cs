@@ -16,7 +16,8 @@ namespace ScriptedEvents.API.Features.Actions
 
     public class Argument
     {
-        public Argument(string argumentName, Type type, string description, bool required)        {
+        public Argument(string argumentName, Type type, string description, bool required)
+        {
             ArgumentName = argumentName;
             Type = type;
             Description = description;
@@ -39,11 +40,11 @@ namespace ScriptedEvents.API.Features.Actions
                 }
                 else if (Type == typeof(int))
                 {
-                    return "Int (Whole Number/Condition)";
+                    return "Int (Whole Number)";
                 }
                 else if (Type == typeof(float))
                 {
-                    return "Float (Number/Condition)";
+                    return "Float (Number)";
                 }
                 else if (Type == typeof(bool))
                 {
