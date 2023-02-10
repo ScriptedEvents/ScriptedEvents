@@ -107,6 +107,7 @@
     <Compile Include="Handlers\DefaultActions\GotoIfAction.cs" />
     <Compile Include="Handlers\DefaultActions\HelpAction.cs" />
     <Compile Include="Handlers\DefaultActions\InfectAddAction.cs" />
+    <Compile Include="Handlers\DefaultActions\SizeAction.cs" />
     <Compile Include="Handlers\DefaultActions\NullAction.cs" />
     <Compile Include="Handlers\DefaultActions\SpawnRuleAction.cs" />
     <Compile Include="Handlers\DefaultActions\StartRoundAction.cs" />
