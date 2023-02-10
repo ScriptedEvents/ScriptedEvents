@@ -12,8 +12,8 @@ namespace ScriptedEvents.Handlers.DefaultActions
     {
         public string Name => "NULL";
 
-        public string[] Aliases => throw new NotImplementedException();
+        public string[] Aliases => Array.Empty<string>();
 
-        public string[] Arguments { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string[] Arguments { get; set; }
     }
 }

@@ -93,6 +93,7 @@
     <Compile Include="DemoScripts\About.cs" />
     <Compile Include="DemoScripts\ConditionSamples.cs" />
     <Compile Include="DemoScripts\IDemoScript.cs" />
+    <Compile Include="Handlers\Commands\MainCommand\ReadScript.cs" />
     <Compile Include="Handlers\Commands\MainCommand\StopAllScripts.cs" />
     <Compile Include="Handlers\Commands\MainCommand\ListScripts.cs" />
     <Compile Include="Handlers\Commands\MainCommand\ScriptedEvents.cs" />

@@ -20,6 +20,7 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
         {
             RegisterCommand(new ExecuteScript());
             RegisterCommand(new ListScripts());
+            RegisterCommand(new ReadScript());
             RegisterCommand(new StopAllScripts());
         }
 
@@ -30,6 +31,7 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
             sb.AppendLine("Available commands:");
             sb.AppendLine("- SCRIPT EXECUTE <SCRIPTNAME> - Executes the script with the given name. (alias: ex, run)");
             sb.AppendLine("- SCRIPT LIST - Lists all scripts and their respective permissions & last edited time.");
+            sb.AppendLine("- SCRIPT READ <SCRIPTNAME> - Reads a script and returns a list of all of its actions.");
             sb.AppendLine("- SCRIPT STOPALL - Stops all currently executing scripts.");
 
             response = StringBuilderPool.Pool.ToStringReturn(sb);
