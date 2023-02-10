@@ -17,18 +17,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1.7.2
+
+      - name: Setup NuGet
+        uses: iRebbok/setup-nuget@master
+
       - uses: actions/checkout@v2
-      
-      - name: Setup MSBuild.exe
-        uses: warrenbuckley/Setup-MSBuild@v1
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
-
-
-      - name: Setup NuGet.exe for use with actions
-        uses: NuGet/setup-nuget@v1.0.6
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
       - name: Restore NuGet
         run: nuget restore ScriptedEvents.sln
@@ -39,8 +34,10 @@ jobs:
           Invoke-WebRequest -Uri ${{ env.REFERENCES_URL }} -OutFile ${{ github.workspace }}/Dev.zip
           Expand-Archive -Path Dev.zip -DestinationPath ${{ env.REFERENCES_PATH }}
       - name: Build
-        run: | 
-          msbuild ScriptedEvents.sln /t:restore /p:ReferencePath="${{ env.REFERENCES_PATH }}" 
+        run: |
+          ./build.ps1 -BuildNuGet
+          $File = (Get-ChildItem -Path . -Include 'EXILED.*.nupkg' -Recurse).Name
+          Out-File -FilePath ${{ github.env }} -InputObject "PackageFile=$File" -Encoding utf-8 -Append
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
