@@ -60,7 +60,7 @@ namespace ScriptedEvents.API.Helpers
 
                 if (action.StartsWith("!--"))
                 {
-                    string flag = action.Substring(2).RemoveWhitespace();
+                    string flag = action.Substring(3).RemoveWhitespace();
                     script.Flags.Add(flag);
 
                     script.Actions.Add(new NullAction());
