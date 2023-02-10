@@ -12,27 +12,27 @@ namespace ScriptedEvents.Handlers.Variables
     public static class ConditionVariables
     {
 
-        private static Dictionary<string, object> definedVariables { get; } = new();
+        internal static Dictionary<string, object> DefinedVariables { get; } = new();
 
         public static void DefineVariable(string name, object input)
         {
-            if (!definedVariables.ContainsKey(name))
+            if (!DefinedVariables.ContainsKey(name))
             {
-                definedVariables.Add(name, input);
+                DefinedVariables.Add(name, input);
                 return;
             }
-            definedVariables[name] = input;
+            DefinedVariables[name] = input;
         }
 
         public static void RemoveVariable(string name)
         {
-            if (definedVariables.ContainsKey(name))
-                definedVariables.Remove(name);
+            if (DefinedVariables.ContainsKey(name))
+                DefinedVariables.Remove(name);
         }
 
         public static void ClearVariables()
         {
-            definedVariables.Clear();
+            DefinedVariables.Clear();
         }
 
         // Useful method so that we don't have to add .ToString() on the end of literally everything
@@ -133,7 +133,7 @@ namespace ScriptedEvents.Handlers.Variables
                     .Replace("{NEXTWAVE}", Respawn.NextKnownTeam)
                     ;
 
-            foreach (var definedVariable in definedVariables)
+            foreach (var definedVariable in DefinedVariables)
             {
                 input = input.Replace(definedVariable.Key, definedVariable.Value);
             }

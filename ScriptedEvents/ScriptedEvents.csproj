@@ -127,6 +127,7 @@
     <Compile Include="Handlers\DefaultActions\StopAction.cs" />
     <Compile Include="Handlers\DefaultActions\StopIfAction.cs" />
     <Compile Include="Handlers\DefaultActions\Switch.cs" />
+    <Compile Include="Handlers\DefaultActions\SaveVariableAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitForSecondsAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitUntilDebugAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitUntilAction.cs" />

@@ -17,7 +17,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public string[] Arguments { get; set; }
 
-        public string Description => "Saves a new player variable.";
+        public string Description => "Saves a new player variable. Saved variables can be used in ANY script, and are reset when the round ends.";
 
         public Argument[] ExpectedArguments => new[]
         {
