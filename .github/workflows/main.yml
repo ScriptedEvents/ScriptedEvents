@@ -22,7 +22,7 @@ jobs:
       - name: Setup MSBuild.exe
         uses: warrenbuckley/Setup-MSBuild@v1
         env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true's
 
 
       - name: Setup NuGet.exe for use with actions
@@ -41,3 +41,9 @@ jobs:
       - name: Build
         run: | 
           msbuild ScriptedEvents.sln /t:restore /p:ReferencePath="${{ env.REFERENCES_PATH }}" 
+
+      - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Build Results
+        path: bin/Release
