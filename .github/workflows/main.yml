@@ -32,9 +32,6 @@ jobs:
       - name: Restore NuGet
         run: nuget restore ScriptedEvents.sln
 
-      - name: Navigate to Workspace
-        run: cd $GITHUB_WORKSPACE
-
       - name: Get Build References
         shell: pwsh
         run: |
