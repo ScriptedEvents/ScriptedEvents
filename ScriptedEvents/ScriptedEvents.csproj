@@ -99,6 +99,7 @@
     <Compile Include="Handlers\Commands\MainCommand\ScriptedEvents.cs" />
     <Compile Include="Handlers\DefaultActions\BroadcastPlayerAction.cs" />
     <Compile Include="Handlers\DefaultActions\BroadcastAction.cs" />
+    <Compile Include="Handlers\DefaultActions\DeleteVariable.cs" />
     <Compile Include="Handlers\DefaultActions\DeletePlayerVariable.cs" />
     <Compile Include="Handlers\DefaultActions\ExecuteScriptAction.cs" />
     <Compile Include="Handlers\DefaultActions\GiveAction.cs" />
