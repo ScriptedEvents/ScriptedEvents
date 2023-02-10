@@ -38,6 +38,11 @@ namespace ScriptedEvents.Handlers.DefaultActions
                         script.Jump(newline);
                         return new(true);
                     }
+                    if (script.Labels.TryGetValue(Arguments.ElementAtOrDefault(0), out newline))
+                    {
+                        script.Jump(newline);
+                        return new(true);
+                    }
                     break;
             }
             return new(false);

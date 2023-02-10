@@ -15,6 +15,7 @@ namespace ScriptedEvents
         public string ScriptName { get; set; } = string.Empty;
         public string RawText { get; set; } = string.Empty;
         public List<IAction> Actions { get; set; } = new();
+        public Dictionary<string, int> Labels { get; set; } = new();
         public int CurrentLine { get; set; }
         public bool IsRunning { get; internal set; } = false;
 

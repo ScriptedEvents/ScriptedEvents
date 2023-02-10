@@ -50,8 +50,11 @@ namespace ScriptedEvents.API.Helpers
             Script script = new();
             string allText = ReadScriptText(scriptName);
 
-            foreach (string action in allText.Split('\n'))
+            string[] array = allText.Split('\n');
+            for (int currentline = 0; currentline < array.Length; currentline++)
             {
+                // NoAction
+                string action = array[currentline];
                 if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#") || action.StartsWith("!--"))
                 {
                     script.Actions.Add(new NullAction());
@@ -60,6 +63,15 @@ namespace ScriptedEvents.API.Helpers
 
                 string[] actionParts = action.Split(' ');
                 string keyword = actionParts[0].RemoveWhitespace();
+
+                // Labels
+                if (keyword.EndsWith(":"))
+                {
+                    script.Labels.Add(action.Remove(keyword.Length - 1, 1), currentline);
+                    script.Actions.Add(new NullAction());
+                    continue;
+                }
+
 
                 var alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
                 if (alias != null)

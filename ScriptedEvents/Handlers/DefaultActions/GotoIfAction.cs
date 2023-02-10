@@ -25,10 +25,10 @@ namespace ScriptedEvents.Actions
         {
             if (Arguments.Length < 3) return new(false, "Missing arguments: trueLine, falseLine, condition");
 
-            if (!int.TryParse(Arguments[0], out int trueLine))
+            if (!int.TryParse(Arguments[0], out int trueLine) && !script.Labels.TryGetValue(Arguments[0], out trueLine))
                 return new(false, "trueLine is not a valid integer.");
 
-            if (!int.TryParse(Arguments[1], out int falseLine))
+            if (!int.TryParse(Arguments[1], out int falseLine) && !script.Labels.TryGetValue(Arguments[1], out falseLine))
                 return new(false, "falseLine is not a valid integer.");
 
             ConditionResponse outcome = ConditionHelper.Evaluate(string.Join("", Arguments.Skip(2)));
