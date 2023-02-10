@@ -35,9 +35,6 @@ jobs:
       - name: Navigate to Workspace
         run: cd $GITHUB_WORKSPACE
 
-      - name: Create Build Directory
-        run: mkdir _build
-
       - name: Get Build References
         shell: pwsh
         run: |
@@ -46,13 +43,10 @@ jobs:
 
       - name: Build
         run: | 
-          msbuild ScriptedEvents.sln /t:restore /p:configuration="Release" /p:ReferencePath="${{ env.REFERENCES_PATH }}" /p:PublishUrl="_build" 
-
-      - name: Navigate to Build
-        run: cd _build
+          msbuild ScriptedEvents.sln /t:restore /p:configuration="Release" /p:ReferencePath="${{ env.REFERENCES_PATH }}" 
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Scripted Events
-          path: "$GITHUB_WORKSPACE/_build"
+          path: "ScriptedEvents/bin/Release/ScriptedEvents.dll"
