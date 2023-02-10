@@ -30,7 +30,7 @@ jobs:
 
       - name: Build
         run: | 
-          msbuild ScriptedEvents\ScriptedEvents.csproj /t:restore /p:configuration="Release" /p:ReferencePath="${{ env.REFERENCES_PATH }}" 
+          msbuild ScriptedEvents\ScriptedEvents.csproj -t:rebuild -verbosity:diag -property:Configuration=Release 
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
