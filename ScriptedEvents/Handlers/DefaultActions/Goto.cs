@@ -28,14 +28,14 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 case "ADD":
                     if (int.TryParse(Arguments.ElementAtOrDefault(1), out int newline))
                     {
-                        script.CurrentLine += newline - 2;
+                        script.Jump(script.CurrentLine + newline);
                         return new(true);
                     }
                     break;
                 default:
                     if (int.TryParse(Arguments.ElementAtOrDefault(0), out newline))
                     {
-                        script.CurrentLine = newline - 2;
+                        script.Jump(newline);
                         return new(true);
                     }
                     break;

@@ -27,6 +27,8 @@ namespace ScriptedEvents.API.Helpers
                 if (typeof(IAction).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
                 {
                     IAction temp = (IAction)Activator.CreateInstance(type);
+
+                    Log.Debug($"Adding Action: {temp.Name} | From Assembly: {assembly.GetName().Name}");
                     ActionTypes.Add(temp.Name, type);
                     i++;
                 }
@@ -57,7 +59,7 @@ namespace ScriptedEvents.API.Helpers
                 }
 
                 string[] actionParts = action.Split(' ');
-                string keyword = actionParts[0];
+                string keyword = actionParts[0].RemoveWhitespace();
 
                 var alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
                 if (alias != null)
@@ -72,7 +74,7 @@ namespace ScriptedEvents.API.Helpers
                 ActionTypes.TryGetValue(keyword, out Type actionType);
                 if (actionType is null && alias == null)
                 {
-                    Log.Info($"Invalid action '{keyword}' detected in script '{scriptName}'");
+                    Log.Info($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'");
                     script.Actions.Add(new NullAction());
                     continue;
                 }

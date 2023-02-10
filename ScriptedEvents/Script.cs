@@ -17,5 +17,10 @@ namespace ScriptedEvents
         public List<IAction> Actions { get; set; } = new();
         public int CurrentLine { get; set; }
         public bool IsRunning { get; internal set; } = false;
+
+        public void Jump(int line)
+        {
+            CurrentLine = line - 2;
+        }
     }
 }
