@@ -37,6 +37,10 @@ jobs:
         run: |
           Invoke-WebRequest -Uri ${{ env.REFERENCES_URL }} -OutFile ${{ github.workspace }}/Dev.zip
           Expand-Archive -Path Dev.zip -DestinationPath ${{ env.REFERENCES_PATH }}
+
+      - name: Create Build Directory
+        run: mkdir _build
+
       - name: Build
         run: | 
           msbuild ScriptedEvents.sln /t:restore /p:configuration="Release" /p:ReferencePath="${{ env.REFERENCES_PATH }}" /p:PublishUrl="../_build" 
@@ -44,5 +48,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Build Results
-          path: "./_build"
+          name: Scripted Events
+          path: "./_build/ScriptedEvents.dll"
