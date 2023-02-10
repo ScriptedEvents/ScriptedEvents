@@ -42,7 +42,7 @@ jobs:
           msbuild ScriptedEvents.sln /t:restore /p:ReferencePath="${{ env.REFERENCES_PATH }}" 
 
       - name: Upload artifacts
-          uses: actions/upload-artifact@v2
-          with:
-            name: Build Results
-            path: Dev.zip
+        uses: actions/upload-artifact@v2
+        with:
+          name: Build Results
+          path: Dev.zip
