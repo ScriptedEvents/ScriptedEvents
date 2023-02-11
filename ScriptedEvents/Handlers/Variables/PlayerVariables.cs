@@ -11,7 +11,7 @@ namespace ScriptedEvents.Handlers.Variables
     public static class PlayerVariables
     {
         private static Dictionary<string, IEnumerable<Player>> definedVariables { get; } = new();
-        private static readonly Dictionary<string, RoleTypeId> roleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => x.ToString().ToUpper(), x => x);
+        private static readonly Dictionary<string, RoleTypeId> roleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
         public static void DefineVariable(string name, IEnumerable<Player> input)
         {
             name = name.RemoveWhitespace();
