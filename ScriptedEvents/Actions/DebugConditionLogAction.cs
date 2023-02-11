@@ -4,6 +4,7 @@
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
 
     public class DebugConditionLogAction : IScriptAction, IHiddenAction
     {

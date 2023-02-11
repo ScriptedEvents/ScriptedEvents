@@ -14,6 +14,7 @@ using ScriptedEvents.Actions.Interfaces;
 using ScriptedEvents.Actions;
 using ScriptedEvents.Variables;
 using ScriptedEvents.API.Enums;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.API.Helpers
 {
@@ -176,7 +177,7 @@ namespace ScriptedEvents.API.Helpers
             MainPlugin.Info($"Running script {scr.ScriptName}.");
             scr.IsRunning = true;
 
-            for (; scr.CurrentLine < scr.Actions.Count; scr.NextLine())                                
+            for (; scr.CurrentLine < scr.Actions.Count; scr.NextLine())
             {
                 if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {

@@ -101,6 +101,7 @@
                             if (Tesla.IgnoredPlayers.Contains(player))
                                 Tesla.IgnoredPlayers.Remove(player);
                         }
+
                         break;
                     case "ROLETYPE":
                         RoleTypeId roleType = (RoleTypeId)target;

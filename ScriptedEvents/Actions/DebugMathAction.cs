@@ -3,6 +3,7 @@
     using System;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
 
     public class DebugMathAction : IScriptAction, IHiddenAction
     {
