@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.DemoScripts
+﻿using System;
+
+namespace ScriptedEvents.DemoScripts
 {
     public class About : IDemoScript
     {
@@ -18,6 +20,9 @@
 # Each action that supports math also supports variables, eg. '5 * {{PLAYERSALIVE}}' to multiply 5 by the amount of players alive.
 # All variables are listed on the plugin's wiki page.
 # Lastly, have fun! This is meant to be a fun plugin to mess around with. If you have any questions, do not hesitate to join the Discord server and ask! I'm here to help you!
-# - Thunder";
+# - Thunder
+
+# DemoScripts Generated at: {DateTime.UtcNow:f}
+# Plugin Version (as of generation): {MainPlugin.Singleton.Version}";
     }
 }
