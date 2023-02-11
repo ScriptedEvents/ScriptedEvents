@@ -18,7 +18,7 @@
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("roundlock", typeof(bool), "Whether or not to lock the round.", true)
+            new Argument("roundlock", typeof(bool), "Whether or not to lock the round.", true),
         };
 
         public ActionResponse Execute(Script script)

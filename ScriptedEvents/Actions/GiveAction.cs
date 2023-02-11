@@ -24,7 +24,7 @@
         {
             new Argument("players", typeof(List<Player>), "The players to give the item to.", true),
             new Argument("item", typeof(ItemType), "The item to give.", true),
-            new Argument("amount", typeof(int), "The amount to give. Variables & Math are supported. Default: 1", false)
+            new Argument("amount", typeof(int), "The amount to give. Variables & Math are supported. Default: 1", false),
         };
 
         public ActionResponse Execute(Script script)

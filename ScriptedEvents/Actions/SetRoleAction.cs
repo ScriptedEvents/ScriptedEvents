@@ -67,7 +67,6 @@
                 }
             }
 
-
             if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out List<Player> plys))
                 return new(false, "No players matching the criteria were found.");
 

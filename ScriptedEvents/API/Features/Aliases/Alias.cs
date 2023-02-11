@@ -52,7 +52,7 @@
             for (int i = 0; i < usage.Count() - 1; i++)
             {
                 string arg = copy[i + 1 + addedCount];
-                switch ("duration")//(Arguments[i])
+                switch ("duration") //(Arguments[i])
                 {
                     case "duration":
                         string[] range = arg.Split('-');

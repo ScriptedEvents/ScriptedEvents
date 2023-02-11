@@ -45,6 +45,7 @@
             {
                 player.Broadcast((ushort)duration, message);
             }
+
             return new(true);
         }
     }

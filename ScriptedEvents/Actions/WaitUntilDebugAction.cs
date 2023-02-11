@@ -18,9 +18,18 @@
 
         public string[] Arguments { get; set; }
 
-        public ActionResponse Execute()
+        public float? Execute(Script scr, out ActionResponse message)
         {
-            return new(true);
+            if (Arguments.Length < 1)
+            {
+                message = new(false, "Missing argument: condition");
+                return null;
+            }
+
+            string coroutineKey = $"WAITUNTIL_DEBUG_COROUTINE_{DateTime.UtcNow.Ticks}";
+            Coroutines.Add(coroutineKey);
+            message = new(true);
+            return Timing.WaitUntilDone(InternalWaitUntil(string.Join(string.Empty, Arguments)), coroutineKey);
         }
 
         private IEnumerator<float> InternalWaitUntil(string input)
@@ -42,20 +51,6 @@
                 Log.Info($"CONDITION: {ConditionVariables.ReplaceVariables(input)} \\\\ PASSED: {response.Passed}");
                 yield return Timing.WaitForSeconds(1f);
             }
-        }
-
-        public float? Execute(Script scr, out ActionResponse message)
-        {
-            if (Arguments.Length < 1)
-            {
-                message = new(false, "Missing argument: condition");
-                return null;
-            }
-
-            string coroutineKey = $"WAITUNTIL_DEBUG_COROUTINE_{DateTime.UtcNow.Ticks}";
-            Coroutines.Add(coroutineKey);
-            message = new(true);
-            return Timing.WaitUntilDone(InternalWaitUntil(string.Join("", Arguments)), coroutineKey);
         }
     }
 }

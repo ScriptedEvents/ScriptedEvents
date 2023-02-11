@@ -85,6 +85,7 @@
 
                 action(door);
             }
+
             return new(true, string.Empty);
         }
 

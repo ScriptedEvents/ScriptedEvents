@@ -10,7 +10,6 @@
 
     public static class ConditionVariables
     {
-
         internal static Dictionary<string, object> DefinedVariables { get; } = new();
 
         public static void DefineVariable(string name, object input)
@@ -20,6 +19,7 @@
                 DefinedVariables.Add(name, input);
                 return;
             }
+
             DefinedVariables[name] = input;
         }
 

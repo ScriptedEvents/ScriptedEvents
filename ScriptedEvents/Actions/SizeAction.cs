@@ -35,10 +35,13 @@
             {
                 return new(false, "Missing arguments: players, size X, size Y, size Z, max(optional)");
             }
+
             if (!float.TryParse(Arguments.ElementAt(1), out float x))
                 return new(false, $"X-scale '{Arguments.ElementAt(1)}' is not a valid number.");
+
             if (!float.TryParse(Arguments.ElementAt(2), out float y))
                 return new(false, $"Y-scale '{Arguments.ElementAt(2)}' is not a valid number.");
+
             if (!float.TryParse(Arguments.ElementAt(3), out float z))
                 return new(false, $"Z-scale '{Arguments.ElementAt(3)}' is not a valid number.");
 
@@ -70,7 +73,6 @@
                     return new(false, "A negative number cannot be used as the max argument of the SIZE action.");
                 }
             }
-
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out List<Player> plys))
                 return new(false, "No players matching the criteria were found.");

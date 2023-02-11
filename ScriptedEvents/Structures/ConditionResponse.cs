@@ -2,11 +2,6 @@
 {
     public class ConditionResponse
     {
-        public bool Success { get; set; }
-        public bool Passed { get; set; }
-        public string Message { get; set; }
-        public object ObjectResult { get; set; }
-
         public ConditionResponse(bool success, bool passed, string message, object objectResult = null)
         {
             Success = success;
@@ -14,6 +9,11 @@
             Message = message;
             ObjectResult = objectResult;
         }
+
+        public bool Success { get; set; }
+        public bool Passed { get; set; }
+        public string Message { get; set; }
+        public object ObjectResult { get; set; }
 
         public override string ToString()
         {

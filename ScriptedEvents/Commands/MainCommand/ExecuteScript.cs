@@ -12,7 +12,7 @@
     {
         public string Command => "execute";
 
-        public string[] Aliases => new[] { "ex", "run"};
+        public string[] Aliases => new[] { "ex", "run" };
 
         public string Description => "Start a script.";
 

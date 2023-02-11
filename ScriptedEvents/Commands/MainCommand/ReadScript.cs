@@ -15,7 +15,7 @@
     {
         public string Command => "readscript";
 
-        public string[] Aliases => new[] { "read", "r"};
+        public string[] Aliases => new[] { "read", "r" };
 
         public string Description => "Start a script.";
 

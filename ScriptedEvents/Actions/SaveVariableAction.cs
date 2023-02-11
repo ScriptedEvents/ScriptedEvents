@@ -42,7 +42,6 @@
                 return new(true);
             }
             catch { }
-            
 
             ConditionVariables.DefineVariable(varName, input);
 

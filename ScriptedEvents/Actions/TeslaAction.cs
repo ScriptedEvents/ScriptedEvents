@@ -37,7 +37,7 @@
                     return new(false, "Missing arguments: Mode, Target, Duration (optional)");
                 }
             }
-            
+
             string mode = Arguments[0];
             string target = mode == "DISABLE" ? null : Arguments[1];
             string duration = Arguments.Length > 2 ? string.Join(string.Empty, Arguments.Skip(2)) : null;
