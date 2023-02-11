@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Exiled.API.Features.Pools;
 using ScriptedEvents.API.Features.Actions;
 
 namespace ScriptedEvents
@@ -14,7 +15,18 @@ namespace ScriptedEvents
         /// </summary>
         public Script()
         {
+            Actions = ListPool<IAction>.Pool.Get();
+            Flags = ListPool<string>.Pool.Get();
             UniqueId = Guid.NewGuid();
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="Script"/> class.
+        /// </summary>
+        ~Script()
+        {
+            ListPool<IAction>.Pool.Return(Actions);
+            ListPool<string>.Pool.Return(Flags);
         }
 
         /// <summary>
@@ -60,7 +72,7 @@ namespace ScriptedEvents
         /// <summary>
         /// Gets or sets a list of <see cref="IAction"/> of each action.
         /// </summary>
-        public List<IAction> Actions { get; set; } = new();
+        public List<IAction> Actions { get; set; }
 
         /// <summary>
         /// Gets the line the script is currently on.
@@ -75,7 +87,7 @@ namespace ScriptedEvents
         /// <summary>
         /// Gets a list of flags on the script.
         /// </summary>
-        public List<string> Flags { get; } = new();
+        public List<string> Flags { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the script is enabled.
