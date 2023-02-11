@@ -34,11 +34,11 @@ namespace ScriptedEvents.Handlers.DefaultActions
             {
                 return new(false, "Missing arguments: players, size X, size Y, size Z, max(optional)");
             }
-            if (float.TryParse(Arguments.ElementAt(1), out float x))
+            if (!float.TryParse(Arguments.ElementAt(1), out float x))
                 return new(false, $"X-scale '{Arguments.ElementAt(1)}' is not a valid number.");
-            if (float.TryParse(Arguments.ElementAt(2), out float y))
+            if (!float.TryParse(Arguments.ElementAt(2), out float y))
                 return new(false, $"Y-scale '{Arguments.ElementAt(2)}' is not a valid number.");
-            if (float.TryParse(Arguments.ElementAt(3), out float z))
+            if (!float.TryParse(Arguments.ElementAt(3), out float z))
                 return new(false, $"Z-scale '{Arguments.ElementAt(3)}' is not a valid number.");
 
             int max = -1;
