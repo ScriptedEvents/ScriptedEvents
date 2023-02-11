@@ -13,6 +13,11 @@ namespace ScriptedEvents
 
         public Guid UniqueId { get; }
         public string ScriptName { get; set; } = string.Empty;
+        public string ReadPermission { get; set; } = "script.read";
+        public string ExecutePermission { get; set; } = "script.execute";
+        public string FilePath { get; set; }
+        public DateTime LastRead { get; set; }
+        public DateTime LastEdited { get; set; }
         public string RawText { get; set; } = string.Empty;
         public List<IAction> Actions { get; set; } = new();
         public int CurrentLine { get; set; }

@@ -43,18 +43,15 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
 
             var arg0 = arguments.At(0);
 
-            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(arg0, out string perm))
-            {
-                if (!sender.CheckPermission("script.read." + perm))
-                {
-                    response = $"Missing permission: script.read.{perm}";
-                    return false;
-                }
-            }
-
             try
             {
                 Script scr = ScriptHelper.ReadScript(arg0);
+
+                if (!sender.CheckPermission(scr.ReadPermission))
+                {
+                    response = $"Missing permission: {scr.ReadPermission}";
+                    return false;
+                }
 
                 if (scr.Disabled)
                 {
@@ -64,7 +61,10 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine($"Reading file {arg0}...");
                 sb.AppendLine($"Script Name: {scr.ScriptName}");
-                sb.AppendLine($"Script Flags: {(scr.Flags.Count > 0 ? string.Join(", ", scr.Flags) : "None")}\n");
+                sb.AppendLine($"Script Flags: {(scr.Flags.Count > 0 ? string.Join(", ", scr.Flags) : "None")}");
+                sb.AppendLine($"Last Ran: {scr.LastRead:f}");
+                sb.AppendLine($"Last Edited: {scr.LastEdited:f}");
+                sb.AppendLine();
                 sb.AppendLine("---- START OF FILE ----");
 
                 int curLine = 0;

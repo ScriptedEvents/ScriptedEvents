@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Actions;
 using ScriptedEvents.API.Features.Aliases;
 using ScriptedEvents.API.Features.Exceptions;
@@ -42,20 +41,33 @@ namespace ScriptedEvents.API.Helpers
         public static Dictionary<string, Type> ActionTypes { get; } = new();
         public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
-        public static string ReadScriptText(string scriptName)
+        private static string InternalRead(string scriptName, out string fileDirectory)
         {
             string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
             if (File.Exists(mainFolderFile))
+            {
+                fileDirectory = mainFolderFile;
                 return File.ReadAllText(mainFolderFile);
+            }
 
             foreach (string directory in Directory.GetDirectories(ScriptPath))
             {
                 string fileName = Path.Combine(directory, scriptName + ".txt");
                 if (File.Exists(fileName))
+                {
+                    fileDirectory = fileName;
                     return File.ReadAllText(fileName);
+                }
             }
 
             throw new FileNotFoundException($"Script {scriptName} does not exist.");
+        }
+
+        public static string ReadScriptText(string scriptName) => InternalRead(scriptName, out _);
+        public static string GetFilePath(string scriptName)
+        {
+            InternalRead(scriptName, out string path);
+            return path;
         }
 
         public static Script ReadScript(string scriptName)
@@ -111,8 +123,21 @@ namespace ScriptedEvents.API.Helpers
                 script.Actions.Add(newAction);
             }
 
+            string scriptPath = GetFilePath(scriptName);
+
+            // Fill out script data
+
+            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2))
+            {
+                script.ReadPermission += $".{perm2}";
+                script.ExecutePermission += $".{perm2}";
+            }
+
             script.ScriptName = scriptName;
             script.RawText = allText;
+            script.FilePath = scriptPath;
+            script.LastRead = File.GetLastAccessTimeUtc(scriptPath);
+            script.LastEdited = File.GetLastWriteTimeUtc(scriptPath);
             return script;
         }
 
