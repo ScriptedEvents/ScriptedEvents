@@ -38,8 +38,8 @@ namespace ScriptedEvents.API.Helpers
         // StackOverflow my beloved
         public static double Math(string expression)
         {
-            var loDataTable = new DataTable();
-            var loDataColumn = new DataColumn("Eval", typeof(double), expression);
+            DataTable loDataTable = new DataTable();
+            DataColumn loDataColumn = new DataColumn("Eval", typeof(double), expression);
             loDataTable.Columns.Add(loDataColumn);
             loDataTable.Rows.Add(0);
             return (double)loDataTable.Rows[0]["Eval"];
@@ -77,7 +77,7 @@ namespace ScriptedEvents.API.Helpers
             if (conditionString is not null)
             {
                 string[] arrString = input.Split(new[] { conditionString.Symbol }, StringSplitOptions.RemoveEmptyEntries);
-                var splitString = arrString.ToList();
+                List<string> splitString = arrString.ToList();
                 splitString.RemoveAll(y => string.IsNullOrWhiteSpace(y));
 
                 if (splitString.Count != 2)
@@ -99,7 +99,7 @@ namespace ScriptedEvents.API.Helpers
                 return new(false, false, $"Invalid condition operator provided! Condition: '{input}'");
 
             string[] arr = input.Split(new[] { condition.Symbol }, StringSplitOptions.RemoveEmptyEntries);
-            var split = arr.ToList();
+            List<string> split = arr.ToList();
             split.RemoveAll(y => string.IsNullOrWhiteSpace(y));
 
             if (split.Count != 2)

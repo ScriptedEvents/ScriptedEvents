@@ -48,7 +48,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
                     if (!ScriptHelper.TryGetPlayers(target, null, out List<Player> players))
                         return new(false, "No players with the given parameters were found!");
 
-                    foreach (var player in players)
+                    foreach (Player player in players)
                     {
                         if (!Tesla.IgnoredPlayers.Contains(player))
                             Tesla.IgnoredPlayers.Add(player);
@@ -96,7 +96,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 switch (mode)
                 {
                     case "PLAYERS":
-                        foreach (var player in (List<Player>)target)
+                        foreach (Player player in (List<Player>)target)
                         {
                             if (Tesla.IgnoredPlayers.Contains(player))
                                 Tesla.IgnoredPlayers.Remove(player);

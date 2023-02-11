@@ -99,7 +99,7 @@ namespace ScriptedEvents.API.Helpers
                 string[] actionParts = action.Split(' ');
                 string keyword = actionParts[0].RemoveWhitespace();
 
-                var alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
+                Alias alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
                 if (alias != null)
                 {
                     actionParts = alias.Unalias(action).Split(' ');
@@ -236,7 +236,7 @@ namespace ScriptedEvents.API.Helpers
                 return true;
             }
 
-            var dashSplit = number.Split('-');
+            string[] dashSplit = number.Split('-');
             if (dashSplit.Length == 2 && float.TryParse(dashSplit[0], out float min) && float.TryParse(dashSplit[1], out float max))
             {
                 result = Random.Range(min, max+1);
@@ -259,7 +259,7 @@ namespace ScriptedEvents.API.Helpers
                 string[] variables = PlayerVariables.IsolateVariables(input);
                 foreach (string variable in variables)
                 {
-                    if (PlayerVariables.TryGet(variable, out var playersFromVariable))
+                    if (PlayerVariables.TryGet(variable, out IEnumerable<Player> playersFromVariable))
                     {
                         plys.AddRange(playersFromVariable);
                     }
@@ -318,25 +318,25 @@ namespace ScriptedEvents.API.Helpers
         public static int StopAllScripts()
         {
             int amount = 0;
-            foreach (var kvp in RunningScripts)
+            foreach (KeyValuePair<Script, CoroutineHandle> kvp in RunningScripts)
             {
                 amount++;
                 kvp.Key.IsRunning = false;
                 Timing.KillCoroutines(kvp.Value);
             }
 
-            foreach (string key in Handlers.DefaultActions.WaitUntilAction.Coroutines)
+            foreach (string key in WaitUntilAction.Coroutines)
             {
                 Timing.KillCoroutines(key);
             }
 
-            foreach (string key in Handlers.DefaultActions.WaitUntilDebugAction.Coroutines)
+            foreach (string key in WaitUntilDebugAction.Coroutines)
             {
                 Timing.KillCoroutines(key);
             }
 
-            Handlers.DefaultActions.WaitUntilAction.Coroutines.Clear();
-            Handlers.DefaultActions.WaitUntilDebugAction.Coroutines.Clear();
+            WaitUntilAction.Coroutines.Clear();
+            WaitUntilDebugAction.Coroutines.Clear();
             RunningScripts.Clear();
             return amount;
         }

@@ -37,7 +37,7 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
                 return true;
             }
 
-            var arg0 = arguments.At(0);
+            string arg0 = arguments.At(0);
 
             try
             {

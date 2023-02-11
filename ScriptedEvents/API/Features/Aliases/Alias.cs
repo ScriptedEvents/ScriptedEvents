@@ -37,13 +37,13 @@ namespace ScriptedEvents.API.Features.Aliases
         {
             List<string> copy = usage.ToList();
 
-            var index = usage.IndexOf(Command);
+            int index = usage.IndexOf(Command);
             if (index > -1)
             {
                 string str = usage[index];
 
                 str = Unalias(str);
-                var split = str.Split(' ');
+                string[] split = str.Split(' ');
 
                 copy[index] = str;
                 copy.InsertRange(index + 1, split);
@@ -56,7 +56,7 @@ namespace ScriptedEvents.API.Features.Aliases
                 switch ("duration")//(Arguments[i])
                 {
                     case "duration":
-                        var range = arg.Split('-');
+                        string[] range = arg.Split('-');
                         if (range.Length > 1)
                         {
                             if (!int.TryParse(range[0], out int min))

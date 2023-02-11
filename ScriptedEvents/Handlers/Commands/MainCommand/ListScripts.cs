@@ -33,7 +33,7 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
                 return true;
             }
 
-            var files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.AllDirectories);
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
             foreach (string file in files)

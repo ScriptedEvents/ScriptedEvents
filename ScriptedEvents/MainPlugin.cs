@@ -47,7 +47,7 @@ namespace ScriptedEvents
             {
                 DirectoryInfo info = Directory.CreateDirectory(ScriptHelper.ScriptPath);
                 DirectoryInfo demoScriptFolder = Directory.CreateDirectory(Path.Combine(info.FullName, "DemoScripts"));
-                foreach (var demo in DemoScripts)
+                foreach (IDemoScript demo in DemoScripts)
                 {
                     File.WriteAllText(Path.Combine(demoScriptFolder.FullName, $"{demo.FileName}.txt"), demo.Contents);
                 }

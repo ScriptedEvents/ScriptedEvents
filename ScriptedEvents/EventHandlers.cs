@@ -13,6 +13,7 @@ using Exiled.Events.EventArgs.Player;
 using System.Linq;
 using UnityEngine;
 using PlayerRoles;
+using System.Data;
 
 namespace ScriptedEvents
 {
@@ -53,7 +54,7 @@ namespace ScriptedEvents
 
                 int iterator = 0;
 
-                foreach (var rule in SpawnRules.Where(rule => rule.Value > 0))
+                foreach (KeyValuePair<RoleTypeId, int> rule in SpawnRules.Where(rule => rule.Value > 0))
                 {
                     for (int i = iterator; i < iterator+rule.Value; i++)
                     {
@@ -83,8 +84,8 @@ namespace ScriptedEvents
                 {
                     List<Player> newPlayers = players.Skip(iterator).ToList();
 
-                    var rule = SpawnRules.FirstOrDefault(rule => rule.Value == -1);
-                    foreach (var player in newPlayers)
+                    KeyValuePair<RoleTypeId, int> rule = SpawnRules.FirstOrDefault(rule => rule.Value == -1);
+                    foreach (Player player in newPlayers)
                     {
                         player.Role.Set(rule.Key);
                     }

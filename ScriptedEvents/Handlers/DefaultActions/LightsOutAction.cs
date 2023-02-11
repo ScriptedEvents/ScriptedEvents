@@ -37,7 +37,7 @@ namespace ScriptedEvents.Actions
                 return new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
             }
 
-            foreach (var room in Room.List)
+            foreach (Room room in Room.List)
                 room.TurnOffLights(duration);
 
             return new(true, string.Empty);

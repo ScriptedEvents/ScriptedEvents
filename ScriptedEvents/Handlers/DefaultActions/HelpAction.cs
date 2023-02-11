@@ -32,7 +32,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 sbList.AppendLine();
                 sbList.AppendLine($"List of all actions.");
 
-                foreach (var kvp in ScriptHelper.ActionTypes)
+                foreach (KeyValuePair<string, Type> kvp in ScriptHelper.ActionTypes)
                 {
                     IAction lAction = Activator.CreateInstance(kvp.Value) as IAction;
                     IHelpInfo lhelpInfo = (lAction as IHelpInfo);
@@ -73,7 +73,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
                 sb.Append("Arguments:");
             }
 
-            foreach (var arg in helpInfo.ExpectedArguments)
+            foreach (Argument arg in helpInfo.ExpectedArguments)
             {
                 string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
                 sb.AppendLine();
