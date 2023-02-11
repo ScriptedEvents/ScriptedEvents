@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using ScriptedEvents.Actions.Interfaces;
 using System;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions
 {

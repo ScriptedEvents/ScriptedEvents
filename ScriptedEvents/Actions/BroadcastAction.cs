@@ -4,6 +4,7 @@ using ScriptedEvents.API.Helpers;
 using ScriptedEvents.Variables;
 using System;
 using System.Linq;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions
 {

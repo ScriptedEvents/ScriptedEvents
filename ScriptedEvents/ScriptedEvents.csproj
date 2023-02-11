@@ -83,6 +83,7 @@
     <Compile Include="Actions\Interfaces\IHelpInfo.cs" />
     <Compile Include="Actions\Interfaces\IHiddenAction.cs" />
     <Compile Include="Actions\Interfaces\IScriptAction.cs" />
+    <Compile Include="API\Enums\ActionFlags.cs" />
     <Compile Include="API\Features\Exceptions\DisabledScriptException.cs" />
     <Compile Include="Conditions\Floats\GreaterThanOrEqualTo.cs" />
     <Compile Include="Conditions\Floats\LessThanOrEqualTo.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Conditions\Interfaces\IStringCondition.cs" />
     <Compile Include="Conditions\Strings\StringNotEqual.cs" />
     <Compile Include="Conditions\Strings\StringEqual.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="DemoScripts\About.cs" />
     <Compile Include="DemoScripts\ConditionSamples.cs" />
     <Compile Include="DemoScripts\IDemoScript.cs" />
@@ -144,6 +146,8 @@
     <Compile Include="Conditions\Floats\LessThan.cs" />
     <Compile Include="Conditions\Floats\GreaterThan.cs" />
     <Compile Include="Conditions\Interfaces\IFloatCondition.cs" />
+    <Compile Include="Structures\Argument.cs" />
+    <Compile Include="Structures\ConditionResponse.cs" />
     <Compile Include="Variables\ConditionVariables.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Actions\WarheadAction.cs" />

@@ -2,6 +2,7 @@
 using ScriptedEvents.Actions.Interfaces;
 using ScriptedEvents.API.Helpers;
 using System;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions
 {

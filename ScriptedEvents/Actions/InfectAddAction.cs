@@ -1,6 +1,7 @@
 ﻿using PlayerRoles;
 using ScriptedEvents.Actions.Interfaces;
 using System;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions
 {

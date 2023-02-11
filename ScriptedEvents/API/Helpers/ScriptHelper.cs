@@ -13,6 +13,7 @@ using Random = UnityEngine.Random;
 using ScriptedEvents.Actions.Interfaces;
 using ScriptedEvents.Actions;
 using ScriptedEvents.Variables;
+using ScriptedEvents.API.Enums;
 
 namespace ScriptedEvents.API.Helpers
 {

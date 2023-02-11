@@ -5,6 +5,7 @@ using ScriptedEvents.Variables;
 using System;
 using System.Linq;
 using UnityEngine;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions
 {

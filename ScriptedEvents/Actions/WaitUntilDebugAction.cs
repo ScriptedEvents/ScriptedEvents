@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using ScriptedEvents.Actions.Interfaces;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.Variables;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions
 {

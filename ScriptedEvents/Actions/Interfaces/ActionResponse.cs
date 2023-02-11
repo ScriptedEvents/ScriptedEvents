@@ -1,15 +1,8 @@
-﻿using System;
+﻿using ScriptedEvents.API.Enums;
+using System;
 
 namespace ScriptedEvents.Actions.Interfaces
 {
-    [Flags]
-    public enum ActionFlags
-    {
-        None = 0,
-        FatalError = 1,
-        StopEventExecution,
-    }
-
     public class ActionResponse
     {
         public bool Success { get; set; }

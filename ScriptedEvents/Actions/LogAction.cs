@@ -3,6 +3,7 @@ using ScriptedEvents.Actions.Interfaces;
 using ScriptedEvents.Variables;
 using System;
 using System.Linq;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions
 {

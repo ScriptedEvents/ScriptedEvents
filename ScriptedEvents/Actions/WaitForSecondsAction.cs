@@ -3,6 +3,7 @@ using System;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.Actions.Interfaces;
 using ScriptedEvents.Variables;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions
 {

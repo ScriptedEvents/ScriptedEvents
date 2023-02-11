@@ -1,5 +1,6 @@
 ﻿using System;
 using ScriptedEvents.Actions.Interfaces;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions
 {

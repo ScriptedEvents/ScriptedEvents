@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tesla = Exiled.API.Features.TeslaGate;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions
 {
