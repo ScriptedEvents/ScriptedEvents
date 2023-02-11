@@ -8,6 +8,7 @@ using ScriptedEvents.API.Features.Exceptions;
 using System.Text;
 using Exiled.API.Features.Pools;
 using ScriptedEvents.API.Features.Actions;
+using Exiled.API.Features;
 
 namespace ScriptedEvents.Handlers.Commands.MainCommand
 {
@@ -54,6 +55,11 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
             try
             {
                 Script scr = ScriptHelper.ReadScript(arg0);
+
+                if (scr.Disabled)
+                {
+                    Log.Warn($"Note: The {scr.ScriptName} script is disabled, and cannot be executed until the DISABLE flag is removed. Script contents still shown below.");
+                }
 
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine($"Reading file {arg0}...");
