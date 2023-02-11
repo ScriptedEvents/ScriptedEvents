@@ -43,7 +43,20 @@ namespace ScriptedEvents.API.Helpers
         public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
         public static string ReadScriptText(string scriptName)
-            => File.ReadAllText(Path.Combine(ScriptPath, scriptName + ".txt"));
+        {
+            string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
+            if (File.Exists(mainFolderFile))
+                return File.ReadAllText(mainFolderFile);
+
+            foreach (string directory in Directory.GetDirectories(ScriptPath))
+            {
+                string fileName = Path.Combine(directory, scriptName + ".txt");
+                if (File.Exists(fileName))
+                    return File.ReadAllText(fileName);
+            }
+
+            throw new FileNotFoundException($"Script {scriptName} does not exist.");
+        }
 
         public static Script ReadScript(string scriptName)
         {
