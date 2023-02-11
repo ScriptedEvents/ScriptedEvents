@@ -105,8 +105,9 @@ namespace ScriptedEvents.API.Helpers
                 // Labels
                 if (keyword.EndsWith(":"))
                 {
-                    script.Labels.Add(action.Remove(keyword.Length - 1, 1), currentline);
-                    script.Actions.Add(new NullAction($"{action.Remove(keyword.Length - 1, 1)} LABEL"));
+                    string labelName = action.Remove(keyword.Length - 1, 1);
+                    script.Labels.Add(labelName, currentline);
+                    script.Actions.Add(new NullAction($"{labelName} LABEL"));
 
                     continue;
                 }
