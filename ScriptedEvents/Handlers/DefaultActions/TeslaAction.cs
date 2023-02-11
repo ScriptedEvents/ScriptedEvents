@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Exiled.API.Features.Roles;
 using MEC;
 using PlayerRoles;
 using ScriptedEvents.API.Features.Actions;
@@ -20,10 +21,16 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(false, "Missing arguments: Mode, Target, Duration (optional)");
+            if (Arguments.Length < 2)
+            {
+                if (Arguments.Length < 1 || Arguments[0] != "DISABLE")
+                {
+                    return new(false, "Missing arguments: Mode, Target, Duration (optional)");
+                }
+            }
             
             string mode = Arguments[0];
-            string target = Arguments[1];
+            string target = mode == "DISABLE" ? null : Arguments[1];
             string duration = Arguments.Length > 2 ? string.Join(string.Empty, Arguments.Skip(2)) : null;
 
             switch (mode)
@@ -47,8 +54,12 @@ namespace ScriptedEvents.Handlers.DefaultActions
                         Tesla.IgnoredRoles.Add(roleType);
                     return Reverse(mode, roleType, duration);
                 case "DISABLE":
-                    duration = Arguments[1]; // DISABLE does not have a target.
+                    duration = Arguments.Length > 1 ? string.Join(string.Empty, Arguments.Skip(1)) : null;
                     MainPlugin.Handlers.TeslasDisabled = true;
+                    return Reverse(mode, null, duration);
+                case "ENABLE":
+                    duration = Arguments.Length > 1 ? string.Join(string.Empty, Arguments.Skip(1)) : null;
+                    MainPlugin.Handlers.TeslasDisabled = false;
                     return Reverse(mode, null, duration);
                 default:
                     return new(false, $"Invalid mode '{mode}'. Valid options: PLAYERS, ROLETYPE, DISABLE");
@@ -89,6 +100,9 @@ namespace ScriptedEvents.Handlers.DefaultActions
                         break;
                     case "DISABLE":
                         MainPlugin.Handlers.TeslasDisabled = false;
+                        break;
+                    case "ENABLE":
+                        MainPlugin.Handlers.TeslasDisabled = true;
                         break;
                 }
             });
