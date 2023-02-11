@@ -62,6 +62,7 @@ namespace ScriptedEvents
             }
 
             PlayerHandler.Died += Handlers.OnDied;
+            PlayerHandler.TriggeringTesla += Handlers.OnTriggeringTesla;
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
@@ -75,6 +76,7 @@ namespace ScriptedEvents
             base.OnDisabled();
 
             PlayerHandler.Died -= Handlers.OnDied;
+            PlayerHandler.TriggeringTesla -= Handlers.OnTriggeringTesla;
 
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
             ServerHandler.RoundStarted -= Handlers.OnRoundStarted;

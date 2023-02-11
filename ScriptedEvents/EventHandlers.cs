@@ -24,6 +24,8 @@ namespace ScriptedEvents
         public TimeSpan TimeSinceWave => DateTime.UtcNow - LastRespawnWave;
         public bool IsRespawning => TimeSinceWave.TotalSeconds < 5;
 
+        public bool TeslasDisabled { get; set; } = false;
+
         public List<InfectRule> InfectionRules { get; } = new();
 
         public Dictionary<RoleTypeId, int> SpawnRules { get; } = new();
@@ -32,6 +34,7 @@ namespace ScriptedEvents
         {
             RespawnWaves = 0;
             LastRespawnWave = DateTime.MinValue;
+            TeslasDisabled = false;
 
             ScriptHelper.StopAllScripts();
             ConditionVariables.ClearVariables();
@@ -138,6 +141,17 @@ namespace ScriptedEvents
                 if (rule.MovePlayer)
                     ev.Player.Teleport(pos);
             });
+        }
+
+        // Tesla
+        public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
+        {
+            if (TeslasDisabled)
+            {
+                ev.IsInIdleRange = false;
+                ev.IsInHurtingRange = false;
+                ev.IsAllowed = false;
+            }
         }
     }
 }
