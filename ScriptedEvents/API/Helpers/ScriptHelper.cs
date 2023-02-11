@@ -65,18 +65,22 @@ namespace ScriptedEvents.API.Helpers
 
             foreach (string action in allText.Split('\n'))
             {
-                if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#"))
+                if (string.IsNullOrWhiteSpace(action))
                 {
-                    script.Actions.Add(new NullAction());
+                    script.Actions.Add(new NullAction("BLANK LINE"));
                     continue;
                 }
-
-                if (action.StartsWith("!--"))
+                else if (action.StartsWith("#"))
+                {
+                    script.Actions.Add(new NullAction("COMMENT"));
+                    continue;
+                }
+                else if (action.StartsWith("!--"))
                 {
                     string flag = action.Substring(3).RemoveWhitespace();
                     script.Flags.Add(flag);
 
-                    script.Actions.Add(new NullAction());
+                    script.Actions.Add(new NullAction("FLAG DEFINE"));
                     continue;
                 }
 
@@ -97,7 +101,7 @@ namespace ScriptedEvents.API.Helpers
                 if (actionType is null && alias == null)
                 {
                     Log.Info($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'");
-                    script.Actions.Add(new NullAction());
+                    script.Actions.Add(new NullAction("ERROR"));
                     continue;
                 }
 

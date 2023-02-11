@@ -65,7 +65,10 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
                 foreach (IAction action in scr.Actions)
                 {
                     curLine++;
-                    sb.AppendLine($"{curLine}\t{action.Name} {(action.Arguments is not null ? string.Join(" ", action.Arguments) : string.Empty)}");
+                    if (action is ICustomReadDisplay display && display.Read(out string stringDisplay))
+                        sb.AppendLine($"{curLine}\t{stringDisplay}");
+                    else
+                        sb.AppendLine($"{curLine}\t{action.Name} {(action.Arguments is not null ? string.Join(" ", action.Arguments) : string.Empty)}");
                 }
 
                 sb.AppendLine("---- END OF FILE ----");
