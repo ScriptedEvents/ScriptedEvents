@@ -1,13 +1,10 @@
-﻿using Exiled.API.Features;
-using PlayerRoles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScriptedEvents.Structures
+﻿namespace ScriptedEvents.Structures
 {
+    using System;
+    using System.Collections.Generic;
+    using Exiled.API.Features;
+    using PlayerRoles;
+
     public class Argument
     {
         public Argument(string argumentName, Type type, string description, bool required)

@@ -1,11 +1,11 @@
-﻿using CommandSystem;
-using Exiled.Permissions.Extensions;
-using ScriptedEvents.API.Helpers;
-using System;
-using System.IO;
-
-namespace ScriptedEvents.Commands.MainCommand
+﻿namespace ScriptedEvents.Commands.MainCommand
 {
+    using System;
+    using System.IO;
+    using CommandSystem;
+    using Exiled.Permissions.Extensions;
+    using ScriptedEvents.API.Helpers;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class StopAllScripts : ICommand
     {

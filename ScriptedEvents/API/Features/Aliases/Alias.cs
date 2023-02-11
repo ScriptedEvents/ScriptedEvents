@@ -1,11 +1,10 @@
-﻿using Exiled.Loader;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-//using YamlDotNet.Serialization;
-
-namespace ScriptedEvents.API.Features.Aliases
+﻿namespace ScriptedEvents.API.Features.Aliases
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.Loader;
+
     public class Alias
     {
         public string Command { get; set; } = "BROADCAST";

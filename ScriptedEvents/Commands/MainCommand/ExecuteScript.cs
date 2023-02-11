@@ -1,13 +1,12 @@
-﻿using CommandSystem;
-using Exiled.Permissions.Extensions;
-using System;
-using System.IO;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.API.Features;
-using ScriptedEvents.API.Features.Exceptions;
-
-namespace ScriptedEvents.Commands.MainCommand
+﻿namespace ScriptedEvents.Commands.MainCommand
 {
+    using System;
+    using System.IO;
+    using CommandSystem;
+    using Exiled.Permissions.Extensions;
+    using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.API.Helpers;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExecuteScript : ICommand
     {

@@ -1,14 +1,14 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.API.Features.Pools;
-using PlayerRoles;
-using ScriptedEvents.API.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace ScriptedEvents.Variables
+﻿namespace ScriptedEvents.Variables
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
+    using PlayerRoles;
+    using ScriptedEvents.API.Helpers;
+
     public static class PlayerVariables
     {
         private static Dictionary<string, IEnumerable<Player>> definedVariables { get; } = new();

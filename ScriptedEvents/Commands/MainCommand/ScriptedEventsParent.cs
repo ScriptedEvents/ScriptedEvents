@@ -1,14 +1,14 @@
-﻿using CommandSystem;
-using Exiled.API.Features.Pools;
-using System;
-using System.Text;
-
-namespace ScriptedEvents.Commands.MainCommand
+﻿namespace ScriptedEvents.Commands.MainCommand
 {
+    using System;
+    using System.Text;
+    using CommandSystem;
+    using Exiled.API.Features.Pools;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class ScriptedEvents : ParentCommand
+    public class ScriptedEventsParent : ParentCommand
     {
-        public ScriptedEvents() => LoadGeneratedCommands();
+        public ScriptedEventsParent() => LoadGeneratedCommands();
 
         public override string Command => "scriptedevents";
 

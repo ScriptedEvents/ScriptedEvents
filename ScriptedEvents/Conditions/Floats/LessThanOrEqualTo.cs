@@ -1,7 +1,7 @@
-﻿using ScriptedEvents.Conditions.Interfaces;
-
-namespace ScriptedEvents.Conditions.Floats
+﻿namespace ScriptedEvents.Conditions.Floats
 {
+    using ScriptedEvents.Conditions.Interfaces;
+
     public class LessThanOrEqualTo : IFloatCondition
     {
         public string Symbol => "<=";

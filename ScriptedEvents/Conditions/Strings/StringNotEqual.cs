@@ -1,7 +1,7 @@
-﻿using ScriptedEvents.Conditions.Interfaces;
-
-namespace ScriptedEvents.Conditions.Strings
+﻿namespace ScriptedEvents.Conditions.Strings
 {
+    using ScriptedEvents.Conditions.Interfaces;
+
     public class StringNotEqual : IStringCondition
     {
         public string Symbol => "!=";

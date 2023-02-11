@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScriptedEvents.API.Enums
+﻿namespace ScriptedEvents.API.Enums
 {
+    using System;
+
     [Flags]
     public enum ActionFlags
     {

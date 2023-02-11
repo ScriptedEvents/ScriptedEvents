@@ -1,7 +1,7 @@
-﻿using PlayerRoles;
-
-namespace ScriptedEvents.Structures
+﻿namespace ScriptedEvents.Structures
 {
+    using PlayerRoles;
+
     public readonly struct InfectRule
     {
         public RoleTypeId OldRole { get; }

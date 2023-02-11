@@ -1,8 +1,7 @@
-﻿using ScriptedEvents.API.Enums;
-using System;
-
-namespace ScriptedEvents.Actions.Interfaces
+﻿namespace ScriptedEvents.Actions.Interfaces
 {
+    using ScriptedEvents.API.Enums;
+
     public class ActionResponse
     {
         public bool Success { get; set; }

@@ -1,14 +1,13 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using PlayerRoles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Random = UnityEngine.Random;
-
-namespace ScriptedEvents.Variables
+﻿namespace ScriptedEvents.Variables
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using PlayerRoles;
+    using Random = UnityEngine.Random;
+
     public static class ConditionVariables
     {
 

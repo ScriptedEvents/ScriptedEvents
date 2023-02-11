@@ -1,6 +1,4 @@
-﻿using ScriptedEvents.DemoScripts;
-
-namespace ScriptedEvents.Handlers
+﻿namespace ScriptedEvents.DemoScripts
 {
     public class DemoScript : IDemoScript
     {

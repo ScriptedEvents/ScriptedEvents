@@ -1,22 +1,21 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.API.Helpers;
-using MEC;
-using System.IO;
-using ScriptedEvents.API.Features;
-using ScriptedEvents.API.Features.Exceptions;
-using Exiled.Events.EventArgs.Server;
-using System;
-using System.Collections.Generic;
-using ScriptedEvents.Structures;
-using Exiled.Events.EventArgs.Player;
-using System.Linq;
-using UnityEngine;
-using PlayerRoles;
-using System.Data;
-using ScriptedEvents.Variables;
-
-namespace ScriptedEvents
+﻿namespace ScriptedEvents
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Server;
+    using MEC;
+    using PlayerRoles;
+    using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+    using UnityEngine;
+
     public class EventHandlers
     {
         public int RespawnWaves = 0;

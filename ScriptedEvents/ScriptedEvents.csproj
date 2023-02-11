@@ -99,7 +99,7 @@
     <Compile Include="Commands\MainCommand\ReadScript.cs" />
     <Compile Include="Commands\MainCommand\StopAllScripts.cs" />
     <Compile Include="Commands\MainCommand\ListScripts.cs" />
-    <Compile Include="Commands\MainCommand\ScriptedEvents.cs" />
+    <Compile Include="Commands\MainCommand\ScriptedEventsParent.cs" />
     <Compile Include="Actions\BroadcastPlayerAction.cs" />
     <Compile Include="Actions\BroadcastAction.cs" />
     <Compile Include="Actions\DeleteVariable.cs" />

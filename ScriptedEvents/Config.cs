@@ -1,10 +1,10 @@
-﻿using Exiled.API.Interfaces;
-using ScriptedEvents.API.Features.Aliases;
-using System.Collections.Generic;
-using System.ComponentModel;
-
-namespace ScriptedEvents
+﻿namespace ScriptedEvents
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Exiled.API.Interfaces;
+    using ScriptedEvents.API.Features.Aliases;
+
     public class Config : IConfig
     {
         [Description("Whether or not to enable the Scripted Events plugin.")]

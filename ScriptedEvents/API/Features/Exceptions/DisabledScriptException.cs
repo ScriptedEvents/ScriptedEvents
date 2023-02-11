@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace ScriptedEvents.API.Features.Exceptions
+﻿namespace ScriptedEvents.API.Features.Exceptions
 {
+    using System;
+
     public class DisabledScriptException : Exception
     {
         public string ScriptName { get; }
