@@ -11,13 +11,22 @@ using Tesla = Exiled.API.Features.TeslaGate;
 
 namespace ScriptedEvents.Handlers.DefaultActions
 {
-    public class TeslaAction : IScriptAction
+    public class TeslaAction : IScriptAction, IHelpInfo
     {
         public string Name => "TESLA";
 
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+
+        public string Description => "Modifies tesla gates.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("mode", typeof(string), "The mode to run. Valid options: PLAYERS, ROLETYPE, DISABLE, ENABLE", true),
+            new Argument("target", typeof(object), "The targets. Different type based on the mode.\nPLAYERS: A list of players.\nROLETYPE: A valid RoleType (eg. ClassD, Scp173, etc)\nDISABLE & ENABLE: None", true),
+            new Argument("duration", typeof(float), "The time before reversing the affect.", false),
+        };
 
         public ActionResponse Execute(Script script)
         {
@@ -62,7 +71,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
                     MainPlugin.Handlers.TeslasDisabled = false;
                     return Reverse(mode, null, duration);
                 default:
-                    return new(false, $"Invalid mode '{mode}'. Valid options: PLAYERS, ROLETYPE, DISABLE");
+                    return new(false, $"Invalid mode '{mode}'. Valid options: PLAYERS, ROLETYPE, DISABLE, ENABLE");
             }
         }
 
