@@ -75,6 +75,11 @@ namespace ScriptedEvents
         public List<IAction> Actions { get; set; }
 
         /// <summary>
+        /// Gets or sets a list of Labels.
+        /// </summary>
+        public Dictionary<string, int> Labels { get; set; } = new();
+
+        /// <summary>
         /// Gets the line the script is currently on.
         /// </summary>
         public int CurrentLine { get; private set; }
