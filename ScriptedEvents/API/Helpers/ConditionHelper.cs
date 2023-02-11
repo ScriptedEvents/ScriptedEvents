@@ -204,7 +204,7 @@ namespace ScriptedEvents.API.Helpers
 
         public override string ToString()
         {
-            return $"SUCCESS: {Success} | PASSED: {Passed} | MESSAGE: {(Message ?? "N/A")}";
+            return $"SUCCESS: {Success} | PASSED: {Passed} | MESSAGE: {(string.IsNullOrWhiteSpace(Message) ? "N/A" : Message)}";
         }
     }
 }
