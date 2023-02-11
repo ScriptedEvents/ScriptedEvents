@@ -58,7 +58,7 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine($"Reading file {arg0}...");
                 sb.AppendLine($"Script Name: {scr.ScriptName}");
-                sb.AppendLine($"Script Flags: {string.Join(", ", scr.Flags)}\n");
+                sb.AppendLine($"Script Flags: {(scr.Flags.Count > 0 ? string.Join(", ", scr.Flags) : "None")}\n");
                 sb.AppendLine("---- START OF FILE ----");
 
                 int curLine = 0;
