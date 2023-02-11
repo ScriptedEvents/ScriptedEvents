@@ -162,7 +162,7 @@ namespace ScriptedEvents.API.Helpers
             MainPlugin.Info($"Running script {scr.ScriptName}.");
             scr.IsRunning = true;
 
-            for (; scr.CurrentLine < scr.Actions.Count; scr.CurrentLine++)                                
+            for (; scr.CurrentLine < scr.Actions.Count; scr.NextLine())                                
             {
                 if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {

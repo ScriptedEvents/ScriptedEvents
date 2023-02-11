@@ -4,31 +4,101 @@ using ScriptedEvents.API.Features.Actions;
 
 namespace ScriptedEvents
 {
+    /// <summary>
+    /// Represents a script.
+    /// </summary>
     public class Script
     {
+        /// <summary>
+        /// Creates a new script and assigns its <see cref="UniqueId"/> to a new <see cref="Guid"/>.
+        /// </summary>
         public Script()
         {
             UniqueId = Guid.NewGuid();
         }
 
+        /// <summary>
+        /// A unique ID referring to this Script instance.
+        /// </summary>
         public Guid UniqueId { get; }
+
+        /// <summary>
+        /// Gets or sets the name of the script.
+        /// </summary>
         public string ScriptName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the permission required to read the script.
+        /// </summary>
         public string ReadPermission { get; set; } = "script.read";
+
+        /// <summary>
+        /// Gets or sets the permission required to execute the script.
+        /// </summary>
         public string ExecutePermission { get; set; } = "script.execute";
+
+        /// <summary>
+        /// Gets or sets the path to the script, on the host's computer.
+        /// </summary>
         public string FilePath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last time the script was read.
+        /// </summary>
         public DateTime LastRead { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last time the script was edited.
+        /// </summary>
         public DateTime LastEdited { get; set; }
+
+        /// <summary>
+        /// Gets or sets the raw text of the script.
+        /// </summary>
         public string RawText { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets a list of <see cref="IAction"/> of each action.
+        /// </summary>
         public List<IAction> Actions { get; set; } = new();
-        public int CurrentLine { get; set; }
+
+        /// <summary>
+        /// Gets the line the script is currently on.
+        /// </summary>
+        public int CurrentLine { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the script is currently executing.
+        /// </summary>
         public bool IsRunning { get; internal set; } = false;
-        public List<string> Flags { get; set; } = new();
+
+        /// <summary>
+        /// Gets a list of flags on the script.
+        /// </summary>
+        public List<string> Flags { get; } = new();
+
+        /// <summary>
+        /// Gets a value indicating whether or not the script is enabled.
+        /// </summary>
         public bool Disabled => Flags.Contains("DISABLE");
+
+        /// <summary>
+        /// Gets a value indicating whether or not the script is marked as an admin-event (CedMod compatibility).
+        /// </summary>
         public bool AdminEvent => Flags.Contains("ADMINEVENT");
 
+        /// <summary>
+        /// Moves the <see cref="CurrentLine"/> to the specified line.
+        /// </summary>
+        /// <param name="line">The line to move to.</param>
         public void Jump(int line)
         {
             CurrentLine = line - 2;
         }
+
+        /// <summary>
+        /// Moves to the next line.
+        /// </summary>
+        public void NextLine() => CurrentLine++;
     }
 }
