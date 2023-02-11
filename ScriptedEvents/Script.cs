@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Exiled.API.Features.Pools;
-using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.Actions.Interfaces;
 
 namespace ScriptedEvents
 {

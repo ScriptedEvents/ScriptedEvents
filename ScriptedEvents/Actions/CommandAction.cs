@@ -1,5 +1,5 @@
 ﻿using System;
-using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.Actions.Interfaces;
 
 namespace ScriptedEvents.Actions
 {

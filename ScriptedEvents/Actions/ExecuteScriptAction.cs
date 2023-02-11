@@ -1,5 +1,5 @@
 ﻿using ScriptedEvents.API.Features;
-using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.Actions.Interfaces;
 using ScriptedEvents.API.Features.Exceptions;
 using ScriptedEvents.API.Helpers;
 using System;

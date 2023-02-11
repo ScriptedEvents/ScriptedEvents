@@ -6,7 +6,6 @@ using ScriptedEvents.API.Helpers;
 using System;
 using System.IO;
 using System.Text;
-using UnityEngine.Android;
 
 namespace ScriptedEvents.Commands.MainCommand
 {

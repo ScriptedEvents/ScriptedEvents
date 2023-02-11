@@ -1,4 +1,4 @@
-﻿using ScriptedEvents.API.Features.Actions;
+﻿using ScriptedEvents.Actions.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

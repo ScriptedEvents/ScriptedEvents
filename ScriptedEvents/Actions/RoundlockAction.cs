@@ -1,5 +1,5 @@
 ﻿using Exiled.API.Features;
-using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.Actions.Interfaces;
 using System;
 using System.Linq;
 

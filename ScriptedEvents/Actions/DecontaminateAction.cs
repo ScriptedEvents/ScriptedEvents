@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Features;
 using LightContainmentZoneDecontamination;
-using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.Actions.Interfaces;
 using System;
 
 namespace ScriptedEvents.Actions

@@ -2,7 +2,7 @@
 using ScriptedEvents.Conditions.Floats;
 using ScriptedEvents.Conditions.Interfaces;
 using ScriptedEvents.Conditions.Strings;
-using ScriptedEvents.Handlers.Variables;
+using ScriptedEvents.Variables;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

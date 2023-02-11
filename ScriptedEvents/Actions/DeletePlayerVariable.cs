@@ -1,5 +1,5 @@
-﻿using ScriptedEvents.API.Features.Actions;
-using ScriptedEvents.Handlers.Variables;
+﻿using ScriptedEvents.Actions.Interfaces;
+using ScriptedEvents.Variables;
 using System;
 
 namespace ScriptedEvents.Actions

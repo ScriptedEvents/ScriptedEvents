@@ -7,8 +7,8 @@ using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Exceptions;
 using System.Text;
 using Exiled.API.Features.Pools;
-using ScriptedEvents.API.Features.Actions;
 using Exiled.API.Features;
+using ScriptedEvents.Actions.Interfaces;
 
 namespace ScriptedEvents.Commands.MainCommand
 {

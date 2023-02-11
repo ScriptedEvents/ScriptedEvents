@@ -1,7 +1,7 @@
 ﻿using System;
+using ScriptedEvents.Actions.Interfaces;
 using Exiled.API.Features;
-using ScriptedEvents.API.Features.Actions;
-using ScriptedEvents.Handlers.Variables;
+using ScriptedEvents.Variables;
 
 namespace ScriptedEvents.Actions
 {

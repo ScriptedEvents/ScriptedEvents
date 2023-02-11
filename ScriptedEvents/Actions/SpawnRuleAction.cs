@@ -1,7 +1,7 @@
 ﻿using PlayerRoles;
-using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.Actions.Interfaces;
 using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Handlers.Variables;
+using ScriptedEvents.Variables;
 using System;
 using System.Linq;
 using UnityEngine;

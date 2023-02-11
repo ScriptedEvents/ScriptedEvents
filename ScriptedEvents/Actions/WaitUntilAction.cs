@@ -2,7 +2,7 @@
 using MEC;
 using System;
 using System.Collections.Generic;
-using ScriptedEvents.API.Features.Actions;
+using ScriptedEvents.Actions.Interfaces;
 using ScriptedEvents.API.Helpers;
 using ScriptedEvents.API.Features;
 

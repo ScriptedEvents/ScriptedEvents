@@ -6,7 +6,6 @@ using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Exceptions;
 using Exiled.Events.EventArgs.Server;
 using System;
-using ScriptedEvents.Handlers.Variables;
 using System.Collections.Generic;
 using ScriptedEvents.Structures;
 using Exiled.Events.EventArgs.Player;
@@ -14,6 +13,7 @@ using System.Linq;
 using UnityEngine;
 using PlayerRoles;
 using System.Data;
+using ScriptedEvents.Variables;
 
 namespace ScriptedEvents
 {
