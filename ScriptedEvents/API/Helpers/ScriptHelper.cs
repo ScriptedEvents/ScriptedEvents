@@ -77,7 +77,8 @@ namespace ScriptedEvents.API.Helpers
                 if (keyword.EndsWith(":"))
                 {
                     script.Labels.Add(action.Remove(keyword.Length - 1, 1), currentline);
-                    script.Actions.Add(new NullAction());
+                    script.Actions.Add(new NullAction($"{action.Remove(keyword.Length - 1, 1)} LABEL"));
+
                     continue;
                 }
 
