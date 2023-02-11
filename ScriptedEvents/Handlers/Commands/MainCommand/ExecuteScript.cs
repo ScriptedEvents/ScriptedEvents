@@ -37,20 +37,18 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
                 return true;
             }
 
-            var arg0 = arguments.At(0);
-
-            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(arg0, out string perm))
-            {
-                if (!sender.CheckPermission("script.execute." + perm))
-                {
-                    response = $"Missing permission: script.execute.{perm}";
-                    return false;
-                }
-            }
+            string arg0 = arguments.At(0);
 
             try
             {
-                ScriptHelper.ReadAndRun(arg0);
+                Script scr = ScriptHelper.ReadScript(arg0);
+
+                if (!sender.CheckPermission(scr.ExecutePermission))
+                {
+                    response = $"Missing permission: {scr.ExecutePermission}";
+                    return false;
+                }
+
                 response = $"Executed {arg0} successfully.";
             }
             catch (DisabledScriptException)

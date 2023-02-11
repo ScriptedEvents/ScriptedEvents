@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Features\Actions\ActionResponse.cs" />
+    <Compile Include="API\Features\Actions\ICustomReadDisplay.cs" />
     <Compile Include="API\Features\Actions\IHelpInfo.cs" />
     <Compile Include="API\Features\Actions\IHiddenAction.cs" />
     <Compile Include="API\Features\Actions\IScriptAction.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Handlers\DefaultActions\GotoIfAction.cs" />
     <Compile Include="Handlers\DefaultActions\HelpAction.cs" />
     <Compile Include="Handlers\DefaultActions\InfectAddAction.cs" />
+    <Compile Include="Handlers\DefaultActions\SizeAction.cs" />
     <Compile Include="Handlers\DefaultActions\NullAction.cs" />
     <Compile Include="Handlers\DefaultActions\SpawnRuleAction.cs" />
     <Compile Include="Handlers\DefaultActions\StartRoundAction.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="Handlers\DefaultActions\StopIfAction.cs" />
     <Compile Include="Handlers\DefaultActions\Switch.cs" />
     <Compile Include="Handlers\DefaultActions\SaveVariableAction.cs" />
+    <Compile Include="Handlers\DefaultActions\TeslaAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitForSecondsAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitUntilDebugAction.cs" />
     <Compile Include="Handlers\DefaultActions\WaitUntilAction.cs" />

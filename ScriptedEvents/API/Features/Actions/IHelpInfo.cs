@@ -62,6 +62,10 @@ namespace ScriptedEvents.API.Features.Actions
                 {
                     return "RoleTypeId (Role Name/Number)";
                 }
+                else if (Type == typeof(object))
+                {
+                    return "Variable";
+                }
                 return Type.Name;
             }
         }

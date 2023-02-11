@@ -133,7 +133,7 @@ namespace ScriptedEvents.Handlers.Variables
                     .Replace("{NEXTWAVE}", Respawn.NextKnownTeam)
                     ;
 
-            foreach (var definedVariable in DefinedVariables)
+            foreach (KeyValuePair<string, object> definedVariable in DefinedVariables)
             {
                 input = input.Replace(definedVariable.Key, definedVariable.Value);
             }

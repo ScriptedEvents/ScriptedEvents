@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Actions;
 using ScriptedEvents.API.Features.Aliases;
 using ScriptedEvents.API.Features.Exceptions;
@@ -42,8 +41,34 @@ namespace ScriptedEvents.API.Helpers
         public static Dictionary<string, Type> ActionTypes { get; } = new();
         public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
-        public static string ReadScriptText(string scriptName)
-            => File.ReadAllText(Path.Combine(ScriptPath, scriptName + ".txt"));
+        private static string InternalRead(string scriptName, out string fileDirectory)
+        {
+            string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
+            if (File.Exists(mainFolderFile))
+            {
+                fileDirectory = mainFolderFile;
+                return File.ReadAllText(mainFolderFile);
+            }
+
+            foreach (string directory in Directory.GetDirectories(ScriptPath))
+            {
+                string fileName = Path.Combine(directory, scriptName + ".txt");
+                if (File.Exists(fileName))
+                {
+                    fileDirectory = fileName;
+                    return File.ReadAllText(fileName);
+                }
+            }
+
+            throw new FileNotFoundException($"Script {scriptName} does not exist.");
+        }
+
+        public static string ReadScriptText(string scriptName) => InternalRead(scriptName, out _);
+        public static string GetFilePath(string scriptName)
+        {
+            InternalRead(scriptName, out string path);
+            return path;
+        }
 
         public static Script ReadScript(string scriptName)
         {
@@ -55,18 +80,22 @@ namespace ScriptedEvents.API.Helpers
             {
                 // NoAction
                 string action = array[currentline];
-                if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#"))
+                if (string.IsNullOrWhiteSpace(action))
                 {
-                    script.Actions.Add(new NullAction());
+                    script.Actions.Add(new NullAction("BLANK LINE"));
                     continue;
                 }
-
-                if (action.StartsWith("!--"))
+                else if (action.StartsWith("#"))
+                {
+                    script.Actions.Add(new NullAction("COMMENT"));
+                    continue;
+                }
+                else if (action.StartsWith("!--"))
                 {
                     string flag = action.Substring(3).RemoveWhitespace();
                     script.Flags.Add(flag);
 
-                    script.Actions.Add(new NullAction());
+                    script.Actions.Add(new NullAction("FLAG DEFINE"));
                     continue;
                 }
 
@@ -82,8 +111,7 @@ namespace ScriptedEvents.API.Helpers
                     continue;
                 }
 
-
-                var alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
+                Alias alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
                 if (alias != null)
                 {
                     actionParts = alias.Unalias(action).Split(' ');
@@ -97,7 +125,7 @@ namespace ScriptedEvents.API.Helpers
                 if (actionType is null && alias == null)
                 {
                     Log.Info($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'");
-                    script.Actions.Add(new NullAction());
+                    script.Actions.Add(new NullAction("ERROR"));
                     continue;
                 }
 
@@ -107,8 +135,21 @@ namespace ScriptedEvents.API.Helpers
                 script.Actions.Add(newAction);
             }
 
+            string scriptPath = GetFilePath(scriptName);
+
+            // Fill out script data
+
+            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2))
+            {
+                script.ReadPermission += $".{perm2}";
+                script.ExecutePermission += $".{perm2}";
+            }
+
             script.ScriptName = scriptName;
             script.RawText = allText;
+            script.FilePath = scriptPath;
+            script.LastRead = File.GetLastAccessTimeUtc(scriptPath);
+            script.LastEdited = File.GetLastWriteTimeUtc(scriptPath);
             return script;
         }
 
@@ -117,7 +158,7 @@ namespace ScriptedEvents.API.Helpers
             if (scr.Disabled)
                 throw new DisabledScriptException(scr.ScriptName);
 
-            CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr));
+            CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr), $"SCRIPT_{scr.UniqueId}");
             RunningScripts.Add(scr, handle);
         }
 
@@ -133,7 +174,7 @@ namespace ScriptedEvents.API.Helpers
             MainPlugin.Info($"Running script {scr.ScriptName}.");
             scr.IsRunning = true;
 
-            for (; scr.CurrentLine < scr.Actions.Count; scr.CurrentLine++)                                
+            for (; scr.CurrentLine < scr.Actions.Count; scr.NextLine())                                
             {
                 if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {
@@ -207,7 +248,7 @@ namespace ScriptedEvents.API.Helpers
                 return true;
             }
 
-            var dashSplit = number.Split('-');
+            string[] dashSplit = number.Split('-');
             if (dashSplit.Length == 2 && float.TryParse(dashSplit[0], out float min) && float.TryParse(dashSplit[1], out float max))
             {
                 result = Random.Range(min, max+1);
@@ -230,7 +271,7 @@ namespace ScriptedEvents.API.Helpers
                 string[] variables = PlayerVariables.IsolateVariables(input);
                 foreach (string variable in variables)
                 {
-                    if (PlayerVariables.TryGet(variable, out var playersFromVariable))
+                    if (PlayerVariables.TryGet(variable, out IEnumerable<Player> playersFromVariable))
                     {
                         plys.AddRange(playersFromVariable);
                     }
@@ -289,25 +330,25 @@ namespace ScriptedEvents.API.Helpers
         public static int StopAllScripts()
         {
             int amount = 0;
-            foreach (var kvp in RunningScripts)
+            foreach (KeyValuePair<Script, CoroutineHandle> kvp in RunningScripts)
             {
                 amount++;
                 kvp.Key.IsRunning = false;
                 Timing.KillCoroutines(kvp.Value);
             }
 
-            foreach (string key in Handlers.DefaultActions.WaitUntilAction.Coroutines)
+            foreach (string key in WaitUntilAction.Coroutines)
             {
                 Timing.KillCoroutines(key);
             }
 
-            foreach (string key in Handlers.DefaultActions.WaitUntilDebugAction.Coroutines)
+            foreach (string key in WaitUntilDebugAction.Coroutines)
             {
                 Timing.KillCoroutines(key);
             }
 
-            Handlers.DefaultActions.WaitUntilAction.Coroutines.Clear();
-            Handlers.DefaultActions.WaitUntilDebugAction.Coroutines.Clear();
+            WaitUntilAction.Coroutines.Clear();
+            WaitUntilDebugAction.Coroutines.Clear();
             RunningScripts.Clear();
             return amount;
         }

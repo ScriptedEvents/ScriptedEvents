@@ -77,7 +77,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
                     return new(false, "First argument must be OPEN/CLOSE/LOCK/UNLOCK/DESTROY!");
             }
 
-            foreach (var door in doors)
+            foreach (Door door in doors)
             {
                 if (duration != 0 && revertAction != null)
                         revertAction(door, duration);
@@ -89,13 +89,13 @@ namespace ScriptedEvents.Handlers.DefaultActions
 
         public void RevertOpened(Door door, float duration)
         {
-            var state = door.IsOpen;
+            bool state = door.IsOpen;
             Timing.CallDelayed(duration, () => door.IsOpen = state);
         }
 
         public void RevertLock(Door door, float duration)
         {
-            var state = door.DoorLockType;
+            DoorLockType state = door.DoorLockType;
             Timing.CallDelayed(duration, () => door.ChangeLock(state));
         }
     }

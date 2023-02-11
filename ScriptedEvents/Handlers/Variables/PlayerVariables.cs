@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
+using Exiled.API.Features.Pools;
 using PlayerRoles;
 using ScriptedEvents.API.Helpers;
 using System;
@@ -11,7 +12,7 @@ namespace ScriptedEvents.Handlers.Variables
     public static class PlayerVariables
     {
         private static Dictionary<string, IEnumerable<Player>> definedVariables { get; } = new();
-        private static readonly Dictionary<string, RoleTypeId> roleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => x.ToString().ToUpper(), x => x);
+        private static readonly Dictionary<string, RoleTypeId> roleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
         public static void DefineVariable(string name, IEnumerable<Player> input)
         {
             name = name.RemoveWhitespace();
@@ -50,8 +51,8 @@ namespace ScriptedEvents.Handlers.Variables
 
         public static string[] IsolateVariables(string input)
         {
-            var result = new List<string>();
-            var split = input.Split(' ');
+            List<string> result = ListPool<string>.Pool.Get();
+            string[] split = input.Split(' ');
 
             foreach (string str in split)
             {
@@ -62,7 +63,7 @@ namespace ScriptedEvents.Handlers.Variables
                 }
             }
 
-            return result.ToArray();
+            return ListPool<string>.Pool.ToArrayReturn(result);
         }
 
         public static IEnumerable<Player> Get(string input)

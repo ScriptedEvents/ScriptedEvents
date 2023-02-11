@@ -13,6 +13,7 @@ using Exiled.Events.EventArgs.Player;
 using System.Linq;
 using UnityEngine;
 using PlayerRoles;
+using System.Data;
 
 namespace ScriptedEvents
 {
@@ -24,6 +25,8 @@ namespace ScriptedEvents
         public TimeSpan TimeSinceWave => DateTime.UtcNow - LastRespawnWave;
         public bool IsRespawning => TimeSinceWave.TotalSeconds < 5;
 
+        public bool TeslasDisabled { get; set; } = false;
+
         public List<InfectRule> InfectionRules { get; } = new();
 
         public Dictionary<RoleTypeId, int> SpawnRules { get; } = new();
@@ -32,6 +35,7 @@ namespace ScriptedEvents
         {
             RespawnWaves = 0;
             LastRespawnWave = DateTime.MinValue;
+            TeslasDisabled = false;
 
             ScriptHelper.StopAllScripts();
             ConditionVariables.ClearVariables();
@@ -50,7 +54,7 @@ namespace ScriptedEvents
 
                 int iterator = 0;
 
-                foreach (var rule in SpawnRules.Where(rule => rule.Value > 0))
+                foreach (KeyValuePair<RoleTypeId, int> rule in SpawnRules.Where(rule => rule.Value > 0))
                 {
                     for (int i = iterator; i < iterator+rule.Value; i++)
                     {
@@ -80,8 +84,8 @@ namespace ScriptedEvents
                 {
                     List<Player> newPlayers = players.Skip(iterator).ToList();
 
-                    var rule = SpawnRules.FirstOrDefault(rule => rule.Value == -1);
-                    foreach (var player in newPlayers)
+                    KeyValuePair<RoleTypeId, int> rule = SpawnRules.FirstOrDefault(rule => rule.Value == -1);
+                    foreach (Player player in newPlayers)
                     {
                         player.Role.Set(rule.Key);
                     }
@@ -138,6 +142,17 @@ namespace ScriptedEvents
                 if (rule.MovePlayer)
                     ev.Player.Teleport(pos);
             });
+        }
+
+        // Tesla
+        public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
+        {
+            if (TeslasDisabled)
+            {
+                ev.IsInIdleRange = false;
+                ev.IsInHurtingRange = false;
+                ev.IsAllowed = false;
+            }
         }
     }
 }

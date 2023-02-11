@@ -45,10 +45,11 @@ namespace ScriptedEvents
 
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
-                var info = Directory.CreateDirectory(ScriptHelper.ScriptPath);
-                foreach (var demo in DemoScripts)
+                DirectoryInfo info = Directory.CreateDirectory(ScriptHelper.ScriptPath);
+                DirectoryInfo demoScriptFolder = Directory.CreateDirectory(Path.Combine(info.FullName, "DemoScripts"));
+                foreach (IDemoScript demo in DemoScripts)
                 {
-                    File.WriteAllText(Path.Combine(info.FullName, $"{demo.FileName}.txt"), demo.Contents);
+                    File.WriteAllText(Path.Combine(demoScriptFolder.FullName, $"{demo.FileName}.txt"), demo.Contents);
                 }
 
                 // Welcome message :)
@@ -61,6 +62,7 @@ namespace ScriptedEvents
             }
 
             PlayerHandler.Died += Handlers.OnDied;
+            PlayerHandler.TriggeringTesla += Handlers.OnTriggeringTesla;
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
@@ -74,6 +76,7 @@ namespace ScriptedEvents
             base.OnDisabled();
 
             PlayerHandler.Died -= Handlers.OnDied;
+            PlayerHandler.TriggeringTesla -= Handlers.OnTriggeringTesla;
 
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
             ServerHandler.RoundStarted -= Handlers.OnRoundStarted;

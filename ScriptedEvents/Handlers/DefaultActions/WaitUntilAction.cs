@@ -28,7 +28,7 @@ namespace ScriptedEvents.Handlers.DefaultActions
         {
             while (true)
             {
-                var response = ConditionHelper.Evaluate(input);
+                ConditionResponse response = ConditionHelper.Evaluate(input);
                 if (response.Success)
                 {
                     if (response.Passed)

@@ -8,6 +8,7 @@ using ScriptedEvents.API.Features.Exceptions;
 using System.Text;
 using Exiled.API.Features.Pools;
 using ScriptedEvents.API.Features.Actions;
+using Exiled.API.Features;
 
 namespace ScriptedEvents.Handlers.Commands.MainCommand
 {
@@ -40,32 +41,46 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
                 return true;
             }
 
-            var arg0 = arguments.At(0);
-
-            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(arg0, out string perm))
-            {
-                if (!sender.CheckPermission("script.read." + perm))
-                {
-                    response = $"Missing permission: script.read.{perm}";
-                    return false;
-                }
-            }
+            string arg0 = arguments.At(0);
 
             try
             {
                 Script scr = ScriptHelper.ReadScript(arg0);
 
+                if (!sender.CheckPermission(scr.ReadPermission))
+                {
+                    response = $"Missing permission: {scr.ReadPermission}";
+                    return false;
+                }
+
+                if (scr.Disabled)
+                {
+                    Log.Warn($"Note: The {scr.ScriptName} script is disabled, and cannot be executed until the DISABLE flag is removed. Script contents still shown below.");
+                }
+
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine($"Reading file {arg0}...");
                 sb.AppendLine($"Script Name: {scr.ScriptName}");
-                sb.AppendLine($"Script Flags: {string.Join(", ", scr.Flags)}\n");
+                sb.AppendLine($"Script Flags: {(scr.Flags.Count > 0 ? string.Join(", ", scr.Flags) : "None")}");
+                sb.AppendLine($"Last Ran: {scr.LastRead:f}");
+                sb.AppendLine($"Last Edited: {scr.LastEdited:f}");
+                sb.AppendLine();
                 sb.AppendLine("---- START OF FILE ----");
 
                 int curLine = 0;
                 foreach (IAction action in scr.Actions)
                 {
                     curLine++;
-                    sb.AppendLine($"{curLine}\t{action.Name} {(action.Arguments is not null ? string.Join(" ", action.Arguments) : string.Empty)}");
+                    if (action is ICustomReadDisplay display)
+                    {
+                        if (!display.Read(out string stringDisplay))
+                            continue;
+                        sb.AppendLine($"{curLine}\t{stringDisplay}");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"{curLine}\t{action.Name} {(action.Arguments is not null ? string.Join(" ", action.Arguments) : string.Empty)}");
+                    }
                 }
 
                 sb.AppendLine("---- END OF FILE ----");

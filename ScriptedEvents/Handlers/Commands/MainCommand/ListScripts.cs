@@ -1,10 +1,12 @@
 ﻿using CommandSystem;
+using Exiled.API.Features;
 using Exiled.API.Features.Pools;
 using Exiled.Permissions.Extensions;
 using ScriptedEvents.API.Helpers;
 using System;
 using System.IO;
 using System.Text;
+using UnityEngine.Android;
 
 namespace ScriptedEvents.Handlers.Commands.MainCommand
 {
@@ -31,20 +33,20 @@ namespace ScriptedEvents.Handlers.Commands.MainCommand
                 return true;
             }
 
-            var files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.AllDirectories);
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
             foreach (string file in files)
             {
-                string scriptName = Path.GetFileNameWithoutExtension(file);
-                string permission = "script.execute";
-                DateTime edited = File.GetLastWriteTimeUtc(file);
-                DateTime read = File.GetLastAccessTimeUtc(file);
-                if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2))
+                try
                 {
-                    permission += $".{perm2}";
+                    Script scr = ScriptHelper.ReadScript(Path.GetFileNameWithoutExtension(file));
+                    bldr.AppendLine($"{scr.ScriptName} (perm: {scr.ExecutePermission}) (last ran: {scr.LastRead:g}) (edited: {scr.LastEdited:g})");
                 }
-                bldr.AppendLine($"{scriptName} (perm: {permission}) (last ran: {read:g}) (edited: {edited:g})");
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
             }
 
             response = $"All found scripts: \n\n{StringBuilderPool.Pool.ToStringReturn(bldr)}";
