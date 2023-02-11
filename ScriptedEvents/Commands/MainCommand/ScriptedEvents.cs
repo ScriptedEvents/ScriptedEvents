@@ -3,7 +3,7 @@ using Exiled.API.Features.Pools;
 using System;
 using System.Text;
 
-namespace ScriptedEvents.Handlers.Commands.MainCommand
+namespace ScriptedEvents.Commands.MainCommand
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ScriptedEvents : ParentCommand

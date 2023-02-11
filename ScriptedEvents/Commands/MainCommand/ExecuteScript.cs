@@ -6,7 +6,7 @@ using ScriptedEvents.API.Helpers;
 using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Exceptions;
 
-namespace ScriptedEvents.Handlers.Commands.MainCommand
+namespace ScriptedEvents.Commands.MainCommand
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExecuteScript : ICommand

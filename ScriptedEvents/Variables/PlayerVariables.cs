@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ScriptedEvents.Handlers.Variables
+namespace ScriptedEvents.Variables
 {
     public static class PlayerVariables
     {

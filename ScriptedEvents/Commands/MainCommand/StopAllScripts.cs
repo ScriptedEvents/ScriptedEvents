@@ -4,7 +4,7 @@ using ScriptedEvents.API.Helpers;
 using System;
 using System.IO;
 
-namespace ScriptedEvents.Handlers.Commands.MainCommand
+namespace ScriptedEvents.Commands.MainCommand
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class StopAllScripts : ICommand

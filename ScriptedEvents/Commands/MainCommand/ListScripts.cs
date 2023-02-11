@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 using UnityEngine.Android;
 
-namespace ScriptedEvents.Handlers.Commands.MainCommand
+namespace ScriptedEvents.Commands.MainCommand
 {
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ListScripts : ICommand

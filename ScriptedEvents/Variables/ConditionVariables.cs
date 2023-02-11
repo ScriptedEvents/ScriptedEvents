@@ -7,7 +7,7 @@ using System.Linq;
 
 using Random = UnityEngine.Random;
 
-namespace ScriptedEvents.Handlers.Variables
+namespace ScriptedEvents.Variables
 {
     public static class ConditionVariables
     {
