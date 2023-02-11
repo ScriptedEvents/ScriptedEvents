@@ -1,48 +1,49 @@
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using MEC;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using ScriptedEvents.API.Features.Aliases;
-using ScriptedEvents.API.Features.Exceptions;
-
-using Random = UnityEngine.Random;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.Actions;
-using ScriptedEvents.Variables;
-using ScriptedEvents.API.Enums;
-using ScriptedEvents.Structures;
-
 namespace ScriptedEvents.API.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using MEC;
+    using ScriptedEvents.Actions;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features.Aliases;
+    using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+    using Random = UnityEngine.Random;
+
+    /// <summary>
+    /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
+    /// </summary>
     public static class ScriptHelper
     {
-        internal static void RegisterActions(Assembly assembly)
-        {
-            int i = 0;
-            foreach (Type type in assembly.GetTypes())
-            {
-                if (typeof(IAction).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
-                {
-                    IAction temp = (IAction)Activator.CreateInstance(type);
-
-                    Log.Debug($"Adding Action: {temp.Name} | From Assembly: {assembly.GetName().Name}");
-                    ActionTypes.Add(temp.Name, type);
-                    i++;
-                }
-            }
-
-            MainPlugin.Info($"Assembly '{assembly.GetName().Name}' has registered {i} actions.");
-        }
-
+        /// <summary>
+        /// The base path to the script folder.
+        /// </summary>
         public static readonly string ScriptPath = Path.Combine(Paths.Configs, "ScriptedEvents");
 
+        /// <summary>
+        /// Gets a dictionary of action names and their respective types.
+        /// </summary>
         public static Dictionary<string, Type> ActionTypes { get; } = new();
+
+        /// <summary>
+        /// Gets a dictionary of <see cref="Script"/> that are currently running, and the <see cref="CoroutineHandle"/> that is running them.
+        /// </summary>
         public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
+        /// <summary>
+        /// Reads a script.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <param name="fileDirectory">The directory of the script, if it is found.</param>
+        /// <returns>The contents of the script, if it is found.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
         private static string InternalRead(string scriptName, out string fileDirectory)
         {
             string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
@@ -65,13 +66,32 @@ namespace ScriptedEvents.API.Helpers
             throw new FileNotFoundException($"Script {scriptName} does not exist.");
         }
 
+        /// <summary>
+        /// Reads and returns the text of a script.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <returns>The contents of the script, if it is found.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
         public static string ReadScriptText(string scriptName) => InternalRead(scriptName, out _);
+
+        /// <summary>
+        /// Returns the file path of a script.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <returns>The directory of the script, if it is found.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
         public static string GetFilePath(string scriptName)
         {
             InternalRead(scriptName, out string path);
             return path;
         }
 
+        /// <summary>
+        /// Reads a script line-by-line, converting every line into an appropriate action, flag, label, etc. Fills out all data and returns a <see cref="Script"/> object.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <returns>The <see cref="Script"/> fully filled out, if the script was found.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
         public static Script ReadScript(string scriptName)
         {
             Script script = new();
@@ -156,6 +176,11 @@ namespace ScriptedEvents.API.Helpers
             return script;
         }
 
+        /// <summary>
+        /// Runs the script.
+        /// </summary>
+        /// <param name="scr">The script to run.</param>
+        /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
         public static void RunScript(Script scr)
         {
             if (scr.Disabled)
@@ -165,6 +190,12 @@ namespace ScriptedEvents.API.Helpers
             RunningScripts.Add(scr, handle);
         }
 
+        /// <summary>
+        /// Reads and runs a script.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <exception cref="FileNotFoundException">The script was not found.</exception>
+        /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
         public static void ReadAndRun(string scriptName)
         {
             Script scr = ReadScript(scriptName);
@@ -172,78 +203,13 @@ namespace ScriptedEvents.API.Helpers
                 RunScript(scr);
         }
 
-        public static IEnumerator<float> RunScriptInternal(Script scr)
-        {
-            MainPlugin.Info($"Running script {scr.ScriptName}.");
-            scr.IsRunning = true;
-
-            for (; scr.CurrentLine < scr.Actions.Count; scr.NextLine())
-            {
-                if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
-                {
-                    ActionResponse resp;
-                    float? delay = null;
-
-                    try
-                    {
-                        if (action is ITimingAction timed)
-                        {
-                            Log.Debug($"Running {action.Name} action...");
-                            delay = timed.Execute(scr, out resp);
-                        }
-                        else if (action is IScriptAction scriptAction)
-                        {
-                            Log.Debug($"Running {action.Name} action...");
-                            resp = scriptAction.Execute(scr);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error($"Ran into an error while running {action.Name} action:\n{e}");
-                        continue;
-                    }
-
-                    if (!resp.Success)
-                    {
-                        if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
-                        {
-                            Log.Error($"[{action.Name}] Fatal action error! {resp.Message}");
-                            break;
-                        }
-                        else
-                        {
-                            Log.Warn($"[{action.Name}] Action error! {resp.Message}");
-                        }
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(resp.Message))
-                            Log.Info($"[{action.Name}] Response: {resp.Message}");
-                        if (delay.HasValue)
-                            yield return delay.Value;
-                    }
-
-                    if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
-                        break;
-                }
-            }
-
-            MainPlugin.Info($"Finished running script {scr.ScriptName}.");
-            scr.IsRunning = false;
-
-            if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
-            {
-                ReadAndRun(scr.ScriptName); // so that it re-reads the content of the text file.
-            }
-
-            RunningScripts.Remove(scr);
-        }
-
-        // Convert number or number range to a number
+        /// <summary>
+        /// Converts an input (either a number or range of numbers) to a float.
+        /// </summary>
+        /// <param name="number">The input.</param>
+        /// <param name="result">The float.</param>
+        /// <returns>Whether or not the conversion was successful.</returns>
+        [Obsolete("Not really useful with the addition of math.")]
         public static bool TryConvertNumber(string number, out float result)
         {
             if (float.TryParse(number, out result))
@@ -261,6 +227,13 @@ namespace ScriptedEvents.API.Helpers
             return false;
         }
 
+        /// <summary>
+        /// Converts an input into a list of players.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="amount">The maximum amount of players to give back, or <see langword="null"/> for unlimited.</param>
+        /// <param name="plys">The list of players.</param>
+        /// <returns>Whether or not any players were found.</returns>
         public static bool TryGetPlayers(string input, int? amount, out List<Player> plys)
         {
             plys = new();
@@ -279,6 +252,7 @@ namespace ScriptedEvents.API.Helpers
                         plys.AddRange(playersFromVariable);
                     }
                 }
+
                 if (Player.TryGet(input, out Player ply))
                 {
                     plys.Add(ply);
@@ -354,6 +328,104 @@ namespace ScriptedEvents.API.Helpers
             WaitUntilDebugAction.Coroutines.Clear();
             RunningScripts.Clear();
             return amount;
+        }
+
+        /// <summary>
+        /// Registers all the actions in the provided assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to register actions in.</param>
+        internal static void RegisterActions(Assembly assembly)
+        {
+            int i = 0;
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (typeof(IAction).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
+                {
+                    IAction temp = (IAction)Activator.CreateInstance(type);
+
+                    Log.Debug($"Adding Action: {temp.Name} | From Assembly: {assembly.GetName().Name}");
+                    ActionTypes.Add(temp.Name, type);
+                    i++;
+                }
+            }
+
+            MainPlugin.Info($"Assembly '{assembly.GetName().Name}' has registered {i} actions.");
+        }
+
+        /// <summary>
+        /// Internal coroutine to run the script.
+        /// </summary>
+        /// <param name="scr">The script to run.</param>
+        /// <returns>Coroutine iterator.</returns>
+        private static IEnumerator<float> RunScriptInternal(Script scr)
+        {
+            MainPlugin.Info($"Running script {scr.ScriptName}.");
+            scr.IsRunning = true;
+
+            for (; scr.CurrentLine < scr.Actions.Count; scr.NextLine())
+            {
+                if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
+                {
+                    ActionResponse resp;
+                    float? delay = null;
+
+                    try
+                    {
+                        if (action is ITimingAction timed)
+                        {
+                            Log.Debug($"Running {action.Name} action...");
+                            delay = timed.Execute(scr, out resp);
+                        }
+                        else if (action is IScriptAction scriptAction)
+                        {
+                            Log.Debug($"Running {action.Name} action...");
+                            resp = scriptAction.Execute(scr);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"Ran into an error while running {action.Name} action:\n{e}");
+                        continue;
+                    }
+
+                    if (!resp.Success)
+                    {
+                        if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
+                        {
+                            Log.Error($"[{action.Name}] Fatal action error! {resp.Message}");
+                            break;
+                        }
+                        else
+                        {
+                            Log.Warn($"[{action.Name}] Action error! {resp.Message}");
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(resp.Message))
+                            Log.Info($"[{action.Name}] Response: {resp.Message}");
+                        if (delay.HasValue)
+                            yield return delay.Value;
+                    }
+
+                    if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
+                        break;
+                }
+            }
+
+            MainPlugin.Info($"Finished running script {scr.ScriptName}.");
+            scr.IsRunning = false;
+
+            if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
+            {
+                ReadAndRun(scr.ScriptName); // so that it re-reads the content of the text file.
+            }
+
+            RunningScripts.Remove(scr);
         }
     }
 }
