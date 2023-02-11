@@ -146,7 +146,7 @@ namespace ScriptedEvents.API.Helpers
             if (scr.Disabled)
                 throw new DisabledScriptException(scr.ScriptName);
 
-            CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr));
+            CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr), $"SCRIPT_{scr.UniqueId}");
             RunningScripts.Add(scr, handle);
         }
 
