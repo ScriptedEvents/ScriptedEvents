@@ -1,12 +1,12 @@
-﻿using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Enums;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Structures;
-using System;
-using System.Linq;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Linq;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+
     public class GotoIfAction : IScriptAction, IHelpInfo
     {
         public string Name => "GOTOIF";

@@ -1,16 +1,16 @@
-﻿using Exiled.API.Features;
-using PlayerRoles;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Variables;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.API.Features;
+    using PlayerRoles;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+    using UnityEngine;
+
     public class SetRoleAction : IScriptAction, IHelpInfo
     {
         public string Name => "SETROLE";

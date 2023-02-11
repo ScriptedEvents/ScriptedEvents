@@ -1,13 +1,8 @@
-﻿using ScriptedEvents.Actions.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using ScriptedEvents.Actions.Interfaces;
+
     // Represents a line in a file that does not have any actions.
     public class NullAction : IAction, IHiddenAction, ICustomReadDisplay
     {

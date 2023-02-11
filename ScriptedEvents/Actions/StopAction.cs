@@ -1,10 +1,10 @@
-﻿using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Enums;
-using System;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Structures;
+
     public class StopAction : IScriptAction, IHelpInfo
     {
         public string Name => "STOP";

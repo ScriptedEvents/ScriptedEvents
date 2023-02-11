@@ -1,16 +1,16 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using MEC;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Variables;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using MEC;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+
     public class DoorAction : IScriptAction, IHelpInfo
     {
         public string Name => "DOOR";

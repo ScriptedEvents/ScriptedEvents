@@ -1,10 +1,10 @@
-﻿using ScriptedEvents.Actions.Interfaces;
-using System;
-using System.Linq;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Linq;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+
     public class GotoAction : IScriptAction, IHelpInfo
     {
         public string Name => "GOTO";

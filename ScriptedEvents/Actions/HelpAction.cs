@@ -1,16 +1,14 @@
-﻿using Exiled.API.Features;
-using Exiled.API.Features.Pools;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+
     public class HelpAction : IScriptAction, IHelpInfo
     {
         public string Name => "HELP";

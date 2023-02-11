@@ -1,10 +1,10 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.Actions.Interfaces;
-using System;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using Exiled.API.Features;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+
     public class WarheadAction : IAction, IHelpInfo
     {
         public string Name => "WARHEAD";

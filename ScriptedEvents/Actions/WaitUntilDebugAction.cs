@@ -1,14 +1,14 @@
-﻿using Exiled.API.Features;
-using MEC;
-using System;
-using System.Collections.Generic;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Variables;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Collections.Generic;
+    using Exiled.API.Features;
+    using MEC;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+
     public class WaitUntilDebugAction : ITimingAction, IHiddenAction
     {
         public static List<string> Coroutines { get; } = new();

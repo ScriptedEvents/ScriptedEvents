@@ -1,11 +1,11 @@
-﻿using System;
-using ScriptedEvents.Actions.Interfaces;
-using Exiled.API.Features;
-using ScriptedEvents.Variables;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using Exiled.API.Features;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+
     public class CassieAction : IScriptAction, IHelpInfo
     {
         public string Name => "CASSIE";

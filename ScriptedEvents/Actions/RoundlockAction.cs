@@ -1,11 +1,11 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.Actions.Interfaces;
-using System;
-using System.Linq;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Linq;
+    using Exiled.API.Features;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+
     public class RoundlockAction : IScriptAction, IHelpInfo
     {
         public string Name => "ROUNDLOCK";

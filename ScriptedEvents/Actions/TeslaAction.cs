@@ -1,17 +1,16 @@
-﻿using Exiled.API.Features;
-using Exiled.API.Features.Roles;
-using MEC;
-using PlayerRoles;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Tesla = Exiled.API.Features.TeslaGate;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.API.Features;
+    using MEC;
+    using PlayerRoles;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using Tesla = Exiled.API.Features.TeslaGate;
+
     public class TeslaAction : IScriptAction, IHelpInfo
     {
         public string Name => "TESLA";

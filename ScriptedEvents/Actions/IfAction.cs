@@ -1,11 +1,11 @@
-﻿using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Enums;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Structures;
-using System;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+
     public class IfAction : IScriptAction, IHelpInfo
     {
         public string Name => "IF";

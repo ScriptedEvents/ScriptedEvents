@@ -1,12 +1,12 @@
-﻿using MEC;
-using System;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.Variables;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using MEC;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+
     public class WaitForSecondsAction : ITimingAction, IHelpInfo
     {
         public string Name => "WAITSEC";
