@@ -64,6 +64,7 @@ namespace ScriptedEvents.Commands.MainCommand
                 sb.AppendLine($"Script Flags: {(scr.Flags.Count > 0 ? string.Join(", ", scr.Flags) : "None")}");
                 sb.AppendLine($"Last Ran: {scr.LastRead:f}");
                 sb.AppendLine($"Last Edited: {scr.LastEdited:f}");
+                sb.AppendLine($"Script Path: {scr.FilePath}");
                 sb.AppendLine();
                 sb.AppendLine("---- START OF FILE ----");
 
