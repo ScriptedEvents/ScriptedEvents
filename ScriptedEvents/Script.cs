@@ -18,7 +18,7 @@ namespace ScriptedEvents
         public int CurrentLine { get; set; }
         public bool IsRunning { get; internal set; } = false;
         public List<string> Flags { get; set; } = new();
-        public bool Disabled => Flags.Contains("DISABLED");
+        public bool Disabled => Flags.Contains("DISABLE");
         public bool AdminEvent => Flags.Contains("ADMINEVENT");
 
         public void Jump(int line)
