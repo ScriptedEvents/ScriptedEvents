@@ -15,7 +15,6 @@ namespace ScriptedEvents.API.Helpers
 {
     public static class ConditionHelper
     {
-
         public const string AND = "AND";
         public const string OR = "OR";
 
@@ -54,6 +53,24 @@ namespace ScriptedEvents.API.Helpers
                 .ToArray());
         }
 
+        public static ConditionResponse Evaluate(string input)
+        {
+            input = ConditionVariables.ReplaceVariables(input);
+            string newWholeString = input;
+
+            MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");
+            if (matches.Count > 0)
+            {
+                foreach (Match match in matches)
+                {
+                    ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value);
+                    newWholeString = newWholeString.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
+                }
+            }
+
+            return EvaluateAndOr(newWholeString, true);
+        }
+
         private static ConditionResponse EvaluateInternal(string input)
         {
             input = ConditionVariables.ReplaceVariables(input.RemoveWhitespace()).Trim(); // Kill all whitespace & replace variables
@@ -71,7 +88,7 @@ namespace ScriptedEvents.API.Helpers
             {
                 if (input.Contains(con.Symbol))
                 {
-                   conditionString = con;
+                    conditionString = con;
                 }
             }
 
@@ -96,6 +113,7 @@ namespace ScriptedEvents.API.Helpers
                     condition = con;
                 }
             }
+
             if (condition is null)
                 return new(false, false, $"Invalid condition operator provided! Condition: '{input}'");
 
@@ -153,6 +171,7 @@ namespace ScriptedEvents.API.Helpers
                     {
                         return conditionResult; // Throw the problem to the end-user
                     }
+
                     if (conditionResult.Passed is true)
                     {
                         stillGo = true;
@@ -163,29 +182,12 @@ namespace ScriptedEvents.API.Helpers
                         stillGo = false;
                     }
                 }
+
                 if (!stillGo)
                     break;
             }
 
             return new(true, stillGo, string.Empty);
-        }
-
-        public static ConditionResponse Evaluate(string input)
-        {
-            input = ConditionVariables.ReplaceVariables(input);
-            string newWholeString = input;
-
-            MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");
-            if (matches.Count > 0)
-            {
-                foreach (Match match in matches)
-                {
-                    ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value);
-                    newWholeString = newWholeString.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
-                }
-            }
-
-            return EvaluateAndOr(newWholeString, true);
         }
     }
 }
