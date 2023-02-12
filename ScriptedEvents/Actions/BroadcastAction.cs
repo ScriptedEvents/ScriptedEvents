@@ -28,7 +28,7 @@
         {
             if (Arguments.Length < 2) return new(false, "Missing argument: duration, message");
 
-            if (!ScriptHelper.TryConvertNumber(Arguments[0], out float duration))
+            if (!float.TryParse(Arguments[0], out float duration))
             {
                 return new(false, "Invalid duration provided!");
             }

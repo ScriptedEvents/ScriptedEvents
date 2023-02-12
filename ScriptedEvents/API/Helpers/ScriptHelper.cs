@@ -174,30 +174,6 @@ namespace ScriptedEvents.API.Helpers
         }
 
         /// <summary>
-        /// Converts an input (either a number or range of numbers) to a float.
-        /// </summary>
-        /// <param name="number">The input.</param>
-        /// <param name="result">The float.</param>
-        /// <returns>Whether or not the conversion was successful.</returns>
-        [Obsolete("Not really useful with the addition of math.")]
-        public static bool TryConvertNumber(string number, out float result)
-        {
-            if (float.TryParse(number, out result))
-            {
-                return true;
-            }
-
-            string[] dashSplit = number.Split('-');
-            if (dashSplit.Length == 2 && float.TryParse(dashSplit[0], out float min) && float.TryParse(dashSplit[1], out float max))
-            {
-                result = Random.Range(min, max + 1);
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Converts an input into a list of players.
         /// </summary>
         /// <param name="input">The input.</param>

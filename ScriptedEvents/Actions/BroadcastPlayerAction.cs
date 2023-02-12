@@ -35,7 +35,7 @@
                 return new(false, "No players matching the criteria were found.");
             }
 
-            if (!ScriptHelper.TryConvertNumber(Arguments[1], out float duration))
+            if (!float.TryParse(Arguments[1], out float duration))
             {
                 return new(false, "Invalid duration provided!");
             }
