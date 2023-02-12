@@ -6,6 +6,7 @@
     using System.Data;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using Exiled.API.Features;
     using ScriptedEvents.Conditions.Floats;
     using ScriptedEvents.Conditions.Interfaces;
     using ScriptedEvents.Conditions.Strings;
@@ -82,10 +83,10 @@
             input = ConditionVariables.ReplaceVariables(input.RemoveWhitespace()).Trim(); // Kill all whitespace & replace variables
 
             // Code for simple checks
-            if (input.ToLowerInvariant() is "true")
+            if (input.ToLowerInvariant() is "true" or "1")
                 return new(true, true, string.Empty);
 
-            if (input.ToLowerInvariant() is "false")
+            if (input.ToLowerInvariant() is "false" or "0")
                 return new(true, false, string.Empty);
 
             // Code for conditions with string operator
