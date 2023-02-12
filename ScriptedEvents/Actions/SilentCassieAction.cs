@@ -9,19 +9,25 @@
 
     public class SilentCassieAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "SILENTCASSIE";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Makes a silent cassie announcement.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption. Variables are supported.", true),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script scr)
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

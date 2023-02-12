@@ -14,14 +14,19 @@
 
     public class SizeAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "SIZE";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Sets all players to the given size.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(List<Player>), "The players to rescale.", true),
@@ -31,6 +36,7 @@
             new Argument("max", typeof(int), "The maximum amount of players to rescale (default: unlimited).", false),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script scr)
         {
             if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

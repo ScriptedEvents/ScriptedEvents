@@ -13,19 +13,25 @@
     {
         public static List<string> Coroutines { get; } = new();
 
+        /// <inheritdoc/>
         public string Name => "WAITUNTIL";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Reads the condition and yields execution of the script until the condition is TRUE.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
 
+        /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
             if (Arguments.Length < 1)

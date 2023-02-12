@@ -10,19 +10,25 @@
 
     public class TurnOffLightsAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "LIGHTSOFF";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Turns all the lights off for a given period of time.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("duration", typeof(float), "The duration of the lights out", true),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

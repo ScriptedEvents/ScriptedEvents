@@ -12,20 +12,26 @@
 
     public class SpawnRuleAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "SPAWNRULE";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Creates a new spawn rule, modifying how players spawn at the start of the game. MUST BE USED BEFORE THE ROUND STARTS.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("role", typeof(RoleTypeId), "The role to create the rule for.", true),
             new Argument("max", typeof(int), "The maximum amount of players to spawn as this role. If not provided, EVERY player who does not become a role with a different spawn rule will become this role. Variables & Math are supported.", false),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script scr)
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

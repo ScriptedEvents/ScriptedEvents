@@ -7,20 +7,26 @@
 
     public class GotoAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "GOTO";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Moves to the provided line.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (ADD, do not provide for specific line)", false),
             new Argument("line", typeof(int), "The line to move to. Variables & Math are NOT supported.", true),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             // Todo: Idiot-proofing

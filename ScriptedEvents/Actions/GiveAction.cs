@@ -13,14 +13,19 @@
 
     public class GiveAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "GIVE";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Gives the targeted players an item.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(List<Player>), "The players to give the item to.", true),
@@ -28,6 +33,7 @@
             new Argument("amount", typeof(int), "The amount to give. Variables & Math are supported. Default: 1", false),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

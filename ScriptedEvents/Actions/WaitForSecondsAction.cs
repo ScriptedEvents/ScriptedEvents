@@ -12,19 +12,25 @@
 
     public class WaitForSecondsAction : ITimingAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "WAITSEC";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Yields execution of the script for the given number of seconds.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("seconds", typeof(float), "The amount of seconds. Variables & Math are supported.", true),
         };
 
+        /// <inheritdoc/>
         public float? Execute(Script scr, out ActionResponse message)
         {
             if (Arguments.Length < 1)

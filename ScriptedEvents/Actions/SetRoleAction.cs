@@ -14,14 +14,19 @@
 
     public class SetRoleAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "SETROLE";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Sets all players to the given role.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(List<Player>), "The players to save as the new variable.", true),
@@ -29,6 +34,7 @@
             new Argument("max", typeof(int), "The maximum amount of players to save in this variable. Variables & Math are supported. (default: unlimited).", false),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script scr)
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

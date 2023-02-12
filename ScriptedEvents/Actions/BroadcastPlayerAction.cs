@@ -12,14 +12,19 @@
 
     public class BroadcastPlayerAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "BROADCASTPLAYER";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Broadcasts a message to specific player(s).";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(List<Player>), "The players to show. Variables are supported.", true),
@@ -27,6 +32,7 @@
             new Argument("message", typeof(string), "The message. Variables are supported.", true),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

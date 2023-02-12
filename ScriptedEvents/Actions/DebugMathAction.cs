@@ -9,12 +9,16 @@
 
     public class DebugMathAction : IScriptAction, IHiddenAction
     {
+        /// <inheritdoc/>
         public string Name => "DEBUGMATH";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));

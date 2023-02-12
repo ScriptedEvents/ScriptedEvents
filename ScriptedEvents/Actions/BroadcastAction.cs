@@ -11,20 +11,26 @@
 
     public class BroadcastAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "BROADCAST";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Broadcasts a message to every player.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("duration", typeof(float), "The duration of the message. Variables & Math are NOT supported.", true),
             new Argument("message", typeof(string), "The message. Variables are supported.", true),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

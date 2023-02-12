@@ -8,14 +8,19 @@
 
     public class InfectAddAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "INFECTADD";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Creates a new infection rule.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("oldRole", typeof(RoleTypeId), "The role a player must die as to be infected.", true),
@@ -23,6 +28,7 @@
             new Argument("movePlayer", typeof(bool), "TRUE if the player should be moved to their death position, FALSE (or leave empty) to leave at spawn.", false),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

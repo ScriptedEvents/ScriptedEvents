@@ -15,14 +15,19 @@
 
     public class DoorAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "DOOR";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Controls map doors.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (LOCK, UNLOCK, OPEN, CLOSE, DESTROY).", true),
@@ -30,6 +35,7 @@
             new Argument("duration", typeof(float), "The duration. Leave blank for indefinite duration. Variables & Math are supported.", false),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

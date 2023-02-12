@@ -8,19 +8,25 @@
 
     public class DecontaminateAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "DECONTAMINATE";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Enables, disables, or forces decontamination.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The action (ENABLE, DISABLE, FORCE). Default: FORCE", false),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             switch (Arguments[0].ToUpper())

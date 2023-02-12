@@ -16,14 +16,19 @@
 
     public class TeslaAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "TESLA";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Modifies tesla gates.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode to run. Valid options: PLAYERS, ROLETYPE, DISABLE, ENABLE", true),
@@ -31,6 +36,7 @@
             new Argument("duration", typeof(float), "The time before reversing the affect.", false),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 2)
@@ -78,6 +84,13 @@
             }
         }
 
+        /// <summary>
+        /// Reverses a previous action.
+        /// </summary>
+        /// <param name="mode">The mode to reverse.</param>
+        /// <param name="target">The targeted objects.</param>
+        /// <param name="duration">The duration until reversing.</param>
+        /// <returns>An <see cref="ActionResponse"/> indicating success of the reverse.</returns>
         public ActionResponse Reverse(string mode, object target, string duration)
         {
             if (duration is null || string.IsNullOrWhiteSpace(duration))
@@ -87,12 +100,12 @@
 
             if (!ConditionHelper.TryMath(duration, out MathResult result))
             {
-                return new(false, $"Invalid max condition provided! Condition: {duration} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
+                return new(MessageType.NotANumberOrCondition, this, "duration", duration, result);
             }
 
             if (result.Result < 0)
             {
-                return new(false, "A negative number cannot be used as the duration argument of the TESLA action.");
+                return new(MessageType.LessThanZeroNumber, this, "duration", result.Result);
             }
 
             floatDuration = result.Result;
