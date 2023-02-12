@@ -9,10 +9,16 @@
     using PlayerRoles;
     using ScriptedEvents.API.Helpers;
 
+    /// <summary>
+    /// A class used to store and retrieve all player variables.
+    /// </summary>
     public static class PlayerVariables
     {
-        private static readonly Dictionary<string, RoleTypeId> roleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
+        private static readonly Dictionary<string, RoleTypeId> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
 
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables, mapped by the variable name.
+        /// </summary>
         public static Dictionary<string, IEnumerable<Player>> Variables { get; } = new()
         {
             // By role
@@ -77,7 +83,7 @@
             if (DefinedVariables.TryGetValue(input, out result))
                 return result;
 
-            if (roleTypeIds.TryGetValue(input, out RoleTypeId rt))
+            if (RoleTypeIds.TryGetValue(input, out RoleTypeId rt))
                 return Player.Get(rt);
             return null;
         }

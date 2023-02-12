@@ -6,7 +6,7 @@
     public interface IAction
     {
         /// <summary>
-        /// Gets the name of  the action.
+        /// Gets the name of the action.
         /// </summary>
         string Name { get; }
 

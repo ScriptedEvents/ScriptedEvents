@@ -5,7 +5,6 @@
     /// </summary>
     public class ConditionResponse
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ConditionResponse"/> class.
         /// </summary>
