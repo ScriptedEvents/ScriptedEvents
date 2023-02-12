@@ -12,6 +12,14 @@
     /// </summary>
     public static class MsgGen
     {
+        /// <summary>
+        /// Generates an error message, based on provided input.
+        /// </summary>
+        /// <param name="type">The type of message to show.</param>
+        /// <param name="action">The action currently executing.</param>
+        /// <param name="paramName">The name of the parameter that is causing a skill issue.</param>
+        /// <param name="arguments">The arguments of the MessageType. See <see cref="ActionResponse.ActionResponse(MessageType, IAction, string, object[])"/> for documentation on what MessageTypes require what arguments.</param>
+        /// <returns>The string to display to the user.</returns>
         public static string Generate(MessageType type, IAction action, string paramName, params object[] arguments)
         {
             switch (type)
@@ -49,7 +57,6 @@
 
                 case MessageType.CassieCaptionNoAnnouncement:
                     return $"Cannot show captions without a corresponding CASSIE announcement.";
-
             }
 
             return "Unknown error";
