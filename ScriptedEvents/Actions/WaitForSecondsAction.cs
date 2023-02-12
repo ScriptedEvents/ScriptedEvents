@@ -1,11 +1,13 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+    using System.Linq;
     using MEC;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+    using UnityEngine;
 
     public class WaitForSecondsAction : ITimingAction, IHelpInfo
     {
@@ -31,20 +33,21 @@
             }
 
             string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));
-            float duration;
 
-            try
+            if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
-                duration = (float)ConditionHelper.Math(formula);
+                message = new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
+                return null;
             }
-            catch (Exception ex)
+
+            if (result.Result < 0)
             {
-                message = new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+                message = new(false, "A negative number cannot be used as the duration argument of the WAITSEC action.");
                 return null;
             }
 
             message = new(true);
-            return Timing.WaitForSeconds(duration);
+            return Timing.WaitForSeconds(result.Result);
         }
     }
 }

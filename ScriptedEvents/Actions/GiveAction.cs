@@ -43,21 +43,13 @@
             {
                 string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)));
 
-                try
+                if (ConditionHelper.TryMath(formula, out MathResult result))
                 {
-                    float maxFloat = (float)ConditionHelper.Math(formula);
-                    if (maxFloat != (int)maxFloat)
-                    {
-                        amt = Mathf.RoundToInt(maxFloat);
-                    }
-                    else
-                    {
-                        amt = (int)maxFloat;
-                    }
+                    amt = Mathf.RoundToInt(result.Result);
                 }
-                catch (Exception ex)
+                else
                 {
-                    return new(false, $"Invalid maximum condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+                    return new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
                 }
 
                 if (amt < 0)

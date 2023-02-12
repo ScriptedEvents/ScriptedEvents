@@ -44,27 +44,17 @@
             {
                 string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)));
 
-                try
+                if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
-                    float maxFloat = (float)ConditionHelper.Math(formula);
-                    if (maxFloat != (int)maxFloat)
-                    {
-                        max = Mathf.RoundToInt(maxFloat);
-                    }
-                    else
-                    {
-                        max = (int)maxFloat;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return new(false, $"Invalid maximum condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+                    return new(false, $"Invalid max condition provided! Condition: {formula} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
                 }
 
-                if (max < 0)
+                if (result.Result < 0)
                 {
                     return new(false, "A negative number cannot be used as the max argument of the SETROLE action.");
                 }
+
+                max = Mathf.RoundToInt(result.Result);
             }
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out List<Player> plys))

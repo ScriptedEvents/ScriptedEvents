@@ -148,6 +148,7 @@
     <Compile Include="Conditions\Interfaces\IFloatCondition.cs" />
     <Compile Include="Structures\Argument.cs" />
     <Compile Include="Structures\ConditionResponse.cs" />
+    <Compile Include="Structures\MathResult.cs" />
     <Compile Include="Variables\ConditionVariables.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Actions\WarheadAction.cs" />

@@ -9,6 +9,8 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+    using UnityEngine;
     using Tesla = Exiled.API.Features.TeslaGate;
 
     public class TeslaAction : IScriptAction, IHelpInfo
@@ -82,14 +84,17 @@
 
             float floatDuration;
 
-            try
+            if (!ConditionHelper.TryMath(duration, out MathResult result))
             {
-                floatDuration = (float)ConditionHelper.Math(duration);
+                return new(false, $"Invalid max condition provided! Condition: {duration} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
             }
-            catch (Exception ex)
+
+            if (result.Result < 0)
             {
-                return new(false, $"Invalid duration condition provided! Condition: {duration} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+                return new(false, "A negative number cannot be used as the duration argument of the TESLA action.");
             }
+
+            floatDuration = result.Result;
 
             Timing.CallDelayed(floatDuration, () =>
             {

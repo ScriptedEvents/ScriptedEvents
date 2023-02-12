@@ -10,6 +10,7 @@
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+    using UnityEngine;
 
     public class DoorAction : IScriptAction, IHelpInfo
     {
@@ -40,14 +41,17 @@
             {
                 string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)));
 
-                try
+                if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
-                    duration = (float)ConditionHelper.Math(formula);
+                    return new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
                 }
-                catch (Exception ex)
+
+                if (result.Result < 0)
                 {
-                    return new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+                    return new(false, "A negative number cannot be used as the duration argument of the DOOR action.");
                 }
+
+                duration = result.Result;
             }
 
             Action<Door> action;

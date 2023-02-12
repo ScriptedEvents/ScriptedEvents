@@ -43,28 +43,29 @@
         }.AsReadOnly();
 
         // StackOverflow my beloved
-        public static double Math(string expression)
+        public static float Math(string expression)
         {
             DataTable loDataTable = new DataTable();
             DataColumn loDataColumn = new DataColumn("Eval", typeof(double), expression);
             loDataTable.Columns.Add(loDataColumn);
             loDataTable.Rows.Add(0);
-            return (double)loDataTable.Rows[0]["Eval"];
+            return (float)(double)loDataTable.Rows[0]["Eval"];
         }
 
-        public static bool TryMath(string expression, out double result)
+        public static bool TryMath(string expression, out MathResult result)
         {
             try
             {
-                result = Math(expression);
+                float floatResult = Math(expression);
+
+                result = new() { Success = true, Result = floatResult };
             }
-            catch
+            catch (Exception ex)
             {
-                result = -1;
-                return false;
+                result = new() { Success = false, Result = -1, Exception = ex };
             }
 
-            return true;
+            return result.Success;
         }
 
         // StackOverflow my beloved
@@ -95,9 +96,9 @@
 
         private static ConditionResponse EvaluateAndOr(string input, bool last = false)
         {
-            if (!last && TryMath(ConditionVariables.ReplaceVariables(input), out double result))
+            if (!last && TryMath(ConditionVariables.ReplaceVariables(input), out MathResult result))
             {
-                float output = (float)result;
+                float output = (float)result.Result;
                 return new(true, true, string.Empty, output);
             }
 
