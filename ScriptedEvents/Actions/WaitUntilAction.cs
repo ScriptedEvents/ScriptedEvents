@@ -24,7 +24,7 @@
             new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
 
-        private IEnumerator<float> InternalWaitUntil(string input)
+        private IEnumerator<float> InternalWaitUntil(Script script, string input)
         {
             while (true)
             {
@@ -36,7 +36,7 @@
                 }
                 else
                 {
-                    Log.Warn($"[WAITUNTIL] WaitUntil condition error: {response.Message}");
+                    Log.Warn($"[Script: {script.ScriptName}] [WAITUNTIL] WaitUntil condition error: {response.Message}");
                     break;
                 }
 
@@ -55,7 +55,7 @@
             string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
             Coroutines.Add(coroutineKey);
             message = new(true);
-            return Timing.WaitUntilDone(InternalWaitUntil(string.Join("", Arguments)), coroutineKey);
+            return Timing.WaitUntilDone(InternalWaitUntil(script, string.Join("", Arguments)), coroutineKey);
         }
     }
 }

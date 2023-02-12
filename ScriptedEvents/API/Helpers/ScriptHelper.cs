@@ -210,6 +210,78 @@ namespace ScriptedEvents.API.Helpers
         /// <param name="result">The float.</param>
         /// <returns>Whether or not the conversion was successful.</returns>
         [Obsolete("Not really useful with the addition of math.")]
+        public static IEnumerator<float> RunScriptInternal(Script scr)
+        {
+            MainPlugin.Info($"Running script {scr.ScriptName}.");
+            scr.IsRunning = true;
+
+            for (; scr.CurrentLine < scr.Actions.Count; scr.NextLine())                                
+            {
+                if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
+                {
+                    ActionResponse resp;
+                    float? delay = null;
+
+                    try
+                    {
+                        if (action is ITimingAction timed)
+                        {
+                            Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
+                            delay = timed.Execute(scr, out resp);
+                        }
+                        else if (action is IScriptAction scriptAction)
+                        {
+                            Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
+                            resp = scriptAction.Execute(scr);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[Script: {scr.ScriptName}] Ran into an error while running {action.Name} action:\n{e}");
+                        continue;
+                    }
+
+                    if (!resp.Success)
+                    {
+                        if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
+                        {
+                            Log.Error($"[Script: {scr.ScriptName}] [{action.Name}] Fatal action error! {resp.Message}");
+                            break;
+                        }
+                        else
+                        {
+                            Log.Warn($"[Script: {scr.ScriptName}] [{action.Name}] Action error! {resp.Message}");
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(resp.Message))
+                            Log.Info($"[Script: {scr.ScriptName}] [{action.Name}] Response: {resp.Message}");
+                        if (delay.HasValue)
+                            yield return delay.Value;
+                    }
+
+                    if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
+                        break;
+                }
+            }
+
+            MainPlugin.Info($"Finished running script {scr.ScriptName}.");
+            scr.IsRunning = false;
+
+            if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
+            {
+                ReadAndRun(scr.ScriptName); // so that it re-reads the content of the text file.
+            }
+
+            RunningScripts.Remove(scr);
+        }
+
+        // Convert number or number range to a number
         public static bool TryConvertNumber(string number, out float result)
         {
             if (float.TryParse(number, out result))

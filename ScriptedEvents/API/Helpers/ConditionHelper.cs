@@ -172,6 +172,7 @@ namespace ScriptedEvents.API.Helpers
 
         public static ConditionResponse Evaluate(string input)
         {
+            input = ConditionVariables.ReplaceVariables(input);
             string newWholeString = input;
 
             MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");

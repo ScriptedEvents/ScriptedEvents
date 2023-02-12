@@ -17,6 +17,27 @@
         public string[] Aliases => Array.Empty<string>();
 
         public string[] Arguments { get; set; }
+        
+        private IEnumerator<float> InternalWaitUntil(Script script, string input)
+        {
+            while (true)
+            {
+                ConditionResponse response = ConditionHelper.Evaluate(input);
+                Log.Info($"CONDITION: {ConditionVariables.ReplaceVariables(input)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}");
+                if (response.Success)
+                {
+                    if (response.Passed)
+                        break;
+                }
+                else
+                {
+                    Log.Warn($"[Script: {script.ScriptName}] [WAITUNTILDEBUG] WaitUntilDebug condition error: {response.Message}");
+                    break;
+                }
+
+                yield return Timing.WaitForSeconds(1f);
+            }
+        }
 
         public float? Execute(Script scr, out ActionResponse message)
         {
@@ -29,28 +50,7 @@
             string coroutineKey = $"WAITUNTIL_DEBUG_COROUTINE_{DateTime.UtcNow.Ticks}";
             Coroutines.Add(coroutineKey);
             message = new(true);
-            return Timing.WaitUntilDone(InternalWaitUntil(string.Join(string.Empty, Arguments)), coroutineKey);
-        }
-
-        private IEnumerator<float> InternalWaitUntil(string input)
-        {
-            while (true)
-            {
-                ConditionResponse response = ConditionHelper.Evaluate(input);
-                if (response.Success)
-                {
-                    if (response.Passed)
-                        break;
-                }
-                else
-                {
-                    Log.Warn($"[WAITUNTILDEBUG] WaitUntilDebug condition error: {response.Message}");
-                    break;
-                }
-
-                Log.Info($"CONDITION: {ConditionVariables.ReplaceVariables(input)} \\\\ PASSED: {response.Passed}");
-                yield return Timing.WaitForSeconds(1f);
-            }
+            return Timing.WaitUntilDone(InternalWaitUntil(scr, string.Join("", Arguments)), coroutineKey);
         }
     }
 }
