@@ -1,9 +1,14 @@
 ﻿namespace ScriptedEvents.DemoScripts
 {
+    /// <summary>
+    /// Demo script showing multiple different actions.
+    /// </summary>
     public class DemoScript : IDemoScript
     {
+        /// <inheritdoc/>
         public string FileName => "DemoScript";
 
+        /// <inheritdoc/>
         public string Contents => @"!-- DISABLE
 # This is an example of a script that you can create to automate random events and/or admin events in your server.
 

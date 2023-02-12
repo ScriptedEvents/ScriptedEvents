@@ -2,10 +2,15 @@
 {
     using System;
 
+    /// <summary>
+    /// Demo script providing information to the server host.
+    /// </summary>
     public class About : IDemoScript
     {
+        /// <inheritdoc/>
         public string FileName => "README";
 
+        /// <inheritdoc/>
         public string Contents => @$"!-- DISABLE
 # Hello, and thank you for using my plugin, Scripted Events!
 # I'm going to go over a couple of brief things in here you should know about setting up scripts. It's relatively easy!
