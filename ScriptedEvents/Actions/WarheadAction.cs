@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
-    public class WarheadAction : IAction, IHelpInfo
+    public class WarheadAction : IScriptAction, IHelpInfo
     {
         public string Name => "WARHEAD";
 
@@ -21,7 +21,7 @@
             new Argument("action", typeof(string), "The action to run. Valid options: START, STOP, LOCK, UNLOCK, DETONATE, BLASTDOORS", true),
         };
 
-        public ActionResponse Execute()
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
