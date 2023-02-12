@@ -48,6 +48,8 @@
                     return false;
                 }
 
+                ScriptHelper.RunScript(scr);
+
                 response = $"Executed {arg0} successfully.";
             }
             catch (DisabledScriptException)
