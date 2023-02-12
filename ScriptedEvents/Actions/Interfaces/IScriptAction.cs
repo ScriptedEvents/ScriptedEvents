@@ -3,7 +3,7 @@
     using ScriptedEvents.Structures;
 
     /// <summary>
-    /// Represents an action that can be executed.
+    /// Represents an action that can be executed and returns a response.
     /// </summary>
     public interface IScriptAction : IAction
     {

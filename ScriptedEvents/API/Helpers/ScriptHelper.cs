@@ -346,19 +346,18 @@ namespace ScriptedEvents.API.Helpers
 
                     try
                     {
-                        if (action is ITimingAction timed)
+                        switch (action)
                         {
-                            Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
-                            delay = timed.Execute(scr, out resp);
-                        }
-                        else if (action is IScriptAction scriptAction)
-                        {
-                            Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
-                            resp = scriptAction.Execute(scr);
-                        }
-                        else
-                        {
-                            continue;
+                            case ITimingAction timed:
+                                Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
+                                delay = timed.Execute(scr, out resp);
+                                break;
+                            case IScriptAction scriptAction:
+                                Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
+                                resp = scriptAction.Execute(scr);
+                                break;
+                            default:
+                                continue;
                         }
                     }
                     catch (Exception e)
