@@ -1,16 +1,16 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using MEC;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Variables;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using MEC;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+
     public class DoorAction : IScriptAction, IHelpInfo
     {
         public string Name => "DOOR";
@@ -25,7 +25,7 @@ namespace ScriptedEvents.Actions
         {
             new Argument("mode", typeof(string), "The mode (LOCK, UNLOCK, OPEN, CLOSE, DESTROY).", true),
             new Argument("doors", typeof(List<Door>), "The doors to affect.", true),
-            new Argument("duration", typeof(float), "The duration. Leave blank for indefinite duration. Variables & Math are supported.", false)
+            new Argument("duration", typeof(float), "The duration. Leave blank for indefinite duration. Variables & Math are supported.", false),
         };
 
         public ActionResponse Execute(Script script)
@@ -85,6 +85,7 @@ namespace ScriptedEvents.Actions
 
                 action(door);
             }
+
             return new(true, string.Empty);
         }
 

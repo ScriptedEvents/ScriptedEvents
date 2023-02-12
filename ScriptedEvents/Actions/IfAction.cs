@@ -1,11 +1,11 @@
-﻿using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Enums;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Structures;
-using System;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+
     public class IfAction : IScriptAction, IHelpInfo
     {
         public string Name => "IF";
@@ -23,7 +23,7 @@ namespace ScriptedEvents.Actions
 
         public ActionResponse Execute(Script script)
         {
-            ConditionResponse outcome = ConditionHelper.Evaluate(string.Join("", Arguments));
+            ConditionResponse outcome = ConditionHelper.Evaluate(string.Join(string.Empty, Arguments));
             if (!outcome.Success)
                 return new(false, $"IF execution error: {outcome.Message}", ActionFlags.FatalError);
 

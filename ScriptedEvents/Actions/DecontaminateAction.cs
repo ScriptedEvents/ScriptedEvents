@@ -1,11 +1,11 @@
-﻿using Exiled.API.Features;
-using LightContainmentZoneDecontamination;
-using ScriptedEvents.Actions.Interfaces;
-using System;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using Exiled.API.Features;
+    using LightContainmentZoneDecontamination;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+
     public class DecontaminateAction : IScriptAction, IHelpInfo
     {
         public string Name => "DECONTAMINATE";

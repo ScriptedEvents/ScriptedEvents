@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace ScriptedEvents.DemoScripts
+﻿namespace ScriptedEvents.DemoScripts
 {
+    using System;
+
     public class About : IDemoScript
     {
         public string FileName => "README";

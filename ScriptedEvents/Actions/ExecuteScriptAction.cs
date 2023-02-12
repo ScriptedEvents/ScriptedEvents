@@ -1,13 +1,12 @@
-﻿using ScriptedEvents.API.Features;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Features.Exceptions;
-using ScriptedEvents.API.Helpers;
-using System;
-using System.IO;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.IO;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+
     public class ExecuteScriptAction : IScriptAction, IHelpInfo
     {
         public string Name => "EXECUTESCRIPT";

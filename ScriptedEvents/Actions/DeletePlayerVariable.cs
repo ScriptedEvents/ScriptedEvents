@@ -1,10 +1,10 @@
-﻿using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.Variables;
-using System;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+
     public class DeletePlayerVariable : IScriptAction, IHelpInfo
     {
         public string Name => "DELPLAYERVARIABLE";

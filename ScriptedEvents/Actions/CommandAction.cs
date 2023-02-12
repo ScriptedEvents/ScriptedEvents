@@ -1,9 +1,9 @@
-﻿using System;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+
     public class CommandAction : IScriptAction, IHelpInfo
     {
         public string Name => "COMMAND";

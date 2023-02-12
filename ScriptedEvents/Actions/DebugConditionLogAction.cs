@@ -1,11 +1,11 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using System;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using Exiled.API.Features;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+
     public class DebugConditionLogAction : IScriptAction, IHiddenAction
     {
         public string Name => "DEBUGCONDITIONLOG";
@@ -16,7 +16,7 @@ namespace ScriptedEvents.Actions
 
         public ActionResponse Execute(Script script)
         {
-            Log.Info(ConditionHelper.Evaluate(string.Join("", Arguments)));
+            Log.Info(ConditionHelper.Evaluate(string.Join(string.Empty, Arguments)));
             return new(true);
         }
     }

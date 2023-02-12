@@ -1,10 +1,10 @@
-﻿using ScriptedEvents.Actions.Interfaces;
-using System;
-using System.Linq;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Linq;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+
     public class GotoAction : IScriptAction, IHelpInfo
     {
         public string Name => "GOTO";
@@ -31,6 +31,7 @@ namespace ScriptedEvents.Actions
                         script.Jump(script.CurrentLine + newline);
                         return new(true);
                     }
+
                     break;
                 default:
                     if (int.TryParse(Arguments.ElementAtOrDefault(0), out newline))
@@ -38,15 +39,17 @@ namespace ScriptedEvents.Actions
                         script.Jump(newline);
                         return new(true);
                     }
+
                     if (script.Labels.TryGetValue(Arguments.ElementAtOrDefault(0), out newline))
                     {
                         script.Jump(newline);
                         return new(true);
                     }
+
                     break;
             }
+
             return new(false);
         }
-        public ActionResponse Execute() => null;
     }
 }

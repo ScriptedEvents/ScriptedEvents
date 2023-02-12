@@ -1,15 +1,15 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Variables;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.API.Features;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+    using UnityEngine;
+
     public class GiveAction : IScriptAction, IHelpInfo
     {
         public string Name => "GIVE";
@@ -24,7 +24,7 @@ namespace ScriptedEvents.Actions
         {
             new Argument("players", typeof(List<Player>), "The players to give the item to.", true),
             new Argument("item", typeof(ItemType), "The item to give.", true),
-            new Argument("amount", typeof(int), "The amount to give. Variables & Math are supported. Default: 1", false)
+            new Argument("amount", typeof(int), "The amount to give. Variables & Math are supported. Default: 1", false),
         };
 
         public ActionResponse Execute(Script script)

@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScriptedEvents.Structures
+﻿namespace ScriptedEvents.Structures
 {
     public class ConditionResponse
     {
-        public bool Success { get; set; }
-        public bool Passed { get; set; }
-        public string Message { get; set; }
-        public object ObjectResult { get; set; }
-
         public ConditionResponse(bool success, bool passed, string message, object objectResult = null)
         {
             Success = success;
@@ -20,6 +9,14 @@ namespace ScriptedEvents.Structures
             Message = message;
             ObjectResult = objectResult;
         }
+
+        public bool Success { get; set; }
+
+        public bool Passed { get; set; }
+
+        public string Message { get; set; }
+
+        public object ObjectResult { get; set; }
 
         public override string ToString()
         {

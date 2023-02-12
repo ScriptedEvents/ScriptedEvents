@@ -1,8 +1,8 @@
-﻿using System;
-using System.Reflection;
-
-namespace ScriptedEvents.API.Helpers
+﻿namespace ScriptedEvents.API.Helpers
 {
+    using System;
+    using System.Reflection;
+
     public static class ApiHelper
     {
         // e.g.

@@ -1,40 +1,59 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.API.Helpers;
-using MEC;
-using System.IO;
-using ScriptedEvents.API.Features;
-using ScriptedEvents.API.Features.Exceptions;
-using Exiled.Events.EventArgs.Server;
-using System;
-using System.Collections.Generic;
-using ScriptedEvents.Structures;
-using Exiled.Events.EventArgs.Player;
-using System.Linq;
-using UnityEngine;
-using PlayerRoles;
-using System.Data;
-using ScriptedEvents.Variables;
-
-namespace ScriptedEvents
+﻿namespace ScriptedEvents
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Server;
+    using MEC;
+    using PlayerRoles;
+    using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+    using UnityEngine;
+
     public class EventHandlers
     {
-        public int RespawnWaves = 0;
-        public DateTime LastRespawnWave = DateTime.MinValue;
+        private DateTime lastRespawnWave = DateTime.MinValue;
 
-        public TimeSpan TimeSinceWave => DateTime.UtcNow - LastRespawnWave;
+        /// <summary>
+        /// Gets or sets the total amount of respawn waves since the round started.
+        /// </summary>
+        public int RespawnWaves { get; set; } = 0;
+
+        /// <summary>
+        /// Gets the amount of time since the last wave.
+        /// </summary>
+        public TimeSpan TimeSinceWave => DateTime.UtcNow - lastRespawnWave;
+
+        /// <summary>
+        /// Gets a value indicating whether or not a wave just spawned.
+        /// </summary>
         public bool IsRespawning => TimeSinceWave.TotalSeconds < 5;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not tesla gates are disabled.
+        /// </summary>
         public bool TeslasDisabled { get; set; } = false;
 
+        /// <summary>
+        /// Gets a List of infection rules.
+        /// </summary>
         public List<InfectRule> InfectionRules { get; } = new();
 
+        /// <summary>
+        /// Gets a dictionary of spawn rules.
+        /// </summary>
         public Dictionary<RoleTypeId, int> SpawnRules { get; } = new();
 
         public void OnRestarting()
         {
             RespawnWaves = 0;
-            LastRespawnWave = DateTime.MinValue;
+            lastRespawnWave = DateTime.MinValue;
             TeslasDisabled = false;
 
             ScriptHelper.StopAllScripts();
@@ -56,7 +75,7 @@ namespace ScriptedEvents
 
                 foreach (KeyValuePair<RoleTypeId, int> rule in SpawnRules.Where(rule => rule.Value > 0))
                 {
-                    for (int i = iterator; i < iterator+rule.Value; i++)
+                    for (int i = iterator; i < iterator + rule.Value; i++)
                     {
                         Player p;
                         try
@@ -77,6 +96,7 @@ namespace ScriptedEvents
 
                         p.Role.Set(rule.Key);
                     }
+
                     iterator += rule.Value;
                 }
 
@@ -114,7 +134,7 @@ namespace ScriptedEvents
             if (!ev.IsAllowed) return;
 
             RespawnWaves++;
-            LastRespawnWave = DateTime.UtcNow;
+            lastRespawnWave = DateTime.UtcNow;
 
             ConditionVariables.DefineVariable("{LASTRESPAWNTEAM}", ev.NextKnownTeam.ToString());
             ConditionVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players.Count);

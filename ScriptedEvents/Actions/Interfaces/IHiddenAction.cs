@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScriptedEvents.Actions.Interfaces
+﻿namespace ScriptedEvents.Actions.Interfaces
 {
+    /// <summary>
+    /// Represents an action that does not show in the "HELP LIST" action.
+    /// </summary>
     public interface IHiddenAction
     {
     }

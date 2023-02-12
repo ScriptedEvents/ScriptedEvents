@@ -1,10 +1,10 @@
-﻿using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using System;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+
     public class DebugMathAction : IScriptAction, IHiddenAction
     {
         public string Name => "DEBUGMATH";

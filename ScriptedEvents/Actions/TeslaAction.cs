@@ -1,17 +1,16 @@
-﻿using Exiled.API.Features;
-using Exiled.API.Features.Roles;
-using MEC;
-using PlayerRoles;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Tesla = Exiled.API.Features.TeslaGate;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.API.Features;
+    using MEC;
+    using PlayerRoles;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using Tesla = Exiled.API.Features.TeslaGate;
+
     public class TeslaAction : IScriptAction, IHelpInfo
     {
         public string Name => "TESLA";
@@ -38,7 +37,7 @@ namespace ScriptedEvents.Actions
                     return new(false, "Missing arguments: Mode, Target, Duration (optional)");
                 }
             }
-            
+
             string mode = Arguments[0];
             string target = mode == "DISABLE" ? null : Arguments[1];
             string duration = Arguments.Length > 2 ? string.Join(string.Empty, Arguments.Skip(2)) : null;
@@ -102,6 +101,7 @@ namespace ScriptedEvents.Actions
                             if (Tesla.IgnoredPlayers.Contains(player))
                                 Tesla.IgnoredPlayers.Remove(player);
                         }
+
                         break;
                     case "ROLETYPE":
                         RoleTypeId roleType = (RoleTypeId)target;

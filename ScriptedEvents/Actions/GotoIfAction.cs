@@ -1,12 +1,12 @@
-﻿using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Enums;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Structures;
-using System;
-using System.Linq;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Linq;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+
     public class GotoIfAction : IScriptAction, IHelpInfo
     {
         public string Name => "GOTOIF";
@@ -16,6 +16,7 @@ namespace ScriptedEvents.Actions
         public string[] Arguments { get; set; }
 
         public string Description => "Reads the condition and jumps to the first provided line if the condition is TRUE, or the second provided line if the condition is FALSE.";
+
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("trueLine", typeof(int), "The line to jump to if the condition is TRUE. Variables & Math are NOT supported.", true),

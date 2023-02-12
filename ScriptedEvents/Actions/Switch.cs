@@ -1,13 +1,4 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.API.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
     /*public class Switch : IAction
     {

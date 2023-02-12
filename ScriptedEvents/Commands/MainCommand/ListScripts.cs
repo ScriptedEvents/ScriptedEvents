@@ -1,14 +1,14 @@
-﻿using CommandSystem;
-using Exiled.API.Features;
-using Exiled.API.Features.Pools;
-using Exiled.Permissions.Extensions;
-using ScriptedEvents.API.Helpers;
-using System;
-using System.IO;
-using System.Text;
-
-namespace ScriptedEvents.Commands.MainCommand
+﻿namespace ScriptedEvents.Commands.MainCommand
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using CommandSystem;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
+    using Exiled.Permissions.Extensions;
+    using ScriptedEvents.API.Helpers;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ListScripts : ICommand
     {

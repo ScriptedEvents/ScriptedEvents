@@ -1,27 +1,30 @@
-﻿using Exiled.Loader;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-//using YamlDotNet.Serialization;
-
-namespace ScriptedEvents.API.Features.Aliases
+﻿namespace ScriptedEvents.API.Features.Aliases
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.Loader;
+
     public class Alias
     {
-        public string Command { get; set; } = "BROADCAST";
-        public string Execute { get; set; } = "COMMAND /bc";
-        // args exist for a documentation or something generator, that could help the user understand the plugin's actions
-        // in the future
-        //[YamlIgnore]
-        //public string[] Arguments { get; set; } = new[] { "DURATION", "MESSAGE" }; 
+        public Alias()
+        {
+        }
 
-        public Alias() { }
         public Alias(string command, string execute, params string[] args)
         {
             Command = command;
             Execute = execute;
             //Arguments = args;
         }
+
+        public string Command { get; set; } = "BROADCAST";
+
+        public string Execute { get; set; } = "COMMAND /bc";
+        // args exist for a documentation or something generator, that could help the user understand the plugin's actions
+        // in the future
+        //[YamlIgnore]
+        //public string[] Arguments { get; set; } = new[] { "DURATION", "MESSAGE" };
 
         public string Unalias(string usage)
             => usage.Replace(Command, Execute);
@@ -53,7 +56,7 @@ namespace ScriptedEvents.API.Features.Aliases
             for (int i = 0; i < usage.Count() - 1; i++)
             {
                 string arg = copy[i + 1 + addedCount];
-                switch ("duration")//(Arguments[i])
+                switch ("duration") //(Arguments[i])
                 {
                     case "duration":
                         string[] range = arg.Split('-');

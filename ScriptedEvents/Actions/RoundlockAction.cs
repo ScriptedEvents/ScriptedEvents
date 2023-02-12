@@ -1,11 +1,11 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.Actions.Interfaces;
-using System;
-using System.Linq;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Linq;
+    using Exiled.API.Features;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+
     public class RoundlockAction : IScriptAction, IHelpInfo
     {
         public string Name => "ROUNDLOCK";
@@ -18,7 +18,7 @@ namespace ScriptedEvents.Actions
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("roundlock", typeof(bool), "Whether or not to lock the round.", true)
+            new Argument("roundlock", typeof(bool), "Whether or not to lock the round.", true),
         };
 
         public ActionResponse Execute(Script script)

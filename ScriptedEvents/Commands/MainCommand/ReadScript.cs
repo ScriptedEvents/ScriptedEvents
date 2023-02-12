@@ -1,23 +1,21 @@
-﻿using CommandSystem;
-using Exiled.Permissions.Extensions;
-using System;
-using System.IO;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.API.Features;
-using ScriptedEvents.API.Features.Exceptions;
-using System.Text;
-using Exiled.API.Features.Pools;
-using Exiled.API.Features;
-using ScriptedEvents.Actions.Interfaces;
-
-namespace ScriptedEvents.Commands.MainCommand
+﻿namespace ScriptedEvents.Commands.MainCommand
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using CommandSystem;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
+    using Exiled.Permissions.Extensions;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Helpers;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ReadScript : ICommand
     {
         public string Command => "readscript";
 
-        public string[] Aliases => new[] { "read", "r"};
+        public string[] Aliases => new[] { "read", "r" };
 
         public string Description => "Start a script.";
 

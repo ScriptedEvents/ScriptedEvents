@@ -1,10 +1,10 @@
-﻿using PlayerRoles;
-using ScriptedEvents.Actions.Interfaces;
-using System;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using PlayerRoles;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+
     public class InfectAddAction : IScriptAction, IHelpInfo
     {
         public string Name => "INFECTADD";
@@ -32,7 +32,7 @@ namespace ScriptedEvents.Actions
             if (!Enum.TryParse(Arguments[1], true, out RoleTypeId newRole))
                 return new(false, $"Invalid new role '{Arguments[1]}' provided.");
 
-            bool movePlayer = (Arguments[2].ToUpper() is "TRUE" or "YES" ? true : false);
+            bool movePlayer = Arguments[2].ToUpper() is "TRUE" or "YES" ? true : false;
 
             MainPlugin.Handlers.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
             MainPlugin.Handlers.InfectionRules.Add(new(oldRole, newRole, movePlayer));

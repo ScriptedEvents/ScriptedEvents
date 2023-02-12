@@ -1,31 +1,37 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.API.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using ScriptedEvents.API.Features.Aliases;
-using ScriptedEvents.API.Helpers;
-using ScriptedEvents.Handlers;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
-using ScriptedEvents.DemoScripts;
-
-using PlayerHandler = Exiled.Events.Handlers.Player;
-using ServerHandler = Exiled.Events.Handlers.Server;
-
-namespace ScriptedEvents
+﻿namespace ScriptedEvents
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.IO;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.DemoScripts;
+
+    using PlayerHandler = Exiled.Events.Handlers.Player;
+    using ServerHandler = Exiled.Events.Handlers.Server;
+
     public class MainPlugin : Plugin<Config>
     {
-        public override string Name => "ScriptedEvents";
-        public override string Author => "Thunder + Johnodon";
-        public override Version Version => new(1, 1, 0);
-        public override Version RequiredExiledVersion => new(6, 0, 0);
-        public override PluginPriority Priority => PluginPriority.High;
-
+        /// <summary>
+        /// Whether or not this build of the plugin is experimental.
+        /// </summary>
         public const bool IsExperimental = true;
 
+        /// <summary>
+        /// Gets or sets the plugin singleton.
+        /// </summary>
+        public static MainPlugin Singleton { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Event Handlers singleton.
+        /// </summary>
+        public static EventHandlers Handlers { get; set; }
+
+        /// <summary>
+        /// Gets a list of demo scripts.
+        /// </summary>
         public static ReadOnlyCollection<IDemoScript> DemoScripts { get; } = new List<IDemoScript>()
         {
             new About(),
@@ -33,9 +39,32 @@ namespace ScriptedEvents
             new ConditionSamples(),
         }.AsReadOnly();
 
-        public static MainPlugin Singleton;
-        public static EventHandlers Handlers;
+        /// <inheritdoc/>
+        public override string Name => "ScriptedEvents";
 
+        /// <inheritdoc/>
+        public override string Author => "Thunder + Johnodon";
+
+        /// <inheritdoc/>
+        public override Version Version => new(1, 1, 0);
+
+        /// <inheritdoc/>
+        public override Version RequiredExiledVersion => new(6, 0, 0);
+
+        /// <inheritdoc/>
+        public override PluginPriority Priority => PluginPriority.High;
+
+        /// <summary>
+        /// Equivalent to <see cref="Log.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
+        public static void Info(string message)
+        {
+            if (Singleton.Config.EnableLogs)
+                Log.Info(message);
+        }
+
+        /// <inheritdoc/>
         public override void OnEnabled()
         {
             base.OnEnabled();
@@ -71,6 +100,7 @@ namespace ScriptedEvents
             ApiHelper.RegisterActions();
         }
 
+        /// <inheritdoc/>
         public override void OnDisabled()
         {
             base.OnDisabled();
@@ -86,12 +116,6 @@ namespace ScriptedEvents
 
             Singleton = null;
             Handlers = null;
-        }
-
-        public static void Info(string message)
-        {
-            if (Singleton.Config.EnableLogs)
-                Log.Info(message);
         }
     }
 }

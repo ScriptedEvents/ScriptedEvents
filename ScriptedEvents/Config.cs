@@ -1,14 +1,15 @@
-﻿using Exiled.API.Interfaces;
-using ScriptedEvents.API.Features.Aliases;
-using System.Collections.Generic;
-using System.ComponentModel;
-
-namespace ScriptedEvents
+﻿namespace ScriptedEvents
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using Exiled.API.Interfaces;
+    using ScriptedEvents.API.Features.Aliases;
+
     public class Config : IConfig
     {
         [Description("Whether or not to enable the Scripted Events plugin.")]
         public bool IsEnabled { get; set; } = true;
+
         public bool Debug { get; set; } = false;
 
         [Description("Enable logs for starting/stopping scripts.")]
@@ -24,7 +25,7 @@ namespace ScriptedEvents
         [Description("Define a custom set of actions and the action they run when used.")]
         public List<Alias> Aliases { get; set; } = new()
         {
-            new("LOCKDOORBRIEF", "DOOR LOCK * 10")
+            new("LOCKDOORBRIEF", "DOOR LOCK * 10"),
         };
 
         [Description("Define a custom set of permissions used to run a certain script. The provided permission will be added AFTER script.execute (eg. script.execute.examplepermission for the provided example).")]

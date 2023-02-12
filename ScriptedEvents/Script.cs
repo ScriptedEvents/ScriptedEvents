@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using Exiled.API.Features.Pools;
-using ScriptedEvents.Actions.Interfaces;
-
-namespace ScriptedEvents
+﻿namespace ScriptedEvents
 {
+    using System;
+    using System.Collections.Generic;
+    using Exiled.API.Features.Pools;
+    using ScriptedEvents.Actions.Interfaces;
+
     /// <summary>
     /// Represents a script.
     /// </summary>
     public class Script
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Script"/> class.
         /// Creates a new script and assigns its <see cref="UniqueId"/> to a new <see cref="Guid"/>.
         /// </summary>
         public Script()

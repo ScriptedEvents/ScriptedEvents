@@ -1,12 +1,12 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.Actions.Interfaces;
-using ScriptedEvents.Variables;
-using System;
-using System.Linq;
-using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Linq;
+    using Exiled.API.Features;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+
     public class LogAction : IScriptAction, IHelpInfo
     {
         public string Name => "LOG";
