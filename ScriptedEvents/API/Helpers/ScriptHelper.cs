@@ -187,12 +187,12 @@ namespace ScriptedEvents.API.Helpers
                     {
                         if (action is ITimingAction timed)
                         {
-                            Log.Debug($"Running {action.Name} action...");
+                            Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
                             delay = timed.Execute(scr, out resp);
                         }
                         else if (action is IScriptAction scriptAction)
                         {
-                            Log.Debug($"Running {action.Name} action...");
+                            Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
                             resp = scriptAction.Execute(scr);
                         }
                         else
@@ -202,7 +202,7 @@ namespace ScriptedEvents.API.Helpers
                     }
                     catch (Exception e)
                     {
-                        Log.Error($"Ran into an error while running {action.Name} action:\n{e}");
+                        Log.Error($"[Script: {scr.ScriptName}] Ran into an error while running {action.Name} action:\n{e}");
                         continue;
                     }
 
@@ -210,18 +210,18 @@ namespace ScriptedEvents.API.Helpers
                     {
                         if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                         {
-                            Log.Error($"[{action.Name}] Fatal action error! {resp.Message}");
+                            Log.Error($"[Script: {scr.ScriptName}] [{action.Name}] Fatal action error! {resp.Message}");
                             break;
                         }
                         else
                         {
-                            Log.Warn($"[{action.Name}] Action error! {resp.Message}");
+                            Log.Warn($"[Script: {scr.ScriptName}] [{action.Name}] Action error! {resp.Message}");
                         }
                     }
                     else
                     {
                         if (!string.IsNullOrEmpty(resp.Message))
-                            Log.Info($"[{action.Name}] Response: {resp.Message}");
+                            Log.Info($"[Script: {scr.ScriptName}] [{action.Name}] Response: {resp.Message}");
                         if (delay.HasValue)
                             yield return delay.Value;
                     }

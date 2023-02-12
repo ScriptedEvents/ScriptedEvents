@@ -23,7 +23,7 @@ namespace ScriptedEvents.Actions
             return new(true);
         }
 
-        private IEnumerator<float> InternalWaitUntil(string input)
+        private IEnumerator<float> InternalWaitUntil(Script script, string input)
         {
             while (true)
             {
@@ -35,7 +35,7 @@ namespace ScriptedEvents.Actions
                 }
                 else
                 {
-                    Log.Warn($"[WAITUNTILDEBUG] WaitUntilDebug condition error: {response.Message}");
+                    Log.Warn($"[Script: {script.ScriptName}] [WAITUNTILDEBUG] WaitUntilDebug condition error: {response.Message}");
                     break;
                 }
 
@@ -55,7 +55,7 @@ namespace ScriptedEvents.Actions
             string coroutineKey = $"WAITUNTIL_DEBUG_COROUTINE_{DateTime.UtcNow.Ticks}";
             Coroutines.Add(coroutineKey);
             message = new(true);
-            return Timing.WaitUntilDone(InternalWaitUntil(string.Join("", Arguments)), coroutineKey);
+            return Timing.WaitUntilDone(InternalWaitUntil(scr, string.Join("", Arguments)), coroutineKey);
         }
     }
 }
