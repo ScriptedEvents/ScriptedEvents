@@ -1,21 +1,27 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.Conditions.Floats;
-using ScriptedEvents.Conditions.Interfaces;
-using ScriptedEvents.Conditions.Strings;
-using ScriptedEvents.Structures;
-using ScriptedEvents.Variables;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace ScriptedEvents.API.Helpers
+﻿namespace ScriptedEvents.API.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Data;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using ScriptedEvents.Conditions.Floats;
+    using ScriptedEvents.Conditions.Interfaces;
+    using ScriptedEvents.Conditions.Strings;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+
     public static class ConditionHelper
     {
+        /// <summary>
+        /// The separator used for AND clauses.
+        /// </summary>
         public const string AND = "AND";
+
+        /// <summary>
+        /// The separator used for OR clauses.
+        /// </summary>
         public const string OR = "OR";
 
         public static ReadOnlyCollection<IFloatCondition> FloatConditions { get; } = new List<IFloatCondition>()

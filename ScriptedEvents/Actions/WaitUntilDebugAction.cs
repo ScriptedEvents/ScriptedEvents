@@ -30,7 +30,7 @@
             string coroutineKey = $"WAITUNTIL_DEBUG_COROUTINE_{DateTime.UtcNow.Ticks}";
             Coroutines.Add(coroutineKey);
             message = new(true);
-            return Timing.WaitUntilDone(InternalWaitUntil(scr, string.Join("", Arguments)), coroutineKey);
+            return Timing.WaitUntilDone(InternalWaitUntil(scr, string.Join(string.Empty, Arguments)), coroutineKey);
         }
 
         private IEnumerator<float> InternalWaitUntil(Script script, string input)

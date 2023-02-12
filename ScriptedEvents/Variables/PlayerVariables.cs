@@ -11,24 +11,7 @@
 
     public static class PlayerVariables
     {
-        private static Dictionary<string, IEnumerable<Player>> definedVariables { get; } = new();
-
         private static readonly Dictionary<string, RoleTypeId> roleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
-        public static void DefineVariable(string name, IEnumerable<Player> input)
-        {
-            name = name.RemoveWhitespace();
-
-            if (!name.StartsWith("{"))
-                name = "{" + name;
-            if (!name.EndsWith("}"))
-                name = name + "}";
-            definedVariables[name] = input;
-        }
-
-        public static void ClearVariables()
-        {
-            definedVariables.Clear();
-        }
 
         public static Dictionary<string, IEnumerable<Player>> Variables { get; } = new()
         {
@@ -48,6 +31,24 @@
             { "{SURFACE}", Player.Get(ply => ply.Zone is ZoneType.Surface) },
             { "{POCKET}", Player.Get(ply => ply.CurrentRoom?.Type is RoomType.Pocket) },
         };
+
+        private static Dictionary<string, IEnumerable<Player>> DefinedVariables { get; } = new();
+
+        public static void DefineVariable(string name, IEnumerable<Player> input)
+        {
+            name = name.RemoveWhitespace();
+
+            if (!name.StartsWith("{"))
+                name = "{" + name;
+            if (!name.EndsWith("}"))
+                name = name + "}";
+            DefinedVariables[name] = input;
+        }
+
+        public static void ClearVariables()
+        {
+            DefinedVariables.Clear();
+        }
 
         public static string[] IsolateVariables(string input)
         {
@@ -73,7 +74,7 @@
             if (Variables.TryGetValue(input, out IEnumerable<Player> result))
                 return result;
 
-            if (definedVariables.TryGetValue(input, out result))
+            if (DefinedVariables.TryGetValue(input, out result))
                 return result;
 
             if (roleTypeIds.TryGetValue(input, out RoleTypeId rt))

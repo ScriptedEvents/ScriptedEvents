@@ -307,7 +307,7 @@ namespace ScriptedEvents.API.Helpers
         /// <param name="fileDirectory">The directory of the script, if it is found.</param>
         /// <returns>The contents of the script, if it is found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        private static string InternalRead(string scriptName, out string fileDirectory)
+        internal static string InternalRead(string scriptName, out string fileDirectory)
         {
             string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
             if (File.Exists(mainFolderFile))

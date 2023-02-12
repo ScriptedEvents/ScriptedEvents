@@ -41,6 +41,7 @@
         public static string ReplaceVariables(string input)
         {
             input = input
+
                     // Bools
                     .Replace("{CASSIESPEAKING}", Cassie.IsSpeaking)
                     .Replace("{!CASSIESPEAKING}", !Cassie.IsSpeaking)
