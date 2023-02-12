@@ -25,7 +25,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!Enum.TryParse(Arguments[0], true, out RoleTypeId oldRole))
                 return new(MessageType.InvalidRole, this, "oldrole", Arguments[0]);

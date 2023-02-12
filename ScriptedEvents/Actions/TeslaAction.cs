@@ -37,7 +37,7 @@
             {
                 if (Arguments.Length < 1 || Arguments[0] != "DISABLE")
                 {
-                    return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+                    return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
                 }
             }
 

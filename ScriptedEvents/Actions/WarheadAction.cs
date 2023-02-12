@@ -23,7 +23,7 @@
 
         public ActionResponse Execute()
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             switch (Arguments[0].ToUpper())
             {

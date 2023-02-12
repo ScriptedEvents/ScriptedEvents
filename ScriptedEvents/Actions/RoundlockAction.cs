@@ -24,7 +24,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             Round.IsLocked = Arguments.ElementAt(0).ToUpper() is "TRUE" or "YES";
             return new(true);

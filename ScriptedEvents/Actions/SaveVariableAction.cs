@@ -26,7 +26,7 @@
 
         public ActionResponse Execute(Script scr)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             string varName = Arguments[0];
             string input = string.Join(" ", Arguments.Skip(1));

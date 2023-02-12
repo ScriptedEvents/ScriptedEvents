@@ -27,7 +27,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!float.TryParse(Arguments[0], out float duration))
             {

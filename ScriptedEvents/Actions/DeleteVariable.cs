@@ -23,7 +23,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
             if (ConditionVariables.DefinedVariables.ContainsKey(Arguments[0]))
             {
                 ConditionVariables.DefinedVariables.Remove(Arguments[0]);

@@ -33,7 +33,7 @@
 
         public ActionResponse Execute(Script scr)
         {
-            if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!float.TryParse(Arguments.ElementAt(1), out float x))
                 return new(MessageType.NotANumber, this, "X", Arguments.ElementAt(1));

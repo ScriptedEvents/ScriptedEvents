@@ -30,7 +30,7 @@
         {
             if (Arguments.Length < 1)
             {
-                message = new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+                message = new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
                 return null;
             }
 

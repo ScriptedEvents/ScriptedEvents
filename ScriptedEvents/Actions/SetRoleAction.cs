@@ -6,6 +6,7 @@
     using Exiled.API.Features;
     using PlayerRoles;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -30,13 +31,10 @@
 
         public ActionResponse Execute(Script scr)
         {
-            if (Arguments.Length < 2)
-            {
-                return new(false, "Missing arguments: players, role, max(optional)");
-            }
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!Enum.TryParse<RoleTypeId>(Arguments[1], true, out RoleTypeId roleType))
-                return new(false, "Invalid role to spawn as provided.");
+                return new(MessageType.InvalidRole, this, "role", Arguments[1]);
 
             int max = -1;
 
@@ -46,12 +44,12 @@
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
-                    return new(false, $"Invalid max condition provided! Condition: {formula} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
+                    return new(MessageType.NotANumberOrCondition, this, "max", formula, result);
                 }
 
                 if (result.Result < 0)
                 {
-                    return new(false, "A negative number cannot be used as the max argument of the SETROLE action.");
+                    return new(MessageType.LessThanZeroNumber, this, "max", result.Result);
                 }
 
                 max = Mathf.RoundToInt(result.Result);

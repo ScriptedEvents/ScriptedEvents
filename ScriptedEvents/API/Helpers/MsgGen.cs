@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.API.Helpers
 {
+    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
@@ -35,7 +36,7 @@
                     return $"Invalid number '{arguments[0]}' provided for the '{paramName}' parameter of the {action.Name} action.";
 
                 case MessageType.NotANumberOrCondition when arguments[0] is not null && arguments[1] is MathResult result:
-                    return $"Invalid {paramName} condition provided! Condition: {arguments[0]} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.";
+                    return $"Invalid {paramName} condition provided in the {action.Name} action! Condition: {arguments[0]} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.";
 
                 case MessageType.LessThanZeroNumber when arguments[0] is not null:
                     return $"Negative number '{arguments[0]}' cannot be used in the '{paramName}' parameter of the {action.Name} action.";

@@ -32,7 +32,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!ScriptHelper.TryGetDoors(Arguments[1], out List<Door> doors))
                 return new(false, "Invalid door(s) provided!");

@@ -30,7 +30,7 @@
 
         public ActionResponse Execute(Script scr)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             int max = -1;
 
