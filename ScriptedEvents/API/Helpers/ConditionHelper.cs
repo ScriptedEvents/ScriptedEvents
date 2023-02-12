@@ -52,6 +52,21 @@
             return (double)loDataTable.Rows[0]["Eval"];
         }
 
+        public static bool TryMath(string expression, out double result)
+        {
+            try
+            {
+                result = Math(expression);
+            }
+            catch
+            {
+                result = -1;
+                return false;
+            }
+
+            return true;
+        }
+
         // StackOverflow my beloved
         public static string RemoveWhitespace(this string input)
         {
@@ -78,6 +93,45 @@
             return EvaluateAndOr(newWholeString, true);
         }
 
+        private static ConditionResponse EvaluateAndOr(string input, bool last = false)
+        {
+            if (!last && TryMath(ConditionVariables.ReplaceVariables(input), out double result))
+            {
+                float output = (float)result;
+                return new(true, true, string.Empty, output);
+            }
+
+            string[] andSplit = input.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
+            bool stillGo = true;
+            foreach (string fragAnd in andSplit)
+            {
+                string[] orSplit = fragAnd.Split(new[] { OR }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string fragOr in orSplit)
+                {
+                    ConditionResponse conditionResult = EvaluateInternal(fragOr.RemoveWhitespace());
+                    if (!conditionResult.Success)
+                    {
+                        return conditionResult; // Throw the problem to the end-user
+                    }
+
+                    if (conditionResult.Passed is true)
+                    {
+                        stillGo = true;
+                        break;
+                    }
+                    else
+                    {
+                        stillGo = false;
+                    }
+                }
+
+                if (!stillGo)
+                    break;
+            }
+
+            return new(true, stillGo, string.Empty);
+        }
+
         private static ConditionResponse EvaluateInternal(string input)
         {
             input = ConditionVariables.ReplaceVariables(input.RemoveWhitespace()).Trim(); // Kill all whitespace & replace variables
@@ -88,6 +142,8 @@
 
             if (input.ToLowerInvariant() is "false" or "0")
                 return new(true, false, string.Empty);
+
+            bool doStringCondition = true;
 
             // Code for conditions with string operator
             IStringCondition conditionString = null;
@@ -102,13 +158,28 @@
             if (conditionString is not null)
             {
                 string[] arrString = input.Split(new[] { conditionString.Symbol }, StringSplitOptions.RemoveEmptyEntries);
-                List<string> splitString = arrString.ToList();
-                splitString.RemoveAll(y => string.IsNullOrWhiteSpace(y));
 
-                if (splitString.Count != 2)
-                    return new(false, false, $"Malformed condition provided! Condition: '{input}'");
+                // Hacky case to skip over string if both sides are computable
+                // For cases with similar string/math operators (eg. '=')
+                try
+                {
+                    if (TryMath(arrString[0], out _) && TryMath(arrString[1], out _))
+                        doStringCondition = false;
+                }
+                catch
+                {
+                }
 
-                return new(true, conditionString.Execute(splitString[0], splitString[1]), string.Empty);
+                if (doStringCondition)
+                {
+                    List<string> splitString = arrString.ToList();
+                    splitString.RemoveAll(y => string.IsNullOrWhiteSpace(y));
+
+                    if (splitString.Count != 2)
+                        return new(false, false, $"Malformed condition provided! Condition: '{input}'");
+
+                    return new(true, conditionString.Execute(splitString[0], splitString[1]), string.Empty);
+                }
             }
 
             // Code for conditions with float operator
@@ -152,51 +223,6 @@
             }
 
             return new(true, condition.Execute((float)left, (float)right), string.Empty);
-        }
-
-        private static ConditionResponse EvaluateAndOr(string input, bool last = false)
-        {
-            try
-            {
-                if (!last)
-                {
-                    float output = (float)Math(ConditionVariables.ReplaceVariables(input));
-                    return new(true, true, string.Empty, output);
-                }
-            }
-            catch
-            {
-            }
-
-            string[] andSplit = input.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
-            bool stillGo = true;
-            foreach (string fragAnd in andSplit)
-            {
-                string[] orSplit = fragAnd.Split(new[] { OR }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string fragOr in orSplit)
-                {
-                    ConditionResponse conditionResult = EvaluateInternal(fragOr.RemoveWhitespace());
-                    if (!conditionResult.Success)
-                    {
-                        return conditionResult; // Throw the problem to the end-user
-                    }
-
-                    if (conditionResult.Passed is true)
-                    {
-                        stillGo = true;
-                        break;
-                    }
-                    else
-                    {
-                        stillGo = false;
-                    }
-                }
-
-                if (!stillGo)
-                    break;
-            }
-
-            return new(true, stillGo, string.Empty);
         }
     }
 }
