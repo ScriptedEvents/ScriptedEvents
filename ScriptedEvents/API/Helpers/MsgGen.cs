@@ -1,11 +1,11 @@
 ﻿namespace ScriptedEvents.API.Helpers
 {
-    using Exiled.API.Features;
+    using System.Text;
+
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
-    using System.Text;
 
     /// <summary>
     /// Tool to generate error messages, for consistency between all actions.
