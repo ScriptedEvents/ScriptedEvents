@@ -5,6 +5,7 @@
     using System.Linq;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -29,10 +30,7 @@
 
         public ActionResponse Execute(Script scr)
         {
-            if (Arguments.Length < 2)
-            {
-                return new(false, "Missing arguments: variableName, players, max(optional)");
-            }
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             int max = -1;
 
@@ -40,33 +38,23 @@
             {
                 string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)));
 
-                try
+                if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
-                    float maxFloat = (float)ConditionHelper.Math(formula);
-                    if (maxFloat != (int)maxFloat)
-                    {
-                        max = Mathf.RoundToInt(maxFloat);
-                    }
-                    else
-                    {
-                        max = (int)maxFloat;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return new(false, $"Invalid maximum condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+                    return new(MessageType.NotANumberOrCondition, this, "max", formula, result);
                 }
 
-                if (max < 0)
+                if (result.Result < 0)
                 {
-                    return new(false, "A negative number cannot be used as the max argument of the SAVEPLAYERS action.");
+                    return new(MessageType.LessThanZeroNumber, this, "max", result.Result);
                 }
+
+                max = Mathf.RoundToInt(result.Result);
             }
 
             List<Player> plys;
 
             if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out plys))
-                return new(false, "No players matching the criteria were found.");
+                return new(MessageType.NoPlayersFound, this, "players");
 
             PlayerVariables.DefineVariable(Arguments[0], plys);
 

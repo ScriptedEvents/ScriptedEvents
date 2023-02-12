@@ -5,6 +5,7 @@
     using Exiled.API.Features;
     using MEC;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
 
@@ -29,7 +30,7 @@
         {
             if (Arguments.Length < 1)
             {
-                message = new(false, "Missing argument: condition");
+                message = new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
                 return null;
             }
 

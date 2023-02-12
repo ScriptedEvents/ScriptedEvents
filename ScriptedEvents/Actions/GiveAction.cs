@@ -5,6 +5,7 @@
     using System.Linq;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -29,10 +30,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2)
-            {
-                return new(false, "Missing arguments: players, item, amount(optional)");
-            }
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!Enum.TryParse<ItemType>(Arguments[1], true, out ItemType itemType))
                 return new(false, "Invalid item provided.");
@@ -49,19 +47,19 @@
                 }
                 else
                 {
-                    return new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
+                    return new(MessageType.NotANumberOrCondition, this, "amount", formula, result);
                 }
 
                 if (amt < 0)
                 {
-                    return new(false, "A negative number cannot be used as the amount argument of the GIVE action.");
+                    return new(MessageType.LessThanZeroNumber, this, "amount", amt);
                 }
             }
 
             List<Player> plys;
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys))
-                return new(false, "No players matching the criteria were found.");
+                return new(MessageType.NoPlayersFound, this, "players");
 
             foreach (Player player in plys)
             {

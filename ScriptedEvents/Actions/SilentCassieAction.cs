@@ -3,6 +3,7 @@
     using System;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -23,12 +24,12 @@
 
         public ActionResponse Execute(Script scr)
         {
-            if (Arguments.Length < 1) return new(false, "Missing text!");
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             string text = string.Join(" ", Arguments);
 
             if (string.IsNullOrWhiteSpace(text))
-                return new(false, "Missing text!");
+                return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             string[] cassieArgs = text.Split('|');
 
@@ -45,7 +46,7 @@
             else
             {
                 if (string.IsNullOrWhiteSpace(cassieArgs[0]))
-                    return new(false, "Cannot show captions without a corresponding message.");
+                    return new(MessageType.CassieCaptionNoAnnouncement, this, "message");
 
                 if (string.IsNullOrWhiteSpace(cassieArgs[1]))
                     Cassie.Message(cassieArgs[0], isNoisy: false);

@@ -5,6 +5,7 @@
     using System.Linq;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -28,16 +29,16 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(false, "Missing argument: players, duration, message");
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out List<Player> players))
             {
-                return new(false, "No players matching the criteria were found.");
+                return new(MessageType.NoPlayersFound, this, "players");
             }
 
             if (!float.TryParse(Arguments[1], out float duration))
             {
-                return new(false, "Invalid duration provided!");
+                return new(MessageType.NotANumber, this, "duration", Arguments[0]);
             }
 
             string message = string.Join(" ", Arguments.Skip(2).Select(arg => ConditionVariables.ReplaceVariables(arg)));

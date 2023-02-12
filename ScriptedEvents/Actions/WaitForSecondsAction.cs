@@ -4,6 +4,7 @@
     using System.Linq;
     using MEC;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -28,7 +29,7 @@
         {
             if (Arguments.Length < 1)
             {
-                message = new(false, "Missing argument: duration");
+                message = new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
                 return null;
             }
 
@@ -36,12 +37,13 @@
 
             if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
-                message = new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
+                message = new(MessageType.NotANumberOrCondition, this, "duration", formula, result);
                 return null;
             }
 
             if (result.Result < 0)
             {
+                message = new(MessageType.LessThanZeroNumber, this, "duration", result.Result);
                 message = new(false, "A negative number cannot be used as the duration argument of the WAITSEC action.");
                 return null;
             }

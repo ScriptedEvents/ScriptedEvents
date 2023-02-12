@@ -5,11 +5,12 @@
     using Exiled.API.Features;
     using MEC;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class WaitUntilDebugAction : ITimingAction, IHiddenAction
+    public class WaitUntilDebugAction : ITimingAction, IHiddenAction, IHelpInfo
     {
         public static List<string> Coroutines { get; } = new();
 
@@ -19,11 +20,18 @@
 
         public string[] Arguments { get; set; }
 
+        public string Description => "Reads the condition and yields execution of the script until the condition is TRUE.";
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
+        };
+
         public float? Execute(Script scr, out ActionResponse message)
         {
             if (Arguments.Length < 1)
             {
-                message = new(false, "Missing argument: condition");
+                message = new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
                 return null;
             }
 

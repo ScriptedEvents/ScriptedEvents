@@ -7,6 +7,7 @@
     using Exiled.API.Features;
     using MEC;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -31,7 +32,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(false, "Missing arguments: LOCK/UNLOCK/OPEN/CLOSE/DESTROY, doorType, duration(optional)");
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!ScriptHelper.TryGetDoors(Arguments[1], out List<Door> doors))
                 return new(false, "Invalid door(s) provided!");
@@ -43,12 +44,12 @@
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
-                    return new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
+                    return new(MessageType.NotANumberOrCondition, this, "duration", formula, result);
                 }
 
                 if (result.Result < 0)
                 {
-                    return new(false, "A negative number cannot be used as the duration argument of the DOOR action.");
+                    return new(MessageType.LessThanZeroNumber, this, "duration", result.Result);
                 }
 
                 duration = result.Result;
@@ -79,7 +80,7 @@
                     revertAction = null;
                     break;
                 default:
-                    return new(false, "First argument must be OPEN/CLOSE/LOCK/UNLOCK/DESTROY!");
+                    return new(MessageType.InvalidOption, this, "mode", Arguments[0], "OPEN/CLOSE/LOCK/UNLOCK/DESTROY");
             }
 
             foreach (Door door in doors)

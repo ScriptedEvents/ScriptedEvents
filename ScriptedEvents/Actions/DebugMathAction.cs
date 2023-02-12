@@ -2,8 +2,10 @@
 {
     using System;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class DebugMathAction : IScriptAction, IHiddenAction
     {
@@ -15,15 +17,13 @@
 
         public ActionResponse Execute(Script script)
         {
-            try
+            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));
+            if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
-                float result = (float)ConditionHelper.Math(string.Join(" ", Arguments));
-                return new(true, result.ToString());
+                return new(MessageType.NotANumberOrCondition, this, "condition", formula, result);
             }
-            catch (Exception ex)
-            {
-                return new(false, $"Invalid math expression provided. Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
-            }
+
+            return new(true, result.Result.ToString());
         }
     }
 }

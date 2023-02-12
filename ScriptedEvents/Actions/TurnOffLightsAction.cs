@@ -3,6 +3,7 @@
     using System;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -24,19 +25,22 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(false, "Missing argument: duration");
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));
             float duration;
 
-            try
+            if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
-                duration = (float)ConditionHelper.Math(formula);
+                return new(MessageType.NotANumberOrCondition, this, "duration", formula, result);
             }
-            catch (Exception ex)
+
+            if (result.Result < 0)
             {
-                return new(false, $"Invalid duration condition provided! Condition: {formula} Error type: '{ex.GetType().Name}' Message: '{ex.Message}'.");
+                return new(MessageType.LessThanZeroNumber, this, "duration", result.Result);
             }
+
+            duration = result.Result;
 
             foreach (Room room in Room.List)
                 room.TurnOffLights(duration);

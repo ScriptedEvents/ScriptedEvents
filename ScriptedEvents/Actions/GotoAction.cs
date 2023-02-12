@@ -23,6 +23,7 @@
 
         public ActionResponse Execute(Script script)
         {
+            // Todo: Idiot-proofing
             switch (Arguments.ElementAtOrDefault(0).ToUpper())
             {
                 case "ADD":

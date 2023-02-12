@@ -7,6 +7,7 @@
     using MEC;
     using PlayerRoles;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -36,7 +37,7 @@
             {
                 if (Arguments.Length < 1 || Arguments[0] != "DISABLE")
                 {
-                    return new(false, "Missing arguments: Mode, Target, Duration (optional)");
+                    return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
                 }
             }
 
@@ -48,7 +49,7 @@
             {
                 case "PLAYERS":
                     if (!ScriptHelper.TryGetPlayers(target, null, out List<Player> players))
-                        return new(false, "No players with the given parameters were found!");
+                        return new(MessageType.NoPlayersFound, this, "players");
 
                     foreach (Player player in players)
                     {
@@ -59,7 +60,7 @@
                     return Reverse(mode, players, duration);
                 case "ROLETYPE":
                     if (!Enum.TryParse(target, out RoleTypeId roleType))
-                        return new(false, "Invalid RoleType provided.");
+                        return new(MessageType.InvalidRole, this, "target", target);
 
                     if (!Tesla.IgnoredRoles.Contains(roleType))
                         Tesla.IgnoredRoles.Add(roleType);
@@ -73,7 +74,7 @@
                     MainPlugin.Handlers.TeslasDisabled = false;
                     return Reverse(mode, null, duration);
                 default:
-                    return new(false, $"Invalid mode '{mode}'. Valid options: PLAYERS, ROLETYPE, DISABLE, ENABLE");
+                    return new(MessageType.InvalidOption, this, "mode", mode, "PLAYERS/ROLETYPE/DISABLE/ENABLE");
             }
         }
 
