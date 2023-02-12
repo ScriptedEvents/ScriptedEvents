@@ -48,7 +48,7 @@
                     return $"No players were found matching the given criteria ('{paramName}' parameter).";
 
                 case MessageType.CassieCaptionNoAnnouncement:
-                    return $"Cannot show captions without a corresponding message.";
+                    return $"Cannot show captions without a corresponding CASSIE announcement.";
 
             }
 
