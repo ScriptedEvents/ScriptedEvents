@@ -93,12 +93,10 @@
                     .Replace("{POCKET}", Player.Get(p => p.CurrentRoom?.Type is RoomType.Pocket).Count())
 
                     //-- ROLE COUNT
-                    //.Replace("{CLASSD}", Player.Get(RoleTypeId.ClassD).Count())
                     .Replace("{CI}", Player.Get(Team.ChaosInsurgency).Count())
                     .Replace("{GUARDS}", Player.Get(RoleTypeId.FacilityGuard).Count())
                     .Replace("{MTF}", Player.Get(Team.FoundationForces).Count() - Player.Get(RoleTypeId.FacilityGuard).Count())
                     .Replace("{MTFANDGUARDS}", Player.Get(Team.FoundationForces).Count())
-                    //.Replace("{SCIENTISTS}", Player.Get(RoleTypeId.Scientist).Count())
                     .Replace("{SCPS}", Player.Get(Side.Scp).Count())
                     .Replace("{SH}", Player.Get(player => player.SessionVariables.ContainsKey("IsSH")))
                     .Replace("{UIU}", Player.Get(player => player.SessionVariables.ContainsKey("IsUIU")))

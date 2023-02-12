@@ -1,7 +1,7 @@
-﻿using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.Actions.Interfaces
+﻿namespace ScriptedEvents.Actions.Interfaces
 {
+    using ScriptedEvents.Structures;
+
     /// <summary>
     /// Represents an action that returns an amount of time to delay the remainder of the action for.
     /// </summary>

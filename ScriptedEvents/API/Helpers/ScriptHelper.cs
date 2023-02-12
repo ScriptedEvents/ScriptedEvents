@@ -38,35 +38,6 @@ namespace ScriptedEvents.API.Helpers
         public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
         /// <summary>
-        /// Reads a script.
-        /// </summary>
-        /// <param name="scriptName">The name of the script.</param>
-        /// <param name="fileDirectory">The directory of the script, if it is found.</param>
-        /// <returns>The contents of the script, if it is found.</returns>
-        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        private static string InternalRead(string scriptName, out string fileDirectory)
-        {
-            string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
-            if (File.Exists(mainFolderFile))
-            {
-                fileDirectory = mainFolderFile;
-                return File.ReadAllText(mainFolderFile);
-            }
-
-            foreach (string directory in Directory.GetDirectories(ScriptPath))
-            {
-                string fileName = Path.Combine(directory, scriptName + ".txt");
-                if (File.Exists(fileName))
-                {
-                    fileDirectory = fileName;
-                    return File.ReadAllText(fileName);
-                }
-            }
-
-            throw new FileNotFoundException($"Script {scriptName} does not exist.");
-        }
-
-        /// <summary>
         /// Reads and returns the text of a script.
         /// </summary>
         /// <param name="scriptName">The name of the script.</param>
@@ -161,7 +132,6 @@ namespace ScriptedEvents.API.Helpers
             string scriptPath = GetFilePath(scriptName);
 
             // Fill out script data
-
             if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2))
             {
                 script.ReadPermission += $".{perm2}";
@@ -210,7 +180,6 @@ namespace ScriptedEvents.API.Helpers
         /// <param name="result">The float.</param>
         /// <returns>Whether or not the conversion was successful.</returns>
         [Obsolete("Not really useful with the addition of math.")]
-        // Convert number or number range to a number
         public static bool TryConvertNumber(string number, out float result)
         {
             if (float.TryParse(number, out result))
@@ -221,7 +190,7 @@ namespace ScriptedEvents.API.Helpers
             string[] dashSplit = number.Split('-');
             if (dashSplit.Length == 2 && float.TryParse(dashSplit[0], out float min) && float.TryParse(dashSplit[1], out float max))
             {
-                result = Random.Range(min, max+1);
+                result = Random.Range(min, max + 1);
                 return true;
             }
 
@@ -329,6 +298,35 @@ namespace ScriptedEvents.API.Helpers
             WaitUntilDebugAction.Coroutines.Clear();
             RunningScripts.Clear();
             return amount;
+        }
+
+        /// <summary>
+        /// Reads a script.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <param name="fileDirectory">The directory of the script, if it is found.</param>
+        /// <returns>The contents of the script, if it is found.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
+        private static string InternalRead(string scriptName, out string fileDirectory)
+        {
+            string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
+            if (File.Exists(mainFolderFile))
+            {
+                fileDirectory = mainFolderFile;
+                return File.ReadAllText(mainFolderFile);
+            }
+
+            foreach (string directory in Directory.GetDirectories(ScriptPath))
+            {
+                string fileName = Path.Combine(directory, scriptName + ".txt");
+                if (File.Exists(fileName))
+                {
+                    fileDirectory = fileName;
+                    return File.ReadAllText(fileName);
+                }
+            }
+
+            throw new FileNotFoundException($"Script {scriptName} does not exist.");
         }
 
         /// <summary>

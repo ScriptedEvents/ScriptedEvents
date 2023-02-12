@@ -12,7 +12,9 @@
         }
 
         public RoleTypeId OldRole { get; }
+
         public RoleTypeId NewRole { get; }
+
         public bool MovePlayer { get; }
     }
 }

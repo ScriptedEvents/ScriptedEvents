@@ -32,7 +32,7 @@
             if (!Enum.TryParse(Arguments[1], true, out RoleTypeId newRole))
                 return new(false, $"Invalid new role '{Arguments[1]}' provided.");
 
-            bool movePlayer = (Arguments[2].ToUpper() is "TRUE" or "YES" ? true : false);
+            bool movePlayer = Arguments[2].ToUpper() is "TRUE" or "YES" ? true : false;
 
             MainPlugin.Handlers.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
             MainPlugin.Handlers.InfectionRules.Add(new(oldRole, newRole, movePlayer));

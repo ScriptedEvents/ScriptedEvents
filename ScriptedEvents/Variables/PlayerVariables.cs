@@ -12,6 +12,7 @@
     public static class PlayerVariables
     {
         private static Dictionary<string, IEnumerable<Player>> definedVariables { get; } = new();
+
         private static readonly Dictionary<string, RoleTypeId> roleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
         public static void DefineVariable(string name, IEnumerable<Player> input)
         {
@@ -32,8 +33,6 @@
         public static Dictionary<string, IEnumerable<Player>> Variables { get; } = new()
         {
             // By role
-            //{ "{CLASSD}", Player.Get(Team.ClassD) },
-            //{ "{SCIENTISTS}", Player.Get(Team.Scientists) },
             { "{GUARDS}", Player.Get(RoleTypeId.FacilityGuard) },
             { "{MTFANDGUARDS}", Player.Get(Team.FoundationForces) },
             { "{SCPS}", Player.Get(Team.SCPs) },
@@ -42,6 +41,7 @@
             { "{SH}", Player.Get(player => player.SessionVariables.ContainsKey("IsSH")) },
             { "{UIU}", Player.Get(player => player.SessionVariables.ContainsKey("IsUIU")) },
 
+            // By zone
             { "{LCZ}", Player.Get(ply => ply.Zone is ZoneType.LightContainment) },
             { "{HCZ}", Player.Get(ply => ply.Zone is ZoneType.HeavyContainment) },
             { "{EZ}", Player.Get(ply => ply.Zone is ZoneType.Entrance) },

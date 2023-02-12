@@ -3,6 +3,7 @@
     public class ConditionSamples : IDemoScript
     {
         public string FileName => "ConditionSamples";
+
         public string Contents => @"!-- DISABLE
 #Wait until 10 seconds after the round started.
 WAITUNTIL {ROUNDSECONDS} > 10

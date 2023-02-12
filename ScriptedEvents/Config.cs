@@ -9,6 +9,7 @@
     {
         [Description("Whether or not to enable the Scripted Events plugin.")]
         public bool IsEnabled { get; set; } = true;
+
         public bool Debug { get; set; } = false;
 
         [Description("Enable logs for starting/stopping scripts.")]

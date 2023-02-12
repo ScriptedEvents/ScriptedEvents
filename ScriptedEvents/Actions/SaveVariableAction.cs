@@ -41,7 +41,9 @@
                 ConditionVariables.DefineVariable(varName, value);
                 return new(true);
             }
-            catch { }
+            catch
+            {
+            }
 
             ConditionVariables.DefineVariable(varName, input);
 

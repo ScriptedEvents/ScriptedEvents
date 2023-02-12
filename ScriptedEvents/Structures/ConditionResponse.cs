@@ -11,8 +11,11 @@
         }
 
         public bool Success { get; set; }
+
         public bool Passed { get; set; }
+
         public string Message { get; set; }
+
         public object ObjectResult { get; set; }
 
         public override string ToString()

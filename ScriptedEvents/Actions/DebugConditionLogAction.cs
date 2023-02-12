@@ -16,7 +16,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            Log.Info(ConditionHelper.Evaluate(string.Join("", Arguments)));
+            Log.Info(ConditionHelper.Evaluate(string.Join(string.Empty, Arguments)));
             return new(true);
         }
     }

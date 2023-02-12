@@ -3,6 +3,7 @@
     public class DemoScript : IDemoScript
     {
         public string FileName => "DemoScript";
+
         public string Contents => @"!-- DISABLE
 # This is an example of a script that you can create to automate random events and/or admin events in your server.
 

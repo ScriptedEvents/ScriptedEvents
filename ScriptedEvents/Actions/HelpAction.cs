@@ -34,7 +34,7 @@
                 foreach (KeyValuePair<string, Type> kvp in ScriptHelper.ActionTypes)
                 {
                     IAction lAction = Activator.CreateInstance(kvp.Value) as IAction;
-                    IHelpInfo lhelpInfo = (lAction as IHelpInfo);
+                    IHelpInfo lhelpInfo = lAction as IHelpInfo;
 
                     if (lAction is IHiddenAction)
                         continue;

@@ -23,7 +23,7 @@
 
         public ActionResponse Execute(Script scr)
         {
-            ConditionResponse outcome = ConditionHelper.Evaluate(string.Join("", Arguments));
+            ConditionResponse outcome = ConditionHelper.Evaluate(string.Join(string.Empty, Arguments));
             if (!outcome.Success)
                 return new(false, $"STOPIF execution error: {outcome.Message}", ActionFlags.FatalError);
 

@@ -157,7 +157,9 @@ namespace ScriptedEvents.API.Helpers
                     return new(true, true, string.Empty, output);
                 }
             }
-            catch { }
+            catch
+            {
+            }
 
             string[] andSplit = input.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
             bool stillGo = true;

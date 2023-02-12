@@ -16,6 +16,7 @@
         public string[] Arguments { get; set; }
 
         public string Description => "Reads the condition and jumps to the first provided line if the condition is TRUE, or the second provided line if the condition is FALSE.";
+
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("trueLine", typeof(int), "The line to jump to if the condition is TRUE. Variables & Math are NOT supported.", true),

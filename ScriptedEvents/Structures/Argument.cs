@@ -16,8 +16,11 @@
         }
 
         public string ArgumentName { get; }
+
         public Type Type { get; }
+
         public string Description { get; }
+
         public bool Required { get; }
 
         public string TypeString

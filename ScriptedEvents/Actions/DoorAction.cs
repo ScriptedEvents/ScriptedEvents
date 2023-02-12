@@ -25,7 +25,7 @@
         {
             new Argument("mode", typeof(string), "The mode (LOCK, UNLOCK, OPEN, CLOSE, DESTROY).", true),
             new Argument("doors", typeof(List<Door>), "The doors to affect.", true),
-            new Argument("duration", typeof(float), "The duration. Leave blank for indefinite duration. Variables & Math are supported.", false)
+            new Argument("duration", typeof(float), "The duration. Leave blank for indefinite duration. Variables & Math are supported.", false),
         };
 
         public ActionResponse Execute(Script script)
