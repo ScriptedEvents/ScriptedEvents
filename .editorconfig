@@ -8,3 +8,6 @@ dotnet_diagnostic.SA1101.severity = none
 
 # SA1503: Braces should not be omitted.
 dotnet_diagnostic.SA1503.severity = none
+
+# SA1633: The file header is missing or not located at the top of the file.
+dotnet_diagnostic.SA1633.severity = none
