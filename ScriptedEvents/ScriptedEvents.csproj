@@ -106,7 +106,7 @@
     <Compile Include="Actions\DeletePlayerVariable.cs" />
     <Compile Include="Actions\ExecuteScriptAction.cs" />
     <Compile Include="Actions\GiveAction.cs" />
-    <Compile Include="Actions\Goto.cs" />
+    <Compile Include="Actions\GotoAction.cs" />
     <Compile Include="Actions\GotoIfAction.cs" />
     <Compile Include="Actions\HelpAction.cs" />
     <Compile Include="Actions\InfectAddAction.cs" />
@@ -125,7 +125,7 @@
     <Compile Include="Actions\DecontaminateAction.cs" />
     <Compile Include="Actions\DoorAction.cs" />
     <Compile Include="Actions\IfAction.cs" />
-    <Compile Include="Actions\LightsOutAction.cs" />
+    <Compile Include="Actions\TurnOffLightsAction.cs" />
     <Compile Include="Actions\LogAction.cs" />
     <Compile Include="Actions\RoundlockAction.cs" />
     <Compile Include="Actions\SetRoleAction.cs" />
