@@ -28,6 +28,7 @@ namespace ScriptedEvents.Actions
             while (true)
             {
                 ConditionResponse response = ConditionHelper.Evaluate(input);
+                Log.Info($"CONDITION: {ConditionVariables.ReplaceVariables(input)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}");
                 if (response.Success)
                 {
                     if (response.Passed)
@@ -39,7 +40,6 @@ namespace ScriptedEvents.Actions
                     break;
                 }
 
-                Log.Info($"CONDITION: {ConditionVariables.ReplaceVariables(input)} \\\\ PASSED: {response.Passed}");
                 yield return Timing.WaitForSeconds(1f);
             }
         }
