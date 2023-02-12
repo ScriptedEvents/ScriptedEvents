@@ -41,6 +41,9 @@
                 case MessageType.LessThanZeroNumber when arguments[0] is not null:
                     return $"Negative number '{arguments[0]}' cannot be used in the '{paramName}' parameter of the {action.Name} action.";
 
+                case MessageType.InvalidRole when arguments[0] is not null:
+                    return $"Invalid {paramName} provided in the {action.Name} action. '{arguments[0]}' is not a valid RoleType.";
+
                 case MessageType.NoPlayersFound:
                     return $"No players were found matching the given criteria ('{paramName}' parameter).";
 
