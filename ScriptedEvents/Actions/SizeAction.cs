@@ -6,6 +6,7 @@
     using System.Runtime.Remoting.Messaging;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -32,19 +33,16 @@
 
         public ActionResponse Execute(Script scr)
         {
-            if (Arguments.Length < 4)
-            {
-                return new(false, "Missing arguments: players, size X, size Y, size Z, max(optional)");
-            }
+            if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
 
             if (!float.TryParse(Arguments.ElementAt(1), out float x))
-                return new(false, $"X-scale '{Arguments.ElementAt(1)}' is not a valid number.");
+                return new(MessageType.NotANumber, this, "X", Arguments.ElementAt(1));
 
             if (!float.TryParse(Arguments.ElementAt(2), out float y))
-                return new(false, $"Y-scale '{Arguments.ElementAt(2)}' is not a valid number.");
+                return new(MessageType.NotANumber, this, "Y", Arguments.ElementAt(2));
 
             if (!float.TryParse(Arguments.ElementAt(3), out float z))
-                return new(false, $"Z-scale '{Arguments.ElementAt(3)}' is not a valid number.");
+                return new(MessageType.NotANumber, this, "Z", Arguments.ElementAt(3));
 
             int max = -1;
 

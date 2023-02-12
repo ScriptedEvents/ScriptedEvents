@@ -6,6 +6,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
 
@@ -23,7 +24,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(false, "Missing argument: Action name");
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
 
             if (Arguments[0].ToUpper() == "LIST")
             {

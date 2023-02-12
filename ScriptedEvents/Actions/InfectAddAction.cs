@@ -3,6 +3,7 @@
     using System;
     using PlayerRoles;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class InfectAddAction : IScriptAction, IHelpInfo
@@ -24,13 +25,13 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 3) return new(false, "Missing arguments: oldrole, newrole, moveplayer");
+            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
 
             if (!Enum.TryParse(Arguments[0], true, out RoleTypeId oldRole))
-                return new(false, $"Invalid old role '{Arguments[1]}' provided.");
+                return new(MessageType.InvalidRole, this, "oldrole", Arguments[0]);
 
             if (!Enum.TryParse(Arguments[1], true, out RoleTypeId newRole))
-                return new(false, $"Invalid new role '{Arguments[1]}' provided.");
+                return new(MessageType.InvalidRole, this, "newrole", Arguments[1]);
 
             bool movePlayer = Arguments[2].ToUpper() is "TRUE" or "YES" ? true : false;
 

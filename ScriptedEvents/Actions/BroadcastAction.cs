@@ -4,6 +4,7 @@
     using System.Linq;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -26,11 +27,11 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(false, "Missing argument: duration, message");
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
 
             if (!float.TryParse(Arguments[0], out float duration))
             {
-                return new(false, "Invalid duration provided!");
+                return new(MessageType.NotANumber, this, "duration", Arguments[0]);
             }
 
             string message = string.Join(" ", Arguments.Skip(1).Select(arg => ConditionVariables.ReplaceVariables(arg)));

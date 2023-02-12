@@ -4,6 +4,7 @@
     using System.Linq;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class RoundlockAction : IScriptAction, IHelpInfo
@@ -23,7 +24,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(false, "Missing argument: TRUE/FALSE");
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
 
             Round.IsLocked = Arguments.ElementAt(0).ToUpper() is "TRUE" or "YES";
             return new(true);

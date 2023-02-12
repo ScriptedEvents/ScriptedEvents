@@ -2,6 +2,7 @@
 {
     using System;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class CommandAction : IScriptAction, IHelpInfo
@@ -21,7 +22,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(false, "Missing Command!");
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
 
             string text = string.Join(" ", Arguments);
             GameCore.Console.singleton.TypeCommand(text);

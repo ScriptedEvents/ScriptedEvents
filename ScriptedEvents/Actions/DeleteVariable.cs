@@ -2,6 +2,7 @@
 {
     using System;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -22,7 +23,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(false, "Missing argument: variableName");
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
             if (ConditionVariables.DefinedVariables.ContainsKey(Arguments[0]))
             {
                 ConditionVariables.DefinedVariables.Remove(Arguments[0]);

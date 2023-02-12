@@ -13,6 +13,7 @@
         NotANumberOrCondition,
         LessThanZeroNumber,
         NoPlayersFound,
+        InvalidRole,
         CassieCaptionNoAnnouncement,
         Custom,
     }

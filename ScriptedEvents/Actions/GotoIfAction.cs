@@ -26,7 +26,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 3) return new(false, "Missing arguments: trueLine, falseLine, condition");
+            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
 
             if (!int.TryParse(Arguments[0], out int trueLine) && !script.Labels.TryGetValue(Arguments[0], out trueLine))
                 return new(false, "trueLine is not a valid integer.");

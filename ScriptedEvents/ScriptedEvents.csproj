@@ -78,6 +78,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Enums\MessageType.cs" />
+    <Compile Include="API\Helpers\MsgGen.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
     <Compile Include="Actions\Interfaces\ICustomReadDisplay.cs" />
     <Compile Include="Actions\Interfaces\IHelpInfo.cs" />

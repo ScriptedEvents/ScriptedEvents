@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -25,10 +26,7 @@
 
         public ActionResponse Execute(Script scr)
         {
-            if (Arguments.Length < 2)
-            {
-                return new(false, "Missing arguments: variableName, value");
-            }
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
 
             string varName = Arguments[0];
             string input = string.Join(" ", Arguments.Skip(1));

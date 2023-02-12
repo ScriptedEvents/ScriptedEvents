@@ -24,20 +24,28 @@
                     }
 
                     return $"Invalid command usage. Usage: {action.Name}{StringBuilderPool.Pool.ToStringReturn(sb)}";
+
                 case MessageType.InvalidUsage:
                     return "Invalid command usage.";
-                case MessageType.InvalidOption when arguments[0] is string options:
-                    return $"Parameter '{arguments[0]}' expects one of the following options: {options}.";
-                case MessageType.NotANumber when arguments[0] is string number:
-                    return $"Invalid number '{number}' provided for the '{paramName}' parameter.";
-                case MessageType.NotANumberOrCondition when arguments[0] is string formula && arguments[1] is MathResult result:
-                    return $"Invalid {paramName} condition provided! Condition: {formula} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.";
-                case MessageType.LessThanZeroNumber when arguments[0] is string number:
-                    return $"Negative number '{number}' cannot be used in the '{paramName}' parameter.";
+
+                case MessageType.InvalidOption when arguments[0] is string input && arguments[1] is string options:
+                    return $"Invalid option {input} provided for the '{paramName}' parameter of the {action.Name} action. This parameter expects one of the following options: {options}.";
+
+                case MessageType.NotANumber when arguments[0] is not null:
+                    return $"Invalid number '{arguments[0]}' provided for the '{paramName}' parameter of the {action.Name} action.";
+
+                case MessageType.NotANumberOrCondition when arguments[0] is not null && arguments[1] is MathResult result:
+                    return $"Invalid {paramName} condition provided! Condition: {arguments[0]} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.";
+
+                case MessageType.LessThanZeroNumber when arguments[0] is not null:
+                    return $"Negative number '{arguments[0]}' cannot be used in the '{paramName}' parameter of the {action.Name} action.";
+
                 case MessageType.NoPlayersFound:
                     return $"No players were found matching the given criteria ('{paramName}' parameter).";
+
                 case MessageType.CassieCaptionNoAnnouncement:
                     return $"Cannot show captions without a corresponding message.";
+
             }
 
             return "Unknown error";

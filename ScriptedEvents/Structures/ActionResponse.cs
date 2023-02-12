@@ -35,11 +35,14 @@
         /// <see cref="MessageType.OK"/> - Doesn't need anything. Doesn't need parameter name.<br />
         /// <see cref="MessageType.GeneratorError"/> - Doesn't need anything. Doesn't need parameter name.<br />
         /// <see cref="MessageType.InvalidUsage"/> - Expects a List of <see cref="Argument"/>. Doesn't need parameter name.<br />
-        /// <see cref="MessageType.InvalidOption"/> - Expects a string representing every option.<br />
+        /// <see cref="MessageType.InvalidOption"/> - Expects a string representing input, and a string representing every option.<br />
         /// <see cref="MessageType.NotANumber"/> - Expects the provided string that is not a number.<br />
         /// <see cref="MessageType.NotANumberOrCondition"/> - Expects a string formula and the <see cref="MathResult"/>.<br />
+        /// <see cref="MessageType.LessThanZeroNumber"/> - Expects the provided number that is negative.<br />
+        /// <see cref="MessageType.InvalidRole"/> - Expects the provided string. <br />
         /// <see cref="MessageType.NoPlayersFound"/> - Expects only parameter name. <br />
         /// <see cref="MessageType.CassieCaptionNoAnnouncement"/> - Expects only parameter name. <br />
+        /// <see cref="MessageType.Custom"/> - Doesn't need anything. Doesn't need parameter name. <br />
         /// </remarks>
         public ActionResponse(MessageType responseType, IAction action, string paramName, params object[] arguments)
         {

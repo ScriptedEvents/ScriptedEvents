@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
@@ -24,7 +25,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(false, "Missing argument: script name");
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
             string scriptName = Arguments[0];
 
             try

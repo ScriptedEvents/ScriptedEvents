@@ -3,6 +3,7 @@
     using System;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class WarheadAction : IAction, IHelpInfo
@@ -22,8 +23,7 @@
 
         public ActionResponse Execute()
         {
-            if (Arguments.Length < 1)
-                return new(false, "Missing argument: action (START/STOP/LOCK/UNLOCK/DETONATE/BLASTDOORS)");
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
 
             switch (Arguments[0].ToUpper())
             {
@@ -46,7 +46,7 @@
                     Warhead.CloseBlastDoors();
                     break;
                 default:
-                    return new(false, "First argument must be START/STOP/DETONATE/LOCK/UNLOCK/BLASTDOORS!");
+                    return new(MessageType.InvalidOption, this, "action", Arguments[0], "START/STOP/DETONATE/LOCK/UNLOCK/BLASTDOORS");
             }
 
             return new(true);
