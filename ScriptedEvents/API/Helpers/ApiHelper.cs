@@ -90,6 +90,30 @@
         }
 
         /// <summary>
+        /// Unregisters multiple registered actions at once.
+        /// </summary>
+        /// <param name="actionNames">A string array of action names.</param>
+        /// <returns>A string message representing whether or not the unregister process was successful.</returns>
+        public static string UnregisterCustomActions(string[] actionNames)
+        {
+            if (actionNames is null)
+            {
+                return "Missing arguments: actionNames.";
+            }
+
+            foreach (string name in actionNames)
+            {
+                string result = UnregisterCustomAction(name);
+                if (result is not "Success")
+                {
+                    return $"Error unregistering '{name}' custom action: {result}";
+                }
+            }
+
+            return "Success";
+        }
+
+        /// <summary>
         /// Gets a list of players using the input string.
         /// </summary>
         /// <param name="input">Input string.</param>
