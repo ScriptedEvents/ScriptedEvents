@@ -55,6 +55,8 @@ The alternative to the above method is by using reflection to access the `ApiHel
 
 The above method takes a string, the name of the plugin, and it takes a defined function. This function gives you a `string[]`, representing the arguments that were given from the script. It must return a `Tuple<bool, string>`, with the bool representing whether or not execution was successful, and the message to show. If it is NOT successful, a message should be provided. If it is successful, a message is optional.
 
+If your plugin is disabled in-game, and Scripted Events is still running, this may cause a problem if a script uses your action. As such, it is recommended to call the `ApiHelper.UnregisterCustomAction(string name)` method if your action is no longer usable.
+
 This method is much more recommended, as your plugin does not need to have Scripted Events installed in order for your plugin to function. However, it is not as straight forward as the previous method, and reflection is significantly slower than the previous method (which is why you only need to use it once in your plugin).
 
 To view an example of this method in action, see the [Round Reports](https://github.com/Thundermaker300/RoundReports/blob/master/RoundReports/ScriptedEventsIntegration.cs) implementation of it.
