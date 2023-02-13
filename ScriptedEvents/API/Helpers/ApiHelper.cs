@@ -53,5 +53,23 @@
             Log.Info($"Assembly '{Assembly.GetCallingAssembly().GetName().Name}' has registered custom action: '{name}'.");
             return "Success";
         }
+
+        public static string UnregisterCustomAction(string name)
+        {
+            if (name is null)
+            {
+                return "Missing arguments: name.";
+            }
+
+            name = name.ToUpper();
+
+            if (!ScriptHelper.CustomActions.ContainsKey(name))
+            {
+                return "The custom action with the provided name does not exist.";
+            }
+
+            ScriptHelper.CustomActions.Remove(name);
+            return "Success";
+        }
     }
 }
