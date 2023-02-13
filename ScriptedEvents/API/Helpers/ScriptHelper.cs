@@ -194,8 +194,9 @@ namespace ScriptedEvents.API.Helpers
         /// <returns>Whether or not any players were found.</returns>
         public static bool TryGetPlayers(string input, int? amount, out List<Player> plys)
         {
+            input = input.RemoveWhitespace();
             plys = new();
-            if (input is "*")
+            if (input.ToUpper() is "*" or "ALL")
             {
                 plys = Player.List.ToList();
                 return true;
