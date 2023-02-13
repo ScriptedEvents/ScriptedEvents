@@ -30,9 +30,9 @@
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-            if (PlayerVariables.Variables.ContainsKey(Arguments[0]))
+            if (PlayerVariables.DefinedVariables.ContainsKey(Arguments[0]))
             {
-                PlayerVariables.Variables.Remove(Arguments[0]);
+                PlayerVariables.DefinedVariables.Remove(Arguments[0]);
                 return new(true);
             }
 

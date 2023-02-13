@@ -34,11 +34,11 @@
             }
         }
 
-        public static readonly List<IVariableGroup> Groups = new();
+        public static List<IVariableGroup> Groups { get; } = new();
 
         private static readonly Dictionary<string, RoleTypeId> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
 
-        private static Dictionary<string, IEnumerable<Player>> DefinedVariables { get; } = new();
+        internal static Dictionary<string, IEnumerable<Player>> DefinedVariables { get; } = new();
 
         public static void DefineVariable(string name, IEnumerable<Player> input)
         {
