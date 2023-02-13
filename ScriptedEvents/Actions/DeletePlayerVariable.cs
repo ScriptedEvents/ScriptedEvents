@@ -4,7 +4,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
 
     public class DeletePlayerVariable : IScriptAction, IHelpInfo
     {

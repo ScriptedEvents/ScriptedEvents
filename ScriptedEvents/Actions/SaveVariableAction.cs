@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
 
     public class SaveVariableAction : IScriptAction, IHelpInfo
     {

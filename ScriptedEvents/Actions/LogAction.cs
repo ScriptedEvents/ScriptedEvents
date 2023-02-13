@@ -5,7 +5,7 @@
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
 
     public class LogAction : IScriptAction, IHelpInfo
     {

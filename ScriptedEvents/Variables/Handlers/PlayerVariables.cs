@@ -1,42 +1,42 @@
-﻿namespace ScriptedEvents.Variables
+﻿namespace ScriptedEvents.Variables.Handlers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using PlayerRoles;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
     /// A class used to store and retrieve all player variables.
     /// </summary>
     public static class PlayerVariables
     {
-        private static readonly Dictionary<string, RoleTypeId> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
-
-        /// <summary>
-        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables, mapped by the variable name.
-        /// </summary>
-        public static Dictionary<string, IEnumerable<Player>> Variables { get; } = new()
+        static PlayerVariables()
         {
-            // By role
-            { "{GUARDS}", Player.Get(RoleTypeId.FacilityGuard) },
-            { "{MTFANDGUARDS}", Player.Get(Team.FoundationForces) },
-            { "{SCPS}", Player.Get(Team.SCPs) },
-            { "{MTF}", Player.Get(ply => ply.Role.Team is Team.FoundationForces && ply.Role.Type is not RoleTypeId.FacilityGuard) },
-            { "{CI}", Player.Get(Team.ChaosInsurgency) },
-            { "{SH}", Player.Get(player => player.SessionVariables.ContainsKey("IsSH")) },
-            { "{UIU}", Player.Get(player => player.SessionVariables.ContainsKey("IsUIU")) },
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (typeof(IVariableGroup).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
+                {
+                    IVariableGroup temp = (IVariableGroup)Activator.CreateInstance(type);
 
-            // By zone
-            { "{LCZ}", Player.Get(ply => ply.Zone is ZoneType.LightContainment) },
-            { "{HCZ}", Player.Get(ply => ply.Zone is ZoneType.HeavyContainment) },
-            { "{EZ}", Player.Get(ply => ply.Zone is ZoneType.Entrance) },
-            { "{SURFACE}", Player.Get(ply => ply.Zone is ZoneType.Surface) },
-            { "{POCKET}", Player.Get(ply => ply.CurrentRoom?.Type is RoomType.Pocket) },
-        };
+                    if (temp.GroupType is not VariableGroupType.Player)
+                        continue;
+
+                    Log.Debug($"Adding variable group: {type.Name}");
+                    Groups.Add(temp);
+                }
+            }
+        }
+
+        public static readonly List<IVariableGroup> Groups = new();
+
+        private static readonly Dictionary<string, RoleTypeId> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
 
         private static Dictionary<string, IEnumerable<Player>> DefinedVariables { get; } = new();
 
@@ -73,18 +73,39 @@
             return ListPool<string>.Pool.ToArrayReturn(result);
         }
 
+        public static IPlayerVariable GetVariable(string name)
+        {
+            foreach (IVariableGroup group in Groups)
+            {
+                foreach (IVariable variable in group.Variables)
+                {
+                    if (variable.Name == name && variable is IPlayerVariable ply)
+                        return ply;
+                }
+            }
+
+            return null;
+        }
+
+        public static bool TryGetVariable(string name, out IPlayerVariable variable)
+        {
+            variable = GetVariable(name);
+            return variable != null;
+        }
+
         public static IEnumerable<Player> Get(string input)
         {
             input = input.RemoveWhitespace();
 
-            if (Variables.TryGetValue(input, out IEnumerable<Player> result))
-                return result;
+            if (TryGetVariable(input, out IPlayerVariable variable))
+                return variable.Players;
 
-            if (DefinedVariables.TryGetValue(input, out result))
+            if (DefinedVariables.TryGetValue(input, out IEnumerable<Player> result))
                 return result;
 
             if (RoleTypeIds.TryGetValue(input, out RoleTypeId rt))
                 return Player.Get(rt);
+
             return null;
         }
 

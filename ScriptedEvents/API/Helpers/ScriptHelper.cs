@@ -14,7 +14,7 @@ namespace ScriptedEvents.API.Helpers
     using ScriptedEvents.API.Features.Aliases;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
     using Random = UnityEngine.Random;
 
     /// <summary>

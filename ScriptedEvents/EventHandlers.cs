@@ -13,7 +13,7 @@
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
     using UnityEngine;
 
     public class EventHandlers

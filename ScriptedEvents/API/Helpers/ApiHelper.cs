@@ -7,7 +7,7 @@
     using Exiled.API.Features;
     using ScriptedEvents.Actions;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
 
     /// <summary>
     /// A set of tools for other plugins to add actions to Scripted Events.

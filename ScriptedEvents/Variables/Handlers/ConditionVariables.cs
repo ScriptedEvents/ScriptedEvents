@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables
+﻿namespace ScriptedEvents.Variables.Handlers
 {
     using System;
     using System.Collections.Generic;

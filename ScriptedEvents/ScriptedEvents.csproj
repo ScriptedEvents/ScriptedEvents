@@ -153,10 +153,10 @@
     <Compile Include="Structures\Argument.cs" />
     <Compile Include="Structures\ConditionResponse.cs" />
     <Compile Include="Structures\MathResult.cs" />
-    <Compile Include="Variables\ConditionVariables.cs" />
+    <Compile Include="Variables\Handlers\ConditionVariables.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Actions\WarheadAction.cs" />
-    <Compile Include="Variables\PlayerVariables.cs" />
+    <Compile Include="Variables\Handlers\PlayerVariables.cs" />
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
