@@ -37,6 +37,8 @@ namespace ScriptedEvents.API.Helpers
         /// </summary>
         public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
+        public static Dictionary<string, CustomAction> CustomActions { get; } = new();
+
         /// <summary>
         /// Reads and returns the text of a script.
         /// </summary>
@@ -116,8 +118,18 @@ namespace ScriptedEvents.API.Helpers
                 Log.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}");
 #endif
                 ActionTypes.TryGetValue(keyword, out Type actionType);
+
                 if (actionType is null && alias == null)
                 {
+                    // Check for custom actions
+                    if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
+                    {
+                        CustomAction customAction1 = new(customAction.Name, customAction.Action);
+                        customAction1.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                        script.Actions.Add(customAction1);
+                        continue;
+                    }
+
                     Log.Info($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'");
                     script.Actions.Add(new NullAction("ERROR"));
                     continue;
@@ -316,6 +328,9 @@ namespace ScriptedEvents.API.Helpers
             {
                 if (typeof(IAction).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
                 {
+                    if (type == typeof(CustomAction))
+                        continue;
+
                     IAction temp = (IAction)Activator.CreateInstance(type);
 
                     Log.Debug($"Adding Action: {temp.Name} | From Assembly: {assembly.GetName().Name}");
