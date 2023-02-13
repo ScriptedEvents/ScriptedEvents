@@ -1,10 +1,13 @@
 ﻿namespace ScriptedEvents.API.Helpers
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
 
     using Exiled.API.Features;
     using ScriptedEvents.Actions;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     /// <summary>
     /// A set of tools for other plugins to add actions to Scripted Events.
@@ -84,6 +87,29 @@
 
             ScriptHelper.CustomActions.Remove(name);
             return "Success";
+        }
+
+        /// <summary>
+        /// Gets a list of players using the input string.
+        /// </summary>
+        /// <param name="input">Input string.</param>
+        /// <param name="max">Maximum amount of players to get. Leave below zero for unlimited.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of players.</returns>
+        public static IEnumerable<Player> GetPlayers(string input, int max = -1)
+        {
+            ScriptHelper.TryGetPlayers(input, max, out List<Player> list);
+            return list;
+        }
+
+        /// <summary>
+        /// Evaluates a string math equation, replacing all variables in the string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <returns>A tuple indicating success and the value.</returns>
+        public static Tuple<bool, float> Math(string input)
+        {
+            bool success = ConditionHelper.TryMath(ConditionVariables.ReplaceVariables(input), out MathResult result);
+            return new(success, result.Result);
         }
     }
 }
