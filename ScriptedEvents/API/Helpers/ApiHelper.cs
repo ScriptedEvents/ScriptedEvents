@@ -1,11 +1,14 @@
 ﻿namespace ScriptedEvents.API.Helpers
 {
-    using Exiled.API.Features;
-    using ScriptedEvents.Actions;
     using System;
-    using System.Collections.Generic;
     using System.Reflection;
 
+    using Exiled.API.Features;
+    using ScriptedEvents.Actions;
+
+    /// <summary>
+    /// A set of tools for other plugins to add actions to Scripted Events.
+    /// </summary>
     public static class ApiHelper
     {
         // e.g.
@@ -34,6 +37,12 @@
             RegisterActions(plugin.Assembly);
         }
 
+        /// <summary>
+        /// Registers a custom action.
+        /// </summary>
+        /// <param name="name">The name of the action.</param>
+        /// <param name="action">The function to execute when the action is used. An array string of parameters is provided, and the action must return a tuple with a bool (successful?) and a string message (optional, can be set to string.Empty).</param>
+        /// <returns>A string message representing whether or not the unregister process was successful.</returns>
         public static string RegisterCustomAction(string name, Func<string[], Tuple<bool, string>> action)
         {
             if (name is null || action is null)
@@ -54,6 +63,11 @@
             return "Success";
         }
 
+        /// <summary>
+        /// Unregisters a previously defined action.
+        /// </summary>
+        /// <param name="name">The name of the action.</param>
+        /// <returns>A string message representing whether or not the unregister process was successful.</returns>
         public static string UnregisterCustomAction(string name)
         {
             if (name is null)
