@@ -39,10 +39,22 @@ scripted_events:
 ```
 
 ## For developers
-If you're a dev and wanna add your own actions to this, it's rather simple. First of all, add the plugin as reference.
+There are two methods for adding your own actions to ScriptedEvents in your plugin.
 
-Create a new class, it needs to inherit `ScriptedEvents.API.Actions.IAction`, then implement this interface
+### Directly Referencing Plugin
+This method works by adding a reference to the plugin.
+
+Create a new class, it needs to inherit `ScriptedEvents.API.Actions.IAction`, then implement this interface.
 
 Then, in your OnEnabled, add `ScriptedEvents.API.ApiHelper.RegisterActions();`
 
-You are done
+The problem with using this method is that your plugin will ONLY function if ScriptedEvents is also installed, which is not ideal servers may use your plugin but not ScriptedEvents.
+
+### Reflection
+The alternative to the above method is by using reflection to access the `ApiHelper` class. From there, call the `RegisterCustomAction(string, Func<string[], Tuple<bool, string>>)` method.
+
+The above method takes a string, the name of the plugin, and it takes a defined function. This function gives you a `string[]`, representing the arguments that were given from the script. It must return a `Tuple<bool, string>`, with the bool representing whether or not execution was successful, and the message to show. If it is NOT successful, a message should be provided. If it is successful, a message is optional.
+
+This method is much more recommended, as your plugin does not need to have Scripted Events installed in order for your plugin to function. However, it is not as straight forward as the previous method, and reflection is significantly slower than the previous method (which is why you only need to use it once in your plugin).
+
+To view an example of this method in action, see the [Round Reports](https://github.com/Thundermaker300/RoundReports/blob/master/RoundReports/ScriptedEventsIntegration.cs) implementation of it.
