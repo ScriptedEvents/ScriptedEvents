@@ -6,6 +6,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using PlayerRoles;
+    using ScriptedEvents.API.Helpers;
     using Random = UnityEngine.Random;
 
     /// <summary>
@@ -26,11 +27,12 @@
         /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
         public static void DefineVariable(string name, object input)
         {
-            if (!DefinedVariables.ContainsKey(name))
-            {
-                DefinedVariables.Add(name, input);
-                return;
-            }
+            name = name.RemoveWhitespace();
+
+            if (!name.StartsWith("{"))
+                name = "{" + name;
+            if (!name.EndsWith("}"))
+                name = name + "}";
 
             DefinedVariables[name] = input;
         }
