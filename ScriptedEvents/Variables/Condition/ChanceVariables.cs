@@ -8,7 +8,7 @@
     {
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
-        public IVariable[] Variables => new IVariable[]
+        public IVariable[] Variables { get; } = new IVariable[]
         {
             new Chance(),
             new Chance3(),

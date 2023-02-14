@@ -11,7 +11,7 @@
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
-        public IVariable[] Variables => new IVariable[]
+        public IVariable[] Variables { get; } = new IVariable[]
         {
             new Players(),
             new PlayersAlive(),
