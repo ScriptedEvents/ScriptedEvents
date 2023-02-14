@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Actions\CustomAction.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
+    <Compile Include="API\Enums\VariableGroupType.cs" />
     <Compile Include="API\Helpers\MsgGen.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
     <Compile Include="Actions\Interfaces\ICustomReadDisplay.cs" />
@@ -153,15 +154,37 @@
     <Compile Include="Structures\Argument.cs" />
     <Compile Include="Structures\ConditionResponse.cs" />
     <Compile Include="Structures\MathResult.cs" />
-    <Compile Include="Variables\ConditionVariables.cs" />
+    <Compile Include="Variables\Condition\BooleanVariables.cs" />
+    <Compile Include="Variables\Condition\ChanceVariables.cs" />
+    <Compile Include="Variables\Condition\CustomVariable.cs" />
+    <Compile Include="Variables\Condition\EscapesVariables.cs" />
+    <Compile Include="Variables\Condition\KillsAndDeathsVariables.cs" />
+    <Compile Include="Variables\Condition\PlayerCountVariables.cs" />
+    <Compile Include="Variables\Condition\RoleVariables.cs" />
+    <Compile Include="Variables\Condition\RoundTimeVariables.cs" />
+    <Compile Include="Variables\Condition\StringVariables.cs" />
+    <Compile Include="Variables\Condition\TicketsAndRespawnsVariables.cs" />
+    <Compile Include="Variables\Condition\WorldTimeVariables.cs" />
+    <Compile Include="Variables\Condition\ZoneVariables.cs" />
+    <Compile Include="Variables\Handlers\ConditionVariables.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Actions\WarheadAction.cs" />
-    <Compile Include="Variables\PlayerVariables.cs" />
+    <Compile Include="Variables\Handlers\PlayerVariables.cs" />
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="API\Helpers\ScriptHelper.cs" />
     <Compile Include="Structures\InfectRule.cs" />
+    <Compile Include="Variables\Interfaces\IBoolVariable.cs" />
+    <Compile Include="Variables\Interfaces\IConditionVariable.cs" />
+    <Compile Include="Variables\Interfaces\IFloatVariable.cs" />
+    <Compile Include="Variables\Interfaces\IPlayerVariable.cs" />
+    <Compile Include="Variables\Interfaces\IStringVariable.cs" />
+    <Compile Include="Variables\Interfaces\IVariable.cs" />
+    <Compile Include="Variables\Interfaces\IVariableGroup.cs" />
+    <Compile Include="Variables\Player\CustomPlayerVariable.cs" />
+    <Compile Include="Variables\Player\RoleVariables.cs" />
+    <Compile Include="Variables\Player\ZoneVariables.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoScripts\DemoScript.cs" />
@@ -176,5 +199,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

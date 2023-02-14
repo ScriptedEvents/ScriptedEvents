@@ -69,11 +69,11 @@
                 {
                     return "Boolean (TRUE/FALSE)";
                 }
-                else if (Type == typeof(List<Player>))
+                else if (Type == typeof(List<Player>) || Type == typeof(Player[]))
                 {
                     return "Player List";
                 }
-                else if (Type == typeof(List<Door>))
+                else if (Type == typeof(List<Door>) || Type == typeof(Door[]))
                 {
                     return "Door List";
                 }

@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
 
     public class SaveVariableAction : IScriptAction, IHelpInfo
     {
@@ -42,14 +42,14 @@
             try
             {
                 float value = (float)ConditionHelper.Math(input);
-                ConditionVariables.DefineVariable(varName, value);
+                ConditionVariables.DefineVariable(varName, "User-defined variable.", value);
                 return new(true);
             }
             catch
             {
             }
 
-            ConditionVariables.DefineVariable(varName, input);
+            ConditionVariables.DefineVariable(varName, "User-defined variable.", input);
 
             return new(true);
         }

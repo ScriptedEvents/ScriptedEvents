@@ -7,11 +7,12 @@
     using System.Linq;
     using System.Text.RegularExpressions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using ScriptedEvents.Conditions.Floats;
     using ScriptedEvents.Conditions.Interfaces;
     using ScriptedEvents.Conditions.Strings;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
 
     public static class ConditionHelper
     {
@@ -74,6 +75,24 @@
             return new string(input.ToCharArray()
                 .Where(c => !char.IsWhiteSpace(c))
                 .ToArray());
+        }
+
+        public static string[] IsolateVariables(string input)
+        {
+            List<string> result = ListPool<string>.Pool.Get();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                char c = input[i];
+                if (c is '{')
+                {
+                    int index = input.IndexOf('}', i);
+                    string variable = input.Substring(i, index - i + 1);
+                    result.Add(variable);
+                }
+            }
+
+            return ListPool<string>.Pool.ToArrayReturn(result);
         }
 
         public static ConditionResponse Evaluate(string input)

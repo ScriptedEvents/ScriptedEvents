@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
     using UnityEngine;
 
     public class GiveAction : IScriptAction, IHelpInfo
@@ -62,7 +62,7 @@
                 }
             }
 
-            List<Player> plys;
+            Player[] plys;
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys))
                 return new(MessageType.NoPlayersFound, this, "players");

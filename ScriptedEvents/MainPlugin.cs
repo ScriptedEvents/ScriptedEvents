@@ -8,7 +8,7 @@
     using Exiled.API.Features;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.DemoScripts;
-
+    using ScriptedEvents.Variables.Handlers;
     using PlayerHandler = Exiled.Events.Handlers.Player;
     using ServerHandler = Exiled.Events.Handlers.Server;
 
@@ -32,12 +32,12 @@
         /// <summary>
         /// Gets a list of demo scripts.
         /// </summary>
-        public static ReadOnlyCollection<IDemoScript> DemoScripts { get; } = new List<IDemoScript>()
+        public static IDemoScript[] DemoScripts { get; } = new IDemoScript[]
         {
             new About(),
             new DemoScript(),
             new ConditionSamples(),
-        }.AsReadOnly();
+        };
 
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";
@@ -98,6 +98,8 @@
             ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
 
             ApiHelper.RegisterActions();
+            ConditionVariables.Setup();
+            PlayerVariables.Setup();
         }
 
         /// <inheritdoc/>

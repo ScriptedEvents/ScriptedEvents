@@ -7,6 +7,7 @@ namespace ScriptedEvents.API.Helpers
     using System.Reflection;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using MEC;
     using ScriptedEvents.Actions;
     using ScriptedEvents.Actions.Interfaces;
@@ -14,7 +15,7 @@ namespace ScriptedEvents.API.Helpers
     using ScriptedEvents.API.Features.Aliases;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
     using Random = UnityEngine.Random;
 
     /// <summary>
@@ -70,6 +71,8 @@ namespace ScriptedEvents.API.Helpers
             Script script = new();
             string allText = ReadScriptText(scriptName);
 
+            List<IAction> actionList = ListPool<IAction>.Pool.Get();
+
             string[] array = allText.Split('\n');
             for (int currentline = 0; currentline < array.Length; currentline++)
             {
@@ -77,12 +80,12 @@ namespace ScriptedEvents.API.Helpers
                 string action = array[currentline];
                 if (string.IsNullOrWhiteSpace(action))
                 {
-                    script.Actions.Add(new NullAction("BLANK LINE"));
+                    actionList.Add(new NullAction("BLANK LINE"));
                     continue;
                 }
                 else if (action.StartsWith("#"))
                 {
-                    script.Actions.Add(new NullAction("COMMENT"));
+                    actionList.Add(new NullAction("COMMENT"));
                     continue;
                 }
                 else if (action.StartsWith("!--"))
@@ -90,7 +93,7 @@ namespace ScriptedEvents.API.Helpers
                     string flag = action.Substring(3).RemoveWhitespace();
                     script.Flags.Add(flag);
 
-                    script.Actions.Add(new NullAction("FLAG DEFINE"));
+                    actionList.Add(new NullAction("FLAG DEFINE"));
                     continue;
                 }
 
@@ -102,7 +105,7 @@ namespace ScriptedEvents.API.Helpers
                 {
                     string labelName = action.Remove(keyword.Length - 1, 1).RemoveWhitespace();
                     script.Labels.Add(labelName, currentline);
-                    script.Actions.Add(new NullAction($"{labelName} LABEL"));
+                    actionList.Add(new NullAction($"{labelName} LABEL"));
 
                     continue;
                 }
@@ -126,19 +129,19 @@ namespace ScriptedEvents.API.Helpers
                     {
                         CustomAction customAction1 = new(customAction.Name, customAction.Action);
                         customAction1.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
-                        script.Actions.Add(customAction1);
+                        actionList.Add(customAction1);
                         continue;
                     }
 
                     Log.Info($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'");
-                    script.Actions.Add(new NullAction("ERROR"));
+                    actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
 
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
                 newAction.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
-                script.Actions.Add(newAction);
+                actionList.Add(newAction);
             }
 
             string scriptPath = GetFilePath(scriptName);
@@ -155,6 +158,7 @@ namespace ScriptedEvents.API.Helpers
             script.FilePath = scriptPath;
             script.LastRead = File.GetLastAccessTimeUtc(scriptPath);
             script.LastEdited = File.GetLastWriteTimeUtc(scriptPath);
+            script.Actions = ListPool<IAction>.Pool.ToArrayReturn(actionList);
             return script;
         }
 
@@ -192,75 +196,78 @@ namespace ScriptedEvents.API.Helpers
         /// <param name="amount">The maximum amount of players to give back, or <see langword="null"/> for unlimited.</param>
         /// <param name="plys">The list of players.</param>
         /// <returns>Whether or not any players were found.</returns>
-        public static bool TryGetPlayers(string input, int? amount, out List<Player> plys)
+        public static bool TryGetPlayers(string input, int? amount, out Player[] plys)
         {
             input = input.RemoveWhitespace();
-            plys = new();
+            List<Player> list = ListPool<Player>.Pool.Get();
             if (input.ToUpper() is "*" or "ALL")
             {
-                plys = Player.List.ToList();
+                plys = Player.List.ToArray();
+                ListPool<Player>.Pool.Return(list);
                 return true;
             }
             else
             {
-                string[] variables = PlayerVariables.IsolateVariables(input);
+                string[] variables = ConditionHelper.IsolateVariables(input);
                 foreach (string variable in variables)
                 {
                     if (PlayerVariables.TryGet(variable, out IEnumerable<Player> playersFromVariable))
                     {
-                        plys.AddRange(playersFromVariable);
+                        list.AddRange(playersFromVariable);
                     }
                 }
 
                 if (Player.TryGet(input, out Player ply))
                 {
-                    plys.Add(ply);
+                    list.Add(ply);
                 }
             }
 
-            plys.ShuffleList();
-            plys.RemoveAll(p => !p.IsConnected);
+            list.ShuffleList();
+            list.RemoveAll(p => !p.IsConnected);
 
             if (amount.HasValue && amount.Value > 0)
             {
-                if (amount.Value < plys.Count)
+                if (amount.Value < list.Count)
                 {
                     for (int i = 0; i < amount.Value; i++)
                     {
-                        plys.PullRandomItem();
+                        list.PullRandomItem();
                     }
                 }
             }
 
-            return plys.Count > 0;
+            plys = ListPool<Player>.Pool.ToArrayReturn(list);
+            return plys.Length > 0;
         }
 
-        public static bool TryGetDoors(string input, out List<Door> doors)
+        public static bool TryGetDoors(string input, out Door[] doors)
         {
-            doors = new();
+            List<Door> doorList = ListPool<Door>.Pool.Get();
             if (input == "*")
             {
-                doors = Door.List.ToList();
+                doorList = Door.List.ToList();
             }
             else if (Enum.TryParse<ZoneType>(input, true, out ZoneType zt))
             {
-                doors = Door.List.Where(d => d.Zone == zt).ToList();
+                doorList = Door.List.Where(d => d.Zone == zt).ToList();
             }
             else if (Enum.TryParse<DoorType>(input, true, out DoorType dt))
             {
-                doors = Door.List.Where(d => d.Type == dt).ToList();
+                doorList = Door.List.Where(d => d.Type == dt).ToList();
             }
             else if (Enum.TryParse<RoomType>(input, true, out RoomType rt))
             {
-                doors = Door.List.Where(d => d.Room?.Type == rt).ToList();
+                doorList = Door.List.Where(d => d.Room?.Type == rt).ToList();
             }
             else
             {
-                doors = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
+                doorList = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
             }
 
-            doors = doors.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second).ToList();
-            return doors.Count > 0;
+            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second).ToList();
+            doors = ListPool<Door>.Pool.ToArrayReturn(doorList);
+            return doors.Length > 0;
         }
 
         public static int StopAllScripts()
@@ -353,7 +360,7 @@ namespace ScriptedEvents.API.Helpers
             MainPlugin.Info($"Running script {scr.ScriptName}.");
             scr.IsRunning = true;
 
-            for (; scr.CurrentLine < scr.Actions.Count; scr.NextLine())
+            for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
                 if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {

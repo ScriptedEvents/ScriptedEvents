@@ -9,6 +9,7 @@
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
     using UnityEngine;
 
     public class SavePlayerVariableAction : IScriptAction, IHelpInfo
@@ -57,12 +58,12 @@
                 max = Mathf.RoundToInt(result.Result);
             }
 
-            List<Player> plys;
+            Player[] plys;
 
             if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out plys))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            PlayerVariables.DefineVariable(Arguments[0], plys);
+            PlayerVariables.DefineVariable(Arguments[0], "User-defined variable.", plys);
 
             return new(true);
         }

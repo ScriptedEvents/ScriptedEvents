@@ -10,10 +10,11 @@
     using Exiled.Events.EventArgs.Server;
     using MEC;
     using PlayerRoles;
+    using Respawning;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
     using UnityEngine;
 
     public class EventHandlers
@@ -34,6 +35,16 @@
         /// Gets a value indicating whether or not a wave just spawned.
         /// </summary>
         public bool IsRespawning => TimeSinceWave.TotalSeconds < 5;
+
+        /// <summary>
+        /// Gets or sets the most recent respawn type.
+        /// </summary>
+        public SpawnableTeamType MostRecentSpawn { get; set; }
+
+        /// <summary>
+        /// Gets a list of players that most recently respawned.
+        /// </summary>
+        public List<Player> RecentlyRespawned { get; } = new();
 
         /// <summary>
         /// Gets or sets a value indicating whether or not tesla gates are disabled.
@@ -62,6 +73,9 @@
 
             InfectionRules.Clear();
             SpawnRules.Clear();
+            RecentlyRespawned.Clear();
+
+            MostRecentSpawn = SpawnableTeamType.None;
         }
 
         public void OnRoundStarted()
@@ -102,7 +116,7 @@
 
                 if (SpawnRules.Any(rule => rule.Value == -1))
                 {
-                    List<Player> newPlayers = players.Skip(iterator).ToList();
+                    Player[] newPlayers = players.Skip(iterator).ToArray();
 
                     KeyValuePair<RoleTypeId, int> rule = SpawnRules.FirstOrDefault(rule => rule.Value == -1);
                     foreach (Player player in newPlayers)
@@ -136,9 +150,10 @@
             RespawnWaves++;
             lastRespawnWave = DateTime.UtcNow;
 
-            ConditionVariables.DefineVariable("{LASTRESPAWNTEAM}", ev.NextKnownTeam.ToString());
-            ConditionVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players.Count);
-            PlayerVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players);
+            MostRecentSpawn = ev.NextKnownTeam;
+
+            RecentlyRespawned.Clear();
+            RecentlyRespawned.AddRange(ev.Players);
         }
 
         // Infection

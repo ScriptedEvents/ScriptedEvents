@@ -9,7 +9,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
     using UnityEngine;
 
     public class SetRoleAction : IScriptAction, IHelpInfo
@@ -61,7 +61,7 @@
                 max = Mathf.RoundToInt(result.Result);
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out List<Player> plys))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys))
                 return new(false, "No players matching the criteria were found.");
 
             foreach (Player player in plys)

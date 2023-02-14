@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
 
     public class BroadcastPlayerAction : IScriptAction, IHelpInfo
     {
@@ -37,7 +37,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out List<Player> players))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players))
             {
                 return new(MessageType.NoPlayersFound, this, "players");
             }

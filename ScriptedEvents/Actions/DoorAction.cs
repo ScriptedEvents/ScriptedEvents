@@ -10,7 +10,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Handlers;
     using UnityEngine;
 
     public class DoorAction : IScriptAction, IHelpInfo
@@ -40,7 +40,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetDoors(Arguments[1], out List<Door> doors))
+            if (!ScriptHelper.TryGetDoors(Arguments[1], out Door[] doors))
                 return new(false, "Invalid door(s) provided!");
 
             float duration = 0;
