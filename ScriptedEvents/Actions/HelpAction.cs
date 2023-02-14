@@ -132,6 +132,8 @@
                     sb.AppendLine($"Description: {playerVariable.Description}");
                     sb.AppendLine($"Current Value: {string.Join(", ", playerVariable.Players.Select(ply => ply.Nickname))}");
                 }
+
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
             }
 
             // Nope
