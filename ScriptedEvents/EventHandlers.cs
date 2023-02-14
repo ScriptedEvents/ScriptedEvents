@@ -116,7 +116,7 @@
 
                 if (SpawnRules.Any(rule => rule.Value == -1))
                 {
-                    List<Player> newPlayers = players.Skip(iterator).ToList();
+                    Player[] newPlayers = players.Skip(iterator).ToArray();
 
                     KeyValuePair<RoleTypeId, int> rule = SpawnRules.FirstOrDefault(rule => rule.Value == -1);
                     foreach (Player player in newPlayers)
