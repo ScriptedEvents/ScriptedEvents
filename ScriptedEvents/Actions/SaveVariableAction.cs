@@ -42,14 +42,14 @@
             try
             {
                 float value = (float)ConditionHelper.Math(input);
-                ConditionVariables.DefineVariable(varName, value);
+                ConditionVariables.DefineVariable(varName, "User-defined variable.", value);
                 return new(true);
             }
             catch
             {
             }
 
-            ConditionVariables.DefineVariable(varName, input);
+            ConditionVariables.DefineVariable(varName, "User-defined variable.", input);
 
             return new(true);
         }

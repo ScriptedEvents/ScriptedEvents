@@ -156,6 +156,7 @@
     <Compile Include="Structures\MathResult.cs" />
     <Compile Include="Variables\Condition\BooleanVariables.cs" />
     <Compile Include="Variables\Condition\ChanceVariables.cs" />
+    <Compile Include="Variables\Condition\CustomVariable.cs" />
     <Compile Include="Variables\Condition\EscapesVariables.cs" />
     <Compile Include="Variables\Condition\KillsAndDeathsVariables.cs" />
     <Compile Include="Variables\Condition\PlayerCountVariables.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariableGroup.cs" />
+    <Compile Include="Variables\Player\CustomPlayerVariable.cs" />
     <Compile Include="Variables\Player\RoleVariables.cs" />
     <Compile Include="Variables\Player\ZoneVariables.cs" />
   </ItemGroup>

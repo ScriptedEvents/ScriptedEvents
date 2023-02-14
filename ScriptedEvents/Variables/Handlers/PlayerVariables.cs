@@ -10,6 +10,7 @@
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Variables.Condition;
     using ScriptedEvents.Variables.Interfaces;
     using ScriptedEvents.Variables.Player.Roles;
 
@@ -22,7 +23,7 @@
 
         public static readonly Dictionary<string, RoleTypeVariable> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => new RoleTypeVariable(x));
 
-        internal static Dictionary<string, IEnumerable<Player>> DefinedVariables { get; } = new();
+        internal static Dictionary<string, CustomPlayerVariable> DefinedVariables { get; } = new();
 
         public static void Setup()
         {
@@ -41,7 +42,7 @@
             }
         }
 
-        public static void DefineVariable(string name, IEnumerable<Player> input)
+        public static void DefineVariable(string name, string desc, IEnumerable<Player> input)
         {
             name = name.RemoveWhitespace();
 
@@ -49,7 +50,7 @@
                 name = "{" + name;
             if (!name.EndsWith("}"))
                 name = name + "}";
-            DefinedVariables[name] = input;
+            DefinedVariables[name] = new(name, desc, input);
         }
 
         public static void ClearVariables()
@@ -71,6 +72,9 @@
             if (RoleTypeIds.TryGetValue(name, out RoleTypeVariable value))
                 return value;
 
+            if (DefinedVariables.TryGetValue(name, out CustomPlayerVariable customVariable))
+                return customVariable;
+
             return null;
         }
 
@@ -86,9 +90,6 @@
 
             if (TryGetVariable(input, out IPlayerVariable variable))
                 return variable.Players;
-
-            if (DefinedVariables.TryGetValue(input, out IEnumerable<Player> result))
-                return result;
 
             return null;
         }

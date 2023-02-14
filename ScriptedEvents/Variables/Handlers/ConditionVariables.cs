@@ -10,6 +10,7 @@
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Variables.Condition;
     using ScriptedEvents.Variables.Condition.Roles;
     using ScriptedEvents.Variables.Interfaces;
     using Random = UnityEngine.Random;
@@ -26,7 +27,7 @@
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that were defined in run-time.
         /// </summary>
-        internal static Dictionary<string, object> DefinedVariables { get; } = new();
+        internal static Dictionary<string, CustomVariable> DefinedVariables { get; } = new();
 
         public static void Setup()
         {
@@ -49,9 +50,10 @@
         /// Defines a variable.
         /// </summary>
         /// <param name="name">The name of the variable.</param>
+        /// <param name="desc">A description of the variable.</param>
         /// <param name="input">The value of the variable.</param>
         /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
-        public static void DefineVariable(string name, object input)
+        public static void DefineVariable(string name, string desc, object input)
         {
             name = name.RemoveWhitespace();
 
@@ -60,7 +62,7 @@
             if (!name.EndsWith("}"))
                 name = name + "}";
 
-            DefinedVariables[name] = input;
+            DefinedVariables[name] = new(name, desc, input);
         }
 
         /// <summary>
@@ -106,6 +108,9 @@
             if (RoleTypeIds.TryGetValue(name, out RoleTypeVariable value))
                 return new(value, false);
 
+            if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
+                return new(customValue, false);
+
             return new(null, false);
         }
 
@@ -146,11 +151,6 @@
                             break;
                     }
                 }
-            }
-
-            foreach (KeyValuePair<string, object> definedVariable in DefinedVariables)
-            {
-                input = input.Replace(definedVariable.Key, definedVariable.Value);
             }
 
             return input;

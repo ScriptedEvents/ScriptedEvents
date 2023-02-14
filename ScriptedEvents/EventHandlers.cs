@@ -136,9 +136,9 @@
             RespawnWaves++;
             lastRespawnWave = DateTime.UtcNow;
 
-            ConditionVariables.DefineVariable("{LASTRESPAWNTEAM}", ev.NextKnownTeam.ToString());
-            ConditionVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players.Count);
-            PlayerVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players);
+            ConditionVariables.DefineVariable("{LASTRESPAWNTEAM}", "The team that respawned most recently.", ev.NextKnownTeam.ToString());
+            ConditionVariables.DefineVariable("{RESPAWNEDPLAYERS}", "The amount of players that respawned most recently.", ev.Players.Count);
+            PlayerVariables.DefineVariable("{RESPAWNEDPLAYERS}", "The players that respawned most recently.", ev.Players);
         }
 
         // Infection
