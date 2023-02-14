@@ -20,15 +20,24 @@
     /// </summary>
     public static class ConditionVariables
     {
-        public static List<IVariableGroup> Groups { get; } = new();
-
+        /// <summary>
+        /// Maps each <see cref="RoleTypeId"/> variable (eg. "{SCP173}") to a respective <see cref="RoleTypeVariable"/>.
+        /// </summary>
         public static readonly Dictionary<string, RoleTypeVariable> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => new RoleTypeVariable(x));
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> of <see cref="IVariableGroup"/> representing all the valid condition variables.
+        /// </summary>
+        public static List<IVariableGroup> Groups { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that were defined in run-time.
         /// </summary>
         internal static Dictionary<string, CustomVariable> DefinedVariables { get; } = new();
 
+        /// <summary>
+        /// Sets up the player variable system by adding every <see cref="IVariable"/> related to conditional variables to the <see cref="Groups"/> list.
+        /// </summary>
         public static void Setup()
         {
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())

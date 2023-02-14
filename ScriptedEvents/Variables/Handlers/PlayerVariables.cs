@@ -19,12 +19,21 @@
     /// </summary>
     public static class PlayerVariables
     {
-        public static List<IVariableGroup> Groups { get; } = new();
-
+        /// <summary>
+        /// Maps each <see cref="RoleTypeId"/> variable (eg. "{SCP173}") to a respective <see cref="RoleTypeVariable"/>.
+        /// </summary>
         public static readonly Dictionary<string, RoleTypeVariable> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => new RoleTypeVariable(x));
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> of <see cref="IVariableGroup"/> representing all the valid player variables.
+        /// </summary>
+        public static List<IVariableGroup> Groups { get; } = new();
 
         internal static Dictionary<string, CustomPlayerVariable> DefinedVariables { get; } = new();
 
+        /// <summary>
+        /// Sets up the player variable system by adding every <see cref="IVariable"/> related to player variables to the <see cref="Groups"/> list.
+        /// </summary>
         public static void Setup()
         {
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
