@@ -81,24 +81,6 @@
             DefinedVariables.Clear();
         }
 
-        public static string[] IsolateVariables(string input)
-        {
-            List<string> result = ListPool<string>.Pool.Get();
-
-            for (int i = 0; i < input.Length; i++)
-            {
-                char c = input[i];
-                if (c is '{')
-                {
-                    int index = input.IndexOf('}', i);
-                    string variable = input.Substring(i, index+1);
-                    result.Add(variable);
-                }
-            }
-
-            return ListPool<string>.Pool.ToArrayReturn(result);
-        }
-
         /// <summary>
         /// Alternative to <see cref="string.Replace(string, string)"/> which takes an object as the newValue (and ToStrings it automatically).
         /// </summary>
@@ -144,7 +126,7 @@
         /// <returns>The modified string.</returns>
         public static string ReplaceVariables(string input)
         {
-            string[] variables = IsolateVariables(input);
+            string[] variables = ConditionHelper.IsolateVariables(input);
 
             foreach (var variable in variables)
             {

@@ -203,7 +203,7 @@ namespace ScriptedEvents.API.Helpers
             }
             else
             {
-                string[] variables = PlayerVariables.IsolateVariables(input);
+                string[] variables = ConditionHelper.IsolateVariables(input);
                 foreach (string variable in variables)
                 {
                     if (PlayerVariables.TryGet(variable, out IEnumerable<Player> playersFromVariable))

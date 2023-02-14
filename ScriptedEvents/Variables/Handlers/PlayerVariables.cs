@@ -57,24 +57,6 @@
             DefinedVariables.Clear();
         }
 
-        public static string[] IsolateVariables(string input)
-        {
-            List<string> result = ListPool<string>.Pool.Get();
-
-            for (int i = 0; i < input.Length; i++)
-            {
-                char c = input[i];
-                if (c is '{')
-                {
-                    int index = input.IndexOf('}', i);
-                    string variable = input.Substring(i, index + 1);
-                    result.Add(variable);
-                }
-            }
-
-            return ListPool<string>.Pool.ToArrayReturn(result);
-        }
-
         public static IPlayerVariable GetVariable(string name)
         {
             foreach (IVariableGroup group in Groups)
