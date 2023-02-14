@@ -19,7 +19,7 @@
     public class NextWave : IStringVariable
     {
         /// <inheritdoc/>
-        public string Name => throw new System.NotImplementedException();
+        public string Name => "{NEXTWAVE}";
 
         /// <inheritdoc/>
         public string Description => throw new System.NotImplementedException();
