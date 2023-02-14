@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScriptedEvents.DemoScripts
+﻿namespace ScriptedEvents.DemoScripts
 {
+    /// <summary>
+    /// Demo script with examples of conditions.
+    /// </summary>
     public class ConditionSamples : IDemoScript
     {
-
+        /// <inheritdoc/>
         public string FileName => "ConditionSamples";
+
+        /// <inheritdoc/>
         public string Contents => @"!-- DISABLE
 #Wait until 10 seconds after the round started.
 WAITUNTIL {ROUNDSECONDS} > 10

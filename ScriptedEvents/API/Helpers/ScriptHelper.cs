@@ -1,61 +1,116 @@
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using MEC;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using Random = UnityEngine.Random;
-using ScriptedEvents.API.Features;
-using ScriptedEvents.API.Features.Actions;
-using ScriptedEvents.API.Features.Aliases;
-using PlayerRoles;
-using ScriptedEvents.API.Features.Exceptions;
-using ScriptedEvents.Handlers.Variables;
-
 namespace ScriptedEvents.API.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
+    using MEC;
+    using ScriptedEvents.Actions;
+    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features.Aliases;
+    using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Handlers;
+    using Random = UnityEngine.Random;
+
+    /// <summary>
+    /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
+    /// </summary>
     public static class ScriptHelper
     {
-        internal static void RegisterActions(Assembly assembly)
-        {
-            int i = 0;
-            foreach (Type type in assembly.GetTypes())
-            {
-                if (typeof(IAction).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
-                {
-                    IAction temp = (IAction)Activator.CreateInstance(type);
-                    ActionTypes.Add(temp.Name, type);
-                    i++;
-                }
-            }
-
-            MainPlugin.Info($"Assembly '{assembly.GetName().Name}' has registered {i} actions.");
-        }
-
+        /// <summary>
+        /// The base path to the script folder.
+        /// </summary>
         public static readonly string ScriptPath = Path.Combine(Paths.Configs, "ScriptedEvents");
 
+        /// <summary>
+        /// Gets a dictionary of action names and their respective types.
+        /// </summary>
         public static Dictionary<string, Type> ActionTypes { get; } = new();
+
+        /// <summary>
+        /// Gets a dictionary of <see cref="Script"/> that are currently running, and the <see cref="CoroutineHandle"/> that is running them.
+        /// </summary>
         public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
-        public static string ReadScriptText(string scriptName)
-            => File.ReadAllText(Path.Combine(ScriptPath, scriptName + ".txt"));
+        public static Dictionary<string, CustomAction> CustomActions { get; } = new();
 
+        /// <summary>
+        /// Reads and returns the text of a script.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <returns>The contents of the script, if it is found.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
+        public static string ReadScriptText(string scriptName) => InternalRead(scriptName, out _);
+
+        /// <summary>
+        /// Returns the file path of a script.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <returns>The directory of the script, if it is found.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
+        public static string GetFilePath(string scriptName)
+        {
+            InternalRead(scriptName, out string path);
+            return path;
+        }
+
+        /// <summary>
+        /// Reads a script line-by-line, converting every line into an appropriate action, flag, label, etc. Fills out all data and returns a <see cref="Script"/> object.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <returns>The <see cref="Script"/> fully filled out, if the script was found.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
         public static Script ReadScript(string scriptName)
         {
             Script script = new();
             string allText = ReadScriptText(scriptName);
 
-            foreach (string action in allText.Split('\n'))
+            List<IAction> actionList = ListPool<IAction>.Pool.Get();
+
+            string[] array = allText.Split('\n');
+            for (int currentline = 0; currentline < array.Length; currentline++)
             {
-                if (string.IsNullOrWhiteSpace(action) || action.StartsWith("#") || action.StartsWith("!--"))
+                // NoAction
+                string action = array[currentline];
+                if (string.IsNullOrWhiteSpace(action))
+                {
+                    actionList.Add(new NullAction("BLANK LINE"));
                     continue;
+                }
+                else if (action.StartsWith("#"))
+                {
+                    actionList.Add(new NullAction("COMMENT"));
+                    continue;
+                }
+                else if (action.StartsWith("!--"))
+                {
+                    string flag = action.Substring(3).RemoveWhitespace();
+                    script.Flags.Add(flag);
+
+                    actionList.Add(new NullAction("FLAG DEFINE"));
+                    continue;
+                }
 
                 string[] actionParts = action.Split(' ');
-                string keyword = actionParts[0];
+                string keyword = actionParts[0].RemoveWhitespace();
 
-                var alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
+                // Labels
+                if (keyword.EndsWith(":"))
+                {
+                    string labelName = action.Remove(keyword.Length - 1, 1).RemoveWhitespace();
+                    script.Labels.Add(labelName, currentline);
+                    actionList.Add(new NullAction($"{labelName} LABEL"));
+
+                    continue;
+                }
+
+                Alias alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
                 if (alias != null)
                 {
                     actionParts = alias.Unalias(action).Split(' ');
@@ -66,86 +121,296 @@ namespace ScriptedEvents.API.Helpers
                 Log.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}");
 #endif
                 ActionTypes.TryGetValue(keyword, out Type actionType);
+
                 if (actionType is null && alias == null)
                 {
-                    Log.Info($"Invalid action '{keyword}' detected in script '{scriptName}'");
+                    // Check for custom actions
+                    if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
+                    {
+                        CustomAction customAction1 = new(customAction.Name, customAction.Action);
+                        customAction1.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                        actionList.Add(customAction1);
+                        continue;
+                    }
+
+                    Log.Info($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'");
+                    actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
 
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
                 newAction.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
-                script.Actions.Enqueue(newAction);
+                actionList.Add(newAction);
+            }
+
+            string scriptPath = GetFilePath(scriptName);
+
+            // Fill out script data
+            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2))
+            {
+                script.ReadPermission += $".{perm2}";
+                script.ExecutePermission += $".{perm2}";
             }
 
             script.ScriptName = scriptName;
             script.RawText = allText;
+            script.FilePath = scriptPath;
+            script.LastRead = File.GetLastAccessTimeUtc(scriptPath);
+            script.LastEdited = File.GetLastWriteTimeUtc(scriptPath);
+            script.Actions = ListPool<IAction>.Pool.ToArrayReturn(actionList);
             return script;
         }
 
+        /// <summary>
+        /// Runs the script.
+        /// </summary>
+        /// <param name="scr">The script to run.</param>
+        /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
         public static void RunScript(Script scr)
         {
-            if (scr.RawText.RemoveWhitespace().StartsWith("!--DISABLE"))
-                throw new DisabledScriptException();
+            if (scr.Disabled)
+                throw new DisabledScriptException(scr.ScriptName);
 
-            CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr));
+            CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr), $"SCRIPT_{scr.UniqueId}");
             RunningScripts.Add(scr, handle);
         }
 
-        public static IEnumerator<float> RunScriptInternal(Script scr)
+        /// <summary>
+        /// Reads and runs a script.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <exception cref="FileNotFoundException">The script was not found.</exception>
+        /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
+        public static void ReadAndRun(string scriptName)
+        {
+            Script scr = ReadScript(scriptName);
+            if (scr is not null)
+                RunScript(scr);
+        }
+
+        /// <summary>
+        /// Converts an input into a list of players.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="amount">The maximum amount of players to give back, or <see langword="null"/> for unlimited.</param>
+        /// <param name="plys">The list of players.</param>
+        /// <returns>Whether or not any players were found.</returns>
+        public static bool TryGetPlayers(string input, int? amount, out Player[] plys)
+        {
+            input = input.RemoveWhitespace();
+            List<Player> list = ListPool<Player>.Pool.Get();
+            if (input.ToUpper() is "*" or "ALL")
+            {
+                plys = Player.List.ToArray();
+                ListPool<Player>.Pool.Return(list);
+                return true;
+            }
+            else
+            {
+                string[] variables = ConditionHelper.IsolateVariables(input);
+                foreach (string variable in variables)
+                {
+                    if (PlayerVariables.TryGet(variable, out IEnumerable<Player> playersFromVariable))
+                    {
+                        list.AddRange(playersFromVariable);
+                    }
+                }
+
+                if (Player.TryGet(input, out Player ply))
+                {
+                    list.Add(ply);
+                }
+            }
+
+            list.ShuffleList();
+            list.RemoveAll(p => !p.IsConnected);
+
+            if (amount.HasValue && amount.Value > 0)
+            {
+                if (amount.Value < list.Count)
+                {
+                    for (int i = 0; i < amount.Value; i++)
+                    {
+                        list.PullRandomItem();
+                    }
+                }
+            }
+
+            plys = ListPool<Player>.Pool.ToArrayReturn(list);
+            return plys.Length > 0;
+        }
+
+        public static bool TryGetDoors(string input, out Door[] doors)
+        {
+            List<Door> doorList = ListPool<Door>.Pool.Get();
+            if (input == "*")
+            {
+                doorList = Door.List.ToList();
+            }
+            else if (Enum.TryParse<ZoneType>(input, true, out ZoneType zt))
+            {
+                doorList = Door.List.Where(d => d.Zone == zt).ToList();
+            }
+            else if (Enum.TryParse<DoorType>(input, true, out DoorType dt))
+            {
+                doorList = Door.List.Where(d => d.Type == dt).ToList();
+            }
+            else if (Enum.TryParse<RoomType>(input, true, out RoomType rt))
+            {
+                doorList = Door.List.Where(d => d.Room?.Type == rt).ToList();
+            }
+            else
+            {
+                doorList = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
+            }
+
+            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second).ToList();
+            doors = ListPool<Door>.Pool.ToArrayReturn(doorList);
+            return doors.Length > 0;
+        }
+
+        public static int StopAllScripts()
+        {
+            int amount = 0;
+            foreach (KeyValuePair<Script, CoroutineHandle> kvp in RunningScripts)
+            {
+                amount++;
+                kvp.Key.IsRunning = false;
+                Timing.KillCoroutines(kvp.Value);
+            }
+
+            foreach (string key in WaitUntilAction.Coroutines)
+            {
+                Timing.KillCoroutines(key);
+            }
+
+            foreach (string key in WaitUntilDebugAction.Coroutines)
+            {
+                Timing.KillCoroutines(key);
+            }
+
+            WaitUntilAction.Coroutines.Clear();
+            WaitUntilDebugAction.Coroutines.Clear();
+            RunningScripts.Clear();
+            return amount;
+        }
+
+        /// <summary>
+        /// Reads a script.
+        /// </summary>
+        /// <param name="scriptName">The name of the script.</param>
+        /// <param name="fileDirectory">The directory of the script, if it is found.</param>
+        /// <returns>The contents of the script, if it is found.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
+        internal static string InternalRead(string scriptName, out string fileDirectory)
+        {
+            string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
+            if (File.Exists(mainFolderFile))
+            {
+                fileDirectory = mainFolderFile;
+                return File.ReadAllText(mainFolderFile);
+            }
+
+            foreach (string directory in Directory.GetDirectories(ScriptPath))
+            {
+                string fileName = Path.Combine(directory, scriptName + ".txt");
+                if (File.Exists(fileName))
+                {
+                    fileDirectory = fileName;
+                    return File.ReadAllText(fileName);
+                }
+            }
+
+            throw new FileNotFoundException($"Script {scriptName} does not exist.");
+        }
+
+        /// <summary>
+        /// Registers all the actions in the provided assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to register actions in.</param>
+        internal static void RegisterActions(Assembly assembly)
+        {
+            int i = 0;
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (typeof(IAction).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
+                {
+                    if (type == typeof(CustomAction))
+                        continue;
+
+                    IAction temp = (IAction)Activator.CreateInstance(type);
+
+                    Log.Debug($"Adding Action: {temp.Name} | From Assembly: {assembly.GetName().Name}");
+                    ActionTypes.Add(temp.Name, type);
+                    i++;
+                }
+            }
+
+            MainPlugin.Info($"Assembly '{assembly.GetName().Name}' has registered {i} actions.");
+        }
+
+        /// <summary>
+        /// Internal coroutine to run the script.
+        /// </summary>
+        /// <param name="scr">The script to run.</param>
+        /// <returns>Coroutine iterator.</returns>
+        private static IEnumerator<float> RunScriptInternal(Script scr)
         {
             MainPlugin.Info($"Running script {scr.ScriptName}.");
             scr.IsRunning = true;
 
-            while (true)
+            for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
-                if (scr.Actions.TryDequeue(out IAction action))
+                if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {
                     ActionResponse resp;
                     float? delay = null;
-                    if (action is ITimingAction timed)
+
+                    try
                     {
-                        delay = timed.GetDelay(out resp);
-                    }
-                    else
-                    {
-                        try
+                        switch (action)
                         {
-                            Log.Debug($"Running {action.Name} action...");
-                            resp = action.Execute();
-                        } catch (Exception e)
-                        {
-                            Log.Error($"Ran into an error while running {action.Name} action:\n{e}");
-                            continue;
+                            case ITimingAction timed:
+                                Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
+                                delay = timed.Execute(scr, out resp);
+                                break;
+                            case IScriptAction scriptAction:
+                                Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
+                                resp = scriptAction.Execute(scr);
+                                break;
+                            default:
+                                continue;
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"[Script: {scr.ScriptName}] Ran into an error while running {action.Name} action:\n{e}");
+                        continue;
                     }
 
                     if (!resp.Success)
                     {
                         if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                         {
-                            Log.Error($"[{action.Name}] Fatal action error! {resp.Message}");
+                            Log.Error($"[Script: {scr.ScriptName}] [{action.Name}] Fatal action error! {resp.Message}");
                             break;
                         }
                         else
                         {
-                            Log.Warn($"[{action.Name}] Action error! {resp.Message}");
+                            Log.Warn($"[Script: {scr.ScriptName}] [{action.Name}] Action error! {resp.Message}");
                         }
                     }
                     else
                     {
                         if (!string.IsNullOrEmpty(resp.Message))
-                            Log.Info($"[{action.Name}] Response: {resp.Message}");
+                            Log.Info($"[Script: {scr.ScriptName}] [{action.Name}] Response: {resp.Message}");
                         if (delay.HasValue)
                             yield return delay.Value;
                     }
 
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
-                }
-                else
-                {
-                    break;
                 }
             }
 
@@ -154,123 +419,10 @@ namespace ScriptedEvents.API.Helpers
 
             if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
             {
-                RunScript(ReadScript(scr.ScriptName)); // so that it re-reads the content of the text file.
+                ReadAndRun(scr.ScriptName); // so that it re-reads the content of the text file.
             }
 
             RunningScripts.Remove(scr);
-        }
-
-        // Convert number or number range to a number
-        public static bool TryConvertNumber(string number, out float result)
-        {
-            if (float.TryParse(number, out result))
-            {
-                return true;
-            }
-
-            var dashSplit = number.Split('-');
-            if (dashSplit.Length == 2 && float.TryParse(dashSplit[0], out float min) && float.TryParse(dashSplit[1], out float max))
-            {
-                result = Random.Range(min, max+1);
-                return true;
-            }
-
-            return false;
-        }
-
-        public static bool TryGetPlayers(string input, int? amount, out List<Player> plys)
-        {
-            plys = new();
-            if (input is "*")
-            {
-                plys = Player.List.ToList();
-                return true;
-            }
-            else
-            {
-                string[] variables = PlayerVariables.IsolateVariables(input);
-                foreach (string variable in variables)
-                {
-                    if (PlayerVariables.TryGet(variable, out var playersFromVariable))
-                    {
-                        plys.AddRange(playersFromVariable);
-                    }
-                }
-                if (Player.TryGet(input, out Player ply))
-                {
-                    plys.Add(ply);
-                }
-            }
-
-            plys.ShuffleList();
-            plys.RemoveAll(p => !p.IsConnected);
-
-            if (amount.HasValue && amount.Value > 0)
-            {
-                if (amount.Value < plys.Count)
-                {
-                    for (int i = 0; i < amount.Value; i++)
-                    {
-                        plys.PullRandomItem();
-                    }
-                }
-            }
-
-            return plys.Count > 0;
-        }
-
-        public static bool TryGetDoors(string input, out List<Door> doors)
-        {
-            doors = new();
-            if (input == "*")
-            {
-                doors = Door.List.ToList();
-            }
-            else if (Enum.TryParse<ZoneType>(input, true, out ZoneType zt))
-            {
-                doors = Door.List.Where(d => d.Zone == zt).ToList();
-            }
-            else if (Enum.TryParse<DoorType>(input, true, out DoorType dt))
-            {
-                doors = Door.List.Where(d => d.Type == dt).ToList();
-            }
-            else if (Enum.TryParse<RoomType>(input, true, out RoomType rt))
-            {
-                doors = Door.List.Where(d => d.Room?.Type == rt).ToList();
-            }
-            else
-            {
-                doors = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
-            }
-
-            doors = doors.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second).ToList();
-            return doors.Count > 0;
-        }
-
-        public static int StopAllScripts()
-        {
-            int amount = 0;
-            foreach (var kvp in RunningScripts)
-            {
-                amount++;
-                kvp.Key.IsRunning = false;
-                Timing.KillCoroutines(kvp.Value);
-            }
-
-            foreach (string key in Handlers.DefaultActions.WaitUntilAction.Coroutines)
-            {
-                Timing.KillCoroutines(key);
-            }
-
-            foreach (string key in Handlers.DefaultActions.WaitUntilDebugAction.Coroutines)
-            {
-                Timing.KillCoroutines(key);
-            }
-
-            Handlers.DefaultActions.WaitUntilAction.Coroutines.Clear();
-            Handlers.DefaultActions.WaitUntilDebugAction.Coroutines.Clear();
-            RunningScripts.Clear();
-            return amount;
         }
     }
 }

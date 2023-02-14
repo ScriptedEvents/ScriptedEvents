@@ -1,16 +1,16 @@
-﻿using ScriptedEvents.Conditions.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScriptedEvents.Conditions.Strings
+﻿namespace ScriptedEvents.Conditions.Strings
 {
+    using ScriptedEvents.Conditions.Interfaces;
+
+    /// <summary>
+    /// Returns whether or not two strings are equal.
+    /// </summary>
     public class StringEqual : IStringCondition
     {
+        /// <inheritdoc/>
         public string Symbol => "=";
 
+        /// <inheritdoc/>
         public bool Execute(string left, string right)
         {
             return left.Equals(right);

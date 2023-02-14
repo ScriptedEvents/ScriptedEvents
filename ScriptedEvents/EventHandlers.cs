@@ -1,38 +1,71 @@
-﻿using Exiled.API.Features;
-using ScriptedEvents.API.Helpers;
-using MEC;
-using System.IO;
-using ScriptedEvents.API.Features;
-using ScriptedEvents.API.Features.Exceptions;
-using Exiled.Events.EventArgs.Server;
-using System;
-using ScriptedEvents.Handlers.Variables;
-using System.Collections.Generic;
-using ScriptedEvents.Structures;
-using Exiled.Events.EventArgs.Player;
-using System.Linq;
-using UnityEngine;
-using Exiled.API.Features.DamageHandlers;
-using PlayerRoles;
-
-namespace ScriptedEvents
+﻿namespace ScriptedEvents
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Server;
+    using MEC;
+    using PlayerRoles;
+    using Respawning;
+    using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Handlers;
+    using UnityEngine;
+
     public class EventHandlers
     {
-        public int RespawnWaves = 0;
-        public DateTime LastRespawnWave = DateTime.MinValue;
+        private DateTime lastRespawnWave = DateTime.MinValue;
 
-        public TimeSpan TimeSinceWave => DateTime.UtcNow - LastRespawnWave;
+        /// <summary>
+        /// Gets or sets the total amount of respawn waves since the round started.
+        /// </summary>
+        public int RespawnWaves { get; set; } = 0;
+
+        /// <summary>
+        /// Gets the amount of time since the last wave.
+        /// </summary>
+        public TimeSpan TimeSinceWave => DateTime.UtcNow - lastRespawnWave;
+
+        /// <summary>
+        /// Gets a value indicating whether or not a wave just spawned.
+        /// </summary>
         public bool IsRespawning => TimeSinceWave.TotalSeconds < 5;
 
+        /// <summary>
+        /// Gets or sets the most recent respawn type.
+        /// </summary>
+        public SpawnableTeamType MostRecentSpawn { get; set; }
+
+        /// <summary>
+        /// Gets a list of players that most recently respawned.
+        /// </summary>
+        public List<Player> RecentlyRespawned { get; } = new();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not tesla gates are disabled.
+        /// </summary>
+        public bool TeslasDisabled { get; set; } = false;
+
+        /// <summary>
+        /// Gets a List of infection rules.
+        /// </summary>
         public List<InfectRule> InfectionRules { get; } = new();
 
+        /// <summary>
+        /// Gets a dictionary of spawn rules.
+        /// </summary>
         public Dictionary<RoleTypeId, int> SpawnRules { get; } = new();
 
         public void OnRestarting()
         {
             RespawnWaves = 0;
-            LastRespawnWave = DateTime.MinValue;
+            lastRespawnWave = DateTime.MinValue;
+            TeslasDisabled = false;
 
             ScriptHelper.StopAllScripts();
             ConditionVariables.ClearVariables();
@@ -40,6 +73,9 @@ namespace ScriptedEvents
 
             InfectionRules.Clear();
             SpawnRules.Clear();
+            RecentlyRespawned.Clear();
+
+            MostRecentSpawn = SpawnableTeamType.None;
         }
 
         public void OnRoundStarted()
@@ -51,11 +87,10 @@ namespace ScriptedEvents
 
                 int iterator = 0;
 
-                foreach (var rule in SpawnRules.Where(rule => rule.Value > 0))
+                foreach (KeyValuePair<RoleTypeId, int> rule in SpawnRules.Where(rule => rule.Value > 0))
                 {
-                    for (int i = iterator; i < iterator+rule.Value; i++)
+                    for (int i = iterator; i < iterator + rule.Value; i++)
                     {
-                        Log.Info(i);
                         Player p;
                         try
                         {
@@ -75,15 +110,16 @@ namespace ScriptedEvents
 
                         p.Role.Set(rule.Key);
                     }
+
                     iterator += rule.Value;
                 }
 
                 if (SpawnRules.Any(rule => rule.Value == -1))
                 {
-                    List<Player> newPlayers = players.Skip(iterator).ToList();
+                    Player[] newPlayers = players.Skip(iterator).ToArray();
 
-                    var rule = SpawnRules.FirstOrDefault(rule => rule.Value == -1);
-                    foreach (var player in newPlayers)
+                    KeyValuePair<RoleTypeId, int> rule = SpawnRules.FirstOrDefault(rule => rule.Value == -1);
+                    foreach (Player player in newPlayers)
                     {
                         player.Role.Set(rule.Key);
                     }
@@ -95,6 +131,13 @@ namespace ScriptedEvents
                 try
                 {
                     Script scr = ScriptHelper.ReadScript(name);
+
+                    if (scr.AdminEvent)
+                    {
+                        Log.Warn($"The '{name}' script is set to run each round, but the script is marked as an admin event!");
+                        continue;
+                    }
+
                     ScriptHelper.RunScript(scr);
                 }
                 catch (DisabledScriptException)
@@ -113,11 +156,12 @@ namespace ScriptedEvents
             if (!ev.IsAllowed) return;
 
             RespawnWaves++;
-            LastRespawnWave = DateTime.UtcNow;
+            lastRespawnWave = DateTime.UtcNow;
 
-            ConditionVariables.DefineVariable("{LASTRESPAWNTEAM}", ev.NextKnownTeam.ToString());
-            ConditionVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players.Count);
-            PlayerVariables.DefineVariable("{RESPAWNEDPLAYERS}", ev.Players);
+            MostRecentSpawn = ev.NextKnownTeam;
+
+            RecentlyRespawned.Clear();
+            RecentlyRespawned.AddRange(ev.Players);
         }
 
         // Infection
@@ -141,6 +185,17 @@ namespace ScriptedEvents
                 if (rule.MovePlayer)
                     ev.Player.Teleport(pos);
             });
+        }
+
+        // Tesla
+        public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
+        {
+            if (TeslasDisabled)
+            {
+                ev.IsInIdleRange = false;
+                ev.IsInHurtingRange = false;
+                ev.IsAllowed = false;
+            }
         }
     }
 }

@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScriptedEvents.DemoScripts
+﻿namespace ScriptedEvents.DemoScripts
 {
+    using System;
+
+    /// <summary>
+    /// Demo script providing information to the server host.
+    /// </summary>
     public class About : IDemoScript
     {
+        /// <inheritdoc/>
         public string FileName => "README";
 
+        /// <inheritdoc/>
         public string Contents => @$"!-- DISABLE
 # Hello, and thank you for using my plugin, Scripted Events!
 # I'm going to go over a couple of brief things in here you should know about setting up scripts. It's relatively easy!
@@ -22,8 +23,20 @@ namespace ScriptedEvents.DemoScripts
 # Adding ""!-- DISABLE"" at the start of the script will disable its execution in-game. Useful for WIP/broken scripts.
 # Each action that takes a 'duration' parameter supports math, which means you can use math equations such as '5 * 5'.
 # Each action that supports math also supports variables, eg. '5 * {{PLAYERSALIVE}}' to multiply 5 by the amount of players alive.
-# All variables are listed on the plugin's wiki page.
-# Lastly, have fun! This is meant to be a fun plugin to mess around with. If you have any questions, do not hesitate to join the Discord server and ask! I'm here to help you!
-# - Thunder";
+
+# This plugin contains A LOT of features. You will likely get confused at first. That's okay, that's why documentation (and support) is here.
+# If you ever get stuck, the HELP action is here for you. Simply input ""HELP [action name/variable name]"" into a script to get detailed info about how it works.
+# Or type ""HELP LIST"" for a list of actions, or ""HELP LISTVAR"" for a list of variables.
+
+# Lastly, have fun! This is meant to be a fun plugin to mess around with, as well as a utility plugin to create what you can imagine without the need for a custom plugin.
+# If you have any questions, do not hesitate to join the Discord server and ask! I'm here to help you!
+# - Thunder
+
+# GitHub: {MainPlugin.GitHub}
+# Discord Server: {MainPlugin.DiscordUrl}
+
+# File Generated at: {DateTime.UtcNow:f}
+# Plugin Version (as of generation): {MainPlugin.Singleton.Version}
+# Experimental DLL: {(MainPlugin.IsExperimental ? "YES" : "NO")}";
     }
 }

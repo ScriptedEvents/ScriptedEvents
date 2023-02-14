@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <LangVersion>9</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -59,7 +61,7 @@
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
-      <HintPath>..\..\..\scpslfiles\SCPSL_Data\Managed\Mirror.dll</HintPath>
+      <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,80 +75,130 @@
       <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\scpslfiles\SCPSL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="YamlDotNet">
-      <HintPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\dependencies\YamlDotNet.dll</HintPath>
+      <HintPath>$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\Features\Actions\ActionResponse.cs" />
+    <Compile Include="Actions\CustomAction.cs" />
+    <Compile Include="API\Enums\MessageType.cs" />
+    <Compile Include="API\Enums\VariableGroupType.cs" />
+    <Compile Include="API\Helpers\MsgGen.cs" />
+    <Compile Include="Structures\ActionResponse.cs" />
+    <Compile Include="Actions\Interfaces\ICustomReadDisplay.cs" />
+    <Compile Include="Actions\Interfaces\IHelpInfo.cs" />
+    <Compile Include="Actions\Interfaces\IHiddenAction.cs" />
+    <Compile Include="Actions\Interfaces\IScriptAction.cs" />
+    <Compile Include="API\Enums\ActionFlags.cs" />
     <Compile Include="API\Features\Exceptions\DisabledScriptException.cs" />
     <Compile Include="Conditions\Floats\GreaterThanOrEqualTo.cs" />
     <Compile Include="Conditions\Floats\LessThanOrEqualTo.cs" />
     <Compile Include="Conditions\Floats\NotEqual.cs" />
     <Compile Include="Conditions\Interfaces\ICondition.cs" />
     <Compile Include="Conditions\Interfaces\IStringCondition.cs" />
+    <Compile Include="Conditions\Strings\StringNotEqual.cs" />
     <Compile Include="Conditions\Strings\StringEqual.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="DemoScripts\About.cs" />
     <Compile Include="DemoScripts\ConditionSamples.cs" />
     <Compile Include="DemoScripts\IDemoScript.cs" />
-    <Compile Include="Handlers\Commands\MainCommand\StopAllScripts.cs" />
-    <Compile Include="Handlers\Commands\MainCommand\ListScripts.cs" />
-    <Compile Include="Handlers\Commands\MainCommand\ScriptedEvents.cs" />
-    <Compile Include="Handlers\DefaultActions\BroadcastPlayerAction.cs" />
-    <Compile Include="Handlers\DefaultActions\BroadcastAction.cs" />
-    <Compile Include="Handlers\DefaultActions\DeletePlayerVariable.cs" />
-    <Compile Include="Handlers\DefaultActions\ExecuteScriptAction.cs" />
-    <Compile Include="Handlers\DefaultActions\GiveAction.cs" />
-    <Compile Include="Handlers\DefaultActions\InfectAddAction.cs" />
-    <Compile Include="Handlers\DefaultActions\SpawnRuleAction.cs" />
-    <Compile Include="Handlers\DefaultActions\StartRoundAction.cs" />
-    <Compile Include="Handlers\DefaultActions\SavePlayerVariableAction.cs" />
-    <Compile Include="Handlers\DefaultActions\SilentCassieAction.cs" />
-    <Compile Include="Handlers\DefaultActions\CassieAction.cs" />
-    <Compile Include="Handlers\DefaultActions\CommandAction.cs" />
-    <Compile Include="API\Features\Actions\IAction.cs" />
-    <Compile Include="API\Features\Actions\ITimingAction.cs" />
-    <Compile Include="Handlers\DefaultActions\DebugMathAction.cs" />
-    <Compile Include="Handlers\DefaultActions\DebugConditionLogAction.cs" />
-    <Compile Include="Handlers\DefaultActions\DecontaminateAction.cs" />
-    <Compile Include="Handlers\DefaultActions\DoorAction.cs" />
-    <Compile Include="Handlers\DefaultActions\IfAction.cs" />
-    <Compile Include="Handlers\DefaultActions\LightsOutAction.cs" />
-    <Compile Include="Handlers\DefaultActions\LogAction.cs" />
-    <Compile Include="Handlers\DefaultActions\RoundlockAction.cs" />
-    <Compile Include="Handlers\DefaultActions\SetRoleAction.cs" />
-    <Compile Include="Handlers\DefaultActions\StopIfAction.cs" />
-    <Compile Include="Handlers\DefaultActions\WaitForSecondsAction.cs" />
-    <Compile Include="Handlers\DefaultActions\WaitUntilDebugAction.cs" />
-    <Compile Include="Handlers\DefaultActions\WaitUntilAction.cs" />
+    <Compile Include="Commands\MainCommand\ReadScript.cs" />
+    <Compile Include="Commands\MainCommand\StopAllScripts.cs" />
+    <Compile Include="Commands\MainCommand\ListScripts.cs" />
+    <Compile Include="Commands\MainCommand\ScriptedEventsParent.cs" />
+    <Compile Include="Actions\BroadcastPlayerAction.cs" />
+    <Compile Include="Actions\BroadcastAction.cs" />
+    <Compile Include="Actions\DeleteVariable.cs" />
+    <Compile Include="Actions\DeletePlayerVariable.cs" />
+    <Compile Include="Actions\ExecuteScriptAction.cs" />
+    <Compile Include="Actions\GiveAction.cs" />
+    <Compile Include="Actions\GotoAction.cs" />
+    <Compile Include="Actions\GotoIfAction.cs" />
+    <Compile Include="Actions\HelpAction.cs" />
+    <Compile Include="Actions\InfectAddAction.cs" />
+    <Compile Include="Actions\SizeAction.cs" />
+    <Compile Include="Actions\NullAction.cs" />
+    <Compile Include="Actions\SpawnRuleAction.cs" />
+    <Compile Include="Actions\StartRoundAction.cs" />
+    <Compile Include="Actions\SavePlayerVariableAction.cs" />
+    <Compile Include="Actions\SilentCassieAction.cs" />
+    <Compile Include="Actions\CassieAction.cs" />
+    <Compile Include="Actions\CommandAction.cs" />
+    <Compile Include="Actions\Interfaces\IAction.cs" />
+    <Compile Include="Actions\Interfaces\ITimingAction.cs" />
+    <Compile Include="Actions\DebugMathAction.cs" />
+    <Compile Include="Actions\DebugConditionLogAction.cs" />
+    <Compile Include="Actions\DecontaminateAction.cs" />
+    <Compile Include="Actions\DoorAction.cs" />
+    <Compile Include="Actions\IfAction.cs" />
+    <Compile Include="Actions\TurnOffLightsAction.cs" />
+    <Compile Include="Actions\LogAction.cs" />
+    <Compile Include="Actions\RoundlockAction.cs" />
+    <Compile Include="Actions\SetRoleAction.cs" />
+    <Compile Include="Actions\StopAction.cs" />
+    <Compile Include="Actions\StopIfAction.cs" />
+    <Compile Include="Actions\Switch.cs" />
+    <Compile Include="Actions\SaveVariableAction.cs" />
+    <Compile Include="Actions\TeslaAction.cs" />
+    <Compile Include="Actions\WaitForSecondsAction.cs" />
+    <Compile Include="Actions\WaitUntilDebugAction.cs" />
+    <Compile Include="Actions\WaitUntilAction.cs" />
     <Compile Include="API\Features\Aliases\Alias.cs" />
     <Compile Include="API\Features\Aliases\AliasExtensions.cs" />
     <Compile Include="API\Helpers\ApiHelper.cs" />
-    <Compile Include="Handlers\Commands\MainCommand\ExecuteScript.cs" />
+    <Compile Include="Commands\MainCommand\ExecuteScript.cs" />
     <Compile Include="API\Helpers\ConditionHelper.cs" />
     <Compile Include="Conditions\Floats\Equal.cs" />
     <Compile Include="Conditions\Floats\LessThan.cs" />
     <Compile Include="Conditions\Floats\GreaterThan.cs" />
     <Compile Include="Conditions\Interfaces\IFloatCondition.cs" />
-    <Compile Include="Handlers\Variables\ConditionVariables.cs" />
+    <Compile Include="Structures\Argument.cs" />
+    <Compile Include="Structures\ConditionResponse.cs" />
+    <Compile Include="Structures\MathResult.cs" />
+    <Compile Include="Variables\Condition\BooleanVariables.cs" />
+    <Compile Include="Variables\Condition\ChanceVariables.cs" />
+    <Compile Include="Variables\Condition\CustomVariable.cs" />
+    <Compile Include="Variables\Condition\EscapesVariables.cs" />
+    <Compile Include="Variables\Condition\KillsAndDeathsVariables.cs" />
+    <Compile Include="Variables\Condition\PlayerCountVariables.cs" />
+    <Compile Include="Variables\Condition\RoleVariables.cs" />
+    <Compile Include="Variables\Condition\RoundTimeVariables.cs" />
+    <Compile Include="Variables\Condition\StringVariables.cs" />
+    <Compile Include="Variables\Condition\TicketsAndRespawnsVariables.cs" />
+    <Compile Include="Variables\Condition\WorldTimeVariables.cs" />
+    <Compile Include="Variables\Condition\ZoneVariables.cs" />
+    <Compile Include="Variables\Handlers\ConditionVariables.cs" />
     <Compile Include="EventHandlers.cs" />
-    <Compile Include="Handlers\DefaultActions\WarheadAction.cs" />
-    <Compile Include="Handlers\Variables\PlayerVariables.cs" />
+    <Compile Include="Actions\WarheadAction.cs" />
+    <Compile Include="Variables\Handlers\PlayerVariables.cs" />
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="API\Features\Script.cs" />
+    <Compile Include="Script.cs" />
     <Compile Include="API\Helpers\ScriptHelper.cs" />
     <Compile Include="Structures\InfectRule.cs" />
+    <Compile Include="Variables\Interfaces\IBoolVariable.cs" />
+    <Compile Include="Variables\Interfaces\IConditionVariable.cs" />
+    <Compile Include="Variables\Interfaces\IFloatVariable.cs" />
+    <Compile Include="Variables\Interfaces\IPlayerVariable.cs" />
+    <Compile Include="Variables\Interfaces\IStringVariable.cs" />
+    <Compile Include="Variables\Interfaces\IVariable.cs" />
+    <Compile Include="Variables\Interfaces\IVariableGroup.cs" />
+    <Compile Include="Variables\Player\CustomPlayerVariable.cs" />
+    <Compile Include="Variables\Player\RoleVariables.cs" />
+    <Compile Include="Variables\Player\ZoneVariables.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoScripts\DemoScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">
-      <Version>6.0.0-beta.25</Version>
+      <Version>6.0.0-beta.26</Version>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers">
+      <Version>1.1.118</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

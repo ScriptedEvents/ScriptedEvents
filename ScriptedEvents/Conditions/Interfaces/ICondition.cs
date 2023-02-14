@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ScriptedEvents.Conditions.Interfaces
+﻿namespace ScriptedEvents.Conditions.Interfaces
 {
+    /// <summary>
+    /// Represents a condition.
+    /// </summary>
     public interface ICondition
     {
+        /// <summary>
+        /// Gets the symbol to detect.
+        /// </summary>
         public string Symbol { get; }
     }
 }
