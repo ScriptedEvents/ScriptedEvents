@@ -18,7 +18,16 @@
     /// </summary>
     public static class ConditionVariables
     {
-        static ConditionVariables()
+        public static List<IVariableGroup> Groups { get; } = new();
+
+        public static readonly Dictionary<string, RoleTypeId> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
+
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that were defined in run-time.
+        /// </summary>
+        internal static Dictionary<string, object> DefinedVariables { get; } = new();
+
+        public static void Setup()
         {
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
@@ -34,15 +43,6 @@
                 }
             }
         }
-
-        public static List<IVariableGroup> Groups { get; } = new();
-
-        public static readonly Dictionary<string, RoleTypeId> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
-
-        /// <summary>
-        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that were defined in run-time.
-        /// </summary>
-        internal static Dictionary<string, object> DefinedVariables { get; } = new();
 
         /// <summary>
         /// Defines a variable.

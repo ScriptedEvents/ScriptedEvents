@@ -8,7 +8,7 @@
     using Exiled.API.Features;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.DemoScripts;
-
+    using ScriptedEvents.Variables.Handlers;
     using PlayerHandler = Exiled.Events.Handlers.Player;
     using ServerHandler = Exiled.Events.Handlers.Server;
 
@@ -98,6 +98,8 @@
             ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
 
             ApiHelper.RegisterActions();
+            ConditionVariables.Setup();
+            PlayerVariables.Setup();
         }
 
         /// <inheritdoc/>

@@ -17,7 +17,11 @@
     /// </summary>
     public static class PlayerVariables
     {
-        static PlayerVariables()
+        public static List<IVariableGroup> Groups { get; } = new();
+
+        internal static Dictionary<string, IEnumerable<Player>> DefinedVariables { get; } = new();
+
+        public static void Setup()
         {
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
@@ -33,10 +37,6 @@
                 }
             }
         }
-
-        public static List<IVariableGroup> Groups { get; } = new();
-
-        internal static Dictionary<string, IEnumerable<Player>> DefinedVariables { get; } = new();
 
         public static void DefineVariable(string name, IEnumerable<Player> input)
         {
