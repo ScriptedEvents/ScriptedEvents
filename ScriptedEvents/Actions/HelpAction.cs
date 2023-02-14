@@ -10,6 +10,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Condition;
     using ScriptedEvents.Variables.Handlers;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -99,11 +100,14 @@
             // Variable help
             else if (Arguments[0].StartsWith("{") && Arguments[0].EndsWith("}"))
             {
+                bool valid = false;
+
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
 
                 if (ConditionVariables.TryGetVariable(Arguments[0], out IConditionVariable variable, out bool reversed))
                 {
+                    valid = true;
                     sb.AppendLine("=== CONDITION VARIABLE ===");
                     sb.AppendLine($"Name: {variable.Name}");
                     sb.AppendLine($"Description: {variable.Description}");
@@ -120,6 +124,9 @@
                         case IStringVariable @string:
                             sb.AppendLine($"Current Value: {@string.Value}");
                             break;
+                        case CustomVariable custom:
+                            sb.AppendLine($"Current Value: {custom.Value}");
+                            break;
                     }
 
                     sb.AppendLine();
@@ -127,17 +134,23 @@
 
                 if (PlayerVariables.TryGetVariable(Arguments[0], out IPlayerVariable playerVariable))
                 {
+                    valid = true;
                     sb.AppendLine($"=== PLAYER VARIABLE ===");
                     sb.AppendLine($"Name: {playerVariable.Name}");
                     sb.AppendLine($"Description: {playerVariable.Description}");
                     sb.AppendLine($"Current Value: {(playerVariable.Players.Count() == 0 ? "[None]" : string.Join(", ", playerVariable.Players.Select(ply => ply.Nickname)))}");
                 }
 
+                if (!valid)
+                {
+                    return new(false, "Invalid variable provided for the HELP action.");
+                }
+
                 return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
             }
 
             // Nope
-            return new(false, "Invalid argument provided for the help command.");
+            return new(false, "Invalid argument provided for the HELP action.");
         }
     }
 }
