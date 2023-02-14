@@ -16,7 +16,6 @@
         /// </summary>
         public Script()
         {
-            Actions = ListPool<IAction>.Pool.Get();
             Flags = ListPool<string>.Pool.Get();
             UniqueId = Guid.NewGuid();
         }
@@ -26,7 +25,6 @@
         /// </summary>
         ~Script()
         {
-            ListPool<IAction>.Pool.Return(Actions);
             ListPool<string>.Pool.Return(Flags);
         }
 
@@ -73,7 +71,7 @@
         /// <summary>
         /// Gets or sets a list of <see cref="IAction"/> of each action.
         /// </summary>
-        public List<IAction> Actions { get; set; }
+        public IAction[] Actions { get; set; }
 
         /// <summary>
         /// Gets or sets a list of Labels.

@@ -58,7 +58,7 @@
                 max = Mathf.RoundToInt(result.Result);
             }
 
-            List<Player> plys;
+            Player[] plys;
 
             if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out plys))
                 return new(MessageType.NoPlayersFound, this, "players");

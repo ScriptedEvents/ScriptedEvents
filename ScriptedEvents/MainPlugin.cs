@@ -32,12 +32,12 @@
         /// <summary>
         /// Gets a list of demo scripts.
         /// </summary>
-        public static ReadOnlyCollection<IDemoScript> DemoScripts { get; } = new List<IDemoScript>()
+        public static IDemoScript[] DemoScripts { get; } = new IDemoScript[]
         {
             new About(),
             new DemoScript(),
             new ConditionSamples(),
-        }.AsReadOnly();
+        };
 
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";

@@ -119,9 +119,9 @@
         /// <param name="input">Input string.</param>
         /// <param name="max">Maximum amount of players to get. Leave below zero for unlimited.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of players.</returns>
-        public static IEnumerable<Player> GetPlayers(string input, int max = -1)
+        public static Player[] GetPlayers(string input, int max = -1)
         {
-            ScriptHelper.TryGetPlayers(input, max, out List<Player> list);
+            ScriptHelper.TryGetPlayers(input, max, out Player[] list);
             return list;
         }
 

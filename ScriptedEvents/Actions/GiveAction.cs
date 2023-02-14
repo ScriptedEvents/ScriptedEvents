@@ -62,7 +62,7 @@
                 }
             }
 
-            List<Player> plys;
+            Player[] plys;
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys))
                 return new(MessageType.NoPlayersFound, this, "players");
