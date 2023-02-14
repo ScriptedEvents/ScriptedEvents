@@ -28,7 +28,7 @@
         public string Name => "{LCZ}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of players in Light Containment Zone.";
 
         /// <inheritdoc/>
         public float Value => Player.List.Count(ply => ply.Zone is ZoneType.LightContainment);
@@ -40,7 +40,7 @@
         public string Name => "{HCZ}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of players in Heavy Containment Zone.";
 
         /// <inheritdoc/>
         public float Value => Player.List.Count(ply => ply.Zone is ZoneType.HeavyContainment);
@@ -52,7 +52,7 @@
         public string Name => "{EZ}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of players in Entrance Zone.";
 
         /// <inheritdoc/>
         public float Value => Player.List.Count(ply => ply.Zone is ZoneType.Entrance);
@@ -64,7 +64,7 @@
         public string Name => "{SURFACE}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of players on the Surface.";
 
         /// <inheritdoc/>
         public float Value => Player.List.Count(ply => ply.Zone is ZoneType.Surface);
@@ -76,7 +76,7 @@
         public string Name => "{POCKET}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of players in the Pocket Dimension.";
 
         /// <inheritdoc/>
         public float Value => Player.List.Count(ply => ply.CurrentRoom?.Type is RoomType.Pocket);

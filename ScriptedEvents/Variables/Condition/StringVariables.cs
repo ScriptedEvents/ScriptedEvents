@@ -22,7 +22,7 @@
         public string Name => "{NEXTWAVE}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The next team to spawn, either NineTailedFox, ChaosInsurgency, or None.";
 
         /// <inheritdoc/>
         public string Value => Respawn.NextKnownTeam.ToString();

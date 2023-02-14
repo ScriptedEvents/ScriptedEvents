@@ -27,7 +27,7 @@
         public string Name => "{LCZ}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Gets all the alive players in Light Containment Zone.";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.Zone is ZoneType.LightContainment);
@@ -39,7 +39,7 @@
         public string Name => "{HCZ}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Gets all the alive players in Heavy Containment Zone.";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.Zone is ZoneType.HeavyContainment);
@@ -51,7 +51,7 @@
         public string Name => "{EZ}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Gets all the alive players in Entrance Zone.";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.Zone is ZoneType.Entrance);
@@ -63,7 +63,7 @@
         public string Name => "{SURFACE}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Gets all the alive players on the Surface.";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.Zone is ZoneType.Surface);
@@ -75,7 +75,7 @@
         public string Name => "{POCKET}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Gets all the alive players in the Pocket Dimension.";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.CurrentRoom?.Type is RoomType.Pocket);

@@ -25,7 +25,7 @@
         public string Name => "{PLAYERS}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of players in the server.";
 
         /// <inheritdoc/>
         public float Value => Player.List.Count();
@@ -37,7 +37,7 @@
         public string Name => "{PLAYERSALIVE}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of alive players in the server.";
 
         /// <inheritdoc/>
         public float Value => Player.List.Count(p => p.IsAlive);
@@ -49,7 +49,7 @@
         public string Name => "{PLAYERSDEAD}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of dead players in the server.";
 
         /// <inheritdoc/>
         public float Value => Player.List.Count(p => p.IsDead);

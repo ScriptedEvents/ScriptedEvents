@@ -23,7 +23,7 @@
         public string Name => "{ROUNDMINUTES}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of elapsed round time, in minutes.";
 
         /// <inheritdoc/>
         public float Value => (float)Round.ElapsedTime.TotalMinutes;
@@ -35,7 +35,7 @@
         public string Name => "{ROUNDSECONDS}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of elapsed round time, in seconds.";
 
         /// <inheritdoc/>
         public float Value => (float)Round.ElapsedTime.TotalSeconds;

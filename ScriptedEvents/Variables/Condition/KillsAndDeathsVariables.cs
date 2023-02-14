@@ -23,7 +23,7 @@
         public string Name => "{KILLS}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of kills.";
 
         /// <inheritdoc/>
         public float Value => Round.Kills;
@@ -35,7 +35,7 @@
         public string Name => "{SCPKILLS}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of SCP-related kills.";
 
         /// <inheritdoc/>
         public float Value => Round.KillsByScp;

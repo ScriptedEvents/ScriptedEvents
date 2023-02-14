@@ -26,7 +26,7 @@
         public string Name => "{DAYOFWEEK}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The current real-world day of the week, from 1-7, in UTC time.";
 
         /// <inheritdoc/>
         public float Value => ((int)DateTime.UtcNow.DayOfWeek) + 1;
@@ -38,7 +38,7 @@
         public string Name => "{DAYOFMONTH}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The current real-world day of the month, from 1-31, in UTC time.";
 
         /// <inheritdoc/>
         public float Value => DateTime.UtcNow.Day;
@@ -50,7 +50,7 @@
         public string Name => "{DAYOFYEAR}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The current real-world day of the year, from 1-366, in UTC time.";
 
         /// <inheritdoc/>
         public float Value => DateTime.UtcNow.DayOfYear;
@@ -62,7 +62,7 @@
         public string Name => "{MONTH}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The current real-world month, from 1-12, in UTC time.";
 
         /// <inheritdoc/>
         public float Value => DateTime.UtcNow.Month;
@@ -74,7 +74,7 @@
         public string Name => "{YEAR}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The current real-world year, from 1-9999, in UTC time.";
 
         /// <inheritdoc/>
         public float Value => DateTime.UtcNow.Year;

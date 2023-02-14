@@ -24,7 +24,7 @@
         public string Name => "{ESCAPES}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of escapes. Equivalent to {CLASSDESCAPES} + {SCIENTISTESCAPES}.";
 
         /// <inheritdoc/>
         public float Value => Round.EscapedDClasses + Round.EscapedScientists;
@@ -36,7 +36,7 @@
         public string Name => "{CLASSDESCAPES}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of Class-D escapes.";
 
         /// <inheritdoc/>
         public float Value => Round.EscapedDClasses;
@@ -48,7 +48,7 @@
         public string Name => "{SCIENTISTESCAPES}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of Scientist escapes.";
 
         /// <inheritdoc/>
         public float Value => Round.EscapedScientists;

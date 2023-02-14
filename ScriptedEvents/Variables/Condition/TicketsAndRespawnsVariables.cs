@@ -26,7 +26,7 @@
         public string Name => "{NTFTICKETS}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of NTF tickets.";
 
         /// <inheritdoc/>
         public float Value => Respawn.NtfTickets;
@@ -38,7 +38,7 @@
         public string Name => "{CHAOSTICKETS}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of Chaos Insurgency tickets.";
 
         /// <inheritdoc/>
         public float Value => Respawn.ChaosTickets;
@@ -50,7 +50,7 @@
         public string Name => "{TOTALWAVES}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The total amount of respawn waves.";
 
         /// <inheritdoc/>
         public float Value => MainPlugin.Handlers.RespawnWaves;
@@ -62,7 +62,7 @@
         public string Name => "{TIMEUNTILNEXTWAVE}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The amount of time until the next respawn wave, in seconds.";
 
         /// <inheritdoc/>
         public float Value => (float)Respawn.TimeUntilSpawnWave.TotalSeconds;
@@ -74,7 +74,7 @@
         public string Name => "{TIMESINCELASTWAVE}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "The amount of time since the last respawn wave, in seconds. If a respawn wave has not occurred yet, this value will be very large.";
 
         /// <inheritdoc/>
         public float Value => (float)MainPlugin.Handlers.TimeSinceWave.TotalSeconds;

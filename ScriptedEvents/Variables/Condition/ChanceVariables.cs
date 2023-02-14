@@ -25,7 +25,7 @@
         public string Name => "{CHANCE}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Always returns a random decimal between 0-1.";
 
         /// <inheritdoc/>
         public float Value => Random.value;
@@ -37,7 +37,7 @@
         public string Name => "{CHANCE3}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Always returns a random number from 1-3.";
 
         /// <inheritdoc/>
         public float Value => Random.Range(1, 4);
@@ -49,7 +49,7 @@
         public string Name => "{CHANCE5}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Always returns a random number from 1-5.";
 
         /// <inheritdoc/>
         public float Value => Random.Range(1, 6);
@@ -61,7 +61,7 @@
         public string Name => "{CHANCE10}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Always returns a random number from 1-10.";
 
         /// <inheritdoc/>
         public float Value => Random.Range(1, 11);
@@ -73,7 +73,7 @@
         public string Name => "{CHANCE20}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Always returns a random number from 1-20.";
 
         /// <inheritdoc/>
         public float Value => Random.Range(1, 21);
@@ -85,7 +85,7 @@
         public string Name => "{CHANCE100}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Always returns a random number from 1-100.";
 
         /// <inheritdoc/>
         public float Value => Random.Range(1, 101);
