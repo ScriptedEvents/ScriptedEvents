@@ -11,6 +11,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Variables.Interfaces;
+    using ScriptedEvents.Variables.Player.Roles;
 
     /// <summary>
     /// A class used to store and retrieve all player variables.
@@ -18,6 +19,8 @@
     public static class PlayerVariables
     {
         public static List<IVariableGroup> Groups { get; } = new();
+
+        public static readonly Dictionary<string, RoleTypeVariable> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => new RoleTypeVariable(x));
 
         internal static Dictionary<string, IEnumerable<Player>> DefinedVariables { get; } = new();
 
@@ -83,6 +86,9 @@
                 }
             }
 
+            if (RoleTypeIds.TryGetValue(name, out RoleTypeVariable value))
+                return value;
+
             return null;
         }
 
@@ -101,9 +107,6 @@
 
             if (DefinedVariables.TryGetValue(input, out IEnumerable<Player> result))
                 return result;
-
-            if (ConditionVariables.RoleTypeIds.TryGetValue(input, out RoleTypeId rt))
-                return Player.Get(rt);
 
             return null;
         }

@@ -33,7 +33,7 @@
         public string ReversedName => "{!CASSIESPEAKING}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Whether or not CASSIE is currently speaking.";
 
         /// <inheritdoc/>
         public bool Value => Cassie.IsSpeaking;
@@ -48,7 +48,7 @@
         public string ReversedName => "{!DECONTAMINATED}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Whether or not Light Containment Zone has been decontaminated.";
 
         /// <inheritdoc/>
         public bool Value => Map.IsLczDecontaminated;
@@ -63,7 +63,7 @@
         public string ReversedName => "{!ROUNDENDED}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Whether or not the round has ended.";
 
         /// <inheritdoc/>
         public bool Value => Round.IsEnded;
@@ -78,7 +78,7 @@
         public string ReversedName => "{!ROUNDINPROGRESS}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Whether or not the round is in progress.";
 
         /// <inheritdoc/>
         public bool Value => Round.InProgress;
@@ -93,7 +93,7 @@
         public string ReversedName => "{!ROUNDSTARTED}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Whether or not the round has started.";
 
         /// <inheritdoc/>
         public bool Value => Round.IsStarted;
@@ -108,7 +108,7 @@
         public string ReversedName => "{!SCP914ACTIVE}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Whether or not SCP-914 is currently active.";
 
         /// <inheritdoc/>
         public bool Value => Scp914.IsWorking;
@@ -123,7 +123,7 @@
         public string ReversedName => "{!WARHEADCOUNTING}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Whether or not the Alpha Warhead is currently counting down.";
 
         /// <inheritdoc/>
         public bool Value => Warhead.IsInProgress;
@@ -138,7 +138,7 @@
         public string ReversedName => "{!WARHEADDETONATED}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Whether or not the warhead has been detonated.";
 
         /// <inheritdoc/>
         public bool Value => Warhead.IsDetonated;
@@ -153,7 +153,7 @@
         public string ReversedName => "{!WAVERESPAWNING}";
 
         /// <inheritdoc/>
-        public string Description => throw new System.NotImplementedException();
+        public string Description => "Whether or not a wave has respawned within the last 5 seconds.";
 
         /// <inheritdoc/>
         public bool Value => MainPlugin.Handlers.IsRespawning;

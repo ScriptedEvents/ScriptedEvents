@@ -10,6 +10,7 @@
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Variables.Condition.Roles;
     using ScriptedEvents.Variables.Interfaces;
     using Random = UnityEngine.Random;
 
@@ -20,7 +21,7 @@
     {
         public static List<IVariableGroup> Groups { get; } = new();
 
-        public static readonly Dictionary<string, RoleTypeId> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
+        public static readonly Dictionary<string, RoleTypeVariable> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => new RoleTypeVariable(x));
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that were defined in run-time.
@@ -120,6 +121,9 @@
                 }
             }
 
+            if (RoleTypeIds.TryGetValue(name, out RoleTypeVariable value))
+                return new(value, false);
+
             return new(null, false);
         }
 
@@ -165,11 +169,6 @@
             foreach (KeyValuePair<string, object> definedVariable in DefinedVariables)
             {
                 input = input.Replace(definedVariable.Key, definedVariable.Value);
-            }
-
-            foreach (KeyValuePair<string, RoleTypeId> rt in RoleTypeIds)
-            {
-                input = input.Replace($"{{{rt.Key}}}", Player.Get(rt.Value).Count());
             }
 
             return input;
