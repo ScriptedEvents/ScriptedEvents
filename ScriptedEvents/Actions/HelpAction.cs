@@ -27,10 +27,10 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public string Description => "Gets information about a command.";
+        public string Description => "Gets information about a command or a variable, or lists all commands or variables.";
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments => new[] { new Argument("action", typeof(string), "The name of the action. Case-sensitive.", true) };
+        public Argument[] ExpectedArguments => new[] { new Argument("input", typeof(string), "The name of the action/variable, \"LIST\" for all actions, or \"LISTVAR\" for all variables. Case-sensitive.", true) };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
