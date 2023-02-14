@@ -130,7 +130,7 @@
                     sb.AppendLine($"=== PLAYER VARIABLE ===");
                     sb.AppendLine($"Name: {playerVariable.Name}");
                     sb.AppendLine($"Description: {playerVariable.Description}");
-                    sb.AppendLine($"Current Value: {string.Join(", ", playerVariable.Players.Select(ply => ply.Nickname))}");
+                    sb.AppendLine($"Current Value: {(playerVariable.Players.Count() == 0 ? "[None]" : string.Join(", ", playerVariable.Players.Select(ply => ply.Nickname)))}");
                 }
 
                 return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
