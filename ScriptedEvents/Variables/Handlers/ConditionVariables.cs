@@ -83,14 +83,15 @@
         public static string[] IsolateVariables(string input)
         {
             List<string> result = ListPool<string>.Pool.Get();
-            string[] split = input.Split(' ');
 
-            foreach (string str in split)
+            for (int i = 0; i < input.Length; i++)
             {
-                string newStr = str.RemoveWhitespace();
-                if (newStr.StartsWith("{") && newStr.EndsWith("}"))
+                char c = input[i];
+                if (c is '{')
                 {
-                    result.Add(newStr.ToUpper());
+                    int index = input.IndexOf('}', i);
+                    string variable = input.Substring(i, index+1);
+                    result.Add(variable);
                 }
             }
 
@@ -119,12 +120,16 @@
                 }
             }
 
-            return null;
+            return new(null, false);
         }
 
         public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed)
         {
-            (variable, reversed) = GetVariable(name);
+            Tuple<IConditionVariable, bool> res = GetVariable(name);
+
+            variable = res.Item1;
+            reversed = res.Item2;
+
             return variable != null;
         }
 
@@ -145,7 +150,7 @@
                     {
                         case IBoolVariable @bool:
                             bool result = reversed ? !@bool.Value : @bool.Value;
-                            input = input.Replace(variable, @bool.Value ? "TRUE" : "FALSE");
+                            input = input.Replace(variable, result ? "TRUE" : "FALSE");
                             break;
                         case IFloatVariable @float:
                             input = input.Replace(variable, @float.Value);
