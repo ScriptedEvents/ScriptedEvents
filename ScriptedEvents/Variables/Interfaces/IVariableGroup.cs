@@ -8,6 +8,11 @@
     public interface IVariableGroup
     {
         /// <summary>
+        /// Gets the name of the group.
+        /// </summary>
+        public string GroupName { get; }
+
+        /// <summary>
         /// Gets the type of variables contained in this group.
         /// </summary>
         public VariableGroupType GroupType { get; }

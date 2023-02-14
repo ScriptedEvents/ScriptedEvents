@@ -8,6 +8,9 @@
     public class RoundTimeVariables : IVariableGroup
     {
         /// <inheritdoc/>
+        public string GroupName => "Round Time";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>

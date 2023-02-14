@@ -9,6 +9,9 @@
     public class PlayerCountVariables : IVariableGroup
     {
         /// <inheritdoc/>
+        public string GroupName => "Players";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>

@@ -6,6 +6,7 @@
     using System.Text;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using PlayerRoles.PlayableScps.HUDs;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
@@ -54,9 +55,73 @@
                     sbList.AppendLine($"{lAction.Name} : {lhelpInfo?.Description ?? "No Description"}");
                 }
 
-                Log.Info(StringBuilderPool.Pool.ToStringReturn(sbList));
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sbList));
+            }
 
-                return new(true);
+            // List Variables
+            if (Arguments[0].ToUpper() is "LISTVAR" or "VARLIST")
+            {
+                var conditionList = ConditionVariables.Groups.Where(g => g.GroupType is VariableGroupType.Condition).OrderByDescending(group => group.GroupName);
+                var playerList = PlayerVariables.Groups.Where(g => g.GroupType is VariableGroupType.Player).OrderByDescending(group => group.GroupName);
+
+                StringBuilder sbList = StringBuilderPool.Pool.Get();
+                sbList.AppendLine();
+                sbList.AppendLine("=== CONDITION VARIABLES ===");
+                sbList.AppendLine("The following variables can all be used in conditions, such as IF, GOTOIF, WAITUNTIL, etc. Additionally, each RoleType has its own variable (eg. {NTFCAPTAIN}).");
+
+                foreach (IVariableGroup group in conditionList)
+                {
+                    sbList.AppendLine($"+ {group.GroupName} +");
+                    foreach (IVariable variable in group.Variables.OrderByDescending(v => v.Name))
+                    {
+                        sbList.AppendLine($"{variable.Name} - {variable.Description}");
+                    }
+
+                    sbList.AppendLine();
+                }
+
+                sbList.AppendLine("+ User Defined +");
+                if (ConditionVariables.DefinedVariables.Count == 0)
+                {
+                    sbList.AppendLine("None");
+                }
+                else
+                {
+                    foreach (var userDefined in ConditionVariables.DefinedVariables)
+                    {
+                        sbList.AppendLine($"{userDefined.Value.Name}");
+                    }
+                }
+
+                sbList.AppendLine();
+                sbList.AppendLine("=== PLAYER VARIABLES ===");
+                sbList.AppendLine("The following variables can all be used in player parameters, such as SETROLE, TESLA PLAYERS, etc. Additionally, each RoleType has its own variable (eg. {NTFCAPTAIN}).");
+
+                foreach (IVariableGroup group in playerList)
+                {
+                    sbList.AppendLine($"+ {group.GroupName} +");
+                    foreach (IVariable variable in group.Variables.OrderByDescending(v => v.Name))
+                    {
+                        sbList.AppendLine($"{variable.Name} - {variable.Description}");
+                    }
+
+                    sbList.AppendLine();
+                }
+
+                sbList.AppendLine("+ User Defined +");
+                if (PlayerVariables.DefinedVariables.Count == 0)
+                {
+                    sbList.AppendLine("None");
+                }
+                else
+                {
+                    foreach (var userDefined in PlayerVariables.DefinedVariables)
+                    {
+                        sbList.AppendLine($"{userDefined.Value.Name}");
+                    }
+                }
+
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sbList));
             }
 
             // Action Help
@@ -93,8 +158,7 @@
                     sb.AppendLine($"  {arg.Description}");
                 }
 
-                Log.Info(StringBuilderPool.Pool.ToStringReturn(sb));
-                return new(true);
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
             }
 
             // Variable help

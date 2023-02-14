@@ -8,6 +8,9 @@
     public class StringVariables : IVariableGroup
     {
         /// <inheritdoc/>
+        public string GroupName => "Strings";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>

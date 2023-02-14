@@ -8,6 +8,9 @@
     internal class WorldTimeVariables : IVariableGroup
     {
         /// <inheritdoc/>
+        public string GroupName => "World Time";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>

@@ -8,6 +8,9 @@
     public class BooleanVariables : IVariableGroup
     {
         /// <inheritdoc/>
+        public string GroupName => "Booleans";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>

@@ -8,6 +8,9 @@
     public class KillsAndDeathsVariables : IVariableGroup
     {
         /// <inheritdoc/>
+        public string GroupName => "Kills & Deaths";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>

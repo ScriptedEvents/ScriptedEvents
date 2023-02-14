@@ -10,8 +10,13 @@
 
     public class ZoneVariables : IVariableGroup
     {
+        /// <inheritdoc/>
+        public string GroupName => "Zones";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Player;
 
+        /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new LCZ(),

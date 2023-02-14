@@ -10,6 +10,9 @@
     public class ZoneVariables : IVariableGroup
     {
         /// <inheritdoc/>
+        public string GroupName => "Zone";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>

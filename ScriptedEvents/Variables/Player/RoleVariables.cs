@@ -10,8 +10,13 @@
 
     public class RoleVariables : IVariableGroup
     {
+        /// <inheritdoc/>
+        public string GroupName => "Roles";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Player;
 
+        /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new Guards(),

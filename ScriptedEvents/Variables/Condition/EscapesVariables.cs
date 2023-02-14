@@ -8,6 +8,9 @@
     public class EscapesVariables : IVariableGroup
     {
         /// <inheritdoc/>
+        public string GroupName => "Escapes";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>

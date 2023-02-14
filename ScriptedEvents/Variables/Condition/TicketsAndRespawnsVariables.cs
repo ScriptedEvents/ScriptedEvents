@@ -8,6 +8,9 @@
     public class TicketsAndRespawnsVariables : IVariableGroup
     {
         /// <inheritdoc/>
+        public string GroupName => "Tickets & Respawn Waves";
+
+        /// <inheritdoc/>
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
