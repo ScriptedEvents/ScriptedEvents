@@ -6,6 +6,7 @@
     using System.IO;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using MEC;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Variables.Handlers;
@@ -18,6 +19,16 @@
         /// Whether or not this build of the plugin is experimental.
         /// </summary>
         public const bool IsExperimental = true;
+
+        /// <summary>
+        /// Gets a link to the Scripted Events Discord server.
+        /// </summary>
+        public const string DiscordUrl = "https://discord.gg/3j54zBnbbD";
+
+        /// <summary>
+        /// Gets a link to the plugin's GitHub page.
+        /// </summary>
+        public const string GitHub = "https://github.com/Thundermaker300/ScriptedEvents";
 
         /// <summary>
         /// Gets or sets the plugin singleton.
@@ -82,7 +93,11 @@
                 }
 
                 // Welcome message :)
-                Log.Warn($"Thank you for installing Scripted Events! View the README file located at {ScriptHelper.ScriptPath} for information on how to use and get the most out of this plugin.");
+                // 3s delay to show after other console spam
+                Timing.CallDelayed(3f, () =>
+                {
+                    Log.Warn($"Thank you for installing Scripted Events! View the README file located at {ScriptHelper.ScriptPath} for information on how to use and get the most out of this plugin.");
+                });
             }
 
             if (IsExperimental)
