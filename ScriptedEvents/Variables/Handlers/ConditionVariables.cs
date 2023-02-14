@@ -3,10 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using PlayerRoles;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Variables.Interfaces;
     using Random = UnityEngine.Random;
 
     /// <summary>
@@ -14,6 +18,27 @@
     /// </summary>
     public static class ConditionVariables
     {
+        static ConditionVariables()
+        {
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (typeof(IVariableGroup).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
+                {
+                    IVariableGroup temp = (IVariableGroup)Activator.CreateInstance(type);
+
+                    if (temp.GroupType is not VariableGroupType.Condition)
+                        continue;
+
+                    Log.Debug($"Adding variable group: {type.Name}");
+                    Groups.Add(temp);
+                }
+            }
+        }
+
+        public static List<IVariableGroup> Groups { get; } = new();
+
+        public static readonly Dictionary<string, RoleTypeId> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
+
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that were defined in run-time.
         /// </summary>
@@ -55,6 +80,23 @@
             DefinedVariables.Clear();
         }
 
+        public static string[] IsolateVariables(string input)
+        {
+            List<string> result = ListPool<string>.Pool.Get();
+            string[] split = input.Split(' ');
+
+            foreach (string str in split)
+            {
+                string newStr = str.RemoveWhitespace();
+                if (newStr.StartsWith("{") && newStr.EndsWith("}"))
+                {
+                    result.Add(newStr.ToUpper());
+                }
+            }
+
+            return ListPool<string>.Pool.ToArrayReturn(result);
+        }
+
         /// <summary>
         /// Alternative to <see cref="string.Replace(string, string)"/> which takes an object as the newValue (and ToStrings it automatically).
         /// </summary>
@@ -64,6 +106,28 @@
         /// <returns>The modified string.</returns>
         public static string Replace(this string input, string oldValue, object newValue) => input.Replace(oldValue, newValue.ToString());
 
+        public static Tuple<IConditionVariable, bool> GetVariable(string name)
+        {
+            foreach (IVariableGroup group in Groups)
+            {
+                foreach (IVariable variable in group.Variables)
+                {
+                    if (variable.Name == name && variable is IConditionVariable condition)
+                        return new(condition, false);
+                    else if (variable is IBoolVariable boolVariable && boolVariable.ReversedName == name)
+                        return new(boolVariable, true);
+                }
+            }
+
+            return null;
+        }
+
+        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed)
+        {
+            (variable, reversed) = GetVariable(name);
+            return variable != null;
+        }
+
         /// <summary>
         /// Replaces all the occurrences of variables in a string.
         /// </summary>
@@ -71,106 +135,36 @@
         /// <returns>The modified string.</returns>
         public static string ReplaceVariables(string input)
         {
-            input = input
+            string[] variables = IsolateVariables(input);
 
-                    // Bools
-                    .Replace("{CASSIESPEAKING}", Cassie.IsSpeaking)
-                    .Replace("{!CASSIESPEAKING}", !Cassie.IsSpeaking)
-
-                    .Replace("{DECONTAMINATED}", Map.IsLczDecontaminated)
-                    .Replace("{!DECONTAMINATED}", !Map.IsLczDecontaminated)
-
-                    .Replace("{ROUNDENDED}", Round.IsEnded)
-                    .Replace("{!ROUNDENDED}", !Round.IsEnded)
-
-                    .Replace("{ROUNDINPROGRESS}", Round.InProgress)
-                    .Replace("{!ROUNDINPROGRESS}", !Round.InProgress)
-
-                    .Replace("{ROUNDSTARTED}", Round.IsStarted)
-                    .Replace("{!ROUNDSTARTED}", !Round.IsStarted)
-
-                    .Replace("{SCP914ACTIVE}", Exiled.API.Features.Scp914.IsWorking)
-                    .Replace("{!SCP914ACTIVE}", !Exiled.API.Features.Scp914.IsWorking)
-
-                    .Replace("{WARHEADCOUNTING}", Warhead.IsInProgress)
-                    .Replace("{!WARHEADCOUNTING}", !Warhead.IsInProgress)
-
-                    .Replace("{WARHEADDETONATED}", Warhead.IsDetonated)
-                    .Replace("{!WARHEADDETONATED}", !Warhead.IsDetonated)
-
-                    .Replace("{WAVERESPAWNING}", MainPlugin.Handlers.IsRespawning)
-                    .Replace("{!WAVERESPAWNING}", !MainPlugin.Handlers.IsRespawning)
-
-                    // Floats
-                    //-- CHANCE
-                    .Replace("{CHANCE}", Random.value)
-                    .Replace("{CHANCE3}", Random.Range(1, 4))
-                    .Replace("{CHANCE5}", Random.Range(1, 6))
-                    .Replace("{CHANCE10}", Random.Range(1, 11))
-                    .Replace("{CHANCE20}", Random.Range(1, 21))
-                    .Replace("{CHANCE100}", Random.Range(1, 101))
-
-                    //-- WORLD TIME
-                    .Replace("{DAYOFWEEK}", ((int)DateTime.UtcNow.DayOfWeek) + 1)
-                    .Replace("{DAYOFMONTH}", DateTime.UtcNow.Day)
-                    .Replace("{DAYOFYEAR}", DateTime.UtcNow.DayOfYear)
-                    .Replace("{MONTH}", DateTime.UtcNow.Month)
-                    .Replace("{YEAR}", DateTime.UtcNow.Year)
-
-                    //-- ZONE COUNT
-                    .Replace("{LCZ}", Player.Get(p => p.Zone.HasFlag(ZoneType.LightContainment)).Count())
-                    .Replace("{HCZ}", Player.Get(p => p.Zone.HasFlag(ZoneType.HeavyContainment)).Count())
-                    .Replace("{EZ}", Player.Get(p => p.Zone.HasFlag(ZoneType.Entrance)).Count())
-                    .Replace("{SURFACE}", Player.Get(p => p.Zone.HasFlag(ZoneType.Surface)).Count())
-                    .Replace("{POCKET}", Player.Get(p => p.CurrentRoom?.Type is RoomType.Pocket).Count())
-
-                    //-- ROLE COUNT
-                    .Replace("{CI}", Player.Get(Team.ChaosInsurgency).Count())
-                    .Replace("{GUARDS}", Player.Get(RoleTypeId.FacilityGuard).Count())
-                    .Replace("{MTF}", Player.Get(Team.FoundationForces).Count() - Player.Get(RoleTypeId.FacilityGuard).Count())
-                    .Replace("{MTFANDGUARDS}", Player.Get(Team.FoundationForces).Count())
-                    .Replace("{SCPS}", Player.Get(Side.Scp).Count())
-                    .Replace("{SH}", Player.Get(player => player.SessionVariables.ContainsKey("IsSH")))
-                    .Replace("{UIU}", Player.Get(player => player.SessionVariables.ContainsKey("IsUIU")))
-
-                    //-- PLAYER COUNT
-                    .Replace("{PLAYERSALIVE}", Player.Get(ply => ply.IsAlive).Count())
-                    .Replace("{PLAYERSDEAD}", Player.Get(ply => ply.IsDead).Count())
-                    .Replace("{PLAYERS}", Player.List.Count())
-
-                    //-- KILLS AND DEATHS
-                    .Replace("{KILLS}", Round.Kills)
-                    .Replace("{SCPKILLS}", Round.KillsByScp)
-
-                    //-- ESCAPES
-                    .Replace("{CLASSDESCAPES}", Round.EscapedDClasses)
-                    .Replace("{SCIENTISTSCAPES}", Round.EscapedScientists)
-                    .Replace("{ESCAPES}", Round.EscapedDClasses + Round.EscapedScientists)
-
-                    //-- ROUND TIME
-                    .Replace("{ROUNDMINUTES}", Round.ElapsedTime.TotalMinutes)
-                    .Replace("{ROUNDSECONDS}", Round.ElapsedTime.TotalSeconds)
-
-                    //-- TICKETS & RESPAWNS
-                    .Replace("{NTFTICKETS}", Respawn.NtfTickets)
-                    .Replace("{CHAOSTICKETS}", Respawn.ChaosTickets)
-                    .Replace("{TOTALWAVES}", MainPlugin.Handlers.RespawnWaves)
-                    .Replace("{TIMEUNTILNEXTWAVE}", Respawn.TimeUntilSpawnWave.TotalSeconds)
-                    .Replace("{TIMESINCELASTWAVE}", MainPlugin.Handlers.TimeSinceWave.TotalSeconds)
-
-                    // Strings
-                    .Replace("{NEXTWAVE}", Respawn.NextKnownTeam)
-                    ;
+            foreach (var variable in variables)
+            {
+                if (TryGetVariable(variable, out IConditionVariable condition, out bool reversed))
+                {
+                    switch (condition)
+                    {
+                        case IBoolVariable @bool:
+                            bool result = reversed ? !@bool.Value : @bool.Value;
+                            input = input.Replace(variable, @bool.Value ? "TRUE" : "FALSE");
+                            break;
+                        case IFloatVariable @float:
+                            input = input.Replace(variable, @float.Value);
+                            break;
+                        case IStringVariable @string:
+                            input = input.Replace(variable, @string.Value);
+                            break;
+                    }
+                }
+            }
 
             foreach (KeyValuePair<string, object> definedVariable in DefinedVariables)
             {
                 input = input.Replace(definedVariable.Key, definedVariable.Value);
             }
 
-            foreach (RoleTypeId rt in (RoleTypeId[])Enum.GetValues(typeof(RoleTypeId)))
+            foreach (KeyValuePair<string, RoleTypeId> rt in RoleTypeIds)
             {
-                string roleTypeString = rt.ToString().ToUpper();
-                input = input.Replace($"{{{roleTypeString}}}", Player.Get(rt).Count());
+                input = input.Replace($"{{{rt.Key}}}", Player.Get(rt.Value).Count());
             }
 
             return input;

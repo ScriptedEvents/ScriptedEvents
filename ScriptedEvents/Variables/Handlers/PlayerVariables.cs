@@ -36,8 +36,6 @@
 
         public static List<IVariableGroup> Groups { get; } = new();
 
-        private static readonly Dictionary<string, RoleTypeId> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => x);
-
         internal static Dictionary<string, IEnumerable<Player>> DefinedVariables { get; } = new();
 
         public static void DefineVariable(string name, IEnumerable<Player> input)
@@ -103,7 +101,7 @@
             if (DefinedVariables.TryGetValue(input, out IEnumerable<Player> result))
                 return result;
 
-            if (RoleTypeIds.TryGetValue(input, out RoleTypeId rt))
+            if (ConditionVariables.RoleTypeIds.TryGetValue(input, out RoleTypeId rt))
                 return Player.Get(rt);
 
             return null;
