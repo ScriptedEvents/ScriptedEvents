@@ -130,7 +130,15 @@
             {
                 try
                 {
-                    ScriptHelper.ReadAndRun(name);
+                    Script scr = ScriptHelper.ReadScript(name);
+
+                    if (scr.AdminEvent)
+                    {
+                        Log.Warn($"The '{name}' script is set to run each round, but the script is marked as an admin event!");
+                        continue;
+                    }
+
+                    ScriptHelper.RunScript(scr);
                 }
                 catch (DisabledScriptException)
                 {
