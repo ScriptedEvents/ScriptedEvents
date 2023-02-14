@@ -20,6 +20,7 @@
             new Chaos(),
             new SerpentsHand(),
             new UIU(),
+            new RespawnedPlayers(),
         };
     }
 
@@ -105,6 +106,19 @@
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.SessionVariables.ContainsKey("IsUIU"));
+    }
+
+    // Todo: Put this in a more appropriate class (when one exists)
+    public class RespawnedPlayers : IPlayerVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{RESPAWNEDPLAYERS}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets all the alive UIU (always none if the plugin is not installed).";
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => MainPlugin.Handlers.RecentlyRespawned;
     }
 
     public class RoleTypeVariable : IPlayerVariable

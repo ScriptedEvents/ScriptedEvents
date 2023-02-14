@@ -10,6 +10,7 @@
     using Exiled.Events.EventArgs.Server;
     using MEC;
     using PlayerRoles;
+    using Respawning;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
@@ -34,6 +35,16 @@
         /// Gets a value indicating whether or not a wave just spawned.
         /// </summary>
         public bool IsRespawning => TimeSinceWave.TotalSeconds < 5;
+
+        /// <summary>
+        /// Gets or sets the most recent respawn type.
+        /// </summary>
+        public SpawnableTeamType MostRecentSpawn { get; set; }
+
+        /// <summary>
+        /// Gets a list of players that most recently respawned.
+        /// </summary>
+        public List<Player> RecentlyRespawned { get; } = new();
 
         /// <summary>
         /// Gets or sets a value indicating whether or not tesla gates are disabled.
@@ -62,6 +73,9 @@
 
             InfectionRules.Clear();
             SpawnRules.Clear();
+            RecentlyRespawned.Clear();
+
+            MostRecentSpawn = SpawnableTeamType.None;
         }
 
         public void OnRoundStarted()
@@ -136,9 +150,10 @@
             RespawnWaves++;
             lastRespawnWave = DateTime.UtcNow;
 
-            ConditionVariables.DefineVariable("{LASTRESPAWNTEAM}", "The team that respawned most recently.", ev.NextKnownTeam.ToString());
-            ConditionVariables.DefineVariable("{RESPAWNEDPLAYERS}", "The amount of players that respawned most recently.", ev.Players.Count);
-            PlayerVariables.DefineVariable("{RESPAWNEDPLAYERS}", "The players that respawned most recently.", ev.Players);
+            MostRecentSpawn = ev.NextKnownTeam;
+
+            RecentlyRespawned.Clear();
+            RecentlyRespawned.AddRange(ev.Players);
         }
 
         // Infection

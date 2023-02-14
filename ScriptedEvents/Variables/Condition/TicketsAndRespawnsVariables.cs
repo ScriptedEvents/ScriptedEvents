@@ -17,6 +17,7 @@
             new TotalWaves(),
             new TimeUntilNextWave(),
             new TimeSinceLastWave(),
+            new RespawnedPlayers(),
         };
     }
 
@@ -78,5 +79,17 @@
 
         /// <inheritdoc/>
         public float Value => (float)MainPlugin.Handlers.TimeSinceWave.TotalSeconds;
+    }
+
+    public class RespawnedPlayers : IFloatVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{RESPAWNEDPLAYERS}";
+
+        /// <inheritdoc/>
+        public string Description => "The amount of players that have respawned in the most recent respawn wave.";
+
+        /// <inheritdoc/>
+        public float Value => MainPlugin.Handlers.RecentlyRespawned.Count;
     }
 }
