@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Condition.Roles
 {
+#pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
     using Exiled.API.Features;
     using PlayerRoles;

@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Condition.WorldTime
 {
+#pragma warning disable SA1402 // File may only contain a single type
     using System;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Variables.Interfaces;
