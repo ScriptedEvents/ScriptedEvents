@@ -405,7 +405,17 @@ namespace ScriptedEvents.API.Helpers
                     }
                     catch (Exception e)
                     {
-                        Log.Error($"[Script: {scr.ScriptName}] Ran into an error while running {action.Name} action:\n{e}");
+                        string message = $"[Script: {scr.ScriptName}] Ran into an error while running {action.Name} action:\n{e}";
+                        switch (scr.Context)
+                        {
+                            case ExecuteContext.RemoteAdmin:
+                                Player.Get(scr.Sender)?.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                break;
+                            default:
+                                Log.Error(message);
+                                break;
+                        }
+
                         continue;
                     }
 
@@ -413,18 +423,49 @@ namespace ScriptedEvents.API.Helpers
                     {
                         if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                         {
-                            Log.Error($"[Script: {scr.ScriptName}] [{action.Name}] Fatal action error! {resp.Message}");
+                            string message = $"[Script: {scr.ScriptName}] [{action.Name}] Fatal action error! {resp.Message}";
+                            switch (scr.Context)
+                            {
+                                case ExecuteContext.RemoteAdmin:
+                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                    break;
+                                default:
+                                    Log.Error(message);
+                                    break;
+                            }
+
                             break;
                         }
                         else
                         {
-                            Log.Warn($"[Script: {scr.ScriptName}] [{action.Name}] Action error! {resp.Message}");
+                            string message = $"[Script: {scr.ScriptName}] [{action.Name}] Action error! {resp.Message}";
+                            switch (scr.Context)
+                            {
+                                case ExecuteContext.RemoteAdmin:
+                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                    break;
+                                default:
+                                    Log.Warn(message);
+                                    break;
+                            }
                         }
                     }
                     else
                     {
                         if (!string.IsNullOrEmpty(resp.Message))
-                            Log.Info($"[Script: {scr.ScriptName}] [{action.Name}] Response: {resp.Message}");
+                        {
+                            string message = $"[Script: {scr.ScriptName}] [{action.Name}] Response: {resp.Message}";
+                            switch (scr.Context)
+                            {
+                                case ExecuteContext.RemoteAdmin:
+                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                    break;
+                                default:
+                                    Log.Warn(message);
+                                    break;
+                            }
+                        }
+
                         if (delay.HasValue)
                             yield return delay.Value;
                     }
