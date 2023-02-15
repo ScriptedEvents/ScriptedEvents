@@ -409,7 +409,12 @@ namespace ScriptedEvents.API.Helpers
                         switch (scr.Context)
                         {
                             case ExecuteContext.RemoteAdmin:
-                                Player.Get(scr.Sender)?.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                Player ply = Player.Get(scr.Sender);
+                                ply.RemoteAdminMessage(message, false, "ScriptedEvents");
+
+                                if (MainPlugin.Configs.BroadcastIssues)
+                                    ply?.Broadcast(5, $"Error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+
                                 break;
                             default:
                                 Log.Error(message);
@@ -427,7 +432,12 @@ namespace ScriptedEvents.API.Helpers
                             switch (scr.Context)
                             {
                                 case ExecuteContext.RemoteAdmin:
-                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                    Player ply = Player.Get(scr.Sender);
+                                    ply?.RemoteAdminMessage(message, false, "ScriptedEvents");
+
+                                    if (MainPlugin.Configs.BroadcastIssues)
+                                        ply?.Broadcast(5, $"Fatal action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+
                                     break;
                                 default:
                                     Log.Error(message);
@@ -442,7 +452,12 @@ namespace ScriptedEvents.API.Helpers
                             switch (scr.Context)
                             {
                                 case ExecuteContext.RemoteAdmin:
-                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                    Player ply = Player.Get(scr.Sender);
+                                    ply?.RemoteAdminMessage(message, false, "ScriptedEvents");
+
+                                    if (MainPlugin.Configs.BroadcastIssues)
+                                        ply?.Broadcast(5, $"Action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+
                                     break;
                                 default:
                                     Log.Warn(message);

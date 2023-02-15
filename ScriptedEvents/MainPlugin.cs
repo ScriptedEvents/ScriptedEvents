@@ -36,7 +36,12 @@
         public static MainPlugin Singleton { get; set; }
 
         /// <summary>
-        /// Gets or sets the Event Handlers singleton.
+        /// Gets the plugin Config singleton.
+        /// </summary>
+        public static Config Configs => Singleton?.Config;
+
+        /// <summary>
+        /// Gets the Event Handlers singleton.
         /// </summary>
         public static EventHandlers Handlers { get; set; }
 
