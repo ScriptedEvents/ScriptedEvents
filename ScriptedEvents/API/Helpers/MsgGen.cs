@@ -1,17 +1,39 @@
 ﻿namespace ScriptedEvents.API.Helpers
 {
+    using System;
+    using System.Collections.Generic;
     using System.Text;
-
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using PlayerRoles;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     /// <summary>
-    /// Tool to generate error messages, for consistency between all actions.
+    /// Tool to generate error messages and strings, for consistency between all actions.
     /// </summary>
     public static class MsgGen
     {
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of types and a string to show for them.
+        /// </summary>
+        public static Dictionary<Type, string> TypeToString { get; } = new()
+        {
+            { typeof(string), "String (Message/Text)" },
+            { typeof(int), "Int (Whole Number)" },
+            { typeof(float), "Float (Number)" },
+            { typeof(bool), "Boolean (TRUE/FALSE)" },
+            { typeof(Player[]), "Player List" },
+            { typeof(List<Player>), "Player List" },
+            { typeof(Door[]), "Door List" },
+            { typeof(List<Door>), "Door List" },
+            { typeof(RoleTypeId), "RoleTypeId (ID / Number)" },
+            { typeof(RoomType), "RoomType (ID / Number)" },
+            { typeof(object), "Variable" },
+        };
+
         /// <summary>
         /// Generates an error message, based on provided input.
         /// </summary>
@@ -60,6 +82,19 @@
             }
 
             return "Unknown error";
+        }
+
+        /// <summary>
+        /// Gets a pretty display for a type.
+        /// </summary>
+        /// <param name="type">The type to get the display of.</param>
+        /// <returns>The display.</returns>
+        public static string Display(this Type type)
+        {
+            if (TypeToString.TryGetValue(type, out string display))
+                return display;
+
+            return type.Name;
         }
     }
 }

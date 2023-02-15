@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Exiled.API.Features;
     using PlayerRoles;
+    using ScriptedEvents.API.Helpers;
 
     /// <summary>
     /// Represents an argument for an action.
@@ -48,46 +49,6 @@
         /// <summary>
         /// Gets the <see cref="Type"/> in a human-readable form.
         /// </summary>
-        public string TypeString
-        {
-            get
-            {
-                // Todo: turn into dictionary
-                if (Type == typeof(string))
-                {
-                    return "String (Text)";
-                }
-                else if (Type == typeof(int))
-                {
-                    return "Int (Whole Number)";
-                }
-                else if (Type == typeof(float))
-                {
-                    return "Float (Number)";
-                }
-                else if (Type == typeof(bool))
-                {
-                    return "Boolean (TRUE/FALSE)";
-                }
-                else if (Type == typeof(List<Player>) || Type == typeof(Player[]))
-                {
-                    return "Player List";
-                }
-                else if (Type == typeof(List<Door>) || Type == typeof(Door[]))
-                {
-                    return "Door List";
-                }
-                else if (Type == typeof(RoleTypeId))
-                {
-                    return "RoleTypeId (Role Name/Number)";
-                }
-                else if (Type == typeof(object))
-                {
-                    return "Variable";
-                }
-
-                return Type.Name;
-            }
-        }
+        public string TypeString => Type.Display();
     }
 }
