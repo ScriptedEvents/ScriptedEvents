@@ -52,23 +52,23 @@
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the execution of the action was successful.
+        /// Gets a value indicating whether or not the execution of the action was successful.
         /// </summary>
-        public bool Success { get; set; }
+        public bool Success { get; }
 
         /// <summary>
-        /// Gets or sets message to show (or an error message if <see cref="Success"/> is <see langword="false"/>).
+        /// Gets message to show (or an error message if <see cref="Success"/> is <see langword="false"/>).
         /// </summary>
-        public string Message { get; set; }
+        public string Message { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="MessageType"/> of the response.
+        /// Gets the <see cref="MessageType"/> of the response.
         /// </summary>
-        public MessageType MessageType { get; set; }
+        public MessageType MessageType { get; }
 
         /// <summary>
-        /// Gets or sets flags that control what happens after the execution is complete.
+        /// Gets flags that control what happens after the execution is complete.
         /// </summary>
-        public ActionFlags ResponseFlags { get; set; }
+        public ActionFlags ResponseFlags { get; }
     }
 }
