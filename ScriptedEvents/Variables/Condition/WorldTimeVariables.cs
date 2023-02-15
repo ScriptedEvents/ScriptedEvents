@@ -21,6 +21,7 @@
             new DayOfYear(),
             new Month(),
             new Year(),
+            new Tick(),
         };
     }
 
@@ -82,5 +83,17 @@
 
         /// <inheritdoc/>
         public float Value => DateTime.UtcNow.Year;
+    }
+
+    public class Tick : IFloatVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{TICK}";
+
+        /// <inheritdoc/>
+        public string Description => $"The amount of seconds since {new DateTime(1970, 1, 1):f}.";
+
+        /// <inheritdoc/>
+        public float Value => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 }
