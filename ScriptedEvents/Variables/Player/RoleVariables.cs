@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Player.Roles
 {
+    using System;
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Collections.Generic;
     using System.Linq;
@@ -115,16 +116,30 @@
     }
 
     // Todo: Put this in a more appropriate class (when one exists)
-    public class RespawnedPlayers : IPlayerVariable
+    public class RespawnedPlayers : IPlayerVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{RESPAWNEDPLAYERS}";
 
         /// <inheritdoc/>
-        public string Description => "Gets all the alive UIU (always none if the plugin is not installed).";
+        public string Description => "Gets all the players that recently respawned.";
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => MainPlugin.Handlers.RecentlyRespawned;
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                if (Arguments.Length > 0 && Enum.TryParse(Arguments[0], out RoleTypeId rt))
+                {
+                    return MainPlugin.Handlers.RecentlyRespawned.Where(ply => ply.Role == rt);
+                }
+
+                return MainPlugin.Handlers.RecentlyRespawned;
+            }
+        }
     }
 
     public class RoleTypeVariable : IPlayerVariable

@@ -103,24 +103,51 @@
 
         public static Tuple<IConditionVariable, bool> GetVariable(string name)
         {
+            string variableName;
+            List<string> argList = ListPool<string>.Pool.Get();
+
+            string[] arguments = name.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+            if (arguments.Length == 1)
+            {
+                variableName = arguments[0];
+            }
+            else
+            {
+                variableName = arguments[0] + "}";
+                foreach (string argument in arguments.Skip(1))
+                {
+                    string arg = argument;
+                    if (arg.EndsWith("}")) arg = arg.Replace("}", string.Empty);
+                    argList.Add(arg);
+                }
+            }
+
+            Tuple<IConditionVariable, bool> result = new(null, false);
+
             foreach (IVariableGroup group in Groups)
             {
                 foreach (IVariable variable in group.Variables)
                 {
-                    if (variable.Name == name && variable is IConditionVariable condition)
-                        return new(condition, false);
-                    else if (variable is IBoolVariable boolVariable && boolVariable.ReversedName == name)
-                        return new(boolVariable, true);
+                    if (variable.Name == variableName && variable is IConditionVariable condition)
+                        result = new(condition, false);
+                    else if (variable is IBoolVariable boolVariable && boolVariable.ReversedName == variableName)
+                        result = new(boolVariable, true);
                 }
             }
 
             if (RoleTypeIds.TryGetValue(name, out RoleTypeVariable value))
-                return new(value, false);
+                result = new(value, false);
 
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
-                return new(customValue, false);
+                result = new(customValue, false);
 
-            return new(null, false);
+            if (result.Item1 is not null && result.Item1 is IArgumentVariable argSupport)
+            {
+                argSupport.Arguments = argList.ToArray();
+            }
+
+            ListPool<string>.Pool.Return(argList);
+            return result;
         }
 
         public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed)
