@@ -5,10 +5,12 @@ namespace ScriptedEvents.API.Helpers
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using CommandSystem;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using MEC;
+    using RemoteAdmin;
     using ScriptedEvents.Actions;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
@@ -64,9 +66,10 @@ namespace ScriptedEvents.API.Helpers
         /// Reads a script line-by-line, converting every line into an appropriate action, flag, label, etc. Fills out all data and returns a <see cref="Script"/> object.
         /// </summary>
         /// <param name="scriptName">The name of the script.</param>
+        /// <param name="executor">The CommandSender that ran the script. Can be null.</param>
         /// <returns>The <see cref="Script"/> fully filled out, if the script was found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        public static Script ReadScript(string scriptName)
+        public static Script ReadScript(string scriptName, ICommandSender executor)
         {
             Script script = new();
             string allText = ReadScriptText(scriptName);
@@ -159,6 +162,22 @@ namespace ScriptedEvents.API.Helpers
             script.LastRead = File.GetLastAccessTimeUtc(scriptPath);
             script.LastEdited = File.GetLastWriteTimeUtc(scriptPath);
             script.Actions = ListPool<IAction>.Pool.ToArrayReturn(actionList);
+
+            if (executor is null)
+            {
+                script.Context = ExecuteContext.Automatic;
+            }
+            else if (executor is ServerConsoleSender console)
+            {
+                script.Context = ExecuteContext.ServerConsole;
+                script.Sender = console;
+            }
+            else if (executor is PlayerCommandSender player)
+            {
+                script.Context = ExecuteContext.RemoteAdmin;
+                script.Sender = player;
+            }
+
             return script;
         }
 
@@ -180,11 +199,12 @@ namespace ScriptedEvents.API.Helpers
         /// Reads and runs a script.
         /// </summary>
         /// <param name="scriptName">The name of the script.</param>
+        /// <param name="executor">The executor that is running the script. Can be null.</param>
         /// <exception cref="FileNotFoundException">The script was not found.</exception>
         /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
-        public static void ReadAndRun(string scriptName)
+        public static void ReadAndRun(string scriptName, ICommandSender executor)
         {
-            Script scr = ReadScript(scriptName);
+            Script scr = ReadScript(scriptName, executor);
             if (scr is not null)
                 RunScript(scr);
         }
@@ -419,7 +439,7 @@ namespace ScriptedEvents.API.Helpers
 
             if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
             {
-                ReadAndRun(scr.ScriptName); // so that it re-reads the content of the text file.
+                ReadAndRun(scr.ScriptName, scr.Sender); // so that it re-reads the content of the text file.
             }
 
             RunningScripts.Remove(scr);

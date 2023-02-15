@@ -39,7 +39,7 @@
             {
                 try
                 {
-                    Script scr = ScriptHelper.ReadScript(Path.GetFileNameWithoutExtension(file));
+                    Script scr = ScriptHelper.ReadScript(Path.GetFileNameWithoutExtension(file), sender);
                     bldr.AppendLine($"{scr.ScriptName} (perm: {scr.ExecutePermission}) (last ran: {scr.LastRead:g}) (edited: {scr.LastEdited:g})");
                 }
                 catch (Exception e)
