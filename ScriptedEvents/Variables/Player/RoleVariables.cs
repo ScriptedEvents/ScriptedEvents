@@ -7,6 +7,7 @@
     using Exiled.API.Features;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
     public class RoleVariables : IVariableGroup
@@ -126,6 +127,12 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("roleType", typeof(RoleTypeId), "The role to filter by.", false),
+        };
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players

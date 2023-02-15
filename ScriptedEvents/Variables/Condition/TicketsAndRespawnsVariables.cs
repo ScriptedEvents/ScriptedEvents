@@ -4,6 +4,7 @@
     using Exiled.API.Features;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
     using System;
     using System.Linq;
@@ -98,6 +99,12 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("roleType", typeof(RoleTypeId), "The role to filter by.", false),
+        };
 
         /// <inheritdoc/>
         public float Value
