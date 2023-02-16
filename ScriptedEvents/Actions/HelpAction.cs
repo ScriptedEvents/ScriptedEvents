@@ -229,13 +229,14 @@
         {
             if (IsFile)
             {
+                string message = $"Auto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n\n{response.Message}";
                 string path = Path.Combine(Paths.Configs, "HelpCommandResponse.txt");
-                File.WriteAllText(path, response.Message);
+                File.WriteAllText(path, message);
 
                 // File "expire"
                 Timing.CallDelayed(300f, Segment.RealtimeUpdate, () =>
                 {
-                    if (File.Exists(path))
+                    if (File.Exists(path) && File.ReadAllText(path) == message)
                     {
                         Log.Debug("Deleting auto-generated help file.");
                         File.Delete(path);
