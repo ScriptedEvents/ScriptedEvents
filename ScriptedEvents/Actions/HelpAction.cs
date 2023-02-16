@@ -237,6 +237,7 @@
                 {
                     if (File.Exists(path))
                     {
+                        Log.Debug("Deleting auto-generated help file.");
                         File.Delete(path);
                     }
                 });
