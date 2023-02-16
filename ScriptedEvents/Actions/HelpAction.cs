@@ -233,7 +233,7 @@
                 File.WriteAllText(path, response.Message);
 
                 // File "expire"
-                Timing.CallDelayed(300f, () =>
+                Timing.CallDelayed(300f, Segment.RealtimeUpdate, () =>
                 {
                     if (File.Exists(path))
                     {
