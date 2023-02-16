@@ -15,9 +15,26 @@
         /// <inheritdoc/>
         public IVariable[] Variables => new IVariable[]
         {
+            new HeavilyModded(),
             new IP(),
             new Port(),
+            new MaxPlayers(),
         };
+    }
+
+    public class HeavilyModded : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{HEAVILYMODDED}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!HEAVILYMODDED}";
+
+        /// <inheritdoc/>
+        public string Description => "Whether or not this server is heavily modded.";
+
+        /// <inheritdoc/>
+        public bool Value => Server.IsHeavilyModded;
     }
 
     public class IP : IStringVariable
@@ -42,5 +59,17 @@
 
         /// <inheritdoc/>
         public float Value => Server.Port;
+    }
+
+    public class MaxPlayers : IFloatVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{MAXPLAYERS}";
+
+        /// <inheritdoc/>
+        public string Description => "This server's maximum player count.";
+
+        /// <inheritdoc/>
+        public float Value => Server.MaxPlayerCount;
     }
 }
