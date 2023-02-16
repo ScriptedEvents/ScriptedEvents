@@ -40,7 +40,7 @@
 
             try
             {
-                Script scr = ScriptHelper.ReadScript(arg0);
+                Script scr = ScriptHelper.ReadScript(arg0, sender);
 
                 if (!sender.CheckPermission(scr.ExecutePermission))
                 {

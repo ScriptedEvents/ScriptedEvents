@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using CommandSystem;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
 
     /// <summary>
     /// Represents a script.
@@ -29,7 +31,7 @@
         }
 
         /// <summary>
-        /// A unique ID referring to this Script instance.
+        /// Gets the unique ID referring to this Script instance.
         /// </summary>
         public Guid UniqueId { get; }
 
@@ -102,6 +104,16 @@
         /// Gets a value indicating whether or not the script is marked as an admin-event (CedMod compatibility).
         /// </summary>
         public bool AdminEvent => Flags.Contains("ADMINEVENT");
+
+        /// <summary>
+        /// Gets the context that the script was executed in.
+        /// </summary>
+        public ExecuteContext Context { get; internal set; }
+
+        /// <summary>
+        /// Gets the sender of the user who executed the script.
+        /// </summary>
+        public ICommandSender Sender { get; internal set; }
 
         /// <summary>
         /// Moves the <see cref="CurrentLine"/> to the specified line.

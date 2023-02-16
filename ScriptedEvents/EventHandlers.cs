@@ -130,7 +130,7 @@
             {
                 try
                 {
-                    Script scr = ScriptHelper.ReadScript(name);
+                    Script scr = ScriptHelper.ReadScript(name, null);
 
                     if (scr.AdminEvent)
                     {
