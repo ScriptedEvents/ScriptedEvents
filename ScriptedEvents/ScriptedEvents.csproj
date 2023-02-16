@@ -167,6 +167,7 @@
     <Compile Include="Variables\Condition\PlayerCountVariables.cs" />
     <Compile Include="Variables\Condition\RoleVariables.cs" />
     <Compile Include="Variables\Condition\RoundTimeVariables.cs" />
+    <Compile Include="Variables\Condition\ServerInfoVariables.cs" />
     <Compile Include="Variables\Condition\StringVariables.cs" />
     <Compile Include="Variables\Condition\TicketsAndRespawnsVariables.cs" />
     <Compile Include="Variables\Condition\WorldTimeVariables.cs" />
