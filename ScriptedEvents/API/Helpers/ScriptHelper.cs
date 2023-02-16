@@ -473,10 +473,10 @@ namespace ScriptedEvents.API.Helpers
                             switch (scr.Context)
                             {
                                 case ExecuteContext.RemoteAdmin:
-                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, true, "ScriptedEvents");
                                     break;
                                 default:
-                                    Log.Warn(message);
+                                    Log.Info(message);
                                     break;
                             }
                         }
