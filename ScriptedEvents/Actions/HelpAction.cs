@@ -231,7 +231,6 @@
             {
                 string path = Path.Combine(Paths.Configs, "HelpCommandResponse.txt");
                 File.WriteAllText(path, response.Message);
-                System.Diagnostics.Process.Start(path);
 
                 // File "expire"
                 Timing.CallDelayed(300f, () =>
@@ -241,6 +240,15 @@
                         File.Delete(path);
                     }
                 });
+
+                try
+                {
+                    System.Diagnostics.Process.Start(path);
+                }
+                catch (Exception e)
+                {
+                    return new(true, $"File was created successfully, but an error occurred when opening external text editor (likely due to permissions). File will expire in 5 minutes and is located at: {path}.");
+                }
 
                 return new(true, $"Opened help in external text editor. Expires in 5 minutes (if the console is left open). Path: {path}");
             }
