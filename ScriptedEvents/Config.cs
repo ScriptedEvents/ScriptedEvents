@@ -18,6 +18,9 @@
         [Description("If a script encounters an error, broadcast a notice to the person who ran the command, informing of the error. The broadcast ONLY shows to the command executor.")]
         public bool BroadcastIssues { get; set; } = true;
 
+        [Description("If set to true, players with overwatch enabled will not be affected by any commands related to players.")]
+        public bool IgnoreOverwatch { get; set; } = true;
+
         [Description("List of scripts to run as soon as the round starts.")]
         public List<string> AutoRunScripts { get; set; } = new();
 

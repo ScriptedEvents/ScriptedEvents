@@ -10,6 +10,7 @@ namespace ScriptedEvents.API.Helpers
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using MEC;
+    using PlayerRoles;
     using RemoteAdmin;
     using ScriptedEvents.Actions;
     using ScriptedEvents.Actions.Interfaces;
@@ -245,6 +246,9 @@ namespace ScriptedEvents.API.Helpers
 
             list.ShuffleList();
             list.RemoveAll(p => !p.IsConnected);
+
+            if (MainPlugin.Configs.IgnoreOverwatch)
+                list.RemoveAll(p => p.Role.Type is RoleTypeId.Overwatch);
 
             if (amount.HasValue && amount.Value > 0)
             {
