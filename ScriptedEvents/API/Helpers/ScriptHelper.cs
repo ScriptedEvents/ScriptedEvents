@@ -252,12 +252,9 @@ namespace ScriptedEvents.API.Helpers
 
             if (amount.HasValue && amount.Value > 0)
             {
-                if (amount.Value < list.Count)
+                while (list.Count > amount.Value)
                 {
-                    for (int i = 0; i < amount.Value; i++)
-                    {
-                        list.PullRandomItem();
-                    }
+                    list.PullRandomItem();
                 }
             }
 
