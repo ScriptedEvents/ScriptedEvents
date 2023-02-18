@@ -71,11 +71,23 @@
             ConditionVariables.ClearVariables();
             PlayerVariables.ClearVariables();
 
+            if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
+            {
+                Timing.KillCoroutines(CountdownHelper.MainHandle.Value);
+                CountdownHelper.MainHandle = null;
+                CountdownHelper.Countdowns.Clear();
+            }
+
             InfectionRules.Clear();
             SpawnRules.Clear();
             RecentlyRespawned.Clear();
 
             MostRecentSpawn = SpawnableTeamType.None;
+        }
+
+        public void OnWaitingForPlayers()
+        {
+            CountdownHelper.Start();
         }
 
         public void OnRoundStarted()

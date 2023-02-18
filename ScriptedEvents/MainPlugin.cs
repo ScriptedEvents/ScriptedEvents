@@ -125,6 +125,7 @@
         /// <inheritdoc/>
         public override void OnDisabled()
         {
+            Handlers.OnRestarting();
             base.OnDisabled();
 
             PlayerHandler.Died -= Handlers.OnDied;
