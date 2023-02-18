@@ -27,6 +27,9 @@
         [Description("List of scripts to automatically re-run as soon as they finish.")]
         public List<string> LoopScripts { get; set; } = new();
 
+        [Description("The string to use for countdowns.")]
+        public string CountdownString { get; set; } = "<size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\\n{TIME}";
+
         // todo: un-alias door commands, because they dont have duration anymore
         [Description("Define a custom set of actions and the action they run when used.")]
         public List<Alias> Aliases { get; set; } = new()

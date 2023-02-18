@@ -114,6 +114,7 @@
             PlayerHandler.TriggeringTesla += Handlers.OnTriggeringTesla;
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;
+            ServerHandler.WaitingForPlayers += Handlers.OnWaitingForPlayers;
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
 
@@ -132,6 +133,7 @@
             PlayerHandler.TriggeringTesla -= Handlers.OnTriggeringTesla;
 
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
+            ServerHandler.WaitingForPlayers -= Handlers.OnWaitingForPlayers;
             ServerHandler.RoundStarted -= Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam -= Handlers.OnRespawningTeam;
 

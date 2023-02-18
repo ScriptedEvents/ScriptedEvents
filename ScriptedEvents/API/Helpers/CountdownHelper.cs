@@ -5,12 +5,16 @@
     using Exiled.API.Features;
     using MEC;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Handlers;
+    using UnityEngine;
 
     public static class CountdownHelper
     {
         public static CoroutineHandle? MainHandle { get; set; }
 
         public static Dictionary<Player, Countdown> Countdowns { get; } = new();
+
+        public static string BroadcastString => MainPlugin.Singleton.Config.CountdownString;
 
         public static void Start()
         {
@@ -31,8 +35,8 @@
 
                     if (!ct.Expired)
                     {
-                        TimeSpan timeLeft = ct.EndTime - DateTime.UtcNow;
-                        ply.Broadcast(1, $"<size=26><color=#5EB3FF><b>{ct.Text}</b></color></size>\n{(int)timeLeft.TotalSeconds}");
+                        ply.ClearBroadcasts();
+                        ply.Broadcast(1, BroadcastString.Replace("{TEXT}", ct.Text).Replace("{TIME}", Mathf.RoundToInt((float)ct.TimeLeft.TotalSeconds)));
                     }
                 }
 
@@ -47,7 +51,11 @@
             if (Countdowns.ContainsKey(player))
                 Countdowns.Remove(player);
 
-            Countdowns.Add(player, new(player, text, (int)ts.TotalSeconds));
+            Countdown ct = new(player, text, (int)ts.TotalSeconds);
+
+            Countdowns.Add(player, ct);
+            player.ClearBroadcasts();
+            player.Broadcast(1, BroadcastString.Replace("{TEXT}", ct.Text).Replace("{TIME}", Mathf.RoundToInt((float)ts.TotalSeconds)));
         }
     }
 }
