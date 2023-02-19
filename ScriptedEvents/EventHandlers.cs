@@ -10,6 +10,7 @@
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.EventArgs.Warhead;
+    using MapGeneration.Distributors;
     using MEC;
     using PlayerRoles;
     using Respawning;
@@ -56,17 +57,6 @@
         /// <summary>
         /// Gets or sets a list of strings indicating round-disabled features.
         /// </summary>
-        /// <remarks>
-        /// Valid keys include...<br />
-        /// TESLA - Disables the tesla gates entirely.<br />
-        /// GENERATORS - Disables generators.<br />
-        /// HURTING - Prevents taking damage.<br />
-        /// DYING - Prevents dying.<br />
-        /// ITEMPICKUP - Prevents any item from being picked up.<br />
-        /// MICROPICKUP - Prevents Micro-HID from being picked up.<br />
-        /// SHOOTING - Disables firing guns.<br />
-        /// WARHEAD - Disables the warhead from being activated.
-        /// </remarks>
         public List<string> DisabledKeys { get; set; } = new();
 
         /// <summary>
@@ -278,6 +268,24 @@
                 ev.IsAllowed = false;
 
             if (DisabledKeys.Contains("MICROPICKUP") && ev.Pickup.Type is ItemType.MicroHID)
+                ev.IsAllowed = false;
+        }
+
+        public void OnInteractingLocker(InteractingLockerEventArgs ev)
+        {
+            if (ev.Locker is PedestalScpLocker && DisabledKeys.Contains("PEDESTALS"))
+            {
+                ev.IsAllowed = false;
+            }
+            else if (ev.Locker is not PedestalScpLocker && DisabledKeys.Contains("LOCKERS"))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+
+        public void OnInteractingElevator(InteractingElevatorEventArgs ev)
+        {
+            if (DisabledKeys.Contains("ELEVATORS"))
                 ev.IsAllowed = false;
         }
 
