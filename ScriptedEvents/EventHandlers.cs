@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
@@ -232,28 +233,10 @@
                 ev.IsAllowed = false;
         }
 
-        public void OnUnlockingGenerator(UnlockingGeneratorEventArgs ev)
+        public void GeneratorEvent(IGeneratorEvent ev)
         {
-            if (DisabledKeys.Contains("GENERATORS"))
-                ev.IsAllowed = false;
-        }
-
-        public void OnOpeningGenerator(OpeningGeneratorEventArgs ev)
-        {
-            if (DisabledKeys.Contains("GENERATORS"))
-                ev.IsAllowed = false;
-        }
-
-        public void OnActivatingGenerator(ActivatingGeneratorEventArgs ev)
-        {
-            if (DisabledKeys.Contains("GENERATORS"))
-                ev.IsAllowed = false;
-        }
-
-        public void OnStoppingGenerator(StoppingGeneratorEventArgs ev)
-        {
-            if (DisabledKeys.Contains("GENERATORS"))
-                ev.IsAllowed = false;
+            if (DisabledKeys.Contains("GENERATORS") && ev is IDeniableEvent deniable)
+                deniable.IsAllowed = false;
         }
 
         public void OnShooting(ShootingEventArgs ev)

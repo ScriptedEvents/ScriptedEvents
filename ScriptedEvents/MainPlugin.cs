@@ -123,10 +123,10 @@
             PlayerHandler.ActivatingWarheadPanel += Handlers.OnActivatingWarheadPanel;
             Exiled.Events.Handlers.Warhead.Starting += Handlers.OnStartingWarhead; // why is this located specially??
 
-            PlayerHandler.ActivatingGenerator += Handlers.OnActivatingGenerator;
-            PlayerHandler.OpeningGenerator += Handlers.OnOpeningGenerator;
-            PlayerHandler.StoppingGenerator += Handlers.OnStoppingGenerator;
-            PlayerHandler.UnlockingGenerator += Handlers.OnUnlockingGenerator;
+            PlayerHandler.ActivatingGenerator += Handlers.GeneratorEvent;
+            PlayerHandler.OpeningGenerator += Handlers.GeneratorEvent;
+            PlayerHandler.StoppingGenerator += Handlers.GeneratorEvent;
+            PlayerHandler.UnlockingGenerator += Handlers.GeneratorEvent;
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;
             ServerHandler.WaitingForPlayers += Handlers.OnWaitingForPlayers;
@@ -156,10 +156,10 @@
             PlayerHandler.ActivatingWarheadPanel -= Handlers.OnActivatingWarheadPanel;
             Exiled.Events.Handlers.Warhead.Starting -= Handlers.OnStartingWarhead; // why is this located specially??
 
-            PlayerHandler.ActivatingGenerator -= Handlers.OnActivatingGenerator;
-            PlayerHandler.OpeningGenerator -= Handlers.OnOpeningGenerator;
-            PlayerHandler.StoppingGenerator -= Handlers.OnStoppingGenerator;
-            PlayerHandler.UnlockingGenerator -= Handlers.OnUnlockingGenerator;
+            PlayerHandler.ActivatingGenerator -= Handlers.GeneratorEvent;
+            PlayerHandler.OpeningGenerator -= Handlers.GeneratorEvent;
+            PlayerHandler.StoppingGenerator -= Handlers.GeneratorEvent;
+            PlayerHandler.UnlockingGenerator -= Handlers.GeneratorEvent;
 
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
             ServerHandler.WaitingForPlayers -= Handlers.OnWaitingForPlayers;
