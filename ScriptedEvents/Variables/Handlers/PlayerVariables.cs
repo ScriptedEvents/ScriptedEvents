@@ -69,22 +69,49 @@
 
         public static IPlayerVariable GetVariable(string name)
         {
+            string variableName;
+            List<string> argList = ListPool<string>.Pool.Get();
+
+            string[] arguments = name.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+            if (arguments.Length == 1)
+            {
+                variableName = arguments[0];
+            }
+            else
+            {
+                variableName = arguments[0] + "}";
+                foreach (string argument in arguments.Skip(1))
+                {
+                    string arg = argument;
+                    if (arg.EndsWith("}")) arg = arg.Replace("}", string.Empty);
+                    argList.Add(arg);
+                }
+            }
+
+            IPlayerVariable result = null;
+
             foreach (IVariableGroup group in Groups)
             {
                 foreach (IVariable variable in group.Variables)
                 {
-                    if (variable.Name == name && variable is IPlayerVariable ply)
-                        return ply;
+                    if (variable.Name == variableName && variable is IPlayerVariable condition)
+                        result = condition;
                 }
             }
 
             if (RoleTypeIds.TryGetValue(name, out RoleTypeVariable value))
-                return value;
+                result = value;
 
-            if (DefinedVariables.TryGetValue(name, out CustomPlayerVariable customVariable))
-                return customVariable;
+            if (DefinedVariables.TryGetValue(name, out CustomPlayerVariable customValue))
+                result = customValue;
 
-            return null;
+            if (result is not null && result is IArgumentVariable argSupport)
+            {
+                argSupport.Arguments = argList.ToArray();
+            }
+
+            ListPool<string>.Pool.Return(argList);
+            return result;
         }
 
         public static bool TryGetVariable(string name, out IPlayerVariable variable)

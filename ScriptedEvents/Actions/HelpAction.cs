@@ -210,6 +210,22 @@
                             break;
                     }
 
+                    if (variable is IArgumentVariable argSupport)
+                    {
+                        sb.AppendLine();
+                        sb.AppendLine("Arguments:");
+
+                        foreach (Argument arg in argSupport.ExpectedArguments)
+                        {
+                            string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
+                            sb.AppendLine();
+                            sb.AppendLine($"{chars[0]}{arg.ArgumentName}{chars[1]}");
+                            sb.AppendLine($"  Required: {(arg.Required ? "YES" : "NO")}");
+                            sb.AppendLine($"  Type: {arg.TypeString}");
+                            sb.AppendLine($"  {arg.Description}");
+                        }
+                    }
+
                     sb.AppendLine();
                 }
 
@@ -220,6 +236,22 @@
                     sb.AppendLine($"Name: {playerVariable.Name}");
                     sb.AppendLine($"Description: {playerVariable.Description}");
                     sb.AppendLine($"Current Value: {(playerVariable.Players.Count() == 0 ? "[None]" : string.Join(", ", playerVariable.Players.Select(ply => ply.Nickname)))}");
+
+                    if (variable is IArgumentVariable argSupport)
+                    {
+                        sb.AppendLine();
+                        sb.AppendLine("Arguments:");
+
+                        foreach (Argument arg in argSupport.ExpectedArguments)
+                        {
+                            string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
+                            sb.AppendLine();
+                            sb.AppendLine($"{chars[0]}{arg.ArgumentName}{chars[1]}");
+                            sb.AppendLine($"  Required: {(arg.Required ? "YES" : "NO")}");
+                            sb.AppendLine($"  Type: {arg.TypeString}");
+                            sb.AppendLine($"  {arg.Description}");
+                        }
+                    }
                 }
 
                 if (!valid)

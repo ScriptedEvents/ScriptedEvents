@@ -92,6 +92,7 @@
     <Compile Include="API\Enums\VariableGroupType.cs" />
     <Compile Include="API\Helpers\CountdownHelper.cs" />
     <Compile Include="API\Helpers\MsgGen.cs" />
+    <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
     <Compile Include="Actions\Interfaces\ICustomReadDisplay.cs" />
     <Compile Include="Actions\Interfaces\IHelpInfo.cs" />

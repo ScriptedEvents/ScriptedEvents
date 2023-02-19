@@ -2,8 +2,12 @@
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using Exiled.API.Features;
+    using PlayerRoles;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
+    using System;
+    using System.Linq;
 
     public class TicketsAndRespawnsVariables : IVariableGroup
     {
@@ -85,7 +89,7 @@
         public float Value => (float)MainPlugin.Handlers.TimeSinceWave.TotalSeconds;
     }
 
-    public class RespawnedPlayers : IFloatVariable
+    public class RespawnedPlayers : IFloatVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{RESPAWNEDPLAYERS}";
@@ -94,6 +98,27 @@
         public string Description => "The amount of players that have respawned in the most recent respawn wave.";
 
         /// <inheritdoc/>
-        public float Value => MainPlugin.Handlers.RecentlyRespawned.Count;
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("roleType", typeof(RoleTypeId), "The role to filter by.", false),
+        };
+
+        /// <inheritdoc/>
+        public float Value
+        {
+            get
+            {
+                if (Arguments.Length > 0 && Enum.TryParse(Arguments[0], out RoleTypeId rt))
+                {
+                    Log.Info(Arguments[0]);
+                    return MainPlugin.Handlers.RecentlyRespawned.Where(ply => ply.Role == rt).Count();
+                }
+
+                return MainPlugin.Handlers.RecentlyRespawned.Count;
+            }
+        }
     }
 }
