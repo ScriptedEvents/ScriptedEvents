@@ -9,6 +9,7 @@ namespace ScriptedEvents.API.Helpers
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Interactables.Interobjects;
     using MEC;
     using PlayerRoles;
     using RemoteAdmin;
@@ -265,7 +266,7 @@ namespace ScriptedEvents.API.Helpers
         public static bool TryGetDoors(string input, out Door[] doors)
         {
             List<Door> doorList = ListPool<Door>.Pool.Get();
-            if (input == "*")
+            if (input is "*" or "ALL")
             {
                 doorList = Door.List.ToList();
             }
@@ -286,7 +287,7 @@ namespace ScriptedEvents.API.Helpers
                 doorList = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
             }
 
-            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second).ToList();
+            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second && d.Base.GetComponentInParent<AirlockController>() == null).ToList();
             doors = ListPool<Door>.Pool.ToArrayReturn(doorList);
             return doors.Length > 0;
         }
