@@ -84,6 +84,7 @@
     <Compile Include="Actions\DamageAction.cs" />
     <Compile Include="Actions\DisableAction.cs" />
     <Compile Include="Actions\KillAction.cs" />
+    <Compile Include="Actions\TicketAction.cs" />
     <Compile Include="Actions\TpRoomAction.cs" />
     <Compile Include="Actions\TpxAction.cs" />
     <Compile Include="API\Enums\ExecuteContext.cs" />

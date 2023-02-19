@@ -5,7 +5,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Variables.Interfaces;
 
-    internal class WorldTimeVariables : IVariableGroup
+    public class WorldTimeVariables : IVariableGroup
     {
         /// <inheritdoc/>
         public string GroupName => "World Time";

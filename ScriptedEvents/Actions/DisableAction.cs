@@ -5,7 +5,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
-    internal class DisableAction : IScriptAction, IHelpInfo
+    public class DisableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "DISABLE";
