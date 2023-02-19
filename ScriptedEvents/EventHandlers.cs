@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Cassie;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -269,6 +270,12 @@
         public void OnInteractingElevator(InteractingElevatorEventArgs ev)
         {
             if (DisabledKeys.Contains("ELEVATORS"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
+        {
+            if (DisabledKeys.Contains("NTFANNOUNCEMENT"))
                 ev.IsAllowed = false;
         }
 
