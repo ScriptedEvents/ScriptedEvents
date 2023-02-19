@@ -12,6 +12,7 @@
     using ScriptedEvents.Variables.Handlers;
     using PlayerHandler = Exiled.Events.Handlers.Player;
     using ServerHandler = Exiled.Events.Handlers.Server;
+    using MapHandler = Exiled.Events.Handlers.Map;
 
     public class MainPlugin : Plugin<Config>
     {
@@ -110,8 +111,20 @@
                 Log.Warn($"This ScriptedEvents DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
             }
 
+            PlayerHandler.Hurting += Handlers.OnHurting;
             PlayerHandler.Died += Handlers.OnDied;
+            PlayerHandler.Dying += Handlers.OnDying;
             PlayerHandler.TriggeringTesla += Handlers.OnTriggeringTesla;
+            PlayerHandler.Shooting += Handlers.OnShooting;
+            PlayerHandler.SearchingPickup += Handlers.OnSearchingPickup;
+
+            PlayerHandler.ActivatingWarheadPanel += Handlers.OnActivatingWarheadPanel;
+            Exiled.Events.Handlers.Warhead.Starting += Handlers.OnStartingWarhead; // why is this located specially??
+
+            PlayerHandler.ActivatingGenerator += Handlers.OnActivatingGenerator;
+            PlayerHandler.OpeningGenerator += Handlers.OnOpeningGenerator;
+            PlayerHandler.StoppingGenerator += Handlers.OnStoppingGenerator;
+            PlayerHandler.UnlockingGenerator += Handlers.OnUnlockingGenerator;
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;
             ServerHandler.WaitingForPlayers += Handlers.OnWaitingForPlayers;
@@ -129,8 +142,20 @@
             Handlers.OnRestarting();
             base.OnDisabled();
 
+            PlayerHandler.Hurting -= Handlers.OnHurting;
             PlayerHandler.Died -= Handlers.OnDied;
+            PlayerHandler.Dying -= Handlers.OnDying;
             PlayerHandler.TriggeringTesla -= Handlers.OnTriggeringTesla;
+            PlayerHandler.Shooting -= Handlers.OnShooting;
+            PlayerHandler.SearchingPickup -= Handlers.OnSearchingPickup;
+
+            PlayerHandler.ActivatingWarheadPanel -= Handlers.OnActivatingWarheadPanel;
+            Exiled.Events.Handlers.Warhead.Starting -= Handlers.OnStartingWarhead; // why is this located specially??
+
+            PlayerHandler.ActivatingGenerator -= Handlers.OnActivatingGenerator;
+            PlayerHandler.OpeningGenerator -= Handlers.OnOpeningGenerator;
+            PlayerHandler.StoppingGenerator -= Handlers.OnStoppingGenerator;
+            PlayerHandler.UnlockingGenerator -= Handlers.OnUnlockingGenerator;
 
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
             ServerHandler.WaitingForPlayers -= Handlers.OnWaitingForPlayers;

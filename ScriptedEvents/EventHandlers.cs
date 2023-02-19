@@ -6,8 +6,10 @@
     using System.IO;
     using System.Linq;
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
+    using Exiled.Events.EventArgs.Warhead;
     using MEC;
     using PlayerRoles;
     using Respawning;
@@ -52,6 +54,22 @@
         public bool TeslasDisabled { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a list of strings indicating round-disabled features.
+        /// </summary>
+        /// <remarks>
+        /// Valid keys include...<br />
+        /// TESLA - Disables the tesla gates entirely.<br />
+        /// GENERATORS - Disables generators.<br />
+        /// HURTING - Prevents taking damage.<br />
+        /// DYING - Prevents dying.<br />
+        /// ITEMPICKUP - Prevents any item from being picked up.<br />
+        /// MICROPICKUP - Prevents Micro-HID from being picked up.<br />
+        /// SHOOTING - Disables firing guns.<br />
+        /// WARHEAD - Disables the warhead from being activated.
+        /// </remarks>
+        public List<string> DisabledKeys { get; set; } = new();
+
+        /// <summary>
         /// Gets a List of infection rules.
         /// </summary>
         public List<InfectRule> InfectionRules { get; } = new();
@@ -70,6 +88,7 @@
             ScriptHelper.StopAllScripts();
             ConditionVariables.ClearVariables();
             PlayerVariables.ClearVariables();
+            DisabledKeys.Clear();
 
             if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
             {
@@ -202,12 +221,76 @@
         // Tesla
         public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
         {
-            if (TeslasDisabled)
+            if (TeslasDisabled || DisabledKeys.Contains("TESLA"))
             {
                 ev.IsInIdleRange = false;
                 ev.IsInHurtingRange = false;
                 ev.IsAllowed = false;
             }
+        }
+
+        // Disable Stuff
+        public void OnDying(DyingEventArgs ev)
+        {
+            if (DisabledKeys.Contains("DYING"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnHurting(HurtingEventArgs ev)
+        {
+            if (DisabledKeys.Contains("HURTING"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnUnlockingGenerator(UnlockingGeneratorEventArgs ev)
+        {
+            if (DisabledKeys.Contains("GENERATORS"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnOpeningGenerator(OpeningGeneratorEventArgs ev)
+        {
+            if (DisabledKeys.Contains("GENERATORS"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnActivatingGenerator(ActivatingGeneratorEventArgs ev)
+        {
+            if (DisabledKeys.Contains("GENERATORS"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnStoppingGenerator(StoppingGeneratorEventArgs ev)
+        {
+            if (DisabledKeys.Contains("GENERATORS"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnShooting(ShootingEventArgs ev)
+        {
+            if (DisabledKeys.Contains("SHOOTING"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnSearchingPickup(SearchingPickupEventArgs ev)
+        {
+            if (DisabledKeys.Contains("ITEMPICKUP"))
+                ev.IsAllowed = false;
+
+            if (DisabledKeys.Contains("MICROPICKUP") && ev.Pickup.Type is ItemType.MicroHID)
+                ev.IsAllowed = false;
+        }
+
+        public void OnStartingWarhead(StartingEventArgs ev)
+        {
+            if (DisabledKeys.Contains("WARHEAD"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnActivatingWarheadPanel(ActivatingWarheadPanelEventArgs ev)
+        {
+            if (DisabledKeys.Contains("WARHEAD"))
+                ev.IsAllowed = false;
         }
     }
 }
