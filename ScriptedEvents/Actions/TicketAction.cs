@@ -36,7 +36,7 @@
             if (!Enum.TryParse<SpawnableTeamType>(Arguments[1], true, out SpawnableTeamType team))
                 return new(false, "Invalid spawnable role provided. Must be ChaosInsurgency or NineTailedFox.");
 
-            if (!int.TryParse(Arguments[2], out int amount))
+            if (!float.TryParse(Arguments[2], out float amount))
                 return new(MessageType.NotANumber, this, "amount", Arguments[1]);
 
             switch (Arguments[0].ToUpper())
