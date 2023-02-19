@@ -5,10 +5,14 @@ namespace ScriptedEvents.API.Helpers
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using CommandSystem;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Interactables.Interobjects;
     using MEC;
+    using PlayerRoles;
+    using RemoteAdmin;
     using ScriptedEvents.Actions;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
@@ -64,9 +68,10 @@ namespace ScriptedEvents.API.Helpers
         /// Reads a script line-by-line, converting every line into an appropriate action, flag, label, etc. Fills out all data and returns a <see cref="Script"/> object.
         /// </summary>
         /// <param name="scriptName">The name of the script.</param>
+        /// <param name="executor">The CommandSender that ran the script. Can be null.</param>
         /// <returns>The <see cref="Script"/> fully filled out, if the script was found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        public static Script ReadScript(string scriptName)
+        public static Script ReadScript(string scriptName, ICommandSender executor)
         {
             Script script = new();
             string allText = ReadScriptText(scriptName);
@@ -159,6 +164,22 @@ namespace ScriptedEvents.API.Helpers
             script.LastRead = File.GetLastAccessTimeUtc(scriptPath);
             script.LastEdited = File.GetLastWriteTimeUtc(scriptPath);
             script.Actions = ListPool<IAction>.Pool.ToArrayReturn(actionList);
+
+            if (executor is null)
+            {
+                script.Context = ExecuteContext.Automatic;
+            }
+            else if (executor is ServerConsoleSender console)
+            {
+                script.Context = ExecuteContext.ServerConsole;
+                script.Sender = console;
+            }
+            else if (executor is PlayerCommandSender player)
+            {
+                script.Context = ExecuteContext.RemoteAdmin;
+                script.Sender = player;
+            }
+
             return script;
         }
 
@@ -180,11 +201,12 @@ namespace ScriptedEvents.API.Helpers
         /// Reads and runs a script.
         /// </summary>
         /// <param name="scriptName">The name of the script.</param>
+        /// <param name="executor">The executor that is running the script. Can be null.</param>
         /// <exception cref="FileNotFoundException">The script was not found.</exception>
         /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
-        public static void ReadAndRun(string scriptName)
+        public static void ReadAndRun(string scriptName, ICommandSender executor)
         {
-            Script scr = ReadScript(scriptName);
+            Script scr = ReadScript(scriptName, executor);
             if (scr is not null)
                 RunScript(scr);
         }
@@ -226,14 +248,14 @@ namespace ScriptedEvents.API.Helpers
             list.ShuffleList();
             list.RemoveAll(p => !p.IsConnected);
 
+            if (MainPlugin.Configs.IgnoreOverwatch)
+                list.RemoveAll(p => p.Role.Type is RoleTypeId.Overwatch);
+
             if (amount.HasValue && amount.Value > 0)
             {
-                if (amount.Value < list.Count)
+                while (list.Count > amount.Value)
                 {
-                    for (int i = 0; i < amount.Value; i++)
-                    {
-                        list.PullRandomItem();
-                    }
+                    list.PullRandomItem();
                 }
             }
 
@@ -244,7 +266,7 @@ namespace ScriptedEvents.API.Helpers
         public static bool TryGetDoors(string input, out Door[] doors)
         {
             List<Door> doorList = ListPool<Door>.Pool.Get();
-            if (input == "*")
+            if (input is "*" or "ALL")
             {
                 doorList = Door.List.ToList();
             }
@@ -265,7 +287,7 @@ namespace ScriptedEvents.API.Helpers
                 doorList = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
             }
 
-            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second).ToList();
+            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second && d.Base.GetComponentInParent<AirlockController>() == null).ToList();
             doors = ListPool<Door>.Pool.ToArrayReturn(doorList);
             return doors.Length > 0;
         }
@@ -385,7 +407,22 @@ namespace ScriptedEvents.API.Helpers
                     }
                     catch (Exception e)
                     {
-                        Log.Error($"[Script: {scr.ScriptName}] Ran into an error while running {action.Name} action:\n{e}");
+                        string message = $"[Script: {scr.ScriptName}] Ran into an error while running {action.Name} action:\n{e}";
+                        switch (scr.Context)
+                        {
+                            case ExecuteContext.RemoteAdmin:
+                                Player ply = Player.Get(scr.Sender);
+                                ply.RemoteAdminMessage(message, false, "ScriptedEvents");
+
+                                if (MainPlugin.Configs.BroadcastIssues)
+                                    ply?.Broadcast(5, $"Error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+
+                                break;
+                            default:
+                                Log.Error(message);
+                                break;
+                        }
+
                         continue;
                     }
 
@@ -393,18 +430,59 @@ namespace ScriptedEvents.API.Helpers
                     {
                         if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                         {
-                            Log.Error($"[Script: {scr.ScriptName}] [{action.Name}] Fatal action error! {resp.Message}");
+                            string message = $"[Script: {scr.ScriptName}] [{action.Name}] Fatal action error! {resp.Message}";
+                            switch (scr.Context)
+                            {
+                                case ExecuteContext.RemoteAdmin:
+                                    Player ply = Player.Get(scr.Sender);
+                                    ply?.RemoteAdminMessage(message, false, "ScriptedEvents");
+
+                                    if (MainPlugin.Configs.BroadcastIssues)
+                                        ply?.Broadcast(5, $"Fatal action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+
+                                    break;
+                                default:
+                                    Log.Error(message);
+                                    break;
+                            }
+
                             break;
                         }
-                        else
+                        else if (!scr.SuppressWarnings)
                         {
-                            Log.Warn($"[Script: {scr.ScriptName}] [{action.Name}] Action error! {resp.Message}");
+                            string message = $"[Script: {scr.ScriptName}] [{action.Name}] Action error! {resp.Message}";
+                            switch (scr.Context)
+                            {
+                                case ExecuteContext.RemoteAdmin:
+                                    Player ply = Player.Get(scr.Sender);
+                                    ply?.RemoteAdminMessage(message, false, "ScriptedEvents");
+
+                                    if (MainPlugin.Configs.BroadcastIssues)
+                                        ply?.Broadcast(5, $"Action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+
+                                    break;
+                                default:
+                                    Log.Warn(message);
+                                    break;
+                            }
                         }
                     }
                     else
                     {
                         if (!string.IsNullOrEmpty(resp.Message))
-                            Log.Info($"[Script: {scr.ScriptName}] [{action.Name}] Response: {resp.Message}");
+                        {
+                            string message = $"[Script: {scr.ScriptName}] [{action.Name}] Response: {resp.Message}";
+                            switch (scr.Context)
+                            {
+                                case ExecuteContext.RemoteAdmin:
+                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, true, "ScriptedEvents");
+                                    break;
+                                default:
+                                    Log.Info(message);
+                                    break;
+                            }
+                        }
+
                         if (delay.HasValue)
                             yield return delay.Value;
                     }
@@ -419,7 +497,7 @@ namespace ScriptedEvents.API.Helpers
 
             if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
             {
-                ReadAndRun(scr.ScriptName); // so that it re-reads the content of the text file.
+                ReadAndRun(scr.ScriptName, scr.Sender); // so that it re-reads the content of the text file.
             }
 
             RunningScripts.Remove(scr);

@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using MEC;
     using PlayerRoles.PlayableScps.HUDs;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
@@ -32,10 +34,16 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[] { new Argument("input", typeof(string), "The name of the action/variable, \"LIST\" for all actions, or \"LISTVAR\" for all variables. Case-sensitive.", true) };
 
+        public bool IsFile { get; set; } = false;
+
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+
+            IsFile = false;
+
+            if (Arguments.Length > 1 && Arguments[1].ToUpper() == "FILE" && script.Sender is ServerConsoleSender) IsFile = true;
 
             // List Help
             if (Arguments[0].ToUpper() == "LIST")
@@ -55,7 +63,7 @@
                     sbList.AppendLine($"{lAction.Name} : {lhelpInfo?.Description ?? "No Description"}");
                 }
 
-                return new(true, StringBuilderPool.Pool.ToStringReturn(sbList));
+                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbList)));
             }
 
             // List Variables
@@ -121,7 +129,7 @@
                     }
                 }
 
-                return new(true, StringBuilderPool.Pool.ToStringReturn(sbList));
+                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbList)));
             }
 
             // Action Help
@@ -141,9 +149,18 @@
 
                 sb.AppendLine($"{action.Name}: {helpInfo.Description}");
 
+                // Usage
+                sb.Append($"USAGE: {action.Name}");
+                foreach (Argument arg in helpInfo.ExpectedArguments)
+                {
+                    string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
+                    sb.Append($" {chars[0]}{arg.ArgumentName.ToUpper()}{chars[1]}");
+                }
+
+                sb.AppendLine();
+
                 if (helpInfo.ExpectedArguments.Length > 0)
                 {
-                    sb.AppendLine();
                     sb.AppendLine();
                     sb.Append("Arguments:");
                 }
@@ -158,7 +175,7 @@
                     sb.AppendLine($"  {arg.Description}");
                 }
 
-                return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
+                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sb)));
             }
 
             // Variable help
@@ -242,11 +259,46 @@
                     return new(false, "Invalid variable provided for the HELP action.");
                 }
 
-                return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
+                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sb)));
             }
 
             // Nope
             return new(false, "Invalid argument provided for the HELP action.");
+        }
+
+        public ActionResponse Display(ActionResponse response)
+        {
+            if (IsFile)
+            {
+                string message = $"!-- DISABLE\nAuto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n{response.Message}";
+                string path = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
+                File.WriteAllText(path, message);
+
+                // File "expire"
+                Timing.CallDelayed(300f, Segment.RealtimeUpdate, () =>
+                {
+                    if (File.Exists(path) && File.ReadAllText(path) == message)
+                    {
+                        Log.Debug("Deleting auto-generated help file.");
+                        File.Delete(path);
+                    }
+                });
+
+                try
+                {
+                    System.Diagnostics.Process.Start(path);
+                }
+                catch (Exception e)
+                {
+                    return new(true, $"File was created successfully, but an error occurred when opening external text editor (likely due to permissions). File will expire in 5 minutes and is located at: {path}.");
+                }
+
+                return new(true, $"Opened help in external text editor. Expires in 5 minutes (if the console is left open). Path: {path}");
+            }
+            else
+            {
+                return response;
+            }
         }
     }
 }

@@ -79,12 +79,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\CountdownAction.cs" />
     <Compile Include="Actions\CustomAction.cs" />
+    <Compile Include="Actions\DamageAction.cs" />
+    <Compile Include="Actions\DisableAction.cs" />
     <Compile Include="Actions\KillAction.cs" />
+    <Compile Include="Actions\TicketAction.cs" />
     <Compile Include="Actions\TpRoomAction.cs" />
     <Compile Include="Actions\TpxAction.cs" />
+    <Compile Include="API\Enums\ExecuteContext.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
     <Compile Include="API\Enums\VariableGroupType.cs" />
+    <Compile Include="API\Helpers\CountdownHelper.cs" />
     <Compile Include="API\Helpers\MsgGen.cs" />
     <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
@@ -157,6 +163,7 @@
     <Compile Include="Conditions\Interfaces\IFloatCondition.cs" />
     <Compile Include="Structures\Argument.cs" />
     <Compile Include="Structures\ConditionResponse.cs" />
+    <Compile Include="Structures\Countdown.cs" />
     <Compile Include="Structures\MathResult.cs" />
     <Compile Include="Variables\Condition\BooleanVariables.cs" />
     <Compile Include="Variables\Condition\ChanceVariables.cs" />
@@ -166,6 +173,7 @@
     <Compile Include="Variables\Condition\PlayerCountVariables.cs" />
     <Compile Include="Variables\Condition\RoleVariables.cs" />
     <Compile Include="Variables\Condition\RoundTimeVariables.cs" />
+    <Compile Include="Variables\Condition\ServerInfoVariables.cs" />
     <Compile Include="Variables\Condition\StringVariables.cs" />
     <Compile Include="Variables\Condition\TicketsAndRespawnsVariables.cs" />
     <Compile Include="Variables\Condition\WorldTimeVariables.cs" />
@@ -204,6 +212,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="API\Features\Controllers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

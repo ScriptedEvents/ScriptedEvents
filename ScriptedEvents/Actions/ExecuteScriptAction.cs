@@ -36,7 +36,7 @@
 
             try
             {
-                ScriptHelper.ReadAndRun(scriptName);
+                ScriptHelper.ReadAndRun(scriptName, script.Sender);
                 return new(true);
             }
             catch (DisabledScriptException)

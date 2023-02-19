@@ -6,8 +6,12 @@
     using System.IO;
     using System.Linq;
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
+    using Exiled.Events.EventArgs.Warhead;
+    using MapGeneration.Distributors;
     using MEC;
     using PlayerRoles;
     using Respawning;
@@ -52,6 +56,11 @@
         public bool TeslasDisabled { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a list of strings indicating round-disabled features.
+        /// </summary>
+        public List<string> DisabledKeys { get; set; } = new();
+
+        /// <summary>
         /// Gets a List of infection rules.
         /// </summary>
         public List<InfectRule> InfectionRules { get; } = new();
@@ -70,12 +79,25 @@
             ScriptHelper.StopAllScripts();
             ConditionVariables.ClearVariables();
             PlayerVariables.ClearVariables();
+            DisabledKeys.Clear();
+
+            if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
+            {
+                Timing.KillCoroutines(CountdownHelper.MainHandle.Value);
+                CountdownHelper.MainHandle = null;
+                CountdownHelper.Countdowns.Clear();
+            }
 
             InfectionRules.Clear();
             SpawnRules.Clear();
             RecentlyRespawned.Clear();
 
             MostRecentSpawn = SpawnableTeamType.None;
+        }
+
+        public void OnWaitingForPlayers()
+        {
+            CountdownHelper.Start();
         }
 
         public void OnRoundStarted()
@@ -130,7 +152,7 @@
             {
                 try
                 {
-                    Script scr = ScriptHelper.ReadScript(name);
+                    Script scr = ScriptHelper.ReadScript(name, null);
 
                     if (scr.AdminEvent)
                     {
@@ -190,12 +212,76 @@
         // Tesla
         public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
         {
-            if (TeslasDisabled)
+            if (TeslasDisabled || DisabledKeys.Contains("TESLA"))
             {
                 ev.IsInIdleRange = false;
                 ev.IsInHurtingRange = false;
                 ev.IsAllowed = false;
             }
+        }
+
+        // Disable Stuff
+        public void OnDying(DyingEventArgs ev)
+        {
+            if (DisabledKeys.Contains("DYING"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnHurting(HurtingEventArgs ev)
+        {
+            if (DisabledKeys.Contains("HURTING"))
+                ev.IsAllowed = false;
+        }
+
+        public void GeneratorEvent(IGeneratorEvent ev)
+        {
+            if (DisabledKeys.Contains("GENERATORS") && ev is IDeniableEvent deniable)
+                deniable.IsAllowed = false;
+        }
+
+        public void OnShooting(ShootingEventArgs ev)
+        {
+            if (DisabledKeys.Contains("SHOOTING"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnSearchingPickup(SearchingPickupEventArgs ev)
+        {
+            if (DisabledKeys.Contains("ITEMPICKUP"))
+                ev.IsAllowed = false;
+
+            if (DisabledKeys.Contains("MICROPICKUP") && ev.Pickup.Type is ItemType.MicroHID)
+                ev.IsAllowed = false;
+        }
+
+        public void OnInteractingLocker(InteractingLockerEventArgs ev)
+        {
+            if (ev.Locker is PedestalScpLocker && DisabledKeys.Contains("PEDESTALS"))
+            {
+                ev.IsAllowed = false;
+            }
+            else if (ev.Locker is not PedestalScpLocker && DisabledKeys.Contains("LOCKERS"))
+            {
+                ev.IsAllowed = false;
+            }
+        }
+
+        public void OnInteractingElevator(InteractingElevatorEventArgs ev)
+        {
+            if (DisabledKeys.Contains("ELEVATORS"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnStartingWarhead(StartingEventArgs ev)
+        {
+            if (DisabledKeys.Contains("WARHEAD"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnActivatingWarheadPanel(ActivatingWarheadPanelEventArgs ev)
+        {
+            if (DisabledKeys.Contains("WARHEAD"))
+                ev.IsAllowed = false;
         }
     }
 }

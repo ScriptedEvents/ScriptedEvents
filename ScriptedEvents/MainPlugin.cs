@@ -12,6 +12,7 @@
     using ScriptedEvents.Variables.Handlers;
     using PlayerHandler = Exiled.Events.Handlers.Player;
     using ServerHandler = Exiled.Events.Handlers.Server;
+    using MapHandler = Exiled.Events.Handlers.Map;
 
     public class MainPlugin : Plugin<Config>
     {
@@ -36,7 +37,12 @@
         public static MainPlugin Singleton { get; set; }
 
         /// <summary>
-        /// Gets or sets the Event Handlers singleton.
+        /// Gets the plugin Config singleton.
+        /// </summary>
+        public static Config Configs => Singleton?.Config;
+
+        /// <summary>
+        /// Gets the Event Handlers singleton.
         /// </summary>
         public static EventHandlers Handlers { get; set; }
 
@@ -105,27 +111,63 @@
                 Log.Warn($"This ScriptedEvents DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
             }
 
+            PlayerHandler.Hurting += Handlers.OnHurting;
             PlayerHandler.Died += Handlers.OnDied;
+            PlayerHandler.Dying += Handlers.OnDying;
             PlayerHandler.TriggeringTesla += Handlers.OnTriggeringTesla;
+            PlayerHandler.Shooting += Handlers.OnShooting;
+            PlayerHandler.SearchingPickup += Handlers.OnSearchingPickup;
+            PlayerHandler.InteractingLocker += Handlers.OnInteractingLocker;
+            PlayerHandler.InteractingElevator += Handlers.OnInteractingElevator;
+
+            PlayerHandler.ActivatingWarheadPanel += Handlers.OnActivatingWarheadPanel;
+            Exiled.Events.Handlers.Warhead.Starting += Handlers.OnStartingWarhead; // why is this located specially??
+
+            PlayerHandler.ActivatingGenerator += Handlers.GeneratorEvent;
+            PlayerHandler.OpeningGenerator += Handlers.GeneratorEvent;
+            PlayerHandler.StoppingGenerator += Handlers.GeneratorEvent;
+            PlayerHandler.UnlockingGenerator += Handlers.GeneratorEvent;
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;
+            ServerHandler.WaitingForPlayers += Handlers.OnWaitingForPlayers;
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
 
             ApiHelper.RegisterActions();
             ConditionVariables.Setup();
             PlayerVariables.Setup();
+
+            // Delete help file on startup
+            string helpPath = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
+            if (File.Exists(helpPath))
+                File.Delete(helpPath);
         }
 
         /// <inheritdoc/>
         public override void OnDisabled()
         {
+            Handlers.OnRestarting();
             base.OnDisabled();
 
+            PlayerHandler.Hurting -= Handlers.OnHurting;
             PlayerHandler.Died -= Handlers.OnDied;
+            PlayerHandler.Dying -= Handlers.OnDying;
             PlayerHandler.TriggeringTesla -= Handlers.OnTriggeringTesla;
+            PlayerHandler.Shooting -= Handlers.OnShooting;
+            PlayerHandler.SearchingPickup -= Handlers.OnSearchingPickup;
+            PlayerHandler.InteractingLocker -= Handlers.OnInteractingLocker;
+            PlayerHandler.InteractingElevator -= Handlers.OnInteractingElevator;
+
+            PlayerHandler.ActivatingWarheadPanel -= Handlers.OnActivatingWarheadPanel;
+            Exiled.Events.Handlers.Warhead.Starting -= Handlers.OnStartingWarhead; // why is this located specially??
+
+            PlayerHandler.ActivatingGenerator -= Handlers.GeneratorEvent;
+            PlayerHandler.OpeningGenerator -= Handlers.GeneratorEvent;
+            PlayerHandler.StoppingGenerator -= Handlers.GeneratorEvent;
+            PlayerHandler.UnlockingGenerator -= Handlers.GeneratorEvent;
 
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
+            ServerHandler.WaitingForPlayers -= Handlers.OnWaitingForPlayers;
             ServerHandler.RoundStarted -= Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam -= Handlers.OnRespawningTeam;
 
