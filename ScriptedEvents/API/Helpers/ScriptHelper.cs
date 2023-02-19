@@ -448,7 +448,7 @@ namespace ScriptedEvents.API.Helpers
 
                             break;
                         }
-                        else
+                        else if (!scr.SuppressWarnings)
                         {
                             string message = $"[Script: {scr.ScriptName}] [{action.Name}] Action error! {resp.Message}";
                             switch (scr.Context)

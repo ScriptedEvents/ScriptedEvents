@@ -106,6 +106,11 @@
         public bool AdminEvent => Flags.Contains("ADMINEVENT");
 
         /// <summary>
+        /// Gets a value indicating whether or not warnings are suppressed.
+        /// </summary>
+        public bool SuppressWarnings => Flags.Contains("SUPPRESSWARNINGS");
+
+        /// <summary>
         /// Gets the context that the script was executed in.
         /// </summary>
         public ExecuteContext Context { get; internal set; }

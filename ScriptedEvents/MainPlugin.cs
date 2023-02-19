@@ -136,6 +136,11 @@
             ApiHelper.RegisterActions();
             ConditionVariables.Setup();
             PlayerVariables.Setup();
+
+            // Delete help file on startup
+            string helpPath = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
+            if (File.Exists(helpPath))
+                File.Delete(helpPath);
         }
 
         /// <inheritdoc/>

@@ -149,9 +149,18 @@
 
                 sb.AppendLine($"{action.Name}: {helpInfo.Description}");
 
+                // Usage
+                sb.Append($"USAGE: {action.Name}");
+                foreach (Argument arg in helpInfo.ExpectedArguments)
+                {
+                    string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
+                    sb.Append($" {chars[0]}{arg.ArgumentName.ToUpper()}{chars[1]}");
+                }
+
+                sb.AppendLine();
+
                 if (helpInfo.ExpectedArguments.Length > 0)
                 {
-                    sb.AppendLine();
                     sb.AppendLine();
                     sb.Append("Arguments:");
                 }
@@ -229,8 +238,8 @@
         {
             if (IsFile)
             {
-                string message = $"Auto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n\n{response.Message}";
-                string path = Path.Combine(Paths.Configs, "HelpCommandResponse.txt");
+                string message = $"!-- DISABLE\nAuto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n{response.Message}";
+                string path = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
                 File.WriteAllText(path, message);
 
                 // File "expire"
