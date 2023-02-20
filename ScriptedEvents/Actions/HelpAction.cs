@@ -69,8 +69,8 @@
             // List Variables
             if (Arguments[0].ToUpper() is "LISTVAR" or "VARLIST")
             {
-                var conditionList = ConditionVariables.Groups.Where(g => g.GroupType is VariableGroupType.Condition).OrderByDescending(group => group.GroupName);
-                var playerList = PlayerVariables.Groups.Where(g => g.GroupType is VariableGroupType.Player).OrderByDescending(group => group.GroupName);
+                var conditionList = ConditionVariables.Groups.Where(g => g.GroupType is VariableGroupType.Condition).OrderBy(group => group.GroupName);
+                var playerList = PlayerVariables.Groups.Where(g => g.GroupType is VariableGroupType.Player).OrderBy(group => group.GroupName);
 
                 StringBuilder sbList = StringBuilderPool.Pool.Get();
                 sbList.AppendLine();
@@ -80,7 +80,7 @@
                 foreach (IVariableGroup group in conditionList)
                 {
                     sbList.AppendLine($"+ {group.GroupName} +");
-                    foreach (IVariable variable in group.Variables.OrderByDescending(v => v.Name))
+                    foreach (IVariable variable in group.Variables.OrderBy(v => v.Name))
                     {
                         sbList.AppendLine($"{variable.Name} - {variable.Description}");
                     }
@@ -95,7 +95,7 @@
                 }
                 else
                 {
-                    foreach (var userDefined in ConditionVariables.DefinedVariables)
+                    foreach (var userDefined in ConditionVariables.DefinedVariables.OrderBy(v => v.Key))
                     {
                         sbList.AppendLine($"{userDefined.Value.Name}");
                     }
@@ -108,7 +108,7 @@
                 foreach (IVariableGroup group in playerList)
                 {
                     sbList.AppendLine($"+ {group.GroupName} +");
-                    foreach (IVariable variable in group.Variables.OrderByDescending(v => v.Name))
+                    foreach (IVariable variable in group.Variables.OrderBy(v => v.Name))
                     {
                         sbList.AppendLine($"{variable.Name} - {variable.Description}");
                     }
@@ -123,7 +123,7 @@
                 }
                 else
                 {
-                    foreach (var userDefined in PlayerVariables.DefinedVariables)
+                    foreach (var userDefined in PlayerVariables.DefinedVariables.OrderBy(v => v.Key))
                     {
                         sbList.AppendLine($"{userDefined.Value.Name}");
                     }
