@@ -5,6 +5,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables.Interfaces;
 
     public class DeleteVariable : IScriptAction, IHelpInfo
     {
@@ -23,7 +24,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("variableName", typeof(string), "The name of the variable.", true),
+            new Argument("variableName", typeof(IConditionVariable), "The name of the variable.", true),
         };
 
         /// <inheritdoc/>

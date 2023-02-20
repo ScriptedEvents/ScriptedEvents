@@ -7,9 +7,11 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using PlayerRoles;
+    using Respawning;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
     /// Tool to generate error messages and strings, for consistency between all actions.
@@ -30,7 +32,11 @@
             { typeof(Door[]), "Door List" },
             { typeof(List<Door>), "Door List" },
             { typeof(RoleTypeId), "RoleTypeId (ID / Number)" },
+            { typeof(SpawnableTeamType), "Spawnable Team (ChaosInsurgency OR NineTailedFox)" },
             { typeof(RoomType), "RoomType (ID / Number)" },
+            { typeof(IVariable), "Variable" },
+            { typeof(IPlayerVariable), "Player Variable" },
+            { typeof(IConditionVariable), "Condition Variable" },
             { typeof(object), "Variable" },
         };
 
