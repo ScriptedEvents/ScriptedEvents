@@ -134,6 +134,9 @@
             PlayerHandler.EnteringEnvironmentalHazard += Handlers.OnHazardEvent;
             PlayerHandler.ExitingEnvironmentalHazard += Handlers.OnHazardEvent;
 
+            PlayerHandler.ActivatingWorkstation += Handlers.OnWorkStationEvent;
+            PlayerHandler.DeactivatingWorkstation += Handlers.OnWorkStationEvent;
+
             MapHandler.AnnouncingNtfEntrance += Handlers.OnAnnouncingNtfEntrance;
 
             Scp330Handler.InteractingScp330 += Handlers.OnScp330Event;
@@ -185,6 +188,9 @@
 
             PlayerHandler.EnteringEnvironmentalHazard -= Handlers.OnHazardEvent;
             PlayerHandler.ExitingEnvironmentalHazard -= Handlers.OnHazardEvent;
+
+            PlayerHandler.ActivatingWorkstation -= Handlers.OnWorkStationEvent;
+            PlayerHandler.DeactivatingWorkstation -= Handlers.OnWorkStationEvent;
 
             MapHandler.AnnouncingNtfEntrance -= Handlers.OnAnnouncingNtfEntrance;
 

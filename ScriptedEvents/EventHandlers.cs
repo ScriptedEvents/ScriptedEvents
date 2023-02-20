@@ -285,6 +285,12 @@
                 deny.IsAllowed = false;
         }
 
+        public void OnWorkStationEvent(IDeniableEvent ev)
+        {
+            if (DisabledKeys.Contains("WORKSTATIONS"))
+                ev.IsAllowed = false;
+        }
+
         public void OnScp330Event(IDeniableEvent ev)
         {
             if (DisabledKeys.Contains("SCP330"))
