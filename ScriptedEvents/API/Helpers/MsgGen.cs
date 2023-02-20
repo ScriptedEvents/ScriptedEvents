@@ -37,7 +37,7 @@
             { typeof(IVariable), "Variable" },
             { typeof(IPlayerVariable), "Player Variable" },
             { typeof(IConditionVariable), "Condition Variable" },
-            { typeof(object), "Variable" },
+            { typeof(object), "Any Type" },
         };
 
         /// <summary>
