@@ -99,6 +99,29 @@
         public void OnWaitingForPlayers()
         {
             CountdownHelper.Start();
+            foreach (string name in MainPlugin.Singleton.Config.AutoRunScripts)
+            {
+                try
+                {
+                    Script scr = ScriptHelper.ReadScript(name, null);
+
+                    if (scr.AdminEvent)
+                    {
+                        Log.Warn($"The '{name}' script is set to run each round, but the script is marked as an admin event!");
+                        continue;
+                    }
+
+                    ScriptHelper.RunScript(scr);
+                }
+                catch (DisabledScriptException)
+                {
+                    Log.Warn($"The '{name}' script is set to run each round, but the script is disabled!");
+                }
+                catch (FileNotFoundException)
+                {
+                    Log.Warn($"The '{name}' script is set to run each round, but the script is not found!");
+                }
+            }
         }
 
         public void OnRoundStarted()
@@ -146,30 +169,6 @@
                     {
                         player.Role.Set(rule.Key);
                     }
-                }
-            }
-
-            foreach (string name in MainPlugin.Singleton.Config.AutoRunScripts)
-            {
-                try
-                {
-                    Script scr = ScriptHelper.ReadScript(name, null);
-
-                    if (scr.AdminEvent)
-                    {
-                        Log.Warn($"The '{name}' script is set to run each round, but the script is marked as an admin event!");
-                        continue;
-                    }
-
-                    ScriptHelper.RunScript(scr);
-                }
-                catch (DisabledScriptException)
-                {
-                    Log.Warn($"The '{name}' script is set to run each round, but the script is disabled!");
-                }
-                catch (FileNotFoundException)
-                {
-                    Log.Warn($"The '{name}' script is set to run each round, but the script is not found!");
                 }
             }
         }
