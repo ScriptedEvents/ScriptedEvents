@@ -180,6 +180,8 @@ namespace ScriptedEvents.API.Helpers
                 script.Sender = player;
             }
 
+            script.DebugLog($"Debug script read successfully. Name: {script.ScriptName} | Actions: {string.Join(" ", script.Actions.Length)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Where(action => action is NullAction @null && @null.Type is "COMMENT").Count()}");
+
             return script;
         }
 
@@ -384,6 +386,8 @@ namespace ScriptedEvents.API.Helpers
 
             for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
+                scr.DebugLog("-----------");
+                scr.DebugLog($"Current Line: {scr.CurrentLine}");
                 if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {
                     ActionResponse resp;
@@ -394,14 +398,15 @@ namespace ScriptedEvents.API.Helpers
                         switch (action)
                         {
                             case ITimingAction timed:
-                                Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
+                                scr.DebugLog($"Running {action.Name} action (timed) on line {scr.CurrentLine}...");
                                 delay = timed.Execute(scr, out resp);
                                 break;
                             case IScriptAction scriptAction:
-                                Log.Debug($"[Script: {scr.ScriptName}] Running {action.Name} action...");
+                                scr.DebugLog($"Running {action.Name} action on line {scr.CurrentLine}...");
                                 resp = scriptAction.Execute(scr);
                                 break;
                             default:
+                                scr.DebugLog($"Skipping line {scr.CurrentLine} (no runnable action on line)");
                                 continue;
                         }
                     }
@@ -428,6 +433,7 @@ namespace ScriptedEvents.API.Helpers
 
                     if (!resp.Success)
                     {
+                        scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine}]: FAIL");
                         if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                         {
                             string message = $"[Script: {scr.ScriptName}] [{action.Name}] Fatal action error! {resp.Message}";
@@ -469,6 +475,7 @@ namespace ScriptedEvents.API.Helpers
                     }
                     else
                     {
+                        scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine}]: SUCCESS");
                         if (!string.IsNullOrEmpty(resp.Message))
                         {
                             string message = $"[Script: {scr.ScriptName}] [{action.Name}] Response: {resp.Message}";
@@ -484,7 +491,10 @@ namespace ScriptedEvents.API.Helpers
                         }
 
                         if (delay.HasValue)
+                        {
+                            scr.DebugLog($"Action '{action.Name}' on line {scr.CurrentLine} delaying script. Length of delay: {delay.Value}");
                             yield return delay.Value;
+                        }
                     }
 
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
@@ -492,14 +502,17 @@ namespace ScriptedEvents.API.Helpers
                 }
             }
 
+            scr.DebugLog("-----------");
             MainPlugin.Info($"Finished running script {scr.ScriptName}.");
             scr.IsRunning = false;
 
             if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
             {
+                scr.DebugLog("Re-running looped script.");
                 ReadAndRun(scr.ScriptName, scr.Sender); // so that it re-reads the content of the text file.
             }
 
+            scr.DebugLog("Removing script from running scripts.");
             RunningScripts.Remove(scr);
         }
     }

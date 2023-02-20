@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using CommandSystem;
+    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
@@ -101,6 +102,11 @@
         public bool Disabled => Flags.Contains("DISABLE");
 
         /// <summary>
+        /// Gets a value indicating whether or not the script is running in debug mode.
+        /// </summary>
+        public bool Debug => Flags.Contains("DEBUG");
+
+        /// <summary>
         /// Gets a value indicating whether or not the script is marked as an admin-event (CedMod compatibility).
         /// </summary>
         public bool AdminEvent => Flags.Contains("ADMINEVENT");
@@ -133,5 +139,15 @@
         /// Moves to the next line.
         /// </summary>
         public void NextLine() => CurrentLine++;
+
+        /// <summary>
+        /// Logs a debug message to the console.
+        /// </summary>
+        /// <param name="input">The input to log.</param>
+        public void DebugLog(string input)
+        {
+            if (!Debug) return;
+            Log.Debug($"[Script: {ScriptName}] {input}");
+        }
     }
 }
