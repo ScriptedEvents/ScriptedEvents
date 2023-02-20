@@ -270,7 +270,7 @@
         {
             if (IsFile)
             {
-                string message = $"!-- DISABLE\nAuto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n{response.Message}";
+                string message = $"!-- HELPRESPONSE\nAuto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n{response.Message}";
                 string path = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
                 File.WriteAllText(path, message);
 

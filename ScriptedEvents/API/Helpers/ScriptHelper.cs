@@ -329,11 +329,14 @@ namespace ScriptedEvents.API.Helpers
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
         internal static string InternalRead(string scriptName, out string fileDirectory)
         {
+            fileDirectory = null;
+
+            string text = null;
             string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
             if (File.Exists(mainFolderFile))
             {
                 fileDirectory = mainFolderFile;
-                return File.ReadAllText(mainFolderFile);
+                text = File.ReadAllText(mainFolderFile);
             }
 
             foreach (string directory in Directory.GetDirectories(ScriptPath))
@@ -342,8 +345,16 @@ namespace ScriptedEvents.API.Helpers
                 if (File.Exists(fileName))
                 {
                     fileDirectory = fileName;
-                    return File.ReadAllText(fileName);
+                    text = File.ReadAllText(fileName);
                 }
+            }
+
+            if (text is not null && fileDirectory is not null)
+            {
+                if (text.Contains("!-- HELPRESPONSE"))
+                    throw new FileNotFoundException($"Script {scriptName} does not exist.");
+
+                return text;
             }
 
             throw new FileNotFoundException($"Script {scriptName} does not exist.");
