@@ -121,6 +121,7 @@
             PlayerHandler.SearchingPickup += Handlers.OnSearchingPickup;
             PlayerHandler.InteractingLocker += Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator += Handlers.OnInteractingElevator;
+            PlayerHandler.Escaping += Handlers.OnEscaping;
 
             PlayerHandler.ActivatingWarheadPanel += Handlers.OnActivatingWarheadPanel;
             Exiled.Events.Handlers.Warhead.Starting += Handlers.OnStartingWarhead; // why is this located specially??
@@ -172,6 +173,7 @@
             PlayerHandler.SearchingPickup -= Handlers.OnSearchingPickup;
             PlayerHandler.InteractingLocker -= Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator -= Handlers.OnInteractingElevator;
+            PlayerHandler.Escaping -= Handlers.OnEscaping;
 
             PlayerHandler.ActivatingWarheadPanel -= Handlers.OnActivatingWarheadPanel;
             Exiled.Events.Handlers.Warhead.Starting -= Handlers.OnStartingWarhead; // why is this located specially??

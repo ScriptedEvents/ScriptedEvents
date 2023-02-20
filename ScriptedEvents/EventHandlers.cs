@@ -267,6 +267,12 @@
             }
         }
 
+        public void OnEscaping(EscapingEventArgs ev)
+        {
+            if (DisabledKeys.Contains("ESCAPING"))
+                ev.IsAllowed = false;
+        }
+
         public void OnInteractingElevator(InteractingElevatorEventArgs ev)
         {
             if (DisabledKeys.Contains("ELEVATORS"))
