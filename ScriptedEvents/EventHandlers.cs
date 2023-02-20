@@ -213,7 +213,7 @@
         // Tesla
         public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
         {
-            if (TeslasDisabled || DisabledKeys.Contains("TESLA"))
+            if (TeslasDisabled || DisabledKeys.Contains("TESLAS"))
             {
                 ev.IsInIdleRange = false;
                 ev.IsInHurtingRange = false;
@@ -248,10 +248,10 @@
 
         public void OnSearchingPickup(SearchingPickupEventArgs ev)
         {
-            if (DisabledKeys.Contains("ITEMPICKUP"))
+            if (DisabledKeys.Contains("ITEMPICKUPS"))
                 ev.IsAllowed = false;
 
-            if (DisabledKeys.Contains("MICROPICKUP") && ev.Pickup.Type is ItemType.MicroHID)
+            if (DisabledKeys.Contains("MICROPICKUPS") && ev.Pickup.Type is ItemType.MicroHID)
                 ev.IsAllowed = false;
         }
 
