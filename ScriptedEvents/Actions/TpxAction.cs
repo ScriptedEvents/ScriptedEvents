@@ -46,10 +46,12 @@
             if (!float.TryParse(Arguments[3], out float z))
                 return new(MessageType.NotANumber, this, "Z", Arguments[3]);
 
+            Vector3 vz = new Vector3(x, y, z);
+
             foreach (Player ply in players)
             {
                 if (ply.IsDead || !ply.IsConnected) continue;
-                ply.Teleport(new Vector3(x, y, z));
+                ply.Teleport(vz);
             }
 
             return new(true);
