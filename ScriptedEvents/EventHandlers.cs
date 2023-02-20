@@ -273,6 +273,12 @@
                 ev.IsAllowed = false;
         }
 
+        public void OnHazardEvent(IHazardEvent ev)
+        {
+            if (DisabledKeys.Contains("HAZARDS") && ev is IDeniableEvent deny)
+                deny.IsAllowed = false;
+        }
+
         public void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
         {
             if (DisabledKeys.Contains("NTFANNOUNCEMENT"))

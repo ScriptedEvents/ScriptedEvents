@@ -128,6 +128,9 @@
             PlayerHandler.StoppingGenerator += Handlers.GeneratorEvent;
             PlayerHandler.UnlockingGenerator += Handlers.GeneratorEvent;
 
+            PlayerHandler.EnteringEnvironmentalHazard += Handlers.OnHazardEvent;
+            PlayerHandler.ExitingEnvironmentalHazard += Handlers.OnHazardEvent;
+
             MapHandler.AnnouncingNtfEntrance += Handlers.OnAnnouncingNtfEntrance;
 
             ServerHandler.RestartingRound += Handlers.OnRestarting;
@@ -167,6 +170,9 @@
             PlayerHandler.OpeningGenerator -= Handlers.GeneratorEvent;
             PlayerHandler.StoppingGenerator -= Handlers.GeneratorEvent;
             PlayerHandler.UnlockingGenerator -= Handlers.GeneratorEvent;
+
+            PlayerHandler.EnteringEnvironmentalHazard -= Handlers.OnHazardEvent;
+            PlayerHandler.ExitingEnvironmentalHazard -= Handlers.OnHazardEvent;
 
             MapHandler.AnnouncingNtfEntrance -= Handlers.OnAnnouncingNtfEntrance;
 
