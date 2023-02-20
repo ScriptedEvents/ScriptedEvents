@@ -279,6 +279,18 @@
                 deny.IsAllowed = false;
         }
 
+        public void OnScp330Event(IDeniableEvent ev)
+        {
+            if (DisabledKeys.Contains("SCP330"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnScp914Event(IDeniableEvent ev)
+        {
+            if (DisabledKeys.Contains("SCP914"))
+                ev.IsAllowed = false;
+        }
+
         public void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
         {
             if (DisabledKeys.Contains("NTFANNOUNCEMENT"))

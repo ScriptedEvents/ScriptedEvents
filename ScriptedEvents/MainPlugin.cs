@@ -10,9 +10,11 @@
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Variables.Handlers;
-    using PlayerHandler = Exiled.Events.Handlers.Player;
-    using ServerHandler = Exiled.Events.Handlers.Server;
     using MapHandler = Exiled.Events.Handlers.Map;
+    using PlayerHandler = Exiled.Events.Handlers.Player;
+    using Scp330Handler = Exiled.Events.Handlers.Scp330;
+    using Scp914Handler = Exiled.Events.Handlers.Scp914;
+    using ServerHandler = Exiled.Events.Handlers.Server;
 
     public class MainPlugin : Plugin<Config>
     {
@@ -133,6 +135,14 @@
 
             MapHandler.AnnouncingNtfEntrance += Handlers.OnAnnouncingNtfEntrance;
 
+            Scp330Handler.InteractingScp330 += Handlers.OnScp330Event;
+
+            Scp914Handler.Activating += Handlers.OnScp914Event;
+            Scp914Handler.ChangingKnobSetting += Handlers.OnScp914Event;
+            Scp914Handler.UpgradingPickup += Handlers.OnScp914Event;
+            Scp914Handler.UpgradingInventoryItem += Handlers.OnScp914Event;
+            Scp914Handler.UpgradingPlayer += Handlers.OnScp914Event;
+
             ServerHandler.RestartingRound += Handlers.OnRestarting;
             ServerHandler.WaitingForPlayers += Handlers.OnWaitingForPlayers;
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
@@ -175,6 +185,14 @@
             PlayerHandler.ExitingEnvironmentalHazard -= Handlers.OnHazardEvent;
 
             MapHandler.AnnouncingNtfEntrance -= Handlers.OnAnnouncingNtfEntrance;
+
+            Scp330Handler.InteractingScp330 -= Handlers.OnScp330Event;
+
+            Scp914Handler.Activating -= Handlers.OnScp914Event;
+            Scp914Handler.ChangingKnobSetting -= Handlers.OnScp914Event;
+            Scp914Handler.UpgradingPickup -= Handlers.OnScp914Event;
+            Scp914Handler.UpgradingInventoryItem -= Handlers.OnScp914Event;
+            Scp914Handler.UpgradingPlayer -= Handlers.OnScp914Event;
 
             ServerHandler.RestartingRound -= Handlers.OnRestarting;
             ServerHandler.WaitingForPlayers -= Handlers.OnWaitingForPlayers;
