@@ -118,6 +118,8 @@
             PlayerHandler.Dying += Handlers.OnDying;
             PlayerHandler.TriggeringTesla += Handlers.OnTriggeringTesla;
             PlayerHandler.Shooting += Handlers.OnShooting;
+            PlayerHandler.DroppingAmmo += Handlers.OnDroppingItem;
+            PlayerHandler.DroppingItem += Handlers.OnDroppingItem;
             PlayerHandler.SearchingPickup += Handlers.OnSearchingPickup;
             PlayerHandler.InteractingLocker += Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator += Handlers.OnInteractingElevator;
@@ -173,6 +175,8 @@
             PlayerHandler.Dying -= Handlers.OnDying;
             PlayerHandler.TriggeringTesla -= Handlers.OnTriggeringTesla;
             PlayerHandler.Shooting -= Handlers.OnShooting;
+            PlayerHandler.DroppingAmmo -= Handlers.OnDroppingItem;
+            PlayerHandler.DroppingItem -= Handlers.OnDroppingItem;
             PlayerHandler.SearchingPickup -= Handlers.OnSearchingPickup;
             PlayerHandler.InteractingLocker -= Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator -= Handlers.OnInteractingElevator;

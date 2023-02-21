@@ -245,6 +245,12 @@
                 ev.IsAllowed = false;
         }
 
+        public void OnDroppingItem(IDeniableEvent ev)
+        {
+            if (DisabledKeys.Contains("DROPPING"))
+                ev.IsAllowed = false;
+        }
+
         public void OnSearchingPickup(SearchingPickupEventArgs ev)
         {
             if (DisabledKeys.Contains("ITEMPICKUPS"))
