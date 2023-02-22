@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
 
-    public class StopIfAction : IScriptAction, IHelpInfo
+    public class StopIfAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "STOPIF";

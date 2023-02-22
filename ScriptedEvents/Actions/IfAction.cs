@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
 
-    public class IfAction : IScriptAction, IHelpInfo
+    public class IfAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "IF";

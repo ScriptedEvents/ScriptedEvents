@@ -5,7 +5,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
-    public class StopAction : IScriptAction, IHelpInfo
+    public class StopAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "STOP";

@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
-    public class GotoAction : IScriptAction, IHelpInfo
+    public class GotoAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "GOTO";

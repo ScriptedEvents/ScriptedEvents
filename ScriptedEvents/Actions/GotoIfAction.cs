@@ -7,7 +7,7 @@
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
 
-    public class GotoIfAction : IScriptAction, IHelpInfo
+    public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "GOTOIF";

@@ -54,6 +54,12 @@
                 return false;
             }
 
+            if (action is ILogicAction)
+            {
+                response = "Logic actions cannot be used in the action command.";
+                return false;
+            }
+
             scriptAction.Arguments = arguments.Skip(1).ToArray();
 
             Script mockScript = new Script();
