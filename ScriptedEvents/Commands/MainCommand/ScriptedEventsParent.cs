@@ -22,6 +22,7 @@
             RegisterCommand(new ListScripts());
             RegisterCommand(new ReadScript());
             RegisterCommand(new StopAllScripts());
+            RegisterCommand(new Action());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)

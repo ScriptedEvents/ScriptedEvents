@@ -35,7 +35,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players))
                 return new(MessageType.NoPlayersFound, this, "players");

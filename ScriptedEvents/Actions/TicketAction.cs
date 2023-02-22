@@ -31,7 +31,7 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!Enum.TryParse<SpawnableTeamType>(Arguments[1], true, out SpawnableTeamType team))
                 return new(false, "Invalid spawnable role provided. Must be ChaosInsurgency or NineTailedFox.");
