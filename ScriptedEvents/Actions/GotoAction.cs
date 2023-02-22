@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class GotoAction : IScriptAction, IHelpInfo
@@ -29,10 +30,12 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            // Todo: Idiot-proofing
+            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, ExpectedArguments);
+
             switch (Arguments.ElementAtOrDefault(0).ToUpper())
             {
                 case "ADD":
+                    if (Arguments.Length < 2) return new(false, "ADD mode requires a line amount to add.");
                     if (int.TryParse(Arguments.ElementAtOrDefault(1), out int newline))
                     {
                         script.Jump(script.CurrentLine + newline);
@@ -56,7 +59,7 @@
                     break;
             }
 
-            return new(false);
+            return new(false, "Invalid line or label provided.");
         }
     }
 }
