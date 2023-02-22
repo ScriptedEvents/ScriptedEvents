@@ -423,7 +423,7 @@ namespace ScriptedEvents.API.Helpers
                     }
                     catch (Exception e)
                     {
-                        string message = $"[Script: {scr.ScriptName}] Ran into an error while running {action.Name} action:\n{e}";
+                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine}] Ran into an error while running {action.Name} action:\n{e}";
                         switch (scr.Context)
                         {
                             case ExecuteContext.RemoteAdmin:
@@ -447,7 +447,7 @@ namespace ScriptedEvents.API.Helpers
                         scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine}]: FAIL");
                         if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                         {
-                            string message = $"[Script: {scr.ScriptName}] [{action.Name}] Fatal action error! {resp.Message}";
+                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine}] [{action.Name}] Fatal action error! {resp.Message}";
                             switch (scr.Context)
                             {
                                 case ExecuteContext.RemoteAdmin:
@@ -467,7 +467,7 @@ namespace ScriptedEvents.API.Helpers
                         }
                         else if (!scr.SuppressWarnings)
                         {
-                            string message = $"[Script: {scr.ScriptName}] [{action.Name}] Action error! {resp.Message}";
+                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine}] [{action.Name}] Action error! {resp.Message}";
                             switch (scr.Context)
                             {
                                 case ExecuteContext.RemoteAdmin:
@@ -489,7 +489,7 @@ namespace ScriptedEvents.API.Helpers
                         scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine}]: SUCCESS");
                         if (!string.IsNullOrEmpty(resp.Message))
                         {
-                            string message = $"[Script: {scr.ScriptName}] [{action.Name}] Response: {resp.Message}";
+                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine}] [{action.Name}] Response: {resp.Message}";
                             switch (scr.Context)
                             {
                                 case ExecuteContext.RemoteAdmin:
