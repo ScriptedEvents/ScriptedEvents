@@ -18,6 +18,7 @@
         {
             new NextWave(),
             new LastRespawnTeam(),
+            new LastUnitName(),
         };
     }
 
@@ -43,5 +44,17 @@
 
         /// <inheritdoc/>
         public string Value => Respawn.NextKnownTeam.ToString();
+    }
+
+    public class LastUnitName : IStringVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LASTRESPAWNUNIT}";
+
+        /// <inheritdoc/>
+        public string Description => "The most recent team's unit name.";
+
+        /// <inheritdoc/>
+        public string Value => MainPlugin.Handlers.MostRecentSpawnUnit;
     }
 }

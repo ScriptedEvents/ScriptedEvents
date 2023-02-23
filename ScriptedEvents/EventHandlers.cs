@@ -47,6 +47,11 @@
         public SpawnableTeamType MostRecentSpawn { get; set; }
 
         /// <summary>
+        /// Gets or sets the most recent spawn unit.
+        /// </summary>
+        public string MostRecentSpawnUnit { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets a list of players that most recently respawned.
         /// </summary>
         public List<Player> RecentlyRespawned { get; } = new();
@@ -76,6 +81,7 @@
             RespawnWaves = 0;
             lastRespawnWave = DateTime.MinValue;
             TeslasDisabled = false;
+            MostRecentSpawnUnit = string.Empty;
 
             ScriptHelper.StopAllScripts();
             ConditionVariables.ClearVariables();
@@ -310,6 +316,8 @@
 
         public void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
         {
+            MostRecentSpawnUnit = ev.UnitName;
+
             if (DisabledKeys.Contains("NTFANNOUNCEMENT"))
                 ev.IsAllowed = false;
         }
