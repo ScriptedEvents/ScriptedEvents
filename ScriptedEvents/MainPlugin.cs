@@ -47,7 +47,7 @@
         public static Config Configs => Singleton?.Config;
 
         /// <summary>
-        /// Gets the Event Handlers singleton.
+        /// Gets or sets the Event Handlers singleton.
         /// </summary>
         public static EventHandlers Handlers { get; set; }
 
@@ -61,8 +61,13 @@
             new ConditionSamples(),
         };
 
+        /// <summary>
+        /// Gets an array of Event "Handler" types defined by Exiled.
+        /// </summary>
         public static Type[] HandlerTypes { get; } = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
             .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
+
+        public static List<Delegate> StoredDelegates { get; } = new();
 
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";
@@ -182,8 +187,10 @@
                                 Script scr = ScriptHelper.ReadScript(script, null);
                                 if (scr is not null)
                                 {
+                                    Delegate dg = Delegate.CreateDelegate(@event.EventHandlerType, scr, scriptMethodInfo);
                                     made = true;
-                                    @event.AddEventHandler(null, Delegate.CreateDelegate(@event.EventHandlerType, scr, scriptMethodInfo));
+                                    @event.AddEventHandler(null, dg);
+                                    StoredDelegates.Add(dg);
                                 }
                             }
                             catch (FileNotFoundException)
