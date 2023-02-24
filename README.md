@@ -12,6 +12,7 @@ All documentation for this plugin can be found on its [wiki](https://github.com/
 The parent command for this plugin is `scriptedevents` (aliases: `script`, `scr`). Running this command will show examples on how to use it.
 
 ### Permissions
+* `script.action` - Run a single non-logic action via command.
 * `script.execute` - Execute a script.
 * `script.list` - View all scripts.
 * `script.read` - Read a script.
