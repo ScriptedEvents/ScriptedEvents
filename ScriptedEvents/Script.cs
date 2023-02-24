@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using CommandSystem;
+    using Discord;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Actions.Interfaces;
@@ -147,7 +148,7 @@
         public void DebugLog(string input)
         {
             if (!Debug) return;
-            Log.Debug($"[Script: {ScriptName}] {input}");
+            Log.Send($"[ScriptedEvents] [Script: {ScriptName}] {input}", LogLevel.Debug, ConsoleColor.Green);
         }
     }
 }
