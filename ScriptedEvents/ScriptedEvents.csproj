@@ -127,7 +127,7 @@
     <Compile Include="Actions\GotoAction.cs" />
     <Compile Include="Actions\GotoIfAction.cs" />
     <Compile Include="Actions\HelpAction.cs" />
-    <Compile Include="Actions\InfectAddAction.cs" />
+    <Compile Include="Actions\InfectRuleAction.cs" />
     <Compile Include="Actions\SizeAction.cs" />
     <Compile Include="Actions\NullAction.cs" />
     <Compile Include="Actions\SpawnRuleAction.cs" />
