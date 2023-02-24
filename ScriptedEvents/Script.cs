@@ -7,6 +7,7 @@
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Helpers;
 
     /// <summary>
     /// Represents a script.
@@ -149,5 +150,10 @@
             if (!Debug) return;
             Log.Debug($"[Script: {ScriptName}] {input}");
         }
+
+        /// <summary>
+        /// Execute the script.
+        /// </summary>
+        public void Execute() => ScriptHelper.RunScript(this);
     }
 }

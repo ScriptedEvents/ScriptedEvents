@@ -4,8 +4,11 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
+    using System.Linq;
+    using System.Reflection;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.Loader;
     using MEC;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.DemoScripts;
@@ -57,6 +60,9 @@
             new DemoScript(),
             new ConditionSamples(),
         };
+
+        public static Type[] HandlerTypes { get; } = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
+            .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
 
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";
@@ -154,9 +160,49 @@
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
 
+            // Setup systems
             ApiHelper.RegisterActions();
             ConditionVariables.Setup();
             PlayerVariables.Setup();
+
+            // "On" config
+            MethodInfo scriptMethodInfo = typeof(Script).GetMethod("Execute");
+            foreach (KeyValuePair<string, List<string>> ev in Configs.On)
+            {
+                bool made = false;
+                foreach (Type handler in HandlerTypes)
+                {
+                    var @event = handler.GetEvent(ev.Key);
+                    if (@event is not null)
+                    {
+                        foreach (string script in ev.Value)
+                        {
+                            try
+                            {
+                                Script scr = ScriptHelper.ReadScript(script, null);
+                                if (scr is not null)
+                                {
+                                    made = true;
+                                    @event.AddEventHandler(null, Delegate.CreateDelegate(@event.EventHandlerType, scr, scriptMethodInfo));
+                                }
+                            }
+                            catch (FileNotFoundException)
+                            {
+                                Log.Warn($"The following script (used in the 'On' config) was not found: {script}");
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.Error($"Exception when making an 'On' connection to the {@event.Name} event: {ex}");
+                            }
+                        }
+                    }
+                }
+
+                if (!made)
+                {
+                    Log.Warn($"The specified event '{ev.Key}' in the 'On' config was not found!");
+                }
+            }
 
             // Delete help file on startup
             string helpPath = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
