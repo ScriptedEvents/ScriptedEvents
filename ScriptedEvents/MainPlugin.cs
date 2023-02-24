@@ -67,7 +67,7 @@
         public static Type[] HandlerTypes { get; } = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
             .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
 
-        public static List<Delegate> StoredDelegates { get; } = new();
+        public static Dictionary<EventInfo, Delegate> StoredDelegates { get; } = new();
 
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";
@@ -190,7 +190,7 @@
                                     Delegate dg = Delegate.CreateDelegate(@event.EventHandlerType, scr, scriptMethodInfo);
                                     made = true;
                                     @event.AddEventHandler(null, dg);
-                                    StoredDelegates.Add(dg);
+                                    StoredDelegates.Add(@event, dg);
                                 }
                             }
                             catch (FileNotFoundException)
@@ -264,6 +264,12 @@
             ServerHandler.RoundStarted -= Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam -= Handlers.OnRespawningTeam;
 
+            foreach (var delegatePair in StoredDelegates)
+            {
+                delegatePair.Key.RemoveEventHandler(null, delegatePair.Value);
+            }
+
+            StoredDelegates.Clear();
             ScriptHelper.ActionTypes.Clear();
 
             Singleton = null;
