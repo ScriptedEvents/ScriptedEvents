@@ -148,7 +148,7 @@
         public void DebugLog(string input)
         {
             if (!Debug) return;
-            Log.Send($"[ScriptedEvents] [Script: {ScriptName}] {input}", LogLevel.Debug, ConsoleColor.Green);
+            Log.Send($"[ScriptedEvents] [Script: {ScriptName}] {input}", LogLevel.Debug, ConsoleColor.Gray);
         }
     }
 }

@@ -181,6 +181,8 @@
 
         public void OnRespawningTeam(RespawningTeamEventArgs ev)
         {
+            if (DisabledKeys.Contains("RESPAWNS")) ev.IsAllowed = false;
+
             if (!ev.IsAllowed) return;
 
             RespawnWaves++;
