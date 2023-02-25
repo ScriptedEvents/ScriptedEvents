@@ -14,6 +14,7 @@
         public DateTime EndTime { get; }
 
         public bool Expired => DateTime.UtcNow > EndTime;
+
         public TimeSpan TimeLeft => EndTime - DateTime.UtcNow;
 
         public Countdown(Player target, string text, int time)
