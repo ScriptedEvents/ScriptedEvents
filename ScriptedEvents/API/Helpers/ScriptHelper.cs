@@ -398,7 +398,7 @@ namespace ScriptedEvents.API.Helpers
             for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
                 scr.DebugLog("-----------");
-                scr.DebugLog($"Current Line: {scr.CurrentLine}");
+                scr.DebugLog($"Current Line: {scr.CurrentLine + 1}");
                 if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
                 {
                     ActionResponse resp;
@@ -409,21 +409,21 @@ namespace ScriptedEvents.API.Helpers
                         switch (action)
                         {
                             case ITimingAction timed:
-                                scr.DebugLog($"Running {action.Name} action (timed) on line {scr.CurrentLine}...");
+                                scr.DebugLog($"Running {action.Name} action (timed) on line {scr.CurrentLine + 1}...");
                                 delay = timed.Execute(scr, out resp);
                                 break;
                             case IScriptAction scriptAction:
-                                scr.DebugLog($"Running {action.Name} action on line {scr.CurrentLine}...");
+                                scr.DebugLog($"Running {action.Name} action on line {scr.CurrentLine + 1}...");
                                 resp = scriptAction.Execute(scr);
                                 break;
                             default:
-                                scr.DebugLog($"Skipping line {scr.CurrentLine} (no runnable action on line)");
+                                scr.DebugLog($"Skipping line {scr.CurrentLine + 1} (no runnable action on line)");
                                 continue;
                         }
                     }
                     catch (Exception e)
                     {
-                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine}] Ran into an error while running {action.Name} action:\n{e}";
+                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] Ran into an error while running {action.Name} action:\n{e}";
                         switch (scr.Context)
                         {
                             case ExecuteContext.RemoteAdmin:
@@ -444,10 +444,10 @@ namespace ScriptedEvents.API.Helpers
 
                     if (!resp.Success)
                     {
-                        scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine}]: FAIL");
+                        scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine + 1}]: FAIL");
                         if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                         {
-                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine}] [{action.Name}] Fatal action error! {resp.Message}";
+                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Fatal action error! {resp.Message}";
                             switch (scr.Context)
                             {
                                 case ExecuteContext.RemoteAdmin:
@@ -467,7 +467,7 @@ namespace ScriptedEvents.API.Helpers
                         }
                         else if (!scr.SuppressWarnings)
                         {
-                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine}] [{action.Name}] Action error! {resp.Message}";
+                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Action error! {resp.Message}";
                             switch (scr.Context)
                             {
                                 case ExecuteContext.RemoteAdmin:
@@ -486,10 +486,10 @@ namespace ScriptedEvents.API.Helpers
                     }
                     else
                     {
-                        scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine}]: SUCCESS");
+                        scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine + 1}]: SUCCESS");
                         if (!string.IsNullOrEmpty(resp.Message))
                         {
-                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine}] [{action.Name}] Response: {resp.Message}";
+                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Response: {resp.Message}";
                             switch (scr.Context)
                             {
                                 case ExecuteContext.RemoteAdmin:
@@ -503,7 +503,7 @@ namespace ScriptedEvents.API.Helpers
 
                         if (delay.HasValue)
                         {
-                            scr.DebugLog($"Action '{action.Name}' on line {scr.CurrentLine} delaying script. Length of delay: {delay.Value}");
+                            scr.DebugLog($"Action '{action.Name}' on line {scr.CurrentLine + 1} delaying script. Length of delay: {delay.Value}");
                             yield return delay.Value;
                         }
                     }

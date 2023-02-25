@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Player.Misc
 {
+#pragma warning disable SA1402 // File may only contain a single type
     using System.Collections.Generic;
 
     using Exiled.API.Features;
@@ -32,4 +33,5 @@
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.RemoteAdminAccess);
     }
+#pragma warning restore SA1402 // File may only contain a single type
 }

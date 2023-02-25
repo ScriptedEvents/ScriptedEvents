@@ -6,10 +6,10 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
-    public class InfectAddAction : IScriptAction, IHelpInfo
+    public class InfectRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "INFECTADD";
+        public string Name => "INFECTRULE";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();

@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\ClearCassieAction.cs" />
     <Compile Include="Actions\CountdownAction.cs" />
     <Compile Include="Actions\CustomAction.cs" />
     <Compile Include="Actions\DamageAction.cs" />
@@ -126,7 +127,7 @@
     <Compile Include="Actions\GotoAction.cs" />
     <Compile Include="Actions\GotoIfAction.cs" />
     <Compile Include="Actions\HelpAction.cs" />
-    <Compile Include="Actions\InfectAddAction.cs" />
+    <Compile Include="Actions\InfectRuleAction.cs" />
     <Compile Include="Actions\SizeAction.cs" />
     <Compile Include="Actions\NullAction.cs" />
     <Compile Include="Actions\SpawnRuleAction.cs" />

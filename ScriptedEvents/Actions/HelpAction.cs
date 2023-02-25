@@ -34,6 +34,9 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[] { new Argument("input", typeof(string), "The name of the action/variable, \"LIST\" for all actions, or \"LISTVAR\" for all variables. Case-sensitive.", true) };
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the response will be opened via file.
+        /// </summary>
         public bool IsFile { get; set; } = false;
 
         /// <inheritdoc/>
@@ -266,6 +269,11 @@
             return new(false, "Invalid argument provided for the HELP action.");
         }
 
+        /// <summary>
+        /// Displays the response, either in console or in file.
+        /// </summary>
+        /// <param name="response">The response of the command execution.</param>
+        /// <returns>A new response to show to the user.</returns>
         public ActionResponse Display(ActionResponse response)
         {
             if (IsFile)
@@ -288,7 +296,7 @@
                 {
                     System.Diagnostics.Process.Start(path);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return new(true, $"File was created successfully, but an error occurred when opening external text editor (likely due to permissions). File will expire in 5 minutes and is located at: {path}.");
                 }

@@ -38,7 +38,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            if (!Enum.TryParse(Arguments[1], out RoomType rt))
+            if (!Enum.TryParse(Arguments[1], true, out RoomType rt))
                 return new(false, $"Invalid room: {Arguments[1]}");
 
             foreach (Player ply in players)

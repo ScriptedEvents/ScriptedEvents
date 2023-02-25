@@ -139,7 +139,7 @@
         {
             get
             {
-                if (Arguments.Length > 0 && Enum.TryParse(Arguments[0], out RoleTypeId rt))
+                if (Arguments.Length > 0 && Enum.TryParse(Arguments[0], true, out RoleTypeId rt))
                 {
                     return MainPlugin.Handlers.RecentlyRespawned.Where(ply => ply.Role == rt);
                 }
