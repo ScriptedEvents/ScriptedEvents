@@ -42,5 +42,8 @@
         {
             { "ExampleScriptNameHere", "examplepermission" },
         };
+
+        [Description("[ADVANCED] Define scripts to execute when certain events occur.")]
+        public Dictionary<string, List<string>> On { get; set; } = new();
     }
 }

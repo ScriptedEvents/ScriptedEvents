@@ -8,6 +8,7 @@
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Helpers;
 
     /// <summary>
     /// Represents a script.
@@ -150,5 +151,10 @@
             if (!Debug) return;
             Log.Send($"[ScriptedEvents] [Script: {ScriptName}] {input}", LogLevel.Debug, ConsoleColor.Gray);
         }
+
+        /// <summary>
+        /// Execute the script.
+        /// </summary>
+        public void Execute() => ScriptHelper.RunScript(this);
     }
 }
