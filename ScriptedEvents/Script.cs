@@ -21,6 +21,7 @@
         /// </summary>
         public Script()
         {
+            Labels = DictionaryPool<string, int>.Pool.Get();
             Flags = ListPool<string>.Pool.Get();
             UniqueId = Guid.NewGuid();
 
@@ -83,7 +84,7 @@
         /// <summary>
         /// Gets or sets a list of Labels.
         /// </summary>
-        public Dictionary<string, int> Labels { get; set; } = new();
+        public Dictionary<string, int> Labels { get; set; }
 
         /// <summary>
         /// Gets the line the script is currently on.
@@ -135,6 +136,7 @@
         /// </summary>
         public ICommandSender Sender { get; internal set; }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             Log.Debug($"Disposing script object | ID: {UniqueId}");
@@ -145,6 +147,7 @@
             RawText = null;
             FilePath = null;
 
+            DictionaryPool<string, int>.Pool.Return(Labels);
             ListPool<string>.Pool.Return(Flags);
             GC.SuppressFinalize(this);
         }
