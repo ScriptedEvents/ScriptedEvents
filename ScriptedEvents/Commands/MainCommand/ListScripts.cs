@@ -39,6 +39,9 @@
 
             foreach (string file in files)
             {
+                if (File.ReadAllText(file).Contains("!-- HELPRESPONSE"))
+                    continue;
+
                 try
                 {
                     Script scr = ScriptHelper.ReadScript(Path.GetFileNameWithoutExtension(file), sender, true);
