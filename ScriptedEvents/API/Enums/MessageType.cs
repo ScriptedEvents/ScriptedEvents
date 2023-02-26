@@ -46,6 +46,11 @@
         NoPlayersFound,
 
         /// <summary>
+        /// No rooms found with the provided input.
+        /// </summary>
+        NoRoomsFound,
+
+        /// <summary>
         /// No role found with the provided input.
         /// </summary>
         InvalidRole,

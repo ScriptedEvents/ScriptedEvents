@@ -145,7 +145,7 @@
     <Compile Include="Actions\DecontaminateAction.cs" />
     <Compile Include="Actions\DoorAction.cs" />
     <Compile Include="Actions\IfAction.cs" />
-    <Compile Include="Actions\TurnOffLightsAction.cs" />
+    <Compile Include="Actions\LightsOffAction.cs" />
     <Compile Include="Actions\LogAction.cs" />
     <Compile Include="Actions\RoundlockAction.cs" />
     <Compile Include="Actions\SetRoleAction.cs" />

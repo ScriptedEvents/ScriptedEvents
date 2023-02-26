@@ -83,6 +83,9 @@
                 case MessageType.NoPlayersFound:
                     return $"No players were found matching the given criteria ('{paramName}' parameter).";
 
+                case MessageType.NoRoomsFound:
+                    return $"No rooms were found matching the given criteria '{arguments[0]}' ('{paramName}' parameter).";
+
                 case MessageType.CassieCaptionNoAnnouncement:
                     return $"Cannot show captions without a corresponding CASSIE announcement.";
             }

@@ -38,7 +38,7 @@
             if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms))
-                return new(false, $"Invalid room(s): {Arguments[0]}");
+                return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
 
             if (!byte.TryParse(Arguments[1], out byte r))
                 return new(false, $"Invalid RGB combination. Each number must be in the range of 0-255.");
