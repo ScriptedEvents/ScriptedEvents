@@ -25,6 +25,7 @@
         {
             { typeof(string), "String (Message/Text)" },
             { typeof(int), "Int (Whole Number)" },
+            { typeof(byte), "Byte (Whole Number, 0-255)" },
             { typeof(float), "Float (Number)" },
             { typeof(bool), "Boolean (TRUE/FALSE)" },
             { typeof(Player[]), "Player List" },
