@@ -285,7 +285,7 @@ namespace ScriptedEvents.API.Helpers
             }
             else if (Enum.TryParse<ZoneType>(input, true, out ZoneType zt))
             {
-                doorList = Door.List.Where(d => d.Zone == zt).ToList();
+                doorList = Door.List.Where(d => d.Zone.HasFlag(zt)).ToList();
             }
             else if (Enum.TryParse<DoorType>(input, true, out DoorType dt))
             {
@@ -314,7 +314,7 @@ namespace ScriptedEvents.API.Helpers
             }
             else if (Enum.TryParse<ZoneType>(input, true, out ZoneType zt))
             {
-                roomList = Room.List.Where(room => room.Zone == zt).ToList();
+                roomList = Room.List.Where(room => room.Zone.HasFlag(zt)).ToList();
             }
             else if (Enum.TryParse<RoomType>(input, true, out RoomType rt))
             {

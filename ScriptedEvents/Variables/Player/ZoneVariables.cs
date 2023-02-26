@@ -36,7 +36,7 @@
         public string Description => "Gets all the alive players in Light Containment Zone.";
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => Player.Get(player => player.Zone is ZoneType.LightContainment);
+        public IEnumerable<Player> Players => Player.Get(player => player.Zone.HasFlag(ZoneType.LightContainment));
     }
 
     public class HCZ : IPlayerVariable
@@ -48,7 +48,7 @@
         public string Description => "Gets all the alive players in Heavy Containment Zone.";
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => Player.Get(player => player.Zone is ZoneType.HeavyContainment);
+        public IEnumerable<Player> Players => Player.Get(player => player.Zone.HasFlag(ZoneType.HeavyContainment));
     }
 
     public class EZ : IPlayerVariable
@@ -60,7 +60,7 @@
         public string Description => "Gets all the alive players in Entrance Zone.";
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => Player.Get(player => player.Zone is ZoneType.Entrance);
+        public IEnumerable<Player> Players => Player.Get(player => player.Zone.HasFlag(ZoneType.Entrance));
     }
 
     public class Surface : IPlayerVariable
