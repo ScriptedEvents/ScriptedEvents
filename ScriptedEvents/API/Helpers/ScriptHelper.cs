@@ -305,6 +305,30 @@ namespace ScriptedEvents.API.Helpers
             return doors.Length > 0;
         }
 
+        public static bool TryGetRooms(string input, out Room[] rooms)
+        {
+            List<Room> roomList = ListPool<Room>.Pool.Get();
+            if (input is "*" or "ALL")
+            {
+                roomList = Room.List.ToList();
+            }
+            else if (Enum.TryParse<ZoneType>(input, true, out ZoneType zt))
+            {
+                roomList = Room.List.Where(room => room.Zone == zt).ToList();
+            }
+            else if (Enum.TryParse<RoomType>(input, true, out RoomType rt))
+            {
+                roomList = Room.List.Where(d => d.Type == rt).ToList();
+            }
+            else
+            {
+                roomList = Room.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
+            }
+
+            rooms = ListPool<Room>.Pool.ToArrayReturn(roomList);
+            return rooms.Length > 0;
+        }
+
         public static int StopAllScripts()
         {
             int amount = 0;

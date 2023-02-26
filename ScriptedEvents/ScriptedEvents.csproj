@@ -86,6 +86,7 @@
     <Compile Include="Actions\DisableAction.cs" />
     <Compile Include="Actions\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\KillAction.cs" />
+    <Compile Include="Actions\LightColorAction.cs" />
     <Compile Include="Actions\TicketAction.cs" />
     <Compile Include="Actions\TpRoomAction.cs" />
     <Compile Include="Actions\TpxAction.cs" />
