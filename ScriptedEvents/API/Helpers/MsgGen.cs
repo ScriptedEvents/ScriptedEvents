@@ -53,6 +53,9 @@
         {
             switch (type)
             {
+                case MessageType.OK:
+                    return "OK";
+
                 case MessageType.InvalidUsage when arguments[0] is Argument[] argList:
                     StringBuilder sb = StringBuilderPool.Pool.Get();
                     foreach (Argument arg in argList)
