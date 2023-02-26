@@ -97,7 +97,11 @@ namespace ScriptedEvents.API.Helpers
                 else if (action.StartsWith("!--"))
                 {
                     string flag = action.Substring(3).RemoveWhitespace();
-                    script.Flags.Add(flag);
+
+                    if (!script.Flags.Contains(flag))
+                        script.Flags.Add(flag);
+                    else if (!suppressWarnings)
+                        Log.Warn($"Multiple definitions for the '{flag}' flag detected in script {scriptName}.");
 
                     actionList.Add(new NullAction("FLAG DEFINE"));
                     continue;
@@ -110,7 +114,12 @@ namespace ScriptedEvents.API.Helpers
                 if (keyword.EndsWith(":"))
                 {
                     string labelName = action.Remove(keyword.Length - 1, 1).RemoveWhitespace();
-                    script.Labels.Add(labelName, currentline);
+
+                    if (!script.Labels.ContainsKey(labelName))
+                        script.Labels.Add(labelName, currentline);
+                    else if (!suppressWarnings)
+                        Log.Warn($"Multiple definitions for the '{labelName}' label detected in script {scriptName}.");
+
                     actionList.Add(new NullAction($"{labelName} LABEL"));
 
                     continue;
@@ -140,7 +149,7 @@ namespace ScriptedEvents.API.Helpers
                     }
 
                     if (!suppressWarnings)
-                        Log.Info($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'");
+                        Log.Warn($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'.");
                     actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
