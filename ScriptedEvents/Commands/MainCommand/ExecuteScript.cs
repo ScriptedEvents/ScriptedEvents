@@ -37,10 +37,11 @@
             }
 
             string arg0 = arguments.At(0);
+            Script scr = null;
 
             try
             {
-                Script scr = ScriptHelper.ReadScript(arg0, sender);
+                scr = ScriptHelper.ReadScript(arg0, sender);
 
                 if (!sender.CheckPermission(scr.ExecutePermission))
                 {
@@ -50,11 +51,12 @@
 
                 ScriptHelper.RunScript(scr);
 
-                response = $"Executed {arg0} successfully.";
+                response = $"Executed {scr.ScriptName} successfully.";
             }
             catch (DisabledScriptException)
             {
-                response = $"Script '{arg0}' is disabled.";
+                response = $"Script '{scr.ScriptName}' is disabled.";
+                scr.Dispose();
                 return false;
             }
             catch (FileNotFoundException)
