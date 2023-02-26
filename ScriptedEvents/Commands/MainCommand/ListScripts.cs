@@ -35,12 +35,17 @@
             string[] files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.AllDirectories);
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
+            int i = 0;
+
             foreach (string file in files)
             {
                 try
                 {
-                    Script scr = ScriptHelper.ReadScript(Path.GetFileNameWithoutExtension(file), sender);
-                    bldr.AppendLine($"{scr.ScriptName} (perm: {scr.ExecutePermission}) (last ran: {scr.LastRead:g}) (edited: {scr.LastEdited:g})");
+                    Script scr = ScriptHelper.ReadScript(Path.GetFileNameWithoutExtension(file), sender, true);
+
+                    i++;
+
+                    bldr.AppendLine($"[{i}] {scr.ScriptName} (perm: {scr.ExecutePermission}) (last ran: {scr.LastRead:g}) (edited: {scr.LastEdited:g})");
 
                     scr.Dispose();
                 }

@@ -74,11 +74,11 @@
                     {
                         if (!display.Read(out string stringDisplay))
                             continue;
-                        sb.AppendLine($"{curLine}\t{stringDisplay}");
+                        sb.AppendLine($"[{curLine}]\t{stringDisplay}");
                     }
                     else
                     {
-                        sb.AppendLine($"{curLine}\t{action.Name} {(action.Arguments is not null ? string.Join(" ", action.Arguments) : string.Empty)}");
+                        sb.AppendLine($"[{curLine}]\t{action.Name} {(action.Arguments is not null ? string.Join(" ", action.Arguments) : string.Empty)}");
                     }
                 }
 

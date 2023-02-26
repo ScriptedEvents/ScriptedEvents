@@ -34,13 +34,16 @@
 
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
+            int i = 0;
             foreach (var scriptPair in ScriptHelper.RunningScripts)
             {
                 if (!scriptPair.Key.IsRunning)
                     continue;
 
+                i++;
+
                 Script script = scriptPair.Key;
-                bldr.AppendLine($"[{script.CurrentLine + 1}] {script.ScriptName} | Executed by: {script.Sender?.LogName ?? "Automatic"} | {script.RunDate:g}");
+                bldr.AppendLine($"[{i}] {script.ScriptName} | Executed by: {script.Sender?.LogName ?? "Automatic"} | {script.RunDate:g}");
             }
 
             response = $"All running scripts: \n\n{StringBuilderPool.Pool.ToStringReturn(bldr)}";
