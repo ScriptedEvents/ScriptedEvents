@@ -62,6 +62,7 @@
 
             scriptAction.Arguments = arguments.Skip(1).ToArray();
 
+            // Fill out mock script info
             Script mockScript = new Script();
             mockScript.Context = ExecuteContext.ServerConsole;
             mockScript.Sender = sender;
@@ -72,6 +73,8 @@
             ActionResponse actionResponse = scriptAction.Execute(mockScript);
 
             response = string.IsNullOrWhiteSpace(actionResponse.Message) ? "Done" : actionResponse.Message;
+
+            mockScript.Dispose();
             return actionResponse.Success;
         }
     }

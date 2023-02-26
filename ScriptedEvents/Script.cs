@@ -24,7 +24,7 @@
             Flags = ListPool<string>.Pool.Get();
             UniqueId = Guid.NewGuid();
 
-            Log.Debug($"Created new script object | {UniqueId}");
+            Log.Debug($"Created new script object | ID: {UniqueId}");
         }
 
         /// <summary>
@@ -137,7 +137,7 @@
 
         public void Dispose()
         {
-            Log.Debug($"Disposing script object | {UniqueId}");
+            Log.Debug($"Disposing script object | ID: {UniqueId}");
 
             Labels = null;
             Sender = null;
