@@ -104,11 +104,24 @@
 
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
-                DirectoryInfo info = Directory.CreateDirectory(ScriptHelper.ScriptPath);
-                DirectoryInfo demoScriptFolder = Directory.CreateDirectory(Path.Combine(info.FullName, "DemoScripts"));
-                foreach (IDemoScript demo in DemoScripts)
+                try
                 {
-                    File.WriteAllText(Path.Combine(demoScriptFolder.FullName, $"{demo.FileName}.txt"), demo.Contents);
+                    DirectoryInfo info = Directory.CreateDirectory(ScriptHelper.ScriptPath);
+                    DirectoryInfo demoScriptFolder = Directory.CreateDirectory(Path.Combine(info.FullName, "DemoScripts"));
+                    foreach (IDemoScript demo in DemoScripts)
+                    {
+                        File.WriteAllText(Path.Combine(demoScriptFolder.FullName, $"{demo.FileName}.txt"), demo.Contents);
+                    }
+                }
+                catch (UnauthorizedAccessException e)
+                {
+                    Log.Error($"Unable to create the required ScriptedEvents directories due to a permission error. Please ensure that ScriptedEvents has proper system permissions to Exiled's Config folder. Full error: {e}");
+                    return;
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Unable to load ScriptedEvents due to a directory error. {e}");
+                    return;
                 }
 
                 // Welcome message :)

@@ -280,7 +280,24 @@
             {
                 string message = $"!-- HELPRESPONSE\nAuto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n{response.Message}";
                 string path = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
-                File.WriteAllText(path, message);
+
+                if (File.Exists(path))
+                    File.Delete(path);
+
+                try
+                {
+                    File.WriteAllText(path, message);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    Log.Warn($"Unable to create the help file, the plugin does not have permission to access the ScriptedEvents directory!");
+                    return new(false, "HELP action error shown in server logs.");
+                }
+                catch (Exception e)
+                {
+                    Log.Warn($"Error when writing to file: {e}");
+                    return new(false, "HELP action error shown in server logs.");
+                }
 
                 // File "expire"
                 Timing.CallDelayed(300f, Segment.RealtimeUpdate, () =>
@@ -291,6 +308,10 @@
                         File.Delete(path);
                     }
                 });
+
+                // Set file attributes
+                FileInfo info = new FileInfo(path);
+                info.Attributes = FileAttributes.Temporary;
 
                 try
                 {
