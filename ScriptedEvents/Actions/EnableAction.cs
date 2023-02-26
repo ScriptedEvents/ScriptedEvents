@@ -22,7 +22,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("key", typeof(string), "The key of the feature to disable. See documentation for a whole list of keys.", true),
+            new Argument("key", typeof(string), "The key of the feature to enable. See documentation for a whole list of keys.", true),
         };
 
         public ActionResponse Execute(Script script)
