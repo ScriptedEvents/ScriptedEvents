@@ -10,13 +10,13 @@
     using ScriptedEvents.API.Helpers;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class ListScripts : ICommand
+    public class ListRunning : ICommand
     {
-        public string Command => "list";
+        public string Command => "listrunning";
 
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "running", "listr", "lr" };
 
-        public string Description => "Lists all event scripts.";
+        public string Description => "Lists all event scripts that are currently running.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -32,25 +32,18 @@
                 return true;
             }
 
-            string[] files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.AllDirectories);
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
-            foreach (string file in files)
+            foreach (var scriptPair in ScriptHelper.RunningScripts)
             {
-                try
-                {
-                    Script scr = ScriptHelper.ReadScript(Path.GetFileNameWithoutExtension(file), sender);
-                    bldr.AppendLine($"{scr.ScriptName} (perm: {scr.ExecutePermission}) (last ran: {scr.LastRead:g}) (edited: {scr.LastEdited:g})");
+                if (!scriptPair.Key.IsRunning)
+                    continue;
 
-                    scr.Dispose();
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
+                Script script = scriptPair.Key;
+                bldr.AppendLine($"[{script.CurrentLine + 1}] {script.ScriptName} | Executed by: {script.Sender?.LogName ?? "Automatic"} | {script.RunDate:g}");
             }
 
-            response = $"All found scripts: \n\n{StringBuilderPool.Pool.ToStringReturn(bldr)}";
+            response = $"All running scripts: \n\n{StringBuilderPool.Pool.ToStringReturn(bldr)}";
             return true;
         }
     }

@@ -13,7 +13,7 @@
     /// <summary>
     /// Represents a script.
     /// </summary>
-    public class Script
+    public class Script : IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Script"/> class.
@@ -23,6 +23,8 @@
         {
             Flags = ListPool<string>.Pool.Get();
             UniqueId = Guid.NewGuid();
+
+            Log.Debug($"Created new script object | {UniqueId}");
         }
 
         /// <summary>
@@ -30,7 +32,7 @@
         /// </summary>
         ~Script()
         {
-            ListPool<string>.Pool.Return(Flags);
+            Dispose();
         }
 
         /// <summary>
@@ -94,6 +96,11 @@
         public bool IsRunning { get; internal set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating the time that the script began running.
+        /// </summary>
+        public DateTime RunDate { get; set; }
+
+        /// <summary>
         /// Gets a list of flags on the script.
         /// </summary>
         public List<string> Flags { get; }
@@ -127,6 +134,20 @@
         /// Gets the sender of the user who executed the script.
         /// </summary>
         public ICommandSender Sender { get; internal set; }
+
+        public void Dispose()
+        {
+            Log.Debug($"Disposing script object | {UniqueId}");
+
+            Labels = null;
+            Sender = null;
+            Actions = null;
+            RawText = null;
+            FilePath = null;
+
+            ListPool<string>.Pool.Return(Flags);
+            GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         /// Moves the <see cref="CurrentLine"/> to the specified line.

@@ -300,8 +300,10 @@ namespace ScriptedEvents.API.Helpers
             foreach (KeyValuePair<Script, CoroutineHandle> kvp in RunningScripts)
             {
                 amount++;
-                kvp.Key.IsRunning = false;
                 Timing.KillCoroutines(kvp.Value);
+
+                kvp.Key.IsRunning = false;
+                kvp.Key.Dispose();
             }
 
             foreach (string key in WaitUntilAction.Coroutines)
@@ -393,7 +395,9 @@ namespace ScriptedEvents.API.Helpers
         private static IEnumerator<float> RunScriptInternal(Script scr)
         {
             MainPlugin.Info($"Running script {scr.ScriptName}.");
+
             scr.IsRunning = true;
+            scr.RunDate = DateTime.UtcNow;
 
             for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
@@ -525,6 +529,8 @@ namespace ScriptedEvents.API.Helpers
 
             scr.DebugLog("Removing script from running scripts.");
             RunningScripts.Remove(scr);
+
+            scr.Dispose();
         }
     }
 }

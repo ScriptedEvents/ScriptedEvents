@@ -270,6 +270,8 @@
             }
 
             StoredDelegates.Clear();
+
+            ScriptHelper.StopAllScripts();
             ScriptHelper.ActionTypes.Clear();
 
             Singleton = null;

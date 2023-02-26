@@ -85,6 +85,8 @@
                 sb.AppendLine("---- END OF FILE ----");
 
                 response = StringBuilderPool.Pool.ToStringReturn(sb);
+
+                scr.Dispose();
             }
             catch (FileNotFoundException)
             {
