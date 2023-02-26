@@ -69,12 +69,13 @@ namespace ScriptedEvents.API.Helpers
         /// </summary>
         /// <param name="scriptName">The name of the script.</param>
         /// <param name="executor">The CommandSender that ran the script. Can be null.</param>
+        /// <param name="suppressWarnings">Do not show warnings in the console.</param>
         /// <returns>The <see cref="Script"/> fully filled out, if the script was found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        public static Script ReadScript(string scriptName, ICommandSender executor)
+        public static Script ReadScript(string scriptName, ICommandSender executor, bool suppressWarnings = false)
         {
-            Script script = new();
             string allText = ReadScriptText(scriptName);
+            Script script = new();
 
             List<IAction> actionList = ListPool<IAction>.Pool.Get();
 
@@ -138,7 +139,8 @@ namespace ScriptedEvents.API.Helpers
                         continue;
                     }
 
-                    Log.Info($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'");
+                    if (!suppressWarnings)
+                        Log.Info($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'");
                     actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
@@ -186,7 +188,7 @@ namespace ScriptedEvents.API.Helpers
         }
 
         /// <summary>
-        /// Runs the script.
+        /// Runs the script and disposes of it as soon as the script execution is complete.
         /// </summary>
         /// <param name="scr">The script to run.</param>
         /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
