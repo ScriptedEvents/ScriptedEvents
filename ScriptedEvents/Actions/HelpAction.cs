@@ -174,7 +174,8 @@
                     sb.AppendLine();
                 }
 
-                sb.AppendLine($"{action.Name}: {helpInfo.Description}");
+                sb.AppendLine($"+ {action.Name} +");
+                sb.AppendLine($"{helpInfo.Description}");
                 sb.AppendLine($"Action type: {MsgGen.Display(action.Subgroup)}");
 
                 // Usage
