@@ -15,7 +15,7 @@
     {
         public string Command => "action";
 
-        public string[] Aliases => new[] { "a", "act" };
+        public string[] Aliases => new[] { "act" };
 
         public string Description => "Runs a specific action with specific arguments.";
 
