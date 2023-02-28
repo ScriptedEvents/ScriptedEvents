@@ -72,7 +72,7 @@
 
                 foreach (IGrouping<ActionSubgroup, IAction> group in grouped.OrderBy(g => g.Key.ToString()))
                 {
-                    if (group.Count() == 0)
+                    if (group.Count() == 0 || group.All(act => act is IHiddenAction))
                         continue;
 
                     sbList.AppendLine();
