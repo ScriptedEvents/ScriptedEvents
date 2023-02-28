@@ -31,6 +31,7 @@
             StringBuilder sb = StringBuilderPool.Pool.Get();
 
             sb.AppendLine("Available commands:");
+            sb.AppendLine("- SCRIPT ACTION <ACTIONNAME> <...ACTIONARGS...> - Executes a single ScriptedEvents action, without the need for a script.");
             sb.AppendLine("- SCRIPT EXECUTE <SCRIPTNAME> - Executes the script with the given name. (alias: ex, run)");
             sb.AppendLine("- SCRIPT LIST - Lists all scripts and their respective permissions & last read & edited time.");
             sb.AppendLine("- SCRIPT LISTR - Lists all scripts that are currently running.");
