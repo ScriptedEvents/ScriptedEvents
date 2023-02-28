@@ -18,6 +18,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Logic;
+
+        /// <inheritdoc/>
         public string Description => "Moves to the provided line.";
 
         /// <inheritdoc/>

@@ -29,10 +29,16 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
+
+        /// <inheritdoc/>
         public string Description => "Gets information about a command or a variable, or lists all commands or variables.";
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments => new[] { new Argument("input", typeof(string), "The name of the action/variable, \"LIST\" for all actions, or \"LISTVAR\" for all variables. Case-sensitive.", true) };
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("input", typeof(string), "The name of the action/variable, \"LIST\" for all actions, or \"LISTVAR\" for all variables. Case-sensitive.", true),
+        };
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the response will be opened via file.
@@ -310,8 +316,10 @@
                 });
 
                 // Set file attributes
-                FileInfo info = new FileInfo(path);
-                info.Attributes = FileAttributes.Temporary;
+                FileInfo info = new(path)
+                {
+                    Attributes = FileAttributes.Temporary,
+                };
 
                 try
                 {

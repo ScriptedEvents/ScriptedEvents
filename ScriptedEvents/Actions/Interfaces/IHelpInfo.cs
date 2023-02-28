@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Actions.Interfaces
 {
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     /// <summary>
@@ -7,6 +8,11 @@
     /// </summary>
     public interface IHelpInfo
     {
+        /// <summary>
+        /// Gets this action's <see cref="ActionSubgroup"/>.
+        /// </summary>
+        public ActionSubgroup Subgroup { get; }
+
         /// <summary>
         /// Gets the description of the action.
         /// </summary>

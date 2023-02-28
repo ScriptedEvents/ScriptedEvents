@@ -21,6 +21,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Lights;
+
+        /// <inheritdoc/>
         public string Description => "Resets the light color in the given room.";
 
         /// <inheritdoc/>

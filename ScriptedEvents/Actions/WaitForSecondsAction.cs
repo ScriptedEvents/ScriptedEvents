@@ -22,6 +22,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Yielding;
+
+        /// <inheritdoc/>
         public string Description => "Yields execution of the script for the given number of seconds.";
 
         /// <inheritdoc/>

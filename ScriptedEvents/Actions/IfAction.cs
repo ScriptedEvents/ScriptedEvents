@@ -18,6 +18,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Logic;
+
+        /// <inheritdoc/>
         public string Description => "Reads the condition and stops execution of the script if the result is FALSE.";
 
         /// <inheritdoc/>

@@ -18,6 +18,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Map;
+
+        /// <inheritdoc/>
         public string Description => "Forces a specific warhead action.";
 
         /// <inheritdoc/>

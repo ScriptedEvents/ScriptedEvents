@@ -21,6 +21,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+
+        /// <inheritdoc/>
         public string Description => "Teleports players to the specified room center.";
 
         /// <inheritdoc/>

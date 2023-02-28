@@ -17,6 +17,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
+
+        /// <inheritdoc/>
         public string Description => "Enables a previously disabled round feature.";
 
         /// <inheritdoc/>

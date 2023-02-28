@@ -17,6 +17,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
+
+        /// <inheritdoc/>
         public string Description => "Runs a server command with full permission.";
 
         /// <inheritdoc/>

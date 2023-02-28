@@ -20,6 +20,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
+
+        /// <inheritdoc/>
         public string Description => "Executes a different script.";
 
         /// <inheritdoc/>

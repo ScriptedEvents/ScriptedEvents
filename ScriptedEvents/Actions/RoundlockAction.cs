@@ -19,6 +19,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Round;
+
+        /// <inheritdoc/>
         public string Description => "Set server's roundlock.";
 
         /// <inheritdoc/>

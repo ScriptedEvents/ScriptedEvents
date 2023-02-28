@@ -10,8 +10,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomAction"/> class.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="action"></param>
+        /// <param name="name">The name of the custom action.</param>
+        /// <param name="action">The function to execute when the action is invoked.</param>
         public CustomAction(string name, Func<string[], Tuple<bool, string>> action)
         {
             Name = name;

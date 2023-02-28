@@ -4,6 +4,7 @@
     using System.Linq;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
 
@@ -17,6 +18,9 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         /// <inheritdoc/>
         public string Description => "Creates a console log. Variables are supported.";

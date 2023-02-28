@@ -22,6 +22,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
+
+        /// <inheritdoc/>
         public string Description => "Creates a new spawn rule, modifying how players spawn at the start of the game. MUST BE USED BEFORE THE ROUND STARTS.";
 
         /// <inheritdoc/>

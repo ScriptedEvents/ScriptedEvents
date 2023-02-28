@@ -26,6 +26,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Map;
+
+        /// <inheritdoc/>
         public string Description => "Modifies tesla gates.";
 
         /// <inheritdoc/>

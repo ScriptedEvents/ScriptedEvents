@@ -4,8 +4,10 @@
     {
         Broadcast,
         Cassie,
+        Debug,
         Lights,
         Logic,
+        Map,
         Misc,
         Player,
         Round,

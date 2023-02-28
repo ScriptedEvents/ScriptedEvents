@@ -19,6 +19,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Variable;
+
+        /// <inheritdoc/>
         public string Description => "Deletes a previously-defined player variable.";
 
         /// <inheritdoc/>

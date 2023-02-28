@@ -21,6 +21,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Lights;
+
+        /// <inheritdoc/>
         public string Description => "Sets the lights in the provided room(s) to the given RGB color.";
 
         /// <inheritdoc/>
@@ -49,7 +52,7 @@
             if (!byte.TryParse(Arguments[3], out byte b))
                 return new(false, $"Invalid RGB combination. Each number must be in the range of 0-255.");
 
-            Color c = new Color(r / 255f, g / 255f, b / 255f);
+            Color c = new(r / 255f, g / 255f, b / 255f);
 
             foreach (Room room in rooms)
             {
