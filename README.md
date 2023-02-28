@@ -26,10 +26,16 @@ scripted_events:
   debug: false
   # Enable logs for starting/stopping scripts.
   enable_logs: true
+  # If a script encounters an error, broadcast a notice to the person who ran the command, informing of the error. The broadcast ONLY shows to the command executor.
+  broadcast_issues: true
+  # If set to true, players with overwatch enabled will not be affected by any commands related to players.
+  ignore_overwatch: true
   # List of scripts to run as soon as the round starts.
   auto_run_scripts: []
   # List of scripts to automatically re-run as soon as they finish.
   loop_scripts: []
+  # The string to use for countdowns.
+  countdown_string: <size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\n{TIME}
   # Define a custom set of actions and the action they run when used.
   aliases:
   - command: LOCKDOORBRIEF
@@ -37,6 +43,8 @@ scripted_events:
   # Define a custom set of permissions used to run a certain script. The provided permission will be added AFTER script.execute (eg. script.execute.examplepermission for the provided example).
   required_permissions:
     ExampleScriptNameHere: examplepermission
+  # [ADVANCED] Define scripts to execute when certain events occur.
+  on: {}
 ```
 
 ## For developers
