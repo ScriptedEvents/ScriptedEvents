@@ -109,5 +109,25 @@
 
             return type.Name;
         }
+
+        /// <summary>
+        /// Gets a pretty display for a <see cref="ActionSubgroup"/>.
+        /// </summary>
+        /// <param name="group">The <see cref="ActionSubgroup"/>.</param>
+        /// <returns>The display.</returns>
+        public static string Display(this ActionSubgroup group)
+        {
+            switch (group)
+            {
+                case ActionSubgroup.Cassie:
+                    return "C.A.S.S.I.E";
+                case ActionSubgroup.Misc:
+                    return "Miscellaneous";
+                case ActionSubgroup.RoundRule:
+                    return "Round Rule";
+            }
+
+            return group.ToString();
+        }
     }
 }

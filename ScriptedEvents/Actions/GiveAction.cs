@@ -23,6 +23,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+
+        /// <inheritdoc/>
         public string Description => "Gives the targeted players an item.";
 
         /// <inheritdoc/>

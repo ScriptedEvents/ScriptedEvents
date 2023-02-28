@@ -4,6 +4,7 @@
     using Exiled.API.Features;
     using LightContainmentZoneDecontamination;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class DecontaminateAction : IScriptAction, IHelpInfo
@@ -16,6 +17,9 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Round;
 
         /// <inheritdoc/>
         public string Description => "Enables, disables, or forces decontamination.";

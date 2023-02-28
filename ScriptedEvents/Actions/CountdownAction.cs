@@ -22,6 +22,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
+
+        /// <inheritdoc/>
         public string Description => "Displays a countdown on the player(s) screens (using broadcasts).";
 
         /// <inheritdoc/>

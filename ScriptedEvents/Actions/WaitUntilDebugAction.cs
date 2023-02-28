@@ -24,6 +24,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Yielding;
+
+        /// <inheritdoc/>
         public string Description => "Reads the condition and yields execution of the script until the condition is TRUE.";
 
         /// <inheritdoc/>

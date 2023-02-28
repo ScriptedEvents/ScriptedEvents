@@ -29,10 +29,16 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
+
+        /// <inheritdoc/>
         public string Description => "Gets information about a command or a variable, or lists all commands or variables.";
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments => new[] { new Argument("input", typeof(string), "The name of the action/variable, \"LIST\" for all actions, or \"LISTVAR\" for all variables. Case-sensitive.", true) };
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("input", typeof(string), "The name of the action/variable, \"LIST\" for all actions, or \"LISTVAR\" for all variables. Case-sensitive.", true),
+        };
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the response will be opened via file.
@@ -55,17 +61,35 @@
                 sbList.AppendLine();
                 sbList.AppendLine($"List of all actions.");
 
+                List<IAction> temp = ListPool<IAction>.Pool.Get();
                 foreach (KeyValuePair<string, Type> kvp in ScriptHelper.ActionTypes)
                 {
                     IAction lAction = Activator.CreateInstance(kvp.Value) as IAction;
-                    IHelpInfo lhelpInfo = lAction as IHelpInfo;
-
-                    if (lAction is IHiddenAction)
-                        continue;
-
-                    sbList.AppendLine($"{lAction.Name} : {lhelpInfo?.Description ?? "No Description"}");
+                    temp.Add(lAction);
                 }
 
+                var grouped = temp.GroupBy(a => a.Subgroup);
+
+                foreach (IGrouping<ActionSubgroup, IAction> group in grouped.OrderBy(g => g.Key.Display()))
+                {
+                    if (group.Count() == 0 || (group.All(act => act is IHiddenAction) && !MainPlugin.Configs.Debug))
+                        continue;
+
+                    sbList.AppendLine();
+                    sbList.AppendLine($"== {group.Key.Display()} Actions ==");
+
+                    foreach (IAction lAction in group)
+                    {
+                        IHelpInfo lhelpInfo = lAction as IHelpInfo;
+
+                        if (lAction is IHiddenAction && !MainPlugin.Configs.Debug)
+                            continue;
+
+                        sbList.AppendLine($"{lAction.Name} : {lhelpInfo?.Description ?? "No Description"}");
+                    }
+                }
+
+                ListPool<IAction>.Pool.Return(temp);
                 return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbList)));
             }
 
@@ -150,7 +174,9 @@
                     sb.AppendLine();
                 }
 
-                sb.AppendLine($"{action.Name}: {helpInfo.Description}");
+                sb.AppendLine($"+ {action.Name} +");
+                sb.AppendLine($"{helpInfo.Description}");
+                sb.AppendLine($"Action type: {MsgGen.Display(action.Subgroup)}");
 
                 // Usage
                 sb.Append($"USAGE: {action.Name}");
@@ -310,8 +336,10 @@
                 });
 
                 // Set file attributes
-                FileInfo info = new FileInfo(path);
-                info.Attributes = FileAttributes.Temporary;
+                FileInfo info = new(path)
+                {
+                    Attributes = FileAttributes.Temporary,
+                };
 
                 try
                 {

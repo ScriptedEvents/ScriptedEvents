@@ -17,6 +17,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
+
+        /// <inheritdoc/>
         public string Description => "Disables a feature for the entire round.";
 
         /// <inheritdoc/>

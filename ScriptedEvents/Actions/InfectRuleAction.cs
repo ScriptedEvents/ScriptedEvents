@@ -18,6 +18,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
+
+        /// <inheritdoc/>
         public string Description => "Creates a new infection rule.";
 
         /// <inheritdoc/>
@@ -39,7 +42,7 @@
             if (!Enum.TryParse(Arguments[1], true, out RoleTypeId newRole))
                 return new(MessageType.InvalidRole, this, "newrole", Arguments[1]);
 
-            bool movePlayer = Arguments[2].ToUpper() is "TRUE" or "YES" ? true : false;
+            bool movePlayer = Arguments[2].ToUpper() is "TRUE" or "YES";
 
             MainPlugin.Handlers.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
             MainPlugin.Handlers.InfectionRules.Add(new(oldRole, newRole, movePlayer));

@@ -24,6 +24,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+
+        /// <inheritdoc/>
         public string Description => "Sets all players to the given role.";
 
         /// <inheritdoc/>

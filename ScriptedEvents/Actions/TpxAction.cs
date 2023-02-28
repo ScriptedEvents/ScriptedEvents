@@ -19,8 +19,13 @@
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+
+        /// <inheritdoc/>
         public string Description => "Teleports players to the specified X, Y, Z coordinates.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to teleport", true),
@@ -46,7 +51,7 @@
             if (!float.TryParse(Arguments[3], out float z))
                 return new(MessageType.NotANumber, this, "Z", Arguments[3]);
 
-            Vector3 vz = new Vector3(x, y, z);
+            Vector3 vz = new(x, y, z);
 
             foreach (Player ply in players)
             {

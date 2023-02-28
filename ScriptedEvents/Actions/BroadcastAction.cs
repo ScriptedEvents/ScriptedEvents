@@ -21,6 +21,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
+
+        /// <inheritdoc/>
         public string Description => "Broadcasts a message to every player.";
 
         /// <inheritdoc/>

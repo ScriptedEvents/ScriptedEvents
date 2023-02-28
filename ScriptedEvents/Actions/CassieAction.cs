@@ -19,6 +19,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Cassie;
+
+        /// <inheritdoc/>
         public string Description => "Makes a loud cassie announcement.";
 
         /// <inheritdoc/>

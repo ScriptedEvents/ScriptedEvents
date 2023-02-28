@@ -17,6 +17,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Logic;
+
+        /// <inheritdoc/>
         public string Description => "Stops the event execution at this line.";
 
         /// <inheritdoc/>

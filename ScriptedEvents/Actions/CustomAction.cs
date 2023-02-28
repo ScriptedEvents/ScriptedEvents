@@ -3,6 +3,7 @@
     using System;
 
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class CustomAction : IScriptAction
@@ -10,8 +11,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomAction"/> class.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="action"></param>
+        /// <param name="name">The name of the custom action.</param>
+        /// <param name="action">The function to execute when the action is invoked.</param>
         public CustomAction(string name, Func<string[], Tuple<bool, string>> action)
         {
             Name = name;
@@ -26,6 +27,9 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         public Func<string[], Tuple<bool, string>> Action { get; }
 

@@ -22,6 +22,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Lights;
+
+        /// <inheritdoc/>
         public string Description => "Turns all the lights off for a given period of time.";
 
         /// <inheritdoc/>

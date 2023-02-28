@@ -20,6 +20,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Variable;
+
+        /// <inheritdoc/>
         public string Description => "Saves a new variable. Saved variables can be used in ANY script, and are reset when the round ends.";
 
         /// <inheritdoc/>
