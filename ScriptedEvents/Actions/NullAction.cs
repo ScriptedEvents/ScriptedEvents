@@ -2,6 +2,7 @@
 {
     using System;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
 
     // Represents a line in a file that does not have any actions.
     public class NullAction : IAction, IHiddenAction, ICustomReadDisplay
@@ -31,6 +32,9 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         /// <summary>
         /// Gets the type of NULL action.

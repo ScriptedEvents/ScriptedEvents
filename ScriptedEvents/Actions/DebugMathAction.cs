@@ -19,6 +19,9 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Debug;
+
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));

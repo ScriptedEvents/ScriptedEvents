@@ -61,17 +61,35 @@
                 sbList.AppendLine();
                 sbList.AppendLine($"List of all actions.");
 
+                List<IAction> temp = ListPool<IAction>.Pool.Get();
                 foreach (KeyValuePair<string, Type> kvp in ScriptHelper.ActionTypes)
                 {
                     IAction lAction = Activator.CreateInstance(kvp.Value) as IAction;
-                    IHelpInfo lhelpInfo = lAction as IHelpInfo;
-
-                    if (lAction is IHiddenAction)
-                        continue;
-
-                    sbList.AppendLine($"{lAction.Name} : {lhelpInfo?.Description ?? "No Description"}");
+                    temp.Add(lAction);
                 }
 
+                var grouped = temp.GroupBy(a => a.Subgroup);
+
+                foreach (IGrouping<ActionSubgroup, IAction> group in grouped.OrderBy(g => g.Key.ToString()))
+                {
+                    if (group.Count() == 0)
+                        continue;
+
+                    sbList.AppendLine();
+                    sbList.AppendLine($"== {group.Key.Display()} Actions ==");
+
+                    foreach (IAction lAction in group)
+                    {
+                        IHelpInfo lhelpInfo = lAction as IHelpInfo;
+
+                        if (lAction is IHiddenAction)
+                            continue;
+
+                        sbList.AppendLine($"{lAction.Name} : {lhelpInfo?.Description ?? "No Description"}");
+                    }
+                }
+
+                ListPool<IAction>.Pool.Return(temp);
                 return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbList)));
             }
 
@@ -157,6 +175,7 @@
                 }
 
                 sb.AppendLine($"{action.Name}: {helpInfo.Description}");
+                sb.AppendLine($"Action type: {MsgGen.Display(action.Subgroup)}");
 
                 // Usage
                 sb.Append($"USAGE: {action.Name}");

@@ -3,6 +3,7 @@
     using System;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
 
@@ -16,6 +17,9 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Debug;
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)

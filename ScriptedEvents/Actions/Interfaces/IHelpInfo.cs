@@ -9,11 +9,6 @@
     public interface IHelpInfo
     {
         /// <summary>
-        /// Gets this action's <see cref="ActionSubgroup"/>.
-        /// </summary>
-        public ActionSubgroup Subgroup { get; }
-
-        /// <summary>
         /// Gets the description of the action.
         /// </summary>
         public string Description { get; }

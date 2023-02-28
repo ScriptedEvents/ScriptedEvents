@@ -3,6 +3,7 @@
     using System;
 
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class CustomAction : IScriptAction
@@ -26,6 +27,9 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         public Func<string[], Tuple<bool, string>> Action { get; }
 

@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.Interfaces
+﻿using ScriptedEvents.API.Enums;
+
+namespace ScriptedEvents.Actions.Interfaces
 {
     /// <summary>
     /// Represents any action.
@@ -14,6 +16,11 @@
         /// Gets aliases of the action. Currently unused.
         /// </summary>
         string[] Aliases { get; }
+
+        /// <summary>
+        /// Gets this action's <see cref="ActionSubgroup"/>.
+        /// </summary>
+        public ActionSubgroup Subgroup { get; }
 
         /// <summary>
         /// Gets or sets the arguments that this action instance will run with.
