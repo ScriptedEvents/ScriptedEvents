@@ -70,9 +70,9 @@
 
                 var grouped = temp.GroupBy(a => a.Subgroup);
 
-                foreach (IGrouping<ActionSubgroup, IAction> group in grouped.OrderBy(g => g.Key.ToString()))
+                foreach (IGrouping<ActionSubgroup, IAction> group in grouped.OrderBy(g => g.Key.Display()))
                 {
-                    if (group.Count() == 0 || group.All(act => act is IHiddenAction))
+                    if (group.Count() == 0 || (group.All(act => act is IHiddenAction) && !MainPlugin.Configs.Debug))
                         continue;
 
                     sbList.AppendLine();
@@ -82,7 +82,7 @@
                     {
                         IHelpInfo lhelpInfo = lAction as IHelpInfo;
 
-                        if (lAction is IHiddenAction)
+                        if (lAction is IHiddenAction && !MainPlugin.Configs.Debug)
                             continue;
 
                         sbList.AppendLine($"{lAction.Name} : {lhelpInfo?.Description ?? "No Description"}");
