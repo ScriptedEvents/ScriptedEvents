@@ -300,7 +300,7 @@ namespace ScriptedEvents.API.Helpers
                 doorList = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
             }
 
-            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second && d.Base.GetComponentInParent<AirlockController>() == null).ToList();
+            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp914Door && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second && d.Base.GetComponentInParent<AirlockController>() == null).ToList();
             doors = ListPool<Door>.Pool.ToArrayReturn(doorList);
             return doors.Length > 0;
         }
