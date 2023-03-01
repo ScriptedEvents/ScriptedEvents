@@ -1,9 +1,8 @@
 ﻿namespace ScriptedEvents.Variables.Condition
 {
-#pragma warning disable SA1402 // File may only contain a single type
     using ScriptedEvents.Variables.Interfaces;
 
-    public class CustomVariable : IConditionVariable
+    public class CustomVariable : IObjectVariable
     {
         public CustomVariable()
         {

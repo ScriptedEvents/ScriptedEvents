@@ -185,6 +185,9 @@
                         case IStringVariable @string:
                             input = input.Replace(variable, @string.Value);
                             break;
+                        case IObjectVariable @object:
+                            input = input.Replace(variable, @object.Value);
+                            break;
                     }
                 }
             }
