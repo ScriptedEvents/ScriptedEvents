@@ -23,7 +23,7 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+        public ActionSubgroup Subgroup => ActionSubgroup.Inventory;
 
         /// <inheritdoc/>
         public string Description => "Gives the targeted players an item.";

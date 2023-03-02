@@ -21,6 +21,11 @@
         Debug,
 
         /// <summary>
+        /// Inventory-related action.
+        /// </summary>
+        Inventory,
+
+        /// <summary>
         /// Facility lighting related action.
         /// </summary>
         Lights,

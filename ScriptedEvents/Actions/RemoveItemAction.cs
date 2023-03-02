@@ -24,7 +24,7 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+        public ActionSubgroup Subgroup => ActionSubgroup.Inventory;
 
         /// <inheritdoc/>
         public string Description => "Removes an item from the targeted players.";
