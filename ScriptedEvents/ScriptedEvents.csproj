@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\ClearCassieAction.cs" />
+    <Compile Include="Actions\ClearInventoryAction.cs" />
     <Compile Include="Actions\CountdownAction.cs" />
     <Compile Include="Actions\CustomAction.cs" />
     <Compile Include="Actions\DamageAction.cs" />

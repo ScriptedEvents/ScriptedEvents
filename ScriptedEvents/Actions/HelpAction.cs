@@ -52,7 +52,8 @@
 
             IsFile = false;
 
-            if (Arguments.Length > 1 && Arguments[1].ToUpper() == "FILE" && script.Sender is ServerConsoleSender) IsFile = true;
+            if (script.Sender is ServerConsoleSender) IsFile = true;
+            if (Arguments.Length > 1 && Arguments[1].ToUpper() == "NOFILE" && script.Sender is ServerConsoleSender) IsFile = false;
 
             // List Help
             if (Arguments[0].ToUpper() == "LIST")
