@@ -222,20 +222,25 @@
                     sb.AppendLine("=== CONDITION VARIABLE ===");
                     sb.AppendLine($"Name: {variable.Name}");
                     sb.AppendLine($"Description: {variable.Description}");
+                    sb.Append("Variable Type: ");
 
                     switch (variable)
                     {
                         case IBoolVariable @bool:
                             bool value = reversed ? !@bool.Value : @bool.Value;
+                            sb.AppendLine("Boolean (true/false)");
                             sb.AppendLine($"Current Value: {(value ? "TRUE" : "FALSE")}");
                             break;
                         case IFloatVariable @float:
+                            sb.AppendLine("Numerical");
                             sb.AppendLine($"Current Value: {@float.Value}");
                             break;
                         case IStringVariable @string:
+                            sb.AppendLine("String (Text)");
                             sb.AppendLine($"Current Value: {@string.Value}");
                             break;
-                        case CustomVariable custom:
+                        case IObjectVariable custom:
+                            sb.AppendLine("Boolean (true/false)");
                             sb.AppendLine($"Current Value: {custom.Value}");
                             break;
                     }
