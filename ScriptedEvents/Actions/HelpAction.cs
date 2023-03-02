@@ -180,7 +180,7 @@
                 sb.AppendLine($"Action type: {MsgGen.Display(action.Subgroup)}");
 
                 // Usage
-                sb.Append($"USAGE: {action.Name}");
+                sb.Append($"Usage: {action.Name}");
                 foreach (Argument arg in helpInfo.ExpectedArguments)
                 {
                     string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
