@@ -149,6 +149,7 @@
     <Compile Include="Actions\DebugConditionLogAction.cs" />
     <Compile Include="Actions\DecontaminateAction.cs" />
     <Compile Include="Actions\DoorAction.cs" />
+    <Compile Include="Actions\EffectAction.cs" />
     <Compile Include="Actions\IfAction.cs" />
     <Compile Include="Actions\LightsOffAction.cs" />
     <Compile Include="Actions\LogAction.cs" />
