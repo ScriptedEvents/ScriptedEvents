@@ -100,6 +100,7 @@
     <Compile Include="API\Enums\VariableGroupType.cs" />
     <Compile Include="API\Helpers\CountdownHelper.cs" />
     <Compile Include="API\Helpers\MsgGen.cs" />
+    <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
     <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />

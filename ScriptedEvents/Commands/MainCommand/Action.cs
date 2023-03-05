@@ -67,7 +67,7 @@
             mockScript.Context = ExecuteContext.ServerConsole;
             mockScript.Sender = sender;
             mockScript.RawText = string.Join(" ", arguments);
-            mockScript.ScriptName = "ACTION COMMAND";
+            mockScript.ScriptName = "ACTION COMMAND EXECUTION";
             mockScript.Flags.Add("ACTIONCOMMANDEXECUTION");
 
             ActionResponse actionResponse = scriptAction.Execute(mockScript);
