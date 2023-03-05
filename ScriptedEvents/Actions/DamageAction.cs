@@ -46,6 +46,9 @@
             if (!float.TryParse(Arguments[1], out float damage))
                 return new(MessageType.NotANumber, this, "damage", Arguments[1]);
 
+            if (damage < 0)
+                return new(MessageType.LessThanZeroNumber, this, "damage", damage);
+
             if (Arguments.Length > 2)
             {
                 bool useDeathType = true;
