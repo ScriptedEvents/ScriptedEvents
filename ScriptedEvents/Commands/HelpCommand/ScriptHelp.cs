@@ -38,7 +38,7 @@
             Script mockScript = new Script();
             mockScript.Context = ExecuteContext.ServerConsole;
             mockScript.Sender = sender;
-            mockScript.RawText = $"HELP {name} FILE";
+            mockScript.RawText = $"HELP {name}";
             mockScript.ScriptName = "HELP COMMAND EXECUTION";
             mockScript.Flags.Add("HELPCOMMANDEXECUTION");
 

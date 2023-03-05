@@ -60,7 +60,7 @@
             {
                 StringBuilder sbList = StringBuilderPool.Pool.Get();
                 sbList.AppendLine();
-                sbList.AppendLine($"List of all actions.");
+                sbList.AppendLine($"List of all actions. For more information on each action, run the HELP <ACTIONNAME> action (or shelp <ACTIONNAME> in the server console).");
 
                 List<IAction> temp = ListPool<IAction>.Pool.Get();
                 foreach (KeyValuePair<string, Type> kvp in ScriptHelper.ActionTypes)
