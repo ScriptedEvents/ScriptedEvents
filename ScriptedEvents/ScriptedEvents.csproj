@@ -208,7 +208,7 @@
     <Compile Include="Variables\Interfaces\IVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariableGroup.cs" />
     <Compile Include="Variables\Player\CustomPlayerVariable.cs" />
-    <Compile Include="Variables\Player\CustomRolePlayerVariable.cs.cs" />
+    <Compile Include="Variables\Player\CustomRolesVariables.cs" />
     <Compile Include="Variables\Player\MiscVariables.cs" />
     <Compile Include="Variables\Player\RoleVariables.cs" />
     <Compile Include="Variables\Player\ZoneVariables.cs" />
