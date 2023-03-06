@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API.Features;
     using PlayerRoles;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
@@ -42,9 +43,6 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!Enum.TryParse<RoleTypeId>(Arguments[1], true, out RoleTypeId roleType))
-                return new(MessageType.InvalidRole, this, "role", Arguments[1]);
-
             int max = -1;
 
             if (Arguments.Length > 2)
@@ -67,10 +65,23 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys))
                 return new(false, "No players matching the criteria were found.");
 
-            foreach (Player player in plys)
-                player.Role.Set(roleType);
+            if (Enum.TryParse(Arguments[1], true, out RoleTypeId roleType))
+            {
+                foreach (Player player in plys)
+                    player.Role.Set(roleType);
 
-            return new(true);
+                return new(true);
+            }
+
+            if (CustomRole.TryGet(Arguments[1], out CustomRole customRole))
+            {
+                foreach (Player player in plys)
+                    customRole.AddRole(player);
+
+                return new(true);
+            }
+
+            return new(MessageType.InvalidRole, this, "role", Arguments[1]);
         }
     }
 }
