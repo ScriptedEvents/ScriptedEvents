@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Exiled.API.Features;
+    using Exiled.CustomItems.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
@@ -41,9 +42,6 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!Enum.TryParse<ItemType>(Arguments[1], true, out ItemType itemType))
-                return new(false, "Invalid item provided.");
-
             int amt = 1;
 
             if (Arguments.Length > 2)
@@ -65,20 +63,36 @@
                 }
             }
 
-            Player[] plys;
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            foreach (Player player in plys)
+            if (Enum.TryParse(Arguments[1], true, out ItemType itemType))
             {
-                for (int i = 0; i < amt; i++)
+                foreach (Player player in plys)
                 {
-                    player.AddItem(itemType);
+                    for (int i = 0; i < amt; i++)
+                    {
+                        player.AddItem(itemType);
+                    }
                 }
+
+                return new(true);
             }
 
-            return new(true);
+            if (CustomItem.TryGet(Arguments[1], out CustomItem customItem))
+            {
+                foreach (Player player in plys)
+                {
+                    for (int i = 0; i < amt; i++)
+                    {
+                        customItem.Give(player);
+                    }
+                }
+
+                return new(true);
+            }
+
+            return new(false, "Invalid item provided.");
         }
     }
 }
