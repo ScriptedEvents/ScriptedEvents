@@ -10,7 +10,7 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
 
-    public class TurnOffLightsAction : IScriptAction, IHelpInfo
+    public class LightsOffAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "LIGHTSOFF";

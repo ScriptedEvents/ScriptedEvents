@@ -9,7 +9,7 @@
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
 
-    public class ResetLightColor : IScriptAction, IHelpInfo
+    public class ResetLightColorAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "RESETLIGHTCOLOR";

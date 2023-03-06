@@ -1,12 +1,14 @@
 ﻿namespace ScriptedEvents.Actions
 {
+    using System;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using System;
+
     using UnityEngine;
 
     public class LightColorAction : IScriptAction, IHelpInfo

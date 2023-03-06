@@ -1,7 +1,7 @@
-﻿using ScriptedEvents.API.Enums;
-
-namespace ScriptedEvents.Actions.Interfaces
+﻿namespace ScriptedEvents.Actions.Interfaces
 {
+    using ScriptedEvents.API.Enums;
+
     /// <summary>
     /// Represents any action.
     /// </summary>
