@@ -7,6 +7,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Exiled.CustomRoles.API.Features;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
@@ -104,6 +105,9 @@
 
             if (DefinedVariables.TryGetValue(name, out CustomPlayerVariable customValue))
                 result = customValue;
+
+            if (CustomRoleTypeVariable.TryGetValue(name, out CustomRoleTypeVariable customRole))
+                result = customRole;
 
             if (result is not null && result is IArgumentVariable argSupport)
             {
