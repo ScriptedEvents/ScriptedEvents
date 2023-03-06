@@ -12,12 +12,16 @@
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ListScripts : ICommand
     {
+        /// <inheritdoc/>
         public string Command => "list";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string Description => "Lists all event scripts.";
 
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("script.list"))

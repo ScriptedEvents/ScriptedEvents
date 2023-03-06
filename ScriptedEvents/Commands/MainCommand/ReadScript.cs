@@ -13,12 +13,16 @@
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ReadScript : ICommand
     {
+        /// <inheritdoc/>
         public string Command => "readscript";
 
+        /// <inheritdoc/>
         public string[] Aliases => new[] { "read", "r" };
 
+        /// <inheritdoc/>
         public string Description => "Start a script.";
 
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("script.read"))

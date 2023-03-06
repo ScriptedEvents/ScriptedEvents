@@ -10,12 +10,16 @@
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExecuteScript : ICommand
     {
+        /// <inheritdoc/>
         public string Command => "execute";
 
+        /// <inheritdoc/>
         public string[] Aliases => new[] { "ex", "run" };
 
+        /// <inheritdoc/>
         public string Description => "Start a script.";
 
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("script.execute"))

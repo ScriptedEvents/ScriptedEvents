@@ -10,12 +10,16 @@
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class ScriptHelp : ICommand
     {
+        /// <inheritdoc/>
         public string Command => "scripthelp";
 
+        /// <inheritdoc/>
         public string[] Aliases => new[] { "shelp", "scrhelp", "sehelp", "seh", "sch" };
 
+        /// <inheritdoc/>
         public string Description => "Get documentation for everything in Scripted Events.";
 
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (arguments.Count < 1)

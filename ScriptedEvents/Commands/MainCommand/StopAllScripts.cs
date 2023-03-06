@@ -9,12 +9,16 @@
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class StopAllScripts : ICommand
     {
+        /// <inheritdoc/>
         public string Command => "stopall";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public string Description => "Stops all scripts currently running.";
 
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("script.stopall"))

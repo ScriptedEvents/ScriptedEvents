@@ -12,12 +12,16 @@
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ListRunning : ICommand
     {
+        /// <inheritdoc/>
         public string Command => "listrunning";
 
+        /// <inheritdoc/>
         public string[] Aliases => new[] { "running", "listr", "lr" };
 
+        /// <inheritdoc/>
         public string Description => "Lists all event scripts that are currently running.";
 
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("script.list"))

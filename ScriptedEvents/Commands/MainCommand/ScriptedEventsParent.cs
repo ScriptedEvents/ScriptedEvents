@@ -8,14 +8,21 @@
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ScriptedEventsParent : ParentCommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScriptedEventsParent"/> class.
+        /// </summary>
         public ScriptedEventsParent() => LoadGeneratedCommands();
 
+        /// <inheritdoc/>
         public override string Command => "scriptedevents";
 
+        /// <inheritdoc/>
         public override string[] Aliases => new[] { "scr", "script", "event", "events" };
 
+        /// <inheritdoc/>
         public override string Description => "Parent command for the Scripted Events plugin.";
 
+        /// <inheritdoc/>
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(new ExecuteScript());
@@ -26,6 +33,7 @@
             RegisterCommand(new Action());
         }
 
+        /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             StringBuilder sb = StringBuilderPool.Pool.Get();

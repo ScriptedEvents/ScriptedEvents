@@ -13,12 +13,16 @@
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Action : ICommand
     {
+        /// <inheritdoc/>
         public string Command => "action";
 
+        /// <inheritdoc/>
         public string[] Aliases => new[] { "act" };
 
+        /// <inheritdoc/>
         public string Description => "Runs a specific action with specific arguments.";
 
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("script.action"))

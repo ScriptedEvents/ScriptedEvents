@@ -14,6 +14,9 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
 
+    /// <summary>
+    /// A set of methods and API for handling conditions and math equations.
+    /// </summary>
     public static class ConditionHelper
     {
         /// <summary>
@@ -26,6 +29,9 @@
         /// </summary>
         public const string OR = "OR";
 
+        /// <summary>
+        /// Gets a <see cref="ReadOnlyCollection{T}"/> of float operators.
+        /// </summary>
         public static ReadOnlyCollection<IFloatCondition> FloatConditions { get; } = new List<IFloatCondition>()
         {
             new GreaterThan(),
@@ -37,15 +43,23 @@
             new GreaterThanOrEqualTo(),
         }.AsReadOnly();
 
+        /// <summary>
+        /// Gets a <see cref="ReadOnlyCollection{T}"/> of string operators.
+        /// </summary>
         public static ReadOnlyCollection<IStringCondition> StringConditions { get; } = new List<IStringCondition>()
         {
             new StringEqual(),
             new StringNotEqual(),
         }.AsReadOnly();
 
-        // StackOverflow my beloved
+        /// <summary>
+        /// Performs a math equation and returns the result.
+        /// </summary>
+        /// <param name="expression">The string math equation.</param>
+        /// <returns>The result of the math equation.</returns>
         public static float Math(string expression)
         {
+            // StackOverflow my beloved
             DataTable loDataTable = new DataTable();
             DataColumn loDataColumn = new DataColumn("Eval", typeof(double), expression);
             loDataTable.Columns.Add(loDataColumn);
@@ -53,6 +67,12 @@
             return (float)(double)loDataTable.Rows[0]["Eval"];
         }
 
+        /// <summary>
+        /// Tries to perform a math equation.
+        /// </summary>
+        /// <param name="expression">The string math equation.</param>
+        /// <param name="result">A <see cref="MathResult"/> indicating the success, result, and the exception if any.</param>
+        /// <returns>Whether or not the math was successful.</returns>
         public static bool TryMath(string expression, out MathResult result)
         {
             try
@@ -69,14 +89,24 @@
             return result.Success;
         }
 
-        // StackOverflow my beloved
+        /// <summary>
+        /// Removes every whitespace character from a string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <returns>The new string, without any whitespace characters.</returns>
         public static string RemoveWhitespace(this string input)
         {
+            // StackOverflow my beloved
             return new string(input.ToCharArray()
                 .Where(c => !char.IsWhiteSpace(c))
                 .ToArray());
         }
 
+        /// <summary>
+        /// Isolates all variables from a string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <returns>The variables used within the string.</returns>
         public static string[] IsolateVariables(string input)
         {
             List<string> result = ListPool<string>.Pool.Get();
@@ -95,6 +125,11 @@
             return ListPool<string>.Pool.ToArrayReturn(result);
         }
 
+        /// <summary>
+        /// Evaluates a condition.
+        /// </summary>
+        /// <param name="input">The condition input.</param>
+        /// <returns>The result of the condition.</returns>
         public static ConditionResponse Evaluate(string input)
         {
             input = ConditionVariables.ReplaceVariables(input);
