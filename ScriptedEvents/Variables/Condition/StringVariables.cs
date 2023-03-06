@@ -3,7 +3,10 @@
 #pragma warning disable SA1402 // File may only contain a single type
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Handlers;
     using ScriptedEvents.Variables.Interfaces;
+    using System.Linq;
 
     public class StringVariables : IVariableGroup
     {
@@ -19,6 +22,7 @@
             new NextWave(),
             new LastRespawnTeam(),
             new LastUnitName(),
+            new Show(),
         };
     }
 
@@ -56,5 +60,42 @@
 
         /// <inheritdoc/>
         public string Value => MainPlugin.Handlers.MostRecentSpawnUnit;
+    }
+
+    public class Show : IStringVariable, IArgumentVariable
+    {
+
+        /// <inheritdoc/>
+        public string Name => "{SHOW}";
+
+        /// <inheritdoc/>
+        public string Description => "Show a player variable as a name or list of names.";
+
+        public string[] Arguments { get; set; }
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("name", typeof(string), "The name of the player variable to show.", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                if (Arguments.Length == 0)
+                    return "ERROR: MISSING VARIABLE NAME";
+
+                string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
+
+                var variable = PlayerVariables.GetVariable($"{{{name}}}");
+                if (variable is not null)
+                {
+                    return string.Join(", ", variable.Players.Select(r => r.Nickname));
+                }
+
+                return "ERROR: INVALID VARIABLE";
+            }
+        }
     }
 }
