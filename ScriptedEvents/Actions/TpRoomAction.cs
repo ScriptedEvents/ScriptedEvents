@@ -32,7 +32,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to teleport", true),
-            new Argument("room", typeof(RoomType), "The room to teleport to. Do NOT use Scp173 room!!!", true),
+            new Argument("room", typeof(RoomType), "The room to teleport to. Alternatively, a zone can be provided to teleport players to a random room in the zone (random for each player). Do NOT use Scp173 room!!!", true),
         };
 
         /// <inheritdoc/>
