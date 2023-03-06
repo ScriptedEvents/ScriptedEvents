@@ -45,7 +45,7 @@
 
             if (Enum.TryParse(Arguments[1], true, out ZoneType zt))
             {
-                List<Room> validRooms = Room.List.Where(r => r.Zone.HasFlag(zt) && r.Type is not RoomType.Lcz173).ToList();
+                List<Room> validRooms = Room.List.Where(r => r.Zone.HasFlag(zt) && r.Type is not RoomType.Lcz173 && r.Type is not RoomType.Hcz079).ToList();
                 foreach (Player ply in players)
                 {
                     validRooms.ShuffleList();
