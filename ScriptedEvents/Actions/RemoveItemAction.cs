@@ -5,6 +5,7 @@
     using System.Linq;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.CustomItems.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
@@ -42,9 +43,6 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!Enum.TryParse<ItemType>(Arguments[1], true, out ItemType itemType))
-                return new(false, "Invalid item provided.");
-
             int amt = 1;
 
             if (Arguments.Length > 2)
@@ -66,24 +64,49 @@
                 }
             }
 
-            Player[] plys;
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            foreach (Player player in plys)
+            if (Enum.TryParse(Arguments[1], true, out ItemType itemType))
             {
-                for (int i = 0; i < amt; i++)
+                foreach (Player player in plys)
                 {
-                    Item item = player.Items.FirstOrDefault(r => r.Type == itemType);
-                    if (item is not null)
+                    int i = 0;
+                    foreach (Item item in player.Items.ToList())
                     {
-                        player.RemoveItem(item);
+                        if (amt < i++)
+                            break;
+
+                        if (item.Type == itemType)
+                        {
+                            player.RemoveItem(item);
+                        }
                     }
                 }
+
+                return new(true);
             }
 
-            return new(true);
+            if (CustomItem.TryGet(Arguments[1], out CustomItem customItem))
+            {
+                foreach (Player player in plys)
+                {
+                    int i = 0;
+                    foreach (Item item in player.Items.ToList())
+                    {
+                        if (amt < i++)
+                            break;
+                        if (customItem.Check(item))
+                        {
+                            player.RemoveItem(item);
+                        }
+                    }
+                }
+
+                return new(true);
+            }
+
+            return new(false, "Invalid item provided.");
         }
     }
 }
