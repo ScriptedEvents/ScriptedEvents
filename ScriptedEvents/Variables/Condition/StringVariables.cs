@@ -1,12 +1,14 @@
 ﻿namespace ScriptedEvents.Variables.Condition.Strings
 {
 #pragma warning disable SA1402 // File may only contain a single type
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
     using ScriptedEvents.Variables.Interfaces;
-    using System.Linq;
 
     public class StringVariables : IVariableGroup
     {
@@ -69,13 +71,14 @@
         public string Name => "{SHOW}";
 
         /// <inheritdoc/>
-        public string Description => "Show a player variable as a name or list of names.";
+        public string Description => "Reveal certain properties about the players in a player variable.";
 
         public string[] Arguments { get; set; }
 
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(string), "The name of the player variable to show.", true),
+            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, ROLE, TEAM, ROOM, ZONE.", false),
         };
 
         /// <inheritdoc/>
@@ -86,12 +89,29 @@
                 if (Arguments.Length == 0)
                     return "ERROR: MISSING VARIABLE NAME";
 
+                string selector = "NAME";
+
+                if (Arguments.Length > 1)
+                    selector = Arguments[1].ToUpper();
+
                 string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
 
                 var variable = PlayerVariables.GetVariable($"{{{name}}}");
                 if (variable is not null)
                 {
-                    return string.Join(", ", variable.Players.Select(r => r.Nickname));
+                    IOrderedEnumerable<string> display = variable.Players.Select(ply =>
+                    {
+                        return selector switch
+                        {
+                            "NAME" => ply.Nickname,
+                            "ROLE" => ply.Role.Type.ToString(),
+                            "TEAM" => ply.Role.Team.ToString(),
+                            "ROOM" => ply.CurrentRoom.Type.ToString(),
+                            "ZONE" => ply.Zone.ToString(),
+                            _ => ply.Nickname,
+                        };
+                    }).OrderBy(s => s);
+                    return string.Join(", ", display);
                 }
 
                 return "ERROR: INVALID VARIABLE";
