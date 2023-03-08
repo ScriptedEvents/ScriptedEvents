@@ -32,7 +32,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to teleport", true),
-            new Argument("room", typeof(DoorType), "The door type to teleport to.", true),
+            new Argument("door", typeof(DoorType), "The door type to teleport to.", true),
         };
 
         /// <inheritdoc/>
