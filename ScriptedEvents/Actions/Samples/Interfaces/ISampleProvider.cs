@@ -2,6 +2,6 @@
 {
     public interface ISampleProvider
     {
-        public ISample Samples { get; }
+        public Sample[] Samples { get; }
     }
 }

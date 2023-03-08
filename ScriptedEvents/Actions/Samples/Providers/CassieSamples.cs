@@ -1,8 +1,8 @@
-﻿namespace ScriptedEvents.Actions.Samples
+﻿namespace ScriptedEvents.Actions.Samples.Providers
 {
     using ScriptedEvents.Actions.Samples.Interfaces;
 
-    public class CassieSamples : ISample
+    public class CassieSamples : ISampleProvider
     {
         /// <inheritdoc/>
         public Sample[] Samples => new[]
