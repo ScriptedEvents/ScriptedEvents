@@ -92,6 +92,7 @@
     <Compile Include="Actions\LightColorAction.cs" />
     <Compile Include="Actions\ResetLightColorAction.cs" />
     <Compile Include="Actions\TicketAction.cs" />
+    <Compile Include="Actions\TpDoorAction.cs" />
     <Compile Include="Actions\TpRoomAction.cs" />
     <Compile Include="Actions\TpxAction.cs" />
     <Compile Include="API\Enums\ActionSubgroup.cs" />
