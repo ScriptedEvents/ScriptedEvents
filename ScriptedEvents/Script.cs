@@ -158,7 +158,7 @@
         /// <param name="line">The line to move to.</param>
         public void Jump(int line)
         {
-            CurrentLine = line - 2;
+            CurrentLine = line - 1;
         }
 
         /// <summary>

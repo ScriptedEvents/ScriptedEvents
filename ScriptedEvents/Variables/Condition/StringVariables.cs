@@ -1,9 +1,10 @@
 ﻿namespace ScriptedEvents.Variables.Condition.Strings
 {
+    using System;
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Collections.Generic;
     using System.Linq;
-
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
@@ -115,6 +116,43 @@
                 }
 
                 return "ERROR: INVALID VARIABLE";
+            }
+        }
+    }
+
+    public class DoorState : IStringVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{DOORSTATE}";
+
+        /// <inheritdoc/>
+        public string Description => "Reveals the state of a door (either 'OPEN' or 'CLOSED').";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("door", typeof(DoorType), "The door to get the state of.", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                if (Arguments.Length < 1) return "ERROR: MISSING DOOR TYPE";
+
+                if (!Enum.TryParse(Arguments[0], out DoorType dt))
+                    return "ERROR: INVALID DOOR TYPE";
+
+                Door d = Door.Get(dt);
+
+                if (d is null)
+                    return "ERROR: INVALID DOOR TYPE";
+
+                return d.IsOpen ? "OPEN" : "CLOSED";
             }
         }
     }

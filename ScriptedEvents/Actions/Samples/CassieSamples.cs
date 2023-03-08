@@ -1,0 +1,26 @@
+﻿namespace ScriptedEvents.Actions.Samples
+{
+    using ScriptedEvents.Actions.Samples.Interfaces;
+
+    public class CassieSamples : ISample
+    {
+        /// <inheritdoc/>
+        public Sample[] Samples => new[]
+        {
+            new Sample(
+                "Case 1",
+                "Announce \"Hello\" with the caption of \"Goodbye\"",
+                @"CASSIE Hello|Goodbye"),
+
+            new Sample(
+                "Case 2",
+                "Announce \"Hello\" with the caption of \"Hello\". No caption is needed in this sample, since by default the caption is equivalent to the text CASSIE speaks.",
+                @"CASSIE Hello"),
+
+            new Sample(
+                "Case 3",
+                "Announce \"Hello\" with no caption.",
+                @"CASSIE Hello|"),
+        };
+    }
+}

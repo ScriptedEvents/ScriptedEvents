@@ -53,7 +53,6 @@
             if (result.Result < 0)
             {
                 message = new(MessageType.LessThanZeroNumber, this, "duration", result.Result);
-                message = new(false, "A negative number cannot be used as the duration argument of the WAITSEC action.");
                 return null;
             }
 

@@ -10,6 +10,8 @@
     using MEC;
     using PlayerRoles.PlayableScps.HUDs;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Actions.Samples;
+    using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
@@ -161,7 +163,7 @@
             }
 
             // Action Help
-            else if (ScriptHelper.ActionTypes.TryGetValue(Arguments[0], out Type type))
+            else if (ScriptHelper.ActionTypes.TryGetValue(Arguments[0].ToUpper(), out Type type))
             {
                 IAction action = Activator.CreateInstance(type) as IAction;
 
@@ -205,6 +207,28 @@
                     sb.AppendLine($"  {arg.Description}");
                 }
 
+                if (action is ISampleProvider sampleProvider)
+                {
+                    Sample[] samples = sampleProvider.Samples.Samples;
+                    if (samples.Length > 0)
+                    {
+                        sb.AppendLine();
+                        sb.AppendLine("Examples:");
+                        sb.AppendLine();
+
+                        foreach (Sample s in samples)
+                        {
+                            sb.AppendLine($"=== {s.Title} ===");
+                            sb.AppendLine(s.Description);
+                            sb.AppendLine();
+                            sb.AppendLine("```");
+                            sb.AppendLine(s.Code);
+                            sb.AppendLine("```");
+                            sb.AppendLine();
+                        }
+                    }
+                }
+
                 return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sb)));
             }
 
@@ -216,7 +240,7 @@
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
 
-                if (ConditionVariables.TryGetVariable(Arguments[0], out IConditionVariable variable, out bool reversed))
+                if (ConditionVariables.TryGetVariable(Arguments[0].ToUpper(), out IConditionVariable variable, out bool reversed))
                 {
                     valid = true;
                     sb.AppendLine("=== CONDITION VARIABLE ===");

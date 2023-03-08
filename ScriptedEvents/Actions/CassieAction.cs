@@ -3,11 +3,13 @@
     using System;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Actions.Samples;
+    using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
 
-    public class CassieAction : IScriptAction, IHelpInfo
+    public class CassieAction : IScriptAction, IHelpInfo, ISampleProvider
     {
         /// <inheritdoc/>
         public string Name => "CASSIE";
@@ -29,6 +31,9 @@
         {
             new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption. Variables are supported.", true),
         };
+
+        /// <inheritdoc/>
+        public ISample Samples { get; } = new CassieSamples();
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
