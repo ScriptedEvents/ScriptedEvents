@@ -45,12 +45,12 @@
 
             if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
-                return new(MessageType.NotANumberOrCondition, this, "duration", formula, result);
+                return new(MessageType.NotANumberOrCondition, this, "maxhealth", formula, result);
             }
 
             if (result.Result < 0)
             {
-                return new(MessageType.LessThanZeroNumber, this, "duration", result.Result);
+                return new(MessageType.LessThanZeroNumber, this, "maxhealth", result.Result);
             }
 
             float hp = result.Result;
