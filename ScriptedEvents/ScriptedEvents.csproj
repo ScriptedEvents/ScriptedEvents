@@ -91,6 +91,7 @@
     <Compile Include="Actions\KillAction.cs" />
     <Compile Include="Actions\LightColorAction.cs" />
     <Compile Include="Actions\ResetLightColorAction.cs" />
+    <Compile Include="Actions\SetAHPAction.cs" />
     <Compile Include="Actions\SetMaxHPAction.cs" />
     <Compile Include="Actions\SetHPAction.cs" />
     <Compile Include="Actions\TicketAction.cs" />
