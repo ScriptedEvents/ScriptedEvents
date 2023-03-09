@@ -14,7 +14,7 @@
 
             new Sample(
                 "Random Light Flicker? idk",
-                "Flicker the lights off for 10 seconds if there are exactly 8 players alive, exactly 5 players dead, exactly 3 SCPs, and at least 3 MTF.\r\n\r\n",
+                "Flicker the lights off for 10 seconds if there are exactly 8 players alive, exactly 5 players dead, exactly 3 SCPs, and at least 3 MTF.",
                 "IF {PLAYERSALIVE} = 8 AND {PLAYERSDEAD} = 5 AND {SCPS} = 3 AND {MTF} >= 3\nLIGHTSOFF * 10"),
 
             new Sample(
