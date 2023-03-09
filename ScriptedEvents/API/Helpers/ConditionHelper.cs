@@ -202,16 +202,24 @@
 
             // Code for conditions with string operator
             IStringCondition conditionString = null;
+            int conditionStringIndex = -1;
             foreach (IStringCondition con in StringConditions)
             {
                 if (input.Contains(con.Symbol))
                 {
                     conditionString = con;
+                    conditionStringIndex = input.IndexOf(con.Symbol);
                 }
             }
 
             if (conditionString is not null)
             {
+                // Hacky: Check the character BEFORE the symbol
+                // Fix edge cases with > and < being right before an equal sign (stupid)
+                char charBefore = input[conditionStringIndex - 1];
+                if (charBefore is '>' or '<')
+                    doStringCondition = false;
+
                 string[] arrString = input.Split(new[] { conditionString.Symbol }, StringSplitOptions.RemoveEmptyEntries);
 
                 // Hacky case to skip over string if both sides are computable
