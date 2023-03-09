@@ -95,6 +95,7 @@
     <Compile Include="Actions\Samples\Interfaces\ISample.cs" />
     <Compile Include="Actions\Samples\Interfaces\ISampleProvider.cs" />
     <Compile Include="Actions\Samples\Providers\IfSamples.cs" />
+    <Compile Include="Actions\Samples\Providers\TeslaSamples.cs" />
     <Compile Include="Actions\Samples\Sample.cs" />
     <Compile Include="Actions\SetAHPAction.cs" />
     <Compile Include="Actions\SetMaxHPAction.cs" />
