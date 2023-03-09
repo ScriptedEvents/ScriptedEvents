@@ -246,6 +246,16 @@
                     sb.AppendLine("=== CONDITION VARIABLE ===");
                     sb.AppendLine($"Name: {variable.Name}");
                     sb.AppendLine($"Description: {variable.Description}");
+
+                    if (variable is IArgumentVariable argSupport1)
+                    {
+                        sb.AppendLine($"Usage: {variable.Name.Substring(0, variable.Name.Length - 1)}:{string.Join(":", argSupport1.ExpectedArguments.Select(arg => arg.ArgumentName.ToUpper()))}}}");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"Usage: {variable.Name}");
+                    }
+
                     sb.Append("Variable Type: ");
 
                     switch (variable)
@@ -294,6 +304,16 @@
                     sb.AppendLine($"=== PLAYER VARIABLE ===");
                     sb.AppendLine($"Name: {playerVariable.Name}");
                     sb.AppendLine($"Description: {playerVariable.Description}");
+
+                    if (variable is IArgumentVariable argSupport1)
+                    {
+                        sb.AppendLine($"Usage: {playerVariable.Name.Substring(0, playerVariable.Name.Length - 1)}:{string.Join(":", argSupport1.ExpectedArguments.Select(arg => arg.ArgumentName.ToUpper()))}}}");
+                    }
+                    else
+                    {
+                        sb.AppendLine($"Usage: {playerVariable.Name}");
+                    }
+
                     sb.AppendLine($"Current Value: {(playerVariable.Players.Count() == 0 ? "[None]" : string.Join(", ", playerVariable.Players.Select(ply => ply.Nickname)))}");
 
                     if (variable is IArgumentVariable argSupport)

@@ -30,7 +30,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to kill.", true),
-            new Argument("damageType", typeof(DamageType), "The DeathType to apply. Default: Unknown", false),
+            new Argument("damageType", typeof(DamageType), "The DamageType to apply, 'VAPORIZE' to vaporize the body, or a custom death message. Default: Unknown", false),
         };
 
         /// <inheritdoc/>
@@ -46,7 +46,7 @@
                 bool useDeathType = true;
                 string customDeath = null;
 
-                if (!Enum.TryParse(Arguments[2], true, out DamageType damageType))
+                if (!Enum.TryParse(Arguments[1], true, out DamageType damageType))
                 {
                     useDeathType = false;
                     customDeath = string.Join(" ", Arguments.Skip(1));
@@ -54,7 +54,9 @@
 
                 foreach (Player player in plys)
                 {
-                    if (useDeathType)
+                    if (customDeath is "VAPORIZE")
+                        player.Vaporize();
+                    else if (useDeathType)
                         player.Kill(damageType);
                     else
                         player.Kill(string.IsNullOrWhiteSpace(customDeath) ? "Unknown" : customDeath);

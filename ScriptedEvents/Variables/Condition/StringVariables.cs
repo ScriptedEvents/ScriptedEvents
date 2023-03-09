@@ -26,6 +26,7 @@
             new LastRespawnTeam(),
             new LastUnitName(),
             new Show(),
+            new DoorState(),
         };
     }
 
