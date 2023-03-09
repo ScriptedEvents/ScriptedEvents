@@ -1,7 +1,7 @@
 ﻿namespace ScriptedEvents.Actions.Samples.Interfaces
 {
-    public interface ISample
+    public interface ISampleAction
     {
-        public Sample[] Samples { get; }
+        public ISampleProvider Samples { get; }
     }
 }

@@ -3,13 +3,13 @@
     using System;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
-    using ScriptedEvents.Actions.Samples;
     using ScriptedEvents.Actions.Samples.Interfaces;
+    using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
 
-    public class CassieAction : IScriptAction, IHelpInfo, ISampleProvider
+    public class CassieAction : IScriptAction, IHelpInfo, ISampleAction
     {
         /// <inheritdoc/>
         public string Name => "CASSIE";
@@ -33,7 +33,7 @@
         };
 
         /// <inheritdoc/>
-        public ISample Samples { get; } = new CassieSamples();
+        public ISampleProvider Samples { get; } = new CassieSamples();
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)

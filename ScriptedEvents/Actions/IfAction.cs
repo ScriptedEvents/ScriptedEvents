@@ -2,11 +2,13 @@
 {
     using System;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Actions.Samples.Interfaces;
+    using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
 
-    public class IfAction : IScriptAction, ILogicAction, IHelpInfo
+    public class IfAction : IScriptAction, ILogicAction, IHelpInfo, ISampleAction
     {
         /// <inheritdoc/>
         public string Name => "IF";
@@ -28,6 +30,9 @@
         {
             new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
+
+        /// <inheritdoc/>
+        public ISampleProvider Samples { get; } = new IfSamples();
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)

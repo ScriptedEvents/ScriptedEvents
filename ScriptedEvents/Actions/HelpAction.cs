@@ -207,9 +207,9 @@
                     sb.AppendLine($"  {arg.Description}");
                 }
 
-                if (action is ISampleProvider sampleProvider)
+                if (action is ISampleAction sampleAction)
                 {
-                    Sample[] samples = sampleProvider.Samples.Samples;
+                    Sample[] samples = sampleAction.Samples.Samples;
                     if (samples.Length > 0)
                     {
                         sb.AppendLine();

@@ -7,6 +7,8 @@
     using MEC;
     using PlayerRoles;
     using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.Actions.Samples.Interfaces;
+    using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
@@ -14,7 +16,7 @@
     using UnityEngine;
     using Tesla = Exiled.API.Features.TeslaGate;
 
-    public class TeslaAction : IScriptAction, IHelpInfo
+    public class TeslaAction : IScriptAction, IHelpInfo, ISampleAction
     {
         /// <inheritdoc/>
         public string Name => "TESLA";
@@ -38,6 +40,8 @@
             new Argument("target", typeof(object), "The targets. Different type based on the mode.\nPLAYERS: A list of players.\nROLETYPE: A valid RoleType (eg. ClassD, Scp173, etc)\nDISABLE & ENABLE: None", true),
             new Argument("duration", typeof(float), "The time before reversing the affect.", false),
         };
+
+        public ISampleProvider Samples { get; } = new TeslaSamples();
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
