@@ -52,14 +52,14 @@
                 }
                 else
                 {
-                    if (Enum.TryParse(Arguments[0], out RoleTypeId rt))
+                    if (Enum.TryParse(Arguments[0], true, out RoleTypeId rt))
                     {
                         if (MainPlugin.Handlers.Kills.TryGetValue(rt, out int amt))
                             return amt;
                         else
                             return 0;
                     }
-                    else if (Enum.TryParse(Arguments[0], out Team team))
+                    else if (Enum.TryParse(Arguments[0], true, out Team team))
                     {
                         int total = 0;
                         foreach (var kills in MainPlugin.Handlers.Kills)
