@@ -40,7 +40,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             if (!int.TryParse(Arguments[1], out int duration))
@@ -49,7 +49,7 @@
             string text = null;
 
             if (Arguments.Length > 2)
-                text = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)));
+                text = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
             foreach (Player ply in players)
                 CountdownHelper.AddCountdown(ply, text, TimeSpan.FromSeconds(duration));

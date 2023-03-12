@@ -49,7 +49,7 @@
 
             if (Arguments.Length > 2)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)));
+                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
                 if (ConditionHelper.TryMath(formula, out MathResult result))
                 {
@@ -68,7 +68,7 @@
 
             Player[] plys;
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             foreach (Player player in plys)

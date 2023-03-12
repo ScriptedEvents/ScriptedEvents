@@ -36,7 +36,7 @@
         };
 
         /// <inheritdoc/>
-        public float? Execute(Script scr, out ActionResponse message)
+        public float? Execute(Script script, out ActionResponse message)
         {
             if (Arguments.Length < 1)
             {
@@ -47,14 +47,14 @@
             string coroutineKey = $"WAITUNTIL_DEBUG_COROUTINE_{DateTime.UtcNow.Ticks}";
             Coroutines.Add(coroutineKey);
             message = new(true);
-            return Timing.WaitUntilDone(InternalWaitUntil(scr, string.Join(string.Empty, Arguments)), coroutineKey);
+            return Timing.WaitUntilDone(InternalWaitUntil(script, string.Join(string.Empty, Arguments)), coroutineKey);
         }
 
         private IEnumerator<float> InternalWaitUntil(Script script, string input)
         {
             while (true)
             {
-                ConditionResponse response = ConditionHelper.Evaluate(input);
+                ConditionResponse response = ConditionHelper.Evaluate(input, script);
                 Log.Info($"CONDITION: {ConditionVariables.ReplaceVariables(input)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}");
                 if (response.Success)
                 {

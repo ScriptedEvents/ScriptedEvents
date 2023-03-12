@@ -42,7 +42,7 @@
 
             Player[] plys;
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             foreach (Player player in plys)

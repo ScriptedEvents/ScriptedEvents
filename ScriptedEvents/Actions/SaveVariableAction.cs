@@ -33,14 +33,14 @@
         };
 
         /// <inheritdoc/>
-        public ActionResponse Execute(Script scr)
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             string varName = Arguments[0];
             string input = string.Join(" ", Arguments.Skip(1));
 
-            input = ConditionVariables.ReplaceVariables(input);
+            input = ConditionVariables.ReplaceVariables(input, script);
 
             try
             {

@@ -40,7 +40,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             if (!Enum.TryParse(Arguments[1], true, out DoorType dt))

@@ -40,7 +40,7 @@
         };
 
         /// <inheritdoc/>
-        public ActionResponse Execute(Script scr)
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
@@ -57,7 +57,7 @@
 
             if (Arguments.Length > 4)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(4)));
+                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(4)), script);
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
@@ -70,7 +70,7 @@
                 }
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys, script))
                 return new(false, "No players matching the criteria were found.");
 
             foreach (Player player in plys)

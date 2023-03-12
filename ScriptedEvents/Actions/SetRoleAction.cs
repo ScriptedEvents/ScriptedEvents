@@ -38,7 +38,7 @@
         };
 
         /// <inheritdoc/>
-        public ActionResponse Execute(Script scr)
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
@@ -49,7 +49,7 @@
 
             if (Arguments.Length > 2)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)));
+                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
@@ -64,8 +64,8 @@
                 max = Mathf.RoundToInt(result.Result);
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys))
-                return new(false, "No players matching the criteria were found.");
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys, script))
+                return new(MessageType.NoPlayersFound, this, "players");
 
             foreach (Player player in plys)
                 player.Role.Set(roleType);

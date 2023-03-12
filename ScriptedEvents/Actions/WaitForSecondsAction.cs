@@ -34,7 +34,7 @@
         };
 
         /// <inheritdoc/>
-        public float? Execute(Script scr, out ActionResponse message)
+        public float? Execute(Script script, out ActionResponse message)
         {
             if (Arguments.Length < 1)
             {
@@ -42,7 +42,7 @@
                 return null;
             }
 
-            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));
+            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments), script);
 
             if (!ConditionHelper.TryMath(formula, out MathResult result))
             {

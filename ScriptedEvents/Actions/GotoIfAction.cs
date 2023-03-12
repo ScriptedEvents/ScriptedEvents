@@ -43,7 +43,7 @@
             if (!int.TryParse(Arguments[1], out int falseLine) && !script.Labels.TryGetValue(Arguments[1], out falseLine))
                 return new(false, "falseLine is not a valid integer.");
 
-            ConditionResponse outcome = ConditionHelper.Evaluate(string.Join(string.Empty, Arguments.Skip(2)));
+            ConditionResponse outcome = ConditionHelper.Evaluate(string.Join(string.Empty, Arguments.Skip(2)), script);
             if (!outcome.Success)
                 return new(false, $"IF execution error: {outcome.Message}", ActionFlags.FatalError);
 

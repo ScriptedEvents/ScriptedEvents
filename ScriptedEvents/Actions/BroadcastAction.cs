@@ -43,7 +43,7 @@
                 return new(MessageType.NotANumber, this, "duration", Arguments[0]);
             }
 
-            string message = string.Join(" ", Arguments.Skip(1).Select(arg => ConditionVariables.ReplaceVariables(arg)));
+            string message = string.Join(" ", Arguments.Skip(1).Select(arg => ConditionVariables.ReplaceVariables(arg, script)));
             Map.Broadcast((ushort)duration, message);
             return new(true);
         }
