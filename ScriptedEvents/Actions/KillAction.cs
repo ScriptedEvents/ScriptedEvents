@@ -34,7 +34,7 @@
         };
 
         /// <inheritdoc/>
-        public ActionResponse Execute(Script scr)
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
