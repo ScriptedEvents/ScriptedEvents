@@ -67,7 +67,7 @@
             DefinedVariables.Clear();
         }
 
-        public static IPlayerVariable GetVariable(string name)
+        public static IPlayerVariable GetVariable(string name, Script source = null)
         {
             string variableName;
             List<string> argList = ListPool<string>.Pool.Get();
@@ -105,6 +105,9 @@
             if (DefinedVariables.TryGetValue(name, out CustomPlayerVariable customValue))
                 result = customValue;
 
+            if (source is not null && source.UniquePlayerVariables.TryGetValue(name, out CustomPlayerVariable customValue2))
+                result = customValue2;
+
             if (result is not null && result is IArgumentVariable argSupport)
             {
                 argSupport.Arguments = argList.ToArray();
@@ -114,7 +117,7 @@
             return result;
         }
 
-        public static bool TryGetVariable(string name, out IPlayerVariable variable)
+        public static bool TryGetVariable(string name, out IPlayerVariable variable, Script source = null)
         {
             variable = GetVariable(name);
             return variable != null;

@@ -101,7 +101,7 @@
         /// <returns>The modified string.</returns>
         public static string Replace(this string input, string oldValue, object newValue) => input.Replace(oldValue, newValue.ToString());
 
-        public static Tuple<IConditionVariable, bool> GetVariable(string name)
+        public static Tuple<IConditionVariable, bool> GetVariable(string name, Script source = null)
         {
             string variableName;
             List<string> argList = ListPool<string>.Pool.Get();
@@ -141,6 +141,9 @@
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
                 result = new(customValue, false);
 
+            if (source is not null && source.UniqueVariables.TryGetValue(name, out CustomVariable customValue2))
+                result = new(customValue2, false);
+
             if (result.Item1 is not null && result.Item1 is IArgumentVariable argSupport)
             {
                 argSupport.Arguments = argList.ToArray();
@@ -150,9 +153,9 @@
             return result;
         }
 
-        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed)
+        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source = null)
         {
-            Tuple<IConditionVariable, bool> res = GetVariable(name);
+            Tuple<IConditionVariable, bool> res = GetVariable(name, source);
 
             variable = res.Item1;
             reversed = res.Item2;
