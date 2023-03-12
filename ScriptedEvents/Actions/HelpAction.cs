@@ -240,7 +240,7 @@
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
 
-                if (ConditionVariables.TryGetVariable(Arguments[0].ToUpper(), out IConditionVariable variable, out bool reversed))
+                if (ConditionVariables.TryGetVariable(Arguments[0].ToUpper(), out IConditionVariable variable, out bool reversed, script))
                 {
                     valid = true;
                     sb.AppendLine("=== CONDITION VARIABLE ===");
@@ -298,7 +298,7 @@
                     sb.AppendLine();
                 }
 
-                if (PlayerVariables.TryGetVariable(Arguments[0], out IPlayerVariable playerVariable))
+                if (PlayerVariables.TryGetVariable(Arguments[0], out IPlayerVariable playerVariable, script))
                 {
                     valid = true;
                     sb.AppendLine($"=== PLAYER VARIABLE ===");

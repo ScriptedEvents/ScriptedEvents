@@ -119,23 +119,23 @@
 
         public static bool TryGetVariable(string name, out IPlayerVariable variable, Script source = null)
         {
-            variable = GetVariable(name);
+            variable = GetVariable(name, source);
             return variable != null;
         }
 
-        public static IEnumerable<Player> Get(string input)
+        public static IEnumerable<Player> Get(string input, Script source = null)
         {
             input = input.RemoveWhitespace();
 
-            if (TryGetVariable(input, out IPlayerVariable variable))
+            if (TryGetVariable(input, out IPlayerVariable variable, source))
                 return variable.Players;
 
             return null;
         }
 
-        public static bool TryGet(string input, out IEnumerable<Player> players)
+        public static bool TryGet(string input, out IEnumerable<Player> players, Script source = null)
         {
-            players = Get(input);
+            players = Get(input, source);
             return players != null;
         }
     }

@@ -167,14 +167,15 @@
         /// Replaces all the occurrences of variables in a string.
         /// </summary>
         /// <param name="input">The string to perform the replacements on.</param>
+        /// <param name="source">The script that is currently running to replace variables. Used only for per-script variables.</param>
         /// <returns>The modified string.</returns>
-        public static string ReplaceVariables(string input)
+        public static string ReplaceVariables(string input, Script source = null)
         {
             string[] variables = ConditionHelper.IsolateVariables(input);
 
             foreach (var variable in variables)
             {
-                if (TryGetVariable(variable, out IConditionVariable condition, out bool reversed))
+                if (TryGetVariable(variable, out IConditionVariable condition, out bool reversed, source))
                 {
                     switch (condition)
                     {
