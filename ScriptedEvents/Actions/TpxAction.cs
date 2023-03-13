@@ -2,6 +2,7 @@
 {
     using System;
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
@@ -55,7 +56,7 @@
 
             foreach (Player ply in players)
             {
-                if (ply.IsDead || !ply.IsConnected) continue;
+                if (ply.Role is not FpcRole || !ply.IsConnected) continue;
                 ply.Teleport(vz);
             }
 
