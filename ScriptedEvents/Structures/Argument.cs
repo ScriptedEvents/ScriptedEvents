@@ -1,9 +1,6 @@
 ﻿namespace ScriptedEvents.Structures
 {
     using System;
-    using System.Collections.Generic;
-    using Exiled.API.Features;
-    using PlayerRoles;
     using ScriptedEvents.API.Helpers;
 
     /// <summary>

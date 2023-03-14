@@ -10,7 +10,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using UnityEngine;
 
     public class TpRoomAction : IScriptAction, IHelpInfo
     {

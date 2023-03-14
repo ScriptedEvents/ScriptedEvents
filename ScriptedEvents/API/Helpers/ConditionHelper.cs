@@ -6,7 +6,6 @@
     using System.Data;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Conditions.Floats;
     using ScriptedEvents.Conditions.Interfaces;

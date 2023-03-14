@@ -2,15 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Exiled.API.Features;
-    using Exiled.API.Features.Items;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
-    using UnityEngine;
 
     public class ClearInventoryAction : IScriptAction, IHelpInfo
     {

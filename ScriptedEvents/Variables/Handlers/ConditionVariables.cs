@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using PlayerRoles;
@@ -13,7 +12,6 @@
     using ScriptedEvents.Variables.Condition;
     using ScriptedEvents.Variables.Condition.Roles;
     using ScriptedEvents.Variables.Interfaces;
-    using Random = UnityEngine.Random;
 
     /// <summary>
     /// A class used to store and retrieve all non-player variables.

@@ -20,7 +20,6 @@ namespace ScriptedEvents.API.Helpers
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
-    using Random = UnityEngine.Random;
 
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.

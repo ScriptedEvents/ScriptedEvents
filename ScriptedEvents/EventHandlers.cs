@@ -6,7 +6,6 @@
     using System.IO;
     using System.Linq;
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs.Cassie;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;

@@ -2,7 +2,6 @@
 {
     using System;
 #pragma warning disable SA1402 // File may only contain a single type
-    using System.Collections.Generic;
     using System.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Features;

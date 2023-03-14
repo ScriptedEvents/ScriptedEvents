@@ -12,8 +12,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
-    using UnityEngine;
     using Tesla = Exiled.API.Features.TeslaGate;
 
     public class TeslaAction : IScriptAction, IHelpInfo, ISampleAction

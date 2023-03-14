@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using Discord;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;

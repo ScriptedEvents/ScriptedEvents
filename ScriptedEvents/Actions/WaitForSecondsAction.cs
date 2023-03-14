@@ -1,14 +1,12 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Linq;
     using MEC;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
-    using UnityEngine;
 
     public class WaitForSecondsAction : ITimingAction, IHelpInfo
     {

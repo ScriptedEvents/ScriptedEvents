@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using PlayerRoles;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Variables.Interfaces;
 

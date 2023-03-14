@@ -8,14 +8,12 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using MEC;
-    using PlayerRoles.PlayableScps.HUDs;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.Actions.Samples;
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Condition;
     using ScriptedEvents.Variables.Handlers;
     using ScriptedEvents.Variables.Interfaces;
 
