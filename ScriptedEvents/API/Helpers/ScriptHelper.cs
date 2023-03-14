@@ -432,6 +432,8 @@ namespace ScriptedEvents.API.Helpers
         {
             MainPlugin.Info($"Running script {scr.ScriptName}.");
 
+            yield return Timing.WaitForOneFrame;
+
             scr.IsRunning = true;
             scr.RunDate = DateTime.UtcNow;
 
