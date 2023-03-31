@@ -1,15 +1,13 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
-    using UnityEngine;
 
     public class TpDoorAction : IScriptAction, IHelpInfo
     {
@@ -40,7 +38,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             if (!Enum.TryParse(Arguments[1], true, out DoorType dt))
@@ -48,7 +46,7 @@
 
             foreach (Player ply in players)
             {
-                if (ply.IsDead || !ply.IsConnected) continue;
+                if (ply.Role is not FpcRole || !ply.IsConnected) continue;
                 ply.Teleport(dt);
             }
 

@@ -2,6 +2,7 @@
 {
     using System;
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
@@ -39,7 +40,7 @@
         {
             if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             if (!float.TryParse(Arguments[1], out float x))
@@ -55,7 +56,7 @@
 
             foreach (Player ply in players)
             {
-                if (ply.IsDead || !ply.IsConnected) continue;
+                if (ply.Role is not FpcRole || !ply.IsConnected) continue;
                 ply.Teleport(vz);
             }
 

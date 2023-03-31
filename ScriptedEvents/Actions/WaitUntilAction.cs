@@ -53,7 +53,7 @@
         {
             while (true)
             {
-                ConditionResponse response = ConditionHelper.Evaluate(input);
+                ConditionResponse response = ConditionHelper.Evaluate(input, script);
                 if (response.Success)
                 {
                     if (response.Passed)

@@ -1,6 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Condition.PlayerCount
 {
-#pragma warning disable SA1402 // File may only contain a single 
+#pragma warning disable SA1402 // File may only contain a single type.
     using System.Linq;
 
     using Exiled.API.Features;

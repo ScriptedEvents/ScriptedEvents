@@ -5,7 +5,6 @@
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
 
@@ -43,7 +42,7 @@
                 return new(MessageType.NotANumber, this, "duration", Arguments[0]);
             }
 
-            string message = string.Join(" ", Arguments.Skip(1).Select(arg => ConditionVariables.ReplaceVariables(arg)));
+            string message = string.Join(" ", Arguments.Skip(1).Select(arg => ConditionVariables.ReplaceVariables(arg, script)));
             Map.Broadcast((ushort)duration, message);
             return new(true);
         }

@@ -31,7 +31,7 @@
         };
 
         /// <inheritdoc/>
-        public ActionResponse Execute(Script scr)
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
@@ -44,12 +44,12 @@
 
             for (int i = 0; i < cassieArgs.Length; i++)
             {
-                cassieArgs[i] = ConditionVariables.ReplaceVariables(cassieArgs[i]);
+                cassieArgs[i] = ConditionVariables.ReplaceVariables(cassieArgs[i], script);
             }
 
             if (cassieArgs.Length == 1)
             {
-                text = ConditionVariables.ReplaceVariables(text);
+                text = ConditionVariables.ReplaceVariables(text, script);
                 Cassie.MessageTranslated(text, text, isNoisy: false);
             }
             else

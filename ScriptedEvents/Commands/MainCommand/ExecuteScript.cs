@@ -1,9 +1,12 @@
 ﻿namespace ScriptedEvents.Commands.MainCommand
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using CommandSystem;
+    using Exiled.API.Features;
     using Exiled.Permissions.Extensions;
+    using RemoteAdmin;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Helpers;
 
@@ -51,6 +54,11 @@
                 {
                     response = $"Missing permission: {scr.ExecutePermission}";
                     return false;
+                }
+
+                if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
+                {
+                    scr.UniquePlayerVariables.Add("{SENDER}", new("{SENDER}", "The player who executed the script.", new List<Player>() { plr }));
                 }
 
                 ScriptHelper.RunScript(scr);

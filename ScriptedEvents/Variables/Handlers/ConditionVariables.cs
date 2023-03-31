@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using PlayerRoles;
@@ -13,7 +12,6 @@
     using ScriptedEvents.Variables.Condition;
     using ScriptedEvents.Variables.Condition.Roles;
     using ScriptedEvents.Variables.Interfaces;
-    using Random = UnityEngine.Random;
 
     /// <summary>
     /// A class used to store and retrieve all non-player variables.
@@ -101,7 +99,7 @@
         /// <returns>The modified string.</returns>
         public static string Replace(this string input, string oldValue, object newValue) => input.Replace(oldValue, newValue.ToString());
 
-        public static Tuple<IConditionVariable, bool> GetVariable(string name)
+        public static Tuple<IConditionVariable, bool> GetVariable(string name, Script source = null)
         {
             string variableName;
             List<string> argList = ListPool<string>.Pool.Get();
@@ -141,6 +139,9 @@
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
                 result = new(customValue, false);
 
+            if (source is not null && source.UniqueVariables.TryGetValue(name, out CustomVariable customValue2))
+                result = new(customValue2, false);
+
             if (result.Item1 is not null && result.Item1 is IArgumentVariable argSupport)
             {
                 argSupport.Arguments = argList.ToArray();
@@ -150,9 +151,9 @@
             return result;
         }
 
-        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed)
+        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source = null)
         {
-            Tuple<IConditionVariable, bool> res = GetVariable(name);
+            Tuple<IConditionVariable, bool> res = GetVariable(name, source);
 
             variable = res.Item1;
             reversed = res.Item2;
@@ -164,14 +165,15 @@
         /// Replaces all the occurrences of variables in a string.
         /// </summary>
         /// <param name="input">The string to perform the replacements on.</param>
+        /// <param name="source">The script that is currently running to replace variables. Used only for per-script variables.</param>
         /// <returns>The modified string.</returns>
-        public static string ReplaceVariables(string input)
+        public static string ReplaceVariables(string input, Script source = null)
         {
             string[] variables = ConditionHelper.IsolateVariables(input);
 
             foreach (var variable in variables)
             {
-                if (TryGetVariable(variable, out IConditionVariable condition, out bool reversed))
+                if (TryGetVariable(variable, out IConditionVariable condition, out bool reversed, source))
                 {
                     switch (condition)
                     {

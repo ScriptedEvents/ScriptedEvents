@@ -92,7 +92,7 @@
     <Compile Include="Actions\LightColorAction.cs" />
     <Compile Include="Actions\ResetLightColorAction.cs" />
     <Compile Include="Actions\Samples\Providers\CassieSamples.cs" />
-    <Compile Include="Actions\Samples\Interfaces\ISample.cs" />
+    <Compile Include="Actions\Samples\Interfaces\ISampleAction.cs" />
     <Compile Include="Actions\Samples\Interfaces\ISampleProvider.cs" />
     <Compile Include="Actions\Samples\Providers\IfSamples.cs" />
     <Compile Include="Actions\Samples\Providers\TeslaSamples.cs" />

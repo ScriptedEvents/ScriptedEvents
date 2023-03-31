@@ -1,14 +1,12 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Linq;
     using MEC;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
-    using UnityEngine;
 
     public class WaitForSecondsAction : ITimingAction, IHelpInfo
     {
@@ -34,7 +32,7 @@
         };
 
         /// <inheritdoc/>
-        public float? Execute(Script scr, out ActionResponse message)
+        public float? Execute(Script script, out ActionResponse message)
         {
             if (Arguments.Length < 1)
             {
@@ -42,7 +40,7 @@
                 return null;
             }
 
-            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));
+            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments), script);
 
             if (!ConditionHelper.TryMath(formula, out MathResult result))
             {

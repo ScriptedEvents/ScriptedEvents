@@ -9,6 +9,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Variables.Condition;
 
     /// <summary>
     /// Represents a script.
@@ -23,6 +24,8 @@
         {
             Labels = DictionaryPool<string, int>.Pool.Get();
             Flags = ListPool<string>.Pool.Get();
+            UniqueVariables = DictionaryPool<string, CustomVariable>.Pool.Get();
+            UniquePlayerVariables = DictionaryPool<string, CustomPlayerVariable>.Pool.Get();
             UniqueId = Guid.NewGuid();
 
             Log.Debug($"Created new script object | ID: {UniqueId}");
@@ -136,6 +139,10 @@
         /// </summary>
         public ICommandSender Sender { get; internal set; }
 
+        public Dictionary<string, CustomVariable> UniqueVariables { get; set; }
+
+        public Dictionary<string, CustomPlayerVariable> UniquePlayerVariables { get; set; }
+
         /// <inheritdoc/>
         public void Dispose()
         {
@@ -149,6 +156,8 @@
 
             DictionaryPool<string, int>.Pool.Return(Labels);
             ListPool<string>.Pool.Return(Flags);
+            DictionaryPool<string, CustomVariable>.Pool.Return(UniqueVariables);
+            DictionaryPool<string, CustomPlayerVariable>.Pool.Return(UniquePlayerVariables);
             GC.SuppressFinalize(this);
         }
 

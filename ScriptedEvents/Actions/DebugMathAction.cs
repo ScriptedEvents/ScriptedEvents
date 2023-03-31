@@ -24,7 +24,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments));
+            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments), script);
             if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
                 return new(MessageType.NotANumberOrCondition, this, "condition", formula, result);

@@ -1,7 +1,6 @@
 ﻿namespace ScriptedEvents.Commands.MainCommand
 {
     using System;
-    using System.IO;
     using System.Linq;
     using CommandSystem;
     using Exiled.Permissions.Extensions;

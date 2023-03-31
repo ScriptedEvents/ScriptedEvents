@@ -4,6 +4,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Handlers;
 
     public class CommandAction : IScriptAction, IHelpInfo
     {
@@ -33,7 +34,7 @@
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            string text = string.Join(" ", Arguments);
+            string text = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments), script);
             GameCore.Console.singleton.TypeCommand(text);
             return new(true, string.Empty);
         }

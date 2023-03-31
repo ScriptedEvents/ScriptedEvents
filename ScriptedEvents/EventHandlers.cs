@@ -6,7 +6,6 @@
     using System.IO;
     using System.Linq;
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs.Cassie;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -76,6 +75,11 @@
         /// </summary>
         public Dictionary<RoleTypeId, int> SpawnRules { get; } = new();
 
+        /// <summary>
+        /// Gets a dictionary of round kills.
+        /// </summary>
+        public Dictionary<RoleTypeId, int> Kills { get; } = new();
+
         public void OnRestarting()
         {
             RespawnWaves = 0;
@@ -87,6 +91,7 @@
             ConditionVariables.ClearVariables();
             PlayerVariables.ClearVariables();
             DisabledKeys.Clear();
+            Kills.Clear();
 
             if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
             {
@@ -233,6 +238,14 @@
         {
             if (DisabledKeys.Contains("DYING"))
                 ev.IsAllowed = false;
+
+            if (ev.Attacker is not null)
+            {
+                if (Kills.ContainsKey(ev.Attacker.Role.Type))
+                    Kills[ev.Attacker.Role.Type]++;
+                else
+                    Kills.Add(ev.Attacker.Role.Type, 1);
+            }
         }
 
         public void OnHurting(HurtingEventArgs ev)

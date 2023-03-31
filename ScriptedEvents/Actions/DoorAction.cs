@@ -11,7 +11,6 @@
     using ScriptedEvents.API.Helpers;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
-    using UnityEngine;
 
     public class DoorAction : IScriptAction, IHelpInfo
     {
@@ -49,7 +48,7 @@
             float duration = 0;
             if (Arguments.Length > 2)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)));
+                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
@@ -95,7 +94,7 @@
             foreach (Door door in doors)
             {
                 if (duration != 0 && revertAction != null)
-                        revertAction(door, duration);
+                    revertAction(door, duration);
 
                 action(door);
             }

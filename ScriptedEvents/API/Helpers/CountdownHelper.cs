@@ -5,7 +5,6 @@
     using Exiled.API.Features;
     using MEC;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
     using UnityEngine;
 
     public static class CountdownHelper

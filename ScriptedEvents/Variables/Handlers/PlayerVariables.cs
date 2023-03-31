@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.CustomRoles.API.Features;
@@ -68,7 +67,7 @@
             DefinedVariables.Clear();
         }
 
-        public static IPlayerVariable GetVariable(string name)
+        public static IPlayerVariable GetVariable(string name, Script source = null)
         {
             string variableName;
             List<string> argList = ListPool<string>.Pool.Get();
@@ -109,6 +108,9 @@
             if (CustomRoleTypeVariable.TryGetValue(name, out CustomRoleTypeVariable customRole))
                 result = customRole;
 
+            if (source is not null && source.UniquePlayerVariables.TryGetValue(name, out CustomPlayerVariable customValue2))
+                result = customValue2;
+
             if (result is not null && result is IArgumentVariable argSupport)
             {
                 argSupport.Arguments = argList.ToArray();
@@ -118,25 +120,25 @@
             return result;
         }
 
-        public static bool TryGetVariable(string name, out IPlayerVariable variable)
+        public static bool TryGetVariable(string name, out IPlayerVariable variable, Script source = null)
         {
-            variable = GetVariable(name);
+            variable = GetVariable(name, source);
             return variable != null;
         }
 
-        public static IEnumerable<Player> Get(string input)
+        public static IEnumerable<Player> Get(string input, Script source = null)
         {
             input = input.RemoveWhitespace();
 
-            if (TryGetVariable(input, out IPlayerVariable variable))
+            if (TryGetVariable(input, out IPlayerVariable variable, source))
                 return variable.Players;
 
             return null;
         }
 
-        public static bool TryGet(string input, out IEnumerable<Player> players)
+        public static bool TryGet(string input, out IEnumerable<Player> players, Script source = null)
         {
-            players = Get(input);
+            players = Get(input, source);
             return players != null;
         }
     }

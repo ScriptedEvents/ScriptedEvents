@@ -40,7 +40,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players, script))
             {
                 return new(MessageType.NoPlayersFound, this, "players");
             }
@@ -50,7 +50,7 @@
                 return new(MessageType.NotANumber, this, "duration", Arguments[0]);
             }
 
-            string message = string.Join(" ", Arguments.Skip(2).Select(arg => ConditionVariables.ReplaceVariables(arg)));
+            string message = string.Join(" ", Arguments.Skip(2).Select(arg => ConditionVariables.ReplaceVariables(arg, script)));
             foreach (Player player in players)
             {
                 player.Broadcast((ushort)duration, message);

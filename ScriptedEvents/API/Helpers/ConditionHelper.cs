@@ -6,7 +6,6 @@
     using System.Data;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Conditions.Floats;
     using ScriptedEvents.Conditions.Interfaces;
@@ -130,9 +129,9 @@
         /// </summary>
         /// <param name="input">The condition input.</param>
         /// <returns>The result of the condition.</returns>
-        public static ConditionResponse Evaluate(string input)
+        public static ConditionResponse Evaluate(string input, Script source = null)
         {
-            input = ConditionVariables.ReplaceVariables(input);
+            input = ConditionVariables.ReplaceVariables(input, source);
             string newWholeString = input;
 
             MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");

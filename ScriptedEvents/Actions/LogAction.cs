@@ -34,7 +34,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Info(string.Join(" ", Arguments.Select(r => ConditionVariables.ReplaceVariables(r))));
+            Log.Info(string.Join(" ", Arguments.Select(r => ConditionVariables.ReplaceVariables(r, script))));
             return new(true);
         }
     }

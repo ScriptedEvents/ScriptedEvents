@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using Discord;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
@@ -36,11 +35,11 @@
         };
 
         /// <inheritdoc/>
-        public ActionResponse Execute(Script scr)
+        public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             if (!float.TryParse(Arguments[1], out float damage))

@@ -1,8 +1,14 @@
 ﻿namespace ScriptedEvents.Variables.Condition.KillsAndDeaths
 {
 #pragma warning disable SA1402 // File may only contain a single type
+    using System;
+
     using Exiled.API.Features;
+
+    using PlayerRoles;
+
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
     public class KillsAndDeathsVariables : IVariableGroup
@@ -21,16 +27,57 @@
         };
     }
 
-    public class Kills : IFloatVariable
+    public class Kills : IFloatVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{KILLS}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of kills.";
+        public string Description => "The total amount of kills, the amount of kills per-role, or -1 if an invalid role type is provided.";
 
         /// <inheritdoc/>
-        public float Value => Round.Kills;
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("role", typeof(RoleTypeId), "The role or team to filter by. Optional.", false),
+        };
+
+        /// <inheritdoc/>
+        public float Value
+        {
+            get
+            {
+                if (Arguments.Length < 1)
+                {
+                    return MainPlugin.Handlers.Kills.Count;
+                }
+                else
+                {
+                    if (Enum.TryParse(Arguments[0], true, out RoleTypeId rt))
+                    {
+                        if (MainPlugin.Handlers.Kills.TryGetValue(rt, out int amt))
+                            return amt;
+                        else
+                            return 0;
+                    }
+                    else if (Enum.TryParse(Arguments[0], true, out Team team))
+                    {
+                        int total = 0;
+                        foreach (var kills in MainPlugin.Handlers.Kills)
+                        {
+                            if (kills.Key.GetTeam() == team)
+                                total += kills.Value;
+                        }
+
+                        return total;
+                    }
+
+                    return -1f;
+                }
+            }
+        }
     }
 
     public class ScpKills : IFloatVariable

@@ -20,7 +20,6 @@ namespace ScriptedEvents.API.Helpers
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
-    using Random = UnityEngine.Random;
 
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
@@ -230,8 +229,9 @@ namespace ScriptedEvents.API.Helpers
         /// <param name="input">The input.</param>
         /// <param name="amount">The maximum amount of players to give back, or <see langword="null"/> for unlimited.</param>
         /// <param name="plys">The list of players.</param>
+        /// <param name="source">The script using the API. Used for per-script variables.</param>
         /// <returns>Whether or not any players were found.</returns>
-        public static bool TryGetPlayers(string input, int? amount, out Player[] plys)
+        public static bool TryGetPlayers(string input, int? amount, out Player[] plys, Script source = null)
         {
             input = input.RemoveWhitespace();
             List<Player> list = ListPool<Player>.Pool.Get();
@@ -246,7 +246,7 @@ namespace ScriptedEvents.API.Helpers
                 string[] variables = ConditionHelper.IsolateVariables(input);
                 foreach (string variable in variables)
                 {
-                    if (PlayerVariables.TryGet(variable, out IEnumerable<Player> playersFromVariable))
+                    if (PlayerVariables.TryGet(variable, out IEnumerable<Player> playersFromVariable, source))
                     {
                         list.AddRange(playersFromVariable);
                     }
@@ -430,6 +430,8 @@ namespace ScriptedEvents.API.Helpers
         private static IEnumerator<float> RunScriptInternal(Script scr)
         {
             MainPlugin.Info($"Running script {scr.ScriptName}.");
+
+            yield return Timing.WaitForOneFrame;
 
             scr.IsRunning = true;
             scr.RunDate = DateTime.UtcNow;

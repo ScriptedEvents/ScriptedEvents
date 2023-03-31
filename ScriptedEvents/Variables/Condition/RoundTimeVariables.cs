@@ -2,6 +2,7 @@
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using Exiled.API.Features;
+    using GameCore;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -18,6 +19,7 @@
         {
             new RoundMinutes(),
             new RoundSeconds(),
+            new LobbyWaitingTime(),
         };
     }
 
@@ -43,5 +45,17 @@
 
         /// <inheritdoc/>
         public float Value => (float)Round.ElapsedTime.TotalSeconds;
+    }
+
+    public class LobbyWaitingTime : IFloatVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LOBBYWAITINGTIME}";
+
+        /// <inheritdoc/>
+        public string Description => "The total ammount of time to wait.";
+
+        /// <inheritdoc/>
+        public float Value => RoundStart.singleton.NetworkTimer;
     }
 }
