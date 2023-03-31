@@ -239,6 +239,9 @@
             if (DisabledKeys.Contains("DYING"))
                 ev.IsAllowed = false;
 
+            if (!ev.IsAllowed)
+                return;
+
             if (ev.Attacker is not null)
             {
                 if (Kills.ContainsKey(ev.Attacker.Role.Type))
