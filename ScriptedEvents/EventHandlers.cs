@@ -236,6 +236,9 @@
         // Disable Stuff
         public void OnDying(DyingEventArgs ev)
         {
+            if (!ev.IsAllowed)
+                return;
+
             if (DisabledKeys.Contains("DYING"))
                 ev.IsAllowed = false;
 
