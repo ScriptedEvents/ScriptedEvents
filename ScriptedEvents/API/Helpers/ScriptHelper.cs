@@ -136,7 +136,7 @@ namespace ScriptedEvents.API.Helpers
 #endif
                 ActionTypes.TryGetValue(keyword, out Type actionType);
 
-                if (actionType is null && alias == null)
+                if (actionType is null && alias is null)
                 {
                     // Check for custom actions
                     if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
@@ -162,7 +162,7 @@ namespace ScriptedEvents.API.Helpers
             string scriptPath = GetFilePath(scriptName);
 
             // Fill out script data
-            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2))
+            if (MainPlugin.Singleton.Config.RequiredPermissions is not null && MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2) == true)
             {
                 script.ReadPermission += $".{perm2}";
                 script.ExecutePermission += $".{perm2}";
@@ -558,7 +558,7 @@ namespace ScriptedEvents.API.Helpers
             MainPlugin.Info($"Finished running script {scr.ScriptName}.");
             scr.IsRunning = false;
 
-            if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
+            if (MainPlugin.Singleton.Config.LoopScripts is not null && MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
             {
                 scr.DebugLog("Re-running looped script.");
                 ReadAndRun(scr.ScriptName, scr.Sender); // so that it re-reads the content of the text file.

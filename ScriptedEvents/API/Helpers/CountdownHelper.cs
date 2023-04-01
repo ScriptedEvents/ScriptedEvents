@@ -13,7 +13,7 @@
 
         public static Dictionary<Player, Countdown> Countdowns { get; } = new();
 
-        public static string BroadcastString => MainPlugin.Singleton.Config.CountdownString;
+        public static string BroadcastString => MainPlugin.Singleton.Config.CountdownString ?? "Countdown";
 
         public static void Start()
         {
