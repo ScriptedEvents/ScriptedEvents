@@ -49,10 +49,12 @@
 
             if (outcome.Passed)
             {
+                script.DebugLog($"GOTOIF result: true. Jumping to line {trueLine}.");
                 script.Jump(trueLine);
             }
             else
             {
+                script.DebugLog($"GOTOIF result: false. Jumping to line {falseLine}.");
                 script.Jump(falseLine);
             }
 
