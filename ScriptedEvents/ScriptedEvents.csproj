@@ -86,6 +86,7 @@
     <Compile Include="Actions\DamageAction.cs" />
     <Compile Include="Actions\EnableAction.cs" />
     <Compile Include="Actions\DisableAction.cs" />
+    <Compile Include="Actions\RadioRangeAction.cs" />
     <Compile Include="Actions\RemoveItemAction.cs" />
     <Compile Include="Actions\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\KillAction.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Actions\Samples\Interfaces\ISampleAction.cs" />
     <Compile Include="Actions\Samples\Interfaces\ISampleProvider.cs" />
     <Compile Include="Actions\Samples\Providers\IfSamples.cs" />
+    <Compile Include="Actions\Samples\Providers\RadioRangeSamples.cs" />
     <Compile Include="Actions\Samples\Providers\TeslaSamples.cs" />
     <Compile Include="Actions\Samples\Sample.cs" />
     <Compile Include="Actions\SetAHPAction.cs" />

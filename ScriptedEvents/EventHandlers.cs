@@ -5,7 +5,9 @@
     using System.Data;
     using System.IO;
     using System.Linq;
+    using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -80,6 +82,11 @@
         /// </summary>
         public Dictionary<RoleTypeId, int> Kills { get; } = new();
 
+        /// <summary>
+        /// Gets a dictionary of players with locked radio settings.
+        /// </summary>
+        public Dictionary<Player, RadioRange> LockedRadios { get; } = new();
+
         public void OnRestarting()
         {
             RespawnWaves = 0;
@@ -92,6 +99,7 @@
             PlayerVariables.ClearVariables();
             DisabledKeys.Clear();
             Kills.Clear();
+            LockedRadios.Clear();
 
             if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
             {
@@ -299,6 +307,22 @@
         public void OnEscaping(EscapingEventArgs ev)
         {
             if (DisabledKeys.Contains("ESCAPING"))
+                ev.IsAllowed = false;
+        }
+
+        public void OnPickingUpItem(PickingUpItemEventArgs ev)
+        {
+            if (!ev.IsAllowed) return;
+
+            if (ev.Pickup is RadioPickup radio && LockedRadios.TryGetValue(ev.Player, out RadioRange range))
+            {
+                radio.Range = range;
+            }
+        }
+
+        public void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev)
+        {
+            if (LockedRadios.ContainsKey(ev.Player))
                 ev.IsAllowed = false;
         }
 
