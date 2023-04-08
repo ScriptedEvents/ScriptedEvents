@@ -136,6 +136,7 @@
                 Log.Warn($"This ScriptedEvents DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
             }
 
+            PlayerHandler.ChangingRole += Handlers.OnChangingRole;
             PlayerHandler.Hurting += Handlers.OnHurting;
             PlayerHandler.Died += Handlers.OnDied;
             PlayerHandler.Dying += Handlers.OnDying;
@@ -238,6 +239,7 @@
             Handlers.OnRestarting();
             base.OnDisabled();
 
+            PlayerHandler.ChangingRole -= Handlers.OnChangingRole;
             PlayerHandler.Hurting -= Handlers.OnHurting;
             PlayerHandler.Died -= Handlers.OnDied;
             PlayerHandler.Dying -= Handlers.OnDying;

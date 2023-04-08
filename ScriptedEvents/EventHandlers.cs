@@ -259,6 +259,16 @@
             }
         }
 
+        public void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            if (!ev.IsAllowed) return;
+
+            if (LockedRadios.ContainsKey(ev.Player))
+            {
+                LockedRadios.Remove(ev.Player);
+            }
+        }
+
         public void OnHurting(HurtingEventArgs ev)
         {
             if (DisabledKeys.Contains("HURTING"))
@@ -310,6 +320,7 @@
                 ev.IsAllowed = false;
         }
 
+        // Radio locks
         public void OnPickingUpItem(PickingUpItemEventArgs ev)
         {
             if (!ev.IsAllowed) return;

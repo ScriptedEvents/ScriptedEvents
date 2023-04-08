@@ -58,7 +58,10 @@
                     foreach (Item item in ply.Items)
                     {
                         if (item is Radio radio)
+                        {
                             radio.Range = range;
+                            radio.Base.SendStatusMessage();
+                        }
                     }
                 }
             }
