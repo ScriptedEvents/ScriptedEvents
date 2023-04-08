@@ -79,7 +79,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(string), "The name of the player variable to show.", true),
-            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, ROLE, TEAM, ROOM, ZONE.", false),
+            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, USERID, PLAYERID, ROLE, TEAM, ROOM, ZONE.", false),
         };
 
         /// <inheritdoc/>
@@ -105,6 +105,8 @@
                         return selector switch
                         {
                             "NAME" => ply.Nickname,
+                            "USERID" => ply.UserId,
+                            "PLAYERID" => ply.Id.ToString(),
                             "ROLE" => ply.Role.Type.ToString(),
                             "TEAM" => ply.Role.Team.ToString(),
                             "ROOM" => ply.CurrentRoom.Type.ToString(),
