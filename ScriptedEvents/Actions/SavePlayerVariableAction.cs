@@ -45,7 +45,7 @@
 
             if (Arguments.Length > 2)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2), script));
+                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
