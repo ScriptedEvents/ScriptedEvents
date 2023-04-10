@@ -91,17 +91,17 @@
         /// <summary>
         /// Gets .
         /// </summary>
-        public Dictionary<Player, List<Effect>> PermPlayerEffects { get; }
+        public Dictionary<Player, List<Effect>> PermPlayerEffects { get; } = new();
 
         /// <summary>
         /// Gets .
         /// </summary>
-        public Dictionary<Team, List<Effect>> PermTeamEffects { get; }
+        public Dictionary<Team, List<Effect>> PermTeamEffects { get; } = new();
 
         /// <summary>
         /// Gets .
         /// </summary>
-        public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; }
+        public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; } = new();
 
         public void OnRestarting()
         {
