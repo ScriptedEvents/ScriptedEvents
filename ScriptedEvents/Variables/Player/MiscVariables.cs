@@ -22,6 +22,18 @@
         };
     }
 
+    public class IntercomSpeaker : IPlayerVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{INTERCOMSPEAKER}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets player who is speaking on the intercom.";
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(player => Intercom.Speaker == player);
+    }
+
     public class Staff : IPlayerVariable
     {
         /// <inheritdoc/>
