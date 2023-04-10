@@ -258,13 +258,22 @@ namespace ScriptedEvents.API.Helpers
                 }
             }
 
+            // If list is still empty, match directly
+            if (list.Count == 0)
+            {
+                Player match = Player.Get(input);
+                if (match is not null)
+                    list.Add(match);
+            }
+
+            // Shuffle, Remove unconnected/overwatch, limit
             list.ShuffleList();
             list.RemoveAll(p => !p.IsConnected);
 
             if (MainPlugin.Configs.IgnoreOverwatch)
                 list.RemoveAll(p => p.Role.Type is RoleTypeId.Overwatch);
 
-            if (amount.HasValue && amount.Value > 0)
+            if (amount.HasValue && amount.Value > 0 && list.Count > 0)
             {
                 while (list.Count > amount.Value)
                 {
@@ -272,6 +281,7 @@ namespace ScriptedEvents.API.Helpers
                 }
             }
 
+            // Return
             plys = ListPool<Player>.Pool.ToArrayReturn(list);
             return plys.Length > 0;
         }
