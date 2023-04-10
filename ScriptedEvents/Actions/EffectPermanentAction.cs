@@ -27,7 +27,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
-            new Argument("players", typeof(object), "The players to affect, or the RoleType/Team to infect with the role.", true),
+            new Argument("target", typeof(object), "The players to affect, or the RoleType/Team to infect with the role.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
             new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Math and variables are NOT supported. Defaults to 1.", false),
         };
@@ -71,7 +71,7 @@
 
             if (list == -1)
             {
-                return new(false, "Second argument must be a team, role, or a player variable with at least one player.");
+                return new(false, "Second argument (target) must be a Team, RoleType, or a player variable with at least one player.");
             }
 
             Effect eff = new(effect, 0, intensity, false, true);
