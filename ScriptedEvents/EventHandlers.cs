@@ -89,17 +89,17 @@
         public Dictionary<Player, RadioRange> LockedRadios { get; } = new();
 
         /// <summary>
-        /// Gets .
+        /// Gets  a dictionary of permanent player-specific effects.
         /// </summary>
         public Dictionary<Player, List<Effect>> PermPlayerEffects { get; } = new();
 
         /// <summary>
-        /// Gets .
+        /// Gets  a dictionary of permanent team-specific effects.
         /// </summary>
         public Dictionary<Team, List<Effect>> PermTeamEffects { get; } = new();
 
         /// <summary>
-        /// Gets .
+        /// Gets a dictionary of permanent role-specific effects.
         /// </summary>
         public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; } = new();
 
