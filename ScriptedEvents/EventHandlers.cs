@@ -225,6 +225,15 @@
                             scr.UniquePlayerVariables.Add("{EVPLAYER}", new("{EVPLAYER}", "The player that is involved with this event.", new[] { playerEvent.Player }));
                         }
 
+                        if (ev is IItemEvent item)
+                        {
+                            scr.UniqueVariables.Add("{EVITEM}", new("{EVITEM}", "The ItemType of the item.", item.Item.Type.ToString()));
+                        }
+                        else if (ev is IPickupEvent pickup)
+                        {
+                            scr.UniqueVariables.Add("{EVITEM}", new("{EVITEM}", "The ItemType of the item.", pickup.Pickup.Type.ToString()));
+                        }
+
                         ScriptHelper.RunScript(scr);
                     }
                     catch (DisabledScriptException)
