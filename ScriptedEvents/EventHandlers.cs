@@ -91,17 +91,17 @@
         /// <summary>
         /// Gets .
         /// </summary>
-        public Dictionary<Player, EffectSetting> PermPlayerEffects { get; }
+        public Dictionary<Player, List<Effect>> PermPlayerEffects { get; }
 
         /// <summary>
         /// Gets .
         /// </summary>
-        public Dictionary<Team, EffectSetting> PermTeamEffects { get; }
+        public Dictionary<Team, List<Effect>> PermTeamEffects { get; }
 
         /// <summary>
         /// Gets .
         /// </summary>
-        public Dictionary<RoleTypeId, EffectSetting> PermRoleEffects { get; }
+        public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; }
 
         public void OnRestarting()
         {
@@ -230,7 +230,20 @@
         // Perm Effects: Spawned
         public void OnSpawned(SpawnedEventArgs ev)
         {
+            if (PermPlayerEffects.TryGetValue(ev.Player, out var effects))
+            {
+                effects.ForEach(eff => ev.Player.EnableEffect(eff));
+            }
 
+            if (PermTeamEffects.TryGetValue(ev.Player.Role.Team, out var effects2))
+            {
+                effects2.ForEach(eff => ev.Player.EnableEffect(eff));
+            }
+
+            if (PermRoleEffects.TryGetValue(ev.Player.Role.Type, out var effects3))
+            {
+                effects3.ForEach(eff => ev.Player.EnableEffect(eff));
+            }
         }
 
         // Reflection: ON config
