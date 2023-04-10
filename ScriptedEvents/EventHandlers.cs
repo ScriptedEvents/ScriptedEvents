@@ -218,6 +218,13 @@
                     try
                     {
                         Script scr = ScriptHelper.ReadScript(script, null);
+
+                        // Add variables based on event.
+                        if (ev is IPlayerEvent playerEvent)
+                        {
+                            scr.UniquePlayerVariables.Add("{EVPLAYER}", new("{EVPLAYER}", "The player that is involved with this event.", new[] { playerEvent.Player }));
+                        }
+
                         ScriptHelper.RunScript(scr);
                     }
                     catch (DisabledScriptException)
