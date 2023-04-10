@@ -25,8 +25,8 @@
 # Each action that supports math also supports variables, eg. '5 * {{PLAYERSALIVE}}' to multiply 5 by the amount of players alive.
 
 # This plugin contains A LOT of features. You will likely get confused at first. That's okay, that's why documentation (and support) is here.
-# If you ever get stuck, the HELP action is here for you. Simply input ""HELP [action name/variable name]"" into a script to get detailed info about how it works.
-# Or type ""HELP LIST"" for a list of actions, or ""HELP LISTVAR"" for a list of variables.
+# The majority of this plugin's features are documented through the ""shelp"" server console command. Simply type ""shelp LIST"" in your server console to get started!
+# shelp takes any of the following: ""LIST"", ""LISTVAR"", the name of an action, or the name of a variable with brackets.
 
 # Lastly, have fun! This is meant to be a fun plugin to mess around with, as well as a utility plugin to create what you can imagine without the need for a custom plugin.
 # If you have any questions, do not hesitate to join the Discord server and ask! I'm here to help you!
