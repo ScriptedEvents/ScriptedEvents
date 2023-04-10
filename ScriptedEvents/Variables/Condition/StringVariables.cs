@@ -82,6 +82,8 @@
             new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, USERID, PLAYERID, ROLE, TEAM, ROOM, ZONE.", false),
         };
 
+        public Script Source { get; set; } = null;
+
         /// <inheritdoc/>
         public string Value
         {
@@ -97,7 +99,7 @@
 
                 string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
 
-                var variable = PlayerVariables.GetVariable($"{{{name}}}");
+                var variable = PlayerVariables.GetVariable($"{{{name}}}", Source);
                 if (variable is not null)
                 {
                     IOrderedEnumerable<string> display = variable.Players.Select(ply =>
