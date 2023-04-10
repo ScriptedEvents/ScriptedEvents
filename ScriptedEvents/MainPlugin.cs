@@ -5,8 +5,10 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.InteropServices;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.Events;
     using Exiled.Loader;
     using MEC;
     using ScriptedEvents.API.Helpers;
@@ -187,7 +189,6 @@
             PlayerVariables.Setup();
 
             // "On" config
-            MethodInfo scriptMethodInfo = typeof(Script).GetMethod("Execute");
             foreach (KeyValuePair<string, List<string>> ev in Configs.On)
             {
                 bool made = false;
@@ -196,28 +197,27 @@
                     var @event = handler.GetEvent(ev.Key);
                     if (@event is not null)
                     {
-                        foreach (string script in ev.Value)
+                        Delegate @delegate;
+                        if (@event.EventHandlerType.GenericTypeArguments.Any())
                         {
-                            try
-                            {
-                                Script scr = ScriptHelper.ReadScript(script, null);
-                                if (scr is not null)
-                                {
-                                    Delegate dg = Delegate.CreateDelegate(@event.EventHandlerType, scr, scriptMethodInfo);
-                                    made = true;
-                                    @event.AddEventHandler(null, dg);
-                                    StoredDelegates.Add(@event, dg);
-                                }
-                            }
-                            catch (FileNotFoundException)
-                            {
-                                Log.Warn($"The following script (used in the 'On' config) was not found: {script}");
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.Error($"Exception when making an 'On' connection to the {@event.Name} event: {ex}");
-                            }
+                            @delegate = typeof(EventHandlers)
+                            .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
+                                .MakeGenericMethod(@event.EventHandlerType.GenericTypeArguments)
+                                .CreateDelegate(typeof(Events.CustomEventHandler<>).MakeGenericType(@event.EventHandlerType.GenericTypeArguments), Handlers);
                         }
+                        else
+                        {
+                            Log.Error($"The {@event.Name} event is not currently compatible with the On config.");
+                            made = true; // we lied!
+                            break;
+                            /*@delegate = typeof(EventHandlers)
+                                .GetMethod(nameof(EventHandlers.OnNonArgumentedEvent))
+                                .CreateDelegate(typeof(Events.CustomEventHandler), Handlers);*/
+                        }
+
+                        @event.AddEventHandler(Handlers, @delegate);
+                        StoredDelegates.Add(@event, @delegate);
+                        made = true;
                     }
                 }
 
@@ -286,7 +286,7 @@
 
             foreach (var delegatePair in StoredDelegates)
             {
-                delegatePair.Key.RemoveEventHandler(null, delegatePair.Value);
+                delegatePair.Key.RemoveEventHandler(Handlers, delegatePair.Value);
             }
 
             StoredDelegates.Clear();

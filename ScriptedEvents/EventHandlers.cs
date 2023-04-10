@@ -5,6 +5,7 @@
     using System.Data;
     using System.IO;
     using System.Linq;
+    using System.Xml.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
@@ -206,6 +207,49 @@
             RecentlyRespawned.Clear();
             RecentlyRespawned.AddRange(ev.Players);
         }
+
+        // Reflection: ON config
+        public void OnAnyEvent(string eventName, IExiledEvent ev = null)
+        {
+            if (MainPlugin.Configs.On.TryGetValue(eventName, out List<string> scripts))
+            {
+                foreach (string script in scripts)
+                {
+                    try
+                    {
+                        Script scr = ScriptHelper.ReadScript(script, null);
+                        ScriptHelper.RunScript(scr);
+                    }
+                    catch (DisabledScriptException)
+                    {
+                        Log.Warn($"Error in 'On' handler (event: {eventName}): Script '{script}' is disabled!");
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        Log.Warn($"Error in 'On' handler (event: {eventName}): Script '{script}' cannot be found!");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warn($"Error in 'On' handler (event: {eventName}): {ex}");
+                    }
+                }
+            }
+        }
+
+        public void OnArgumentedEvent<T>(T ev)
+            where T : IExiledEvent
+        {
+            Type evType = typeof(T);
+            string evName = evType.Name.Replace("EventArgs", string.Empty);
+            OnAnyEvent(evName, ev);
+        }
+
+        /*public void OnNonArgumentedEvent()
+        {
+            Type evType = typeof(T);
+            string evName = evType.Name.Replace("EventArgs", string.Empty);
+            OnAnyEvent(evName, ev);
+        }*/
 
         // Infection
         public void OnDied(DiedEventArgs ev)
