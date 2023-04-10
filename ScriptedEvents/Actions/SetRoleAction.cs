@@ -34,7 +34,10 @@
         {
             new Argument("players", typeof(List<Player>), "The players to set the role as.", true),
             new Argument("role", typeof(RoleTypeId), "The role to set all the players as.", true),
+            new Argument("spawnpoint", typeof(bool), "Use spawnpoint? default: true", false),
+            new Argument("inventory", typeof(bool), "Use default inventory? default: true", false),
             new Argument("max", typeof(int), "The maximum amount of players to set the role of. Variables & Math are supported. (default: unlimited).", false),
+
         };
 
         /// <inheritdoc/>
@@ -45,11 +48,22 @@
             if (!Enum.TryParse<RoleTypeId>(Arguments[1], true, out RoleTypeId roleType))
                 return new(MessageType.InvalidRole, this, "role", Arguments[1]);
 
+            bool setSpawnpoint = Arguments.Length == 2 || Arguments[2] is "TRUE" or "YES";
+            bool setInventory = Arguments.Length <= 3 || Arguments[3] is "TRUE" or "YES";
+
+            RoleSpawnFlags flags = RoleSpawnFlags.None;
+
+            if (setSpawnpoint)
+                flags |= RoleSpawnFlags.UseSpawnpoint;
+
+            if (setInventory)
+                flags |= RoleSpawnFlags.AssignInventory;
+
             int max = -1;
 
-            if (Arguments.Length > 2)
+            if (Arguments.Length > 4)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
+                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(4)), script);
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
@@ -68,7 +82,7 @@
                 return new(MessageType.NoPlayersFound, this, "players");
 
             foreach (Player player in plys)
-                player.Role.Set(roleType);
+                player.Role.Set(roleType, flags);
 
             return new(true);
         }
