@@ -29,7 +29,7 @@
             new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
             new Argument("players", typeof(object), "The players to affect, or the RoleType/Team to infect with the role.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
-            new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Math and variables are NOT supported. Defaults to 1", false),
+            new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Math and variables are NOT supported. Defaults to 1.", false),
         };
 
         public ActionResponse Execute(Script script)
