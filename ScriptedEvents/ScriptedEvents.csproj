@@ -84,6 +84,7 @@
     <Compile Include="Actions\CountdownAction.cs" />
     <Compile Include="Actions\CustomAction.cs" />
     <Compile Include="Actions\DamageAction.cs" />
+    <Compile Include="Actions\EffectPermanentAction.cs" />
     <Compile Include="Actions\EnableAction.cs" />
     <Compile Include="Actions\DisableAction.cs" />
     <Compile Include="Actions\RadioRangeAction.cs" />

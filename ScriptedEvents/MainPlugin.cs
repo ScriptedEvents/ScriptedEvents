@@ -150,6 +150,7 @@
             PlayerHandler.InteractingLocker += Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator += Handlers.OnInteractingElevator;
             PlayerHandler.Escaping += Handlers.OnEscaping;
+            PlayerHandler.Spawned += Handlers.OnSpawned;
 
             PlayerHandler.PickingUpItem += Handlers.OnPickingUpItem;
             PlayerHandler.ChangingRadioPreset += Handlers.OnChangingRadioPreset;
@@ -251,6 +252,7 @@
             PlayerHandler.InteractingLocker -= Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator -= Handlers.OnInteractingElevator;
             PlayerHandler.Escaping -= Handlers.OnEscaping;
+            PlayerHandler.Spawned -= Handlers.OnSpawned;
 
             PlayerHandler.PickingUpItem -= Handlers.OnPickingUpItem;
             PlayerHandler.ChangingRadioPreset -= Handlers.OnChangingRadioPreset;

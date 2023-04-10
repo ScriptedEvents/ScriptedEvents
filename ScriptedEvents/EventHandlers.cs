@@ -88,6 +88,21 @@
         /// </summary>
         public Dictionary<Player, RadioRange> LockedRadios { get; } = new();
 
+        /// <summary>
+        /// Gets  a dictionary of permanent player-specific effects.
+        /// </summary>
+        public Dictionary<Player, List<Effect>> PermPlayerEffects { get; } = new();
+
+        /// <summary>
+        /// Gets  a dictionary of permanent team-specific effects.
+        /// </summary>
+        public Dictionary<Team, List<Effect>> PermTeamEffects { get; } = new();
+
+        /// <summary>
+        /// Gets a dictionary of permanent role-specific effects.
+        /// </summary>
+        public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; } = new();
+
         public void OnRestarting()
         {
             RespawnWaves = 0;
@@ -101,6 +116,10 @@
             DisabledKeys.Clear();
             Kills.Clear();
             LockedRadios.Clear();
+
+            PermPlayerEffects.Clear();
+            PermTeamEffects.Clear();
+            PermRoleEffects.Clear();
 
             if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
             {
@@ -206,6 +225,25 @@
 
             RecentlyRespawned.Clear();
             RecentlyRespawned.AddRange(ev.Players);
+        }
+
+        // Perm Effects: Spawned
+        public void OnSpawned(SpawnedEventArgs ev)
+        {
+            if (PermPlayerEffects.TryGetValue(ev.Player, out var effects))
+            {
+                effects.ForEach(eff => ev.Player.EnableEffect(eff));
+            }
+
+            if (PermTeamEffects.TryGetValue(ev.Player.Role.Team, out var effects2))
+            {
+                effects2.ForEach(eff => ev.Player.EnableEffect(eff));
+            }
+
+            if (PermRoleEffects.TryGetValue(ev.Player.Role.Type, out var effects3))
+            {
+                effects3.ForEach(eff => ev.Player.EnableEffect(eff));
+            }
         }
 
         // Reflection: ON config
