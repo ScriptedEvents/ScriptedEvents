@@ -88,6 +88,21 @@
         /// </summary>
         public Dictionary<Player, RadioRange> LockedRadios { get; } = new();
 
+        /// <summary>
+        /// Gets .
+        /// </summary>
+        public Dictionary<Player, EffectSetting> PermPlayerEffects { get; }
+
+        /// <summary>
+        /// Gets .
+        /// </summary>
+        public Dictionary<Team, EffectSetting> PermTeamEffects { get; }
+
+        /// <summary>
+        /// Gets .
+        /// </summary>
+        public Dictionary<RoleTypeId, EffectSetting> PermRoleEffects { get; }
+
         public void OnRestarting()
         {
             RespawnWaves = 0;
@@ -101,6 +116,10 @@
             DisabledKeys.Clear();
             Kills.Clear();
             LockedRadios.Clear();
+
+            PermPlayerEffects.Clear();
+            PermTeamEffects.Clear();
+            PermRoleEffects.Clear();
 
             if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
             {
@@ -206,6 +225,12 @@
 
             RecentlyRespawned.Clear();
             RecentlyRespawned.AddRange(ev.Players);
+        }
+
+        // Perm Effects: Spawned
+        public void OnSpawned(SpawnedEventArgs ev)
+        {
+
         }
 
         // Reflection: ON config
