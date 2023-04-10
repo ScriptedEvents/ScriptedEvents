@@ -18,6 +18,7 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
+            new IntercomSpeaker(),
             new Staff(),
         };
     }
