@@ -195,6 +195,7 @@
                 bool made = false;
                 foreach (Type handler in HandlerTypes)
                 {
+                    // Credit to DevTools for below code.
                     var @event = handler.GetEvent(ev.Key);
                     if (@event is not null)
                     {
@@ -211,9 +212,6 @@
                             Log.Error($"The {@event.Name} event is not currently compatible with the On config.");
                             made = true; // we lied!
                             break;
-                            /*@delegate = typeof(EventHandlers)
-                                .GetMethod(nameof(EventHandlers.OnNonArgumentedEvent))
-                                .CreateDelegate(typeof(Events.CustomEventHandler), Handlers);*/
                         }
 
                         @event.AddEventHandler(Handlers, @delegate);
