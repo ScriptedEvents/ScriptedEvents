@@ -113,6 +113,7 @@
                             "TEAM" => ply.Role.Team.ToString(),
                             "ROOM" => ply.CurrentRoom.Type.ToString(),
                             "ZONE" => ply.Zone.ToString(),
+                            "HP" or "HEALTH" => ply.Health.ToString(),
                             _ => ply.Nickname,
                         };
                     }).OrderBy(s => s);
