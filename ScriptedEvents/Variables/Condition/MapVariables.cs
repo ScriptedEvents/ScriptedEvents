@@ -16,9 +16,10 @@
         public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
-        public IVariable[] Variables { get; } = new[]
+        public IVariable[] Variables { get; } = new IVariable[]
         {
             new EngagedGenerators(),
+            new DetonationTime(),
         };
     }
 
@@ -32,5 +33,17 @@
 
         /// <inheritdoc/>
         public string Description => "The amount of generators which are fully engaged.";
+    }
+
+    public class DetonationTime : IFloatVariable
+    {
+        /// <inheritdoc/>
+        public float Value => Warhead.DetonationTimer;
+
+        /// <inheritdoc/>
+        public string Name => "{DETONATIONTIME}";
+
+        /// <inheritdoc/>
+        public string Description => "The amount of time until the warhead detonates.";
     }
 }
