@@ -3,7 +3,10 @@
 #pragma warning disable SA1402 // File may only contain a single type
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
+    using System.Linq;
 
     public class BooleanVariables : IVariableGroup
     {
@@ -25,6 +28,8 @@
             new WarheadCounting(),
             new WarheadDetonated(),
             new WaveRespawning(),
+
+            new IsScriptRunning(),
         };
     }
 
@@ -161,5 +166,38 @@
 
         /// <inheritdoc/>
         public bool Value => MainPlugin.Handlers.IsRespawning;
+    }
+
+    public class IsScriptRunning : IBoolVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{ISRUNNING}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!ISRUNNING}";
+
+        /// <inheritdoc/>
+        public string Description => "Whether or not a specific script is running.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("scriptName", typeof(string), "The name of the script.", true),
+        };
+
+        /// <inheritdoc/>
+        public bool Value
+        {
+            get
+            {
+                if (Arguments.Length < 1) return false;
+
+                string scriptName = Arguments[0];
+                return ScriptHelper.RunningScripts.Any(scr => scr.Key.ScriptName == scriptName && scr.Value.IsRunning);
+            }
+        }
     }
 }
