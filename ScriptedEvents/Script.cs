@@ -170,6 +170,27 @@
             CurrentLine = line - 1;
         }
 
+        public bool Jump(string keyword)
+        {
+            switch (keyword.ToUpper())
+            {
+                case "NEXT":
+                    NextLine();
+                    return true;
+                case "START":
+                    CurrentLine = 0;
+                    return true;
+            }
+
+            if (int.TryParse(keyword, out int n))
+            {
+                Jump(n);
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Moves to the next line.
         /// </summary>

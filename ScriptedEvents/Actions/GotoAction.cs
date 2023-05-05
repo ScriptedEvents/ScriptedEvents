@@ -59,6 +59,11 @@
                         return new(true);
                     }
 
+                    if (!script.Jump(Arguments.ElementAt(0)))
+                    {
+                        return new(false, "Invalid line or label provided!");
+                    }
+
                     break;
             }
 
