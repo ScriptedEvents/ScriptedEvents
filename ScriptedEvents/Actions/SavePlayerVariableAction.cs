@@ -62,7 +62,7 @@
 
             Player[] plys;
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out plys))
+            if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             PlayerVariables.DefineVariable(Arguments[0], "User-defined variable.", plys);
