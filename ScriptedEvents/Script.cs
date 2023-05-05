@@ -139,8 +139,14 @@
         /// </summary>
         public ICommandSender Sender { get; internal set; }
 
+        /// <summary>
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
+        /// </summary>
         public Dictionary<string, CustomVariable> UniqueVariables { get; set; }
 
+        /// <summary>
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> of player variables that are unique to this script.
+        /// </summary>
         public Dictionary<string, CustomPlayerVariable> UniquePlayerVariables { get; set; }
 
         /// <inheritdoc/>
@@ -170,6 +176,11 @@
             CurrentLine = line - 1;
         }
 
+        /// <summary>
+        /// Moves the <see cref="CurrentLine"/> to the specified location.
+        /// </summary>
+        /// <param name="keyword">Keyword.</param>
+        /// <returns>Whether or not the jump was successful.</returns>
         public bool Jump(string keyword)
         {
             switch (keyword.ToUpper())
