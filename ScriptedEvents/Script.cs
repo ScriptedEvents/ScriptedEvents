@@ -189,5 +189,15 @@
         /// Execute the script.
         /// </summary>
         public void Execute() => ScriptHelper.RunScript(this);
+
+        public void AddVariable(string name, string desc, object value)
+        {
+            UniqueVariables.Add(name, new(name, desc, value));
+        }
+
+        public void AddPlayerVariable(string name, string desc, IEnumerable<Player> value)
+        {
+            UniquePlayerVariables.Add(name, new(name, desc, value));
+        }
     }
 }

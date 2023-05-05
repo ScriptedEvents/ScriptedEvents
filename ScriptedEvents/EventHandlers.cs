@@ -260,21 +260,21 @@
                         // Add variables based on event.
                         if (ev is IPlayerEvent playerEvent)
                         {
-                            scr.UniquePlayerVariables.Add("{EVPLAYER}", new("{EVPLAYER}", "The player that is involved with this event.", new[] { playerEvent.Player }));
+                            scr.AddPlayerVariable("{EVPLAYER}", "The player that is involved with this event.", new[] { playerEvent.Player });
                         }
 
                         if (ev is IAttackerEvent attackerEvent)
                         {
-                            scr.UniquePlayerVariables.Add("{EVATTACKER}", new("{EVATTACKER}", "The attacker that is involved with this event.", new[] { attackerEvent.Attacker }));
+                            scr.AddPlayerVariable("{EVATTACKER}", "The attacker that is involved with this event.", new[] { attackerEvent.Attacker });
                         }
 
                         if (ev is IItemEvent item)
                         {
-                            scr.UniqueVariables.Add("{EVITEM}", new("{EVITEM}", "The ItemType of the item.", item.Item.Type.ToString()));
+                            scr.AddVariable("{EVITEM}", "The ItemType of the item involved with this event.", item.Item.Type.ToString());
                         }
                         else if (ev is IPickupEvent pickup)
                         {
-                            scr.UniqueVariables.Add("{EVITEM}", new("{EVITEM}", "The ItemType of the item.", pickup.Pickup.Type.ToString()));
+                            scr.AddVariable("{EVITEM}", "The ItemType of the pickup associated with this event.", pickup.Pickup.Type.ToString());
                         }
 
                         ScriptHelper.RunScript(scr);
