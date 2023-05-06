@@ -37,25 +37,25 @@
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!int.TryParse(Arguments[0], out int trueLine) && !script.Labels.TryGetValue(Arguments[0], out trueLine))
-                return new(false, "trueLine is not a valid integer.");
-
-            if (!int.TryParse(Arguments[1], out int falseLine) && !script.Labels.TryGetValue(Arguments[1], out falseLine))
-                return new(false, "falseLine is not a valid integer.");
-
             ConditionResponse outcome = ConditionHelper.Evaluate(string.Join(string.Empty, Arguments.Skip(2)), script);
             if (!outcome.Success)
                 return new(false, $"IF execution error: {outcome.Message}", ActionFlags.FatalError);
 
             if (outcome.Passed)
             {
-                script.DebugLog($"GOTOIF result: true. Jumping to line {trueLine}.");
-                script.Jump(trueLine);
+                script.DebugLog($"GOTOIF result: true. Jumping to line {Arguments[0]}.");
+                if (!script.Jump(Arguments[0]))
+                {
+                    return new(false, $"Failed to jump to trueLine '{Arguments[0]}'. trueLine must be an integer, a label, or a keyword.");
+                }
             }
             else
             {
-                script.DebugLog($"GOTOIF result: false. Jumping to line {falseLine}.");
-                script.Jump(falseLine);
+                script.DebugLog($"GOTOIF result: false. Jumping to line {Arguments[1]}.");
+                if (!script.Jump(Arguments[1]))
+                {
+                    return new(false, $"Failed to jump to falseLine '{Arguments[1]}'. falseLine must be an integer, a label, or a keyword.");
+                }
             }
 
             return new(true);
