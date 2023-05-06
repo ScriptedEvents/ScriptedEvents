@@ -222,11 +222,23 @@
         /// </summary>
         public void Execute() => ScriptHelper.RunScript(this);
 
+        /// <summary>
+        /// Adds a variable.
+        /// </summary>
+        /// <param name="name">Name of the variable.</param>
+        /// <param name="desc">Description of the variable.</param>
+        /// <param name="value">The value of the variable.</param>
         public void AddVariable(string name, string desc, object value)
         {
             UniqueVariables.Add(name, new(name, desc, value));
         }
 
+        /// <summary>
+        /// Adds a player variable.
+        /// </summary>
+        /// <param name="name">Name of the variable.</param>
+        /// <param name="desc">Description of the variable.</param>
+        /// <param name="value">The <see cref="IEnumerable{T}"/> of Players for this variable.</param>
         public void AddPlayerVariable(string name, string desc, IEnumerable<Player> value)
         {
             UniquePlayerVariables.Add(name, new(name, desc, value));

@@ -28,7 +28,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("trueLine", typeof(int), "The line to jump to if the condition is TRUE. Variables & Math are NOT supported.", true),
-            new Argument("falseLine", typeof(int), "The line to jump to if the condition iS FALSE. Variables & Math are NOT supported.", true),
+            new Argument("falseLine", typeof(int), "The line to jump to if the condition is FALSE. Variables & Math are NOT supported.", true),
             new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
 
