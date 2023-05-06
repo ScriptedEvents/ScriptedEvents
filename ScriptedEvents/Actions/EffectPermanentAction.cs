@@ -14,16 +14,22 @@
 
     public class EffectPermanentAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "EFFECTPERM";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Action for giving/removing permanent player effects.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
@@ -32,6 +38,7 @@
             new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Math and variables are NOT supported. Defaults to 1.", false),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

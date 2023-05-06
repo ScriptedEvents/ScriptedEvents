@@ -13,16 +13,22 @@
 
     public class EffectAction : IScriptAction, IHelpInfo
     {
+        /// <inheritdoc/>
         public string Name => "EFFECT";
 
+        /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
+        /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public string Description => "Action for giving/removing player effects.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (GIVE, REMOVE, CLEAR)", true),
@@ -32,6 +38,7 @@
             new Argument("duration", typeof(int), "The duration of the effect, or no duration for a permanent effect. Math and variables ARE supported.", false),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

@@ -6,7 +6,7 @@
     public readonly struct Sample
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Sample"/> class.
+        /// Initializes a new instance of the <see cref="Sample"/> struct.
         /// </summary>
         /// <param name="title">The title of the code sample.</param>
         /// <param name="description">The description of the code sample.</param>
