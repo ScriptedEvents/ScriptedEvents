@@ -31,7 +31,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode (GIVE, REMOVE, CLEAR)", true),
+            new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
             new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Math and variables are NOT supported. Defaults to 1.", false),
@@ -99,10 +99,8 @@
                     }
 
                     return new(true);
-                case "CLEAR":
-                    return new(false, "CLEAR is Not implemented");
                 default:
-                    return new(MessageType.InvalidOption, this, "mode", mode, "GIVE/REMOVE/CLEAR");
+                    return new(MessageType.InvalidOption, this, "mode", mode, "GIVE/REMOVE");
             }
         }
     }
