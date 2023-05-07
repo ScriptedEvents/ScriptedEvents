@@ -179,7 +179,7 @@
         /// <summary>
         /// Moves the <see cref="CurrentLine"/> to the specified location.
         /// </summary>
-        /// <param name="keyword">Keyword.</param>
+        /// <param name="keyword">Keyword (NEXT, START, label, or number).</param>
         /// <returns>Whether or not the jump was successful.</returns>
         public bool Jump(string keyword)
         {
@@ -191,6 +191,12 @@
                 case "START":
                     CurrentLine = 0;
                     return true;
+            }
+
+            if (Labels.TryGetValue(keyword, out int line))
+            {
+                CurrentLine = line;
+                return true;
             }
 
             if (int.TryParse(keyword, out int n))
