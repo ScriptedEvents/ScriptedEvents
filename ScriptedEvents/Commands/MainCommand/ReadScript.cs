@@ -8,7 +8,7 @@
     using Exiled.API.Features.Pools;
     using Exiled.Permissions.Extensions;
     using ScriptedEvents.Actions.Interfaces;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ReadScript : ICommand

@@ -8,7 +8,7 @@
     using Exiled.API.Features.Pools;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Variables.Condition;
     using ScriptedEvents.Variables.Interfaces;
     using ScriptedEvents.Variables.Player.Roles;

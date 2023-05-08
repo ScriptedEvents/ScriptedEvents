@@ -1,12 +1,12 @@
 ﻿namespace ScriptedEvents.Variables.Condition.Booleans
 {
 #pragma warning disable SA1402 // File may only contain a single type
+    using System.Linq;
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
-    using System.Linq;
 
     public class BooleanVariables : IVariableGroup
     {

@@ -19,7 +19,7 @@
     using PlayerRoles;
     using Respawning;
     using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
     using UnityEngine;

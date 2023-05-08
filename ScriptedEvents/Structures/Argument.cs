@@ -1,7 +1,7 @@
 ﻿namespace ScriptedEvents.Structures
 {
     using System;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
 
     /// <summary>
     /// Represents an argument for an action.

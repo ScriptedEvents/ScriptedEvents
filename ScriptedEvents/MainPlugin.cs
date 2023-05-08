@@ -11,7 +11,7 @@
     using Exiled.Events;
     using Exiled.Loader;
     using MEC;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Variables.Handlers;
     using MapHandler = Exiled.Events.Handlers.Map;

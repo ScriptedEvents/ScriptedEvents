@@ -8,7 +8,7 @@
     using Exiled.Permissions.Extensions;
     using RemoteAdmin;
     using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExecuteScript : ICommand

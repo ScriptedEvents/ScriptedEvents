@@ -114,8 +114,8 @@
     <Compile Include="API\Enums\ExecuteContext.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
     <Compile Include="API\Enums\VariableGroupType.cs" />
-    <Compile Include="API\Helpers\CountdownHelper.cs" />
-    <Compile Include="API\Helpers\MsgGen.cs" />
+    <Compile Include="API\Features\CountdownHelper.cs" />
+    <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
@@ -182,9 +182,9 @@
     <Compile Include="Actions\WaitForSecondsAction.cs" />
     <Compile Include="Actions\WaitUntilDebugAction.cs" />
     <Compile Include="Actions\WaitUntilAction.cs" />
-    <Compile Include="API\Helpers\ApiHelper.cs" />
+    <Compile Include="API\Features\ApiHelper.cs" />
     <Compile Include="Commands\MainCommand\ExecuteScript.cs" />
-    <Compile Include="API\Helpers\ConditionHelper.cs" />
+    <Compile Include="API\Features\ConditionHelper.cs" />
     <Compile Include="Conditions\Floats\Equal.cs" />
     <Compile Include="Conditions\Floats\LessThan.cs" />
     <Compile Include="Conditions\Floats\GreaterThan.cs" />
@@ -213,7 +213,7 @@
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
-    <Compile Include="API\Helpers\ScriptHelper.cs" />
+    <Compile Include="API\Features\ScriptHelper.cs" />
     <Compile Include="Structures\InfectRule.cs" />
     <Compile Include="Variables\Interfaces\IBoolVariable.cs" />
     <Compile Include="Variables\Interfaces\IConditionVariable.cs" />
