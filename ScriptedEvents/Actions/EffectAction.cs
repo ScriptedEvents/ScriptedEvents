@@ -86,7 +86,6 @@
 
                     foreach (Player player in plys)
                     {
-                        Log.Info(duration);
                         player.ChangeEffectIntensity(effect, intensity);
                         player.EnableEffect(effect, duration);
                     }
