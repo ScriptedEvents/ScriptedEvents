@@ -67,7 +67,6 @@
 
     public class Show : IStringVariable, IArgumentVariable
     {
-
         /// <inheritdoc/>
         public string Name => "{SHOW}";
 

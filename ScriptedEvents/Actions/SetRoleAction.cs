@@ -37,7 +37,6 @@
             new Argument("spawnpoint", typeof(bool), "Use spawnpoint? default: true", false),
             new Argument("inventory", typeof(bool), "Use default inventory? default: true", false),
             new Argument("max", typeof(int), "The maximum amount of players to set the role of. Variables & Math are supported. (default: unlimited).", false),
-
         };
 
         /// <inheritdoc/>
