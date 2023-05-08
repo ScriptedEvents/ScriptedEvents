@@ -185,8 +185,7 @@
         {
             switch (keyword.ToUpper())
             {
-                case "NEXT":
-                    NextLine();
+                case "NEXT": // Simply return "true" as a success. It'll go to the next line automatically.
                     return true;
                 case "START":
                     CurrentLine = 0;
