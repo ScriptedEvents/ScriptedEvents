@@ -49,7 +49,7 @@
                 foreach (Player ply in players)
                 {
                     validRooms.ShuffleList();
-                    if (ply.IsDead || !ply.IsConnected) continue;
+                    if (ply.Role is not FpcRole || !ply.IsConnected) continue;
                     ply.Teleport(validRooms[UnityEngine.Random.Range(0, validRooms.Count)]);
                 }
 
