@@ -182,8 +182,6 @@
     <Compile Include="Actions\WaitForSecondsAction.cs" />
     <Compile Include="Actions\WaitUntilDebugAction.cs" />
     <Compile Include="Actions\WaitUntilAction.cs" />
-    <Compile Include="API\Features\Aliases\Alias.cs" />
-    <Compile Include="API\Features\Aliases\AliasExtensions.cs" />
     <Compile Include="API\Helpers\ApiHelper.cs" />
     <Compile Include="Commands\MainCommand\ExecuteScript.cs" />
     <Compile Include="API\Helpers\ConditionHelper.cs" />

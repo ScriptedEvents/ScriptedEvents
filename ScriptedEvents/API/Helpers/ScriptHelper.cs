@@ -16,7 +16,6 @@ namespace ScriptedEvents.API.Helpers
     using ScriptedEvents.Actions;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features.Aliases;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
@@ -124,19 +123,12 @@ namespace ScriptedEvents.API.Helpers
                     continue;
                 }
 
-                Alias alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
-                if (alias != null)
-                {
-                    actionParts = alias.Unalias(action).Split(' ');
-                    keyword = actionParts[0].RemoveWhitespace();
-                }
-
 #if DEBUG
                 Log.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}");
 #endif
                 ActionTypes.TryGetValue(keyword, out Type actionType);
 
-                if (actionType is null && alias is null)
+                if (actionType is null)
                 {
                     // Check for custom actions
                     if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
