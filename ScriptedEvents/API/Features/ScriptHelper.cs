@@ -2,6 +2,7 @@ namespace ScriptedEvents.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -438,6 +439,9 @@ namespace ScriptedEvents.API.Features
             scr.IsRunning = true;
             scr.RunDate = DateTime.UtcNow;
 
+            int safetyActionCount = 0;
+            Stopwatch safety = Stopwatch.StartNew();
+
             for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
                 scr.DebugLog("-----------");
@@ -553,6 +557,22 @@ namespace ScriptedEvents.API.Features
 
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
+
+                    // Safety
+                    safetyActionCount++;
+                    if (safety.Elapsed.TotalSeconds > 1)
+                    {
+                        if (safetyActionCount > 25 && !scr.Flags.Contains("NOSAFETY"))
+                        {
+                            Log.Warn($"Script '{scr.ScriptName}' exceeded safety limit of 25 actions per 1 second and has been force-stopped, saving from a potential crash. If this is intentional, add '!-- NOSAFETY' to the top of the script. All script loops should have a delay in them.");
+                            break;
+                        }
+                        else
+                        {
+                            safety.Restart();
+                            safetyActionCount = 0;
+                        }
+                    }
                 }
             }
 
