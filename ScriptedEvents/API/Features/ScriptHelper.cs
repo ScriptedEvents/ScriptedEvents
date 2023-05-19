@@ -562,9 +562,9 @@ namespace ScriptedEvents.API.Features
                     safetyActionCount++;
                     if (safety.Elapsed.TotalSeconds > 1)
                     {
-                        if (safetyActionCount > 25 && !scr.Flags.Contains("NOSAFETY"))
+                        if (safetyActionCount > MainPlugin.Configs.MaxActionsPerSecond && !scr.Flags.Contains("NOSAFETY"))
                         {
-                            Log.Warn($"Script '{scr.ScriptName}' exceeded safety limit of 25 actions per 1 second and has been force-stopped, saving from a potential crash. If this is intentional, add '!-- NOSAFETY' to the top of the script. All script loops should have a delay in them.");
+                            Log.Warn($"Script '{scr.ScriptName}' exceeded safety limit of {MainPlugin.Configs.MaxActionsPerSecond} actions per 1 second and has been force-stopped, saving from a potential crash. If this is intentional, add '!-- NOSAFETY' to the top of the script. All script loops should have a delay in them.");
                             break;
                         }
                         else
