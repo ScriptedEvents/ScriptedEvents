@@ -42,7 +42,7 @@
 
             foreach (Room room in rooms)
             {
-                if (room.FlickerableLightController is not null)
+                if (room.RoomLightController is not null)
                     room.ResetColor();
             }
 
