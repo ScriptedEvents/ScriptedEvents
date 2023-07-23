@@ -22,6 +22,7 @@
             new Month(),
             new Year(),
             new Tick(),
+            new Hour(),
         };
     }
 
@@ -95,5 +96,17 @@
 
         /// <inheritdoc/>
         public float Value => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+    }
+
+    public class Hour : IFloatVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{HOUR}";
+
+        /// <inheritdoc/>
+        public string Description => $"The current real-world hour, from 0-23.";
+
+        /// <inheritdoc/>
+        public float Value => DateTime.UtcNow.Hour;
     }
 }
