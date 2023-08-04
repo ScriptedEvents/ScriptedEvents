@@ -5,11 +5,13 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.InteropServices;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.Events;
     using Exiled.Loader;
     using MEC;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Variables.Handlers;
     using MapHandler = Exiled.Events.Handlers.Map;
@@ -75,7 +77,7 @@
         public override string Author => "Thunder + Johnodon";
 
         /// <inheritdoc/>
-        public override Version Version => new(2, 1, 1);
+        public override Version Version => new(2, 3, 0);
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion => new(6, 0, 0);
@@ -136,6 +138,7 @@
                 Log.Warn($"This ScriptedEvents DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
             }
 
+            PlayerHandler.ChangingRole += Handlers.OnChangingRole;
             PlayerHandler.Hurting += Handlers.OnHurting;
             PlayerHandler.Died += Handlers.OnDied;
             PlayerHandler.Dying += Handlers.OnDying;
@@ -147,6 +150,10 @@
             PlayerHandler.InteractingLocker += Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator += Handlers.OnInteractingElevator;
             PlayerHandler.Escaping += Handlers.OnEscaping;
+            PlayerHandler.Spawned += Handlers.OnSpawned;
+
+            PlayerHandler.PickingUpItem += Handlers.OnPickingUpItem;
+            PlayerHandler.ChangingRadioPreset += Handlers.OnChangingRadioPreset;
 
             PlayerHandler.ActivatingWarheadPanel += Handlers.OnActivatingWarheadPanel;
             Exiled.Events.Handlers.Warhead.Starting += Handlers.OnStartingWarhead; // why is this located specially??
@@ -183,37 +190,33 @@
             PlayerVariables.Setup();
 
             // "On" config
-            MethodInfo scriptMethodInfo = typeof(Script).GetMethod("Execute");
             foreach (KeyValuePair<string, List<string>> ev in Configs.On)
             {
                 bool made = false;
                 foreach (Type handler in HandlerTypes)
                 {
+                    // Credit to DevTools for below code.
                     var @event = handler.GetEvent(ev.Key);
                     if (@event is not null)
                     {
-                        foreach (string script in ev.Value)
+                        Delegate @delegate;
+                        if (@event.EventHandlerType.GenericTypeArguments.Any())
                         {
-                            try
-                            {
-                                Script scr = ScriptHelper.ReadScript(script, null);
-                                if (scr is not null)
-                                {
-                                    Delegate dg = Delegate.CreateDelegate(@event.EventHandlerType, scr, scriptMethodInfo);
-                                    made = true;
-                                    @event.AddEventHandler(null, dg);
-                                    StoredDelegates.Add(@event, dg);
-                                }
-                            }
-                            catch (FileNotFoundException)
-                            {
-                                Log.Warn($"The following script (used in the 'On' config) was not found: {script}");
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.Error($"Exception when making an 'On' connection to the {@event.Name} event: {ex}");
-                            }
+                            @delegate = typeof(EventHandlers)
+                            .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
+                                .MakeGenericMethod(@event.EventHandlerType.GenericTypeArguments)
+                                .CreateDelegate(typeof(Events.CustomEventHandler<>).MakeGenericType(@event.EventHandlerType.GenericTypeArguments), Handlers);
                         }
+                        else
+                        {
+                            Log.Error($"The {@event.Name} event is not currently compatible with the On config.");
+                            made = true; // we lied!
+                            break;
+                        }
+
+                        @event.AddEventHandler(Handlers, @delegate);
+                        StoredDelegates.Add(@event, @delegate);
+                        made = true;
                     }
                 }
 
@@ -235,6 +238,7 @@
             Handlers.OnRestarting();
             base.OnDisabled();
 
+            PlayerHandler.ChangingRole -= Handlers.OnChangingRole;
             PlayerHandler.Hurting -= Handlers.OnHurting;
             PlayerHandler.Died -= Handlers.OnDied;
             PlayerHandler.Dying -= Handlers.OnDying;
@@ -246,6 +250,10 @@
             PlayerHandler.InteractingLocker -= Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator -= Handlers.OnInteractingElevator;
             PlayerHandler.Escaping -= Handlers.OnEscaping;
+            PlayerHandler.Spawned -= Handlers.OnSpawned;
+
+            PlayerHandler.PickingUpItem -= Handlers.OnPickingUpItem;
+            PlayerHandler.ChangingRadioPreset -= Handlers.OnChangingRadioPreset;
 
             PlayerHandler.ActivatingWarheadPanel -= Handlers.OnActivatingWarheadPanel;
             Exiled.Events.Handlers.Warhead.Starting -= Handlers.OnStartingWarhead; // why is this located specially??
@@ -278,7 +286,7 @@
 
             foreach (var delegatePair in StoredDelegates)
             {
-                delegatePair.Key.RemoveEventHandler(null, delegatePair.Value);
+                delegatePair.Key.RemoveEventHandler(Handlers, delegatePair.Value);
             }
 
             StoredDelegates.Clear();

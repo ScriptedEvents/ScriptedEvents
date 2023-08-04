@@ -8,7 +8,7 @@
     using Exiled.Permissions.Extensions;
     using RemoteAdmin;
     using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExecuteScript : ICommand
@@ -58,7 +58,7 @@
 
                 if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
                 {
-                    scr.UniquePlayerVariables.Add("{SENDER}", new("{SENDER}", "The player who executed the script.", new List<Player>() { plr }));
+                    scr.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
                 }
 
                 ScriptHelper.RunScript(scr);

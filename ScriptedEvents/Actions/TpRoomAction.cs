@@ -8,7 +8,7 @@
     using Exiled.API.Features.Roles;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
 
     public class TpRoomAction : IScriptAction, IHelpInfo
@@ -49,7 +49,7 @@
                 foreach (Player ply in players)
                 {
                     validRooms.ShuffleList();
-                    if (ply.IsDead || !ply.IsConnected) continue;
+                    if (ply.Role is not FpcRole || !ply.IsConnected) continue;
                     ply.Teleport(validRooms[UnityEngine.Random.Range(0, validRooms.Count)]);
                 }
 

@@ -1,7 +1,8 @@
-namespace ScriptedEvents.API.Helpers
+namespace ScriptedEvents.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -16,7 +17,6 @@ namespace ScriptedEvents.API.Helpers
     using ScriptedEvents.Actions;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features.Aliases;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
@@ -124,19 +124,12 @@ namespace ScriptedEvents.API.Helpers
                     continue;
                 }
 
-                Alias alias = MainPlugin.Singleton.Config.Aliases.Get(keyword);
-                if (alias != null)
-                {
-                    actionParts = alias.Unalias(action).Split(' ');
-                    keyword = actionParts[0].RemoveWhitespace();
-                }
-
 #if DEBUG
                 Log.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}");
 #endif
                 ActionTypes.TryGetValue(keyword, out Type actionType);
 
-                if (actionType is null && alias == null)
+                if (actionType is null)
                 {
                     // Check for custom actions
                     if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
@@ -162,7 +155,7 @@ namespace ScriptedEvents.API.Helpers
             string scriptPath = GetFilePath(scriptName);
 
             // Fill out script data
-            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2))
+            if (MainPlugin.Singleton.Config.RequiredPermissions is not null && MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2) == true)
             {
                 script.ReadPermission += $".{perm2}";
                 script.ExecutePermission += $".{perm2}";
@@ -258,13 +251,22 @@ namespace ScriptedEvents.API.Helpers
                 }
             }
 
+            // If list is still empty, match directly
+            if (list.Count == 0)
+            {
+                Player match = Player.Get(input);
+                if (match is not null)
+                    list.Add(match);
+            }
+
+            // Shuffle, Remove unconnected/overwatch, limit
             list.ShuffleList();
             list.RemoveAll(p => !p.IsConnected);
 
             if (MainPlugin.Configs.IgnoreOverwatch)
                 list.RemoveAll(p => p.Role.Type is RoleTypeId.Overwatch);
 
-            if (amount.HasValue && amount.Value > 0)
+            if (amount.HasValue && amount.Value > 0 && list.Count > 0)
             {
                 while (list.Count > amount.Value)
                 {
@@ -272,6 +274,7 @@ namespace ScriptedEvents.API.Helpers
                 }
             }
 
+            // Return
             plys = ListPool<Player>.Pool.ToArrayReturn(list);
             return plys.Length > 0;
         }
@@ -436,6 +439,9 @@ namespace ScriptedEvents.API.Helpers
             scr.IsRunning = true;
             scr.RunDate = DateTime.UtcNow;
 
+            int safetyActionCount = 0;
+            Stopwatch safety = Stopwatch.StartNew();
+
             for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
                 scr.DebugLog("-----------");
@@ -551,6 +557,22 @@ namespace ScriptedEvents.API.Helpers
 
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
+
+                    // Safety
+                    safetyActionCount++;
+                    if (safety.Elapsed.TotalSeconds > 1)
+                    {
+                        if (safetyActionCount > MainPlugin.Configs.MaxActionsPerSecond && !scr.Flags.Contains("NOSAFETY"))
+                        {
+                            Log.Warn($"Script '{scr.ScriptName}' exceeded safety limit of {MainPlugin.Configs.MaxActionsPerSecond} actions per 1 second and has been force-stopped, saving from a potential crash. If this is intentional, add '!-- NOSAFETY' to the top of the script. All script loops should have a delay in them.");
+                            break;
+                        }
+                        else
+                        {
+                            safety.Restart();
+                            safetyActionCount = 0;
+                        }
+                    }
                 }
             }
 
@@ -558,7 +580,7 @@ namespace ScriptedEvents.API.Helpers
             MainPlugin.Info($"Finished running script {scr.ScriptName}.");
             scr.IsRunning = false;
 
-            if (MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
+            if (MainPlugin.Singleton.Config.LoopScripts is not null && MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
             {
                 scr.DebugLog("Re-running looped script.");
                 ReadAndRun(scr.ScriptName, scr.Sender); // so that it re-reads the content of the text file.

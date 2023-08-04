@@ -8,7 +8,7 @@
     using Exiled.API.Features.Pools;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Variables.Condition;
 
     /// <summary>
@@ -139,8 +139,14 @@
         /// </summary>
         public ICommandSender Sender { get; internal set; }
 
+        /// <summary>
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
+        /// </summary>
         public Dictionary<string, CustomVariable> UniqueVariables { get; set; }
 
+        /// <summary>
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> of player variables that are unique to this script.
+        /// </summary>
         public Dictionary<string, CustomPlayerVariable> UniquePlayerVariables { get; set; }
 
         /// <inheritdoc/>
@@ -171,6 +177,37 @@
         }
 
         /// <summary>
+        /// Moves the <see cref="CurrentLine"/> to the specified location.
+        /// </summary>
+        /// <param name="keyword">Keyword (NEXT, START, label, or number).</param>
+        /// <returns>Whether or not the jump was successful.</returns>
+        public bool Jump(string keyword)
+        {
+            switch (keyword.ToUpper())
+            {
+                case "NEXT": // Simply return "true" as a success. It'll go to the next line automatically.
+                    return true;
+                case "START":
+                    CurrentLine = 0;
+                    return true;
+            }
+
+            if (Labels.TryGetValue(keyword, out int line))
+            {
+                CurrentLine = line;
+                return true;
+            }
+
+            if (int.TryParse(keyword, out int n))
+            {
+                Jump(n);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Moves to the next line.
         /// </summary>
         public void NextLine() => CurrentLine++;
@@ -189,5 +226,27 @@
         /// Execute the script.
         /// </summary>
         public void Execute() => ScriptHelper.RunScript(this);
+
+        /// <summary>
+        /// Adds a variable.
+        /// </summary>
+        /// <param name="name">Name of the variable.</param>
+        /// <param name="desc">Description of the variable.</param>
+        /// <param name="value">The value of the variable.</param>
+        public void AddVariable(string name, string desc, object value)
+        {
+            UniqueVariables.Add(name, new(name, desc, value));
+        }
+
+        /// <summary>
+        /// Adds a player variable.
+        /// </summary>
+        /// <param name="name">Name of the variable.</param>
+        /// <param name="desc">Description of the variable.</param>
+        /// <param name="value">The <see cref="IEnumerable{T}"/> of Players for this variable.</param>
+        public void AddPlayerVariable(string name, string desc, IEnumerable<Player> value)
+        {
+            UniquePlayerVariables.Add(name, new(name, desc, value));
+        }
     }
 }

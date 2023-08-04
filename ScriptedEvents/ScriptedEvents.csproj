@@ -79,13 +79,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\CustomInfoAction.cs" />
+    <Compile Include="Actions\HintPlayerAction.cs" />
+    <Compile Include="Actions\HintAction.cs" />
     <Compile Include="Actions\ClearCassieAction.cs" />
     <Compile Include="Actions\ClearInventoryAction.cs" />
     <Compile Include="Actions\CountdownAction.cs" />
     <Compile Include="Actions\CustomAction.cs" />
     <Compile Include="Actions\DamageAction.cs" />
+    <Compile Include="Actions\EffectPermanentAction.cs" />
     <Compile Include="Actions\EnableAction.cs" />
     <Compile Include="Actions\DisableAction.cs" />
+    <Compile Include="Actions\RadioRangeAction.cs" />
     <Compile Include="Actions\RemoveItemAction.cs" />
     <Compile Include="Actions\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\KillAction.cs" />
@@ -95,6 +100,7 @@
     <Compile Include="Actions\Samples\Interfaces\ISampleAction.cs" />
     <Compile Include="Actions\Samples\Interfaces\ISampleProvider.cs" />
     <Compile Include="Actions\Samples\Providers\IfSamples.cs" />
+    <Compile Include="Actions\Samples\Providers\RadioRangeSamples.cs" />
     <Compile Include="Actions\Samples\Providers\TeslaSamples.cs" />
     <Compile Include="Actions\Samples\Sample.cs" />
     <Compile Include="Actions\SetAHPAction.cs" />
@@ -108,11 +114,13 @@
     <Compile Include="API\Enums\ExecuteContext.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
     <Compile Include="API\Enums\VariableGroupType.cs" />
-    <Compile Include="API\Helpers\CountdownHelper.cs" />
-    <Compile Include="API\Helpers\MsgGen.cs" />
+    <Compile Include="API\Features\CountdownHelper.cs" />
+    <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
+    <Compile Include="Variables\Condition\IntercomVariables.cs" />
+    <Compile Include="Variables\Condition\MapVariables.cs" />
     <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
     <Compile Include="Actions\Interfaces\ICustomReadDisplay.cs" />
@@ -174,11 +182,9 @@
     <Compile Include="Actions\WaitForSecondsAction.cs" />
     <Compile Include="Actions\WaitUntilDebugAction.cs" />
     <Compile Include="Actions\WaitUntilAction.cs" />
-    <Compile Include="API\Features\Aliases\Alias.cs" />
-    <Compile Include="API\Features\Aliases\AliasExtensions.cs" />
-    <Compile Include="API\Helpers\ApiHelper.cs" />
+    <Compile Include="API\Features\ApiHelper.cs" />
     <Compile Include="Commands\MainCommand\ExecuteScript.cs" />
-    <Compile Include="API\Helpers\ConditionHelper.cs" />
+    <Compile Include="API\Features\ConditionHelper.cs" />
     <Compile Include="Conditions\Floats\Equal.cs" />
     <Compile Include="Conditions\Floats\LessThan.cs" />
     <Compile Include="Conditions\Floats\GreaterThan.cs" />
@@ -207,7 +213,7 @@
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
-    <Compile Include="API\Helpers\ScriptHelper.cs" />
+    <Compile Include="API\Features\ScriptHelper.cs" />
     <Compile Include="Structures\InfectRule.cs" />
     <Compile Include="Variables\Interfaces\IBoolVariable.cs" />
     <Compile Include="Variables\Interfaces\IConditionVariable.cs" />
@@ -228,7 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">
-      <Version>6.0.0-beta.26</Version>
+      <Version>7.0.3</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>

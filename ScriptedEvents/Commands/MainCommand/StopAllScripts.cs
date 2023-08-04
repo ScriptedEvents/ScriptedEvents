@@ -4,7 +4,7 @@
     using System.IO;
     using CommandSystem;
     using Exiled.Permissions.Extensions;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class StopAllScripts : ICommand

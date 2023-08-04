@@ -8,9 +8,10 @@
     using Exiled.API.Features.Pools;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Variables.Condition;
     using ScriptedEvents.Variables.Condition.Roles;
+    using ScriptedEvents.Variables.Condition.Strings;
     using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
@@ -177,6 +178,11 @@
                 {
                     switch (condition)
                     {
+                        // Edge case to declare script source.
+                        case Show showVariable:
+                            showVariable.Source = source;
+                            input = input.Replace(variable, showVariable.Value);
+                            break;
                         case IBoolVariable @bool:
                             bool result = reversed ? !@bool.Value : @bool.Value;
                             input = input.Replace(variable, result ? "TRUE" : "FALSE");

@@ -18,8 +18,21 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
+            new IntercomSpeaker(),
             new Staff(),
         };
+    }
+
+    public class IntercomSpeaker : IPlayerVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{INTERCOMSPEAKER}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets the player who is speaking on the intercom.";
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(player => Intercom.Speaker == player);
     }
 
     public class Staff : IPlayerVariable

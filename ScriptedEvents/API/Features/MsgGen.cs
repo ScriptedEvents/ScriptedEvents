@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.API.Helpers
+﻿namespace ScriptedEvents.API.Features
 {
     using System;
     using System.Collections.Generic;

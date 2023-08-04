@@ -2,7 +2,7 @@
 {
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
 
     /// <summary>
     /// Represents a response to an action execution.

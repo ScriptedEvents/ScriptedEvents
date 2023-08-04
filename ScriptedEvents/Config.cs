@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using Exiled.API.Interfaces;
-    using ScriptedEvents.API.Features.Aliases;
 
     public class Config : IConfig
     {
@@ -30,12 +29,8 @@
         [Description("The string to use for countdowns.")]
         public string CountdownString { get; set; } = "<size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\\n{TIME}";
 
-        // todo: un-alias door commands, because they dont have duration anymore
-        [Description("Define a custom set of actions and the action they run when used.")]
-        public List<Alias> Aliases { get; set; } = new()
-        {
-            new("LOCKDOORBRIEF", "DOOR LOCK * 10"),
-        };
+        [Description("The maximum amount of actions that can run in one second, before the script is force-stopped. Increasing this value allows for more actions to occur at the same time, but increases the risk of the server crashing (or restarting due to missed heartbeats). This maximum can be bypassed entirely by including the \"!-- NOSAFETY\" flag in a script.")]
+        public int MaxActionsPerSecond { get; set; } = 25;
 
         [Description("Define a custom set of permissions used to run a certain script. The provided permission will be added AFTER script.execute (eg. script.execute.examplepermission for the provided example).")]
         public Dictionary<string, string> RequiredPermissions { get; set; } = new()

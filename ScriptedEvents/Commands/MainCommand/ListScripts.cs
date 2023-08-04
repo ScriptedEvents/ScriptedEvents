@@ -7,7 +7,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.Permissions.Extensions;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ListScripts : ICommand

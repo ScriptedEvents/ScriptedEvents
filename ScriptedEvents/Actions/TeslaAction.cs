@@ -10,7 +10,7 @@
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using Tesla = Exiled.API.Features.TeslaGate;
 

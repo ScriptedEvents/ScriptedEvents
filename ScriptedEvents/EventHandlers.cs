@@ -5,7 +5,10 @@
     using System.Data;
     using System.IO;
     using System.Linq;
+    using System.Xml.Linq;
+    using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -16,7 +19,7 @@
     using PlayerRoles;
     using Respawning;
     using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
     using UnityEngine;
@@ -80,6 +83,26 @@
         /// </summary>
         public Dictionary<RoleTypeId, int> Kills { get; } = new();
 
+        /// <summary>
+        /// Gets a dictionary of players with locked radio settings.
+        /// </summary>
+        public Dictionary<Player, RadioRange> LockedRadios { get; } = new();
+
+        /// <summary>
+        /// Gets  a dictionary of permanent player-specific effects.
+        /// </summary>
+        public Dictionary<Player, List<Effect>> PermPlayerEffects { get; } = new();
+
+        /// <summary>
+        /// Gets  a dictionary of permanent team-specific effects.
+        /// </summary>
+        public Dictionary<Team, List<Effect>> PermTeamEffects { get; } = new();
+
+        /// <summary>
+        /// Gets a dictionary of permanent role-specific effects.
+        /// </summary>
+        public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; } = new();
+
         public void OnRestarting()
         {
             RespawnWaves = 0;
@@ -92,6 +115,11 @@
             PlayerVariables.ClearVariables();
             DisabledKeys.Clear();
             Kills.Clear();
+            LockedRadios.Clear();
+
+            PermPlayerEffects.Clear();
+            PermTeamEffects.Clear();
+            PermRoleEffects.Clear();
 
             if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
             {
@@ -199,6 +227,89 @@
             RecentlyRespawned.AddRange(ev.Players);
         }
 
+        // Perm Effects: Spawned
+        public void OnSpawned(SpawnedEventArgs ev)
+        {
+            if (PermPlayerEffects.TryGetValue(ev.Player, out var effects))
+            {
+                effects.ForEach(eff => ev.Player.EnableEffect(eff));
+            }
+
+            if (PermTeamEffects.TryGetValue(ev.Player.Role.Team, out var effects2))
+            {
+                effects2.ForEach(eff => ev.Player.EnableEffect(eff));
+            }
+
+            if (PermRoleEffects.TryGetValue(ev.Player.Role.Type, out var effects3))
+            {
+                effects3.ForEach(eff => ev.Player.EnableEffect(eff));
+            }
+        }
+
+        // Reflection: ON config
+        public void OnAnyEvent(string eventName, IExiledEvent ev = null)
+        {
+            if (MainPlugin.Configs.On.TryGetValue(eventName, out List<string> scripts))
+            {
+                foreach (string script in scripts)
+                {
+                    try
+                    {
+                        Script scr = ScriptHelper.ReadScript(script, null);
+
+                        // Add variables based on event.
+                        if (ev is IPlayerEvent playerEvent)
+                        {
+                            scr.AddPlayerVariable("{EVPLAYER}", "The player that is involved with this event.", new[] { playerEvent.Player });
+                        }
+
+                        if (ev is IAttackerEvent attackerEvent)
+                        {
+                            scr.AddPlayerVariable("{EVATTACKER}", "The attacker that is involved with this event.", new[] { attackerEvent.Attacker });
+                        }
+
+                        if (ev is IItemEvent item)
+                        {
+                            scr.AddVariable("{EVITEM}", "The ItemType of the item involved with this event.", item.Item.Type.ToString());
+                        }
+                        else if (ev is IPickupEvent pickup)
+                        {
+                            scr.AddVariable("{EVITEM}", "The ItemType of the pickup associated with this event.", pickup.Pickup.Type.ToString());
+                        }
+
+                        ScriptHelper.RunScript(scr);
+                    }
+                    catch (DisabledScriptException)
+                    {
+                        Log.Warn($"Error in 'On' handler (event: {eventName}): Script '{script}' is disabled!");
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        Log.Warn($"Error in 'On' handler (event: {eventName}): Script '{script}' cannot be found!");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warn($"Error in 'On' handler (event: {eventName}): {ex}");
+                    }
+                }
+            }
+        }
+
+        public void OnArgumentedEvent<T>(T ev)
+            where T : IExiledEvent
+        {
+            Type evType = typeof(T);
+            string evName = evType.Name.Replace("EventArgs", string.Empty);
+            OnAnyEvent(evName, ev);
+        }
+
+        /*public void OnNonArgumentedEvent()
+        {
+            Type evType = typeof(T);
+            string evName = evType.Name.Replace("EventArgs", string.Empty);
+            OnAnyEvent(evName, ev);
+        }*/
+
         // Infection
         public void OnDied(DiedEventArgs ev)
         {
@@ -251,6 +362,16 @@
             }
         }
 
+        public void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            if (!ev.IsAllowed) return;
+
+            if (LockedRadios.ContainsKey(ev.Player))
+            {
+                LockedRadios.Remove(ev.Player);
+            }
+        }
+
         public void OnHurting(HurtingEventArgs ev)
         {
             if (DisabledKeys.Contains("HURTING"))
@@ -299,6 +420,23 @@
         public void OnEscaping(EscapingEventArgs ev)
         {
             if (DisabledKeys.Contains("ESCAPING"))
+                ev.IsAllowed = false;
+        }
+
+        // Radio locks
+        public void OnPickingUpItem(PickingUpItemEventArgs ev)
+        {
+            if (!ev.IsAllowed) return;
+
+            if (ev.Pickup is RadioPickup radio && LockedRadios.TryGetValue(ev.Player, out RadioRange range))
+            {
+                radio.Range = range;
+            }
+        }
+
+        public void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev)
+        {
+            if (LockedRadios.ContainsKey(ev.Player))
                 ev.IsAllowed = false;
         }
 

@@ -31,6 +31,9 @@
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
+        /// <summary>
+        /// Gets the <see cref="Func{T, TResult}"/> to execute when this action is executed.
+        /// </summary>
         public Func<string[], Tuple<bool, string>> Action { get; }
 
         /// <inheritdoc/>

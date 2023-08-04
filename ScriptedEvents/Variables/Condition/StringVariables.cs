@@ -67,7 +67,6 @@
 
     public class Show : IStringVariable, IArgumentVariable
     {
-
         /// <inheritdoc/>
         public string Name => "{SHOW}";
 
@@ -79,8 +78,10 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(string), "The name of the player variable to show.", true),
-            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, ROLE, TEAM, ROOM, ZONE.", false),
+            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, USERID, PLAYERID, ROLE, TEAM, ROOM, ZONE, HP, HEALTH.", false),
         };
+
+        public Script Source { get; set; } = null;
 
         /// <inheritdoc/>
         public string Value
@@ -97,7 +98,7 @@
 
                 string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
 
-                var variable = PlayerVariables.GetVariable($"{{{name}}}");
+                var variable = PlayerVariables.GetVariable($"{{{name}}}", Source);
                 if (variable is not null)
                 {
                     IOrderedEnumerable<string> display = variable.Players.Select(ply =>
@@ -105,10 +106,13 @@
                         return selector switch
                         {
                             "NAME" => ply.Nickname,
+                            "USERID" => ply.UserId,
+                            "PLAYERID" => ply.Id.ToString(),
                             "ROLE" => ply.Role.Type.ToString(),
                             "TEAM" => ply.Role.Team.ToString(),
                             "ROOM" => ply.CurrentRoom.Type.ToString(),
                             "ZONE" => ply.Zone.ToString(),
+                            "HP" or "HEALTH" => ply.Health.ToString(),
                             _ => ply.Nickname,
                         };
                     }).OrderBy(s => s);

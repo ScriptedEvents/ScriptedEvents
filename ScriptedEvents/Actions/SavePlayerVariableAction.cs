@@ -6,7 +6,7 @@
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Handlers;
     using UnityEngine;
@@ -45,7 +45,7 @@
 
             if (Arguments.Length > 2)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2), script));
+                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
@@ -62,7 +62,7 @@
 
             Player[] plys;
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out plys))
+            if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             PlayerVariables.DefineVariable(Arguments[0], "User-defined variable.", plys);

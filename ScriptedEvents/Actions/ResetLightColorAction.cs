@@ -6,7 +6,7 @@
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Helpers;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
 
     public class ResetLightColorAction : IScriptAction, IHelpInfo
@@ -42,7 +42,7 @@
 
             foreach (Room room in rooms)
             {
-                if (room.FlickerableLightController is not null)
+                if (room.RoomLightController is not null)
                     room.ResetColor();
             }
 
