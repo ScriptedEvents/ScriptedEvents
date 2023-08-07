@@ -24,6 +24,7 @@
             new NextWave(),
             new LastRespawnTeam(),
             new LastUnitName(),
+            new Len(),
             new Show(),
             new DoorState(),
         };
@@ -65,6 +66,46 @@
         public string Value => MainPlugin.Handlers.MostRecentSpawnUnit;
     }
 
+    public class Len : IFloatVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LEN}";
+
+        /// <inheritdoc/>
+        public string Description => "Reveals the length of a player variable.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("name", typeof(string), "The name of the player variable to retrieve the length of.", true),
+        };
+
+        public Script Source { get; set; } = null;
+
+        /// <inheritdoc/>
+        public float Value
+        {
+            get
+            {
+                if (Arguments.Length == 0)
+                    return -1f;
+
+                string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
+
+                var variable = PlayerVariables.GetVariable($"{{{name}}}", Source);
+                if (variable is not null)
+                {
+                    return variable.Players.Count();
+                }
+
+                return -1f;
+            }
+        }
+    }
+
     public class Show : IStringVariable, IArgumentVariable
     {
         /// <inheritdoc/>
@@ -73,8 +114,10 @@
         /// <inheritdoc/>
         public string Description => "Reveal certain properties about the players in a player variable.";
 
+        /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(string), "The name of the player variable to show.", true),
