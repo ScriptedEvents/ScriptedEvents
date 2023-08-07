@@ -71,6 +71,8 @@
             string variableName;
             List<string> argList = ListPool<string>.Pool.Get();
 
+            source.DebugLog($"Attempting to retrieve variable '{name}'");
+
             string[] arguments = name.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
             if (arguments.Length == 1)
             {

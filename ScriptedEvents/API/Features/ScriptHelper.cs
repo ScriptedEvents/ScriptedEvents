@@ -6,6 +6,7 @@ namespace ScriptedEvents.API.Features
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text.RegularExpressions;
     using CommandSystem;
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -106,7 +107,16 @@ namespace ScriptedEvents.API.Features
                     continue;
                 }
 
-                string[] actionParts = action.Split(' ');
+                // Regular string.Split(' '), except ignore spaces inside of variable names
+                // Allows spaces in variable names without giving a bizarre error.
+                MatchCollection collection = Regex.Matches(action, "\\[[^]]*]|\\{[^}]*}|[^ ]+");
+                List<string> actionParts = ListPool<string>.Pool.Get();
+
+                foreach (Match m in collection)
+                {
+                    actionParts.Add(m.Value);
+                }
+
                 string keyword = actionParts[0].RemoveWhitespace();
 
                 // Labels
@@ -150,6 +160,7 @@ namespace ScriptedEvents.API.Features
                 newAction.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
                 actionList.Add(newAction);
+                ListPool<string>.Pool.Return(actionParts);
             }
 
             string scriptPath = GetFilePath(scriptName);
@@ -226,6 +237,7 @@ namespace ScriptedEvents.API.Features
         /// <returns>Whether or not any players were found.</returns>
         public static bool TryGetPlayers(string input, int? amount, out Player[] plys, Script source = null)
         {
+            source.DebugLog($"DEBUG {input}");
             input = input.RemoveWhitespace();
             List<Player> list = ListPool<Player>.Pool.Get();
             if (input.ToUpper() is "*" or "ALL")
