@@ -17,7 +17,7 @@
         public override string Command => "scriptedevents";
 
         /// <inheritdoc/>
-        public override string[] Aliases => new[] { "scr", "script", "event", "events" };
+        public override string[] Aliases => new[] { "scr", "script" };
 
         /// <inheritdoc/>
         public override string Description => "Parent command for the Scripted Events plugin.";
@@ -43,7 +43,7 @@
             sb.AppendLine("- SCRIPT EXECUTE <SCRIPTNAME> - Executes the script with the given name. (alias: ex, run)");
             sb.AppendLine("- SCRIPT LIST - Lists all scripts and their respective permissions & last read & edited time.");
             sb.AppendLine("- SCRIPT LISTR - Lists all scripts that are currently running.");
-            sb.AppendLine("- SCRIPT READ <SCRIPTNAME> - Reads a script and returns a list of all of its actions.");
+            sb.AppendLine("- SCRIPT RSR <SCRIPTNAME> - Reads a script and returns a list of all of its actions.");
             sb.AppendLine("- SCRIPT STOPALL - Stops all currently executing scripts.");
 
             response = StringBuilderPool.Pool.ToStringReturn(sb);

@@ -17,7 +17,7 @@
         public string Command => "readscript";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "read", "r" };
+        public string[] Aliases => new[] { "readscr", "rsr" };
 
         /// <inheritdoc/>
         public string Description => "Start a script.";
