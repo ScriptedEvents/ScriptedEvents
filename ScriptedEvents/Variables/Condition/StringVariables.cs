@@ -112,7 +112,7 @@
         public string Name => "{SHOW}";
 
         /// <inheritdoc/>
-        public string Description => "Reveal certain properties about the players in a player variable.";
+        public string Description => "Reveal certain properties about the players in a player variable. This variable is designed to only be used with a player variable containing one player. However, it CAN be used with multiple players, and will list the display in the form of a comma-separated list.";
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
@@ -158,6 +158,7 @@
                             "HP" or "HEALTH" => ply.Health.ToString(),
                             "INVCOUNT" => ply.Items.Count.ToString(),
                             "INV" => string.Join(", ", ply.Items.Select(item => item.Type)),
+                            "GOD" => ply.IsGodModeEnabled.ToString().ToUpper(),
                             _ => ply.Nickname,
                         };
                     }).OrderBy(s => s);
