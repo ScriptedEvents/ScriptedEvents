@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\CustomInfoAction.cs" />
+    <Compile Include="Actions\DeleteInfectRule.cs" />
     <Compile Include="Actions\HintPlayerAction.cs" />
     <Compile Include="Actions\HintAction.cs" />
     <Compile Include="Actions\ClearCassieAction.cs" />
