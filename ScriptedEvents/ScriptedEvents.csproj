@@ -112,6 +112,7 @@
     <Compile Include="Actions\TpDoorAction.cs" />
     <Compile Include="Actions\TpRoomAction.cs" />
     <Compile Include="Actions\TpxAction.cs" />
+    <Compile Include="Actions\WaitForMillisecondsAction.cs" />
     <Compile Include="API\Enums\ActionSubgroup.cs" />
     <Compile Include="API\Enums\ExecuteContext.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
