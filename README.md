@@ -23,7 +23,7 @@ Fair warning: This plugin is very complex and has a lot of features. However, on
 ### Default Config
 ```yml
 scripted_events:
-  # Whether or not to enable the Scripted Events plugin.
+# Whether or not to enable the Scripted Events plugin.
   is_enabled: true
   debug: false
   # Enable logs for starting/stopping scripts.
@@ -37,11 +37,9 @@ scripted_events:
   # List of scripts to automatically re-run as soon as they finish.
   loop_scripts: []
   # The string to use for countdowns.
-  countdown_string: <size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\n{TIME}
-  # Define a custom set of actions and the action they run when used.
-  aliases:
-  - command: LOCKDOORBRIEF
-    execute: DOOR LOCK * 10
+  countdown_string: '<size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\n{TIME}'
+  # The maximum amount of actions that can run in one second, before the script is force-stopped. Increasing this value allows for more actions to occur at the same time, but increases the risk of the server crashing (or restarting due to missed heartbeats). This maximum can be bypassed entirely by including the "!-- NOSAFETY" flag in a script.
+  max_actions_per_second: 25
   # Define a custom set of permissions used to run a certain script. The provided permission will be added AFTER script.execute (eg. script.execute.examplepermission for the provided example).
   required_permissions:
     ExampleScriptNameHere: examplepermission
