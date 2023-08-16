@@ -169,6 +169,9 @@
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
                 result = new(customValue, false);
 
+            if (DefinedPlayerVariables.TryGetValue(name, out CustomPlayerVariable customPlayerValue))
+                result = new(customPlayerValue, false);
+
             if (source is not null && source.UniqueVariables.TryGetValue(name, out CustomVariable customValue2))
                 result = new(customValue2, false);
 
@@ -200,12 +203,6 @@
                     players = plrVariable.Players;
                     return true;
                 }
-            }
-
-            if (DefinedPlayerVariables.TryGetValue(name, out CustomPlayerVariable customValue))
-            {
-                players = customValue.Players;
-                return true;
             }
 
             players = null;
