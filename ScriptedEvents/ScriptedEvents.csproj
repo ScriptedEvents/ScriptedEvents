@@ -108,6 +108,7 @@
     <Compile Include="Actions\SetMaxHPAction.cs" />
     <Compile Include="Actions\SetHPAction.cs" />
     <Compile Include="Actions\ReskinAction.cs" />
+    <Compile Include="Actions\AdvSetRoleAction.cs" />
     <Compile Include="Actions\TicketAction.cs" />
     <Compile Include="Actions\TpDoorAction.cs" />
     <Compile Include="Actions\TpRoomAction.cs" />
