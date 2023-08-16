@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class HintPlayerAction : IScriptAction, IHelpInfo
     {
@@ -50,7 +50,7 @@
                 return new(MessageType.NotANumber, this, "duration", Arguments[0]);
             }
 
-            string message = string.Join(" ", Arguments.Skip(2).Select(arg => ConditionVariables.ReplaceVariables(arg, script)));
+            string message = string.Join(" ", Arguments.Skip(2).Select(arg => VariableSystem.ReplaceVariables(arg, script)));
             foreach (Player player in players)
             {
                 player.ShowHint(message, duration);

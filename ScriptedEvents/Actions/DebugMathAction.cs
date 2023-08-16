@@ -5,7 +5,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class DebugMathAction : IScriptAction, IHiddenAction
     {
@@ -24,7 +24,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments), script);
+            string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments), script);
             if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
                 return new(MessageType.NotANumberOrCondition, this, "condition", formula, result);

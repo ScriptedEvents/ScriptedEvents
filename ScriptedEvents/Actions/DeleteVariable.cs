@@ -4,7 +4,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
     public class DeleteVariable : IScriptAction, IHelpInfo
@@ -34,9 +34,9 @@
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-            if (ConditionVariables.DefinedVariables.ContainsKey(Arguments[0]))
+            if (VariableSystem.DefinedVariables.ContainsKey(Arguments[0]))
             {
-                ConditionVariables.DefinedVariables.Remove(Arguments[0]);
+                VariableSystem.DefinedVariables.Remove(Arguments[0]);
                 return new(true);
             }
 

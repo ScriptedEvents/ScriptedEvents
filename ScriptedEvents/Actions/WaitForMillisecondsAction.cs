@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class WaitForMillisecondsAction : ITimingAction, IHelpInfo
     {
@@ -40,7 +40,7 @@
                 return null;
             }
 
-            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments), script);
+            string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments), script);
 
             if (!ConditionHelper.TryMath(formula, out MathResult result))
             {

@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition
+﻿namespace ScriptedEvents.Variables.Intercom
 {
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;

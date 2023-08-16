@@ -11,7 +11,7 @@
     using ScriptedEvents.Conditions.Interfaces;
     using ScriptedEvents.Conditions.Strings;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     /// <summary>
     /// A set of methods and API for handling conditions and math equations.
@@ -145,7 +145,7 @@
         /// <returns>The result of the condition.</returns>
         public static ConditionResponse Evaluate(string input, Script source = null)
         {
-            input = ConditionVariables.ReplaceVariables(input, source);
+            input = VariableSystem.ReplaceVariables(input, source);
             string newWholeString = input;
 
             MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");
@@ -163,7 +163,7 @@
 
         private static ConditionResponse EvaluateAndOr(string input, bool last = false)
         {
-            if (!last && TryMath(ConditionVariables.ReplaceVariables(input), out MathResult result))
+            if (!last && TryMath(VariableSystem.ReplaceVariables(input), out MathResult result))
             {
                 float output = (float)result.Result;
                 return new(true, true, string.Empty, output);
@@ -202,7 +202,7 @@
 
         private static ConditionResponse EvaluateInternal(string input)
         {
-            input = ConditionVariables.ReplaceVariables(input.RemoveWhitespace()).Trim(); // Kill all whitespace & replace variables
+            input = VariableSystem.ReplaceVariables(input.RemoveWhitespace()).Trim(); // Kill all whitespace & replace variables
 
             // Code for simple checks
             if (input.ToLowerInvariant() is "true" or "1")

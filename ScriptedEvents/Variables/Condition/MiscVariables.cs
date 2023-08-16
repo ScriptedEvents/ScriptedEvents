@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.Misc
+﻿namespace ScriptedEvents.Variables.Misc
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Collections.Generic;

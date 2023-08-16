@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition
+﻿namespace ScriptedEvents.Variables.Map
 {
     using System.Linq;
 

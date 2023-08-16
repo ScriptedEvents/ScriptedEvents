@@ -14,7 +14,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
     public class HelpAction : IScriptAction, IHelpInfo
@@ -97,7 +97,7 @@
             // List Variables
             if (Arguments[0].ToUpper() is "LISTVAR" or "VARLIST")
             {
-                var conditionList = ConditionVariables.Groups.OrderBy(group => group.GroupName);
+                var conditionList = VariableSystem.Groups.OrderBy(group => group.GroupName);
 
                 StringBuilder sbList = StringBuilderPool.Pool.Get();
                 sbList.AppendLine();
@@ -118,18 +118,18 @@
 
                 sbList.AppendLine("+ Script Defined +");
                 sbList.AppendLine("These variables are defined by a script. These variables can be used in any script and are erased when the round restarts.");
-                if (ConditionVariables.DefinedVariables.Count == 0)
+                if (VariableSystem.DefinedVariables.Count == 0)
                 {
                     sbList.AppendLine("None");
                 }
                 else
                 {
-                    foreach (var userDefined in ConditionVariables.DefinedVariables.OrderBy(v => v.Key))
+                    foreach (var userDefined in VariableSystem.DefinedVariables.OrderBy(v => v.Key))
                     {
                         sbList.AppendLine($"{userDefined.Value.Name}");
                     }
 
-                    foreach (var userDefined2 in ConditionVariables.DefinedPlayerVariables.OrderBy(v => v.Key))
+                    foreach (var userDefined2 in VariableSystem.DefinedPlayerVariables.OrderBy(v => v.Key))
                     {
                         sbList.AppendLine($"[*] {userDefined2.Value.Name}");
                     }
@@ -216,7 +216,7 @@
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
 
-                if (ConditionVariables.TryGetVariable(Arguments[0].ToUpper(), out IConditionVariable variable, out bool reversed, script))
+                if (VariableSystem.TryGetVariable(Arguments[0].ToUpper(), out IConditionVariable variable, out bool reversed, script))
                 {
                     valid = true;
                     sb.AppendLine("=== VARIABLE ===");

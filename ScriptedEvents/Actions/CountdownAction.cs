@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class CountdownAction : IScriptAction, IHelpInfo
     {
@@ -49,7 +49,7 @@
             string text = null;
 
             if (Arguments.Length > 2)
-                text = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
+                text = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
             foreach (Player ply in players)
                 CountdownHelper.AddCountdown(ply, text, TimeSpan.FromSeconds(duration));

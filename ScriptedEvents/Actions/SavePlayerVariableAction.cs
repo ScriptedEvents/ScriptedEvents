@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
     using UnityEngine;
 
     public class SavePlayerVariableAction : IScriptAction, IHelpInfo
@@ -45,7 +45,7 @@
 
             if (Arguments.Length > 2)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
+                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {
@@ -65,7 +65,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            ConditionVariables.DefineVariable(Arguments[0], "Script-defined variable.", plys);
+            VariableSystem.DefineVariable(Arguments[0], "Script-defined variable.", plys);
 
             return new(true);
         }

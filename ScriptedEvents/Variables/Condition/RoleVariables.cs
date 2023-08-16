@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.Roles
+﻿namespace ScriptedEvents.Variables.Roles
 {
     using System;
     using System.Collections.Generic;

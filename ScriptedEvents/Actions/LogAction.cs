@@ -6,7 +6,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class LogAction : IScriptAction, IHelpInfo
     {
@@ -34,7 +34,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Info(string.Join(" ", Arguments.Select(r => ConditionVariables.ReplaceVariables(r, script))));
+            Log.Info(string.Join(" ", Arguments.Select(r => VariableSystem.ReplaceVariables(r, script))));
             return new(true);
         }
     }

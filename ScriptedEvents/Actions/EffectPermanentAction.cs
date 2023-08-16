@@ -9,7 +9,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
     using UnityEngine;
 
     public class EffectPermanentAction : IScriptAction, IHelpInfo

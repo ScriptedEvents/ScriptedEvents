@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.Zone
+﻿namespace ScriptedEvents.Variables.Zone
 {
     using System.Collections;
     using System.Collections.Generic;

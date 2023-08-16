@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class WaitUntilDebugAction : ITimingAction, IHiddenAction, IHelpInfo
     {
@@ -55,7 +55,7 @@
             while (true)
             {
                 ConditionResponse response = ConditionHelper.Evaluate(input, script);
-                Log.Info($"CONDITION: {ConditionVariables.ReplaceVariables(input)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}");
+                Log.Info($"CONDITION: {VariableSystem.ReplaceVariables(input)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}");
                 if (response.Success)
                 {
                     if (response.Passed)

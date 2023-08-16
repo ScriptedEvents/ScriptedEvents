@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Handlers
+﻿namespace ScriptedEvents.Variables
 {
     using System;
     using System.Collections.Generic;
@@ -10,15 +10,14 @@
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.Variables.Condition;
-    using ScriptedEvents.Variables.Condition.Roles;
-    using ScriptedEvents.Variables.Condition.Strings;
+    using ScriptedEvents.Variables.Roles;
+    using ScriptedEvents.Variables.Strings;
     using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
     /// A class used to store and retrieve all variables.
     /// </summary>
-    public static class ConditionVariables
+    public static class VariableSystem
     {
         /// <summary>
         /// Maps each <see cref="RoleTypeId"/> variable (eg. "{SCP173}") to a respective <see cref="RoleTypeVariable"/>.

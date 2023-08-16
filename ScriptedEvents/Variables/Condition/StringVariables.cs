@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.Strings
+﻿namespace ScriptedEvents.Variables.Strings
 {
     using System;
 #pragma warning disable SA1402 // File may only contain a single type
@@ -7,7 +7,7 @@
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
     public class StringVariables : IVariableGroup
@@ -95,7 +95,7 @@
 
                 string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
 
-                var conditionVariable = ConditionVariables.GetVariable($"{{{name}}}", Source);
+                var conditionVariable = VariableSystem.GetVariable($"{{{name}}}", Source);
                 if (conditionVariable.Item1 is not null)
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)
@@ -146,7 +146,7 @@
 
                 string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
 
-                var conditionVariable = ConditionVariables.GetVariable($"{{{name}}}", Source);
+                var conditionVariable = VariableSystem.GetVariable($"{{{name}}}", Source);
                 if (conditionVariable.Item1 is not null)
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)

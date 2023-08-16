@@ -209,7 +209,7 @@
     <Compile Include="Variables\Condition\TicketsAndRespawnsVariables.cs" />
     <Compile Include="Variables\Condition\WorldTimeVariables.cs" />
     <Compile Include="Variables\Condition\ZoneVariables.cs" />
-    <Compile Include="Variables\Handlers\ConditionVariables.cs" />
+    <Compile Include="Variables\VariableSystem.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Actions\WarheadAction.cs" />
     <Compile Include="MainPlugin.cs" />

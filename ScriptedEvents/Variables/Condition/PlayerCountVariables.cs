@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.PlayerCount
+﻿namespace ScriptedEvents.Variables.PlayerCount
 {
     using System.Collections.Generic;
 #pragma warning disable SA1402 // File may only contain a single type.
