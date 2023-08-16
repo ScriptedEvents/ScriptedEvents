@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Condition.PlayerCount
 {
+    using System.Collections.Generic;
 #pragma warning disable SA1402 // File may only contain a single type.
     using System.Linq;
 
@@ -18,13 +19,13 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
-            new Players(),
+            new AllPlayers(),
             new PlayersAlive(),
             new PlayersDead(),
         };
     }
 
-    public class Players : IFloatVariable
+    public class AllPlayers : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{PLAYERS}";
@@ -34,9 +35,12 @@
 
         /// <inheritdoc/>
         public float Value => Player.List.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.List;
     }
 
-    public class PlayersAlive : IFloatVariable
+    public class PlayersAlive : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{PLAYERSALIVE}";
@@ -46,9 +50,12 @@
 
         /// <inheritdoc/>
         public float Value => Player.List.Count(p => p.IsAlive);
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.List.Where(p => p.IsAlive);
     }
 
-    public class PlayersDead : IFloatVariable
+    public class PlayersDead : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{PLAYERSDEAD}";
@@ -58,5 +65,8 @@
 
         /// <inheritdoc/>
         public float Value => Player.List.Count(p => p.IsDead);
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.List.Where(p => p.IsDead);
     }
 }

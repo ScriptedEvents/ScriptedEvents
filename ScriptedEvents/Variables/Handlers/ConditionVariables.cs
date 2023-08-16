@@ -6,6 +6,7 @@
     using System.Reflection;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Handlers;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
@@ -15,7 +16,7 @@
     using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
-    /// A class used to store and retrieve all non-player variables.
+    /// A class used to store and retrieve all variables.
     /// </summary>
     public static class ConditionVariables
     {
@@ -160,6 +161,21 @@
             reversed = res.Item2;
 
             return variable != null;
+        }
+
+        public static bool TryGetPlayers(string name, out IEnumerable<Exiled.API.Features.Player> players, Script source = null)
+        {
+            if (TryGetVariable(name, out IConditionVariable variable, out bool reversed, source))
+            {
+                if (variable is IPlayerVariable plrVariable)
+                {
+                    players = plrVariable.Players;
+                    return true;
+                }
+            }
+
+            players = null;
+            return false;
         }
 
         /// <summary>

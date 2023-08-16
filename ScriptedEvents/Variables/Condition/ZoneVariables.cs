@@ -1,5 +1,7 @@
 ﻿namespace ScriptedEvents.Variables.Condition.Zone
 {
+    using System.Collections;
+    using System.Collections.Generic;
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
     using Exiled.API.Enums;
@@ -26,7 +28,7 @@
         };
     }
 
-    public class LCZ : IFloatVariable
+    public class LCZ : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{LCZ}";
@@ -35,10 +37,13 @@
         public string Description => "The total amount of players in Light Containment Zone.";
 
         /// <inheritdoc/>
-        public float Value => Player.List.Count(ply => ply.Zone is ZoneType.LightContainment);
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.List.Where(ply => ply.Zone.HasFlag(ZoneType.LightContainment));
     }
 
-    public class HCZ : IFloatVariable
+    public class HCZ : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{HCZ}";
@@ -47,10 +52,13 @@
         public string Description => "The total amount of players in Heavy Containment Zone.";
 
         /// <inheritdoc/>
-        public float Value => Player.List.Count(ply => ply.Zone is ZoneType.HeavyContainment);
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.List.Where(ply => ply.Zone.HasFlag(ZoneType.HeavyContainment));
     }
 
-    public class EZ : IFloatVariable
+    public class EZ : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{EZ}";
@@ -59,10 +67,13 @@
         public string Description => "The total amount of players in Entrance Zone.";
 
         /// <inheritdoc/>
-        public float Value => Player.List.Count(ply => ply.Zone is ZoneType.Entrance);
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.List.Where(ply => ply.Zone.HasFlag(ZoneType.Entrance));
     }
 
-    public class Surface : IFloatVariable
+    public class Surface : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{SURFACE}";
@@ -71,10 +82,13 @@
         public string Description => "The total amount of players on the Surface.";
 
         /// <inheritdoc/>
-        public float Value => Player.List.Count(ply => ply.Zone is ZoneType.Surface);
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.List.Where(ply => ply.Zone.HasFlag(ZoneType.Surface));
     }
 
-    public class Pocket : IFloatVariable
+    public class Pocket : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{POCKET}";
@@ -83,6 +97,9 @@
         public string Description => "The total amount of players in the Pocket Dimension.";
 
         /// <inheritdoc/>
-        public float Value => Player.List.Count(ply => ply.CurrentRoom?.Type is RoomType.Pocket);
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.List.Where(ply => ply.CurrentRoom?.Type is RoomType.Pocket);
     }
 }

@@ -2,6 +2,8 @@
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.API.Features;
@@ -90,7 +92,7 @@
         public float Value => (float)MainPlugin.Handlers.TimeSinceWave.TotalSeconds;
     }
 
-    public class RespawnedPlayers : IFloatVariable, IArgumentVariable
+    public class RespawnedPlayers : IFloatVariable, IArgumentVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{RESPAWNEDPLAYERS}";
@@ -108,17 +110,20 @@
         };
 
         /// <inheritdoc/>
-        public float Value
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players
         {
             get
             {
                 if (Arguments.Length > 0 && Enum.TryParse(Arguments[0], true, out RoleTypeId rt))
                 {
                     Log.Info(Arguments[0]);
-                    return MainPlugin.Handlers.RecentlyRespawned.Where(ply => ply.Role == rt).Count();
+                    return MainPlugin.Handlers.RecentlyRespawned.Where(ply => ply.Role == rt);
                 }
 
-                return MainPlugin.Handlers.RecentlyRespawned.Count;
+                return MainPlugin.Handlers.RecentlyRespawned;
             }
         }
     }

@@ -226,10 +226,8 @@
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariableGroup.cs" />
-    <Compile Include="Variables\Player\CustomPlayerVariable.cs" />
-    <Compile Include="Variables\Player\MiscVariables.cs" />
-    <Compile Include="Variables\Player\RoleVariables.cs" />
-    <Compile Include="Variables\Player\ZoneVariables.cs" />
+    <Compile Include="Variables\Condition\CustomPlayerVariable.cs" />
+    <Compile Include="Variables\Condition\MiscVariables.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoScripts\DemoScript.cs" />

@@ -251,7 +251,7 @@ namespace ScriptedEvents.API.Features
                 string[] variables = ConditionHelper.IsolateVariables(input);
                 foreach (string variable in variables)
                 {
-                    if (PlayerVariables.TryGet(variable, out IEnumerable<Player> playersFromVariable, source))
+                    if (ConditionVariables.TryGetPlayers(variable, out IEnumerable<Player> playersFromVariable, source))
                     {
                         list.AddRange(playersFromVariable);
                     }
