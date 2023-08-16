@@ -50,9 +50,6 @@
                 {
                     IVariableGroup temp = (IVariableGroup)Activator.CreateInstance(type);
 
-                    if (temp.GroupType is not VariableGroupType.Condition)
-                        continue;
-
                     Log.Debug($"Adding variable group: {type.Name}");
                     Groups.Add(temp);
                 }

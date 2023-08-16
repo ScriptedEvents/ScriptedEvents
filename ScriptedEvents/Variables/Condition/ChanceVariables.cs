@@ -11,9 +11,6 @@
         public string GroupName => "Chances";
 
         /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
-
-        /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new Chance(),

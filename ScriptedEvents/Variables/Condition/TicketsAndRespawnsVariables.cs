@@ -18,9 +18,6 @@
         public string GroupName => "Tickets & Respawn Waves";
 
         /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
-
-        /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new NtfTickets(),

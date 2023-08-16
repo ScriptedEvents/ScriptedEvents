@@ -15,9 +15,6 @@
         public string GroupName => "Zone";
 
         /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
-
-        /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new LCZ(),

@@ -11,9 +11,6 @@
         public string GroupName => "World Time";
 
         /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
-
-        /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new DayOfWeek(),

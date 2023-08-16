@@ -14,9 +14,6 @@
         public string GroupName => "Players";
 
         /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
-
-        /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new AllPlayers(),

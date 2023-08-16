@@ -10,8 +10,6 @@
     {
         public string GroupName => "Intercom";
 
-        public VariableGroupType GroupType => VariableGroupType.Condition;
-
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new IntercomReady(),

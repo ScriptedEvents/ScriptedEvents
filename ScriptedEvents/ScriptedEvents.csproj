@@ -116,7 +116,6 @@
     <Compile Include="API\Enums\ActionSubgroup.cs" />
     <Compile Include="API\Enums\ExecuteContext.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
-    <Compile Include="API\Enums\VariableGroupType.cs" />
     <Compile Include="API\Features\CountdownHelper.cs" />
     <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />

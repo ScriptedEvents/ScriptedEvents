@@ -17,9 +17,6 @@
         public string GroupName => "Kills & Deaths";
 
         /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
-
-        /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new Kills(),

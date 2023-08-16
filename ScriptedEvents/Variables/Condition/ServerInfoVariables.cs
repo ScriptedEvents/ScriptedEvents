@@ -11,9 +11,6 @@
         public string GroupName => "Server Info";
 
         /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
-
-        /// <inheritdoc/>
         public IVariable[] Variables => new IVariable[]
         {
             new HeavilyModded(),
