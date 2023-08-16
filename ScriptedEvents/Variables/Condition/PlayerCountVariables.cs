@@ -22,6 +22,7 @@
             new AllPlayers(),
             new PlayersAlive(),
             new PlayersDead(),
+            new Staff(),
         };
     }
 
@@ -68,5 +69,20 @@
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.List.Where(p => p.IsDead);
+    }
+
+    public class Staff : IFloatVariable, IPlayerVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{SERVERSTAFF}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets all of the staff on the server (RA access)";
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(player => player.RemoteAdminAccess);
     }
 }
