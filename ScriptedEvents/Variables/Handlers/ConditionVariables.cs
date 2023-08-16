@@ -117,6 +117,7 @@
         public static void ClearVariables()
         {
             DefinedVariables.Clear();
+            DefinedPlayerVariables.Clear();
         }
 
         /// <summary>

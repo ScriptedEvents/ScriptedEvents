@@ -112,7 +112,6 @@
 
             ScriptHelper.StopAllScripts();
             ConditionVariables.ClearVariables();
-            PlayerVariables.ClearVariables();
             DisabledKeys.Clear();
             Kills.Clear();
             LockedRadios.Clear();

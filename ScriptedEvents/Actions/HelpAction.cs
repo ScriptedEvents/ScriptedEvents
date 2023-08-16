@@ -97,26 +97,27 @@
             // List Variables
             if (Arguments[0].ToUpper() is "LISTVAR" or "VARLIST")
             {
-                var conditionList = ConditionVariables.Groups.Where(g => g.GroupType is VariableGroupType.Condition).OrderBy(group => group.GroupName);
-                var playerList = PlayerVariables.Groups.Where(g => g.GroupType is VariableGroupType.Player).OrderBy(group => group.GroupName);
+                var conditionList = ConditionVariables.Groups.OrderBy(group => group.GroupName);
 
                 StringBuilder sbList = StringBuilderPool.Pool.Get();
                 sbList.AppendLine();
-                sbList.AppendLine("=== CONDITION VARIABLES ===");
+                sbList.AppendLine("=== VARIABLES ===");
                 sbList.AppendLine("The following variables can all be used in conditions, such as IF, GOTOIF, WAITUNTIL, etc. Additionally, each RoleType has its own variable (eg. {NTFCAPTAIN}).");
+                sbList.AppendLine("An asterisk [*] before the name of a variable indicates it also stores players, which can be used in numerous actions such as SETROLE.");
 
                 foreach (IVariableGroup group in conditionList)
                 {
                     sbList.AppendLine($"+ {group.GroupName} +");
                     foreach (IVariable variable in group.Variables.OrderBy(v => v.Name))
                     {
-                        sbList.AppendLine($"{variable.Name} - {variable.Description}");
+                        sbList.AppendLine($"{(variable is IPlayerVariable ? "[*] " : string.Empty)}{variable.Name} - {variable.Description}");
                     }
 
                     sbList.AppendLine();
                 }
 
-                sbList.AppendLine("+ User Defined +");
+                sbList.AppendLine("+ Script Defined +");
+                sbList.AppendLine("These variables are defined by a script. These variables can be used in any script and are erased when the round restarts.");
                 if (ConditionVariables.DefinedVariables.Count == 0)
                 {
                     sbList.AppendLine("None");
@@ -127,33 +128,10 @@
                     {
                         sbList.AppendLine($"{userDefined.Value.Name}");
                     }
-                }
 
-                sbList.AppendLine();
-                sbList.AppendLine("=== PLAYER VARIABLES ===");
-                sbList.AppendLine("The following variables can all be used in player parameters, such as SETROLE, TESLA PLAYERS, etc. Additionally, each RoleType has its own variable (eg. {NTFCAPTAIN}).");
-
-                foreach (IVariableGroup group in playerList)
-                {
-                    sbList.AppendLine($"+ {group.GroupName} +");
-                    foreach (IVariable variable in group.Variables.OrderBy(v => v.Name))
+                    foreach (var userDefined2 in ConditionVariables.DefinedPlayerVariables.OrderBy(v => v.Key))
                     {
-                        sbList.AppendLine($"{variable.Name} - {variable.Description}");
-                    }
-
-                    sbList.AppendLine();
-                }
-
-                sbList.AppendLine("+ User Defined +");
-                if (PlayerVariables.DefinedVariables.Count == 0)
-                {
-                    sbList.AppendLine("None");
-                }
-                else
-                {
-                    foreach (var userDefined in PlayerVariables.DefinedVariables.OrderBy(v => v.Key))
-                    {
-                        sbList.AppendLine($"{userDefined.Value.Name}");
+                        sbList.AppendLine($"[*] {userDefined2.Value.Name}");
                     }
                 }
 
@@ -241,9 +219,10 @@
                 if (ConditionVariables.TryGetVariable(Arguments[0].ToUpper(), out IConditionVariable variable, out bool reversed, script))
                 {
                     valid = true;
-                    sb.AppendLine("=== CONDITION VARIABLE ===");
+                    sb.AppendLine("=== VARIABLE ===");
                     sb.AppendLine($"Name: {variable.Name}");
                     sb.AppendLine($"Description: {variable.Description}");
+                    sb.AppendLine($"Stores Players: {(variable is IPlayerVariable ? "YES" : "NO")}");
 
                     if (variable is IArgumentVariable argSupport1)
                     {
@@ -293,42 +272,12 @@
                         }
                     }
 
+                    if (variable is IPlayerVariable plrVar)
+                    {
+                        sb.AppendLine($"Current Players: {(plrVar.Players.Count() == 0 ? "[None]" : string.Join(", ", plrVar.Players.Select(ply => ply.Nickname)))}");
+                    }
+
                     sb.AppendLine();
-                }
-
-                if (PlayerVariables.TryGetVariable(Arguments[0], out IPlayerVariable playerVariable, script))
-                {
-                    valid = true;
-                    sb.AppendLine($"=== PLAYER VARIABLE ===");
-                    sb.AppendLine($"Name: {playerVariable.Name}");
-                    sb.AppendLine($"Description: {playerVariable.Description}");
-
-                    if (variable is IArgumentVariable argSupport1)
-                    {
-                        sb.AppendLine($"Usage: {playerVariable.Name.Substring(0, playerVariable.Name.Length - 1)}:{string.Join(":", argSupport1.ExpectedArguments.Select(arg => arg.ArgumentName.ToUpper()))}}}");
-                    }
-                    else
-                    {
-                        sb.AppendLine($"Usage: {playerVariable.Name}");
-                    }
-
-                    sb.AppendLine($"Current Value: {(playerVariable.Players.Count() == 0 ? "[None]" : string.Join(", ", playerVariable.Players.Select(ply => ply.Nickname)))}");
-
-                    if (variable is IArgumentVariable argSupport)
-                    {
-                        sb.AppendLine();
-                        sb.AppendLine("Arguments:");
-
-                        foreach (Argument arg in argSupport.ExpectedArguments)
-                        {
-                            string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
-                            sb.AppendLine();
-                            sb.AppendLine($"{chars[0]}{arg.ArgumentName}{chars[1]}");
-                            sb.AppendLine($"  Required: {(arg.Required ? "YES" : "NO")}");
-                            sb.AppendLine($"  Type: {arg.TypeString}");
-                            sb.AppendLine($"  {arg.Description}");
-                        }
-                    }
                 }
 
                 if (!valid)

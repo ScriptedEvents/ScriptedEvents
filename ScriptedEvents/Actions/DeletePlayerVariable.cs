@@ -34,9 +34,9 @@
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-            if (PlayerVariables.DefinedVariables.ContainsKey(Arguments[0]))
+            if (ConditionVariables.DefinedPlayerVariables.ContainsKey(Arguments[0]))
             {
-                PlayerVariables.DefinedVariables.Remove(Arguments[0]);
+                ConditionVariables.DefinedPlayerVariables.Remove(Arguments[0]);
                 return new(true);
             }
 

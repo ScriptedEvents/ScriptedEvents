@@ -187,7 +187,6 @@
             // Setup systems
             ApiHelper.RegisterActions();
             ConditionVariables.Setup();
-            PlayerVariables.Setup();
 
             // "On" config
             foreach (KeyValuePair<string, List<string>> ev in Configs.On)

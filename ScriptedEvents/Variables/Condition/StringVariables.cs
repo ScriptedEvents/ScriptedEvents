@@ -95,9 +95,14 @@
 
                 string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
 
-                var variable = PlayerVariables.GetVariable($"{{{name}}}", Source);
-                if (variable is not null)
+                var conditionVariable = ConditionVariables.GetVariable($"{{{name}}}", Source);
+                if (conditionVariable.Item1 is not null)
                 {
+                    if (conditionVariable.Item1 is not IPlayerVariable variable)
+                    {
+                        return -1f;
+                    }
+
                     return variable.Players.Count();
                 }
 

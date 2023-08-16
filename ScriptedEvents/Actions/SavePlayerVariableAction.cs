@@ -65,7 +65,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            PlayerVariables.DefineVariable(Arguments[0], "User-defined variable.", plys);
+            ConditionVariables.DefineVariable(Arguments[0], "Script-defined variable.", plys);
 
             return new(true);
         }
