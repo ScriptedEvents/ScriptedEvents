@@ -11,7 +11,6 @@
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Variables.Condition;
     using ScriptedEvents.Variables.Interfaces;
-    using ScriptedEvents.Variables.Player.Roles;
 
     /// <summary>
     /// A class used to store and retrieve all player variables.

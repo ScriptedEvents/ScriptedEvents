@@ -36,6 +36,11 @@
         internal static Dictionary<string, CustomVariable> DefinedVariables { get; } = new();
 
         /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables that were defined in run-time.
+        /// </summary>
+        internal static Dictionary<string, CustomPlayerVariable> DefinedPlayerVariables { get; } = new();
+
+        /// <summary>
         /// Sets up the player variable system by adding every <see cref="IVariable"/> related to conditional variables to the <see cref="Groups"/> list.
         /// </summary>
         public static void Setup()
@@ -75,6 +80,25 @@
         }
 
         /// <summary>
+        /// Defines a player variable.
+        /// </summary>
+        /// <param name="name">The name of the variable.</param>
+        /// <param name="desc">A description of the variable.</param>
+        /// <param name="players">The players.</param>
+        /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
+        public static void DefineVariable(string name, string desc, IEnumerable<Exiled.API.Features.Player> players)
+        {
+            name = name.RemoveWhitespace();
+
+            if (!name.StartsWith("{"))
+                name = "{" + name;
+            if (!name.EndsWith("}"))
+                name = name + "}";
+
+            DefinedPlayerVariables[name] = new(name, desc, players);
+        }
+
+        /// <summary>
         /// Removes a previously-defined variable.
         /// </summary>
         /// <param name="name">The name of the variable, with curly braces.</param>
@@ -82,6 +106,9 @@
         {
             if (DefinedVariables.ContainsKey(name))
                 DefinedVariables.Remove(name);
+
+            if (DefinedPlayerVariables.ContainsKey(name))
+                DefinedPlayerVariables.Remove(name);
         }
 
         /// <summary>
@@ -172,6 +199,12 @@
                     players = plrVariable.Players;
                     return true;
                 }
+            }
+
+            if (DefinedPlayerVariables.TryGetValue(name, out CustomPlayerVariable customValue))
+            {
+                players = customValue.Players;
+                return true;
             }
 
             players = null;
