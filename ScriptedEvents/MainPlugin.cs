@@ -13,7 +13,7 @@
     using MEC;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.DemoScripts;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
     using MapHandler = Exiled.Events.Handlers.Map;
     using PlayerHandler = Exiled.Events.Handlers.Player;
     using Scp330Handler = Exiled.Events.Handlers.Scp330;
@@ -186,8 +186,7 @@
 
             // Setup systems
             ApiHelper.RegisterActions();
-            ConditionVariables.Setup();
-            PlayerVariables.Setup();
+            VariableSystem.Setup();
 
             // "On" config
             foreach (KeyValuePair<string, List<string>> ev in Configs.On)

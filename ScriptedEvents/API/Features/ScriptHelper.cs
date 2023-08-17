@@ -20,7 +20,7 @@ namespace ScriptedEvents.API.Features
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
@@ -251,7 +251,7 @@ namespace ScriptedEvents.API.Features
                 string[] variables = ConditionHelper.IsolateVariables(input);
                 foreach (string variable in variables)
                 {
-                    if (PlayerVariables.TryGet(variable, out IEnumerable<Player> playersFromVariable, source))
+                    if (VariableSystem.TryGetPlayers(variable, out IEnumerable<Player> playersFromVariable, source))
                     {
                         list.AddRange(playersFromVariable);
                     }

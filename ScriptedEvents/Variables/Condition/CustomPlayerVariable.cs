@@ -1,13 +1,12 @@
-﻿namespace ScriptedEvents.Variables.Condition
+﻿namespace ScriptedEvents.Variables
 {
-#pragma warning disable SA1402 // File may only contain a single type
     using System.Collections.Generic;
-
+    using System.Linq;
     using Exiled.API.Features;
 
     using ScriptedEvents.Variables.Interfaces;
 
-    public class CustomPlayerVariable : IPlayerVariable
+    public class CustomPlayerVariable : IFloatVariable, IPlayerVariable
     {
         public CustomPlayerVariable()
         {
@@ -23,6 +22,8 @@
         public string Name { get; }
 
         public string Description { get; }
+
+        public float Value => Players.Count();
 
         public IEnumerable<Player> Players { get; }
     }

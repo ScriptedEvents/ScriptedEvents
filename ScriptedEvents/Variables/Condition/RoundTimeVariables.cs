@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.RoundTime
+﻿namespace ScriptedEvents.Variables.RoundTime
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using Exiled.API.Features;
@@ -9,9 +9,6 @@
     {
         /// <inheritdoc/>
         public string GroupName => "Round Time";
-
-        /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]

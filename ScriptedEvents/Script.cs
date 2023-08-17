@@ -9,7 +9,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.Variables.Condition;
+    using ScriptedEvents.Variables;
 
     /// <summary>
     /// Represents a script.

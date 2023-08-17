@@ -7,7 +7,7 @@
     using Exiled.API.Features;
     using ScriptedEvents.Actions;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     /// <summary>
     /// A set of tools for other plugins to add actions to Scripted Events.
@@ -132,7 +132,7 @@
         /// <returns>A tuple indicating success and the value.</returns>
         public static Tuple<bool, float> Math(string input)
         {
-            bool success = ConditionHelper.TryMath(ConditionVariables.ReplaceVariables(input), out MathResult result);
+            bool success = ConditionHelper.TryMath(VariableSystem.ReplaceVariables(input), out MathResult result);
             return new(success, result.Result);
         }
     }

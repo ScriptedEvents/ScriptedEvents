@@ -21,7 +21,7 @@
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
     using UnityEngine;
 
     public class EventHandlers
@@ -111,8 +111,7 @@
             MostRecentSpawnUnit = string.Empty;
 
             ScriptHelper.StopAllScripts();
-            ConditionVariables.ClearVariables();
-            PlayerVariables.ClearVariables();
+            VariableSystem.ClearVariables();
             DisabledKeys.Clear();
             Kills.Clear();
             LockedRadios.Clear();

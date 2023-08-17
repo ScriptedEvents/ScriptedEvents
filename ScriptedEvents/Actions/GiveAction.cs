@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
     using UnityEngine;
 
     public class GiveAction : IScriptAction, IHelpInfo
@@ -48,7 +48,7 @@
 
             if (Arguments.Length > 2)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
+                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
                 if (ConditionHelper.TryMath(formula, out MathResult result))
                 {

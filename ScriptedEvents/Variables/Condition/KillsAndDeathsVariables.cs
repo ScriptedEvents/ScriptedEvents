@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.KillsAndDeaths
+﻿namespace ScriptedEvents.Variables.KillsAndDeaths
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using System;
@@ -15,9 +15,6 @@
     {
         /// <inheritdoc/>
         public string GroupName => "Kills & Deaths";
-
-        /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]

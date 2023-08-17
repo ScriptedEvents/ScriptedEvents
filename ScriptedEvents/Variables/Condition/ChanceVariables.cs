@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.Chance
+﻿namespace ScriptedEvents.Variables.Chance
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using ScriptedEvents.API.Enums;
@@ -9,9 +9,6 @@
     {
         /// <inheritdoc/>
         public string GroupName => "Chances";
-
-        /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]

@@ -7,7 +7,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class SetHPAction : IScriptAction, IHelpInfo
     {
@@ -41,7 +41,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(1)), script);
+            string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(1)), script);
 
             if (!ConditionHelper.TryMath(formula, out MathResult result))
             {

@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition
+﻿namespace ScriptedEvents.Variables
 {
     using ScriptedEvents.Variables.Interfaces;
 

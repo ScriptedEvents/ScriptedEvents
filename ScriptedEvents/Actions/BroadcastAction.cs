@@ -6,7 +6,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class BroadcastAction : IScriptAction, IHelpInfo
     {
@@ -42,7 +42,7 @@
                 return new(MessageType.NotANumber, this, "duration", Arguments[0]);
             }
 
-            string message = string.Join(" ", Arguments.Skip(1).Select(arg => ConditionVariables.ReplaceVariables(arg, script)));
+            string message = string.Join(" ", Arguments.Skip(1).Select(arg => VariableSystem.ReplaceVariables(arg, script)));
             Map.Broadcast((ushort)duration, message);
             return new(true);
         }

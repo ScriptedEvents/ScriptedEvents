@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class SizeAction : IScriptAction, IHelpInfo
     {
@@ -55,7 +55,7 @@
 
             if (Arguments.Length > 4)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(4)), script);
+                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(4)), script);
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {

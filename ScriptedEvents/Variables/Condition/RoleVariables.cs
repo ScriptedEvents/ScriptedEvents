@@ -1,19 +1,19 @@
-﻿namespace ScriptedEvents.Variables.Condition.Roles
+﻿namespace ScriptedEvents.Variables.Roles
 {
+    using System;
+    using System.Collections.Generic;
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
     using Exiled.API.Features;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
     public class RoleVariables : IVariableGroup
     {
         /// <inheritdoc/>
         public string GroupName => "Roles";
-
-        /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
@@ -28,7 +28,7 @@
         };
     }
 
-    public class Guards : IFloatVariable
+    public class Guards : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{GUARDS}";
@@ -38,9 +38,12 @@
 
         /// <inheritdoc/>
         public float Value => Player.Get(RoleTypeId.FacilityGuard).Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(RoleTypeId.FacilityGuard);
     }
 
-    public class MtfAndGuards : IFloatVariable
+    public class MtfAndGuards : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{MTFANDGUARDS}";
@@ -50,9 +53,12 @@
 
         /// <inheritdoc/>
         public float Value => Player.Get(Team.FoundationForces).Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(Team.FoundationForces);
     }
 
-    public class Scps : IFloatVariable
+    public class Scps : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{SCPS}";
@@ -62,9 +68,12 @@
 
         /// <inheritdoc/>
         public float Value => Player.Get(Team.SCPs).Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(Team.SCPs);
     }
 
-    public class Mtf : IFloatVariable
+    public class Mtf : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{MTF}";
@@ -74,9 +83,12 @@
 
         /// <inheritdoc/>
         public float Value => Player.Get(ply => ply.Role.Team is Team.FoundationForces && ply.Role.Type is not RoleTypeId.FacilityGuard).Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(ply => ply.Role.Team is Team.FoundationForces && ply.Role.Type is not RoleTypeId.FacilityGuard);
     }
 
-    public class Chaos : IFloatVariable
+    public class Chaos : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{CI}";
@@ -86,9 +98,12 @@
 
         /// <inheritdoc/>
         public float Value => Player.Get(Team.ChaosInsurgency).Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(Team.ChaosInsurgency);
     }
 
-    public class SerpentsHand : IFloatVariable
+    public class SerpentsHand : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{SH}";
@@ -98,9 +113,12 @@
 
         /// <inheritdoc/>
         public float Value => Player.Get(player => player.SessionVariables.ContainsKey("IsSH")).Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(player => player.SessionVariables.ContainsKey("IsSH"));
     }
 
-    public class UIU : IFloatVariable
+    public class UIU : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{UIU}";
@@ -110,9 +128,47 @@
 
         /// <inheritdoc/>
         public float Value => Player.Get(player => player.SessionVariables.ContainsKey("IsUIU")).Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(player => player.SessionVariables.ContainsKey("IsUIU"));
     }
 
-    public class RoleTypeVariable : IFloatVariable
+    public class RespawnedPlayers : IFloatVariable, IPlayerVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{RESPAWNEDPLAYERS}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets all the players that recently respawned.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("roleType", typeof(RoleTypeId), "The role to filter by.", false),
+        };
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                if (Arguments.Length > 0 && Enum.TryParse(Arguments[0], true, out RoleTypeId rt))
+                {
+                    return MainPlugin.Handlers.RecentlyRespawned.Where(ply => ply.Role == rt);
+                }
+
+                return MainPlugin.Handlers.RecentlyRespawned;
+            }
+        }
+    }
+
+    public class RoleTypeVariable : IFloatVariable, IPlayerVariable
     {
         public RoleTypeVariable()
         {
@@ -134,5 +190,8 @@
 
         /// <inheritdoc/>
         public float Value => Player.Get(RoleType).Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(RoleType);
     }
 }

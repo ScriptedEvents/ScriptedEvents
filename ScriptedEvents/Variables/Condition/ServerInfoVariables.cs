@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition
+﻿namespace ScriptedEvents.Variables.ServerInfo
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using Exiled.API.Features;
@@ -9,9 +9,6 @@
     {
         /// <inheritdoc/>
         public string GroupName => "Server Info";
-
-        /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
         public IVariable[] Variables => new IVariable[]

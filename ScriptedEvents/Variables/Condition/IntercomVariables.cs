@@ -1,14 +1,14 @@
-﻿namespace ScriptedEvents.Variables.Condition
+﻿namespace ScriptedEvents.Variables.Intercom
 {
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Variables.Interfaces;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class IntercomVariables : IVariableGroup
     {
         public string GroupName => "Intercom";
-
-        public VariableGroupType GroupType => VariableGroupType.Condition;
 
         public IVariable[] Variables { get; } = new IVariable[]
         {
@@ -16,6 +16,7 @@
             new IntercomInUse(),
             new IntercomCooldown(),
             new IntercomUseTime(),
+            new IntercomSpeaker(),
         };
     }
 
@@ -71,5 +72,20 @@
 
         /// <inheritdoc/>
         public float Value => Intercom.SpeechRemainingTime;
+    }
+
+    public class IntercomSpeaker : IFloatVariable, IPlayerVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{INTERCOMSPEAKER}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets the player who is speaking on the intercom.";
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.Get(player => Intercom.Speaker == player);
     }
 }

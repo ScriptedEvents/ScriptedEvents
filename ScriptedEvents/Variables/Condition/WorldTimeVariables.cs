@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.WorldTime
+﻿namespace ScriptedEvents.Variables.WorldTime
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using System;
@@ -9,9 +9,6 @@
     {
         /// <inheritdoc/>
         public string GroupName => "World Time";
-
-        /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]

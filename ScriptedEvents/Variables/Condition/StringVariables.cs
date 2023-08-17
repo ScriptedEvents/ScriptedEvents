@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.Strings
+﻿namespace ScriptedEvents.Variables.Strings
 {
     using System;
 #pragma warning disable SA1402 // File may only contain a single type
@@ -7,16 +7,13 @@
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
     public class StringVariables : IVariableGroup
     {
         /// <inheritdoc/>
         public string GroupName => "Strings";
-
-        /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
@@ -95,9 +92,14 @@
 
                 string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
 
-                var variable = PlayerVariables.GetVariable($"{{{name}}}", Source);
-                if (variable is not null)
+                var conditionVariable = VariableSystem.GetVariable($"{{{name}}}", Source);
+                if (conditionVariable.Item1 is not null)
                 {
+                    if (conditionVariable.Item1 is not IPlayerVariable variable)
+                    {
+                        return -1f;
+                    }
+
                     return variable.Players.Count();
                 }
 
@@ -141,9 +143,14 @@
 
                 string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
 
-                var variable = PlayerVariables.GetVariable($"{{{name}}}", Source);
-                if (variable is not null)
+                var conditionVariable = VariableSystem.GetVariable($"{{{name}}}", Source);
+                if (conditionVariable.Item1 is not null)
                 {
+                    if (conditionVariable.Item1 is not IPlayerVariable variable)
+                    {
+                        return $"ERROR: No players associated with {conditionVariable.Item1.Name} variable";
+                    }
+
                     IOrderedEnumerable<string> display = variable.Players.Select(ply =>
                     {
                         return selector switch

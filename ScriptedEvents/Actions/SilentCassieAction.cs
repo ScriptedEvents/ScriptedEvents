@@ -5,7 +5,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class SilentCassieAction : IScriptAction, IHelpInfo
     {
@@ -44,12 +44,12 @@
 
             for (int i = 0; i < cassieArgs.Length; i++)
             {
-                cassieArgs[i] = ConditionVariables.ReplaceVariables(cassieArgs[i], script);
+                cassieArgs[i] = VariableSystem.ReplaceVariables(cassieArgs[i], script);
             }
 
             if (cassieArgs.Length == 1)
             {
-                text = ConditionVariables.ReplaceVariables(text, script);
+                text = VariableSystem.ReplaceVariables(text, script);
                 Cassie.MessageTranslated(text, text, isNoisy: false);
             }
             else

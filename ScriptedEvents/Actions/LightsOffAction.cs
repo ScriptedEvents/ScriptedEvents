@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
 
     public class LightsOffAction : IScriptAction, IHelpInfo
     {
@@ -42,7 +42,7 @@
             if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms))
                 return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
 
-            string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(1)), script);
+            string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(1)), script);
             float duration;
 
             if (!ConditionHelper.TryMath(formula, out MathResult result))

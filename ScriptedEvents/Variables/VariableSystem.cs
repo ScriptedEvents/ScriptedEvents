@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Handlers
+﻿namespace ScriptedEvents.Variables
 {
     using System;
     using System.Collections.Generic;
@@ -6,18 +6,18 @@
     using System.Reflection;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+    using Exiled.Events.Handlers;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.Variables.Condition;
-    using ScriptedEvents.Variables.Condition.Roles;
-    using ScriptedEvents.Variables.Condition.Strings;
+    using ScriptedEvents.Variables.Roles;
+    using ScriptedEvents.Variables.Strings;
     using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
-    /// A class used to store and retrieve all non-player variables.
+    /// A class used to store and retrieve all variables.
     /// </summary>
-    public static class ConditionVariables
+    public static class VariableSystem
     {
         /// <summary>
         /// Maps each <see cref="RoleTypeId"/> variable (eg. "{SCP173}") to a respective <see cref="RoleTypeVariable"/>.
@@ -35,6 +35,11 @@
         internal static Dictionary<string, CustomVariable> DefinedVariables { get; } = new();
 
         /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables that were defined in run-time.
+        /// </summary>
+        internal static Dictionary<string, CustomPlayerVariable> DefinedPlayerVariables { get; } = new();
+
+        /// <summary>
         /// Sets up the player variable system by adding every <see cref="IVariable"/> related to conditional variables to the <see cref="Groups"/> list.
         /// </summary>
         public static void Setup()
@@ -44,9 +49,6 @@
                 if (typeof(IVariableGroup).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
                 {
                     IVariableGroup temp = (IVariableGroup)Activator.CreateInstance(type);
-
-                    if (temp.GroupType is not VariableGroupType.Condition)
-                        continue;
 
                     Log.Debug($"Adding variable group: {type.Name}");
                     Groups.Add(temp);
@@ -74,6 +76,25 @@
         }
 
         /// <summary>
+        /// Defines a player variable.
+        /// </summary>
+        /// <param name="name">The name of the variable.</param>
+        /// <param name="desc">A description of the variable.</param>
+        /// <param name="players">The players.</param>
+        /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
+        public static void DefineVariable(string name, string desc, IEnumerable<Exiled.API.Features.Player> players)
+        {
+            name = name.RemoveWhitespace();
+
+            if (!name.StartsWith("{"))
+                name = "{" + name;
+            if (!name.EndsWith("}"))
+                name = name + "}";
+
+            DefinedPlayerVariables[name] = new(name, desc, players);
+        }
+
+        /// <summary>
         /// Removes a previously-defined variable.
         /// </summary>
         /// <param name="name">The name of the variable, with curly braces.</param>
@@ -81,6 +102,9 @@
         {
             if (DefinedVariables.ContainsKey(name))
                 DefinedVariables.Remove(name);
+
+            if (DefinedPlayerVariables.ContainsKey(name))
+                DefinedPlayerVariables.Remove(name);
         }
 
         /// <summary>
@@ -89,6 +113,7 @@
         public static void ClearVariables()
         {
             DefinedVariables.Clear();
+            DefinedPlayerVariables.Clear();
         }
 
         /// <summary>
@@ -140,6 +165,9 @@
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
                 result = new(customValue, false);
 
+            if (DefinedPlayerVariables.TryGetValue(name, out CustomPlayerVariable customPlayerValue))
+                result = new(customPlayerValue, false);
+
             if (source is not null && source.UniqueVariables.TryGetValue(name, out CustomVariable customValue2))
                 result = new(customValue2, false);
 
@@ -160,6 +188,21 @@
             reversed = res.Item2;
 
             return variable != null;
+        }
+
+        public static bool TryGetPlayers(string name, out IEnumerable<Exiled.API.Features.Player> players, Script source = null)
+        {
+            if (TryGetVariable(name, out IConditionVariable variable, out bool reversed, source))
+            {
+                if (variable is IPlayerVariable plrVariable)
+                {
+                    players = plrVariable.Players;
+                    return true;
+                }
+            }
+
+            players = null;
+            return false;
         }
 
         /// <summary>

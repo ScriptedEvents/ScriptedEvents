@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Variables.Condition.Booleans
+﻿namespace ScriptedEvents.Variables.Booleans
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
@@ -12,9 +12,6 @@
     {
         /// <inheritdoc/>
         public string GroupName => "Booleans";
-
-        /// <inheritdoc/>
-        public VariableGroupType GroupType => VariableGroupType.Condition;
 
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
