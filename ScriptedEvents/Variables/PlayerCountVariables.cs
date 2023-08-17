@@ -23,6 +23,7 @@
             new PlayersAlive(),
             new PlayersDead(),
             new Staff(),
+            new InRoom(),
         };
     }
 
