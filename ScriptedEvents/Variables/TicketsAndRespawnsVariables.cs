@@ -21,6 +21,10 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
+            new NextWave(),
+            new LastRespawnTeam(),
+            new LastUnitName(),
+            new WaveRespawning(),
             new NtfTickets(),
             new ChaosTickets(),
             new TotalWaves(),
@@ -30,6 +34,57 @@
             new ChaosSpawns(),
             new MtfSpawns(),
         };
+    }
+
+    public class LastRespawnTeam : IStringVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LASTRESPAWNTEAM}";
+
+        /// <inheritdoc/>
+        public string Description => "The most recent team that spawn.";
+
+        /// <inheritdoc/>
+        public string Value => MainPlugin.Handlers.MostRecentSpawn.ToString();
+    }
+
+    public class NextWave : IStringVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{NEXTWAVE}";
+
+        /// <inheritdoc/>
+        public string Description => "The next team to spawn, either NineTailedFox, ChaosInsurgency, or None.";
+
+        /// <inheritdoc/>
+        public string Value => Respawn.NextKnownTeam.ToString();
+    }
+
+    public class LastUnitName : IStringVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LASTRESPAWNUNIT}";
+
+        /// <inheritdoc/>
+        public string Description => "The most recent team's unit name.";
+
+        /// <inheritdoc/>
+        public string Value => MainPlugin.Handlers.MostRecentSpawnUnit;
+    }
+
+    public class WaveRespawning : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{WAVERESPAWNING}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!WAVERESPAWNING}";
+
+        /// <inheritdoc/>
+        public string Description => "Whether or not a wave has respawned within the last 5 seconds.";
+
+        /// <inheritdoc/>
+        public bool Value => MainPlugin.Handlers.IsRespawning;
     }
 
     public class NtfTickets : IFloatVariable

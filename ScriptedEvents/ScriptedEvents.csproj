@@ -203,10 +203,11 @@
     <Compile Include="Variables\KillsAndDeathsVariables.cs" />
     <Compile Include="Variables\PlayerCountVariables.cs" />
     <Compile Include="Variables\RoleVariables.cs" />
-    <Compile Include="Variables\RoundTimeVariables.cs" />
+    <Compile Include="Variables\RoundVariables.cs" />
     <Compile Include="Variables\ServerInfoVariables.cs" />
     <Compile Include="Variables\StringVariables.cs" />
     <Compile Include="Variables\TicketsAndRespawnsVariables.cs" />
+    <Compile Include="Variables\WarheadVariables.cs" />
     <Compile Include="Variables\WorldTimeVariables.cs" />
     <Compile Include="Variables\ZoneVariables.cs" />
     <Compile Include="Variables\VariableSystem.cs" />

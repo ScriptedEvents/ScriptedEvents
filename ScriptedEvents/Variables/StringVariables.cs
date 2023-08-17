@@ -18,49 +18,9 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
-            new NextWave(),
-            new LastRespawnTeam(),
-            new LastUnitName(),
             new Len(),
             new Show(),
-            new DoorState(),
         };
-    }
-
-    public class LastRespawnTeam : IStringVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{LASTRESPAWNTEAM}";
-
-        /// <inheritdoc/>
-        public string Description => "The most recent team that spawn.";
-
-        /// <inheritdoc/>
-        public string Value => MainPlugin.Handlers.MostRecentSpawn.ToString();
-    }
-
-    public class NextWave : IStringVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{NEXTWAVE}";
-
-        /// <inheritdoc/>
-        public string Description => "The next team to spawn, either NineTailedFox, ChaosInsurgency, or None.";
-
-        /// <inheritdoc/>
-        public string Value => Respawn.NextKnownTeam.ToString();
-    }
-
-    public class LastUnitName : IStringVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{LASTRESPAWNUNIT}";
-
-        /// <inheritdoc/>
-        public string Description => "The most recent team's unit name.";
-
-        /// <inheritdoc/>
-        public string Value => MainPlugin.Handlers.MostRecentSpawnUnit;
     }
 
     public class Len : IFloatVariable, IArgumentVariable
@@ -173,43 +133,6 @@
                 }
 
                 return "ERROR: INVALID VARIABLE";
-            }
-        }
-    }
-
-    public class DoorState : IStringVariable, IArgumentVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{DOORSTATE}";
-
-        /// <inheritdoc/>
-        public string Description => "Reveals the state of a door (either 'OPEN' or 'CLOSED').";
-
-        /// <inheritdoc/>
-        public string[] Arguments { get; set; }
-
-        /// <inheritdoc/>
-        public Argument[] ExpectedArguments => new[]
-        {
-            new Argument("door", typeof(DoorType), "The door to get the state of.", true),
-        };
-
-        /// <inheritdoc/>
-        public string Value
-        {
-            get
-            {
-                if (Arguments.Length < 1) return "ERROR: MISSING DOOR TYPE";
-
-                if (!Enum.TryParse(Arguments[0], out DoorType dt))
-                    return "ERROR: INVALID DOOR TYPE";
-
-                Door d = Door.Get(dt);
-
-                if (d is null)
-                    return "ERROR: INVALID DOOR TYPE";
-
-                return d.IsOpen ? "OPEN" : "CLOSED";
             }
         }
     }

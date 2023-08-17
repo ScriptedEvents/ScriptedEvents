@@ -1,22 +1,71 @@
-﻿namespace ScriptedEvents.Variables.RoundTime
+﻿namespace ScriptedEvents.Variables.Round
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Variables.Interfaces;
 
-    public class RoundTimeVariables : IVariableGroup
+    public class RoundVariables : IVariableGroup
     {
         /// <inheritdoc/>
-        public string GroupName => "Round Time";
+        public string GroupName => "Round";
 
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
+            new RoundEnded(),
+            new RoundInProgress(),
+            new RoundStarted(),
+
             new RoundMinutes(),
             new RoundSeconds(),
             new LobbyTime(),
         };
+    }
+
+    public class RoundEnded : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{ROUNDENDED}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!ROUNDENDED}";
+
+        /// <inheritdoc/>
+        public string Description => "Whether or not the round has ended.";
+
+        /// <inheritdoc/>
+        public bool Value => Round.IsEnded;
+    }
+
+    public class RoundInProgress : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{ROUNDINPROGRESS}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!ROUNDINPROGRESS}";
+
+        /// <inheritdoc/>
+        public string Description => "Whether or not the round is in progress.";
+
+        /// <inheritdoc/>
+        public bool Value => Round.InProgress;
+    }
+
+    public class RoundStarted : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{ROUNDSTARTED}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!ROUNDSTARTED}";
+
+        /// <inheritdoc/>
+        public string Description => "Whether or not the round has started.";
+
+        /// <inheritdoc/>
+        public bool Value => Round.IsStarted;
     }
 
     public class RoundMinutes : IFloatVariable
@@ -63,4 +112,6 @@
             }
         }
     }
+
+
 }
