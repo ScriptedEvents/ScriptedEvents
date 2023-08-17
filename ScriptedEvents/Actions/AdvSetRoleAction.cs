@@ -3,13 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using PlayerRoles;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Handlers;
+    using ScriptedEvents.Variables;
     using UnityEngine;
 
     public class AdvSetRoleAction : IScriptAction, IHelpInfo
@@ -63,7 +64,7 @@
 
             if (Arguments.Length > 4)
             {
-                string formula = ConditionVariables.ReplaceVariables(string.Join(" ", Arguments.Skip(4)), script);
+                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(4)), script);
 
                 if (!ConditionHelper.TryMath(formula, out MathResult result))
                 {

@@ -122,8 +122,8 @@
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
-    <Compile Include="Variables\Condition\IntercomVariables.cs" />
-    <Compile Include="Variables\Condition\MapVariables.cs" />
+    <Compile Include="Variables\IntercomVariables.cs" />
+    <Compile Include="Variables\MapVariables.cs" />
     <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
     <Compile Include="Actions\Interfaces\ICustomReadDisplay.cs" />
@@ -196,19 +196,19 @@
     <Compile Include="Structures\ConditionResponse.cs" />
     <Compile Include="Structures\Countdown.cs" />
     <Compile Include="Structures\MathResult.cs" />
-    <Compile Include="Variables\Condition\BooleanVariables.cs" />
-    <Compile Include="Variables\Condition\ChanceVariables.cs" />
-    <Compile Include="Variables\Condition\CustomVariable.cs" />
-    <Compile Include="Variables\Condition\EscapesVariables.cs" />
-    <Compile Include="Variables\Condition\KillsAndDeathsVariables.cs" />
-    <Compile Include="Variables\Condition\PlayerCountVariables.cs" />
-    <Compile Include="Variables\Condition\RoleVariables.cs" />
-    <Compile Include="Variables\Condition\RoundTimeVariables.cs" />
-    <Compile Include="Variables\Condition\ServerInfoVariables.cs" />
-    <Compile Include="Variables\Condition\StringVariables.cs" />
-    <Compile Include="Variables\Condition\TicketsAndRespawnsVariables.cs" />
-    <Compile Include="Variables\Condition\WorldTimeVariables.cs" />
-    <Compile Include="Variables\Condition\ZoneVariables.cs" />
+    <Compile Include="Variables\BooleanVariables.cs" />
+    <Compile Include="Variables\ChanceVariables.cs" />
+    <Compile Include="Variables\CustomVariable.cs" />
+    <Compile Include="Variables\EscapesVariables.cs" />
+    <Compile Include="Variables\KillsAndDeathsVariables.cs" />
+    <Compile Include="Variables\PlayerCountVariables.cs" />
+    <Compile Include="Variables\RoleVariables.cs" />
+    <Compile Include="Variables\RoundTimeVariables.cs" />
+    <Compile Include="Variables\ServerInfoVariables.cs" />
+    <Compile Include="Variables\StringVariables.cs" />
+    <Compile Include="Variables\TicketsAndRespawnsVariables.cs" />
+    <Compile Include="Variables\WorldTimeVariables.cs" />
+    <Compile Include="Variables\ZoneVariables.cs" />
     <Compile Include="Variables\VariableSystem.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Actions\WarheadAction.cs" />
@@ -225,7 +225,7 @@
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariableGroup.cs" />
-    <Compile Include="Variables\Condition\CustomPlayerVariable.cs" />
+    <Compile Include="Variables\CustomPlayerVariable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemoScripts\DemoScript.cs" />

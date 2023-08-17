@@ -1,11 +1,14 @@
 ﻿namespace ScriptedEvents.Variables.PlayerCount
 {
+    using System;
     using System.Collections.Generic;
 #pragma warning disable SA1402 // File may only contain a single type.
     using System.Linq;
-
+    using Exiled.API.Enums;
     using Exiled.API.Features;
+    using PlayerRoles;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
     public class PlayerCountVariables : IVariableGroup
@@ -81,5 +84,46 @@
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.RemoteAdminAccess);
+    }
+
+    public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable
+    {
+
+        /// <inheritdoc/>
+        public string Name => "{INROOM}";
+
+        /// <inheritdoc/>
+        public string Description => "The amount of players in the specified room.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("roomType", typeof(RoomType), "The room to filter by.", false),
+        };
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                if (Arguments.Length < 0)
+                {
+                    return Array.Empty<Player>();
+                }
+
+                if (Enum.TryParse<RoomType>(Arguments[0], out RoomType rt))
+                {
+                    return Player.Get(plr => plr.CurrentRoom.Type == rt);
+                }
+
+                return Array.Empty<Player>();
+            }
+        }
     }
 }
