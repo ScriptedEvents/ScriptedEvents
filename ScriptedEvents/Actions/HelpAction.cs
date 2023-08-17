@@ -250,10 +250,6 @@
                             sb.AppendLine("String (Text)");
                             sb.AppendLine($"Current Value: {@string.Value}");
                             break;
-                        case IObjectVariable custom:
-                            sb.AppendLine("Boolean (true/false)");
-                            sb.AppendLine($"Current Value: {custom.Value}");
-                            break;
                     }
 
                     if (variable is IArgumentVariable argSupport)

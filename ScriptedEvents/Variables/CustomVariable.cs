@@ -2,13 +2,13 @@
 {
     using ScriptedEvents.Variables.Interfaces;
 
-    public class CustomVariable : IObjectVariable
+    public class CustomVariable : IStringVariable
     {
         public CustomVariable()
         {
         }
 
-        public CustomVariable(string name, string description, object value)
+        public CustomVariable(string name, string description, string value)
         {
             Name = name;
             Description = description;
@@ -19,6 +19,6 @@
 
         public string Description { get; }
 
-        public object Value { get; }
+        public string Value { get; }
     }
 }

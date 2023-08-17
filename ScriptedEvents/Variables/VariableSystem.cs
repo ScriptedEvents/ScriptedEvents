@@ -63,7 +63,7 @@
         /// <param name="desc">A description of the variable.</param>
         /// <param name="input">The value of the variable.</param>
         /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
-        public static void DefineVariable(string name, string desc, object input)
+        public static void DefineVariable(string name, string desc, string input)
         {
             name = name.RemoveWhitespace();
 
@@ -235,9 +235,6 @@
                             break;
                         case IStringVariable @string:
                             input = input.Replace(variable, @string.Value);
-                            break;
-                        case IObjectVariable @object:
-                            input = input.Replace(variable, @object.Value);
                             break;
                     }
                 }

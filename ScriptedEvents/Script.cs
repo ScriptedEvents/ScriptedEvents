@@ -233,7 +233,7 @@
         /// <param name="name">Name of the variable.</param>
         /// <param name="desc">Description of the variable.</param>
         /// <param name="value">The value of the variable.</param>
-        public void AddVariable(string name, string desc, object value)
+        public void AddVariable(string name, string desc, string value)
         {
             UniqueVariables.Add(name, new(name, desc, value));
         }
