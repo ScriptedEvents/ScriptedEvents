@@ -37,7 +37,7 @@
         public string Description => "The amount of facility guards alive. Equivalent to {FACILITYGUARD}";
 
         /// <inheritdoc/>
-        public float Value => Player.Get(RoleTypeId.FacilityGuard).Count();
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(RoleTypeId.FacilityGuard);
@@ -52,7 +52,7 @@
         public string Description => "The amount of facility guards & MTF alive.";
 
         /// <inheritdoc/>
-        public float Value => Player.Get(Team.FoundationForces).Count();
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(Team.FoundationForces);
@@ -67,7 +67,7 @@
         public string Description => "The amount of SCPs alive.";
 
         /// <inheritdoc/>
-        public float Value => Player.Get(Team.SCPs).Count();
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(Team.SCPs);
@@ -82,7 +82,7 @@
         public string Description => "The amount of MTF alive.";
 
         /// <inheritdoc/>
-        public float Value => Player.Get(ply => ply.Role.Team is Team.FoundationForces && ply.Role.Type is not RoleTypeId.FacilityGuard).Count();
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(ply => ply.Role.Team is Team.FoundationForces && ply.Role.Type is not RoleTypeId.FacilityGuard);
@@ -97,7 +97,7 @@
         public string Description => "The amount of Chaos Insurgency alive.";
 
         /// <inheritdoc/>
-        public float Value => Player.Get(Team.ChaosInsurgency).Count();
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(Team.ChaosInsurgency);
@@ -112,7 +112,7 @@
         public string Description => "The amount of Serpent's Hand alive (always 0 if the plugin is not installed).";
 
         /// <inheritdoc/>
-        public float Value => Player.Get(player => player.SessionVariables.ContainsKey("IsSH")).Count();
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.SessionVariables.ContainsKey("IsSH"));
@@ -127,7 +127,7 @@
         public string Description => "The amount of UIU alive (always 0 if the plugin is not installed).";
 
         /// <inheritdoc/>
-        public float Value => Player.Get(player => player.SessionVariables.ContainsKey("IsUIU")).Count();
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.SessionVariables.ContainsKey("IsUIU"));
@@ -189,7 +189,7 @@
         public string Description => $"The amount of {RoleType.ToString()} alive.";
 
         /// <inheritdoc/>
-        public float Value => Player.Get(RoleType).Count();
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(RoleType);
