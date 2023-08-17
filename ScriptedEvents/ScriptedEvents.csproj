@@ -122,6 +122,7 @@
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
+    <Compile Include="Variables\FilterVariables.cs" />
     <Compile Include="Variables\IntercomVariables.cs" />
     <Compile Include="Variables\MapVariables.cs" />
     <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
@@ -221,6 +222,7 @@
     <Compile Include="Variables\Interfaces\IBoolVariable.cs" />
     <Compile Include="Variables\Interfaces\IConditionVariable.cs" />
     <Compile Include="Variables\Interfaces\IFloatVariable.cs" />
+    <Compile Include="Variables\Interfaces\INeedSourceVariable.cs" />
     <Compile Include="Variables\Interfaces\IPlayerVariable.cs" />
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariable.cs" />
