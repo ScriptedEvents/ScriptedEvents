@@ -122,6 +122,13 @@
                 {
                     return Player.Get(plr => plr.CurrentRoom.Type == rt);
                 }
+                else if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, null)) // Todo: Support script
+                {
+                    if (variable is IStringVariable variableString && Enum.TryParse(variableString.Value, out RoomType rt2))
+                    {
+                        return Player.Get(plr => plr.CurrentRoom.Type == rt2);
+                    }
+                }
 
                 return Array.Empty<Player>();
             }
