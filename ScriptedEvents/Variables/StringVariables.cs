@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.Variables.Strings
 {
     using System;
+    using System.Collections.Generic;
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
     using Exiled.API.Enums;
@@ -64,6 +65,43 @@
                 }
 
                 return -1f;
+            }
+        }
+    }
+
+    public class Command : IStringVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{C}";
+
+        /// <inheritdoc/>
+        public string Description => "Convert a player variable into a format to use with commands.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("name", typeof(string), "The name of the player variable.", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                if (Arguments.Length == 0)
+                {
+                    return "ERROR: MISSING PLAYER VARIABLE";
+                }
+
+                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, null)) // Todo: Support script
+                {
+                    return string.Join(".", players.Select(plr => plr.Id.ToString()));
+                }
+
+                return "ERROR: UNKNOWN PLAYER VARIABLE";
             }
         }
     }

@@ -221,7 +221,6 @@
     <Compile Include="Variables\Interfaces\IBoolVariable.cs" />
     <Compile Include="Variables\Interfaces\IConditionVariable.cs" />
     <Compile Include="Variables\Interfaces\IFloatVariable.cs" />
-    <Compile Include="Variables\Interfaces\IObjectVariable.cs" />
     <Compile Include="Variables\Interfaces\IPlayerVariable.cs" />
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariable.cs" />
