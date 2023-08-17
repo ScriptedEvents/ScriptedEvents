@@ -8,6 +8,7 @@
 
     using Exiled.API.Features;
     using PlayerRoles;
+    using Respawning;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
@@ -26,6 +27,8 @@
             new TimeUntilNextWave(),
             new TimeSinceLastWave(),
             new RespawnedPlayers(),
+            new ChaosSpawns(),
+            new MtfSpawns(),
         };
     }
 
@@ -123,5 +126,29 @@
                 return MainPlugin.Handlers.RecentlyRespawned;
             }
         }
+    }
+
+    public class ChaosSpawns : IFloatVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{CHAOSSPAWNS}";
+
+        /// <inheritdoc/>
+        public string Description => "Total amount of Chaos Insurgency respawns.";
+
+        /// <inheritdoc/>
+        public float Value => MainPlugin.Handlers.SpawnsByTeam[SpawnableTeamType.ChaosInsurgency];
+    }
+
+    public class MtfSpawns : IFloatVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{MTFSPAWNS}";
+
+        /// <inheritdoc/>
+        public string Description => "Total amount of Mobile Task Force respawns.";
+
+        /// <inheritdoc/>
+        public float Value => MainPlugin.Handlers.SpawnsByTeam[SpawnableTeamType.NineTailedFox];
     }
 }

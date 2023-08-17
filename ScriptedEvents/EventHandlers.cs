@@ -49,6 +49,15 @@
         public SpawnableTeamType MostRecentSpawn { get; set; }
 
         /// <summary>
+        /// Gets or sets the spawns by team.
+        /// </summary>
+        public Dictionary<SpawnableTeamType, int> SpawnsByTeam { get; set; } = new()
+        {
+            [SpawnableTeamType.ChaosInsurgency] = 0,
+            [SpawnableTeamType.NineTailedFox] = 0,
+        };
+
+        /// <summary>
         /// Gets or sets the most recent spawn unit.
         /// </summary>
         public string MostRecentSpawnUnit { get; set; } = string.Empty;
@@ -109,6 +118,9 @@
             lastRespawnWave = DateTime.MinValue;
             TeslasDisabled = false;
             MostRecentSpawnUnit = string.Empty;
+
+            SpawnsByTeam[SpawnableTeamType.NineTailedFox] = 0;
+            SpawnsByTeam[SpawnableTeamType.ChaosInsurgency] = 0;
 
             ScriptHelper.StopAllScripts();
             VariableSystem.ClearVariables();
@@ -221,6 +233,7 @@
             lastRespawnWave = DateTime.UtcNow;
 
             MostRecentSpawn = ev.NextKnownTeam;
+            SpawnsByTeam[ev.NextKnownTeam]++;
 
             RecentlyRespawned.Clear();
             RecentlyRespawned.AddRange(ev.Players);

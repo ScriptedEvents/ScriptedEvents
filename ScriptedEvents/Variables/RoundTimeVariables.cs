@@ -15,6 +15,7 @@
         {
             new RoundMinutes(),
             new RoundSeconds(),
+            new LobbyTime(),
         };
     }
 
@@ -40,5 +41,26 @@
 
         /// <inheritdoc/>
         public float Value => (float)Round.ElapsedTime.TotalSeconds;
+    }
+
+    public class LobbyTime : IFloatVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LOBBYTIME}";
+
+        /// <inheritdoc/>
+        public string Description => "The total amount of time remaining before the round starts. -1 if round already started.";
+
+        /// <inheritdoc/>
+        public float Value
+        {
+            get
+            {
+                if (Round.IsStarted)
+                    return -1f;
+
+                return Round.LobbyWaitingTime;
+            }
+        }
     }
 }
