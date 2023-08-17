@@ -58,6 +58,15 @@
         };
 
         /// <summary>
+        /// Gets or sets escaped players.
+        /// </summary>
+        public Dictionary<RoleTypeId, List<Player>> Escapes { get; set; } = new()
+        {
+            [RoleTypeId.ClassD] = new(),
+            [RoleTypeId.Scientist] = new(),
+        };
+
+        /// <summary>
         /// Gets or sets the most recent spawn unit.
         /// </summary>
         public string MostRecentSpawnUnit { get; set; } = string.Empty;
@@ -121,6 +130,9 @@
 
             SpawnsByTeam[SpawnableTeamType.NineTailedFox] = 0;
             SpawnsByTeam[SpawnableTeamType.ChaosInsurgency] = 0;
+
+            Escapes[RoleTypeId.ClassD].Clear();
+            Escapes[RoleTypeId.Scientist].Clear();
 
             ScriptHelper.StopAllScripts();
             VariableSystem.ClearVariables();
@@ -433,6 +445,10 @@
         {
             if (DisabledKeys.Contains("ESCAPING"))
                 ev.IsAllowed = false;
+
+            if (!ev.IsAllowed) return;
+
+            Escapes[ev.Player.Role.Type].Add(ev.Player);
         }
 
         // Radio locks

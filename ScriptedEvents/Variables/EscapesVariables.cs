@@ -1,8 +1,11 @@
-﻿namespace ScriptedEvents.Variables.Escapes
+﻿#pragma warning disable SA1402 // File may only contain a single type
+namespace ScriptedEvents.Variables.Escapes
 {
-#pragma warning disable SA1402 // File may only contain a single type
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
+    using PlayerRoles;
     using ScriptedEvents.Variables.Interfaces;
 
     public class EscapesVariables : IVariableGroup
@@ -19,7 +22,7 @@
         };
     }
 
-    public class Escapes : IFloatVariable
+    public class Escapes : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{ESCAPES}";
@@ -28,10 +31,14 @@
         public string Description => "The total amount of escapes. Equivalent to {CLASSDESCAPES} + {SCIENTISTESCAPES}.";
 
         /// <inheritdoc/>
-        public float Value => Round.EscapedDClasses + Round.EscapedScientists;
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => MainPlugin.Handlers.Escapes[RoleTypeId.ClassD]
+            .Union(MainPlugin.Handlers.Escapes[RoleTypeId.Scientist]);
     }
 
-    public class ClassDEscapes : IFloatVariable
+    public class ClassDEscapes : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{CLASSDESCAPES}";
@@ -40,10 +47,13 @@
         public string Description => "The total amount of Class-D escapes.";
 
         /// <inheritdoc/>
-        public float Value => Round.EscapedDClasses;
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => MainPlugin.Handlers.Escapes[RoleTypeId.ClassD];
     }
 
-    public class ScientistEscapes : IFloatVariable
+    public class ScientistEscapes : IFloatVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{SCIENTISTESCAPES}";
@@ -52,6 +62,9 @@
         public string Description => "The total amount of Scientist escapes.";
 
         /// <inheritdoc/>
-        public float Value => Round.EscapedScientists;
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => MainPlugin.Handlers.Escapes[RoleTypeId.Scientist];
     }
 }
