@@ -171,9 +171,17 @@
             if (source is not null && source.UniqueVariables.TryGetValue(name, out CustomVariable customValue2))
                 result = new(customValue2, false);
 
-            if (result.Item1 is not null && result.Item1 is IArgumentVariable argSupport)
+            if (result.Item1 is not null)
             {
-                argSupport.Arguments = argList.ToArray();
+                if (result.Item1 is IArgumentVariable argSupport)
+                {
+                    argSupport.Arguments = argList.ToArray();
+                }
+
+                if (result.Item1 is INeedSourceVariable sourcePls)
+                {
+                    sourcePls.Source = source;
+                }
             }
 
             ListPool<string>.Pool.Return(argList);
@@ -221,11 +229,6 @@
                 {
                     switch (condition)
                     {
-                        // Edge case to declare script source.
-                        case Show showVariable:
-                            showVariable.Source = source;
-                            input = input.Replace(variable, showVariable.Value);
-                            break;
                         case IBoolVariable @bool:
                             bool result = reversed ? !@bool.Value : @bool.Value;
                             input = input.Replace(variable, result ? "TRUE" : "FALSE");

@@ -24,7 +24,7 @@
         };
     }
 
-    public class Len : IFloatVariable, IArgumentVariable
+    public class Len : IFloatVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{LEN}";
@@ -41,6 +41,7 @@
             new Argument("name", typeof(string), "The name of the player variable to retrieve the length of.", true),
         };
 
+        /// <inheritdoc/>
         public Script Source { get; set; } = null;
 
         /// <inheritdoc/>
@@ -69,7 +70,7 @@
         }
     }
 
-    public class Command : IStringVariable, IArgumentVariable
+    public class Command : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{C}";
@@ -87,6 +88,9 @@
         };
 
         /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
         public string Value
         {
             get
@@ -96,7 +100,7 @@
                     return "ERROR: MISSING PLAYER VARIABLE";
                 }
 
-                if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, null)) // Todo: Support script
+                if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source))
                 {
                     if (variable is IArgumentVariable)
                     {
@@ -116,7 +120,7 @@
         }
     }
 
-    public class Show : IStringVariable, IArgumentVariable
+    public class Show : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{SHOW}";
@@ -134,6 +138,7 @@
             new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, USERID, PLAYERID, ROLE, TEAM, ROOM, ZONE, HP, HEALTH, INV, INVCOUNT.", false),
         };
 
+        /// <inheritdoc/>
         public Script Source { get; set; } = null;
 
         /// <inheritdoc/>

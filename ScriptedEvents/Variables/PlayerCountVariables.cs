@@ -87,7 +87,7 @@
         public IEnumerable<Player> Players => Player.Get(player => player.RemoteAdminAccess);
     }
 
-    public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable
+    public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable, INeedSourceVariable
     {
 
         /// <inheritdoc/>
@@ -106,6 +106,9 @@
         };
 
         /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
         public float Value => Players.Count();
 
         /// <inheritdoc/>
@@ -122,7 +125,7 @@
                 {
                     return Player.Get(plr => plr.CurrentRoom.Type == rt);
                 }
-                else if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, null)) // Todo: Support script
+                else if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source))
                 {
                     if (variable is IStringVariable variableString && Enum.TryParse(variableString.Value, out RoomType rt2))
                     {
