@@ -96,12 +96,22 @@
                     return "ERROR: MISSING PLAYER VARIABLE";
                 }
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, null)) // Todo: Support script
+                if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, null)) // Todo: Support script
                 {
-                    return string.Join(".", players.Select(plr => plr.Id.ToString()));
+                    if (variable is IArgumentVariable)
+                    {
+                        return "ERROR: ARGUMENT VARIABLE NOT SUPPORTED IN 'C'. PLEASE USE CUSTOM VARIABLE INSTEAD.";
+                    }
+
+                    if (variable is not IPlayerVariable plrVar)
+                    {
+                        return "ERROR: VARIABLE DOES NOT CONTAIN ANY PLAYERS.";
+                    }
+
+                    return string.Join(".", plrVar.Players.Select(plr => plr.Id.ToString()));
                 }
 
-                return "ERROR: UNKNOWN PLAYER VARIABLE";
+                return "ERROR: INVALID VARIABLE";
             }
         }
     }
