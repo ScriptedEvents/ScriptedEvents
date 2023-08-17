@@ -74,7 +74,7 @@
         public string Name => "{ROUNDMINUTES}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of elapsed round time, in minutes.";
+        public string Description => "The amount of elapsed round time, in minutes.";
 
         /// <inheritdoc/>
         public float Value => (float)Round.ElapsedTime.TotalMinutes;
@@ -86,7 +86,7 @@
         public string Name => "{ROUNDSECONDS}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of elapsed round time, in seconds.";
+        public string Description => "The amount of elapsed round time, in seconds.";
 
         /// <inheritdoc/>
         public float Value => (float)Round.ElapsedTime.TotalSeconds;
@@ -98,7 +98,7 @@
         public string Name => "{LOBBYTIME}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of time remaining before the round starts. -1 if round already started.";
+        public string Description => "The amount of time remaining before the round starts. -1 if round already started.";
 
         /// <inheritdoc/>
         public float Value

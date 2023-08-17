@@ -31,7 +31,7 @@
         public string Name => "{LCZ}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of players in Light Containment Zone.";
+        public string Description => "The amount of players in Light Containment Zone.";
 
         /// <inheritdoc/>
         public float Value => Players.Count();
@@ -46,7 +46,7 @@
         public string Name => "{HCZ}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of players in Heavy Containment Zone.";
+        public string Description => "The amount of players in Heavy Containment Zone.";
 
         /// <inheritdoc/>
         public float Value => Players.Count();
@@ -61,7 +61,7 @@
         public string Name => "{EZ}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of players in Entrance Zone.";
+        public string Description => "The amount of players in Entrance Zone.";
 
         /// <inheritdoc/>
         public float Value => Players.Count();
@@ -76,7 +76,7 @@
         public string Name => "{SURFACE}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of players on the Surface.";
+        public string Description => "The amount of players on the Surface.";
 
         /// <inheritdoc/>
         public float Value => Players.Count();
@@ -91,7 +91,7 @@
         public string Name => "{POCKET}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of players in the Pocket Dimension.";
+        public string Description => "The amount of players in the Pocket Dimension.";
 
         /// <inheritdoc/>
         public float Value => Players.Count();

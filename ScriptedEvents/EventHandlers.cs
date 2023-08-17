@@ -18,8 +18,8 @@
     using MEC;
     using PlayerRoles;
     using Respawning;
-    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using UnityEngine;
@@ -29,7 +29,7 @@
         private DateTime lastRespawnWave = DateTime.MinValue;
 
         /// <summary>
-        /// Gets or sets the total amount of respawn waves since the round started.
+        /// Gets or sets the amount of respawn waves since the round started.
         /// </summary>
         public int RespawnWaves { get; set; } = 0;
 

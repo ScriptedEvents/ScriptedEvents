@@ -30,7 +30,7 @@
         public string Name => "{KILLS}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of kills, the amount of kills per-role, or -1 if an invalid role type is provided.";
+        public string Description => "The amount of kills, the amount of kills per-role, or -1 if an invalid role type is provided.";
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
@@ -83,7 +83,7 @@
         public string Name => "{SCPKILLS}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of SCP-related kills.";
+        public string Description => "The amount of SCP-related kills.";
 
         /// <inheritdoc/>
         public float Value => Round.KillsByScp;

@@ -28,7 +28,7 @@ namespace ScriptedEvents.Variables.Escapes
         public string Name => "{ESCAPES}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of escapes. Equivalent to {CLASSDESCAPES} + {SCIENTISTESCAPES}.";
+        public string Description => "The amount of escapes. Equivalent to {CLASSDESCAPES} + {SCIENTISTESCAPES}.";
 
         /// <inheritdoc/>
         public float Value => Players.Count();
@@ -44,7 +44,7 @@ namespace ScriptedEvents.Variables.Escapes
         public string Name => "{CLASSDESCAPES}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of Class-D escapes.";
+        public string Description => "The amount of Class-D escapes.";
 
         /// <inheritdoc/>
         public float Value => Players.Count();
@@ -59,7 +59,7 @@ namespace ScriptedEvents.Variables.Escapes
         public string Name => "{SCIENTISTESCAPES}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of Scientist escapes.";
+        public string Description => "The amount of Scientist escapes.";
 
         /// <inheritdoc/>
         public float Value => Players.Count();

@@ -93,7 +93,7 @@
         public string Name => "{NTFTICKETS}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of NTF tickets.";
+        public string Description => "The amount of NTF tickets.";
 
         /// <inheritdoc/>
         public float Value => Respawn.NtfTickets;
@@ -105,7 +105,7 @@
         public string Name => "{CHAOSTICKETS}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of Chaos Insurgency tickets.";
+        public string Description => "The amount of Chaos Insurgency tickets.";
 
         /// <inheritdoc/>
         public float Value => Respawn.ChaosTickets;
@@ -117,7 +117,7 @@
         public string Name => "{TOTALWAVES}";
 
         /// <inheritdoc/>
-        public string Description => "The total amount of respawn waves.";
+        public string Description => "The amount of respawn waves.";
 
         /// <inheritdoc/>
         public float Value => MainPlugin.Handlers.RespawnWaves;

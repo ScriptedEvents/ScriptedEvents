@@ -139,7 +139,7 @@
         public string Name => "{RESPAWNEDPLAYERS}";
 
         /// <inheritdoc/>
-        public string Description => "Gets all the players that recently respawned.";
+        public string Description => "The amount of players that respawned in the most recent respawn wave.";
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }

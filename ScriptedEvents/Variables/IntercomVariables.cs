@@ -80,7 +80,7 @@
         public string Name => "{INTERCOMSPEAKER}";
 
         /// <inheritdoc/>
-        public string Description => "Gets the player who is speaking on the intercom.";
+        public string Description => "Gets the amount of players who are speaking on the intercom (always either 0 or 1).";
 
         /// <inheritdoc/>
         public float Value => Players.Count();
