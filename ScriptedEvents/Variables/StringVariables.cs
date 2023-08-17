@@ -109,7 +109,7 @@
 
                     if (variable is not IPlayerVariable plrVar)
                     {
-                        return "ERROR: VARIABLE DOES NOT CONTAIN ANY PLAYERS.";
+                        return $"ERROR: No players associated with {variable.Name} variable";
                     }
 
                     return string.Join(".", plrVar.Players.Select(plr => plr.Id.ToString()));
