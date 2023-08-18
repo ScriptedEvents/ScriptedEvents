@@ -64,37 +64,37 @@
                         sb.Append($" {chars[0]}{arg.ArgumentName}{chars[1]}");
                     }
 
-                    return $"Invalid command usage. Usage: {action.Name}{StringBuilderPool.Pool.ToStringReturn(sb)}";
+                    return $"Invalid '{action.Name}' action usage. Usage: {action.Name}{StringBuilderPool.Pool.ToStringReturn(sb)} [Error Code: SE-116]";
 
                 case MessageType.InvalidUsage:
-                    return "Invalid command usage.";
+                    return $"Invalid '{action.Name}' action usage. [Error Code: SE-117]";
 
                 case MessageType.InvalidOption when arguments[0] is string input && arguments[1] is string options:
-                    return $"Invalid option {input} provided for the '{paramName}' parameter of the {action.Name} action. This parameter expects one of the following options: {options}.";
+                    return $"Invalid option {input} provided for the '{paramName}' parameter of the {action.Name} action. This parameter expects one of the following options: {options}. [Error Code: SE-118]";
 
                 case MessageType.NotANumber when arguments[0] is not null:
-                    return $"Invalid number '{arguments[0]}' provided for the '{paramName}' parameter of the {action.Name} action.";
+                    return $"Invalid number '{arguments[0]}' provided for the '{paramName}' parameter of the {action.Name} action. [Error Code: SE-119]";
 
                 case MessageType.NotANumberOrCondition when arguments[0] is not null && arguments[1] is MathResult result:
-                    return $"Invalid {paramName} condition provided in the {action.Name} action! Condition: {arguments[0]} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.";
+                    return $"Invalid {paramName} condition provided in the {action.Name} action! Condition: {arguments[0]} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'. [Error Code: SE-120]";
 
                 case MessageType.LessThanZeroNumber when arguments[0] is not null:
-                    return $"Negative number '{arguments[0]}' cannot be used in the '{paramName}' parameter of the {action.Name} action.";
+                    return $"Negative number '{arguments[0]}' cannot be used in the '{paramName}' parameter of the {action.Name} action. [Error Code: SE-121]";
 
                 case MessageType.InvalidRole when arguments[0] is not null:
-                    return $"Invalid {paramName} provided in the {action.Name} action. '{arguments[0]}' is not a valid RoleType.";
+                    return $"Invalid {paramName} provided in the {action.Name} action. '{arguments[0]}' is not a valid RoleType. [Error Code: SE-122]";
 
                 case MessageType.NoPlayersFound:
-                    return $"No players were found matching the given criteria ('{paramName}' parameter).";
+                    return $"No players were found matching the given criteria ('{paramName}' parameter). [Error Code: SE-123]";
 
                 case MessageType.NoRoomsFound:
-                    return $"No rooms were found matching the given criteria '{arguments[0]}' ('{paramName}' parameter).";
+                    return $"No rooms were found matching the given criteria '{arguments[0]}' ('{paramName}' parameter). [Error Code: SE-124]";
 
                 case MessageType.CassieCaptionNoAnnouncement:
-                    return $"Cannot show captions without a corresponding CASSIE announcement.";
+                    return $"Cannot show captions without a corresponding CASSIE announcement. [Error Code: SE-125]";
             }
 
-            return "Unknown error";
+            return "Unknown error [Error Code: SE-126]";
         }
 
         /// <summary>

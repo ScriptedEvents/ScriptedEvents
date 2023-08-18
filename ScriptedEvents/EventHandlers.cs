@@ -169,7 +169,7 @@
 
                     if (scr.AdminEvent)
                     {
-                        Log.Warn($"The '{name}' script is set to run each round, but the script is marked as an admin event!");
+                        Log.Warn($"The '{name}' script is set to run each round, but the script is marked as an admin event! [Error Code: SE-105]");
                         continue;
                     }
 
@@ -177,11 +177,11 @@
                 }
                 catch (DisabledScriptException)
                 {
-                    Log.Warn($"The '{name}' script is set to run each round, but the script is disabled!");
+                    Log.Warn($"The '{name}' script is set to run each round, but the script is disabled! [Error Code: SE-100]");
                 }
                 catch (FileNotFoundException)
                 {
-                    Log.Warn($"The '{name}' script is set to run each round, but the script is not found!");
+                    Log.Warn($"The '{name}' script is set to run each round, but the script is not found! [Error Code: SE-101]");
                 }
             }
         }
@@ -305,15 +305,15 @@
                     }
                     catch (DisabledScriptException)
                     {
-                        Log.Warn($"Error in 'On' handler (event: {eventName}): Script '{script}' is disabled!");
+                        Log.Warn($"Error in 'On' handler (event: {eventName}): Script '{script}' is disabled! [Error Code: SE-110]");
                     }
                     catch (FileNotFoundException)
                     {
-                        Log.Warn($"Error in 'On' handler (event: {eventName}): Script '{script}' cannot be found!");
+                        Log.Warn($"Error in 'On' handler (event: {eventName}): Script '{script}' cannot be found! [Error Code: SE-111]");
                     }
                     catch (Exception ex)
                     {
-                        Log.Warn($"Error in 'On' handler (event: {eventName}): {ex}");
+                        Log.Warn($"Error in 'On' handler (event: {eventName}) [Error Code: SE-112]: {ex}");
                     }
                 }
             }

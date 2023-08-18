@@ -309,12 +309,12 @@
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    Log.Warn($"Unable to create the help file, the plugin does not have permission to access the ScriptedEvents directory!");
+                    Log.Warn($"Unable to create the help file, the plugin does not have permission to access the ScriptedEvents directory! [Error Code: SE-114]");
                     return new(false, "HELP action error shown in server logs.");
                 }
                 catch (Exception e)
                 {
-                    Log.Warn($"Error when writing to file: {e}");
+                    Log.Warn($"Error when writing to file [Error Code: SE-115]: {e}");
                     return new(false, "HELP action error shown in server logs.");
                 }
 

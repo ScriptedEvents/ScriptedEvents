@@ -116,12 +116,12 @@
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    Log.Error($"Unable to create the required ScriptedEvents directories due to a permission error. Please ensure that ScriptedEvents has proper system permissions to Exiled's Config folder. Full error: {e}");
+                    Log.Error($"Unable to create the required ScriptedEvents directories due to a permission error. Please ensure that ScriptedEvents has proper system permissions to Exiled's Config folder. [Error Code: SE-106] Full error: {e}");
                     return;
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"Unable to load ScriptedEvents due to a directory error. {e}");
+                    Log.Error($"Unable to load ScriptedEvents due to a directory error. [Error Code: SE-107] {e}");
                     return;
                 }
 
@@ -208,7 +208,7 @@
                         }
                         else
                         {
-                            Log.Error($"The {@event.Name} event is not currently compatible with the On config.");
+                            Log.Error($"The '{@event.Name}' event is not currently compatible with the On config. [Error Code: SE-109]");
                             made = true; // we lied!
                             break;
                         }
@@ -221,7 +221,7 @@
 
                 if (!made)
                 {
-                    Log.Warn($"The specified event '{ev.Key}' in the 'On' config was not found!");
+                    Log.Warn($"The specified event '{ev.Key}' in the 'On' config was not found! [Error Code: SE-108]");
                 }
             }
 
