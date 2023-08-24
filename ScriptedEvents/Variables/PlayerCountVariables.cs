@@ -116,7 +116,7 @@
         {
             get
             {
-                if (Arguments.Length < 0)
+                if (Arguments.Length < 1)
                 {
                     return Array.Empty<Player>();
                 }
