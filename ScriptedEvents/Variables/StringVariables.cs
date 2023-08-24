@@ -113,6 +113,9 @@
                         return $"ERROR: No players associated with {variable.Name} variable";
                     }
 
+                    if (plrVar.Players.Count() == 0)
+                        return string.Empty;
+
                     return string.Join(".", plrVar.Players.Select(plr => plr.Id.ToString()));
                 }
 
