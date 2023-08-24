@@ -146,6 +146,8 @@
                 }
             }
 
+            source?.DebugLog($"Attempting to retrieve variable {variableName} with args {string.Join(" ", argList)}");
+
             Tuple<IConditionVariable, bool> result = new(null, false);
 
             foreach (IVariableGroup group in Groups)

@@ -101,7 +101,9 @@
                     return "ERROR: MISSING PLAYER VARIABLE";
                 }
 
-                if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source))
+                string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
+
+                if (VariableSystem.TryGetVariable($"{{{name}}}", out IConditionVariable variable, out _, Source))
                 {
                     if (variable is IArgumentVariable)
                     {
