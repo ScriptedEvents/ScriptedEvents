@@ -66,6 +66,8 @@
                             return Player.List.Where(plr => plr.Zone.HasFlag(zt));
                         case "ROOM" when Enum.TryParse(Arguments[2], true, out RoomType room):
                             return Player.List.Where(plr => plr.CurrentRoom.Type == room);
+                        case "USERID":
+                            return Player.List.Where(plr => plr.UserId == Arguments[2]);
                         default:
                             return Enumerable.Empty<Player>();
                     }
