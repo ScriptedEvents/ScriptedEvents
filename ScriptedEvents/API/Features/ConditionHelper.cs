@@ -49,6 +49,7 @@
         {
             new StringEqual(),
             new StringNotEqual(),
+            new StringContains(),
         }.AsReadOnly();
 
         /// <summary>

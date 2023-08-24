@@ -168,8 +168,11 @@
             if (DefinedPlayerVariables.TryGetValue(name, out CustomPlayerVariable customPlayerValue))
                 result = new(customPlayerValue, false);
 
-            if (source is not null && source.UniqueVariables.TryGetValue(name, out CustomVariable customValue2))
-                result = new(customValue2, false);
+            if (source is not null && source.UniqueVariables.TryGetValue(name, out CustomVariable uniqueValue))
+                result = new(uniqueValue, false);
+
+            if (source is not null && source.UniquePlayerVariables.TryGetValue(name, out CustomPlayerVariable uniquePlayerValue))
+                result = new(uniquePlayerValue, false);
 
             if (result.Item1 is not null)
             {
