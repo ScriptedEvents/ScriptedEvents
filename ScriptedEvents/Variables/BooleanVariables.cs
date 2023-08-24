@@ -16,10 +16,46 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
+            new VariableExists(),
             new CassieSpeaking(),
-
             new IsScriptRunning(),
         };
+    }
+
+    public class VariableExists : IBoolVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{VEXISTS}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!VEXISTS}";
+
+        /// <inheritdoc/>
+        public string Description => "Whether or not the variable with the given name exists in the current context.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("variableName", typeof(string), "The name of the variable.", true),
+        };
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public bool Value
+        {
+            get
+            {
+                if (Arguments.Length < 1) return false;
+
+                string variableName = Arguments[0];
+                return VariableSystem.GetVariable(variableName, Source)?.Item1 != null;
+            }
+        }
     }
 
     public class CassieSpeaking : IBoolVariable
