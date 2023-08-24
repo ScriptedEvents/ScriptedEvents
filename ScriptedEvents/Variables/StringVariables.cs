@@ -20,6 +20,7 @@
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new Len(),
+            new Command(),
             new Show(),
         };
     }
