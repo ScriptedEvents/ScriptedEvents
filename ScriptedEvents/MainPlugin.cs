@@ -5,15 +5,20 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.InteropServices;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.Events;
+
+    using Exiled.Events.Features;
     using Exiled.Loader;
     using MEC;
+
     using ScriptedEvents.API.Features;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Variables;
+
+    using Event = Exiled.Events.Features.Event;
+
     using MapHandler = Exiled.Events.Handlers.Map;
     using PlayerHandler = Exiled.Events.Handlers.Player;
     using Scp330Handler = Exiled.Events.Handlers.Scp330;
@@ -68,7 +73,7 @@
         public static Type[] HandlerTypes { get; } = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
             .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
 
-        public static Dictionary<EventInfo, Delegate> StoredDelegates { get; } = new();
+        public static List<Tuple<EventInfo, Delegate>> StoredDelegates { get; } = new();
 
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";
@@ -80,7 +85,7 @@
         public override Version Version => new(2, 3, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new(6, 0, 0);
+        public override Version RequiredExiledVersion => new(8, 0, 0);
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
@@ -195,40 +200,48 @@
                 foreach (Type handler in HandlerTypes)
                 {
                     // Credit to DevTools for below code.
-                    var @event = handler.GetEvent(ev.Key);
-                    if (@event is not null)
+                    Delegate @delegate = null;
+                    PropertyInfo propertyInfo = handler.GetProperty(ev.Key);
+                    EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
+                    MethodInfo subscribe = propertyInfo.PropertyType.GetMethod("Subscribe");
+
+                    if (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
                     {
-                        Delegate @delegate;
-                        if (@event.EventHandlerType.GenericTypeArguments.Any())
-                        {
-                            @delegate = typeof(EventHandlers)
-                            .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
-                                .MakeGenericMethod(@event.EventHandlerType.GenericTypeArguments)
-                                .CreateDelegate(typeof(Events.CustomEventHandler<>).MakeGenericType(@event.EventHandlerType.GenericTypeArguments), Handlers);
-                        }
-                        else
-                        {
-                            Log.Error($"The '{@event.Name}' event is not currently compatible with the On config. [Error Code: SE-109]");
-                            made = true; // we lied!
-                            break;
-                        }
-
-                        @event.AddEventHandler(Handlers, @delegate);
-                        StoredDelegates.Add(@event, @delegate);
-                        made = true;
+                        @delegate = typeof(EventHandlers)
+                        .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
+                            .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
+                            .CreateDelegate(typeof(CustomEventHandler).MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments), Handlers);
                     }
-                }
+                    else if (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event))
+                    {
+                        @delegate = typeof(EventHandlers)
+                        .GetMethod(nameof(EventHandlers.OnNonArgumentedEvent))
+                        .CreateDelegate(typeof(CustomEventHandler));
+                        made = true;
+                        break;
+                    }
+                    else
+                    {
+                        Log.Warn(propertyInfo.Name);
+                        made = false;
+                        break;
+                    }
 
-                if (!made)
-                {
-                    Log.Warn($"The specified event '{ev.Key}' in the 'On' config was not found! [Error Code: SE-108]");
+                    subscribe.Invoke(propertyInfo.GetValue(null), new object[] { @delegate });
+                    StoredDelegates.Add(new Tuple<EventInfo, Delegate>(eventInfo, @delegate));
+                    made = true;
+
+                    if (!made)
+                    {
+                        Log.Warn($"The specified event '{ev.Key}' in the 'On' config was not found!");
+                    }
+
+                    // Delete help file on startup
+                    string helpPath = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
+                    if (File.Exists(helpPath))
+                        File.Delete(helpPath);
                 }
             }
-
-            // Delete help file on startup
-            string helpPath = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
-            if (File.Exists(helpPath))
-                File.Delete(helpPath);
         }
 
         /// <inheritdoc/>
@@ -283,12 +296,25 @@
             ServerHandler.RoundStarted -= Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam -= Handlers.OnRespawningTeam;
 
-            foreach (var delegatePair in StoredDelegates)
+            for (int i = 0; i < StoredDelegates.Count; i++)
             {
-                delegatePair.Key.RemoveEventHandler(Handlers, delegatePair.Value);
-            }
+                Tuple<EventInfo, Delegate> tuple = StoredDelegates[i];
+                EventInfo eventInfo = tuple.Item1;
+                Delegate handler = tuple.Item2;
 
-            StoredDelegates.Clear();
+                if (eventInfo.DeclaringType != null)
+                {
+                    MethodInfo removeMethod = eventInfo.DeclaringType.GetMethod($"remove_{eventInfo.Name}", BindingFlags.Instance | BindingFlags.NonPublic);
+                    removeMethod.Invoke(null, new object[] { handler });
+                }
+                else
+                {
+                    MethodInfo removeMethod = eventInfo.GetRemoveMethod(true);
+                    removeMethod.Invoke(null, new[] { handler });
+                }
+
+                StoredDelegates.Remove(tuple);
+            }
 
             ScriptHelper.StopAllScripts();
             ScriptHelper.ActionTypes.Clear();

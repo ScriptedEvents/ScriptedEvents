@@ -23,6 +23,7 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using UnityEngine;
+    using System.Diagnostics;
 
     public class EventHandlers
     {
@@ -327,12 +328,10 @@
             OnAnyEvent(evName, ev);
         }
 
-        /*public void OnNonArgumentedEvent()
+        public void OnNonArgumentedEvent()
         {
-            Type evType = typeof(T);
-            string evName = evType.Name.Replace("EventArgs", string.Empty);
-            OnAnyEvent(evName, ev);
-        }*/
+            OnAnyEvent(new StackFrame(2).GetMethod().Name);
+        }
 
         // Infection
         public void OnDied(DiedEventArgs ev)
