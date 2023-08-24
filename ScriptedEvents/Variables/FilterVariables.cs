@@ -21,7 +21,7 @@
         };
     }
 
-    public class RoleFilter : IFloatVariable, IPlayerVariable, IArgumentVariable
+    public class RoleFilter : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{FILTER}";
@@ -44,6 +44,9 @@
         public float Value => Players.Count();
 
         /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
         public IEnumerable<Player> Players
         {
             get
@@ -53,7 +56,7 @@
 
                 string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
 
-                var conditionVariable = VariableSystem.GetVariable($"{{{name}}}", null); // Todo support per script variables
+                var conditionVariable = VariableSystem.GetVariable($"{{{name}}}", Source);
                 if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
                 {
                     switch (Arguments[1].ToString())
