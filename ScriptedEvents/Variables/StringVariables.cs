@@ -6,6 +6,7 @@
     using System.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.CustomItems.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -183,7 +184,7 @@
                             "ZONE" => ply.Zone.ToString(),
                             "HP" or "HEALTH" => ply.Health.ToString(),
                             "INVCOUNT" => ply.Items.Count.ToString(),
-                            "INV" => string.Join(", ", ply.Items.Select(item => item.Type)),
+                            "INV" => string.Join(", ", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())),
                             "GOD" => ply.IsGodModeEnabled.ToString().ToUpper(),
                             _ => ply.Nickname,
                         };

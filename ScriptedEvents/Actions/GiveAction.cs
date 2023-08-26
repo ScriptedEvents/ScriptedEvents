@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Exiled.API.Features;
+    using Exiled.CustomItems.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
@@ -41,8 +42,24 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!Enum.TryParse<ItemType>(Arguments[1], true, out ItemType itemType))
-                return new(false, "Invalid item provided.");
+            bool useCustom = false;
+            CustomItem item = null;
+            ItemType itemType = ItemType.None;
+
+            if (CustomItem.TryGet(Arguments[1], out CustomItem customItem))
+            {
+                useCustom = true;
+                item = customItem;
+            }
+            else if (Enum.TryParse<ItemType>(Arguments[1], true, out ItemType itemType2))
+            {
+                useCustom = false;
+                itemType = itemType2;
+            }
+            else
+            {
+                return new(false, "Invalid ItemType or Custom Item name provided.");
+            }
 
             int amt = 1;
 
@@ -74,7 +91,10 @@
             {
                 for (int i = 0; i < amt; i++)
                 {
-                    player.AddItem(itemType);
+                    if (useCustom)
+                        item.Give(player);
+                    else
+                        player.AddItem(itemType);
                 }
             }
 
