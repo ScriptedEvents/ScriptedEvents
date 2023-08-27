@@ -8,6 +8,7 @@
     using PlayerRoles;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
+    using UnityEngine;
 
     public class FilterVariables : IVariableGroup
     {
@@ -97,7 +98,7 @@
         public Argument[] ExpectedArguments { get; } = new[]
         {
             new Argument("name", typeof(string), "The name of the variable to index.", true),
-            new Argument("type", typeof(int), "The index.", true),
+            new Argument("type", typeof(int), "The index. Number variables can be used (if they are decimal, the decimal portion will be removed)", true),
         };
 
         /// <inheritdoc/>
@@ -119,8 +120,20 @@
                 var conditionVariable = VariableSystem.GetVariable($"{{{name}}}", Source);
                 if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
                 {
-                    if (!int.TryParse(Arguments[1], out int index))
+                    int index = -1;
+
+                    if (int.TryParse(Arguments[1], out index))
+                    {
+                        // yay
+                    }
+                    else if (VariableSystem.TryGetVariable(Arguments[1], out IConditionVariable var, out _, Source) && var is IFloatVariable floatVar)
+                    {
+                        index = (int)floatVar.Value;
+                    }
+                    else
+                    {
                         return Enumerable.Empty<Player>();
+                    }
 
                     if (index > playerVariable.Players.Count() - 1)
                         return Enumerable.Empty<Player>();
