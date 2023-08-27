@@ -17,11 +17,12 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
-            new RoleFilter(),
+            new Filter(),
+            new GetByIndex(),
         };
     }
 
-    public class RoleFilter : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
+    public class Filter : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{FILTER}";
@@ -74,6 +75,57 @@
                         default:
                             return Enumerable.Empty<Player>();
                     }
+                }
+
+                return Enumerable.Empty<Player>();
+            }
+        }
+    }
+
+    public class GetByIndex : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{INDEXVAR}";
+
+        /// <inheritdoc/>
+        public string Description => "Indexes a player variable and gets ONE player at the specified position.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("name", typeof(string), "The name of the variable to index.", true),
+            new Argument("type", typeof(int), "The index.", true),
+        };
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                // Todo: Throw error, not empty enumerable
+                if (Arguments.Length < 2) return Enumerable.Empty<Player>();
+
+                string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
+
+                var conditionVariable = VariableSystem.GetVariable($"{{{name}}}", Source);
+                if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
+                {
+                    if (!int.TryParse(Arguments[1], out int index))
+                        return Enumerable.Empty<Player>();
+
+                    if (index > playerVariable.Players.Count() - 1)
+                        return Enumerable.Empty<Player>();
+
+                    return new List<Player>() { playerVariable.Players.ToList()[index] }; // Todo make pretty
                 }
 
                 return Enumerable.Empty<Player>();
