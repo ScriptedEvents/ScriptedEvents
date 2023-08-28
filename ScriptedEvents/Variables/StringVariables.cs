@@ -23,6 +23,8 @@
             new Len(),
             new Command(),
             new Show(),
+
+            new RandomRoom(),
         };
     }
 
@@ -197,6 +199,48 @@
                 }
 
                 return "ERROR: INVALID VARIABLE";
+            }
+        }
+    }
+
+    public class RandomRoom : IStringVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{RANDOMROOM}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets the RoomType of a random room. Can be filtered by zone.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("zone", typeof(ZoneType), "A zone to filter by (optional).", false),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                ZoneType filter = ZoneType.Unspecified;
+
+                if (Arguments.Length > 0 && !Enum.TryParse(Arguments[0], out filter))
+                {
+                    return "INVALID ZONETYPE FILTER PROVIDED";
+                }
+
+                IEnumerable<Room> validRooms = Room.List.Where(room => room.Type != RoomType.Pocket);
+
+                if (filter is not ZoneType.Unspecified)
+                {
+                    validRooms = validRooms.Where(room => room.Zone.HasFlag(filter));
+                }
+
+                List<Room> newList = validRooms.ToList();
+                return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
             }
         }
     }
