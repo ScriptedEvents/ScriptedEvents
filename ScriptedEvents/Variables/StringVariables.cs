@@ -186,6 +186,10 @@
                             "INVCOUNT" => ply.Items.Count.ToString(),
                             "INV" => string.Join(", ", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())),
                             "GOD" => ply.IsGodModeEnabled.ToString().ToUpper(),
+                            "POS" => $"{ply.Position.x} {ply.Position.y} {ply.Position.z}",
+                            "POSX" => ply.Position.x.ToString(),
+                            "POSY" => ply.Position.y.ToString(),
+                            "POSZ" => ply.Position.z.ToString(),
                             _ => ply.Nickname,
                         };
                     }).OrderBy(s => s);
