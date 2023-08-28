@@ -300,6 +300,10 @@
                         {
                             scr.AddVariable("{EVITEM}", "The ItemType of the pickup associated with this event.", pickup.Pickup.Type.ToString());
                         }
+                        else if (ev is ChangingItemEventArgs changingEv) // exiled moment (ChangingItemEventArgs is not considered an item event)
+                        { // Todo: Remove this when exiled stops being stupid
+                            scr.AddVariable("{EVITEM}", "The ItemType of the item involved with this event.", changingEv.NewItem.Type.ToString());
+                        }
 
                         ScriptHelper.RunScript(scr);
                     }
