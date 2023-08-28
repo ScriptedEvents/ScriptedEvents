@@ -366,8 +366,20 @@ namespace ScriptedEvents.API.Features
                 Timing.KillCoroutines(key);
             }
 
+            foreach (string key in HttpGetAction.Coroutines)
+            {
+                Timing.KillCoroutines(key);
+            }
+
+            foreach (string key in HttpPostAction.Coroutines)
+            {
+                Timing.KillCoroutines(key);
+            }
+
             WaitUntilAction.Coroutines.Clear();
             WaitUntilDebugAction.Coroutines.Clear();
+            HttpGetAction.Coroutines.Clear();
+            HttpPostAction.Coroutines.Clear();
             RunningScripts.Clear();
             return amount;
         }
