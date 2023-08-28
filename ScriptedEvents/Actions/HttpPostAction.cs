@@ -61,6 +61,7 @@
         {
             UnityWebRequest discordWWW = UnityWebRequest.Put(input, body);
             discordWWW.method = "POST";
+            discordWWW.SetRequestHeader("Content-Type", "application/json");
             yield return Timing.WaitUntilDone(discordWWW.SendWebRequest());
 
             string result;
