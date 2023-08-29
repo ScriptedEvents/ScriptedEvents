@@ -127,6 +127,10 @@
 
         public static Tuple<IConditionVariable, bool> GetVariable(string name, Script source = null)
         {
+            // Do this here so individual files dont have to do it anymore
+            name = name.Replace("{", string.Empty).Replace("}", string.Empty);
+            name = $"{{{name}}}";
+
             string variableName;
             List<string> argList = ListPool<string>.Pool.Get();
 

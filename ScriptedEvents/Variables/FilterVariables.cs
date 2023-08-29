@@ -56,9 +56,7 @@
                 // Todo: Throw error, not empty enumerable
                 if (Arguments.Length < 3) return Enumerable.Empty<Player>();
 
-                string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
-
-                var conditionVariable = VariableSystem.GetVariable($"{{{name}}}", Source);
+                var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source);
                 if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
                 {
                     switch (Arguments[1].ToString())
@@ -115,9 +113,7 @@
                 // Todo: Throw error, not empty enumerable
                 if (Arguments.Length < 2) return Enumerable.Empty<Player>();
 
-                string name = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
-
-                var conditionVariable = VariableSystem.GetVariable($"{{{name}}}", Source);
+                var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source);
                 if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
                 {
                     int index = -1;
@@ -126,9 +122,12 @@
                     {
                         // yay
                     }
-                    else if (VariableSystem.TryGetVariable(Arguments[1], out IConditionVariable var, out _, Source) && var is IFloatVariable floatVar)
+                    else if (VariableSystem.TryGetVariable(Arguments[1], out IConditionVariable var, out _, Source))
                     {
-                        index = (int)floatVar.Value;
+                        if (var is IFloatVariable floatVar)
+                            index = (int)floatVar.Value;
+                        else if (var is IStringVariable stringVar && int.TryParse(stringVar.Value, out int stringN))
+                            index = stringN;
                     }
                     else
                     {

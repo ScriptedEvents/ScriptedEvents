@@ -53,8 +53,7 @@
             {
                 if (Arguments.Length < 1) return false;
 
-                string variableName = Arguments[0].Replace("{", string.Empty).Replace("}", string.Empty);
-                return VariableSystem.GetVariable($"{{{variableName}}}", Source)?.Item1 != null;
+                return VariableSystem.GetVariable(Arguments[0], Source)?.Item1 != null;
             }
         }
     }
