@@ -52,7 +52,7 @@
                 text = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
             foreach (Player ply in players)
-                CountdownHelper.AddCountdown(ply, text, TimeSpan.FromSeconds(duration));
+                CountdownHelper.AddCountdown(ply, text, TimeSpan.FromSeconds(duration), script);
 
             return new(true);
         }
