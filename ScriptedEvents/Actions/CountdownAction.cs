@@ -43,7 +43,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            if (!int.TryParse(Arguments[1], out int duration))
+            if (!VariableSystem.TryParse(Arguments[1], out int duration, script))
                 return new(MessageType.NotANumber, this, "duration", Arguments[1]);
 
             string text = null;
