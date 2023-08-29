@@ -24,13 +24,13 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public string Description => "Set the AHP of the targeted players.";
+        public string Description => "Add AHP to the targeted players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to affect.", true),
-            new Argument("health", typeof(float), "The amount of artificial health to set the player to. Math and variables ARE supported.", true),
+            new Argument("health", typeof(float), "The amount of artificial health to add to the player. Math and variables ARE supported.", true),
         };
 
         /// <inheritdoc/>
@@ -55,7 +55,7 @@
 
             float hp = result.Result;
             foreach (Player ply in plys)
-                ply.ArtificialHealth = hp;
+                ply.AddAhp(hp);
 
             return new(true);
         }
