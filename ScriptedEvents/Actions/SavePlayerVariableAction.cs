@@ -33,7 +33,7 @@
         {
             new Argument("variableName", typeof(string), "The name of the new variable. Braces will be added automatically if not provided.", true),
             new Argument("players", typeof(List<Player>), "The players to save as the new variable.", true),
-            new Argument("max", typeof(int), "The maximum amount of players to save in this variable (default: unlimited).", false),
+            new Argument("max", typeof(int), "The maximum amount of players to save in this variable. Math and variables are supported. (default: unlimited).", false),
         };
 
         /// <inheritdoc/>

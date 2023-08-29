@@ -40,6 +40,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            // Todo: Variable support
             if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms))

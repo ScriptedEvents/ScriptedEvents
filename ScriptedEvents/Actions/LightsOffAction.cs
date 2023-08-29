@@ -31,7 +31,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("room", typeof(RoomType), "The room(s) to flicker the lights off.", true),
-            new Argument("duration", typeof(float), "The duration of the lights out. Math and variables ARE supported.", true),
+            new Argument("duration", typeof(float), "The duration of the lights out. Variables are supported.", true),
         };
 
         /// <inheritdoc/>
@@ -43,19 +43,11 @@
                 return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
 
             string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(1)), script);
-            float duration;
 
-            if (!ConditionHelper.TryMath(formula, out MathResult result))
+            if (!VariableSystem.TryParse(Arguments[1], out int duration, script))
             {
-                return new(MessageType.NotANumberOrCondition, this, "duration", formula, result);
+                return new(MessageType.NotANumber, this, "duration", Arguments[1]);
             }
-
-            if (result.Result < 0)
-            {
-                return new(MessageType.LessThanZeroNumber, this, "duration", result.Result);
-            }
-
-            duration = result.Result;
 
             foreach (Room room in rooms)
                 room.TurnOffLights(duration);

@@ -41,7 +41,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            // Todo: Make it support variables
+            // Todo: Needs negative number checking
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))

@@ -12,8 +12,10 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
     using Tesla = Exiled.API.Features.TeslaGate;
 
+    // Todo: Needs reworked entirely
     public class TeslaAction : IScriptAction, IHelpInfo, ISampleAction
     {
         /// <inheritdoc/>
@@ -36,7 +38,7 @@
         {
             new Argument("mode", typeof(string), "The mode to run. Valid options: PLAYERS, ROLETYPE, DISABLE, ENABLE", true),
             new Argument("target", typeof(object), "The targets. Different type based on the mode.\nPLAYERS: A list of players.\nROLETYPE: A valid RoleType (eg. ClassD, Scp173, etc)\nDISABLE & ENABLE: None", true),
-            new Argument("duration", typeof(float), "The time before reversing the effect.", false),
+            new Argument("duration", typeof(float), "The time before reversing the effect. Variables are supported.", false),
         };
 
         public ISampleProvider Samples { get; } = new TeslaSamples();
@@ -68,22 +70,22 @@
                             Tesla.IgnoredPlayers.Add(player);
                     }
 
-                    return Reverse(mode, players, duration);
+                    return Reverse(mode, players, duration, script);
                 case "ROLETYPE":
                     if (!Enum.TryParse(target, true, out RoleTypeId roleType))
                         return new(MessageType.InvalidRole, this, "target", target);
 
                     if (!Tesla.IgnoredRoles.Contains(roleType))
                         Tesla.IgnoredRoles.Add(roleType);
-                    return Reverse(mode, roleType, duration);
+                    return Reverse(mode, roleType, duration, script);
                 case "DISABLE":
                     duration = Arguments.Length > 1 ? string.Join(string.Empty, Arguments.Skip(1)) : null;
                     MainPlugin.Handlers.TeslasDisabled = true;
-                    return Reverse(mode, null, duration);
+                    return Reverse(mode, null, duration, script);
                 case "ENABLE":
                     duration = Arguments.Length > 1 ? string.Join(string.Empty, Arguments.Skip(1)) : null;
                     MainPlugin.Handlers.TeslasDisabled = false;
-                    return Reverse(mode, null, duration);
+                    return Reverse(mode, null, duration, script);
                 default:
                     return new(MessageType.InvalidOption, this, "mode", mode, "PLAYERS/ROLETYPE/DISABLE/ENABLE");
             }
@@ -95,25 +97,19 @@
         /// <param name="mode">The mode to reverse.</param>
         /// <param name="target">The targeted objects.</param>
         /// <param name="duration">The duration until reversing.</param>
+        /// <param name="script">The script.</param>
         /// <returns>An <see cref="ActionResponse"/> indicating success of the reverse.</returns>
-        public ActionResponse Reverse(string mode, object target, string duration)
+        public ActionResponse Reverse(string mode, object target, string duration, Script script = null)
         {
             if (duration is null || string.IsNullOrWhiteSpace(duration))
                 return new(true);
 
             float floatDuration;
 
-            if (!ConditionHelper.TryMath(duration, out MathResult result))
-            {
-                return new(MessageType.NotANumberOrCondition, this, "duration", duration, result);
-            }
-
-            if (result.Result < 0)
-            {
-                return new(MessageType.LessThanZeroNumber, this, "duration", result.Result);
-            }
-
-            floatDuration = result.Result;
+            if (!VariableSystem.TryParse(duration, out floatDuration, script))
+                return new(MessageType.NotANumber, this, "duration", duration);
+            if (floatDuration < 0)
+                return new(MessageType.LessThanZeroNumber, this, "duration", duration);
 
             Timing.CallDelayed(floatDuration, () =>
             {

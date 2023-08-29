@@ -31,8 +31,8 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to show the countdown to.", true),
-            new Argument("duration", typeof(int), "The duration of the countdown. Math and variables are NOT supported.", true),
-            new Argument("text", typeof(string), "The text to show on the broadcast. Variables ARE supported.", true),
+            new Argument("duration", typeof(int), "The duration of the countdown. Variables are supported.", true),
+            new Argument("text", typeof(string), "The text to show on the broadcast. Variables are supported.", true),
         };
 
         /// <inheritdoc/>
