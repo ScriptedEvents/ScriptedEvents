@@ -37,7 +37,7 @@
             new Argument("role", typeof(RoleTypeId), "The role to set all the players as.", true),
             new Argument("spawnpoint", typeof(bool), "Use spawnpoint? default: true", false),
             new Argument("inventory", typeof(bool), "Use default inventory? default: true", false),
-            new Argument("max", typeof(int), "The maximum amount of players to set the role of. Variables & Math are supported. (default: unlimited).", false),
+            new Argument("max", typeof(int), "The maximum amount of players to set the role of. Variables are supported. (default: unlimited).", false),
 
         };
 
@@ -64,19 +64,10 @@
 
             if (Arguments.Length > 4)
             {
-                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(4)), script);
-
-                if (!ConditionHelper.TryMath(formula, out MathResult result))
+                if (!VariableSystem.TryParse(Arguments[4], out max, script))
                 {
-                    return new(MessageType.NotANumberOrCondition, this, "max", formula, result);
+                    return new(MessageType.NotANumber, this, "max", Arguments[4]);
                 }
-
-                if (result.Result < 0)
-                {
-                    return new(MessageType.LessThanZeroNumber, this, "max", result.Result);
-                }
-
-                max = Mathf.RoundToInt(result.Result);
             }
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys, script))
