@@ -24,6 +24,7 @@
             new PlayersDead(),
             new Staff(),
             new InRoom(),
+            new NonePlayer(),
         };
     }
 
@@ -89,7 +90,6 @@
 
     public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable, INeedSourceVariable
     {
-
         /// <inheritdoc/>
         public string Name => "{INROOM}";
 
@@ -136,5 +136,20 @@
                 return Array.Empty<Player>();
             }
         }
+    }
+
+    public class NonePlayer : IFloatVariable, IPlayerVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{NONE}";
+
+        /// <inheritdoc/>
+        public string Description => "Will always be an empty variable with no players.";
+
+        /// <inheritdoc/>
+        public float Value => Player.List.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Enumerable.Empty<Player>();
     }
 }
