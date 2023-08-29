@@ -14,7 +14,7 @@
     public class SavePlayerVariableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "SAVEPLAYERVARIABLE";
+        public string Name => "SAVEPLAYERS";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
