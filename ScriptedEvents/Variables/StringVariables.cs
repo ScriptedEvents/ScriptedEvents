@@ -56,7 +56,7 @@
                 if (Arguments.Length == 0)
                     return -1f;
 
-                var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source);
+                var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source, false);
                 if (conditionVariable.Item1 is not null)
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)
@@ -102,7 +102,7 @@
                     return "ERROR: MISSING PLAYER VARIABLE";
                 }
 
-                if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source))
+                if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
                 {
                     if (variable is IArgumentVariable)
                     {
@@ -159,7 +159,7 @@
                 if (Arguments.Length > 1)
                     selector = Arguments[1].ToUpper();
 
-                var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source);
+                var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source, false);
                 if (conditionVariable.Item1 is not null)
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)

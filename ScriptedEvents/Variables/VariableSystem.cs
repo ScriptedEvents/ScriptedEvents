@@ -126,11 +126,14 @@
         /// <returns>The modified string.</returns>
         public static string Replace(this string input, string oldValue, object newValue) => input.Replace(oldValue, newValue.ToString());
 
-        public static Tuple<IConditionVariable, bool> GetVariable(string name, Script source = null)
+        public static Tuple<IConditionVariable, bool> GetVariable(string name, Script source = null, bool requireBrackets = true)
         {
             // Do this here so individual files dont have to do it anymore
-            name = name.Replace("{", string.Empty).Replace("}", string.Empty);
-            name = $"{{{name}}}";
+            if (!requireBrackets)
+            {
+                name = name.Replace("{", string.Empty).Replace("}", string.Empty);
+                name = $"{{{name}}}";
+            }
 
             string variableName;
             List<string> argList = ListPool<string>.Pool.Get();
@@ -198,9 +201,9 @@
             return result;
         }
 
-        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source = null)
+        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source = null, bool requireBrackets = true)
         {
-            Tuple<IConditionVariable, bool> res = GetVariable(name, source);
+            Tuple<IConditionVariable, bool> res = GetVariable(name, source, requireBrackets);
 
             variable = res.Item1;
             reversed = res.Item2;

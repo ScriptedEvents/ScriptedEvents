@@ -53,7 +53,7 @@
             {
                 if (Arguments.Length < 1) return false;
 
-                return VariableSystem.GetVariable(Arguments[0], Source)?.Item1 != null;
+                return VariableSystem.GetVariable(Arguments[0], Source, false)?.Item1 != null;
             }
         }
     }

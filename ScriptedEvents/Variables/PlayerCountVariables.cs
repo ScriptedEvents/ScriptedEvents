@@ -125,7 +125,7 @@
                 {
                     return Player.Get(plr => plr.CurrentRoom.Type == rt);
                 }
-                else if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source))
+                else if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
                 {
                     if (variable is IStringVariable variableString && Enum.TryParse(variableString.Value, out RoomType rt2))
                     {
