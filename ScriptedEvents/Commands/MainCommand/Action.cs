@@ -66,11 +66,13 @@
             scriptAction.Arguments = arguments.Skip(1).ToArray();
 
             // Fill out mock script info
-            Script mockScript = new Script();
-            mockScript.Context = ExecuteContext.ServerConsole;
-            mockScript.Sender = sender;
-            mockScript.RawText = string.Join(" ", arguments);
-            mockScript.ScriptName = "ACTION COMMAND EXECUTION";
+            Script mockScript = new()
+            {
+                Context = ExecuteContext.ServerConsole,
+                Sender = sender,
+                RawText = string.Join(" ", arguments),
+                ScriptName = "ACTION COMMAND EXECUTION",
+            };
             mockScript.Flags.Add("ACTIONCOMMANDEXECUTION");
 
             ActionResponse actionResponse = scriptAction.Execute(mockScript);

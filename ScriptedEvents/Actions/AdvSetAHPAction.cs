@@ -78,7 +78,7 @@
                     return new(MessageType.NotANumber, this, "sustain", Arguments[5]);
             }
 
-            bool persistent = Arguments.Length > 6 ? (Arguments[6] is "TRUE" or "YES") : false;
+            bool persistent = Arguments.Length > 6 && (Arguments[6] is "TRUE" or "YES");
 
             foreach (Player ply in plys)
                 ply.AddAhp(hp, limit, decay, efficacy, sustain, persistent);

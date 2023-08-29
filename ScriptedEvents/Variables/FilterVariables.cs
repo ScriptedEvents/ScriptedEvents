@@ -59,21 +59,15 @@
                 var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source);
                 if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
                 {
-                    switch (Arguments[1].ToString())
+                    return Arguments[1].ToString() switch
                     {
-                        case "ROLE" when Enum.TryParse(Arguments[2], true, out RoleTypeId rt):
-                            return Player.List.Where(plr => plr.Role.Type == rt);
-                        case "TEAM" when Enum.TryParse(Arguments[2], true, out Team team):
-                            return Player.List.Where(plr => plr.Role.Team == team);
-                        case "ZONE" when Enum.TryParse(Arguments[2], true, out ZoneType zt):
-                            return Player.List.Where(plr => plr.Zone.HasFlag(zt));
-                        case "ROOM" when Enum.TryParse(Arguments[2], true, out RoomType room):
-                            return Player.List.Where(plr => plr.CurrentRoom.Type == room);
-                        case "USERID":
-                            return Player.List.Where(plr => plr.UserId == Arguments[2]);
-                        default:
-                            return Enumerable.Empty<Player>();
-                    }
+                        "ROLE" when Enum.TryParse(Arguments[2], true, out RoleTypeId rt) => Player.List.Where(plr => plr.Role.Type == rt),
+                        "TEAM" when Enum.TryParse(Arguments[2], true, out Team team) => Player.List.Where(plr => plr.Role.Team == team),
+                        "ZONE" when Enum.TryParse(Arguments[2], true, out ZoneType zt) => Player.List.Where(plr => plr.Zone.HasFlag(zt)),
+                        "ROOM" when Enum.TryParse(Arguments[2], true, out RoomType room) => Player.List.Where(plr => plr.CurrentRoom.Type == room),
+                        "USERID" => Player.List.Where(plr => plr.UserId == Arguments[2]),
+                        _ => Enumerable.Empty<Player>(),
+                    };
                 }
 
                 return Enumerable.Empty<Player>();
@@ -116,9 +110,7 @@
                 var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source);
                 if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
                 {
-                    int index = -1;
-
-                    if (int.TryParse(Arguments[1], out index))
+                    if (int.TryParse(Arguments[1], out int index))
                     {
                         // yay
                     }

@@ -209,7 +209,7 @@
 
         public static bool TryGetPlayers(string name, out IEnumerable<Exiled.API.Features.Player> players, Script source = null)
         {
-            if (TryGetVariable(name, out IConditionVariable variable, out bool reversed, source))
+            if (TryGetVariable(name, out IConditionVariable variable, out _, source))
             {
                 if (variable is IPlayerVariable plrVariable)
                 {

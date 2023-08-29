@@ -144,8 +144,10 @@ namespace ScriptedEvents.API.Features
                     // Check for custom actions
                     if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
                     {
-                        CustomAction customAction1 = new(customAction.Name, customAction.Action);
-                        customAction1.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                        CustomAction customAction1 = new(customAction.Name, customAction.Action)
+                        {
+                            Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray(),
+                        };
                         actionList.Add(customAction1);
                         continue;
                     }
