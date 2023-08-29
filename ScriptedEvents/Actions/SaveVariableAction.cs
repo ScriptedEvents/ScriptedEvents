@@ -14,7 +14,7 @@
         public string Name => "SAVE";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "SAVEVARIABLE" };
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }

@@ -17,7 +17,7 @@
         public string Name => "SAVEPLAYERS";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "SAVEPLAYERVARIABLE" };
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }

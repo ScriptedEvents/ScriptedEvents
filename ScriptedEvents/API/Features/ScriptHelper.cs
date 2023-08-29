@@ -149,7 +149,21 @@ namespace ScriptedEvents.API.Features
                             Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray(),
                         };
                         actionList.Add(customAction1);
+                        ListPool<string>.Pool.Return(actionParts);
                         continue;
+                    }
+
+                    // Alias support
+                    foreach (Type actionType123 in ActionTypes.Values)
+                    {
+                        var mock = (IAction)Activator.CreateInstance(actionType123);
+                        mock.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                        if (mock.Aliases.Contains(keyword))
+                        {
+                            actionList.Add(mock);
+                            ListPool<string>.Pool.Return(actionParts);
+                            continue;
+                        }
                     }
 
                     if (!suppressWarnings)

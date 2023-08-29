@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.Commands.MainCommand
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using CommandSystem;
     using Exiled.Permissions.Extensions;
@@ -45,8 +46,16 @@
 
             if (!ScriptHelper.ActionTypes.TryGetValue(actionName.ToUpper(), out Type argType))
             {
-                response = "Invalid argument name provided.";
-                return false;
+                KeyValuePair<string, Type>? alias = ScriptHelper.ActionTypes.FirstOrDefault(kpv => ((IAction)Activator.CreateInstance(kpv.Value)).Aliases.Contains(actionName.ToUpper()));
+                if (alias.HasValue)
+                {
+                    argType = alias.Value.Value;
+                }
+                else
+                {
+                    response = "Invalid argument name provided.";
+                    return false;
+                }
             }
 
             IAction action = Activator.CreateInstance(argType) as IAction;
