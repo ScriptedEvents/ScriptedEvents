@@ -44,13 +44,13 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            if (!VariableSystem.TryParse(Arguments[1], out float x))
+            if (!VariableSystem.TryParse(Arguments[1], out float x, script))
                 return new(MessageType.NotANumber, this, "X", Arguments[1]);
 
-            if (!VariableSystem.TryParse(Arguments[2], out float y))
+            if (!VariableSystem.TryParse(Arguments[2], out float y, script))
                 return new(MessageType.NotANumber, this, "Y", Arguments[2]);
 
-            if (!VariableSystem.TryParse(Arguments[3], out float z))
+            if (!VariableSystem.TryParse(Arguments[3], out float z, script))
                 return new(MessageType.NotANumber, this, "Z", Arguments[3]);
 
             Vector3 vz = new(x, y, z);

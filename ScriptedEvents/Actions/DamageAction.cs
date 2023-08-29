@@ -43,7 +43,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            if (!VariableSystem.TryParse(Arguments[1], out float damage))
+            if (!VariableSystem.TryParse(Arguments[1], out float damage, script))
                 return new(MessageType.NotANumber, this, "damage", Arguments[1]);
 
             if (damage < 0)

@@ -37,7 +37,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!VariableSystem.TryParse(Arguments[0], out float duration))
+            if (!VariableSystem.TryParse(Arguments[0], out float duration, script))
             {
                 return new(MessageType.NotANumber, this, "duration", Arguments[0]);
             }

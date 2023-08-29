@@ -110,7 +110,7 @@
                 var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source);
                 if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
                 {
-                    if (!VariableSystem.TryParse(Arguments[1], out int index))
+                    if (!VariableSystem.TryParse(Arguments[1], out int index, Source))
                     {
                         return Enumerable.Empty<Player>();
                     }

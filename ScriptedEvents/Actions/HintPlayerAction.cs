@@ -45,7 +45,7 @@
                 return new(MessageType.NoPlayersFound, this, "players");
             }
 
-            if (!VariableSystem.TryParse(Arguments[1], out float duration))
+            if (!VariableSystem.TryParse(Arguments[1], out float duration, script))
             {
                 return new(MessageType.NotANumber, this, "duration", Arguments[0]);
             }
