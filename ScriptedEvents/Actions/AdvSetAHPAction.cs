@@ -47,34 +47,34 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            if (!float.TryParse(Arguments[1], out float hp))
+            if (!VariableSystem.TryParse(Arguments[1], out float hp))
                 return new(MessageType.NotANumber, this, "health", Arguments[1]);
 
             float limit = 75;
             if (Arguments.Length > 2)
             {
-                if (!float.TryParse(Arguments[2], out limit))
+                if (!VariableSystem.TryParse(Arguments[2], out limit))
                     return new(MessageType.NotANumber, this, "limit", Arguments[2]);
             }
 
             float decay = 1.2f;
             if (Arguments.Length > 3)
             {
-                if (!float.TryParse(Arguments[3], out decay))
+                if (!VariableSystem.TryParse(Arguments[3], out decay))
                     return new(MessageType.NotANumber, this, "decay", Arguments[2]);
             }
 
             float efficacy = 0.7f;
             if (Arguments.Length > 4)
             {
-                if (!float.TryParse(Arguments[4], out efficacy))
+                if (!VariableSystem.TryParse(Arguments[4], out efficacy))
                     return new(MessageType.NotANumber, this, "efficacy", Arguments[2]);
             }
 
             float sustain = 0f;
             if (Arguments.Length > 5)
             {
-                if (!float.TryParse(Arguments[5], out sustain))
+                if (!VariableSystem.TryParse(Arguments[5], out sustain))
                     return new(MessageType.NotANumber, this, "sustain", Arguments[5]);
             }
 

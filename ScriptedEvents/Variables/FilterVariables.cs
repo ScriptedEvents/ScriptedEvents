@@ -110,18 +110,7 @@
                 var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source);
                 if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
                 {
-                    if (int.TryParse(Arguments[1], out int index))
-                    {
-                        // yay
-                    }
-                    else if (VariableSystem.TryGetVariable(Arguments[1], out IConditionVariable var, out _, Source))
-                    {
-                        if (var is IFloatVariable floatVar)
-                            index = (int)floatVar.Value;
-                        else if (var is IStringVariable stringVar && int.TryParse(stringVar.Value, out int stringN))
-                            index = stringN;
-                    }
-                    else
+                    if (!VariableSystem.TryParse(Arguments[1], out int index))
                     {
                         return Enumerable.Empty<Player>();
                     }

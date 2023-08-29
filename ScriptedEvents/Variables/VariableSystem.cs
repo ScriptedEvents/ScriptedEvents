@@ -11,7 +11,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Variables.Roles;
-    using ScriptedEvents.Variables.Strings;
     using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
@@ -222,6 +221,42 @@
 
             players = null;
             return false;
+        }
+
+        public static float Parse(string input, Script source = null)
+        {
+            if (float.TryParse(input, out float fl))
+                return fl;
+
+            if (TryGetVariable(input, out IConditionVariable var, out _, source))
+            {
+                if (var is IFloatVariable floatVar)
+                    return floatVar.Value;
+                else if (var is IStringVariable stringVar && float.TryParse(stringVar.Value, out float res))
+                    return res;
+            }
+
+            return float.NaN;
+        }
+
+        public static bool TryParse(string input, out float result, Script source = null)
+        {
+            result = Parse(input, source);
+            return result != float.NaN;
+        }
+
+        public static bool TryParse(string input, out int result, Script source = null)
+        {
+            float floatResult = Parse(input, source);
+
+            if (floatResult == float.NaN)
+            {
+                result = -1;
+                return false;
+            }
+
+            result = (int)floatResult;
+            return result == floatResult;
         }
 
         /// <summary>
