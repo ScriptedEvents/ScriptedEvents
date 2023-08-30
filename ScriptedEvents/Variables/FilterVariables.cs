@@ -106,8 +106,7 @@
                 // Todo: Throw error, not empty enumerable
                 if (Arguments.Length < 2) return Enumerable.Empty<Player>();
 
-                var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source, false);
-                if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
+                if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable var, out _, Source, false) && var is IPlayerVariable playerVariable)
                 {
                     if (!VariableSystem.TryParse(Arguments[1], out int index, Source))
                     {
