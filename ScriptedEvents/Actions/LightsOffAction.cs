@@ -42,8 +42,6 @@
             if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms))
                 return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
 
-            string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(1)), script);
-
             if (!VariableSystem.TryParse(Arguments[1], out int duration, script))
             {
                 return new(MessageType.NotANumber, this, "duration", Arguments[1]);

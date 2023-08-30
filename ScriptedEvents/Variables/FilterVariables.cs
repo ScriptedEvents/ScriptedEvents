@@ -8,7 +8,6 @@
     using PlayerRoles;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
-    using UnityEngine;
 
     public class FilterVariables : IVariableGroup
     {

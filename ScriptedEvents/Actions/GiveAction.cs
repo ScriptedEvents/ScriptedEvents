@@ -42,7 +42,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            bool useCustom = false;
+            bool useCustom;
             CustomItem item = null;
             ItemType itemType = ItemType.None;
 
@@ -69,9 +69,7 @@
                     return new(MessageType.NotANumber, this, "amount", Arguments[4]);
             }
 
-            Player[] plys;
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys, script))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             foreach (Player player in plys)

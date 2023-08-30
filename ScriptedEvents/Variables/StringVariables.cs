@@ -1,13 +1,12 @@
 ﻿namespace ScriptedEvents.Variables.Strings
 {
+#pragma warning disable SA1402 // File may only contain a single type
     using System;
     using System.Collections.Generic;
-#pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;

@@ -59,9 +59,7 @@
                     return new(MessageType.LessThanZeroNumber, this, "duration", Arguments[4]);
             }
 
-            Player[] plys;
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out plys, script))
+            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             switch (mode)

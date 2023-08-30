@@ -2,9 +2,9 @@
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
-    using System.Xml.Linq;
+
     using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
+
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;

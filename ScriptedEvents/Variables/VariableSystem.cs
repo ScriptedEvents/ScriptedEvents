@@ -6,12 +6,11 @@
     using System.Reflection;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using Exiled.Events.Handlers;
     using PlayerRoles;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.Variables.Roles;
+
     using ScriptedEvents.Variables.Interfaces;
+    using ScriptedEvents.Variables.Roles;
 
     /// <summary>
     /// A class used to store and retrieve all variables.

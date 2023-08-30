@@ -5,7 +5,7 @@
     using System.Data;
     using System.IO;
     using System.Linq;
-    using System.Xml.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
@@ -14,14 +14,17 @@
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.EventArgs.Warhead;
+
     using MapGeneration.Distributors;
     using MEC;
     using PlayerRoles;
     using Respawning;
+
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+
     using UnityEngine;
 
     public class EventHandlers

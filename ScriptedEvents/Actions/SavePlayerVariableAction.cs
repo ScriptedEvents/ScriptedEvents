@@ -60,9 +60,7 @@
                 max = Mathf.RoundToInt(result.Result);
             }
 
-            Player[] plys;
-
-            ScriptHelper.TryGetPlayers(Arguments[1], max, out plys, script);
+            ScriptHelper.TryGetPlayers(Arguments[1], max, out Player[] plys, script);
 
             VariableSystem.DefineVariable(Arguments[0], "Script-defined variable.", plys);
 
