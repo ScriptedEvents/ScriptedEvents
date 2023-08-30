@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Exiled.API.Features;
+    using Exiled.CustomItems.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
@@ -33,7 +34,7 @@
         {
             new Argument("players", typeof(List<Player>), "The players to give the item to.", true),
             new Argument("item", typeof(ItemType), "The item to give.", true),
-            new Argument("amount", typeof(int), "The amount to give. Variables & Math are supported. Default: 1", false),
+            new Argument("amount", typeof(int), "The amount to give. Variables are supported. Default: 1", false),
         };
 
         /// <inheritdoc/>
@@ -41,40 +42,44 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!Enum.TryParse<ItemType>(Arguments[1], true, out ItemType itemType))
-                return new(false, "Invalid item provided.");
+            bool useCustom;
+            CustomItem item = null;
+            ItemType itemType = ItemType.None;
+
+            if (CustomItem.TryGet(Arguments[1], out CustomItem customItem))
+            {
+                useCustom = true;
+                item = customItem;
+            }
+            else if (Enum.TryParse<ItemType>(Arguments[1], true, out ItemType itemType2))
+            {
+                useCustom = false;
+                itemType = itemType2;
+            }
+            else
+            {
+                return new(false, "Invalid ItemType or Custom Item name provided.");
+            }
 
             int amt = 1;
 
             if (Arguments.Length > 2)
             {
-                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
-
-                if (ConditionHelper.TryMath(formula, out MathResult result))
-                {
-                    amt = Mathf.RoundToInt(result.Result);
-                }
-                else
-                {
-                    return new(MessageType.NotANumberOrCondition, this, "amount", formula, result);
-                }
-
-                if (amt < 0)
-                {
-                    return new(MessageType.LessThanZeroNumber, this, "amount", amt);
-                }
+                if (!VariableSystem.TryParse(Arguments[2], out amt, script))
+                    return new(MessageType.NotANumber, this, "amount", Arguments[4]);
             }
 
-            Player[] plys;
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out plys, script))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             foreach (Player player in plys)
             {
                 for (int i = 0; i < amt; i++)
                 {
-                    player.AddItem(itemType);
+                    if (useCustom)
+                        item.Give(player);
+                    else
+                        player.AddItem(itemType);
                 }
             }
 

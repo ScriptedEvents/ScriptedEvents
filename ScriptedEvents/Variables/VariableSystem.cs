@@ -6,13 +6,11 @@
     using System.Reflection;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using Exiled.Events.Handlers;
     using PlayerRoles;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.Variables.Roles;
-    using ScriptedEvents.Variables.Strings;
+
     using ScriptedEvents.Variables.Interfaces;
+    using ScriptedEvents.Variables.Roles;
 
     /// <summary>
     /// A class used to store and retrieve all variables.
@@ -22,7 +20,9 @@
         /// <summary>
         /// Maps each <see cref="RoleTypeId"/> variable (eg. "{SCP173}") to a respective <see cref="RoleTypeVariable"/>.
         /// </summary>
-        public static readonly Dictionary<string, RoleTypeVariable> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => new RoleTypeVariable(x));
+        public static readonly Dictionary<string, RoleTypeVariable> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId)))
+            .Where(role => role is not RoleTypeId.None)
+            .ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => new RoleTypeVariable(x));
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="IVariableGroup"/> representing all the valid condition variables.
@@ -125,8 +125,15 @@
         /// <returns>The modified string.</returns>
         public static string Replace(this string input, string oldValue, object newValue) => input.Replace(oldValue, newValue.ToString());
 
-        public static Tuple<IConditionVariable, bool> GetVariable(string name, Script source = null)
+        public static Tuple<IConditionVariable, bool> GetVariable(string name, Script source = null, bool requireBrackets = true)
         {
+            // Do this here so individual files dont have to do it anymore
+            if (!requireBrackets)
+            {
+                name = name.Replace("{", string.Empty).Replace("}", string.Empty);
+                name = $"{{{name}}}";
+            }
+
             string variableName;
             List<string> argList = ListPool<string>.Pool.Get();
 
@@ -145,6 +152,8 @@
                     argList.Add(arg);
                 }
             }
+
+            source?.DebugLog($"Attempting to retrieve variable {variableName} with args {string.Join(" ", argList)}");
 
             Tuple<IConditionVariable, bool> result = new(null, false);
 
@@ -191,9 +200,9 @@
             return result;
         }
 
-        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source = null)
+        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source = null, bool requireBrackets = true)
         {
-            Tuple<IConditionVariable, bool> res = GetVariable(name, source);
+            Tuple<IConditionVariable, bool> res = GetVariable(name, source, requireBrackets);
 
             variable = res.Item1;
             reversed = res.Item2;
@@ -203,7 +212,7 @@
 
         public static bool TryGetPlayers(string name, out IEnumerable<Exiled.API.Features.Player> players, Script source = null)
         {
-            if (TryGetVariable(name, out IConditionVariable variable, out bool reversed, source))
+            if (TryGetVariable(name, out IConditionVariable variable, out _, source))
             {
                 if (variable is IPlayerVariable plrVariable)
                 {
@@ -214,6 +223,42 @@
 
             players = null;
             return false;
+        }
+
+        public static float Parse(string input, Script source = null)
+        {
+            if (float.TryParse(input, out float fl))
+                return fl;
+
+            if (TryGetVariable(input, out IConditionVariable var, out _, source))
+            {
+                if (var is IFloatVariable floatVar)
+                    return floatVar.Value;
+                else if (var is IStringVariable stringVar && float.TryParse(stringVar.Value, out float res))
+                    return res;
+            }
+
+            return float.NaN;
+        }
+
+        public static bool TryParse(string input, out float result, Script source = null)
+        {
+            result = Parse(input, source);
+            return result != float.NaN;
+        }
+
+        public static bool TryParse(string input, out int result, Script source = null)
+        {
+            float floatResult = Parse(input, source);
+
+            if (floatResult == float.NaN)
+            {
+                result = -1;
+                return false;
+            }
+
+            result = (int)floatResult;
+            return result == floatResult;
         }
 
         /// <summary>

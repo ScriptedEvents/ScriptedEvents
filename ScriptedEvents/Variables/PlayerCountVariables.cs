@@ -1,13 +1,11 @@
 ﻿namespace ScriptedEvents.Variables.PlayerCount
 {
+#pragma warning disable SA1402 // File may only contain a single type.
     using System;
     using System.Collections.Generic;
-#pragma warning disable SA1402 // File may only contain a single type.
     using System.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using PlayerRoles;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -24,6 +22,7 @@
             new PlayersDead(),
             new Staff(),
             new InRoom(),
+            new NonePlayer(),
         };
     }
 
@@ -89,7 +88,6 @@
 
     public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable, INeedSourceVariable
     {
-
         /// <inheritdoc/>
         public string Name => "{INROOM}";
 
@@ -125,7 +123,7 @@
                 {
                     return Player.Get(plr => plr.CurrentRoom.Type == rt);
                 }
-                else if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source))
+                else if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
                 {
                     if (variable is IStringVariable variableString && Enum.TryParse(variableString.Value, out RoomType rt2))
                     {
@@ -136,5 +134,20 @@
                 return Array.Empty<Player>();
             }
         }
+    }
+
+    public class NonePlayer : IFloatVariable, IPlayerVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{NONE}";
+
+        /// <inheritdoc/>
+        public string Description => "Will always be an empty variable with no players.";
+
+        /// <inheritdoc/>
+        public float Value => Player.List.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Enumerable.Empty<Player>();
     }
 }

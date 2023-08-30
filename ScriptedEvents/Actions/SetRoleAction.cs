@@ -34,7 +34,7 @@
         {
             new Argument("players", typeof(List<Player>), "The players to set the role as.", true),
             new Argument("role", typeof(RoleTypeId), "The role to set all the players as.", true),
-            new Argument("max", typeof(int), "The maximum amount of players to set the role of. Variables & Math are supported. (default: unlimited).", false),
+            new Argument("max", typeof(int), "The maximum amount of players to set the role of. Variables are supported. (default: unlimited).", false),
         };
 
         /// <inheritdoc/>
@@ -49,19 +49,10 @@
 
             if (Arguments.Length > 2)
             {
-                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
-
-                if (!ConditionHelper.TryMath(formula, out MathResult result))
-                {
-                    return new(MessageType.NotANumberOrCondition, this, "max", formula, result);
-                }
-
-                if (result.Result < 0)
-                {
-                    return new(MessageType.LessThanZeroNumber, this, "max", result.Result);
-                }
-
-                max = Mathf.RoundToInt(result.Result);
+                if (!VariableSystem.TryParse(Arguments[2], out max, script))
+                    return new(MessageType.NotANumber, this, "max", Arguments[2]);
+                if (max < 0)
+                    return new(MessageType.LessThanZeroNumber, this, "maxhealth", max);
             }
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys, script))

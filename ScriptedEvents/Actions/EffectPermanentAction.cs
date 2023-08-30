@@ -9,6 +9,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
     using UnityEngine;
 
     public class EffectPermanentAction : IScriptAction, IHelpInfo
@@ -34,7 +35,7 @@
             new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
             new Argument("target", typeof(object), "The players to affect, or the RoleType/Team to infect with the role.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
-            new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Math and variables are NOT supported. Defaults to 1.", false),
+            new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
         };
 
         /// <inheritdoc/>
@@ -47,12 +48,17 @@
             if (!Enum.TryParse<EffectType>(Arguments[2], true, out EffectType effect))
                 return new(false, "Invalid effect type provided.");
 
-            byte intensity = 1;
+            int intensity = 1;
             if (Arguments.Length > 3)
             {
-                if (!byte.TryParse(Arguments[3], out intensity))
+                if (!VariableSystem.TryParse(Arguments[3], out intensity))
                 {
-                    return new(false, "Intensity must be a whole number from 1-255.");
+                    return new(false, "Intensity must be a whole number from 0-255.");
+                }
+
+                if (intensity < 0 || intensity > 255)
+                {
+                    return new(false, "Intensity must be a whole number from 0-255.");
                 }
             }
 
@@ -80,7 +86,7 @@
                 return new(false, "Second argument (target) must be a Team, RoleType, or a player variable with at least one player.");
             }
 
-            Effect eff = new(effect, 0, intensity, false, true);
+            Effect eff = new(effect, 0, (byte)intensity, false, true);
 
             switch (mode)
             {

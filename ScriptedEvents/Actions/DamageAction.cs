@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class DamageAction : IScriptAction, IHelpInfo
     {
@@ -30,7 +31,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to kill.", true),
-            new Argument("damage", typeof(float), "The amount of damage to apply. Variables & Math are NOT supported.", true),
+            new Argument("damage", typeof(float), "The amount of damage to apply. Variables are supported.", true),
             new Argument("damageType", typeof(string), "The DeathType to apply. If a DamageType is not matched, this will act as a custom message instead. Default: Unknown", false),
         };
 
@@ -42,7 +43,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            if (!float.TryParse(Arguments[1], out float damage))
+            if (!VariableSystem.TryParse(Arguments[1], out float damage, script))
                 return new(MessageType.NotANumber, this, "damage", Arguments[1]);
 
             if (damage < 0)

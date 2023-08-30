@@ -31,7 +31,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("role", typeof(RoleTypeId), "The role to create the rule for.", true),
-            new Argument("max", typeof(int), "The maximum amount of players to spawn as this role. If not provided, EVERY player who does not become a role with a different spawn rule will become this role. Variables & Math are supported.", false),
+            new Argument("max", typeof(int), "The maximum amount of players to spawn as this role. If not provided, EVERY player who does not become a role with a different spawn rule will become this role. Variables are supported.", false),
         };
 
         /// <inheritdoc/>
@@ -46,19 +46,10 @@
 
             if (Arguments.Length > 1)
             {
-                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(1)), script);
-
-                if (!ConditionHelper.TryMath(formula, out MathResult result))
-                {
-                    return new(MessageType.NotANumberOrCondition, this, "max", formula, result);
-                }
-
-                if (result.Result < 0)
-                {
-                    return new(MessageType.LessThanZeroNumber, this, "max", result.Result);
-                }
-
-                max = Mathf.RoundToInt(result.Result);
+                if (!VariableSystem.TryParse(Arguments[1], out max, script))
+                    return new(MessageType.NotANumber, this, "max", Arguments[1]);
+                if (max < 0)
+                    return new(MessageType.LessThanZeroNumber, this, "max", max);
             }
 
             MainPlugin.Handlers.SpawnRules.Remove(roleType);

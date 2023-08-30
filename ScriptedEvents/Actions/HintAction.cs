@@ -28,7 +28,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("duration", typeof(float), "The duration of the message. Variables & Math are NOT supported.", true),
+            new Argument("duration", typeof(float), "The duration of the message. Variables are supported.", true),
             new Argument("message", typeof(string), "The message. Variables are supported.", true),
         };
 
@@ -37,7 +37,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!float.TryParse(Arguments[0], out float duration))
+            if (!VariableSystem.TryParse(Arguments[0], out float duration, script))
             {
                 return new(MessageType.NotANumber, this, "duration", Arguments[0]);
             }

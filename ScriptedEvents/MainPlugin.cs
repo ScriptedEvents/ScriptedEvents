@@ -11,6 +11,7 @@
 
     using Exiled.Events.Features;
     using Exiled.Loader;
+
     using MEC;
 
     using ScriptedEvents.API.Features;
@@ -18,7 +19,6 @@
     using ScriptedEvents.Variables;
 
     using Event = Exiled.Events.Features.Event;
-
     using MapHandler = Exiled.Events.Handlers.Map;
     using PlayerHandler = Exiled.Events.Handlers.Player;
     using Scp330Handler = Exiled.Events.Handlers.Scp330;

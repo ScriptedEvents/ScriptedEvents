@@ -6,6 +6,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class TicketAction : IScriptAction, IHelpInfo
     {
@@ -29,7 +30,7 @@
         {
             new Argument("mode", typeof(string), "The action (ADD, REMOVE, SET).", true),
             new Argument("team", typeof(SpawnableTeamType), "The spawn team (ChaosInsurgency or NineTailedFox).", true),
-            new Argument("amount", typeof(int), "The amount to apply.", true),
+            new Argument("amount", typeof(int), "The amount to apply. Variables are supported.", true),
         };
 
         public ActionResponse Execute(Script script)
@@ -39,7 +40,7 @@
             if (!Enum.TryParse<SpawnableTeamType>(Arguments[1], true, out SpawnableTeamType team))
                 return new(false, "Invalid spawnable role provided. Must be ChaosInsurgency or NineTailedFox.");
 
-            if (!float.TryParse(Arguments[2], out float amount))
+            if (!VariableSystem.TryParse(Arguments[2], out float amount, script))
                 return new(MessageType.NotANumber, this, "amount", Arguments[1]);
 
             switch (Arguments[0].ToUpper())
