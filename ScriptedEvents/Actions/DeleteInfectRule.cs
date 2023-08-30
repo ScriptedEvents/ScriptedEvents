@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
-    public class DeleleteInfectRule : IScriptAction, IHelpInfo
+    public class DeleteInfectRule : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "DELINFECTRULE";

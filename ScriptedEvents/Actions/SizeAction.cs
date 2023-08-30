@@ -42,13 +42,13 @@
         {
             if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!float.TryParse(Arguments.ElementAt(1), out float x))
+            if (!VariableSystem.TryParse(Arguments.ElementAt(1), out float x, script))
                 return new(MessageType.NotANumber, this, "X", Arguments.ElementAt(1));
 
-            if (!float.TryParse(Arguments.ElementAt(2), out float y))
+            if (!VariableSystem.TryParse(Arguments.ElementAt(2), out float y, script))
                 return new(MessageType.NotANumber, this, "Y", Arguments.ElementAt(2));
 
-            if (!float.TryParse(Arguments.ElementAt(3), out float z))
+            if (!VariableSystem.TryParse(Arguments.ElementAt(3), out float z, script))
                 return new(MessageType.NotANumber, this, "Z", Arguments.ElementAt(3));
 
             int max = -1;

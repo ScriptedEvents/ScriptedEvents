@@ -7,7 +7,6 @@
 
     using PlayerRoles;
 
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 

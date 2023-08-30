@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Warhead
 {
+#pragma warning disable SA1402 // File may only contain a single type.
     using ScriptedEvents.Variables.Interfaces;
 
     using Warhead = Exiled.API.Features.Warhead;
@@ -57,5 +58,5 @@
         /// <inheritdoc/>
         public bool Value => Warhead.IsDetonated;
     }
-
+#pragma warning restore SA1402 // File may only contain a single type.
 }

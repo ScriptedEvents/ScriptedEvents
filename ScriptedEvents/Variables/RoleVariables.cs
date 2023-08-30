@@ -1,12 +1,11 @@
 ﻿namespace ScriptedEvents.Variables.Roles
 {
+#pragma warning disable SA1402 // File may only contain a single type
     using System;
     using System.Collections.Generic;
-#pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
     using Exiled.API.Features;
     using PlayerRoles;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -186,7 +185,7 @@
         public string Name => $"{{{RoleType.ToString().ToUpper()}}}";
 
         /// <inheritdoc/>
-        public string Description => $"The amount of {RoleType.ToString()} alive.";
+        public string Description => $"The amount of {RoleType} alive.";
 
         /// <inheritdoc/>
         public float Value => Players.Count();

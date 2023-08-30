@@ -14,12 +14,14 @@
         /// <param name="target">The player to show the countdown to.</param>
         /// <param name="text">The text of the countdown.</param>
         /// <param name="time">The time of the countdown, in seconds.</param>
-        public Countdown(Player target, string text, int time)
+        /// <param name="source">The script that executed the countdown.</param>
+        public Countdown(Player target, string text, int time, Script source = null)
         {
             Target = target;
             Text = string.IsNullOrWhiteSpace(text) ? "Countdown" : text;
             StartTime = DateTime.UtcNow;
             EndTime = StartTime.AddSeconds(time);
+            Source = source;
         }
 
         /// <summary>
@@ -51,5 +53,10 @@
         /// Gets a <see cref="TimeSpan"/> representing the amount of time left on the countdown.
         /// </summary>
         public TimeSpan TimeLeft => EndTime - DateTime.UtcNow;
+
+        /// <summary>
+        /// Gets the source script that executed the countdown timer.
+        /// </summary>
+        public Script Source { get; }
     }
 }

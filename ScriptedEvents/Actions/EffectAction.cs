@@ -34,8 +34,8 @@
             new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
-            new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Math and variables are NOT supported. Defaults to 1.", false),
-            new Argument("duration", typeof(int), "The duration of the effect, or no duration for a permanent effect. Math and variables ARE supported.", false),
+            new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
+            new Argument("duration", typeof(int), "The duration of the effect, or no duration for a permanent effect. Variables are supported.", false),
         };
 
         /// <inheritdoc/>
@@ -52,26 +52,14 @@
 
             if (Arguments.Length > 4)
             {
-                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(4)), script);
-
-                if (ConditionHelper.TryMath(formula, out MathResult result))
-                {
-                    duration = Mathf.RoundToInt(result.Result);
-                }
-                else
-                {
-                    return new(MessageType.NotANumberOrCondition, this, "duration", formula, result);
-                }
+                if (!VariableSystem.TryParse(Arguments[4], out duration, script))
+                    return new(MessageType.NotANumber, this, "duration", Arguments[4]);
 
                 if (duration < 0)
-                {
-                    return new(MessageType.LessThanZeroNumber, this, "duration", duration);
-                }
+                    return new(MessageType.LessThanZeroNumber, this, "duration", Arguments[4]);
             }
 
-            Player[] plys;
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out plys, script))
+            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
             switch (mode)
@@ -81,12 +69,15 @@
                     if (Arguments.Length > 3)
                         intensityString = Arguments[3];
 
-                    if (!byte.TryParse(intensityString, out byte intensity))
+                    if (!VariableSystem.TryParse(intensityString, out int intensity))
                         return new(MessageType.NotANumber, this, "intensity", Arguments[3]);
+
+                    if (intensity < 0 || intensity > 255)
+                        return new(false, "Effect intensity must be between 0-255.");
 
                     foreach (Player player in plys)
                     {
-                        player.ChangeEffectIntensity(effect, intensity);
+                        player.ChangeEffectIntensity(effect, (byte)intensity);
                         player.EnableEffect(effect, duration);
                     }
 

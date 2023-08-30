@@ -24,13 +24,13 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public string Description => "Set the AHP of the targeted players.";
+        public string Description => "Add AHP to the targeted players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to affect.", true),
-            new Argument("health", typeof(float), "The amount of artificial health to set the player to. Math and variables ARE supported.", true),
+            new Argument("health", typeof(float), "The amount of artificial health to add to the player. Variables are supported.", true),
         };
 
         /// <inheritdoc/>
@@ -41,21 +41,13 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(1)), script);
+            if (!VariableSystem.TryParse(Arguments[1], out float hp, script))
+                return new(MessageType.NotANumber, this, "health", Arguments[1]);
+            if (hp < 0)
+                return new(MessageType.LessThanZeroNumber, this, "health", hp);
 
-            if (!ConditionHelper.TryMath(formula, out MathResult result))
-            {
-                return new(MessageType.NotANumberOrCondition, this, "health", formula, result);
-            }
-
-            if (result.Result < 0)
-            {
-                return new(MessageType.LessThanZeroNumber, this, "health", result.Result);
-            }
-
-            float hp = result.Result;
             foreach (Player ply in plys)
-                ply.ArtificialHealth = hp;
+                ply.AddAhp(hp);
 
             return new(true);
         }

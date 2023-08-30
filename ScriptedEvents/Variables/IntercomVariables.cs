@@ -1,10 +1,11 @@
 ﻿namespace ScriptedEvents.Variables.Intercom
 {
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.Variables.Interfaces;
+#pragma warning disable SA1402 // File may only contain a single type.
     using System.Collections.Generic;
     using System.Linq;
+
+    using Exiled.API.Features;
+    using ScriptedEvents.Variables.Interfaces;
 
     public class IntercomVariables : IVariableGroup
     {
@@ -88,4 +89,5 @@
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => Intercom.Speaker == player);
     }
+#pragma warning restore SA1402 // File may only contain a single type.
 }

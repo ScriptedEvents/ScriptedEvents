@@ -31,8 +31,8 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to show the countdown to.", true),
-            new Argument("duration", typeof(int), "The duration of the countdown. Math and variables are NOT supported.", true),
-            new Argument("text", typeof(string), "The text to show on the broadcast. Variables ARE supported.", true),
+            new Argument("duration", typeof(int), "The duration of the countdown. Variables are supported.", true),
+            new Argument("text", typeof(string), "The text to show on the broadcast. Variables are supported.", true),
         };
 
         /// <inheritdoc/>
@@ -43,7 +43,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            if (!int.TryParse(Arguments[1], out int duration))
+            if (!VariableSystem.TryParse(Arguments[1], out int duration, script))
                 return new(MessageType.NotANumber, this, "duration", Arguments[1]);
 
             string text = null;
@@ -52,7 +52,7 @@
                 text = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
 
             foreach (Player ply in players)
-                CountdownHelper.AddCountdown(ply, text, TimeSpan.FromSeconds(duration));
+                CountdownHelper.AddCountdown(ply, text, TimeSpan.FromSeconds(duration), script);
 
             return new(true);
         }

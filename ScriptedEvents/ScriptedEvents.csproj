@@ -77,6 +77,9 @@
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>..\..\..\scpslfiles\SCPSL_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\CustomInfoAction.cs" />
@@ -91,6 +94,8 @@
     <Compile Include="Actions\EffectPermanentAction.cs" />
     <Compile Include="Actions\EnableAction.cs" />
     <Compile Include="Actions\DisableAction.cs" />
+    <Compile Include="Actions\HttpPostAction.cs" />
+    <Compile Include="Actions\HttpGetAction.cs" />
     <Compile Include="Actions\RadioRangeAction.cs" />
     <Compile Include="Actions\RemoveItemAction.cs" />
     <Compile Include="Actions\Interfaces\ILogicAction.cs" />
@@ -104,6 +109,7 @@
     <Compile Include="Actions\Samples\Providers\RadioRangeSamples.cs" />
     <Compile Include="Actions\Samples\Providers\TeslaSamples.cs" />
     <Compile Include="Actions\Samples\Sample.cs" />
+    <Compile Include="Actions\AdvSetAHPAction.cs" />
     <Compile Include="Actions\SetAHPAction.cs" />
     <Compile Include="Actions\SetMaxHPAction.cs" />
     <Compile Include="Actions\SetHPAction.cs" />

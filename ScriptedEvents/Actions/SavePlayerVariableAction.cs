@@ -14,10 +14,10 @@
     public class SavePlayerVariableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "SAVEPLAYERVARIABLE";
+        public string Name => "SAVEPLAYERS";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "SAVEPLAYERVARIABLE" };
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
@@ -33,7 +33,7 @@
         {
             new Argument("variableName", typeof(string), "The name of the new variable. Braces will be added automatically if not provided.", true),
             new Argument("players", typeof(List<Player>), "The players to save as the new variable.", true),
-            new Argument("max", typeof(int), "The maximum amount of players to save in this variable (default: unlimited).", false),
+            new Argument("max", typeof(int), "The maximum amount of players to save in this variable. Math and variables are supported. (default: unlimited).", false),
         };
 
         /// <inheritdoc/>
@@ -60,10 +60,7 @@
                 max = Mathf.RoundToInt(result.Result);
             }
 
-            Player[] plys;
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out plys, script))
-                return new(MessageType.NoPlayersFound, this, "players");
+            ScriptHelper.TryGetPlayers(Arguments[1], max, out Player[] plys, script);
 
             VariableSystem.DefineVariable(Arguments[0], "Script-defined variable.", plys);
 

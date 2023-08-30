@@ -144,10 +144,26 @@ namespace ScriptedEvents.API.Features
                     // Check for custom actions
                     if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
                     {
-                        CustomAction customAction1 = new(customAction.Name, customAction.Action);
-                        customAction1.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                        CustomAction customAction1 = new(customAction.Name, customAction.Action)
+                        {
+                            Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray(),
+                        };
                         actionList.Add(customAction1);
+                        ListPool<string>.Pool.Return(actionParts);
                         continue;
+                    }
+
+                    // Alias support
+                    foreach (Type actionType123 in ActionTypes.Values)
+                    {
+                        var mock = (IAction)Activator.CreateInstance(actionType123);
+                        mock.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                        if (mock.Aliases.Contains(keyword))
+                        {
+                            actionList.Add(mock);
+                            ListPool<string>.Pool.Return(actionParts);
+                            continue;
+                        }
                     }
 
                     if (!suppressWarnings)
@@ -366,8 +382,20 @@ namespace ScriptedEvents.API.Features
                 Timing.KillCoroutines(key);
             }
 
+            foreach (string key in HttpGetAction.Coroutines)
+            {
+                Timing.KillCoroutines(key);
+            }
+
+            foreach (string key in HttpPostAction.Coroutines)
+            {
+                Timing.KillCoroutines(key);
+            }
+
             WaitUntilAction.Coroutines.Clear();
             WaitUntilDebugAction.Coroutines.Clear();
+            HttpGetAction.Coroutines.Clear();
+            HttpPostAction.Coroutines.Clear();
             RunningScripts.Clear();
             return amount;
         }

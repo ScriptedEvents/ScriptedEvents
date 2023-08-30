@@ -62,12 +62,13 @@
         /// <param name="player">The player to count down for.</param>
         /// <param name="text">The text to show.</param>
         /// <param name="ts">The time on the countdown.</param>
-        public static void AddCountdown(Player player, string text, TimeSpan ts)
+        /// <param name="source">The script that started the countdown.</param>
+        public static void AddCountdown(Player player, string text, TimeSpan ts, Script source = null)
         {
             if (Countdowns.ContainsKey(player))
                 Countdowns.Remove(player);
 
-            Countdown ct = new(player, text, (int)ts.TotalSeconds);
+            Countdown ct = new(player, text, (int)ts.TotalSeconds, source);
 
             Countdowns.Add(player, ct);
             player.ClearBroadcasts();

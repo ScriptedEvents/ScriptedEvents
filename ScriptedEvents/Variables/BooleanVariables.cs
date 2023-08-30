@@ -2,8 +2,9 @@
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
+
     using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
+
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
@@ -52,8 +53,7 @@
             {
                 if (Arguments.Length < 1) return false;
 
-                string variableName = Arguments[0];
-                return VariableSystem.GetVariable(variableName, Source)?.Item1 != null;
+                return VariableSystem.GetVariable(Arguments[0], Source, false)?.Item1 != null;
             }
         }
     }

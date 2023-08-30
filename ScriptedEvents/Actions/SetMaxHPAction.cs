@@ -30,7 +30,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to affect.", true),
-            new Argument("maxhealth", typeof(float), "The amount of max health to set the player to. Math and variables ARE supported.", true),
+            new Argument("maxhealth", typeof(float), "The amount of max health to set the player to. Variables ARE supported.", true),
         };
 
         /// <inheritdoc/>
@@ -41,19 +41,11 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
                 return new(MessageType.NoPlayersFound, this, "players");
 
-            string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(1)), script);
+            if (!VariableSystem.TryParse(Arguments[1], out float hp, script))
+                return new(MessageType.NotANumber, this, "maxhealth", Arguments[1]);
+            if (hp < 0)
+                return new(MessageType.LessThanZeroNumber, this, "maxhealth", hp);
 
-            if (!ConditionHelper.TryMath(formula, out MathResult result))
-            {
-                return new(MessageType.NotANumberOrCondition, this, "maxhealth", formula, result);
-            }
-
-            if (result.Result < 0)
-            {
-                return new(MessageType.LessThanZeroNumber, this, "maxhealth", result.Result);
-            }
-
-            float hp = result.Result;
             foreach (Player ply in plys)
                 ply.MaxHealth = hp;
 
