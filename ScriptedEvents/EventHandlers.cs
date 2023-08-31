@@ -369,8 +369,6 @@
         {
             if (TeslasDisabled || DisabledKeys.Contains("TESLAS"))
             {
-                ev.IsInIdleRange = false;
-                ev.IsInHurtingRange = false;
                 ev.IsAllowed = false;
             }
         }
