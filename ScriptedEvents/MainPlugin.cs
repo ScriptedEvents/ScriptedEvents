@@ -308,13 +308,13 @@
             {
                 if (custom.Name == string.Empty)
                 {
-                    Log.Warn($"Custom command is defined without a name.");
+                    Log.Warn($"Custom command is defined without a name. [Error Code: SE-128]");
                     continue;
                 }
 
                 if (custom.Run is null || custom.Run.Count == 0)
                 {
-                    Log.Warn($"Custom command '{custom.Name}' ({custom.Type}) will not be created because it is set to run zero scripts.");
+                    Log.Warn($"Custom command '{custom.Name}' ({custom.Type}) will not be created because it is set to run zero scripts. [Error Code: SE-129]");
                     continue;
                 }
 
