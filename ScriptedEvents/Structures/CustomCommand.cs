@@ -10,6 +10,8 @@
 
         public string Description { get; set; }
 
+        public string Permission { get; set; }
+
         public CommandType Type { get; set; }
 
         public List<string> Run { get; set; }

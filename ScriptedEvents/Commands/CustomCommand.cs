@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using CommandSystem;
+    using Exiled.Permissions.Extensions;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
@@ -20,8 +21,15 @@
 
         public string[] Scripts { get; set; }
 
+        public string Permission { get; set; }
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!sender.CheckPermission(Permission))
+            {
+                response = $"Missing permission: {Permission}";
+            }
+
             Dictionary<string, string> failed = new();
 
             foreach (string scr in Scripts)
