@@ -121,14 +121,17 @@
     <Compile Include="Actions\TpxAction.cs" />
     <Compile Include="Actions\WaitForMillisecondsAction.cs" />
     <Compile Include="API\Enums\ActionSubgroup.cs" />
+    <Compile Include="API\Enums\CommandType.cs" />
     <Compile Include="API\Enums\ExecuteContext.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
     <Compile Include="API\Features\CountdownHelper.cs" />
     <Compile Include="API\Features\MsgGen.cs" />
+    <Compile Include="Commands\CustomCommand.cs" />
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
+    <Compile Include="Structures\CustomCommand.cs" />
     <Compile Include="Variables\FilterVariables.cs" />
     <Compile Include="Variables\IntercomVariables.cs" />
     <Compile Include="Variables\MapVariables.cs" />

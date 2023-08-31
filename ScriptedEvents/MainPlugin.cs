@@ -12,8 +12,10 @@
     using Exiled.Loader;
 
     using MEC;
-
+    using RemoteAdmin;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.Commands;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Variables;
 
@@ -298,6 +300,48 @@
 
             Singleton = null;
             Handlers = null;
+        }
+
+        public override void OnRegisteringCommands()
+        {
+            foreach (Structures.CustomCommand custom in Config.Commands)
+            {
+                if (custom.Name == string.Empty)
+                {
+                    Log.Warn($"Custom command is defined without a name.");
+                    continue;
+                }
+
+                if (custom.Run is null || custom.Run.Count == 0)
+                {
+                    Log.Warn($"Custom command '{custom.Name}' ({custom.Type}) will not be created because it is set to run zero scripts.");
+                    continue;
+                }
+
+                CustomCommand command = new()
+                {
+                    Command = custom.Name,
+                    Description = custom.Description,
+                    Aliases = new string[0],
+                    Type = custom.Type,
+                    Scripts = custom.Run.ToArray(),
+                };
+
+                switch (command.Type)
+                {
+                    case CommandType.PlayerConsole:
+                        QueryProcessor.DotCommandHandler.RegisterCommand(command);
+                        break;
+                    case CommandType.ServerConsole:
+                        GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
+                        break;
+                    case CommandType.RemoteAdmin:
+                        CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
+                        break;
+                }
+            }
+
+            base.OnRegisteringCommands();
         }
     }
 }
