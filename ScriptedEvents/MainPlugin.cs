@@ -82,10 +82,10 @@
         public override string Author => "Thunder + Johnodon";
 
         /// <inheritdoc/>
-        public override Version Version => new(2, 3, 0);
+        public override Version Version => new(2, 4, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new(6, 0, 0);
+        public override Version RequiredExiledVersion => new(8, 0, 0);
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
