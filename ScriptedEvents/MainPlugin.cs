@@ -9,6 +9,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events;
+    using Exiled.Events.Features;
     using Exiled.Loader;
 
     using MEC;
@@ -209,7 +210,7 @@
                             @delegate = typeof(EventHandlers)
                             .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
                                 .MakeGenericMethod(@event.EventHandlerType.GenericTypeArguments)
-                                .CreateDelegate(typeof(Events.CustomEventHandler<>).MakeGenericType(@event.EventHandlerType.GenericTypeArguments), Handlers);
+                                .CreateDelegate(typeof(CustomEventHandler<>).MakeGenericType(@event.EventHandlerType.GenericTypeArguments), Handlers);
                         }
                         else
                         {

@@ -4,13 +4,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using Exiled.API.Enums;
-    using Exiled.API.Features;
+    using Exiled.API.Features.Doors;
     using MEC;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class DoorAction : IScriptAction, IHelpInfo
     {
@@ -66,7 +65,11 @@
                     action = (door) => door.Unlock();
                     break;
                 case "DESTROY":
-                    action = (door) => door.BreakDoor();
+                    action = (door) =>
+                    {
+                        if (door is BreakableDoor breaker && !breaker.IsDestroyed)
+                            breaker.Break();
+                    };
                     break;
                 default:
                     return new(MessageType.InvalidOption, this, "mode", Arguments[0], "OPEN/CLOSE/LOCK/UNLOCK/DESTROY");

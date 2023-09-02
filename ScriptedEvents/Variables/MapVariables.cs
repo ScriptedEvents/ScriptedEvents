@@ -6,6 +6,7 @@
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Doors;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 

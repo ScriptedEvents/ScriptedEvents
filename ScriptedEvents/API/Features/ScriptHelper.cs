@@ -10,6 +10,7 @@ namespace ScriptedEvents.API.Features
     using CommandSystem;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
     using Interactables.Interobjects;
     using MEC;
@@ -21,6 +22,7 @@ namespace ScriptedEvents.API.Features
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+    using AirlockController = Exiled.API.Features.Doors.AirlockController;
 
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
@@ -331,7 +333,7 @@ namespace ScriptedEvents.API.Features
                 doorList = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
             }
 
-            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp914Door && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second && d.Base.GetComponentInParent<AirlockController>() == null).ToList();
+            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp914Door && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second && AirlockController.Get(d) is null).ToList();
             doors = ListPool<Door>.Pool.ToArrayReturn(doorList);
             return doors.Length > 0;
         }
