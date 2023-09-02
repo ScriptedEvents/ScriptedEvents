@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.IO;
     using CommandSystem;
+    using Exiled.API.Features;
     using Exiled.Permissions.Extensions;
+    using RemoteAdmin;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
@@ -36,7 +38,14 @@
             {
                 try
                 {
-                    ScriptHelper.ReadAndRun(scr, sender);
+                    Script body = ScriptHelper.ReadScript(scr, sender);
+
+                    if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
+                    {
+                        body.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
+                    }
+
+                    ScriptHelper.RunScript(body);
                 }
                 catch (DisabledScriptException)
                 {
