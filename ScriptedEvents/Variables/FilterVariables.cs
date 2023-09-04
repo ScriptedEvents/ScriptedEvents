@@ -5,6 +5,7 @@
     using System.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.CustomItems.API.Features;
     using PlayerRoles;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
@@ -37,7 +38,7 @@
         public Argument[] ExpectedArguments { get; } = new[]
         {
             new Argument("name", typeof(string), "The name of the variable to filter.", true),
-            new Argument("type", typeof(string), "The mode to use to filter. Valid modes: ROLE, ZONE", true),
+            new Argument("type", typeof(string), "The mode to use to filter. Valid modes: ROLE, ZONE, TEAM, ROOM, USERID, INV", true),
             new Argument("input", typeof(string), "What to use as the filter (RoleType, ZoneType, etc)", true),
         };
 
@@ -67,7 +68,9 @@
                         "ZONE" when Enum.TryParse(Arguments[2], true, out ZoneType zt) => Player.List.Where(plr => plr.Zone.HasFlag(zt)),
                         "ROOM" when Enum.TryParse(Arguments[2], true, out RoomType room) => Player.List.Where(plr => plr.CurrentRoom.Type == room),
                         "USERID" => Player.List.Where(plr => plr.UserId == Arguments[2]),
-                        _ => Enumerable.Empty<Player>(),
+                        "INV" when Enum.TryParse(Arguments[2], true, out ItemType item) => Player.List.Where(plr => plr.Items.Any(i => i.Type == item)),
+                        "INV" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => Player.List.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
+                        _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{Arguments[2]}' is not valid for the specified filter method."),
                     };
                 }
 
