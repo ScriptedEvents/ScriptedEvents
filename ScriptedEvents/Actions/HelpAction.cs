@@ -240,15 +240,18 @@
                         case IBoolVariable @bool:
                             bool value = reversed ? !@bool.Value : @bool.Value;
                             sb.AppendLine("Boolean (true/false)");
-                            sb.AppendLine($"Current Value: {(value ? "TRUE" : "FALSE")}");
+
+                            // sb.AppendLine($"Current Value: {(value ? "TRUE" : "FALSE")}");
                             break;
                         case IFloatVariable @float:
                             sb.AppendLine("Numerical");
-                            sb.AppendLine($"Current Value: {@float.Value}");
+
+                            // sb.AppendLine($"Current Value: {@float.Value}");
                             break;
                         case IStringVariable @string:
                             sb.AppendLine("String (Text)");
-                            sb.AppendLine($"Current Value: {@string.Value}");
+
+                            // sb.AppendLine($"Current Value: {@string.Value}");
                             break;
                     }
 
@@ -266,11 +269,6 @@
                             sb.AppendLine($"  Type: {arg.TypeString}");
                             sb.AppendLine($"  {arg.Description}");
                         }
-                    }
-
-                    if (variable is IPlayerVariable plrVar)
-                    {
-                        sb.AppendLine($"Current Players: {(plrVar.Players.Count() == 0 ? "[None]" : string.Join(", ", plrVar.Players.Select(ply => ply.Nickname)))}");
                     }
 
                     sb.AppendLine();

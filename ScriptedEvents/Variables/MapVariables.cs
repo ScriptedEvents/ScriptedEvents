@@ -7,6 +7,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -89,15 +90,18 @@
         {
             get
             {
-                if (Arguments.Length < 1) return "ERROR: MISSING DOOR TYPE";
+                if (Arguments.Length < 1)
+                {
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "door" }));
+                }
 
                 if (!Enum.TryParse(Arguments[0], out DoorType dt))
-                    return "ERROR: INVALID DOOR TYPE";
+                    throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid DoorType.");
 
                 Door d = Door.Get(dt);
 
                 if (d is null)
-                    return "ERROR: INVALID DOOR TYPE";
+                    throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid DoorType.");
 
                 return d.IsOpen ? "OPEN" : "CLOSED";
             }

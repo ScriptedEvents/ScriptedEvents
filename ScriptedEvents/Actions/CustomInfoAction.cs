@@ -38,8 +38,8 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out Player[] plys, script))
-                return new(MessageType.NoPlayersFound, this, "players");
+            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection plys, script))
+                return new(false, plys.Message);
 
             string mode = Arguments[0].ToUpper();
             switch (mode)

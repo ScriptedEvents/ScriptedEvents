@@ -61,8 +61,8 @@
             switch (mode)
             {
                 case "PLAYERS":
-                    if (!ScriptHelper.TryGetPlayers(target, null, out Player[] players, script))
-                        return new(MessageType.NoPlayersFound, this, "players");
+                    if (!ScriptHelper.TryGetPlayers(target, null, out PlayerCollection players, script))
+                        return new(false, players.Message);
 
                     foreach (Player player in players)
                     {

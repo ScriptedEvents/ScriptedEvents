@@ -40,8 +40,8 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] players, script))
-                return new(MessageType.NoPlayersFound, this, "players");
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players, script))
+                return new(false, players.Message);
 
             if (!VariableSystem.TryParse(Arguments[1], out int duration, script))
                 return new(MessageType.NotANumber, this, "duration", Arguments[1]);

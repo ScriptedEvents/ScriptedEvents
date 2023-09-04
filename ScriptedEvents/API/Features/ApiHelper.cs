@@ -121,8 +121,8 @@
         /// <returns>A <see cref="IEnumerable{T}"/> of players.</returns>
         public static Player[] GetPlayers(string input, int max = -1)
         {
-            ScriptHelper.TryGetPlayers(input, max, out Player[] list);
-            return list;
+            ScriptHelper.TryGetPlayers(input, max, out PlayerCollection list);
+            return list.GetInnerArray();
         }
 
         /// <summary>

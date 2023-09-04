@@ -52,8 +52,10 @@
         {
             get
             {
-                // Todo: Throw error, not empty enumerable
-                if (Arguments.Length < 3) return Enumerable.Empty<Player>();
+                if (Arguments.Length < 3)
+                {
+                    throw new ArgumentException($"{Name} requires three arguments (name, type, input)");
+                }
 
                 var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source, false);
                 if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
@@ -69,7 +71,7 @@
                     };
                 }
 
-                return Enumerable.Empty<Player>();
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players.");
             }
         }
     }
@@ -103,23 +105,25 @@
         {
             get
             {
-                // Todo: Throw error, not empty enumerable
-                if (Arguments.Length < 2) return Enumerable.Empty<Player>();
+                if (Arguments.Length < 2)
+                {
+                    throw new ArgumentException($"{Name} requires two arguments (name, type)");
+                }
 
                 if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable var, out _, Source, false) && var is IPlayerVariable playerVariable)
                 {
                     if (!VariableSystem.TryParse(Arguments[1], out int index, Source))
                     {
-                        return Enumerable.Empty<Player>();
+                        throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid integer or variable containing an integer.");
                     }
 
                     if (index > playerVariable.Players.Count() - 1)
-                        return Enumerable.Empty<Player>();
+                        throw new IndexOutOfRangeException($"The provided index '{index}' is greater than the size of the player collection.");
 
                     return new List<Player>() { playerVariable.Players.ToList()[index] }; // Todo make pretty
                 }
 
-                return Enumerable.Empty<Player>();
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players.");
             }
         }
     }

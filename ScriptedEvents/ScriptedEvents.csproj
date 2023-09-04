@@ -132,6 +132,7 @@
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
     <Compile Include="Structures\CustomCommand.cs" />
+    <Compile Include="Structures\PlayerCollection.cs" />
     <Compile Include="Variables\FilterVariables.cs" />
     <Compile Include="Variables\IntercomVariables.cs" />
     <Compile Include="Variables\MapVariables.cs" />

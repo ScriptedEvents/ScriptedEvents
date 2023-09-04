@@ -66,7 +66,7 @@
 
             Team team = Team.Dead;
             RoleTypeId rt = RoleTypeId.None;
-            Player[] players = null;
+            PlayerCollection players = null;
 
             if (Enum.TryParse(Arguments[1], true, out team))
             {
@@ -78,6 +78,11 @@
             }
             else if (ScriptHelper.TryGetPlayers(Arguments[1], null, out players, script))
             {
+                if (!players.Success)
+                {
+                    return new(false, players.Message);
+                }
+
                 list = 0;
             }
 

@@ -250,18 +250,19 @@ namespace ScriptedEvents.API.Features
         /// </summary>
         /// <param name="input">The input.</param>
         /// <param name="amount">The maximum amount of players to give back, or <see langword="null"/> for unlimited.</param>
-        /// <param name="plys">The list of players.</param>
+        /// <param name="collection">A <see cref="PlayerCollection"/> representing the players.</param>
         /// <param name="source">The script using the API. Used for per-script variables.</param>
-        /// <returns>Whether or not any players were found.</returns>
-        public static bool TryGetPlayers(string input, int? amount, out Player[] plys, Script source = null)
+        /// <returns>Whether or not the process errored.</returns>
+        public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source = null)
         {
             source.DebugLog($"DEBUG {input}");
             input = input.RemoveWhitespace();
             List<Player> list = ListPool<Player>.Pool.Get();
             if (input.ToUpper() is "*" or "ALL")
             {
-                plys = Player.List.ToArray();
                 ListPool<Player>.Pool.Return(list);
+
+                collection = new(Player.List);
                 return true;
             }
             else
@@ -269,9 +270,17 @@ namespace ScriptedEvents.API.Features
                 string[] variables = ConditionHelper.IsolateVariables(input);
                 foreach (string variable in variables)
                 {
-                    if (VariableSystem.TryGetPlayers(variable, out IEnumerable<Player> playersFromVariable, source))
+                    try
                     {
-                        list.AddRange(playersFromVariable);
+                        if (VariableSystem.TryGetPlayers(variable, out IEnumerable<Player> playersFromVariable, source))
+                        {
+                            list.AddRange(playersFromVariable);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        collection = new(null, false, $"Error when processing the {variable} variable: {e}");
+                        return false;
                     }
                 }
 
@@ -305,8 +314,8 @@ namespace ScriptedEvents.API.Features
             }
 
             // Return
-            plys = ListPool<Player>.Pool.ToArrayReturn(list);
-            return plys.Length > 0;
+            collection = new(ListPool<Player>.Pool.ToArrayReturn(list));
+            return true;
         }
 
         public static bool TryGetDoors(string input, out Door[] doors)
