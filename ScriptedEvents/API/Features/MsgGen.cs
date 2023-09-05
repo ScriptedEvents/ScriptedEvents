@@ -98,9 +98,9 @@
             return "Unknown error [Error Code: SE-126]";
         }
 
-        public static string VariableArgCount(string name, string[] args)
+        public static string VariableArgCount(string name, params string[] args)
         {
-            return $"{name} requires {args.Length} argument{(args.Length > 1 ? "s" : string.Empty)} ({string.Join(", ", args)})";
+            return $"{name} requires {args.Length} argument{(args.Length > 1 ? "s" : string.Empty)} ({string.Join(", ", args)}) [Error Code: SE-130]";
         }
 
         /// <summary>

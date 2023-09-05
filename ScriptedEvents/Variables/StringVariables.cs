@@ -63,13 +63,13 @@
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)
                     {
-                        throw new ArgumentException($"The provided value '{conditionVariable.Item1.Name}' has no associated players.");
+                        throw new ArgumentException($"The provided value '{conditionVariable.Item1.Name}' has no associated players. [Error Code: SE-133]");
                     }
 
                     return variable.Players.Count();
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable.");
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
             }
         }
     }
@@ -113,7 +113,7 @@
 
                     if (variable is not IPlayerVariable plrVar)
                     {
-                        throw new ArgumentException($"The provided value '{variable.Name}' has no associated players.");
+                        throw new ArgumentException($"The provided value '{variable.Name}' has no associated players. [Error Code: SE-133]");
                     }
 
                     if (plrVar.Players.Count() == 0)
@@ -122,7 +122,7 @@
                     return string.Join(".", plrVar.Players.Select(plr => plr.Id.ToString()));
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable.");
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
             }
         }
     }
@@ -168,7 +168,7 @@
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)
                     {
-                        throw new ArgumentException($"The provided value '{conditionVariable.Item1.Name}' has no associated players.");
+                        throw new ArgumentException($"The provided value '{conditionVariable.Item1.Name}' has no associated players. [Error Code: SE-133]");
                     }
 
                     IOrderedEnumerable<string> display = variable.Players.Select(ply =>
@@ -196,7 +196,7 @@
                     return string.Join(", ", display);
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable.");
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
             }
         }
     }

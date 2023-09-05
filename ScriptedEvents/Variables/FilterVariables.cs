@@ -7,6 +7,7 @@
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using PlayerRoles;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -55,7 +56,7 @@
             {
                 if (Arguments.Length < 3)
                 {
-                    throw new ArgumentException($"{Name} requires three arguments (name, type, input)");
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type", "input"));
                 }
 
                 var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source, false);
@@ -74,7 +75,7 @@
                     };
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players.");
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
             }
         }
     }
@@ -110,23 +111,23 @@
             {
                 if (Arguments.Length < 2)
                 {
-                    throw new ArgumentException($"{Name} requires two arguments (name, type)");
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type"));
                 }
 
                 if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable var, out _, Source, false) && var is IPlayerVariable playerVariable)
                 {
                     if (!VariableSystem.TryParse(Arguments[1], out int index, Source))
                     {
-                        throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid integer or variable containing an integer.");
+                        throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid integer or variable containing an integer. [Error Code: SE-134]");
                     }
 
                     if (index > playerVariable.Players.Count() - 1)
-                        throw new IndexOutOfRangeException($"The provided index '{index}' is greater than the size of the player collection.");
+                        throw new IndexOutOfRangeException($"The provided index '{index}' is greater than the size of the player collection. [Error Code: SE-135]");
 
                     return new List<Player>() { playerVariable.Players.ToList()[index] }; // Todo make pretty
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players.");
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
             }
         }
     }
