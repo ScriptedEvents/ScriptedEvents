@@ -205,6 +205,10 @@
                     // Credit to DevTools for below code.
                     Delegate @delegate = null;
                     PropertyInfo propertyInfo = handler.GetProperty(ev.Key);
+
+                    if (propertyInfo is null)
+                        continue;
+
                     EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
                     MethodInfo subscribe = propertyInfo.PropertyType.GetMethod("Subscribe");
 
@@ -213,7 +217,7 @@
                         @delegate = typeof(EventHandlers)
                         .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
                             .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
-                            .CreateDelegate(typeof(CustomEventHandler).MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments), Handlers);
+                            .CreateDelegate(typeof(CustomEventHandler<>).MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments), Handlers);
                     }
                     else if (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event))
                     {
