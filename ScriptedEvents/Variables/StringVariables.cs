@@ -193,7 +193,7 @@
                             _ => ply.Nickname,
                         };
                     }).OrderBy(s => s);
-                    return string.Join(", ", display);
+                    return string.Join(", ", display).Trim();
                 }
 
                 throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
