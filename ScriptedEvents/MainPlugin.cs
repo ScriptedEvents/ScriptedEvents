@@ -208,26 +208,25 @@
                     EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
                     MethodInfo subscribe = propertyInfo.PropertyType.GetMethod("Subscribe");
 
-                    if (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
+                    if (propertyInfo.PropertyType == typeof(Event))
                     {
-                        @delegate = typeof(EventHandlers)
-                        .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
-                            .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
-                            .CreateDelegate(typeof(CustomEventHandler).MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments), Handlers);
+                        @delegate = new CustomEventHandler(Handlers.OnNonArgumentedEvent);
+                        subscribe.Invoke(propertyInfo.GetValue(null), new object[] { @delegate });
                     }
-                    else if (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event))
+                    else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
                     {
                         @delegate = typeof(EventHandlers)
-                        .GetMethod(nameof(EventHandlers.OnNonArgumentedEvent))
-                        .CreateDelegate(typeof(CustomEventHandler));
-                        made = true;
-                        break;
+                            .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
+                            .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
+                            .CreateDelegate(typeof(CustomEventHandler<>)
+                            .MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments));
+
+                        subscribe.Invoke(propertyInfo.GetValue(null), new[] { @delegate });
                     }
                     else
                     {
                         Log.Warn(propertyInfo.Name);
-                        made = false;
-                        break;
+                        continue;
                     }
 
                     subscribe.Invoke(propertyInfo.GetValue(null), new object[] { @delegate });
