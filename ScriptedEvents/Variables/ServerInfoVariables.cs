@@ -82,7 +82,7 @@
         public string Description => "Whether or not this server is verified.";
 
         /// <inheritdoc/>
-        public bool Value => Server.PermissionsHandler.IsVerified;
+        public bool Value => CustomNetworkManager.IsVerified;
     }
 #pragma warning restore SA1402 // File may only contain a single type
 }

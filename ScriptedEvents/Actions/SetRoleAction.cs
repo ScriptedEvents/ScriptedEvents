@@ -52,11 +52,11 @@
                 if (!VariableSystem.TryParse(Arguments[2], out max, script))
                     return new(MessageType.NotANumber, this, "max", Arguments[2]);
                 if (max < 0)
-                    return new(MessageType.LessThanZeroNumber, this, "maxhealth", max);
+                    return new(MessageType.LessThanZeroNumber, this, "max", max);
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys, script))
-                return new(MessageType.NoPlayersFound, this, "players");
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out PlayerCollection plys, script))
+                return new(false, plys.Message);
 
             foreach (Player player in plys)
                 player.Role.Set(roleType);

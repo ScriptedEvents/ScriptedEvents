@@ -70,7 +70,7 @@
                         return total;
                     }
 
-                    return -1f;
+                    throw new ArgumentException($"The 'role' argument must be a valid Team or RoleType. Value '{Arguments[0]}' is not a valid Team or RoleType.");
                 }
             }
         }

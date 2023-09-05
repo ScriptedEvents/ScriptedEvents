@@ -68,8 +68,8 @@
                 }
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys, script))
-                return new(false, "No players matching the criteria were found.");
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out PlayerCollection plys, script))
+                return new(false, plys.Message);
 
             foreach (Player player in plys)
                 player.Scale = new(x, y, z);

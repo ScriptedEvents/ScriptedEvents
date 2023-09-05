@@ -9,12 +9,15 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
+    using Exiled.Events;
     using Exiled.Events.Features;
     using Exiled.Loader;
 
     using MEC;
-
+    using RemoteAdmin;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.Commands;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Variables;
 
@@ -82,7 +85,7 @@
         public override string Author => "Thunder + Johnodon";
 
         /// <inheritdoc/>
-        public override Version Version => new(2, 3, 0);
+        public override Version Version => new(2, 4, 0);
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion => new(8, 0, 0);
@@ -321,6 +324,49 @@
 
             Singleton = null;
             Handlers = null;
+        }
+
+        public override void OnRegisteringCommands()
+        {
+            foreach (Structures.CustomCommand custom in Config.Commands)
+            {
+                if (custom.Name == string.Empty)
+                {
+                    Log.Warn($"Custom command is defined without a name. [Error Code: SE-128]");
+                    continue;
+                }
+
+                if (custom.Run is null || custom.Run.Count == 0)
+                {
+                    Log.Warn($"Custom command '{custom.Name}' ({custom.Type}) will not be created because it is set to run zero scripts. [Error Code: SE-129]");
+                    continue;
+                }
+
+                CustomCommand command = new()
+                {
+                    Command = custom.Name,
+                    Description = custom.Description,
+                    Aliases = new string[0],
+                    Type = custom.Type,
+                    Permission = custom.Permission == string.Empty ? "script.command" : "script.command." + custom.Permission,
+                    Scripts = custom.Run.ToArray(),
+                };
+
+                switch (command.Type)
+                {
+                    case CommandType.PlayerConsole:
+                        QueryProcessor.DotCommandHandler.RegisterCommand(command);
+                        break;
+                    case CommandType.ServerConsole:
+                        GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
+                        break;
+                    case CommandType.RemoteAdmin:
+                        CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
+                        break;
+                }
+            }
+
+            base.OnRegisteringCommands();
         }
     }
 }

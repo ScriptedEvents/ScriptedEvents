@@ -7,6 +7,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
@@ -52,21 +53,23 @@
         {
             get
             {
-                if (Arguments.Length == 0)
-                    return -1f;
+                if (Arguments.Length < 1)
+                {
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
+                }
 
                 var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source, false);
                 if (conditionVariable.Item1 is not null)
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)
                     {
-                        return -1f;
+                        throw new ArgumentException($"The provided value '{conditionVariable.Item1.Name}' has no associated players. [Error Code: SE-133]");
                     }
 
                     return variable.Players.Count();
                 }
 
-                return -1f;
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
             }
         }
     }
@@ -96,9 +99,9 @@
         {
             get
             {
-                if (Arguments.Length == 0)
+                if (Arguments.Length < 1)
                 {
-                    return "ERROR: MISSING PLAYER VARIABLE";
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
                 }
 
                 if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
@@ -110,7 +113,7 @@
 
                     if (variable is not IPlayerVariable plrVar)
                     {
-                        return $"ERROR: No players associated with {variable.Name} variable";
+                        throw new ArgumentException($"The provided value '{variable.Name}' has no associated players. [Error Code: SE-133]");
                     }
 
                     if (plrVar.Players.Count() == 0)
@@ -119,7 +122,7 @@
                     return string.Join(".", plrVar.Players.Select(plr => plr.Id.ToString()));
                 }
 
-                return "ERROR: INVALID VARIABLE";
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
             }
         }
     }
@@ -150,8 +153,10 @@
         {
             get
             {
-                if (Arguments.Length == 0)
-                    return "ERROR: MISSING VARIABLE NAME";
+                if (Arguments.Length < 1)
+                {
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
+                }
 
                 string selector = "NAME";
 
@@ -163,7 +168,7 @@
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)
                     {
-                        return $"ERROR: No players associated with {conditionVariable.Item1.Name} variable";
+                        throw new ArgumentException($"The provided value '{conditionVariable.Item1.Name}' has no associated players. [Error Code: SE-133]");
                     }
 
                     IOrderedEnumerable<string> display = variable.Players.Select(ply =>
@@ -191,7 +196,7 @@
                     return string.Join(", ", display);
                 }
 
-                return "ERROR: INVALID VARIABLE";
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
             }
         }
     }
@@ -222,7 +227,7 @@
 
                 if (Arguments.Length > 0 && !Enum.TryParse(Arguments[0], out filter))
                 {
-                    return "INVALID ZONETYPE FILTER PROVIDED";
+                    throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid ZoneType.");
                 }
 
                 IEnumerable<Room> validRooms = Room.List.Where(room => room.Type != RoomType.Pocket);

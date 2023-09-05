@@ -156,7 +156,6 @@
         {
             Log.Debug($"Disposing script object | ID: {UniqueId}");
 
-            Labels = null;
             Sender = null;
             Actions = null;
             RawText = null;

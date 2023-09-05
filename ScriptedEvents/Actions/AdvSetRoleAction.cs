@@ -38,7 +38,6 @@
             new Argument("spawnpoint", typeof(bool), "Use spawnpoint? default: true", false),
             new Argument("inventory", typeof(bool), "Use default inventory? default: true", false),
             new Argument("max", typeof(int), "The maximum amount of players to set the role of. Variables are supported. (default: unlimited).", false),
-
         };
 
         /// <inheritdoc/>
@@ -70,8 +69,8 @@
                 }
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out Player[] plys, script))
-                return new(MessageType.NoPlayersFound, this, "players");
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
+                return new(false, plys.Message);
 
             foreach (Player player in plys)
                 player.Role.Set(roleType, flags);
