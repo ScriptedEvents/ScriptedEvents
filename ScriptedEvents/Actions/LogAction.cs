@@ -34,7 +34,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Info(VariableSystem.ReplaceVariables(string.Join(" ", Arguments)));
+            Log.Info(VariableSystem.ReplaceVariables(string.Join(" ", Arguments), script));
             return new(true);
         }
     }
