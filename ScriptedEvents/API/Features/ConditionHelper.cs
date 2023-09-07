@@ -50,6 +50,7 @@
             new StringEqual(),
             new StringNotEqual(),
             new StringContains(),
+            new StringNotContains(),
         }.AsReadOnly();
 
         /// <summary>
