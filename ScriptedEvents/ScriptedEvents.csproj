@@ -117,6 +117,7 @@
     <Compile Include="Actions\AdvSetRoleAction.cs" />
     <Compile Include="Actions\TicketAction.cs" />
     <Compile Include="Actions\TpDoorAction.cs" />
+    <Compile Include="Actions\TpSpawnAction.cs" />
     <Compile Include="Actions\TpRoomAction.cs" />
     <Compile Include="Actions\TpxAction.cs" />
     <Compile Include="Actions\WaitForMillisecondsAction.cs" />
