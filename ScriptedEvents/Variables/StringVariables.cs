@@ -142,7 +142,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(string), "The name of the player variable to show.", true),
-            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, USERID, PLAYERID, ROLE, TEAM, ROOM, ZONE, HP, HEALTH, INV, INVCOUNT.", false),
+            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, USERID, PLAYERID, ROLE, TEAM, ROOM, ZONE, HP, HEALTH, INV, INVCOUNT, HELDITEM.", false),
         };
 
         /// <inheritdoc/>
@@ -185,6 +185,7 @@
                             "HP" or "HEALTH" => ply.Health.ToString(),
                             "INVCOUNT" => ply.Items.Count.ToString(),
                             "INV" => string.Join(", ", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())),
+                            "HELDITEM" => (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci) ? ci.Name : ply.CurrentItem?.Type.ToString()) ?? ItemType.None.ToString(),
                             "GOD" => ply.IsGodModeEnabled.ToString().ToUpper(),
                             "POS" => $"{ply.Position.x} {ply.Position.y} {ply.Position.z}",
                             "POSX" => ply.Position.x.ToString(),
