@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class KillAction : IScriptAction, IHelpInfo
     {
@@ -46,7 +47,7 @@
                 bool useDeathType = true;
                 string customDeath = null;
 
-                if (!Enum.TryParse(Arguments[1], true, out DamageType damageType))
+                if (!VariableSystem.TryParse(Arguments[1], out DamageType damageType, script))
                 {
                     useDeathType = false;
                     customDeath = string.Join(" ", Arguments.Skip(1));

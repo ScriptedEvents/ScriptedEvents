@@ -318,22 +318,22 @@ namespace ScriptedEvents.API.Features
             return true;
         }
 
-        public static bool TryGetDoors(string input, out Door[] doors)
+        public static bool TryGetDoors(string input, out Door[] doors, Script source = null)
         {
             List<Door> doorList = ListPool<Door>.Pool.Get();
             if (input is "*" or "ALL")
             {
                 doorList = Door.List.ToList();
             }
-            else if (Enum.TryParse<ZoneType>(input, true, out ZoneType zt))
+            else if (VariableSystem.TryParse<ZoneType>(input, out ZoneType zt, source))
             {
                 doorList = Door.List.Where(d => d.Zone.HasFlag(zt)).ToList();
             }
-            else if (Enum.TryParse<DoorType>(input, true, out DoorType dt))
+            else if (VariableSystem.TryParse<DoorType>(input, out DoorType dt, source))
             {
                 doorList = Door.List.Where(d => d.Type == dt).ToList();
             }
-            else if (Enum.TryParse<RoomType>(input, true, out RoomType rt))
+            else if (VariableSystem.TryParse<RoomType>(input, out RoomType rt, source))
             {
                 doorList = Door.List.Where(d => d.Room?.Type == rt).ToList();
             }
@@ -347,18 +347,18 @@ namespace ScriptedEvents.API.Features
             return doors.Length > 0;
         }
 
-        public static bool TryGetRooms(string input, out Room[] rooms)
+        public static bool TryGetRooms(string input, out Room[] rooms, Script source = null)
         {
             List<Room> roomList = ListPool<Room>.Pool.Get();
             if (input is "*" or "ALL")
             {
                 roomList = Room.List.ToList();
             }
-            else if (Enum.TryParse<ZoneType>(input, true, out ZoneType zt))
+            else if (VariableSystem.TryParse<ZoneType>(input, out ZoneType zt, source))
             {
                 roomList = Room.List.Where(room => room.Zone.HasFlag(zt)).ToList();
             }
-            else if (Enum.TryParse<RoomType>(input, true, out RoomType rt))
+            else if (VariableSystem.TryParse<RoomType>(input, out RoomType rt, source))
             {
                 roomList = Room.List.Where(d => d.Type == rt).ToList();
             }

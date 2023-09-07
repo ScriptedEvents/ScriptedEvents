@@ -45,7 +45,7 @@
 
             string mode = Arguments[0].ToUpper();
 
-            if (!Enum.TryParse<EffectType>(Arguments[2], true, out EffectType effect))
+            if (!VariableSystem.TryParse<EffectType>(Arguments[2], out EffectType effect, script))
                 return new(false, "Invalid effect type provided.");
 
             int intensity = 1;
@@ -68,11 +68,11 @@
             RoleTypeId rt = RoleTypeId.None;
             PlayerCollection players = null;
 
-            if (Enum.TryParse(Arguments[1], true, out team))
+            if (VariableSystem.TryParse(Arguments[1], out team, script))
             {
                 list = 1;
             }
-            else if (Enum.TryParse(Arguments[1], true, out rt))
+            else if (VariableSystem.TryParse(Arguments[1], out rt, script))
             {
                 list = 2;
             }

@@ -132,41 +132,6 @@
         public IEnumerable<Player> Players => Player.Get(player => player.SessionVariables.ContainsKey("IsUIU"));
     }
 
-    public class RespawnedPlayers : IFloatVariable, IPlayerVariable, IArgumentVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{RESPAWNEDPLAYERS}";
-
-        /// <inheritdoc/>
-        public string Description => "The amount of players that respawned in the most recent respawn wave.";
-
-        /// <inheritdoc/>
-        public string[] Arguments { get; set; }
-
-        /// <inheritdoc/>
-        public Argument[] ExpectedArguments => new[]
-        {
-            new Argument("roleType", typeof(RoleTypeId), "The role to filter by.", false),
-        };
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
-
-        /// <inheritdoc/>
-        public IEnumerable<Player> Players
-        {
-            get
-            {
-                if (Arguments.Length > 0 && Enum.TryParse(Arguments[0], true, out RoleTypeId rt))
-                {
-                    return MainPlugin.Handlers.RecentlyRespawned.Where(ply => ply.Role == rt);
-                }
-
-                return MainPlugin.Handlers.RecentlyRespawned;
-            }
-        }
-    }
-
     public class RoleTypeVariable : IFloatVariable, IPlayerVariable
     {
         public RoleTypeVariable()

@@ -261,6 +261,25 @@
             return result == floatResult;
         }
 
+        public static bool TryParse<T>(string input, out T result, Script source = null, bool requireBrackets = true)
+            where T : struct
+        {
+            if (Enum.TryParse(input, true, out result))
+            {
+                return true;
+            }
+
+            if (TryGetVariable(input, out IConditionVariable vr, out _, source, requireBrackets))
+            {
+                if (vr is IStringVariable strVar && Enum.TryParse(strVar.Value, true, out result))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Replaces all the occurrences of variables in a string.
         /// </summary>

@@ -42,7 +42,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!Enum.TryParse<ItemType>(Arguments[1], true, out ItemType itemType))
+            if (!VariableSystem.TryParse<ItemType>(Arguments[1], out ItemType itemType, script))
                 return new(false, "Invalid item provided.");
 
             int amt = 1;

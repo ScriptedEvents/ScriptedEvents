@@ -64,12 +64,12 @@
                 {
                     return Arguments[1].ToString() switch
                     {
-                        "ROLE" when Enum.TryParse(Arguments[2], true, out RoleTypeId rt) => Player.List.Where(plr => plr.Role.Type == rt),
-                        "TEAM" when Enum.TryParse(Arguments[2], true, out Team team) => Player.List.Where(plr => plr.Role.Team == team),
-                        "ZONE" when Enum.TryParse(Arguments[2], true, out ZoneType zt) => Player.List.Where(plr => plr.Zone.HasFlag(zt)),
-                        "ROOM" when Enum.TryParse(Arguments[2], true, out RoomType room) => Player.List.Where(plr => plr.CurrentRoom.Type == room),
+                        "ROLE" when VariableSystem.TryParse(Arguments[2], out RoleTypeId rt, Source, false) => Player.List.Where(plr => plr.Role.Type == rt),
+                        "TEAM" when VariableSystem.TryParse(Arguments[2], out Team team, Source, false) => Player.List.Where(plr => plr.Role.Team == team),
+                        "ZONE" when VariableSystem.TryParse(Arguments[2], out ZoneType zt, Source, false) => Player.List.Where(plr => plr.Zone.HasFlag(zt)),
+                        "ROOM" when VariableSystem.TryParse(Arguments[2], out RoomType room, Source, false) => Player.List.Where(plr => plr.CurrentRoom.Type == room),
                         "USERID" => Player.List.Where(plr => plr.UserId == Arguments[2]),
-                        "INV" when Enum.TryParse(Arguments[2], true, out ItemType item) => Player.List.Where(plr => plr.Items.Any(i => i.Type == item)),
+                        "INV" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => Player.List.Where(plr => plr.Items.Any(i => i.Type == item)),
                         "INV" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => Player.List.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
                         _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{Arguments[2]}' is not valid for the specified filter method."),
                     };

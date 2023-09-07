@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class TpSpawnAction : IScriptAction, IHelpInfo
     {
@@ -41,7 +42,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players, script))
                 return new(false, players.Message);
 
-            if (!Enum.TryParse(Arguments[1], true, out SpawnLocationType rt))
+            if (!VariableSystem.TryParse(Arguments[1], out SpawnLocationType rt, script))
                 return new(false, $"Invalid spawn: {Arguments[1]}. View all valid spawns at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.SpawnLocationType.html");
 
             foreach (Player ply in players)

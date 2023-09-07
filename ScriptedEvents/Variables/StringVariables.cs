@@ -201,7 +201,7 @@
         }
     }
 
-    public class RandomRoom : IStringVariable, IArgumentVariable
+    public class RandomRoom : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{RANDOMROOM}";
@@ -219,13 +219,16 @@
         };
 
         /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
         public string Value
         {
             get
             {
                 ZoneType filter = ZoneType.Unspecified;
 
-                if (Arguments.Length > 0 && !Enum.TryParse(Arguments[0], out filter))
+                if (Arguments.Length > 0 && !VariableSystem.TryParse(Arguments[0], out filter, Source, false))
                 {
                     throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid ZoneType.");
                 }

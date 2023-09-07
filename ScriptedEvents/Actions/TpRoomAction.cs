@@ -10,6 +10,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class TpRoomAction : IScriptAction, IHelpInfo
     {
@@ -43,7 +44,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players, script))
                 return new(false, players.Message);
 
-            if (Enum.TryParse(Arguments[1], true, out ZoneType zt))
+            if (VariableSystem.TryParse(Arguments[1], out ZoneType zt, script))
             {
                 List<Room> validRooms = Room.List.Where(r => r.Zone.HasFlag(zt) && r.Type is not RoomType.Lcz173 && r.Type is not RoomType.Hcz079).ToList();
                 foreach (Player ply in players)
@@ -56,7 +57,7 @@
                 return new(true);
             }
 
-            if (!Enum.TryParse(Arguments[1], true, out RoomType rt))
+            if (!VariableSystem.TryParse(Arguments[1], out RoomType rt, script))
                 return new(false, $"Invalid room: {Arguments[1]}");
 
             foreach (Player ply in players)
