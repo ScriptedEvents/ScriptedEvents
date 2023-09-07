@@ -144,6 +144,7 @@
         /// Evaluates a condition.
         /// </summary>
         /// <param name="input">The condition input.</param>
+        /// <param name="source">The source script.</param>
         /// <returns>The result of the condition.</returns>
         public static ConditionResponse Evaluate(string input, Script source = null)
         {
