@@ -69,7 +69,7 @@
                     if (Arguments.Length > 3)
                         intensityString = Arguments[3];
 
-                    if (!VariableSystem.TryParse(intensityString, out int intensity))
+                    if (!VariableSystem.TryParse(intensityString, out int intensity, script))
                         return new(MessageType.NotANumber, this, "intensity", Arguments[3]);
 
                     if (intensity < 0 || intensity > 255)

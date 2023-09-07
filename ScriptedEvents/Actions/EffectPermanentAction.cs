@@ -51,7 +51,7 @@
             int intensity = 1;
             if (Arguments.Length > 3)
             {
-                if (!VariableSystem.TryParse(Arguments[3], out intensity))
+                if (!VariableSystem.TryParse(Arguments[3], out intensity, script))
                 {
                     return new(false, "Intensity must be a whole number from 0-255.");
                 }
