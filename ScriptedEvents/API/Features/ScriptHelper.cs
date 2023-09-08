@@ -526,7 +526,7 @@ namespace ScriptedEvents.API.Features
                         {
                             case ExecuteContext.RemoteAdmin:
                                 Player ply = Player.Get(scr.Sender);
-                                ply.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                ply.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
 
                                 if (MainPlugin.Configs.BroadcastIssues)
                                     ply?.Broadcast(5, $"Error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
@@ -550,7 +550,7 @@ namespace ScriptedEvents.API.Features
                             {
                                 case ExecuteContext.RemoteAdmin:
                                     Player ply = Player.Get(scr.Sender);
-                                    ply?.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                    ply?.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
 
                                     if (MainPlugin.Configs.BroadcastIssues)
                                         ply?.Broadcast(5, $"Fatal action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
@@ -570,7 +570,7 @@ namespace ScriptedEvents.API.Features
                             {
                                 case ExecuteContext.RemoteAdmin:
                                     Player ply = Player.Get(scr.Sender);
-                                    ply?.RemoteAdminMessage(message, false, "ScriptedEvents");
+                                    ply?.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
 
                                     if (MainPlugin.Configs.BroadcastIssues)
                                         ply?.Broadcast(5, $"Action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
@@ -591,7 +591,7 @@ namespace ScriptedEvents.API.Features
                             switch (scr.Context)
                             {
                                 case ExecuteContext.RemoteAdmin:
-                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, true, "ScriptedEvents");
+                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, true, MainPlugin.Singleton.Name);
                                     break;
                                 default:
                                     Log.Info(message);

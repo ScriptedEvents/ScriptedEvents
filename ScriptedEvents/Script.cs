@@ -220,7 +220,7 @@
         public void DebugLog(string input)
         {
             if (!Debug) return;
-            Log.Send($"[ScriptedEvents] [Script: {ScriptName}] {input}", LogLevel.Debug, ConsoleColor.Gray);
+            Log.Send($"[{MainPlugin.Singleton.Name}] [Script: {ScriptName}] {input}", LogLevel.Debug, ConsoleColor.Gray);
         }
 
         /// <summary>

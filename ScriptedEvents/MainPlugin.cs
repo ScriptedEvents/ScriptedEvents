@@ -143,7 +143,7 @@
 
             if (IsExperimental)
             {
-                Log.Warn($"This ScriptedEvents DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
+                Log.Warn($"This {Name} DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
             }
 
             PlayerHandler.ChangingRole += Handlers.OnChangingRole;
