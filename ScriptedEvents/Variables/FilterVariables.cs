@@ -71,6 +71,8 @@
                         "USERID" => Player.List.Where(plr => plr.UserId == Arguments[2]),
                         "INV" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => Player.List.Where(plr => plr.Items.Any(i => i.Type == item)),
                         "INV" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => Player.List.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
+                        "ISSTAFF" when Arguments[2].ToUpper() == "TRUE" => Player.List.Where(plr => plr.RemoteAdminAccess),
+                        "ISSTAFF" when Arguments[2].ToUpper() == "FALSE" => Player.List.Where(plr => !plr.RemoteAdminAccess),
                         _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{Arguments[2]}' is not valid for the specified filter method."),
                     };
                 }
