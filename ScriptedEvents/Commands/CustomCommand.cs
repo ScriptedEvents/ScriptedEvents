@@ -33,6 +33,7 @@
             }
 
             Dictionary<string, string> failed = new();
+            int success = 0;
 
             foreach (string scr in Scripts)
             {
@@ -56,6 +57,7 @@
                     body.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));
 
                     ScriptHelper.RunScript(body);
+                    success++;
                 }
                 catch (DisabledScriptException)
                 {
@@ -69,7 +71,7 @@
 
             if (failed.Count > 0)
             {
-                response = $"{failed.Count} failed scripts:";
+                response = $"Successfully ran {success} scripts. {failed.Count} failed scripts:";
                 foreach (var kvp in failed)
                 {
                     response += $"\n{kvp.Key} - {kvp.Value}";
@@ -78,7 +80,7 @@
                 return false;
             }
 
-            response = "Success.";
+            response = $"Successfully ran {success} scripts.";
             return true;
         }
     }
