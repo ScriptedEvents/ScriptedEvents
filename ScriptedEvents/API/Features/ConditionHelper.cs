@@ -148,7 +148,6 @@
         /// <returns>The result of the condition.</returns>
         public static ConditionResponse Evaluate(string input, Script source = null)
         {
-            input = VariableSystem.ReplaceVariables(input, source);
             string newWholeString = input;
 
             MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");
@@ -205,7 +204,7 @@
 
         private static ConditionResponse EvaluateInternal(string input)
         {
-            input = VariableSystem.ReplaceVariables(input.RemoveWhitespace()).Trim(); // Kill all whitespace & replace variables
+            input = input.RemoveWhitespace().Trim(); // Kill all whitespace
 
             // Code for simple checks
             if (input.ToLowerInvariant() is "true" or "1")
@@ -264,6 +263,8 @@
                     if (splitString.Count != 2)
                         return new(false, false, $"Malformed condition provided! Condition: '{input}'");
 
+                    splitString = splitString.Select(s => VariableSystem.ReplaceVariables(s)).ToList();
+
                     return new(true, conditionString.Execute(splitString[0], splitString[1]), string.Empty);
                 }
             }
@@ -287,6 +288,8 @@
 
             if (split.Count != 2)
                 return new(false, false, $"Malformed condition provided! Condition: '{input}'");
+
+            split = split.Select(s => VariableSystem.ReplaceVariables(s)).ToList();
 
             double left;
             try
