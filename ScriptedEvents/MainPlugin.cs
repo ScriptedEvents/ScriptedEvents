@@ -155,6 +155,7 @@
             PlayerHandler.DroppingAmmo += Handlers.OnDroppingItem;
             PlayerHandler.DroppingItem += Handlers.OnDroppingItem;
             PlayerHandler.SearchingPickup += Handlers.OnSearchingPickup;
+            PlayerHandler.InteractingDoor += Handlers.OnInteractingDoor;
             PlayerHandler.InteractingLocker += Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator += Handlers.OnInteractingElevator;
             PlayerHandler.Escaping += Handlers.OnEscaping;
@@ -266,6 +267,7 @@
             PlayerHandler.DroppingAmmo -= Handlers.OnDroppingItem;
             PlayerHandler.DroppingItem -= Handlers.OnDroppingItem;
             PlayerHandler.SearchingPickup -= Handlers.OnSearchingPickup;
+            PlayerHandler.InteractingDoor -= Handlers.OnInteractingDoor;
             PlayerHandler.InteractingLocker -= Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator -= Handlers.OnInteractingElevator;
             PlayerHandler.Escaping -= Handlers.OnEscaping;
