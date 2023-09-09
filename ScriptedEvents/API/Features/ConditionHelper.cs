@@ -155,17 +155,17 @@
             {
                 foreach (Match match in matches)
                 {
-                    ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value);
+                    ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value, source: source);
                     newWholeString = newWholeString.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
                 }
             }
 
-            return EvaluateAndOr(newWholeString, true);
+            return EvaluateAndOr(newWholeString, true, source: source);
         }
 
-        private static ConditionResponse EvaluateAndOr(string input, bool last = false)
+        private static ConditionResponse EvaluateAndOr(string input, bool last = false, Script source = null)
         {
-            if (!last && TryMath(VariableSystem.ReplaceVariables(input), out MathResult result))
+            if (!last && TryMath(VariableSystem.ReplaceVariables(input, source), out MathResult result))
             {
                 float output = (float)result.Result;
                 return new(true, true, string.Empty, output);
@@ -178,7 +178,7 @@
                 string[] orSplit = fragAnd.Split(new[] { OR }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string fragOr in orSplit)
                 {
-                    ConditionResponse conditionResult = EvaluateInternal(fragOr.RemoveWhitespace());
+                    ConditionResponse conditionResult = EvaluateInternal(fragOr.RemoveWhitespace(), source);
                     if (!conditionResult.Success)
                     {
                         return conditionResult; // Throw the problem to the end-user
@@ -202,7 +202,7 @@
             return new(true, stillGo, string.Empty);
         }
 
-        private static ConditionResponse EvaluateInternal(string input)
+        private static ConditionResponse EvaluateInternal(string input, Script source = null)
         {
             input = input.RemoveWhitespace().Trim(); // Kill all whitespace
 
@@ -263,7 +263,7 @@
                     if (splitString.Count != 2)
                         return new(false, false, $"Malformed condition provided! Condition: '{input}'");
 
-                    splitString = splitString.Select(s => VariableSystem.ReplaceVariables(s)).ToList();
+                    splitString = splitString.Select(s => VariableSystem.ReplaceVariables(s, source)).ToList();
 
                     return new(true, conditionString.Execute(splitString[0], splitString[1]), string.Empty);
                 }
