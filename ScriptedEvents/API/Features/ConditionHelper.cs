@@ -232,9 +232,16 @@
             {
                 // Hacky: Check the character BEFORE the symbol
                 // Fix edge cases with > and < being right before an equal sign (stupid)
-                char charBefore = input[conditionStringIndex - 1];
-                if (charBefore is '>' or '<')
+                if (conditionStringIndex < 1)
+                {
                     doStringCondition = false;
+                }
+                else
+                {
+                    char charBefore = input[conditionStringIndex - 1];
+                    if (charBefore is '>' or '<')
+                        doStringCondition = false;
+                }
 
                 string[] arrString = input.Split(new[] { conditionString.Symbol }, StringSplitOptions.RemoveEmptyEntries);
 
