@@ -45,6 +45,16 @@
                         body.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
                     }
 
+                    for (int i = 0; i < 20; i++)
+                    {
+                        if (arguments.Count < i + 1)
+                            break;
+
+                        body.AddVariable($"{{ARG{i + 1}}}", $"Argument #{i + 1} of the command.", arguments.At(i).ToString());
+                    }
+
+                    body.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));
+
                     ScriptHelper.RunScript(body);
                 }
                 catch (DisabledScriptException)
