@@ -289,7 +289,7 @@
             if (split.Count != 2)
                 return new(false, false, $"Malformed condition provided! Condition: '{input}'");
 
-            split = split.Select(s => VariableSystem.ReplaceVariables(s)).ToList();
+            split = split.Select(s => VariableSystem.ReplaceVariables(s, source)).ToList();
 
             double left;
             try
