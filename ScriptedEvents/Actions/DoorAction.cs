@@ -40,7 +40,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetDoors(Arguments[1], out Door[] doors))
+            if (!ScriptHelper.TryGetDoors(Arguments[1], out Door[] doors, script))
                 return new(false, "Invalid door(s) provided!");
 
             Action<Door> action;

@@ -33,6 +33,7 @@
             }
 
             Dictionary<string, string> failed = new();
+            int success = 0;
 
             foreach (string scr in Scripts)
             {
@@ -45,7 +46,18 @@
                         body.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
                     }
 
+                    for (int i = 0; i < 20; i++)
+                    {
+                        if (arguments.Count < i + 1)
+                            break;
+
+                        body.AddVariable($"{{ARG{i + 1}}}", $"Argument #{i + 1} of the command.", arguments.At(i).ToString());
+                    }
+
+                    body.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));
+
                     ScriptHelper.RunScript(body);
+                    success++;
                 }
                 catch (DisabledScriptException)
                 {
@@ -59,7 +71,7 @@
 
             if (failed.Count > 0)
             {
-                response = $"{failed.Count} failed scripts:";
+                response = $"Successfully ran {success} scripts. {failed.Count} failed scripts:";
                 foreach (var kvp in failed)
                 {
                     response += $"\n{kvp.Key} - {kvp.Value}";
@@ -68,7 +80,7 @@
                 return false;
             }
 
-            response = "Success.";
+            response = $"Successfully ran {success} scripts.";
             return true;
         }
     }

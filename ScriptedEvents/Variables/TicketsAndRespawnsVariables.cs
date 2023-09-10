@@ -145,7 +145,7 @@
         public float Value => (float)MainPlugin.Handlers.TimeSinceWave.TotalSeconds;
     }
 
-    public class RespawnedPlayers : IFloatVariable, IArgumentVariable, IPlayerVariable
+    public class RespawnedPlayers : IFloatVariable, IArgumentVariable, IPlayerVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{RESPAWNEDPLAYERS}";
@@ -163,6 +163,9 @@
         };
 
         /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
         public float Value => Players.Count();
 
         /// <inheritdoc/>
@@ -170,7 +173,8 @@
         {
             get
             {
-                if (Arguments.Length > 0 && Enum.TryParse(Arguments[0], true, out RoleTypeId rt))
+                // This is technically not necessary anymore since {FILTER} exists. TODO Think about this
+                if (Arguments.Length > 0 && VariableSystem.TryParse(Arguments[0], out RoleTypeId rt, Source, false))
                 {
                     return MainPlugin.Handlers.RecentlyRespawned.Where(ply => ply.Role == rt);
                 }

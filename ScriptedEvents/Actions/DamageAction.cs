@@ -54,7 +54,7 @@
                 bool useDeathType = true;
                 string customDeath = null;
 
-                if (!Enum.TryParse(Arguments[2], true, out DamageType damageType))
+                if (!VariableSystem.TryParse(Arguments[2], out DamageType damageType, script))
                 {
                     useDeathType = false;
                     customDeath = string.Join(" ", Arguments.Skip(2));

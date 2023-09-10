@@ -46,6 +46,9 @@
                 script.DebugLog($"GOTOIF result: true. Jumping to line {Arguments[0]}.");
                 if (!script.Jump(Arguments[0]))
                 {
+                    if (Arguments[0].ToUpper() == "STOP")
+                        return new(true, flags: ActionFlags.StopEventExecution);
+
                     return new(false, $"Failed to jump to trueLine '{Arguments[0]}'. trueLine must be an integer, a label, or a keyword.");
                 }
             }
@@ -54,6 +57,9 @@
                 script.DebugLog($"GOTOIF result: false. Jumping to line {Arguments[1]}.");
                 if (!script.Jump(Arguments[1]))
                 {
+                    if (Arguments[1].ToUpper() == "STOP")
+                        return new(true, flags: ActionFlags.StopEventExecution);
+
                     return new(false, $"Failed to jump to falseLine '{Arguments[1]}'. falseLine must be an integer, a label, or a keyword.");
                 }
             }

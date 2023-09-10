@@ -39,7 +39,7 @@
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!Enum.TryParse<RoleTypeId>(Arguments[0], true, out RoleTypeId roleType))
+            if (!VariableSystem.TryParse<RoleTypeId>(Arguments[0], out RoleTypeId roleType, script))
                 return new(MessageType.InvalidRole, this, "spawnrole", Arguments[0]);
 
             int max = -1;

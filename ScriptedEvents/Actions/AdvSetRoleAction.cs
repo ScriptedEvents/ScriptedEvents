@@ -45,7 +45,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!Enum.TryParse<RoleTypeId>(Arguments[1], true, out RoleTypeId roleType))
+            if (!VariableSystem.TryParse<RoleTypeId>(Arguments[1], out RoleTypeId roleType, script))
                 return new(MessageType.InvalidRole, this, "role", Arguments[1]);
 
             bool setSpawnpoint = Arguments.Length == 2 || Arguments[2] is "TRUE" or "YES";

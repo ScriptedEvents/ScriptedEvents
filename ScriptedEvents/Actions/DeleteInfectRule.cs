@@ -5,6 +5,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class DeleteInfectRule : IScriptAction, IHelpInfo
     {
@@ -34,7 +35,7 @@
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!Enum.TryParse(Arguments[0], true, out RoleTypeId oldRole))
+            if (!VariableSystem.TryParse(Arguments[0], out RoleTypeId oldRole, script))
                 return new(MessageType.InvalidRole, this, "role", Arguments[0]);
 
             MainPlugin.Handlers.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);

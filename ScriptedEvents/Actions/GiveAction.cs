@@ -51,7 +51,7 @@
                 useCustom = true;
                 item = customItem;
             }
-            else if (Enum.TryParse<ItemType>(Arguments[1], true, out ItemType itemType2))
+            else if (VariableSystem.TryParse<ItemType>(Arguments[1], out ItemType itemType2, script))
             {
                 useCustom = false;
                 itemType = itemType2;

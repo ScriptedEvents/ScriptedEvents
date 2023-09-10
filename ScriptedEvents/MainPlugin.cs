@@ -143,7 +143,7 @@
 
             if (IsExperimental)
             {
-                Log.Warn($"This ScriptedEvents DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
+                Log.Warn($"This {Name} DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
             }
 
             PlayerHandler.ChangingRole += Handlers.OnChangingRole;
@@ -155,6 +155,7 @@
             PlayerHandler.DroppingAmmo += Handlers.OnDroppingItem;
             PlayerHandler.DroppingItem += Handlers.OnDroppingItem;
             PlayerHandler.SearchingPickup += Handlers.OnSearchingPickup;
+            PlayerHandler.InteractingDoor += Handlers.OnInteractingDoor;
             PlayerHandler.InteractingLocker += Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator += Handlers.OnInteractingElevator;
             PlayerHandler.Escaping += Handlers.OnEscaping;
@@ -205,13 +206,16 @@
                     // Credit to DevTools for below code.
                     Delegate @delegate = null;
                     PropertyInfo propertyInfo = handler.GetProperty(ev.Key);
+
+                    if (propertyInfo is null)
+                        continue;
+
                     EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
                     MethodInfo subscribe = propertyInfo.PropertyType.GetMethod("Subscribe");
 
                     if (propertyInfo.PropertyType == typeof(Event))
                     {
                         @delegate = new CustomEventHandler(Handlers.OnNonArgumentedEvent);
-                        subscribe.Invoke(propertyInfo.GetValue(null), new object[] { @delegate });
                     }
                     else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
                     {
@@ -220,8 +224,6 @@
                             .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
                             .CreateDelegate(typeof(CustomEventHandler<>)
                             .MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments));
-
-                        subscribe.Invoke(propertyInfo.GetValue(null), new[] { @delegate });
                     }
                     else
                     {
@@ -261,6 +263,7 @@
             PlayerHandler.DroppingAmmo -= Handlers.OnDroppingItem;
             PlayerHandler.DroppingItem -= Handlers.OnDroppingItem;
             PlayerHandler.SearchingPickup -= Handlers.OnSearchingPickup;
+            PlayerHandler.InteractingDoor -= Handlers.OnInteractingDoor;
             PlayerHandler.InteractingLocker -= Handlers.OnInteractingLocker;
             PlayerHandler.InteractingElevator -= Handlers.OnInteractingElevator;
             PlayerHandler.Escaping -= Handlers.OnEscaping;

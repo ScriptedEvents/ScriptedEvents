@@ -45,7 +45,7 @@
 
             string mode = Arguments[0].ToUpper();
 
-            if (!Enum.TryParse<EffectType>(Arguments[2], true, out EffectType effect))
+            if (!VariableSystem.TryParse<EffectType>(Arguments[2], out EffectType effect, script))
                 return new(false, "Invalid effect type provided.");
 
             int duration = 0;
@@ -69,7 +69,7 @@
                     if (Arguments.Length > 3)
                         intensityString = Arguments[3];
 
-                    if (!VariableSystem.TryParse(intensityString, out int intensity))
+                    if (!VariableSystem.TryParse(intensityString, out int intensity, script))
                         return new(MessageType.NotANumber, this, "intensity", Arguments[3]);
 
                     if (intensity < 0 || intensity > 255)

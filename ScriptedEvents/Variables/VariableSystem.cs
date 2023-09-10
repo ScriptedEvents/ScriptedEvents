@@ -261,6 +261,25 @@
             return result == floatResult;
         }
 
+        public static bool TryParse<T>(string input, out T result, Script source = null, bool requireBrackets = true)
+            where T : struct
+        {
+            if (Enum.TryParse(input, true, out result))
+            {
+                return true;
+            }
+
+            if (TryGetVariable(input, out IConditionVariable vr, out _, source, requireBrackets))
+            {
+                if (vr is IStringVariable strVar && Enum.TryParse(strVar.Value, true, out result))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Replaces all the occurrences of variables in a string.
         /// </summary>
@@ -275,18 +294,25 @@
             {
                 if (TryGetVariable(variable, out IConditionVariable condition, out bool reversed, source))
                 {
-                    switch (condition)
+                    try
                     {
-                        case IBoolVariable @bool:
-                            bool result = reversed ? !@bool.Value : @bool.Value;
-                            input = input.Replace(variable, result ? "TRUE" : "FALSE");
-                            break;
-                        case IFloatVariable @float:
-                            input = input.Replace(variable, @float.Value);
-                            break;
-                        case IStringVariable @string:
-                            input = input.Replace(variable, @string.Value);
-                            break;
+                        switch (condition)
+                        {
+                            case IBoolVariable @bool:
+                                bool result = reversed ? !@bool.Value : @bool.Value;
+                                input = input.Replace(variable, result ? "TRUE" : "FALSE");
+                                break;
+                            case IFloatVariable @float:
+                                input = input.Replace(variable, @float.Value);
+                                break;
+                            case IStringVariable @string:
+                                input = input.Replace(variable, @string.Value);
+                                break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warn($"Error replacing the {condition.Name} variable: {e.Message}");
                     }
                 }
             }

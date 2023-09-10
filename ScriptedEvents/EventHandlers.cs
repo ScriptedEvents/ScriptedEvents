@@ -429,6 +429,12 @@
                 ev.IsAllowed = false;
         }
 
+        public void OnInteractingDoor(InteractingDoorEventArgs ev)
+        {
+            if (DisabledKeys.Contains("DOORS"))
+                ev.IsAllowed = false;
+        }
+
         public void OnInteractingLocker(InteractingLockerEventArgs ev)
         {
             if (ev.Locker is PedestalScpLocker && DisabledKeys.Contains("PEDESTALS"))

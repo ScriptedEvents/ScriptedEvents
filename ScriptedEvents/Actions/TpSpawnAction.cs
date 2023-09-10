@@ -1,8 +1,6 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
@@ -12,10 +10,10 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class TpRoomAction : IScriptAction, IHelpInfo
+    public class TpSpawnAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "TPROOM";
+        public string Name => "TPSPAWN";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -27,13 +25,13 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
 
         /// <inheritdoc/>
-        public string Description => "Teleports players to the specified room center.";
+        public string Description => $"Teleports players to the specified {nameof(SpawnLocationType)}.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to teleport", true),
-            new Argument("room", typeof(RoomType), "The room to teleport to. Alternatively, a zone can be provided to teleport players to a random room in the zone (random for each player). Do NOT use Scp173 room!!!", true),
+            new Argument("spawn", typeof(SpawnLocationType), "The spawn to teleport to.", true),
         };
 
         /// <inheritdoc/>
@@ -44,26 +42,13 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players, script))
                 return new(false, players.Message);
 
-            if (VariableSystem.TryParse(Arguments[1], out ZoneType zt, script))
-            {
-                List<Room> validRooms = Room.List.Where(r => r.Zone.HasFlag(zt) && r.Type is not RoomType.Lcz173 && r.Type is not RoomType.Hcz079).ToList();
-                foreach (Player ply in players)
-                {
-                    validRooms.ShuffleList();
-                    if (ply.Role is not FpcRole || !ply.IsConnected) continue;
-                    ply.Teleport(validRooms[UnityEngine.Random.Range(0, validRooms.Count)]);
-                }
-
-                return new(true);
-            }
-
-            if (!VariableSystem.TryParse(Arguments[1], out RoomType rt, script))
-                return new(false, $"Invalid room: {Arguments[1]}");
+            if (!VariableSystem.TryParse(Arguments[1], out SpawnLocationType rt, script))
+                return new(false, $"Invalid spawn: {Arguments[1]}. View all valid spawns at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.SpawnLocationType.html");
 
             foreach (Player ply in players)
             {
                 if (ply.Role is not FpcRole || !ply.IsConnected) continue;
-                ply.Teleport(rt);
+                ply.Teleport(rt, UnityEngine.Vector3.up);
             }
 
             return new(true);

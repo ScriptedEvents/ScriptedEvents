@@ -68,7 +68,7 @@
         public bool Value => Scp914.IsWorking;
     }
 
-    public class DoorState : IStringVariable, IArgumentVariable
+    public class DoorState : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{DOORSTATE}";
@@ -78,6 +78,9 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -95,15 +98,14 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "door" }));
                 }
 
-                if (!Enum.TryParse(Arguments[0], out DoorType dt))
+                if (!VariableSystem.TryParse(Arguments[0], out DoorType dt, Source, false))
                     throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid DoorType.");
 
                 Door d = Door.Get(dt);
 
-                if (d is null)
-                    throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid DoorType.");
-
-                return d.IsOpen ? "OPEN" : "CLOSED";
+                return d is null
+                    ? throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid DoorType.")
+                    : (d.IsOpen ? "OPEN" : "CLOSED");
             }
         }
     }

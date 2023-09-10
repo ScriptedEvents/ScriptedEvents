@@ -117,6 +117,7 @@
     <Compile Include="Actions\AdvSetRoleAction.cs" />
     <Compile Include="Actions\TicketAction.cs" />
     <Compile Include="Actions\TpDoorAction.cs" />
+    <Compile Include="Actions\TpSpawnAction.cs" />
     <Compile Include="Actions\TpRoomAction.cs" />
     <Compile Include="Actions\TpxAction.cs" />
     <Compile Include="Actions\WaitForMillisecondsAction.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
+    <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
     <Compile Include="Structures\CustomCommand.cs" />
     <Compile Include="Structures\PlayerCollection.cs" />
@@ -245,7 +247,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">
-      <Version>8.0.1</Version>
+      <Version>8.2.0</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>

@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class TpDoorAction : IScriptAction, IHelpInfo
     {
@@ -41,7 +42,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players, script))
                 return new(false, players.Message);
 
-            if (!Enum.TryParse(Arguments[1], true, out DoorType dt))
+            if (!VariableSystem.TryParse(Arguments[1], out DoorType dt, script))
                 return new(false, $"Invalid door: {Arguments[1]}");
 
             foreach (Player ply in players)

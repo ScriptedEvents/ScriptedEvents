@@ -21,6 +21,7 @@
             new VariableExists(),
             new CassieSpeaking(),
             new IsScriptRunning(),
+            new LobbyLocked(),
         };
     }
 
@@ -72,6 +73,21 @@
 
         /// <inheritdoc/>
         public bool Value => Cassie.IsSpeaking;
+    }
+
+    public class LobbyLocked : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LOBBYLOCKED}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!LOBBYLOCKED}";
+
+        /// <inheritdoc/>
+        public string Description => "Indicates if the lobby is locked.";
+
+        /// <inheritdoc/>
+        public bool Value => Round.IsLobbyLocked;
     }
 
     public class IsScriptRunning : IBoolVariable, IArgumentVariable

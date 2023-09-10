@@ -72,7 +72,7 @@
 
                     return Reverse(mode, players, duration, script);
                 case "ROLETYPE":
-                    if (!Enum.TryParse(target, true, out RoleTypeId roleType))
+                    if (!VariableSystem.TryParse(target, out RoleTypeId roleType, script))
                         return new(MessageType.InvalidRole, this, "target", target);
 
                     if (!Tesla.IgnoredRoles.Contains(roleType))

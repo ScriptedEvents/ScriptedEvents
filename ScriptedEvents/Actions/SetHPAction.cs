@@ -41,7 +41,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
                 return new(false, plys.Message);
 
-            if (!VariableSystem.TryParse(Arguments[2], out float hp, script))
+            if (!VariableSystem.TryParse(Arguments[1], out float hp, script))
                 return new(MessageType.NotANumber, this, "health", Arguments[2]);
             if (hp < 0)
                 return new(MessageType.LessThanZeroNumber, this, "health", hp);
