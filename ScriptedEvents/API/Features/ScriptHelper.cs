@@ -279,7 +279,7 @@ namespace ScriptedEvents.API.Features
                     }
                     catch (Exception e)
                     {
-                        collection = new(null, false, $"Error when processing the {variable} variable: {e}");
+                        collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
                         return false;
                     }
                 }

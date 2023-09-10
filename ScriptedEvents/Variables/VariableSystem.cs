@@ -294,18 +294,25 @@
             {
                 if (TryGetVariable(variable, out IConditionVariable condition, out bool reversed, source))
                 {
-                    switch (condition)
+                    try
                     {
-                        case IBoolVariable @bool:
-                            bool result = reversed ? !@bool.Value : @bool.Value;
-                            input = input.Replace(variable, result ? "TRUE" : "FALSE");
-                            break;
-                        case IFloatVariable @float:
-                            input = input.Replace(variable, @float.Value);
-                            break;
-                        case IStringVariable @string:
-                            input = input.Replace(variable, @string.Value);
-                            break;
+                        switch (condition)
+                        {
+                            case IBoolVariable @bool:
+                                bool result = reversed ? !@bool.Value : @bool.Value;
+                                input = input.Replace(variable, result ? "TRUE" : "FALSE");
+                                break;
+                            case IFloatVariable @float:
+                                input = input.Replace(variable, @float.Value);
+                                break;
+                            case IStringVariable @string:
+                                input = input.Replace(variable, @string.Value);
+                                break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warn($"Error replacing the {condition.Name} variable: {e.Message}");
                     }
                 }
             }

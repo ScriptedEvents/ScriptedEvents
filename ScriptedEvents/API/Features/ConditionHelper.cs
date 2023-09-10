@@ -207,10 +207,10 @@
             input = input.RemoveWhitespace().Trim(); // Kill all whitespace
 
             // Code for simple checks
-            if (input.ToLowerInvariant() is "true" or "1")
+            if (VariableSystem.ReplaceVariables(input, source).ToLowerInvariant() is "true" or "1")
                 return new(true, true, string.Empty);
 
-            if (input.ToLowerInvariant() is "false" or "0")
+            if (VariableSystem.ReplaceVariables(input, source).ToLowerInvariant() is "false" or "0")
                 return new(true, false, string.Empty);
 
             bool doStringCondition = true;
