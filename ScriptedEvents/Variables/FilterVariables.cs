@@ -67,7 +67,7 @@
                         "ROLE" when VariableSystem.TryParse(Arguments[2], out RoleTypeId rt, Source, false) => playerVariable.Players.Where(plr => plr.Role.Type == rt),
                         "TEAM" when VariableSystem.TryParse(Arguments[2], out Team team, Source, false) => playerVariable.Players.Where(plr => plr.Role.Team == team),
                         "ZONE" when VariableSystem.TryParse(Arguments[2], out ZoneType zt, Source, false) => playerVariable.Players.Where(plr => plr.Zone.HasFlag(zt)),
-                        "ROOM" when VariableSystem.TryParse(Arguments[2], out RoomType room, Source, false) => playerVariable.Players.Where(plr => plr.CurrentRoom.Type == room),
+                        "ROOM" when VariableSystem.TryParse(Arguments[2], out RoomType room, Source, false) => playerVariable.Players.Where(plr => plr.CurrentRoom?.Type == room),
                         "USERID" => playerVariable.Players.Where(plr => plr.UserId == Arguments[2]),
                         "INV" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => playerVariable.Players.Where(plr => plr.Items.Any(i => i.Type == item)),
                         "INV" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => playerVariable.Players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
