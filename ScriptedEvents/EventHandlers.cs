@@ -405,6 +405,9 @@
             if (DisabledKeys.Contains("HURTING"))
                 ev.IsAllowed = false;
 
+            if (ev.Attacker is null || ev.Player is null || ev.Attacker == Server.Host)
+                return;
+
             // Damage Rules
             foreach (DamageRule rule in DamageRules)
             {

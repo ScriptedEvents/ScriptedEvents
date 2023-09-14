@@ -116,6 +116,14 @@
             {
                 return Multiplier;
             }
+            else if (Type == DamageRuleType.RoleToTeam && AttackerRole == attacker.Role && ReceiverTeam == receiver.Role.Team)
+            {
+                return Multiplier;
+            }
+            else if (Type == DamageRuleType.TeamToRole && AttackerTeam == attacker.Role.Team && ReceiverRole == receiver.Role)
+            {
+                return Multiplier;
+            }
             else if (Type == DamageRuleType.PlayerToPlayer && AttackerPlayers.Contains(attacker) && ReceiverPlayers.Contains(receiver))
             {
                 return Multiplier;

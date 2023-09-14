@@ -64,17 +64,13 @@
             }
             else if (VariableSystem.TryParse(Arguments[1], out RoleTypeId attackerRole2, script))
             {
-                if (VariableSystem.TryParse(Arguments[0], out RoleTypeId receiverRole2, script))
+                if (VariableSystem.TryParse(Arguments[0], out Team receiverTeam2, script))
                 {
-                    rule = new(attackerRole2, receiverRole2);
-                }
-                else if (VariableSystem.TryParse(Arguments[0], out Team receiverTeam2, script))
-                {
-                    rule = new(attackerRole2, receiverTeam2);
+                    rule = new(receiverTeam2, attackerRole2);
                 }
                 else if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players2, script))
                 {
-                    rule = new(attackerRole2, players2);
+                    rule = new(players2, attackerRole2);
                 }
             }
 
@@ -96,17 +92,13 @@
             }
             else if (VariableSystem.TryParse(Arguments[1], out Team attackerTeam2, script))
             {
-                if (VariableSystem.TryParse(Arguments[0], out Team receiverTeam2, script))
+                if (VariableSystem.TryParse(Arguments[0], out RoleTypeId receiverRole2, script))
                 {
-                    rule = new(attackerTeam2, receiverTeam2);
-                }
-                else if (VariableSystem.TryParse(Arguments[0], out RoleTypeId receiverRole2, script))
-                {
-                    rule = new(attackerTeam, receiverRole2);
+                    rule = new(receiverRole2, attackerTeam2);
                 }
                 else if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players2, script))
                 {
-                    rule = new(attackerTeam2, players2);
+                    rule = new(players2, attackerTeam2);
                 }
             }
             else if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> attackers, script) && VariableSystem.TryGetPlayers(Arguments[1], out IEnumerable<Player> receivers, script))
