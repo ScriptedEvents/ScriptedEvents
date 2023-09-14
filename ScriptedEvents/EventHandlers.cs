@@ -125,6 +125,8 @@
         /// </summary>
         public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; } = new();
 
+        public List<DamageRule> DamageRules { get; } = new();
+
         public void OnRestarting()
         {
             RespawnWaves = 0;
@@ -147,6 +149,8 @@
             PermPlayerEffects.Clear();
             PermTeamEffects.Clear();
             PermRoleEffects.Clear();
+
+            DamageRules.Clear();
 
             if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
             {
@@ -400,6 +404,16 @@
         {
             if (DisabledKeys.Contains("HURTING"))
                 ev.IsAllowed = false;
+
+            if (ev.Attacker is null || ev.Player is null || ev.Attacker == Server.Host)
+                return;
+
+            // Damage Rules
+            foreach (DamageRule rule in DamageRules)
+            {
+                float multiplier = rule.DetermineMultiplier(ev.Attacker, ev.Player);
+                ev.Amount *= multiplier;
+            }
         }
 
         public void GeneratorEvent(IGeneratorEvent ev)
