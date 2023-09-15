@@ -420,6 +420,16 @@ namespace ScriptedEvents.API.Features
                 fileDirectory = mainFolderFile;
                 text = File.ReadAllText(mainFolderFile);
             }
+            else
+            {
+                mainFolderFile = Path.Combine(ScriptPath, scriptName + ".sel");
+                if (File.Exists(mainFolderFile))
+                {
+                    fileDirectory = mainFolderFile;
+                    text = File.ReadAllText(mainFolderFile);
+                }
+            }
+
 
             foreach (string directory in Directory.GetDirectories(ScriptPath))
             {
@@ -428,6 +438,15 @@ namespace ScriptedEvents.API.Features
                 {
                     fileDirectory = fileName;
                     text = File.ReadAllText(fileName);
+                }
+                else
+                {
+                    fileName = Path.Combine(directory, scriptName + ".sel");
+                    if (File.Exists(fileName))
+                    {
+                        fileDirectory = fileName;
+                        text = File.ReadAllText(fileName);
+                    }
                 }
             }
 

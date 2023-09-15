@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using CommandSystem;
     using Exiled.API.Features;
@@ -36,7 +37,7 @@
                 return true;
             }
 
-            string[] files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) || s.EndsWith(".sel", StringComparison.OrdinalIgnoreCase)).ToArray();
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
             int i = 0;
