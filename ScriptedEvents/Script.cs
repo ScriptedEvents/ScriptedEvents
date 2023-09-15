@@ -156,7 +156,6 @@
         {
             Log.Debug($"Disposing script object | ID: {UniqueId}");
 
-            Labels = null;
             Sender = null;
             Actions = null;
             RawText = null;
@@ -221,7 +220,7 @@
         public void DebugLog(string input)
         {
             if (!Debug) return;
-            Log.Send($"[ScriptedEvents] [Script: {ScriptName}] {input}", LogLevel.Debug, ConsoleColor.Gray);
+            Log.Send($"[{MainPlugin.Singleton.Name}] [Script: {ScriptName}] {input}", LogLevel.Debug, ConsoleColor.Gray);
         }
 
         /// <summary>

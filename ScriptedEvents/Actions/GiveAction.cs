@@ -51,7 +51,7 @@
                 useCustom = true;
                 item = customItem;
             }
-            else if (Enum.TryParse<ItemType>(Arguments[1], true, out ItemType itemType2))
+            else if (VariableSystem.TryParse<ItemType>(Arguments[1], out ItemType itemType2, script))
             {
                 useCustom = false;
                 itemType = itemType2;
@@ -69,8 +69,8 @@
                     return new(MessageType.NotANumber, this, "amount", Arguments[4]);
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
-                return new(MessageType.NoPlayersFound, this, "players");
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
+                return new(false, plys.Message);
 
             foreach (Player player in plys)
             {

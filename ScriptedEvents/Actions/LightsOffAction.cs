@@ -39,10 +39,10 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms))
+            if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms, script))
                 return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
 
-            if (!VariableSystem.TryParse(Arguments[1], out int duration, script))
+            if (!VariableSystem.TryParse(Arguments[1], out float duration, script))
             {
                 return new(MessageType.NotANumber, this, "duration", Arguments[1]);
             }

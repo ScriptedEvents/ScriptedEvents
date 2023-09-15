@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class KillAction : IScriptAction, IHelpInfo
     {
@@ -38,15 +39,15 @@
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out Player[] plys, script))
-                return new(MessageType.NoPlayersFound, this, "players");
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
+                return new(false, plys.Message);
 
             if (Arguments.Length > 1)
             {
                 bool useDeathType = true;
                 string customDeath = null;
 
-                if (!Enum.TryParse(Arguments[1], true, out DamageType damageType))
+                if (!VariableSystem.TryParse(Arguments[1], out DamageType damageType, script))
                 {
                     useDeathType = false;
                     customDeath = string.Join(" ", Arguments.Skip(1));

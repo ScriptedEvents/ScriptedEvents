@@ -6,6 +6,7 @@
     using System.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -116,22 +117,15 @@
             {
                 if (Arguments.Length < 1)
                 {
-                    return Array.Empty<Player>();
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "roomType" }));
                 }
 
-                if (Enum.TryParse<RoomType>(Arguments[0], out RoomType rt))
+                if (VariableSystem.TryParse<RoomType>(Arguments[0], out RoomType rt, Source, false))
                 {
                     return Player.Get(plr => plr.CurrentRoom.Type == rt);
                 }
-                else if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
-                {
-                    if (variable is IStringVariable variableString && Enum.TryParse(variableString.Value, out RoomType rt2))
-                    {
-                        return Player.Get(plr => plr.CurrentRoom.Type == rt2);
-                    }
-                }
 
-                return Array.Empty<Player>();
+                throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid RoomType or the variable does not provide a RoomType.");
             }
         }
     }

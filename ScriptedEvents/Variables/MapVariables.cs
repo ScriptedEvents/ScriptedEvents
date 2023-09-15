@@ -7,6 +7,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -67,7 +68,7 @@
         public bool Value => Scp914.IsWorking;
     }
 
-    public class DoorState : IStringVariable, IArgumentVariable
+    public class DoorState : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{DOORSTATE}";
@@ -77,6 +78,9 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -89,17 +93,19 @@
         {
             get
             {
-                if (Arguments.Length < 1) return "ERROR: MISSING DOOR TYPE";
+                if (Arguments.Length < 1)
+                {
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "door" }));
+                }
 
-                if (!Enum.TryParse(Arguments[0], out DoorType dt))
-                    return "ERROR: INVALID DOOR TYPE";
+                if (!VariableSystem.TryParse(Arguments[0], out DoorType dt, Source, false))
+                    throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid DoorType.");
 
                 Door d = Door.Get(dt);
 
-                if (d is null)
-                    return "ERROR: INVALID DOOR TYPE";
-
-                return d.IsOpen ? "OPEN" : "CLOSED";
+                return d is null
+                    ? throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid DoorType.")
+                    : (d.IsOpen ? "OPEN" : "CLOSED");
             }
         }
     }

@@ -10,6 +10,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class RadioRangeAction : IScriptAction, IHelpInfo, ISampleAction
     {
@@ -45,10 +46,10 @@
             if (Arguments.Length < 3)
                 return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out Player[] players, script))
-                return new(MessageType.NoPlayersFound, this, "players");
+            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection players, script))
+                return new(false, players.Message);
 
-            if (!Enum.TryParse(Arguments[2], true, out RadioRange range))
+            if (!VariableSystem.TryParse(Arguments[2], out RadioRange range, script))
                 return new(false, "Invalid radio range provided. Must be: Short, Medium, Long, Ultra.");
 
             if (Arguments[0] is "LOCK" or "SET")

@@ -23,7 +23,7 @@
         };
     }
 
-    public class Kills : IFloatVariable, IArgumentVariable
+    public class Kills : IFloatVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{KILLS}";
@@ -33,6 +33,9 @@
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -51,14 +54,14 @@
                 }
                 else
                 {
-                    if (Enum.TryParse(Arguments[0], true, out RoleTypeId rt))
+                    if (VariableSystem.TryParse(Arguments[0], out RoleTypeId rt, Source))
                     {
                         if (MainPlugin.Handlers.Kills.TryGetValue(rt, out int amt))
                             return amt;
                         else
                             return 0;
                     }
-                    else if (Enum.TryParse(Arguments[0], true, out Team team))
+                    else if (VariableSystem.TryParse(Arguments[0], out Team team, Source))
                     {
                         int total = 0;
                         foreach (var kills in MainPlugin.Handlers.Kills)
@@ -70,7 +73,7 @@
                         return total;
                     }
 
-                    return -1f;
+                    throw new ArgumentException($"The 'role' argument must be a valid Team or RoleType. Value '{Arguments[0]}' is not a valid Team or RoleType.");
                 }
             }
         }

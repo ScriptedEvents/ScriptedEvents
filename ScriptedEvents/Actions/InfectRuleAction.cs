@@ -5,6 +5,7 @@
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class InfectRuleAction : IScriptAction, IHelpInfo
     {
@@ -36,10 +37,10 @@
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!Enum.TryParse(Arguments[0], true, out RoleTypeId oldRole))
+            if (!VariableSystem.TryParse(Arguments[0], out RoleTypeId oldRole, script))
                 return new(MessageType.InvalidRole, this, "oldrole", Arguments[0]);
 
-            if (!Enum.TryParse(Arguments[1], true, out RoleTypeId newRole))
+            if (!VariableSystem.TryParse(Arguments[1], out RoleTypeId newRole, script))
                 return new(MessageType.InvalidRole, this, "newrole", Arguments[1]);
 
             bool movePlayer = Arguments[2].ToUpper() is "TRUE" or "YES";

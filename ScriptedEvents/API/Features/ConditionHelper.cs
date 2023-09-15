@@ -50,6 +50,7 @@
             new StringEqual(),
             new StringNotEqual(),
             new StringContains(),
+            new StringNotContains(),
         }.AsReadOnly();
 
         /// <summary>
@@ -143,10 +144,10 @@
         /// Evaluates a condition.
         /// </summary>
         /// <param name="input">The condition input.</param>
+        /// <param name="source">The source script.</param>
         /// <returns>The result of the condition.</returns>
         public static ConditionResponse Evaluate(string input, Script source = null)
         {
-            input = VariableSystem.ReplaceVariables(input, source);
             string newWholeString = input;
 
             MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");
@@ -154,17 +155,17 @@
             {
                 foreach (Match match in matches)
                 {
-                    ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value);
+                    ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value, source: source);
                     newWholeString = newWholeString.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
                 }
             }
 
-            return EvaluateAndOr(newWholeString, true);
+            return EvaluateAndOr(newWholeString, true, source: source);
         }
 
-        private static ConditionResponse EvaluateAndOr(string input, bool last = false)
+        private static ConditionResponse EvaluateAndOr(string input, bool last = false, Script source = null)
         {
-            if (!last && TryMath(VariableSystem.ReplaceVariables(input), out MathResult result))
+            if (!last && TryMath(VariableSystem.ReplaceVariables(input, source), out MathResult result))
             {
                 float output = (float)result.Result;
                 return new(true, true, string.Empty, output);
@@ -177,7 +178,7 @@
                 string[] orSplit = fragAnd.Split(new[] { OR }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string fragOr in orSplit)
                 {
-                    ConditionResponse conditionResult = EvaluateInternal(fragOr.RemoveWhitespace());
+                    ConditionResponse conditionResult = EvaluateInternal(fragOr.RemoveWhitespace(), source);
                     if (!conditionResult.Success)
                     {
                         return conditionResult; // Throw the problem to the end-user
@@ -201,15 +202,15 @@
             return new(true, stillGo, string.Empty);
         }
 
-        private static ConditionResponse EvaluateInternal(string input)
+        private static ConditionResponse EvaluateInternal(string input, Script source = null)
         {
-            input = VariableSystem.ReplaceVariables(input.RemoveWhitespace()).Trim(); // Kill all whitespace & replace variables
+            input = input.RemoveWhitespace().Trim(); // Kill all whitespace
 
             // Code for simple checks
-            if (input.ToLowerInvariant() is "true" or "1")
+            if (VariableSystem.ReplaceVariables(input, source).ToLowerInvariant() is "true" or "1")
                 return new(true, true, string.Empty);
 
-            if (input.ToLowerInvariant() is "false" or "0")
+            if (VariableSystem.ReplaceVariables(input, source).ToLowerInvariant() is "false" or "0")
                 return new(true, false, string.Empty);
 
             bool doStringCondition = true;
@@ -230,9 +231,16 @@
             {
                 // Hacky: Check the character BEFORE the symbol
                 // Fix edge cases with > and < being right before an equal sign (stupid)
-                char charBefore = input[conditionStringIndex - 1];
-                if (charBefore is '>' or '<')
+                if (conditionStringIndex < 1)
+                {
                     doStringCondition = false;
+                }
+                else
+                {
+                    char charBefore = input[conditionStringIndex - 1];
+                    if (charBefore is '>' or '<')
+                        doStringCondition = false;
+                }
 
                 string[] arrString = input.Split(new[] { conditionString.Symbol }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -254,6 +262,8 @@
 
                     if (splitString.Count != 2)
                         return new(false, false, $"Malformed condition provided! Condition: '{input}'");
+
+                    splitString = splitString.Select(s => VariableSystem.ReplaceVariables(s, source)).ToList();
 
                     return new(true, conditionString.Execute(splitString[0], splitString[1]), string.Empty);
                 }
@@ -278,6 +288,8 @@
 
             if (split.Count != 2)
                 return new(false, false, $"Malformed condition provided! Condition: '{input}'");
+
+            split = split.Select(s => VariableSystem.ReplaceVariables(s, source)).ToList();
 
             double left;
             try

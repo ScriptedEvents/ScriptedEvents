@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Booleans
 {
+    using System;
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
 
@@ -20,6 +21,7 @@
             new VariableExists(),
             new CassieSpeaking(),
             new IsScriptRunning(),
+            new LobbyLocked(),
         };
     }
 
@@ -73,6 +75,21 @@
         public bool Value => Cassie.IsSpeaking;
     }
 
+    public class LobbyLocked : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LOBBYLOCKED}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!LOBBYLOCKED}";
+
+        /// <inheritdoc/>
+        public string Description => "Indicates if the lobby is locked.";
+
+        /// <inheritdoc/>
+        public bool Value => Round.IsLobbyLocked;
+    }
+
     public class IsScriptRunning : IBoolVariable, IArgumentVariable
     {
         /// <inheritdoc/>
@@ -98,7 +115,10 @@
         {
             get
             {
-                if (Arguments.Length < 1) return false;
+                if (Arguments.Length < 1)
+                {
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "scriptName" }));
+                }
 
                 string scriptName = Arguments[0];
                 return ScriptHelper.RunningScripts.Any(scr => scr.Key.ScriptName == scriptName && scr.Value.IsRunning);

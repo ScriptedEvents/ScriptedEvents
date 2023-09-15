@@ -98,6 +98,11 @@
             return "Unknown error [Error Code: SE-126]";
         }
 
+        public static string VariableArgCount(string name, params string[] args)
+        {
+            return $"{name} requires {args.Length} argument{(args.Length > 1 ? "s" : string.Empty)} ({string.Join(", ", args)}) [Error Code: SE-130]";
+        }
+
         /// <summary>
         /// Gets a pretty display for a type.
         /// </summary>

@@ -26,6 +26,7 @@
     using ScriptedEvents.Variables;
 
     using UnityEngine;
+    using System.Diagnostics;
 
     public class EventHandlers
     {
@@ -124,6 +125,8 @@
         /// </summary>
         public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; } = new();
 
+        public List<DamageRule> DamageRules { get; } = new();
+
         public void OnRestarting()
         {
             RespawnWaves = 0;
@@ -146,6 +149,8 @@
             PermPlayerEffects.Clear();
             PermTeamEffects.Clear();
             PermRoleEffects.Clear();
+
+            DamageRules.Clear();
 
             if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
             {
@@ -330,12 +335,10 @@
             OnAnyEvent(evName, ev);
         }
 
-        /*public void OnNonArgumentedEvent()
+        public void OnNonArgumentedEvent()
         {
-            Type evType = typeof(T);
-            string evName = evType.Name.Replace("EventArgs", string.Empty);
-            OnAnyEvent(evName, ev);
-        }*/
+            OnAnyEvent(new StackFrame(2).GetMethod().Name);
+        }
 
         // Infection
         public void OnDied(DiedEventArgs ev)
@@ -401,6 +404,16 @@
         {
             if (DisabledKeys.Contains("HURTING"))
                 ev.IsAllowed = false;
+
+            if (ev.Attacker is null || ev.Player is null || ev.Attacker == Server.Host)
+                return;
+
+            // Damage Rules
+            foreach (DamageRule rule in DamageRules)
+            {
+                float multiplier = rule.DetermineMultiplier(ev.Attacker, ev.Player);
+                ev.Amount *= multiplier;
+            }
         }
 
         public void GeneratorEvent(IGeneratorEvent ev)
@@ -427,6 +440,12 @@
                 ev.IsAllowed = false;
 
             if (DisabledKeys.Contains("MICROPICKUPS") && ev.Pickup.Type is ItemType.MicroHID)
+                ev.IsAllowed = false;
+        }
+
+        public void OnInteractingDoor(InteractingDoorEventArgs ev)
+        {
+            if (DisabledKeys.Contains("DOORS"))
                 ev.IsAllowed = false;
         }
 
