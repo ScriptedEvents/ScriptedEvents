@@ -59,21 +59,20 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type", "input"));
                 }
 
-                var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source, false);
-                if (conditionVariable.Item1 is not null && conditionVariable.Item1 is IPlayerVariable playerVariable)
+                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
                 {
                     return Arguments[1].ToString() switch
                     {
-                        "ROLE" when VariableSystem.TryParse(Arguments[2], out RoleTypeId rt, Source, false) => playerVariable.Players.Where(plr => plr.Role.Type == rt),
-                        "TEAM" when VariableSystem.TryParse(Arguments[2], out Team team, Source, false) => playerVariable.Players.Where(plr => plr.Role.Team == team),
-                        "ZONE" when VariableSystem.TryParse(Arguments[2], out ZoneType zt, Source, false) => playerVariable.Players.Where(plr => plr.Zone.HasFlag(zt)),
-                        "ROOM" when VariableSystem.TryParse(Arguments[2], out RoomType room, Source, false) => playerVariable.Players.Where(plr => plr.CurrentRoom?.Type == room),
-                        "USERID" => playerVariable.Players.Where(plr => plr.UserId == Arguments[2]),
-                        "INV" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => playerVariable.Players.Where(plr => plr.Items.Any(i => i.Type == item)),
-                        "INV" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => playerVariable.Players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
+                        "ROLE" when VariableSystem.TryParse(Arguments[2], out RoleTypeId rt, Source, false) => players.Where(plr => plr.Role.Type == rt),
+                        "TEAM" when VariableSystem.TryParse(Arguments[2], out Team team, Source, false) => players.Where(plr => plr.Role.Team == team),
+                        "ZONE" when VariableSystem.TryParse(Arguments[2], out ZoneType zt, Source, false) => players.Where(plr => plr.Zone.HasFlag(zt)),
+                        "ROOM" when VariableSystem.TryParse(Arguments[2], out RoomType room, Source, false) => players.Where(plr => plr.CurrentRoom?.Type == room),
+                        "USERID" => players.Where(plr => plr.UserId == Arguments[2]),
+                        "INV" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
+                        "INV" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
 
-                        "ISSTAFF" when Arguments[2].ToUpper() == "TRUE" => playerVariable.Players.Where(plr => plr.RemoteAdminAccess),
-                        "ISSTAFF" when Arguments[2].ToUpper() == "FALSE" => playerVariable.Players.Where(plr => !plr.RemoteAdminAccess),
+                        "ISSTAFF" when Arguments[2].ToUpper() == "TRUE" => players.Where(plr => plr.RemoteAdminAccess),
+                        "ISSTAFF" when Arguments[2].ToUpper() == "FALSE" => players.Where(plr => !plr.RemoteAdminAccess),
                         _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{Arguments[2]}' is not valid for the specified filter method."),
                     };
                 }
@@ -117,17 +116,17 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type"));
                 }
 
-                if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable var, out _, Source, false) && var is IPlayerVariable playerVariable)
+                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
                 {
                     if (!VariableSystem.TryParse(Arguments[1], out int index, Source, false))
                     {
                         throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid integer or variable containing an integer. [Error Code: SE-134]");
                     }
 
-                    if (index > playerVariable.Players.Count() - 1)
+                    if (index > players.Count() - 1)
                         throw new IndexOutOfRangeException($"The provided index '{index}' is greater than the size of the player collection. [Error Code: SE-135]");
 
-                    return new List<Player>() { playerVariable.Players.ToList()[index] }; // Todo make pretty
+                    return new List<Player>() { players.ToList()[index] }; // Todo make pretty
                 }
 
                 throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");

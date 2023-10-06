@@ -210,9 +210,9 @@
             return variable != null;
         }
 
-        public static bool TryGetPlayers(string name, out IEnumerable<Exiled.API.Features.Player> players, Script source = null)
+        public static bool TryGetPlayers(string name, out IEnumerable<Exiled.API.Features.Player> players, Script source = null, bool requireBrackets = true)
         {
-            if (TryGetVariable(name, out IConditionVariable variable, out _, source))
+            if (TryGetVariable(name, out IConditionVariable variable, out _, source, requireBrackets))
             {
                 if (variable is IPlayerVariable plrVariable)
                 {
