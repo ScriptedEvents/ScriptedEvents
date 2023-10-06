@@ -119,7 +119,7 @@
 
                 if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable var, out _, Source, false) && var is IPlayerVariable playerVariable)
                 {
-                    if (!VariableSystem.TryParse(Arguments[1], out int index, Source))
+                    if (!VariableSystem.TryParse(Arguments[1], out int index, Source, false))
                     {
                         throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid integer or variable containing an integer. [Error Code: SE-134]");
                     }
