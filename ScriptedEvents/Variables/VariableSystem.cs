@@ -288,7 +288,7 @@
         /// <returns>The modified string.</returns>
         public static string ReplaceVariables(string input, Script source = null)
         {
-            string[] variables = ConditionHelper.IsolateVariables(input);
+            string[] variables = ConditionHelper.IsolateVariables(input, source);
 
             foreach (var variable in variables)
             {
