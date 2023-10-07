@@ -121,9 +121,11 @@
         /// Isolates all variables from a string.
         /// </summary>
         /// <param name="input">The input string.</param>
+        /// <param name="source">The script source.</param>
         /// <returns>The variables used within the string.</returns>
         public static string[] IsolateVariables(string input, Script source = null)
         {
+            source?.DebugLog($"Isolating variables from: {input}");
             List<string> result = ListPool<string>.Pool.Get();
 
             for (int i = 0; i < input.Length; i++)
@@ -132,9 +134,9 @@
                 if (c is '{')
                 {
                     int index = input.IndexOf('}', i);
-                    source.DebugLog($"Detected variable opening symbol, char {i}. Closing index {index}. Substring {index - i + 1}.");
+                    source?.DebugLog($"Detected variable opening symbol, char {i}. Closing index {index}. Substring {index - i + 1}.");
                     string variable = input.Substring(i, index - i + 1);
-                    source.DebugLog($"Variable: {variable}");
+                    source?.DebugLog($"Variable: {variable}");
                     result.Add(variable);
                 }
             }
@@ -207,12 +209,13 @@
         private static ConditionResponse EvaluateInternal(string input, Script source = null)
         {
             input = input.RemoveWhitespace().Trim(); // Kill all whitespace
+            string converted = VariableSystem.ReplaceVariables(input, source).ToLower();
 
             // Code for simple checks
-            if (VariableSystem.ReplaceVariables(input, source).ToLowerInvariant() is "true" or "1")
+            if (converted is "true" or "1")
                 return new(true, true, string.Empty);
 
-            if (VariableSystem.ReplaceVariables(input, source).ToLowerInvariant() is "false" or "0")
+            if (converted is "false" or "0")
                 return new(true, false, string.Empty);
 
             bool doStringCondition = true;
@@ -244,7 +247,7 @@
                         doStringCondition = false;
                 }
 
-                string[] arrString = input.Split(new[] { conditionString.Symbol }, StringSplitOptions.RemoveEmptyEntries);
+                string[] arrString = converted.Split(new[] { conditionString.Symbol }, StringSplitOptions.RemoveEmptyEntries);
 
                 // Hacky case to skip over string if both sides are computable
                 // For cases with similar string/math operators (eg. '=')
@@ -262,10 +265,12 @@
                     List<string> splitString = arrString.ToList();
                     splitString.RemoveAll(y => string.IsNullOrWhiteSpace(y));
 
-                    if (splitString.Count != 2)
-                        return new(false, false, $"Malformed condition provided! Condition: '{input}'");
+                    source?.DebugLog($"String condition fragments length: {splitString.Count}");
 
-                    splitString = splitString.Select(s => VariableSystem.ReplaceVariables(s, source)).ToList();
+                    if (splitString.Count != 2)
+                        return new(false, false, $"Malformed string condition provided! Condition: '{input}'");
+
+                    splitString = splitString.ToList();
 
                     return new(true, conditionString.Execute(splitString[0], splitString[1]), string.Empty);
                 }
@@ -282,16 +287,16 @@
             }
 
             if (condition is null)
-                return new(false, false, $"Invalid condition operator provided! Condition: '{input}'");
+                return new(false, false, $"Invalid number condition operator provided! Condition: '{input}'");
 
-            string[] arr = input.Split(new[] { condition.Symbol }, StringSplitOptions.RemoveEmptyEntries);
+            string[] arr = converted.Split(new[] { condition.Symbol }, StringSplitOptions.RemoveEmptyEntries);
             List<string> split = arr.ToList();
             split.RemoveAll(y => string.IsNullOrWhiteSpace(y));
 
-            if (split.Count != 2)
-                return new(false, false, $"Malformed condition provided! Condition: '{input}'");
+            source?.DebugLog($"Float condition fragments length: {split.Count}");
 
-            split = split.Select(s => VariableSystem.ReplaceVariables(s, source)).ToList();
+            if (split.Count != 2)
+                return new(false, false, $"Malformed number condition provided! Condition: '{input}'");
 
             double left;
             try

@@ -62,8 +62,9 @@
         /// <param name="name">The name of the variable.</param>
         /// <param name="desc">A description of the variable.</param>
         /// <param name="input">The value of the variable.</param>
+        /// <param name="source">The script source.</param>
         /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
-        public static void DefineVariable(string name, string desc, string input)
+        public static void DefineVariable(string name, string desc, string input, Script source = null)
         {
             name = name.RemoveWhitespace();
 
@@ -71,6 +72,8 @@
                 name = "{" + name;
             if (!name.EndsWith("}"))
                 name = name + "}";
+
+            source?.DebugLog($"Defined variable {name} with value {input}");
 
             DefinedVariables[name] = new(name, desc, input);
         }
