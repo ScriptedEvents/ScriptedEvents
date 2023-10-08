@@ -255,7 +255,7 @@ namespace ScriptedEvents.API.Features
         /// <returns>Whether or not the process errored.</returns>
         public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source = null)
         {
-            source.DebugLog($"DEBUG {input}");
+            source.DebugLog($"TRYGETPLAYERS {input}");
             input = input.RemoveWhitespace();
             List<Player> list = ListPool<Player>.Pool.Get();
             if (input.ToUpper() is "*" or "ALL")
@@ -267,7 +267,7 @@ namespace ScriptedEvents.API.Features
             }
             else
             {
-                string[] variables = ConditionHelper.IsolateVariables(input);
+                string[] variables = ConditionHelper.IsolateVariables(input, source);
                 foreach (string variable in variables)
                 {
                     try

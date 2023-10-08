@@ -41,7 +41,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            // Todo: Needs negative number checking
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
@@ -55,6 +54,8 @@
             {
                 if (!VariableSystem.TryParse(Arguments[2], out limit, script))
                     return new(MessageType.NotANumber, this, "limit", Arguments[2]);
+                if (limit < 0)
+                    return new(MessageType.LessThanZeroNumber, this, "limit", limit);
             }
 
             float decay = 1.2f;
@@ -62,6 +63,8 @@
             {
                 if (!VariableSystem.TryParse(Arguments[3], out decay, script))
                     return new(MessageType.NotANumber, this, "decay", Arguments[2]);
+                if (decay < 0)
+                    return new(MessageType.LessThanZeroNumber, this, "decay", limit);
             }
 
             float efficacy = 0.7f;
@@ -69,6 +72,8 @@
             {
                 if (!VariableSystem.TryParse(Arguments[4], out efficacy, script))
                     return new(MessageType.NotANumber, this, "efficacy", Arguments[2]);
+                if (efficacy < 0)
+                    return new(MessageType.LessThanZeroNumber, this, "efficacy", limit);
             }
 
             float sustain = 0f;
@@ -76,6 +81,8 @@
             {
                 if (!VariableSystem.TryParse(Arguments[5], out sustain, script))
                     return new(MessageType.NotANumber, this, "sustain", Arguments[5]);
+                if (sustain < 0)
+                    return new(MessageType.LessThanZeroNumber, this, "sustain", limit);
             }
 
             bool persistent = Arguments.Length > 6 && (Arguments[6] is "TRUE" or "YES");

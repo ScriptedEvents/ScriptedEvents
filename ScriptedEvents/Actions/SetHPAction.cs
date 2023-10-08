@@ -42,7 +42,7 @@
                 return new(false, plys.Message);
 
             if (!VariableSystem.TryParse(Arguments[1], out float hp, script))
-                return new(MessageType.NotANumber, this, "health", Arguments[2]);
+                return new(MessageType.NotANumber, this, "health", Arguments[1]);
             if (hp < 0)
                 return new(MessageType.LessThanZeroNumber, this, "health", hp);
 
