@@ -27,6 +27,7 @@
 
     using UnityEngine;
     using System.Diagnostics;
+    using System.Runtime.InteropServices;
 
     public class EventHandlers
     {
@@ -327,17 +328,17 @@
             }
         }
 
-        public void OnArgumentedEvent<T>(T ev)
+        public static void OnArgumentedEvent<T>(T ev)
             where T : IExiledEvent
         {
             Type evType = typeof(T);
             string evName = evType.Name.Replace("EventArgs", string.Empty);
-            OnAnyEvent(evName, ev);
+            MainPlugin.Handlers.OnAnyEvent(evName, ev);
         }
 
-        public void OnNonArgumentedEvent()
+        public static void OnNonArgumentedEvent()
         {
-            OnAnyEvent(new StackFrame(2).GetMethod().Name);
+            MainPlugin.Handlers.OnAnyEvent(new StackFrame(2).GetMethod().Name);
         }
 
         // Infection
