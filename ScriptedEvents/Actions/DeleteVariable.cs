@@ -10,7 +10,7 @@
     public class DeleteVariable : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "DELVARIABLE";
+        public string Name => "DELETE";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
