@@ -10,7 +10,7 @@
     public class DeletePlayerVariable : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "DELPLAYERVARIABLE";
+        public string Name => "DELETEPLAYER";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
