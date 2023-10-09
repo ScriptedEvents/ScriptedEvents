@@ -283,11 +283,6 @@ namespace ScriptedEvents.API.Features
                         return false;
                     }
                 }
-
-                if (Player.TryGet(input, out Player ply))
-                {
-                    list.Add(ply);
-                }
             }
 
             // If list is still empty, match directly
