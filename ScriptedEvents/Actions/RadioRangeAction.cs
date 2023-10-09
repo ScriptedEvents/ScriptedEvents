@@ -52,7 +52,7 @@
             if (!VariableSystem.TryParse(Arguments[2], out RadioRange range, script))
                 return new(false, "Invalid radio range provided. Must be: Short, Medium, Long, Ultra.");
 
-            if (Arguments[0] is "LOCK" or "SET")
+            if (Arguments[0].ToUpper() is "LOCK" or "SET")
             {
                 foreach (Player ply in players)
                 {
@@ -71,7 +71,7 @@
                 return new(MessageType.InvalidOption, this, "mode", Arguments[0], "SET/LOCK");
             }
 
-            if (Arguments[0] is "LOCK")
+            if (Arguments[0].ToUpper() is "LOCK")
             {
                 foreach (Player ply in players)
                 {

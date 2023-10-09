@@ -215,7 +215,7 @@
 
                     if (propertyInfo.PropertyType == typeof(Event))
                     {
-                        @delegate = new CustomEventHandler(Handlers.OnNonArgumentedEvent);
+                        @delegate = new CustomEventHandler(EventHandlers.OnNonArgumentedEvent);
                     }
                     else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
                     {
@@ -231,7 +231,7 @@
                         continue;
                     }
 
-                    subscribe.Invoke(propertyInfo.GetValue(null), new object[] { @delegate });
+                    subscribe.Invoke(propertyInfo.GetValue(Handlers), new object[] { @delegate });
                     StoredDelegates.Add(new Tuple<EventInfo, Delegate>(eventInfo, @delegate));
                     made = true;
 

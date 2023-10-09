@@ -27,7 +27,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (ADD, do not provide for specific line)", false),
-            new Argument("line", typeof(int), "The line to move to. Variables & Math are NOT supported.", true),
+            new Argument("line", typeof(int), "The line to move to. Variables are NOT supported.", true),
         };
 
         /// <inheritdoc/>

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
@@ -42,6 +43,8 @@
             foreach (Player player in plys)
             {
                 player.ClearInventory();
+                player.Inventory.UserInventory.ReserveAmmo.Clear();
+                player.Inventory.SendAmmoNextFrame = true;
             }
 
             return new(true);

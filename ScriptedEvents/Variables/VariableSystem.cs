@@ -62,8 +62,9 @@
         /// <param name="name">The name of the variable.</param>
         /// <param name="desc">A description of the variable.</param>
         /// <param name="input">The value of the variable.</param>
+        /// <param name="source">The script source.</param>
         /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
-        public static void DefineVariable(string name, string desc, string input)
+        public static void DefineVariable(string name, string desc, string input, Script source = null)
         {
             name = name.RemoveWhitespace();
 
@@ -71,6 +72,8 @@
                 name = "{" + name;
             if (!name.EndsWith("}"))
                 name = name + "}";
+
+            source?.DebugLog($"Defined variable {name} with value {input}");
 
             DefinedVariables[name] = new(name, desc, input);
         }
@@ -210,9 +213,9 @@
             return variable != null;
         }
 
-        public static bool TryGetPlayers(string name, out IEnumerable<Exiled.API.Features.Player> players, Script source = null)
+        public static bool TryGetPlayers(string name, out IEnumerable<Exiled.API.Features.Player> players, Script source = null, bool requireBrackets = true)
         {
-            if (TryGetVariable(name, out IConditionVariable variable, out _, source))
+            if (TryGetVariable(name, out IConditionVariable variable, out _, source, requireBrackets))
             {
                 if (variable is IPlayerVariable plrVariable)
                 {
@@ -225,12 +228,12 @@
             return false;
         }
 
-        public static float Parse(string input, Script source = null)
+        public static float Parse(string input, Script source = null, bool requireBrackets = true)
         {
             if (float.TryParse(input, out float fl))
                 return fl;
 
-            if (TryGetVariable(input, out IConditionVariable var, out _, source))
+            if (TryGetVariable(input, out IConditionVariable var, out _, source, requireBrackets))
             {
                 if (var is IFloatVariable floatVar)
                     return floatVar.Value;
@@ -241,15 +244,15 @@
             return float.NaN;
         }
 
-        public static bool TryParse(string input, out float result, Script source = null)
+        public static bool TryParse(string input, out float result, Script source = null, bool requireBrackets = true)
         {
-            result = Parse(input, source);
+            result = Parse(input, source, requireBrackets);
             return result != float.NaN;
         }
 
-        public static bool TryParse(string input, out int result, Script source = null)
+        public static bool TryParse(string input, out int result, Script source = null, bool requireBrackets = true)
         {
-            float floatResult = Parse(input, source);
+            float floatResult = Parse(input, source, requireBrackets);
 
             if (floatResult == float.NaN)
             {
@@ -288,7 +291,7 @@
         /// <returns>The modified string.</returns>
         public static string ReplaceVariables(string input, Script source = null)
         {
-            string[] variables = ConditionHelper.IsolateVariables(input);
+            string[] variables = ConditionHelper.IsolateVariables(input, source);
 
             foreach (var variable in variables)
             {

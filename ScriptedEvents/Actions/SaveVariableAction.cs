@@ -45,14 +45,14 @@
             try
             {
                 float value = (float)ConditionHelper.Math(input);
-                VariableSystem.DefineVariable(varName, "User-defined variable.", value.ToString());
+                VariableSystem.DefineVariable(varName, "User-defined variable.", value.ToString(), script);
                 return new(true);
             }
             catch
             {
             }
 
-            VariableSystem.DefineVariable(varName, "User-defined variable.", input);
+            VariableSystem.DefineVariable(varName, "User-defined variable.", input, script);
 
             return new(true);
         }
