@@ -43,10 +43,8 @@
             foreach (Player player in plys)
             {
                 player.ClearInventory();
-                foreach (var ammo in player.Ammo)
-                {
-                    player.SetAmmo(ammo.Key.GetAmmoType(), 0);
-                }
+                player.Inventory.UserInventory.ReserveAmmo.Clear();
+                player.Inventory.SendAmmoNextFrame = true;
             }
 
             return new(true);
