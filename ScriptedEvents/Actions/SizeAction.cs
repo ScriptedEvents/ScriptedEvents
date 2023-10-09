@@ -55,17 +55,10 @@
 
             if (Arguments.Length > 4)
             {
-                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(4)), script);
-
-                if (!ConditionHelper.TryMath(formula, out MathResult result))
-                {
-                    return new(false, $"Invalid max condition provided! Condition: {formula} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'.");
-                }
-
-                if (result.Result < 0)
-                {
-                    return new(false, "A negative number cannot be used as the max argument of the SIZE action.");
-                }
+                if (!VariableSystem.TryParse(Arguments[4], out max, script))
+                    return new(MessageType.NotANumber, this, "max", Arguments[4]);
+                if (max < 0)
+                    return new(MessageType.LessThanZeroNumber, this, "max", max);
             }
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out PlayerCollection plys, script))
