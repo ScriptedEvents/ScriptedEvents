@@ -54,7 +54,7 @@
                 }
             }
 
-            string mode = Arguments[0];
+            string mode = Arguments[0].ToUpper();
             string target = mode == "DISABLE" ? null : Arguments[1];
             string duration = Arguments.Length > 2 ? string.Join(string.Empty, Arguments.Skip(2)) : null;
 
