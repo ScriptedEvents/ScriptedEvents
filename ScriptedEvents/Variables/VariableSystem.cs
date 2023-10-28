@@ -315,7 +315,7 @@
                     }
                     catch (Exception e)
                     {
-                        Log.Warn($"Error replacing the {condition.Name} variable: {e.Message}");
+                        Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] Error replacing the {condition.Name} variable: {e}");
                     }
                 }
             }
