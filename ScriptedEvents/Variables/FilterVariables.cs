@@ -39,7 +39,7 @@
         public Argument[] ExpectedArguments { get; } = new[]
         {
             new Argument("name", typeof(string), "The name of the variable to filter.", true),
-            new Argument("type", typeof(string), "The mode to use to filter. Valid modes: ROLE, ZONE, TEAM, ROOM, USERID, INV", true),
+            new Argument("type", typeof(string), "The mode to use to filter. Valid modes: ROLE, ZONE, TEAM, ROOM, USERID, INV, HELDITEM, ISSTAFF", true),
             new Argument("input", typeof(string), "What to use as the filter (RoleType, ZoneType, etc)", true),
         };
 
