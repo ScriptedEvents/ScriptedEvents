@@ -19,8 +19,10 @@
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new AllPlayers(),
+            new AllNpcs(),
             new PlayersAlive(),
             new PlayersDead(),
+            new Humans(),
             new Staff(),
             new InRoom(),
             new NonePlayer(),
@@ -36,10 +38,26 @@
         public string Description => "The amount of players in the server.";
 
         /// <inheritdoc/>
-        public float Value => Player.List.Count();
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.List;
+    }
+
+    public class AllNpcs : IFloatVariable, IPlayerVariable
+    {
+
+        /// <inheritdoc/>
+        public string Name => "{NPCS}";
+
+        /// <inheritdoc/>
+        public string Description => "The amount of NPCs in the server.";
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Npc.List;
     }
 
     public class PlayersAlive : IFloatVariable, IPlayerVariable
@@ -51,7 +69,7 @@
         public string Description => "The amount of alive players in the server.";
 
         /// <inheritdoc/>
-        public float Value => Player.List.Count(p => p.IsAlive);
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.List.Where(p => p.IsAlive);
@@ -66,10 +84,25 @@
         public string Description => "The amount of dead players in the server.";
 
         /// <inheritdoc/>
-        public float Value => Player.List.Count(p => p.IsDead);
+        public float Value => Players.Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.List.Where(p => p.IsDead);
+    }
+
+    public class Humans : IFloatVariable, IPlayerVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{HUMANS}";
+
+        /// <inheritdoc/>
+        public string Description => "The amount of humans that are currently alive.";
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players => Player.List.Where(p => p.IsAlive && p.Role.Team is not PlayerRoles.Team.SCPs);
     }
 
     public class Staff : IFloatVariable, IPlayerVariable
