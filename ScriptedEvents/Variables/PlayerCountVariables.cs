@@ -102,7 +102,7 @@
         public float Value => Players.Count();
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => Player.List.Where(p => p.IsAlive && p.Role.Team is not PlayerRoles.Team.SCPs);
+        public IEnumerable<Player> Players => Player.List.Where(p => p.IsHuman);
     }
 
     public class Staff : IFloatVariable, IPlayerVariable
