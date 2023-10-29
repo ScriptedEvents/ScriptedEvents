@@ -172,7 +172,7 @@
         public string Description => "Will always be an empty variable with no players.";
 
         /// <inheritdoc/>
-        public float Value => Player.List.Count();
+        public float Value => 0;
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Enumerable.Empty<Player>();
