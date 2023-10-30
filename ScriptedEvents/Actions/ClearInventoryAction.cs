@@ -42,9 +42,9 @@
 
             foreach (Player player in plys)
             {
-                player.ClearInventory();
                 player.Inventory.UserInventory.ReserveAmmo.Clear();
                 player.Inventory.SendAmmoNextFrame = true;
+                player.ClearInventory();
             }
 
             return new(true);
