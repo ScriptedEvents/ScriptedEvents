@@ -13,6 +13,17 @@
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
+
+    // SCPs
+    using Exiled.Events.EventArgs.Scp049;
+    using Exiled.Events.EventArgs.Scp0492;
+    using Exiled.Events.EventArgs.Scp079;
+    using Exiled.Events.EventArgs.Scp096;
+    using Exiled.Events.EventArgs.Scp106;
+    using Exiled.Events.EventArgs.Scp173;
+    using Exiled.Events.EventArgs.Scp3114;
+    using Exiled.Events.EventArgs.Scp939;
+
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.EventArgs.Warhead;
 
@@ -372,6 +383,17 @@
             }
         }
 
+        // Locked Radios
+        public void OnChangingRole(ChangingRoleEventArgs ev)
+        {
+            if (!ev.IsAllowed) return;
+
+            if (LockedRadios.ContainsKey(ev.Player))
+            {
+                LockedRadios.Remove(ev.Player);
+            }
+        }
+
         // Disable Stuff
         public void OnDying(DyingEventArgs ev)
         {
@@ -387,16 +409,6 @@
                     Kills[ev.Attacker.Role.Type]++;
                 else
                     Kills.Add(ev.Attacker.Role.Type, 1);
-            }
-        }
-
-        public void OnChangingRole(ChangingRoleEventArgs ev)
-        {
-            if (!ev.IsAllowed) return;
-
-            if (LockedRadios.ContainsKey(ev.Player))
-            {
-                LockedRadios.Remove(ev.Player);
             }
         }
 
@@ -515,6 +527,70 @@
         public void OnScp914Event(IDeniableEvent ev)
         {
             if (DisabledKeys.Contains("SCP914"))
+                ev.IsAllowed = false;
+        }
+
+#pragma warning disable SA1201
+        public static Dictionary<Type, string> EventToDisableKey { get; } = new()
+#pragma warning restore SA1201
+        {
+            // SCP-049
+            [typeof(ActivatingSenseEventArgs)] = "SCP049SENSE",
+            [typeof(Exiled.Events.EventArgs.Scp049.AttackingEventArgs)] = "SCP049ATTACK",
+            [typeof(StartingRecallEventArgs)] = "SCP049RECALL",
+            [typeof(SendingCallEventArgs)] = "SCP049CALL",
+
+            // SCP-049-2
+            [typeof(ConsumingCorpseEventArgs)] = "SCP0492CONSUMECORPSE",
+            [typeof(TriggeringBloodlustEventArgs)] = "SCP0492BLOODLUST",
+
+            // SCP-079
+            // [typeof(ChangingCameraEventArgs)] = "SCP079CHANGECAMERA",
+            [typeof(ChangingSpeakerStatusEventArgs)] = "SCP079SPEAKER",
+            [typeof(ElevatorTeleportingEventArgs)] = "SCP079ELEVATOR",
+            // [typeof(GainingExperienceEventArgs)] = "SCP079GAINEXPERIENCE",
+            // [typeof(GainingLevelEventArgs)] = "SCP079GAINLEVEL",
+            [typeof(InteractingTeslaEventArgs)] = "SCP079TESLA",
+            [typeof(LockingDownEventArgs)] = "SCP079LOCKDOWN",
+            [typeof(PingingEventArgs)] = "SCP079PING",
+            [typeof(RoomBlackoutEventArgs)] = "SCP079BLACKOUT",
+            [typeof(TriggeringDoorEventArgs)] = "SCP079DOOR",
+            [typeof(ZoneBlackoutEventArgs)] = "SCP079ZONEBLACKOUT",
+
+            // SCP-096
+            [typeof(AddingTargetEventArgs)] = "SCP096ADDTARGET",
+            [typeof(ChargingEventArgs)] = "SCP096CHARGE",
+            [typeof(EnragingEventArgs)] = "SCP096ENRAGE",
+            [typeof(TryingNotToCryEventArgs)] = "SCP096TRYNOTCRY",
+
+            // SCP-106
+            [typeof(Exiled.Events.EventArgs.Scp106.AttackingEventArgs)] = "SCP106ATTACK",
+            [typeof(TeleportingEventArgs)] = "SCP106ATLAS",
+            [typeof(StalkingEventArgs)] = "SCP106STALK",
+
+            // SCP-173
+            [typeof(BlinkingEventArgs)] = "SCP173BREAKNECKSPEED",
+            [typeof(PlacingTantrumEventArgs)] = "SCP173TANTRUM",
+            [typeof(UsingBreakneckSpeedsEventArgs)] = "SCP173BREAKNECKSPEED",
+
+            // SCP-939
+            [typeof(ChangingFocusEventArgs)] = "SCP939FOCUS",
+            [typeof(PlacingAmnesticCloudEventArgs)] = "SCP939CLOUD",
+            [typeof(PlayingSoundEventArgs)] = "SCP939PLAYSOUND",
+            [typeof(PlayingVoiceEventArgs)] = "SCP939PLAYVOICE",
+            [typeof(SavingVoiceEventArgs)] = "SCP939SAVEVOICE",
+
+            // SCP-3114
+            [typeof(TryUseBodyEventArgs)] = "SCP3114DISGUISE",
+            [typeof(DisguisingEventArgs)] = "SCP3114DISGUISE",
+
+        };
+
+        public void OnScpAbility(IDeniableEvent ev)
+        {
+            if (EventToDisableKey.TryGetValue(ev.GetType(), out string key) && DisabledKeys.Contains(key))
+                ev.IsAllowed = false;
+            if (DisabledKeys.Contains("DEBUGDISABLEALL"))
                 ev.IsAllowed = false;
         }
 

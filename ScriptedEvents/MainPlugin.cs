@@ -11,6 +11,7 @@
 
     using Exiled.Events;
     using Exiled.Events.Features;
+    using Exiled.Events.Handlers;
     using Exiled.Loader;
 
     using MEC;
@@ -193,6 +194,41 @@
             ServerHandler.RoundStarted += Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
 
+            // SCP abilities
+            Scp049.ActivatingSense += Handlers.OnScpAbility;
+            Scp049.Attacking += Handlers.OnScpAbility;
+            Scp049.StartingRecall += Handlers.OnScpAbility;
+            Scp049.SendingCall += Handlers.OnScpAbility;
+            Scp0492.ConsumingCorpse += Handlers.OnScpAbility;
+            Scp0492.TriggeringBloodlust += Handlers.OnScpAbility;
+            Scp079.ChangingCamera += Handlers.OnScpAbility;
+            Scp079.ChangingSpeakerStatus += Handlers.OnScpAbility;
+            Scp079.ElevatorTeleporting += Handlers.OnScpAbility;
+            Scp079.GainingExperience += Handlers.OnScpAbility;
+            Scp079.GainingLevel += Handlers.OnScpAbility;
+            Scp079.InteractingTesla += Handlers.OnScpAbility;
+            Scp079.LockingDown += Handlers.OnScpAbility;
+            Scp079.Pinging += Handlers.OnScpAbility;
+            Scp079.RoomBlackout += Handlers.OnScpAbility;
+            Scp079.TriggeringDoor += Handlers.OnScpAbility;
+            Scp079.ZoneBlackout += Handlers.OnScpAbility;
+            Scp096.AddingTarget += Handlers.OnScpAbility;
+            Scp096.Charging += Handlers.OnScpAbility;
+            Scp096.Enraging += Handlers.OnScpAbility;
+            Scp096.TryingNotToCry += Handlers.OnScpAbility;
+            Scp106.Attacking += Handlers.OnScpAbility;
+            Scp106.Teleporting += Handlers.OnScpAbility;
+            Scp106.Stalking += Handlers.OnScpAbility;
+            Scp173.Blinking += Handlers.OnScpAbility;
+            Scp173.PlacingTantrum += Handlers.OnScpAbility;
+            Scp173.UsingBreakneckSpeeds += Handlers.OnScpAbility;
+            Scp939.ChangingFocus += Handlers.OnScpAbility;
+            Scp939.PlacingAmnesticCloud += Handlers.OnScpAbility;
+            Scp939.PlayingSound += Handlers.OnScpAbility;
+            Scp939.PlayingVoice += Handlers.OnScpAbility;
+            Scp939.SavingVoice += Handlers.OnScpAbility;
+            Scp3114.TryUseBody += Handlers.OnScpAbility;
+
             // Setup systems
             ApiHelper.RegisterActions();
             VariableSystem.Setup();
@@ -300,6 +336,41 @@
             ServerHandler.WaitingForPlayers -= Handlers.OnWaitingForPlayers;
             ServerHandler.RoundStarted -= Handlers.OnRoundStarted;
             ServerHandler.RespawningTeam -= Handlers.OnRespawningTeam;
+
+            // SCP abilities
+            Scp049.ActivatingSense -= Handlers.OnScpAbility;
+            Scp049.Attacking -= Handlers.OnScpAbility;
+            Scp049.StartingRecall -= Handlers.OnScpAbility;
+            Scp049.SendingCall -= Handlers.OnScpAbility;
+            Scp0492.ConsumingCorpse -= Handlers.OnScpAbility;
+            Scp0492.TriggeringBloodlust -= Handlers.OnScpAbility;
+            Scp079.ChangingCamera -= Handlers.OnScpAbility;
+            Scp079.ChangingSpeakerStatus -= Handlers.OnScpAbility;
+            Scp079.ElevatorTeleporting -= Handlers.OnScpAbility;
+            Scp079.GainingExperience -= Handlers.OnScpAbility;
+            Scp079.GainingLevel -= Handlers.OnScpAbility;
+            Scp079.InteractingTesla -= Handlers.OnScpAbility;
+            Scp079.LockingDown -= Handlers.OnScpAbility;
+            Scp079.Pinging -= Handlers.OnScpAbility;
+            Scp079.RoomBlackout -= Handlers.OnScpAbility;
+            Scp079.TriggeringDoor -= Handlers.OnScpAbility;
+            Scp079.ZoneBlackout -= Handlers.OnScpAbility;
+            Scp096.AddingTarget -= Handlers.OnScpAbility;
+            Scp096.Charging -= Handlers.OnScpAbility;
+            Scp096.Enraging -= Handlers.OnScpAbility;
+            Scp096.TryingNotToCry -= Handlers.OnScpAbility;
+            Scp106.Attacking -= Handlers.OnScpAbility;
+            Scp106.Teleporting -= Handlers.OnScpAbility;
+            Scp106.Stalking -= Handlers.OnScpAbility;
+            Scp173.Blinking -= Handlers.OnScpAbility;
+            Scp173.PlacingTantrum -= Handlers.OnScpAbility;
+            Scp173.UsingBreakneckSpeeds -= Handlers.OnScpAbility;
+            Scp939.ChangingFocus -= Handlers.OnScpAbility;
+            Scp939.PlacingAmnesticCloud -= Handlers.OnScpAbility;
+            Scp939.PlayingSound -= Handlers.OnScpAbility;
+            Scp939.PlayingVoice -= Handlers.OnScpAbility;
+            Scp939.SavingVoice -= Handlers.OnScpAbility;
+            Scp3114.TryUseBody -= Handlers.OnScpAbility;
 
             for (int i = 0; i < StoredDelegates.Count; i++)
             {
