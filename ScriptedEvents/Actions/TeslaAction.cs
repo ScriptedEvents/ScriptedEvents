@@ -6,7 +6,7 @@
     using Exiled.API.Features;
     using MEC;
     using PlayerRoles;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;

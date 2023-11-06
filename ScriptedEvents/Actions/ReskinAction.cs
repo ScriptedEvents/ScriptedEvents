@@ -6,7 +6,7 @@
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using PlayerRoles;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;

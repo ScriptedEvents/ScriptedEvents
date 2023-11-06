@@ -3,7 +3,7 @@
     using System;
     using Exiled.API.Features;
     using Respawning;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;

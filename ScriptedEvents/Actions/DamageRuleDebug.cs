@@ -2,8 +2,8 @@
 {
     using System;
     using Exiled.API.Features;
-    using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class DamageRuleDebug : IScriptAction, IHiddenAction

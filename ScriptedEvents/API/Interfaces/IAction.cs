@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Actions.Interfaces
+﻿namespace ScriptedEvents.API.Interfaces
 {
     using ScriptedEvents.API.Enums;
 

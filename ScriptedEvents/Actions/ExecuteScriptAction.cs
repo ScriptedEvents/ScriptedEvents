@@ -2,7 +2,7 @@
 {
     using System;
     using System.IO;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Features;

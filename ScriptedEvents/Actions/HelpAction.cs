@@ -8,7 +8,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using MEC;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Actions.Samples;
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.API.Enums;

@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Actions.Interfaces
+﻿namespace ScriptedEvents.API.Interfaces
 {
     /// <summary>
     /// Indicates that the action has a custom display in the "script read" command.

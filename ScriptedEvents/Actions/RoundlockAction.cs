@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using Exiled.API.Features;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 

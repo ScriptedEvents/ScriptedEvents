@@ -3,9 +3,9 @@
     using System;
     using System.Linq;
     using Exiled.API.Features;
-    using ScriptedEvents.Actions.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 

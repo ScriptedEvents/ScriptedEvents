@@ -1,7 +1,7 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
 
     // Represents a line in a file that does not have any actions.

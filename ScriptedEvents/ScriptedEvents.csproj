@@ -102,7 +102,7 @@
     <Compile Include="Actions\PlayerVariableAction.cs" />
     <Compile Include="Actions\RadioRangeAction.cs" />
     <Compile Include="Actions\RemoveItemAction.cs" />
-    <Compile Include="Actions\Interfaces\ILogicAction.cs" />
+    <Compile Include="API\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\KillAction.cs" />
     <Compile Include="Actions\LightColorAction.cs" />
     <Compile Include="Actions\ResetLightColorAction.cs" />
@@ -146,10 +146,10 @@
     <Compile Include="Variables\MapVariables.cs" />
     <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
-    <Compile Include="Actions\Interfaces\ICustomReadDisplay.cs" />
-    <Compile Include="Actions\Interfaces\IHelpInfo.cs" />
-    <Compile Include="Actions\Interfaces\IHiddenAction.cs" />
-    <Compile Include="Actions\Interfaces\IScriptAction.cs" />
+    <Compile Include="API\Interfaces\ICustomReadDisplay.cs" />
+    <Compile Include="API\Interfaces\IHelpInfo.cs" />
+    <Compile Include="API\Interfaces\IHiddenAction.cs" />
+    <Compile Include="API\Interfaces\IScriptAction.cs" />
     <Compile Include="API\Enums\ActionFlags.cs" />
     <Compile Include="API\Features\Exceptions\DisabledScriptException.cs" />
     <Compile Include="Conditions\Floats\GreaterThanOrEqualTo.cs" />
@@ -185,8 +185,8 @@
     <Compile Include="Actions\SilentCassieAction.cs" />
     <Compile Include="Actions\CassieAction.cs" />
     <Compile Include="Actions\CommandAction.cs" />
-    <Compile Include="Actions\Interfaces\IAction.cs" />
-    <Compile Include="Actions\Interfaces\ITimingAction.cs" />
+    <Compile Include="API\Interfaces\IAction.cs" />
+    <Compile Include="API\Interfaces\ITimingAction.cs" />
     <Compile Include="Actions\DebugMathAction.cs" />
     <Compile Include="Actions\DebugConditionLogAction.cs" />
     <Compile Include="Actions\DecontaminateAction.cs" />
