@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
 
@@ -26,8 +27,6 @@
     using ScriptedEvents.Variables;
 
     using UnityEngine;
-    using System.Diagnostics;
-    using System.Runtime.InteropServices;
 
     public class EventHandlers
     {
@@ -265,17 +264,17 @@
         {
             if (PermPlayerEffects.TryGetValue(ev.Player, out var effects))
             {
-                effects.ForEach(eff => ev.Player.EnableEffect(eff));
+                effects.ForEach(eff => ev.Player.SyncEffect(eff));
             }
 
             if (PermTeamEffects.TryGetValue(ev.Player.Role.Team, out var effects2))
             {
-                effects2.ForEach(eff => ev.Player.EnableEffect(eff));
+                effects2.ForEach(eff => ev.Player.SyncEffect(eff));
             }
 
             if (PermRoleEffects.TryGetValue(ev.Player.Role.Type, out var effects3))
             {
-                effects3.ForEach(eff => ev.Player.EnableEffect(eff));
+                effects3.ForEach(eff => ev.Player.SyncEffect(eff));
             }
         }
 
