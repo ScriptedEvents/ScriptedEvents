@@ -22,6 +22,7 @@ namespace ScriptedEvents.API.Features
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+    using static Exiled.Loader.Features.MultiAdminFeatures;
     using AirlockController = Exiled.API.Features.Doors.AirlockController;
 
     /// <summary>
@@ -178,10 +179,9 @@ namespace ScriptedEvents.API.Features
                 newAction.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
                 // Obsolete check
-                var obsolete = actionType.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == "ObsoleteAttribute");
-                if (obsolete is not null)
+                if (newAction.IsObsolete(out string obsoleteReason))
                 {
-                    Log.Warn($"Notice: Action {newAction.Name} is marked as obsolete. Please avoid using it. Reason: {obsolete.ConstructorArguments[0].Value}");
+                    Log.Warn($"Notice: Action {newAction.Name} is marked as obsolete. Please avoid using it. Reason: {obsoleteReason}");
                 }
 
                 actionList.Add(newAction);
@@ -643,6 +643,20 @@ namespace ScriptedEvents.API.Features
             RunningScripts.Remove(scr);
 
             scr.Dispose();
+        }
+
+        public static bool IsObsolete(this IAction action, out string message)
+        {
+            Type t = action.GetType();
+            var obsolete = t.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == "ObsoleteAttribute");
+            if (obsolete is not null)
+            {
+                message = obsolete.ConstructorArguments[0].Value.ToString();
+                return true;
+            }
+
+            message = string.Empty;
+            return false;
         }
     }
 }

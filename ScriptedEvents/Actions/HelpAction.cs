@@ -73,7 +73,7 @@
 
                 foreach (IGrouping<ActionSubgroup, IAction> group in grouped.OrderBy(g => g.Key.Display()))
                 {
-                    if (group.Count() == 0 || (group.All(act => act is IHiddenAction) && !MainPlugin.Configs.Debug))
+                    if (group.Count() == 0 || (group.All(act => act is IHiddenAction || act.IsObsolete(out _)) && !MainPlugin.Configs.Debug))
                         continue;
 
                     sbList.AppendLine();
@@ -83,7 +83,7 @@
                     {
                         IHelpInfo lhelpInfo = lAction as IHelpInfo;
 
-                        if (lAction is IHiddenAction && !MainPlugin.Configs.Debug)
+                        if ((lAction is IHiddenAction && !MainPlugin.Configs.Debug) || lAction.IsObsolete(out _))
                             continue;
 
                         sbList.AppendLine($"{lAction.Name} : {lhelpInfo?.Description ?? "No Description"}");
@@ -156,6 +156,9 @@
                 sb.AppendLine($"+ {action.Name} +");
                 sb.AppendLine($"{helpInfo.Description}");
                 sb.AppendLine($"Action type: {MsgGen.Display(action.Subgroup)}");
+
+                if (action.IsObsolete(out string reason))
+                    sb.AppendLine($"** THIS ACTION IS MARKED AS OBSOLETE AND SHOULD BE AVOIDED WHERE POSSIBLE. REASON: {reason} **");
 
                 // Usage
                 sb.Append($"Usage: {action.Name}");
