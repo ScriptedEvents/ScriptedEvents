@@ -21,17 +21,20 @@ WAITSEC 2
 
 # Northwood does not allow us to permanently have the lights off.
 # So we'll just have them off for a very very long time instead.
-LIGHTSOFF 9999
+# * Indicates lights off in EVERY room.
+LIGHTSOFF * 9999
 
 # Give every Class-D a Flashlight.
 GIVE {CLASSD} Flashlight
 
 # Open and lock every door
+# * Indicates ALL doors open and lock.
 DOOR OPEN *
 DOOR LOCK *
 
 
 # 65-second countdown
+# * Indicates to show the countdown to EVERY player.
 COUNTDOWN * 65 Seeker released in...
 
 # Optionally: Close the surface blast doors, so players cannot hide on the surface.
