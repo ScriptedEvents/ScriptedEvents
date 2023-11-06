@@ -9,28 +9,28 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class SetHPAction : IScriptAction, IHelpInfo
+    public class SetAHPAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "HP";
+        public string Name => "AHP";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+        public ActionSubgroup Subgroup => ActionSubgroup.Health;
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public string Description => "Set the HP of the targeted players.";
+        public string Description => "Add AHP to the targeted players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to affect.", true),
-            new Argument("health", typeof(float), "The amount of health to set the player to. Variables are supported.", true),
+            new Argument("health", typeof(float), "The amount of artificial health to add to the player. Variables are supported.", true),
         };
 
         /// <inheritdoc/>
@@ -47,7 +47,7 @@
                 return new(MessageType.LessThanZeroNumber, this, "health", hp);
 
             foreach (Player ply in plys)
-                ply.Health = hp;
+                ply.AddAhp(hp);
 
             return new(true);
         }

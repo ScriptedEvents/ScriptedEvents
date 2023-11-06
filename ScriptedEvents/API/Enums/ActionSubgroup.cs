@@ -21,6 +21,11 @@
         Debug,
 
         /// <summary>
+        /// Health-related action.
+        /// </summary>
+        Health,
+
+        /// <summary>
         /// Inventory-related action.
         /// </summary>
         Inventory,

@@ -22,7 +22,7 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+        public ActionSubgroup Subgroup => ActionSubgroup.Health;
 
         /// <inheritdoc/>
         public string Description => "Damages the targeted player.";

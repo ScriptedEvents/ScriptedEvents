@@ -18,7 +18,7 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+        public ActionSubgroup Subgroup => ActionSubgroup.Health;
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }

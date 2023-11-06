@@ -19,7 +19,7 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
+        public ActionSubgroup Subgroup => ActionSubgroup.Debug;
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
