@@ -16,8 +16,10 @@
         {
             Name = name;
             Description = description;
-            PlayerList = value;
+            playerList = value;
         }
+
+        private List<Player> playerList { get; }
 
         public string Name { get; }
 
@@ -25,8 +27,24 @@
 
         public float Value => Players.Count();
 
-        public List<Player> PlayerList { get; set; }
+        public IEnumerable<Player> Players => playerList;
 
-        public IEnumerable<Player> Players => PlayerList;
+        public void Add(params Player[] player)
+        {
+            foreach (Player plr in player)
+            {
+                if (!playerList.Contains(plr))
+                    playerList.Add(plr);
+            }
+        }
+
+        public void Remove(params Player[] player)
+        {
+            foreach (Player plr in player)
+            {
+                if (playerList.Contains(plr))
+                    playerList.Remove(plr);
+            }
+        }
     }
 }

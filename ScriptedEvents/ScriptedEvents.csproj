@@ -99,6 +99,7 @@
     <Compile Include="Actions\DisableAction.cs" />
     <Compile Include="Actions\HttpPostAction.cs" />
     <Compile Include="Actions\HttpGetAction.cs" />
+    <Compile Include="Actions\PlayerVariableAction.cs" />
     <Compile Include="Actions\RadioRangeAction.cs" />
     <Compile Include="Actions\RemoveItemAction.cs" />
     <Compile Include="Actions\Interfaces\ILogicAction.cs" />

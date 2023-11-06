@@ -38,5 +38,10 @@
         {
             return players.ToList();
         }
+
+        public Player[] GetArray()
+        {
+            return GetInnerList().ToArray();
+        }
     }
 }
