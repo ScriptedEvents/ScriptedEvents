@@ -599,7 +599,7 @@
         {
             if (EventToDisableKey.TryGetValue(ev.GetType(), out string key) && DisabledKeys.Contains(key))
                 ev.IsAllowed = false;
-            if (DisabledKeys.Contains("DEBUGDISABLEALL"))
+            if (DisabledKeys.Contains("SCPALLABILITIES"))
                 ev.IsAllowed = false;
         }
 
