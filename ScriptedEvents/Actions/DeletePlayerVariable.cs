@@ -7,6 +7,7 @@
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
+    [Obsolete("Use the PLAYERVAR action.")]
     public class DeletePlayerVariable : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>

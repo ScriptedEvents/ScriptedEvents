@@ -11,6 +11,7 @@
     using ScriptedEvents.Variables;
     using UnityEngine;
 
+    [Obsolete("Use the PLAYERVAR action.")]
     public class SavePlayerVariableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>

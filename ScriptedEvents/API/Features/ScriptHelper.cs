@@ -177,6 +177,13 @@ namespace ScriptedEvents.API.Features
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
                 newAction.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
+                // Obsolete check
+                var obsolete = actionType.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == "ObsoleteAttribute");
+                if (obsolete is not null)
+                {
+                    Log.Warn($"Notice: Action {newAction.Name} is marked as obsolete. Please avoid using it. Reason: {obsolete.ConstructorArguments[0].Value}");
+                }
+
                 actionList.Add(newAction);
                 ListPool<string>.Pool.Return(actionParts);
             }
