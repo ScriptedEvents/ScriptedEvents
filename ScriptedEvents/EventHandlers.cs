@@ -569,7 +569,7 @@
             [typeof(StalkingEventArgs)] = "SCP106STALK",
 
             // SCP-173
-            [typeof(BlinkingEventArgs)] = "SCP173BREAKNECKSPEED",
+            [typeof(BlinkingEventArgs)] = "SCP173BLINK",
             [typeof(PlacingTantrumEventArgs)] = "SCP173TANTRUM",
             [typeof(UsingBreakneckSpeedsEventArgs)] = "SCP173BREAKNECKSPEED",
 
