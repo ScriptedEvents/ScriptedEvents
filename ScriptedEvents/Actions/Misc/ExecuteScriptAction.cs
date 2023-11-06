@@ -2,10 +2,11 @@
 {
     using System;
     using System.IO;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class ExecuteScriptAction : IScriptAction, IHelpInfo

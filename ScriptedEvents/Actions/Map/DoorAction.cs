@@ -2,13 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Features.Doors;
-    using MEC;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class DoorAction : IScriptAction, IHelpInfo

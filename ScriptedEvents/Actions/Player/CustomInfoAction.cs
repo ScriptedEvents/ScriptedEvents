@@ -2,10 +2,12 @@
 {
     using System;
     using System.Linq;
+
     using Exiled.API.Features;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class CustomInfoAction : IScriptAction, IHelpInfo

@@ -3,16 +3,21 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Exiled.API.Features;
+
     using MEC;
+
     using PlayerRoles;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+
     using Tesla = Exiled.API.Features.TeslaGate;
 
     // Todo: Needs reworked entirely

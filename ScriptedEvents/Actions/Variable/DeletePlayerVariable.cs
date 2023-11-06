@@ -1,8 +1,9 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;

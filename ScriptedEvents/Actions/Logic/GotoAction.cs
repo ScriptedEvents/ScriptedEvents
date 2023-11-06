@@ -2,8 +2,9 @@
 {
     using System;
     using System.Linq;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class GotoAction : IScriptAction, ILogicAction, IHelpInfo

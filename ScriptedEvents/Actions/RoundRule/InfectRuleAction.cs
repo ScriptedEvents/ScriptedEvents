@@ -1,9 +1,11 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+
     using PlayerRoles;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 

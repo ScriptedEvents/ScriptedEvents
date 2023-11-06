@@ -1,9 +1,11 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+
     using Exiled.API.Features;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class WarheadAction : IScriptAction, IHelpInfo

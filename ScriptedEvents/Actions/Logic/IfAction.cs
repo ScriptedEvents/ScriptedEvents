@@ -1,11 +1,12 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class IfAction : IScriptAction, ILogicAction, IHelpInfo, ISampleAction

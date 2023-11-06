@@ -1,10 +1,13 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+
     using Exiled.API.Features;
+
     using Respawning;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 

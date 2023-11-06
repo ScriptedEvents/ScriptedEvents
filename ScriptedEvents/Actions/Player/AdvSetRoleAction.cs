@@ -2,16 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using Exiled.API.Enums;
+
     using Exiled.API.Features;
+
     using PlayerRoles;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
-    using UnityEngine;
 
     public class AdvSetRoleAction : IScriptAction, IHelpInfo
     {
