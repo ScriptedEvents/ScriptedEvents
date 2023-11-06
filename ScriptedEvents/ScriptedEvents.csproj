@@ -86,6 +86,7 @@
     <Compile Include="Actions\DamageRuleAction.cs" />
     <Compile Include="Actions\DamageRuleDebug.cs" />
     <Compile Include="Actions\DeleteInfectRule.cs" />
+    <Compile Include="Actions\GiveCandyAction.cs" />
     <Compile Include="Actions\HintPlayerAction.cs" />
     <Compile Include="Actions\HintAction.cs" />
     <Compile Include="Actions\ClearCassieAction.cs" />
