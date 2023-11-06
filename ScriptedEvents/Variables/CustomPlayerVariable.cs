@@ -12,12 +12,14 @@
         {
         }
 
-        public CustomPlayerVariable(string name, string description, IEnumerable<Player> value)
+        public CustomPlayerVariable(string name, string description, List<Player> value)
         {
             Name = name;
             Description = description;
-            Players = value;
+            playerList = value;
         }
+
+        private List<Player> playerList { get; }
 
         public string Name { get; }
 
@@ -25,6 +27,24 @@
 
         public float Value => Players.Count();
 
-        public IEnumerable<Player> Players { get; }
+        public IEnumerable<Player> Players => playerList;
+
+        public void Add(params Player[] player)
+        {
+            foreach (Player plr in player)
+            {
+                if (!playerList.Contains(plr))
+                    playerList.Add(plr);
+            }
+        }
+
+        public void Remove(params Player[] player)
+        {
+            foreach (Player plr in player)
+            {
+                if (playerList.Contains(plr))
+                    playerList.Remove(plr);
+            }
+        }
     }
 }

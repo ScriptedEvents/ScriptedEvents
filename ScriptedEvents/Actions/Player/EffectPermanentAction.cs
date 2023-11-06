@@ -1,0 +1,153 @@
+﻿namespace ScriptedEvents.Actions
+{
+    using System;
+    using System.Linq;
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
+    using PlayerRoles;
+    using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+    using UnityEngine;
+
+    public class EffectPermanentAction : IScriptAction, IHelpInfo
+    {
+        /// <inheritdoc/>
+        public string Name => "EFFECTPERM";
+
+        /// <inheritdoc/>
+        public string[] Aliases => Array.Empty<string>();
+
+        /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public string Description => "Action for giving/removing permanent player effects.";
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
+            new Argument("target", typeof(object), "The players to affect, or the RoleType/Team to infect with the role.", true),
+            new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
+            new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
+        };
+
+        /// <inheritdoc/>
+        public ActionResponse Execute(Script script)
+        {
+            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+
+            string mode = Arguments[0].ToUpper();
+
+            if (!VariableSystem.TryParse<EffectType>(Arguments[2], out EffectType effect, script))
+                return new(false, "Invalid effect type provided.");
+
+            int intensity = 1;
+            if (Arguments.Length > 3)
+            {
+                if (!VariableSystem.TryParse(Arguments[3], out intensity, script))
+                {
+                    return new(false, "Intensity must be a whole number from 0-255.");
+                }
+
+                if (intensity < 0 || intensity > 255)
+                {
+                    return new(false, "Intensity must be a whole number from 0-255.");
+                }
+            }
+
+            int list = -1;
+
+            Team team = Team.Dead;
+            RoleTypeId rt = RoleTypeId.None;
+            PlayerCollection players = null;
+
+            if (VariableSystem.TryParse(Arguments[1], out team, script))
+            {
+                list = 1;
+            }
+            else if (VariableSystem.TryParse(Arguments[1], out rt, script))
+            {
+                list = 2;
+            }
+            else if (ScriptHelper.TryGetPlayers(Arguments[1], null, out players, script))
+            {
+                if (!players.Success)
+                {
+                    return new(false, players.Message);
+                }
+
+                list = 0;
+            }
+
+            if (list == -1)
+            {
+                return new(false, "Second argument (target) must be a Team, RoleType, or a player variable with at least one player.");
+            }
+
+            Effect eff = new(effect, 0, (byte)intensity, false, true);
+
+            switch (mode)
+            {
+                case "GIVE":
+                    if (list is 0)
+                    {
+                        foreach (Player ply in players)
+                        {
+                            if (MainPlugin.Handlers.PermPlayerEffects.ContainsKey(ply))
+                                MainPlugin.Handlers.PermPlayerEffects[ply].Add(eff);
+                            else
+                                MainPlugin.Handlers.PermPlayerEffects.Add(ply, new() { eff });
+                        }
+                    }
+                    else if (list is 1)
+                    {
+                        if (MainPlugin.Handlers.PermTeamEffects.ContainsKey(team))
+                            MainPlugin.Handlers.PermTeamEffects[team].Add(eff);
+                        else
+                            MainPlugin.Handlers.PermTeamEffects.Add(team, new() { eff });
+                    }
+                    else if (list is 2)
+                    {
+                        if (MainPlugin.Handlers.PermRoleEffects.ContainsKey(rt))
+                            MainPlugin.Handlers.PermRoleEffects[rt].Add(eff);
+                        else
+                            MainPlugin.Handlers.PermRoleEffects.Add(rt, new() { eff });
+                    }
+
+                    break;
+                case "REMOVE":
+                    if (list is 0)
+                    {
+                        foreach (Player ply in players)
+                        {
+                            if (MainPlugin.Handlers.PermPlayerEffects.ContainsKey(ply))
+                                MainPlugin.Handlers.PermPlayerEffects[ply].RemoveAll(e => e == eff);
+                        }
+                    }
+                    else if (list is 1)
+                    {
+                        if (MainPlugin.Handlers.PermTeamEffects.ContainsKey(team))
+                            MainPlugin.Handlers.PermTeamEffects[team].RemoveAll(e => e == eff);
+                    }
+                    else if (list is 2)
+                    {
+                        if (MainPlugin.Handlers.PermRoleEffects.ContainsKey(rt))
+                            MainPlugin.Handlers.PermRoleEffects[rt].RemoveAll(e => e == eff);
+                    }
+
+                    break;
+                default:
+                    return new(MessageType.InvalidOption, this, "mode", mode, "GIVE/REMOVE");
+            }
+
+            return new(true);
+        }
+    }
+}

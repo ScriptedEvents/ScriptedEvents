@@ -5,7 +5,7 @@
     using System.Linq;
     using CommandSystem;
     using Exiled.Permissions.Extensions;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;

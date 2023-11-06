@@ -17,11 +17,12 @@ namespace ScriptedEvents.API.Features
     using PlayerRoles;
     using RemoteAdmin;
     using ScriptedEvents.Actions;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+    using static Exiled.Loader.Features.MultiAdminFeatures;
     using AirlockController = Exiled.API.Features.Doors.AirlockController;
 
     /// <summary>
@@ -177,6 +178,12 @@ namespace ScriptedEvents.API.Features
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
                 newAction.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
+                // Obsolete check
+                if (newAction.IsObsolete(out string obsoleteReason))
+                {
+                    Log.Warn($"Notice: Action {newAction.Name} is marked as obsolete. Please avoid using it. Reason: {obsoleteReason}");
+                }
+
                 actionList.Add(newAction);
                 ListPool<string>.Pool.Return(actionParts);
             }
@@ -262,7 +269,7 @@ namespace ScriptedEvents.API.Features
             {
                 ListPool<Player>.Pool.Return(list);
 
-                collection = new(Player.List);
+                collection = new(Player.List.ToList());
                 return true;
             }
             else
@@ -309,7 +316,7 @@ namespace ScriptedEvents.API.Features
             }
 
             // Return
-            collection = new(ListPool<Player>.Pool.ToArrayReturn(list));
+            collection = new(list);
             return true;
         }
 
@@ -636,6 +643,20 @@ namespace ScriptedEvents.API.Features
             RunningScripts.Remove(scr);
 
             scr.Dispose();
+        }
+
+        public static bool IsObsolete(this IAction action, out string message)
+        {
+            Type t = action.GetType();
+            var obsolete = t.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == "ObsoleteAttribute");
+            if (obsolete is not null)
+            {
+                message = obsolete.ConstructorArguments[0].Value.ToString();
+                return true;
+            }
+
+            message = string.Empty;
+            return false;
         }
     }
 }

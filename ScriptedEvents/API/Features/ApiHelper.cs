@@ -122,7 +122,7 @@
         public static Player[] GetPlayers(string input, int max = -1)
         {
             ScriptHelper.TryGetPlayers(input, max, out PlayerCollection list);
-            return list.GetInnerArray();
+            return list.GetInnerList().ToArray();
         }
 
         /// <summary>

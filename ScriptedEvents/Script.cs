@@ -2,13 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using CommandSystem;
     using Discord;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Variables;
@@ -247,7 +247,7 @@
         /// <param name="value">The <see cref="IEnumerable{T}"/> of Players for this variable.</param>
         public void AddPlayerVariable(string name, string desc, IEnumerable<Player> value)
         {
-            UniquePlayerVariables.Add(name, new(name, desc, value));
+            UniquePlayerVariables.Add(name, new(name, desc, value.ToList()));
         }
     }
 }

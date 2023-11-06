@@ -7,7 +7,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.Permissions.Extensions;
-    using ScriptedEvents.Actions.Interfaces;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
