@@ -417,6 +417,14 @@
             if (DisabledKeys.Contains("HURTING"))
                 ev.IsAllowed = false;
 
+            // SCP-049 & SCP-106 handled by OnScpAbility method
+            if ((ev.Attacker.Role.Type is RoleTypeId.Scp0492 && DisabledKeys.Contains("SCP0492ATTACK")) ||
+                (ev.Attacker.Role.Type is RoleTypeId.Scp096 && DisabledKeys.Contains("SCP096ATTACK")) ||
+                (ev.Attacker.Role.Type is RoleTypeId.Scp173 && DisabledKeys.Contains("SCP173ATTACK")) ||
+                (ev.Attacker.Role.Type is RoleTypeId.Scp939 && DisabledKeys.Contains("SCP939ATTACK")) ||
+                (ev.Attacker.Role.Type is RoleTypeId.Scp3114 && DisabledKeys.Contains("SCP3114ATTACK")))
+                ev.IsAllowed = false;
+
             if (ev.Attacker is null || ev.Player is null || ev.Attacker == Server.Host)
                 return;
 
