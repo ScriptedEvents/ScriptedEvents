@@ -262,7 +262,7 @@ namespace ScriptedEvents.API.Features
             {
                 ListPool<Player>.Pool.Return(list);
 
-                collection = new(Player.List);
+                collection = new(Player.List.ToList());
                 return true;
             }
             else
@@ -309,7 +309,7 @@ namespace ScriptedEvents.API.Features
             }
 
             // Return
-            collection = new(ListPool<Player>.Pool.ToArrayReturn(list));
+            collection = new(list);
             return true;
         }
 

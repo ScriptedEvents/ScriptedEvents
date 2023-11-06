@@ -63,7 +63,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[1], max, out PlayerCollection plys, script))
                 return new(false, plys.Message);
 
-            VariableSystem.DefineVariable(Arguments[0], "Script-defined variable.", plys.GetInnerArray());
+            VariableSystem.DefineVariable(Arguments[0], "Script-defined variable.", plys.GetInnerList());
 
             return new(true);
         }

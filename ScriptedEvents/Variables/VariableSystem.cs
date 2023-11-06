@@ -85,7 +85,7 @@
         /// <param name="desc">A description of the variable.</param>
         /// <param name="players">The players.</param>
         /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
-        public static void DefineVariable(string name, string desc, IEnumerable<Exiled.API.Features.Player> players)
+        public static void DefineVariable(string name, string desc, List<Player> players)
         {
             name = name.RemoveWhitespace();
 

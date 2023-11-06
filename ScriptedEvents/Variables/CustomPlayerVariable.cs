@@ -12,11 +12,11 @@
         {
         }
 
-        public CustomPlayerVariable(string name, string description, IEnumerable<Player> value)
+        public CustomPlayerVariable(string name, string description, List<Player> value)
         {
             Name = name;
             Description = description;
-            Players = value;
+            PlayerList = value;
         }
 
         public string Name { get; }
@@ -25,6 +25,8 @@
 
         public float Value => Players.Count();
 
-        public IEnumerable<Player> Players { get; }
+        public List<Player> PlayerList { get; set; }
+
+        public IEnumerable<Player> Players => PlayerList;
     }
 }

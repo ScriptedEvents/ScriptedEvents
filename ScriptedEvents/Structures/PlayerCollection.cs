@@ -8,11 +8,11 @@
 
     public class PlayerCollection : IEnumerable
     {
-        private IEnumerable<Player> players;
+        private List<Player> players;
 
-        public PlayerCollection(IEnumerable<Player> newPlayers, bool success = true, string message = "")
+        public PlayerCollection(List<Player> newPlayers, bool success = true, string message = "")
         {
-            players = newPlayers ?? Array.Empty<Player>();
+            players = newPlayers ?? new();
 
             Success = success;
             Message = message;
@@ -34,9 +34,9 @@
             return players.GetEnumerator();
         }
 
-        public Player[] GetInnerArray()
+        public List<Player> GetInnerList()
         {
-            return players.ToArray();
+            return players.ToList();
         }
     }
 }
