@@ -161,7 +161,7 @@
                 sb.AppendLine($"Action type: {MsgGen.Display(action.Subgroup)}");
 
                 if (action.IsObsolete(out string reason))
-                    sb.AppendLine($"** THIS ACTION IS MARKED AS OBSOLETE AND SHOULD BE AVOIDED WHERE POSSIBLE. REASON: {reason} **");
+                    sb.AppendLine($"** THIS ACTION IS MARKED AS OBSOLETE AND REASON DIRECTIVES SHOULD BE READ BEFORE USING. REASON: {reason} **");
 
                 // Usage
                 sb.Append($"Usage: {action.Name}");
