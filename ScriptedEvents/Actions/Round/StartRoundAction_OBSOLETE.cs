@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    // Todo: Remove
     [Obsolete("Use STARTROUND instead.")]
     public class StartRoundActionObsolete : IScriptAction, IHelpInfo
     {
