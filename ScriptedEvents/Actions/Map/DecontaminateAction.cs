@@ -22,7 +22,7 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Round;
+        public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
         public string Description => "Enables, disables, or forces decontamination.";
