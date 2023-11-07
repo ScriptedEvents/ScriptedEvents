@@ -7,6 +7,8 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    // Todo: Update
+    [Obsolete("The GOTO action will soon support ONLY labels, and the ADD mode will be removed. Please convert your usage of this action to: GOTO <label name here>")]
     public class GotoAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -49,12 +51,6 @@
                     break;
                 default:
                     if (int.TryParse(Arguments.ElementAtOrDefault(0), out newline))
-                    {
-                        script.Jump(newline);
-                        return new(true);
-                    }
-
-                    if (script.Labels.TryGetValue(Arguments.ElementAtOrDefault(0), out newline))
                     {
                         script.Jump(newline);
                         return new(true);

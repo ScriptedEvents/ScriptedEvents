@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    [Obsolete("The trueLine and falseLine parameters will soon ONLY support labels. Please change current usage of this action to: GOTOIF <true label name> <false label name> <condition>")]
     public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
