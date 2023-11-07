@@ -8,10 +8,11 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class StartRoundAction : IScriptAction, IHelpInfo
+    [Obsolete("Use STARTROUND instead.")]
+    public class StartRoundActionObsolete : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "STARTROUND";
+        public string Name => "START";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();

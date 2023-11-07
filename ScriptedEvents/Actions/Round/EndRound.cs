@@ -8,10 +8,10 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class StartRoundAction : IScriptAction, IHelpInfo
+    public class EndRoundAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "STARTROUND";
+        public string Name => "ENDROUND";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -23,7 +23,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Round;
 
         /// <inheritdoc/>
-        public string Description => "Starts the round.";
+        public string Description => "Ends the round.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => Array.Empty<Argument>();
@@ -31,8 +31,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script scr)
         {
-            Round.Start();
-            return new(true);
+            Round.EndRound(true);
         }
     }
 }
