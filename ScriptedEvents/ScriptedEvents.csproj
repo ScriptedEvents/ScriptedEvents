@@ -99,6 +99,8 @@
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Misc\HttpPostAction.cs" />
     <Compile Include="Actions\Misc\HttpGetAction.cs" />
+    <Compile Include="Actions\Round\EndRound.cs" />
+    <Compile Include="Actions\Round\StartRoundAction_OBSOLETE.cs" />
     <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
     <Compile Include="Actions\Player\RadioRangeAction.cs" />
     <Compile Include="Actions\Inventory\RemoveItemAction.cs" />
@@ -189,7 +191,7 @@
     <Compile Include="API\Interfaces\ITimingAction.cs" />
     <Compile Include="Actions\DebugActions\DebugMathAction.cs" />
     <Compile Include="Actions\DebugActions\DebugConditionLogAction.cs" />
-    <Compile Include="Actions\Round\DecontaminateAction.cs" />
+    <Compile Include="Actions\Map\DecontaminateAction.cs" />
     <Compile Include="Actions\Map\DoorAction.cs" />
     <Compile Include="Actions\Player\EffectAction.cs" />
     <Compile Include="Actions\Logic\IfAction.cs" />

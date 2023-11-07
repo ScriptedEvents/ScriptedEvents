@@ -32,6 +32,7 @@
         public ActionResponse Execute(Script scr)
         {
             Round.EndRound(true);
+            return new(true);
         }
     }
 }
