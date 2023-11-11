@@ -598,7 +598,7 @@
 
         public void OnScpAbility(IDeniableEvent ev)
         {
-            if (EventToDisableKey.TryGetValue(ev.GetType(), out string key) && DisabledKeys.Contains(key))
+            if (EventToDisableKey.TryGetValue(ev.GetType(), out string key) && (DisabledKeys.Contains(key) || (key is "SCP106ATTACK" or "SCP049ATTACK" && DisabledKeys.Contains("SCPATTACK"))))
                 ev.IsAllowed = false;
             if (DisabledKeys.Contains("SCPALLABILITIES"))
                 ev.IsAllowed = false;
