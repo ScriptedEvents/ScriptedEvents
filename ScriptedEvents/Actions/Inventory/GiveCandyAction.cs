@@ -51,7 +51,7 @@
             if (Arguments.Length > 2)
             {
                 if (!VariableSystem.TryParse(Arguments[2], out amt, script))
-                    return new(MessageType.NotANumber, this, "amount", Arguments[4]);
+                    return new(MessageType.NotANumber, this, "amount", Arguments[2]);
             }
 
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
