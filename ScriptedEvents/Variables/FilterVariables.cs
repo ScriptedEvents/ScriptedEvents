@@ -98,7 +98,7 @@
         public Argument[] ExpectedArguments { get; } = new[]
         {
             new Argument("name", typeof(string), "The name of the variable to filter.", true),
-            new Argument("type", typeof(string), "The mode to use to filter. Valid modes: ROLE, ZONE, TEAM, ROOM, USERID, INV, HELDITEM, ISSTAFF", true),
+            new Argument("type", typeof(string), "The mode to use to filter. Valid modes: ROLE, ZONE, TEAM, ROOM, USERID, PLAYERID, INV, HELDITEM, ISSTAFF", true),
             new Argument("input", typeof(string), "What to use as the filter (RoleType, ZoneType, etc)", true),
         };
 
@@ -127,6 +127,7 @@
                         "ZONE" when VariableSystem.TryParse(Arguments[2], out ZoneType zt, Source, false) => players.Where(plr => plr.Zone.HasFlag(zt)),
                         "ROOM" when VariableSystem.TryParse(Arguments[2], out RoomType room, Source, false) => players.Where(plr => plr.CurrentRoom?.Type == room),
                         "USERID" => players.Where(plr => plr.UserId == VariableSystem.ReplaceVariable(Arguments[2], Source, false)),
+                        "PLAYERID" => players.Where(plr => plr.Id.ToString() == VariableSystem.ReplaceVariable(Arguments[2], Source, false)),
                         "INV" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
                         "INV" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
                         "HELDITEM" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => players.Where(plr => plr.CurrentItem?.Type == item),
