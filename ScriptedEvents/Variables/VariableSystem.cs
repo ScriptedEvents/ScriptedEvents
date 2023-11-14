@@ -244,6 +244,17 @@
             return float.NaN;
         }
 
+        public static string ReplaceVariable(string input, Script source = null, bool requireBrackets = true)
+        {
+            if (TryGetVariable(input, out IConditionVariable var, out _, source, requireBrackets))
+            {
+                if (var is IStringVariable str)
+                    return str.Value;
+            }
+
+            return input;
+        }
+
         public static bool TryParse(string input, out float result, Script source = null, bool requireBrackets = true)
         {
             result = Parse(input, source, requireBrackets);

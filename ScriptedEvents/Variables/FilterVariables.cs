@@ -126,14 +126,14 @@
                         "TEAM" when VariableSystem.TryParse(Arguments[2], out Team team, Source, false) => players.Where(plr => plr.Role.Team == team),
                         "ZONE" when VariableSystem.TryParse(Arguments[2], out ZoneType zt, Source, false) => players.Where(plr => plr.Zone.HasFlag(zt)),
                         "ROOM" when VariableSystem.TryParse(Arguments[2], out RoomType room, Source, false) => players.Where(plr => plr.CurrentRoom?.Type == room),
-                        "USERID" => players.Where(plr => plr.UserId == Arguments[2]),
+                        "USERID" => players.Where(plr => plr.UserId == VariableSystem.ReplaceVariable(Arguments[2], Source, false)),
                         "INV" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
                         "INV" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
                         "HELDITEM" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => players.Where(plr => plr.CurrentItem?.Type == item),
                         "HELDITEM" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => players.Where(plr => CustomItem.TryGet(plr.CurrentItem, out CustomItem customItem2) && customItem == customItem2),
 
-                        "ISSTAFF" when Arguments[2].ToUpper() == "TRUE" => players.Where(plr => plr.RemoteAdminAccess),
-                        "ISSTAFF" when Arguments[2].ToUpper() == "FALSE" => players.Where(plr => !plr.RemoteAdminAccess),
+                        "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()) == "TRUE" => players.Where(plr => plr.RemoteAdminAccess),
+                        "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()) == "FALSE" => players.Where(plr => !plr.RemoteAdminAccess),
                         _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{Arguments[2]}' is not valid for the specified filter method."),
                     };
                 }
