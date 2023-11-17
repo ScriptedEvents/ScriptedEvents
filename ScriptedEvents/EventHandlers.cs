@@ -417,6 +417,9 @@
             if (DisabledKeys.Contains("HURTING"))
                 ev.IsAllowed = false;
 
+            if (ev.Attacker is null || ev.Player is null || ev.Attacker == Server.Host)
+                return;
+
             // SCP-049 & SCP-106 handled by OnScpAbility method
             if ((ev.Attacker.Role.Type is RoleTypeId.Scp0492 && DisabledKeys.Contains("SCP0492ATTACK")) ||
                 (ev.Attacker.Role.Type is RoleTypeId.Scp096 && DisabledKeys.Contains("SCP096ATTACK")) ||
@@ -426,9 +429,6 @@
                 (ev.Attacker.Role.Team is Team.SCPs && DisabledKeys.Contains("SCPATTACK")) ||
                 (ev.Attacker.Role.Team is Team.SCPs && DisabledKeys.Contains("SCPALLABILITIES")))
                 ev.IsAllowed = false;
-
-            if (ev.Attacker is null || ev.Player is null || ev.Attacker == Server.Host)
-                return;
 
             // Damage Rules
             foreach (DamageRule rule in DamageRules)
