@@ -21,12 +21,12 @@
         /// <summary>
         /// The separator used for AND clauses.
         /// </summary>
-        public const string AND = "AND";
+        public const string AND = " AND ";
 
         /// <summary>
         /// The separator used for OR clauses.
         /// </summary>
-        public const string OR = "OR";
+        public const string OR = " OR ";
 
         /// <summary>
         /// Gets a <see cref="ReadOnlyCollection{T}"/> of float operators.
@@ -169,7 +169,8 @@
 
         private static ConditionResponse EvaluateAndOr(string input, bool last = false, Script source = null)
         {
-            if (!last && TryMath(VariableSystem.ReplaceVariables(input, source), out MathResult result))
+            string convert = VariableSystem.ReplaceVariables(input, source);
+            if (!last && TryMath(convert, out MathResult result))
             {
                 float output = (float)result.Result;
                 return new(true, true, string.Empty, output);
