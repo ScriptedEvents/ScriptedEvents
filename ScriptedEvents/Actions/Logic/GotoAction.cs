@@ -7,8 +7,6 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    // Todo: Update
-    [Obsolete("The GOTO action will soon support ONLY labels, and the ADD mode will be removed. Please convert your usage of this action to: GOTO <label name here>")]
     public class GotoAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -29,8 +27,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode (ADD, do not provide for specific line)", false),
-            new Argument("line", typeof(int), "The line to move to. Variables are NOT supported.", true),
+            new Argument("label", typeof(string), "The label to move to, or keyword (START/NEXT/STOP)", false),
         };
 
         /// <inheritdoc/>
@@ -38,33 +35,14 @@
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            switch (Arguments.ElementAtOrDefault(0).ToUpper())
+            if (!script.Jump(Arguments.ElementAt(0)))
             {
-                case "ADD":
-                    if (Arguments.Length < 2) return new(false, "ADD mode requires a line amount to add.");
-                    if (int.TryParse(Arguments.ElementAtOrDefault(1), out int newline))
-                    {
-                        script.Jump(script.CurrentLine + newline);
-                        return new(true);
-                    }
-
-                    break;
-                default:
-                    if (int.TryParse(Arguments.ElementAtOrDefault(0), out newline))
-                    {
-                        script.Jump(newline);
-                        return new(true);
-                    }
-
-                    if (!script.Jump(Arguments.ElementAt(0)))
-                    {
-                        return new(false, "Invalid line or label provided!");
-                    }
-
-                    break;
+                if (Arguments[0].ToUpper() == "STOP")
+                    return new(true, flags: ActionFlags.StopEventExecution);
+                return new(false, "Invalid line or label provided!");
             }
 
-            return new(false, "Invalid line or label provided.");
+            return new(true);
         }
     }
 }

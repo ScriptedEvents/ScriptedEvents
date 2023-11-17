@@ -8,7 +8,6 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    [Obsolete("The trueLine and falseLine parameters will soon ONLY support labels. Please change current usage of this action to: GOTOIF <true label name> <false label name> <condition>")]
     public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -29,8 +28,8 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("trueLine", typeof(string), "The line to jump to if the condition is TRUE. Variables & Math are NOT supported.", true),
-            new Argument("falseLine", typeof(string), "The line to jump to if the condition is FALSE. Variables & Math are NOT supported.", true),
+            new Argument("trueLabel", typeof(string), "The label to jump to if the condition is TRUE, or a keyword (START/NEXT/STOP). Variables & Math are NOT supported.", true),
+            new Argument("falseLabel", typeof(string), "The label to jump to if the condition is FALSE, or a keyword (START/NEXT/STOP). Variables & Math are NOT supported.", true),
             new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
 

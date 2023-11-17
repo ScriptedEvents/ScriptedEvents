@@ -199,12 +199,6 @@
                 return true;
             }
 
-            if (int.TryParse(keyword, out int n))
-            {
-                Jump(n);
-                return true;
-            }
-
             return false;
         }
 
