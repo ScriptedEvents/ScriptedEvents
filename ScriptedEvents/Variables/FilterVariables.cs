@@ -98,7 +98,7 @@
         public Argument[] ExpectedArguments { get; } = new[]
         {
             new Argument("name", typeof(string), "The name of the variable to filter.", true),
-            new Argument("type", typeof(string), "The mode to use to filter. Valid modes: ROLE, ZONE, TEAM, ROOM, USERID, PLAYERID, INV, HELDITEM, ISSTAFF", true),
+            new Argument("type", typeof(string), "The mode to use to filter. Valid modes: GROUP, ROLE, ZONE, TEAM, ROOM, USERID, PLAYERID, INV, HELDITEM, ISSTAFF", true),
             new Argument("input", typeof(string), "What to use as the filter (RoleType, ZoneType, etc)", true),
         };
 
@@ -132,6 +132,8 @@
                         "INV" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
                         "HELDITEM" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => players.Where(plr => plr.CurrentItem?.Type == item),
                         "HELDITEM" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => players.Where(plr => CustomItem.TryGet(plr.CurrentItem, out CustomItem customItem2) && customItem == customItem2),
+
+                        "GROUP" => players.Where(plr => plr.GroupName == Arguments[2]),
 
                         "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()) == "TRUE" => players.Where(plr => plr.RemoteAdminAccess),
                         "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()) == "FALSE" => players.Where(plr => !plr.RemoteAdminAccess),

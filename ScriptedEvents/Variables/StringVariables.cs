@@ -143,7 +143,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(string), "The name of the player variable to show.", true),
-            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, DISPLAYNAME, USERID, PLAYERID, ROLE, TEAM, ROOM, ZONE, HP, HEALTH, INV, INVCOUNT, HELDITEM, TIER.", false),
+            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, DISPLAYNAME, GROUP, USERID, PLAYERID, ROLE, TEAM, ROOM, ZONE, HP, HEALTH, INV, INVCOUNT, HELDITEM, TIER.", false),
         };
 
         /// <inheritdoc/>
@@ -195,6 +195,7 @@
                             "POSZ" => ply.Position.z.ToString(),
                             "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
                             "TIER" => "0",
+                            "GROUP" => ply.GroupName,
                             _ => ply.Nickname,
                         };
                     }).OrderBy(s => s);
