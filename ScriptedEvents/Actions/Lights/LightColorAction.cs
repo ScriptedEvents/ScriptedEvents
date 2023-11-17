@@ -46,17 +46,17 @@
             if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms, script))
                 return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
 
-            if (!VariableSystem.TryParse(Arguments[1], out int r, script))
+            if (!VariableSystem.TryParse(Arguments[1], out float r, script))
                 return new(false, $"The red component of the color is invalid.");
             if (r < 0 || r > 255)
                 return new(false, "The red component of the color must be between 0 and 255.");
 
-            if (!VariableSystem.TryParse(Arguments[2], out int g, script))
+            if (!VariableSystem.TryParse(Arguments[2], out float g, script))
                 return new(false, $"The green component of the color is invalid.");
             if (g < 0 || g > 255)
                 return new(false, "The green component of the color must be between 0 and 255.");
 
-            if (!VariableSystem.TryParse(Arguments[3], out int b, script))
+            if (!VariableSystem.TryParse(Arguments[3], out float b, script))
                 return new(false, $"The blue component of the color is invalid.");
             if (b < 0 || b > 255)
                 return new(false, "The blue component of the color must be between 0 and 255.");
