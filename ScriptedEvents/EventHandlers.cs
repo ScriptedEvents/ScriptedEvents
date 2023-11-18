@@ -159,6 +159,9 @@
 
         public PlayerDisable? GetPlayerDisableRule(string key, Player player)
         {
+            if (player is null)
+                return null;
+
             foreach (PlayerDisable playerDisable in DisabledPlayerKeys)
             {
                 if (key.Equals(playerDisable.Key) && playerDisable.Players.Contains(player))
@@ -190,9 +193,11 @@
 
             ScriptHelper.StopAllScripts();
             VariableSystem.ClearVariables();
-            DisabledKeys.Clear();
             Kills.Clear();
             LockedRadios.Clear();
+
+            DisabledPlayerKeys.Clear();
+            DisabledKeys.Clear();
 
             PermPlayerEffects.Clear();
             PermTeamEffects.Clear();
@@ -414,7 +419,7 @@
         // Tesla
         public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
         {
-            if (TeslasDisabled || DisabledKeys.Contains("TESLAS"))
+            if (TeslasDisabled || DisabledKeys.Contains("TESLAS") || DisabledForPlayer("TESLAS", ev.Player))
             {
                 ev.IsAllowed = false;
             }
@@ -451,7 +456,7 @@
 
         public void OnHurting(HurtingEventArgs ev)
         {
-            if (DisabledKeys.Contains("HURTING"))
+            if (DisabledKeys.Contains("HURTING") || DisabledForPlayer("HURTING", ev.Player))
                 ev.IsAllowed = false;
 
             if (ev.Attacker is null || ev.Player is null || ev.Attacker == Server.Host)
@@ -477,13 +482,18 @@
 
         public void GeneratorEvent(IGeneratorEvent ev)
         {
-            if (DisabledKeys.Contains("GENERATORS") && ev is IDeniableEvent deniable)
-                deniable.IsAllowed = false;
+            if (ev is IDeniableEvent deniable)
+            {
+                if (DisabledKeys.Contains("GENERATORS"))
+                    deniable.IsAllowed = false;
+                if (ev is IPlayerEvent plrEvent && DisabledForPlayer("GENERATORS", plrEvent.Player))
+                    deniable.IsAllowed = false;
+            }
         }
 
         public void OnShooting(ShootingEventArgs ev)
         {
-            if (DisabledKeys.Contains("SHOOTING"))
+            if (DisabledKeys.Contains("SHOOTING") || DisabledForPlayer("SHOOTING", ev.Player))
                 ev.IsAllowed = false;
         }
 
@@ -491,30 +501,32 @@
         {
             if (DisabledKeys.Contains("DROPPING"))
                 ev.IsAllowed = false;
+            if (ev is IPlayerEvent plrEv && DisabledForPlayer("DROPPING", plrEv.Player))
+                ev.IsAllowed = false;
         }
 
         public void OnSearchingPickup(SearchingPickupEventArgs ev)
         {
-            if (DisabledKeys.Contains("ITEMPICKUPS"))
+            if (DisabledKeys.Contains("ITEMPICKUPS") || DisabledForPlayer("ITEMPICKUPS", ev.Player))
                 ev.IsAllowed = false;
 
-            if (DisabledKeys.Contains("MICROPICKUPS") && ev.Pickup.Type is ItemType.MicroHID)
+            if ((DisabledKeys.Contains("MICROPICKUPS") || DisabledForPlayer("MICROPICKUPS", ev.Player)) && ev.Pickup.Type is ItemType.MicroHID)
                 ev.IsAllowed = false;
         }
 
         public void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
-            if (DisabledKeys.Contains("DOORS"))
+            if (DisabledKeys.Contains("DOORS") || DisabledForPlayer("DOORS", ev.Player))
                 ev.IsAllowed = false;
         }
 
         public void OnInteractingLocker(InteractingLockerEventArgs ev)
         {
-            if (ev.Locker is PedestalScpLocker && DisabledKeys.Contains("PEDESTALS"))
+            if (ev.Locker is PedestalScpLocker && (DisabledKeys.Contains("PEDESTALS") || DisabledForPlayer("PEDESTALS", ev.Player)))
             {
                 ev.IsAllowed = false;
             }
-            else if (ev.Locker is not PedestalScpLocker && DisabledKeys.Contains("LOCKERS"))
+            else if (ev.Locker is not PedestalScpLocker && (DisabledKeys.Contains("LOCKERS") || DisabledForPlayer("LOCKERS", ev.Player)))
             {
                 ev.IsAllowed = false;
             }
@@ -522,7 +534,7 @@
 
         public void OnEscaping(EscapingEventArgs ev)
         {
-            if (DisabledKeys.Contains("ESCAPING"))
+            if (DisabledKeys.Contains("ESCAPING") || DisabledForPlayer("ESCAPING", ev.Player))
                 ev.IsAllowed = false;
 
             if (!ev.IsAllowed) return;
@@ -549,19 +561,26 @@
 
         public void OnInteractingElevator(InteractingElevatorEventArgs ev)
         {
-            if (DisabledKeys.Contains("ELEVATORS"))
+            if (DisabledKeys.Contains("ELEVATORS") || DisabledForPlayer("ELEVATORS", ev.Player))
                 ev.IsAllowed = false;
         }
 
         public void OnHazardEvent(IHazardEvent ev)
         {
-            if (DisabledKeys.Contains("HAZARDS") && ev is IDeniableEvent deny)
-                deny.IsAllowed = false;
+            if (ev is IDeniableEvent deny)
+            {
+                if (DisabledKeys.Contains("HAZARDS"))
+                    deny.IsAllowed = false;
+                else if (ev is IPlayerEvent plrEv && DisabledForPlayer("HAZARDS", plrEv.Player))
+                    deny.IsAllowed = false;
+            }
         }
 
         public void OnWorkStationEvent(IDeniableEvent ev)
         {
             if (DisabledKeys.Contains("WORKSTATIONS"))
+                ev.IsAllowed = false;
+            else if (ev is IPlayerEvent plrEv && DisabledForPlayer("WORKSTATIONS", plrEv.Player))
                 ev.IsAllowed = false;
         }
 
@@ -569,11 +588,15 @@
         {
             if (DisabledKeys.Contains("SCP330"))
                 ev.IsAllowed = false;
+            else if (ev is IPlayerEvent plrEv && DisabledForPlayer("SCP330", plrEv.Player))
+                ev.IsAllowed = false;
         }
 
         public void OnScp914Event(IDeniableEvent ev)
         {
             if (DisabledKeys.Contains("SCP914"))
+                ev.IsAllowed = false;
+            else if (ev is IPlayerEvent plrEv && DisabledForPlayer("SCP914", plrEv.Player))
                 ev.IsAllowed = false;
         }
 
@@ -635,6 +658,7 @@
 
         public void OnScpAbility(IDeniableEvent ev)
         {
+            // Todo: Per-player support
             if (EventToDisableKey.TryGetValue(ev.GetType(), out string key) && (DisabledKeys.Contains(key) || (key is "SCP106ATTACK" or "SCP049ATTACK" && DisabledKeys.Contains("SCPATTACK"))))
                 ev.IsAllowed = false;
             if (DisabledKeys.Contains("SCPALLABILITIES"))
@@ -651,13 +675,13 @@
 
         public void OnStartingWarhead(StartingEventArgs ev)
         {
-            if (DisabledKeys.Contains("WARHEAD"))
+            if (DisabledKeys.Contains("WARHEAD") || DisabledForPlayer("WARHEAD", ev.Player))
                 ev.IsAllowed = false;
         }
 
         public void OnActivatingWarheadPanel(ActivatingWarheadPanelEventArgs ev)
         {
-            if (DisabledKeys.Contains("WARHEAD"))
+            if (DisabledKeys.Contains("WARHEAD") || DisabledForPlayer("WARHEAD", ev.Player))
                 ev.IsAllowed = false;
         }
     }
