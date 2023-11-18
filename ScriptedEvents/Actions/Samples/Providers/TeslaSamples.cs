@@ -9,8 +9,8 @@
         {
             new Sample(
                 "Case 1",
-                "Disable tesla gates entirely for 5 seconds, plus 5 seconds for each alive Chaos Insurgent.",
-                @"TELSA DISABLE 5 + (5 * {CI})"),
+                "Disable tesla gates entirely for 10 seconds.",
+                @"TELSA DISABLE 10"),
 
             new Sample(
                 "Case 2",
