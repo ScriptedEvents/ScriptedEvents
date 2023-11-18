@@ -12,6 +12,7 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
+            new UptimeRound(),
             new RoundEnded(),
             new RoundInProgress(),
             new RoundStarted(),
@@ -20,6 +21,18 @@
             new RoundSeconds(),
             new LobbyTime(),
         };
+    }
+
+    public class UptimeRound : IFloatVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{UPTIMEROUND}";
+
+        /// <inheritdoc/>
+        public string Description => "The amount of rounds that have progressed since the server has started.";
+
+        /// <inheritdoc/>
+        public float Value => Round.UptimeRounds;
     }
 
     public class RoundEnded : IBoolVariable
