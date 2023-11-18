@@ -102,6 +102,11 @@
         public List<string> DisabledKeys { get; set; } = new();
 
         /// <summary>
+        /// Gets or sets a list of strings indicating round-disabled features for players.
+        /// </summary>
+        public List<PlayerDisable> DisabledPlayerKeys { get; set; } = new();
+
+        /// <summary>
         /// Gets a List of infection rules.
         /// </summary>
         public List<InfectRule> InfectionRules { get; } = new();
@@ -137,6 +142,38 @@
         public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; } = new();
 
         public List<DamageRule> DamageRules { get; } = new();
+
+        // Helpful method
+        public PlayerDisable? GetPlayerDisableRule(string key)
+        {
+            foreach (PlayerDisable playerDisable in DisabledPlayerKeys)
+            {
+                if (key.Equals(playerDisable.Key))
+                {
+                    return playerDisable;
+                }
+            }
+
+            return null;
+        }
+
+        public PlayerDisable? GetPlayerDisableRule(string key, Player player)
+        {
+            foreach (PlayerDisable playerDisable in DisabledPlayerKeys)
+            {
+                if (key.Equals(playerDisable.Key) && playerDisable.Players.Contains(player))
+                {
+                    return playerDisable;
+                }
+            }
+
+            return null;
+        }
+
+        public bool DisabledForPlayer(string key, Player player)
+        {
+            return GetPlayerDisableRule(key, player).HasValue;
+        }
 
         public void OnRestarting()
         {
@@ -397,7 +434,7 @@
         // Disable Stuff
         public void OnDying(DyingEventArgs ev)
         {
-            if (DisabledKeys.Contains("DYING"))
+            if (DisabledKeys.Contains("DYING") || DisabledForPlayer("DYING", ev.Player))
                 ev.IsAllowed = false;
 
             if (!ev.IsAllowed)
