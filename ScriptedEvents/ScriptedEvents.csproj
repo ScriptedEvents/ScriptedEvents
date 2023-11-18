@@ -102,7 +102,6 @@
     <Compile Include="Actions\Misc\HttpPostAction.cs" />
     <Compile Include="Actions\Misc\HttpGetAction.cs" />
     <Compile Include="Actions\Round\EndRound.cs" />
-    <Compile Include="Actions\Round\StartRoundAction_OBSOLETE.cs" />
     <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
     <Compile Include="Actions\Player\RadioRangeAction.cs" />
     <Compile Include="Actions\Inventory\RemoveItemAction.cs" />
@@ -175,7 +174,6 @@
     <Compile Include="Actions\Broadcast\BroadcastPlayerAction.cs" />
     <Compile Include="Actions\Broadcast\BroadcastAction.cs" />
     <Compile Include="Actions\Variable\DeleteVariable.cs" />
-    <Compile Include="Actions\Variable\DeletePlayerVariable.cs" />
     <Compile Include="Actions\Misc\ExecuteScriptAction.cs" />
     <Compile Include="Actions\Inventory\GiveAction.cs" />
     <Compile Include="Actions\Logic\GotoAction.cs" />
@@ -186,7 +184,6 @@
     <Compile Include="Actions\Misc\NullAction.cs" />
     <Compile Include="Actions\RoundRule\SpawnRuleAction.cs" />
     <Compile Include="Actions\Round\StartRoundAction.cs" />
-    <Compile Include="Actions\Variable\SavePlayerVariableAction.cs" />
     <Compile Include="Actions\CASSIE\SilentCassieAction.cs" />
     <Compile Include="Actions\CASSIE\CassieAction.cs" />
     <Compile Include="Actions\Misc\CommandAction.cs" />
