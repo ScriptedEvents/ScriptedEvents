@@ -152,6 +152,7 @@
         /// <inheritdoc/>
         public string Value
         {
+            // Todo: Switch to using VariableSystem.TryGetPlayers() (that's what FILTER uses).
             get
             {
                 if (Arguments.Length < 1)

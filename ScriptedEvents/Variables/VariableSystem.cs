@@ -128,6 +128,13 @@
         /// <returns>The modified string.</returns>
         public static string Replace(this string input, string oldValue, object newValue) => input.Replace(oldValue, newValue.ToString());
 
+        /// <summary>
+        /// Gets a variable.
+        /// </summary>
+        /// <param name="name">The input string.</param>
+        /// <param name="source">The script source.</param>
+        /// <param name="requireBrackets">If brackets are required to parse the variable.</param>
+        /// <returns>A tuple containing the variable and whether or not it's a reversed boolean value.</returns>
         public static Tuple<IConditionVariable, bool> GetVariable(string name, Script source = null, bool requireBrackets = true)
         {
             // Do this here so individual files dont have to do it anymore
@@ -203,6 +210,15 @@
             return result;
         }
 
+        /// <summary>
+        /// Try-gets a variable.
+        /// </summary>
+        /// <param name="name">The input string.</param>
+        /// <param name="variable">The variable found, if successful.</param>
+        /// <param name="reversed">If the value is a reversed boolean value.</param>
+        /// <param name="source">The script source.</param>
+        /// <param name="requireBrackets">If brackets are required to parse the variable.</param>
+        /// <returns>Whether or not the try-get was successful.</returns>
         public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source = null, bool requireBrackets = true)
         {
             Tuple<IConditionVariable, bool> res = GetVariable(name, source, requireBrackets);
@@ -213,7 +229,17 @@
             return variable != null;
         }
 
-        public static bool TryGetPlayers(string name, out IEnumerable<Exiled.API.Features.Player> players, Script source = null, bool requireBrackets = true)
+        /// <summary>
+        /// Attempts to get a <see cref="IEnumerable{T}"/> of <see cref="Player"/>s based on the input variable.
+        /// </summary>
+        /// <param name="name">The variable.</param>
+        /// <param name="players">The players found. Can be <see langword="null"/>.</param>
+        /// <param name="source">The source script.</param>
+        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
+        /// <returns>Whether or not players were found.</returns>
+        /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="ScriptHelper.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
+        /// <seealso cref="ScriptHelper.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>
+        public static bool TryGetPlayers(string name, out IEnumerable<Player> players, Script source = null, bool requireBrackets = true)
         {
             if (TryGetVariable(name, out IConditionVariable variable, out _, source, requireBrackets))
             {
@@ -228,6 +254,13 @@
             return false;
         }
 
+        /// <summary>
+        /// Attempts to parse a string input into a <see cref="float"/>. Functionally similar to <see cref="float.Parse(string)"/>, but also supports SE variables.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="source">The source script.</param>
+        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
+        /// <returns>The result of the cast, or <see cref="float.NaN"/> if the cast failed.</returns>
         public static float Parse(string input, Script source = null, bool requireBrackets = true)
         {
             if (float.TryParse(input, out float fl))
@@ -244,6 +277,14 @@
             return float.NaN;
         }
 
+        /// <summary>
+        /// Replaces a string variable, if one is present. Otherwise, returns the same string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="source">Source script.</param>
+        /// <param name="requireBrackets">Require brackets to replace?.</param>
+        /// <returns>A string.</returns>
+        /// <remarks>This is intended for a string that is either a variable entirely or a string entirely - this will not isolate and replace all variables in a string. See <see cref="ReplaceVariables(string, Script)"/>.</remarks>
         public static string ReplaceVariable(string input, Script source = null, bool requireBrackets = true)
         {
             if (TryGetVariable(input, out IConditionVariable var, out _, source, requireBrackets))
@@ -255,12 +296,28 @@
             return input;
         }
 
+        /// <summary>
+        /// Attempts to parse a string input into a <see cref="float"/>. Functionally similar to <see cref="float.TryParse(string, out float)"/>, but also supports SE variables.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="result">The result of the parse.</param>
+        /// <param name="source">The source script.</param>
+        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
+        /// <returns>Whether or not the parse was successful.</returns>
         public static bool TryParse(string input, out float result, Script source = null, bool requireBrackets = true)
         {
             result = Parse(input, source, requireBrackets);
             return result != float.NaN;
         }
 
+        /// <summary>
+        /// Attempts to parse a string input into a <see cref="int"/>. Functionally similar to <see cref="int.TryParse(string, out int)"/>, but also supports SE variables.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="result">The result of the parse.</param>
+        /// <param name="source">The source script.</param>
+        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
+        /// <returns>Whether or not the parse was successful.</returns>
         public static bool TryParse(string input, out int result, Script source = null, bool requireBrackets = true)
         {
             float floatResult = Parse(input, source, requireBrackets);
@@ -275,6 +332,15 @@
             return result == floatResult;
         }
 
+        /// <summary>
+        /// Attempts to parse a string input into <typeparamref name="T"/>, where T is an <see cref="Enum"/>. Functionally similar to <see cref="Enum.TryParse{TEnum}(string, out TEnum)"/>, but also supports SE variables.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="result">The result of the parse.</param>
+        /// <param name="source">The source script.</param>
+        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
+        /// <typeparam name="T">The Enum type to cast to.</typeparam>
+        /// <returns>Whether or not the parse was successful.</returns>
         public static bool TryParse<T>(string input, out T result, Script source = null, bool requireBrackets = true)
             where T : struct
         {
@@ -300,6 +366,7 @@
         /// <param name="input">The string to perform the replacements on.</param>
         /// <param name="source">The script that is currently running to replace variables. Used only for per-script variables.</param>
         /// <returns>The modified string.</returns>
+        /// <remarks>This is intended for strings that contain both regular text and variables. Otherwise, see <see cref="ReplaceVariable(string, Script, bool)"/>.</remarks>
         public static string ReplaceVariables(string input, Script source = null)
         {
             string[] variables = ConditionHelper.IsolateVariables(input, source);

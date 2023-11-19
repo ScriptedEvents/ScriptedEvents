@@ -6,7 +6,7 @@
     using System.Linq;
     using Exiled.API.Features;
 
-    public class PlayerCollection : IEnumerable
+    public class PlayerCollection : IEnumerable<Player>
     {
         private List<Player> players;
 

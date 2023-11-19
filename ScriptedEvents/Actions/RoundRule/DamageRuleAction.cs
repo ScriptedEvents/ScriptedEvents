@@ -8,6 +8,7 @@
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -60,7 +61,7 @@
                 {
                     rule = new(attackerRole, receiverTeam);
                 }
-                else if (VariableSystem.TryGetPlayers(Arguments[1], out IEnumerable<Player> players, script))
+                else if (ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection players, script))
                 {
                     rule = new(attackerRole, players);
                 }
@@ -71,7 +72,7 @@
                 {
                     rule = new(receiverTeam2, attackerRole2);
                 }
-                else if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players2, script))
+                else if (ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players2, script))
                 {
                     rule = new(players2, attackerRole2);
                 }
@@ -88,7 +89,7 @@
                 {
                     rule = new(attackerTeam, receiverRole);
                 }
-                else if (VariableSystem.TryGetPlayers(Arguments[1], out IEnumerable<Player> players, script))
+                else if (ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection players, script))
                 {
                     rule = new(attackerTeam, players);
                 }
@@ -99,12 +100,12 @@
                 {
                     rule = new(receiverRole2, attackerTeam2);
                 }
-                else if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players2, script))
+                else if (ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players2, script))
                 {
                     rule = new(players2, attackerTeam2);
                 }
             }
-            else if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> attackers, script) && VariableSystem.TryGetPlayers(Arguments[1], out IEnumerable<Player> receivers, script))
+            else if (ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection attackers, script) && ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection receivers, script))
             {
                 rule = new(attackers, receivers);
             }
