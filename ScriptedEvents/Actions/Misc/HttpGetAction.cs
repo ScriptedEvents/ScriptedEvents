@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-
+    using ScriptedEvents.Variables;
     using UnityEngine.Networking;
 
     public class HttpGetAction : IHelpInfo, ITimingAction
@@ -48,7 +48,7 @@
             string coroutineKey = $"HTTPGET_COROUTINE_{DateTime.UtcNow.Ticks}";
             Coroutines.Add(coroutineKey);
             message = new(true);
-            return Timing.WaitUntilDone(InternalSendHTTP(script, Arguments[0]), coroutineKey);
+            return Timing.WaitUntilDone(InternalSendHTTP(script, VariableSystem.ReplaceVariables(Arguments[0], script)), coroutineKey);
         }
 
         private IEnumerator<float> InternalSendHTTP(Script script, string input)
