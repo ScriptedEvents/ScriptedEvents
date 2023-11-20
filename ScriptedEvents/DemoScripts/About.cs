@@ -21,8 +21,7 @@
 # 'script.execute' permission is required to execute scripts (unless specified otherwise in config).
 # Any line starting with a # will be ignored and can be used to comment what you're doing, TODOs, etc.
 # Adding ""!-- DISABLE"" at the start of the script will disable its execution in-game. Useful for WIP/broken scripts.
-# Each action that takes a 'duration' parameter supports math, which means you can use math equations such as '5 * 5'.
-# Each action that supports math also supports variables, eg. '5 * {{PLAYERSALIVE}}' to multiply 5 by the amount of players alive.
+# Almost every action that takes a message or number supports variables, eg. '{{PLAYERSALIVE}}' to get the amount of players alive.
 
 # This plugin contains A LOT of features. You will likely get confused at first. That's okay, that's why documentation (and support) is here.
 # The majority of this plugin's features are documented through the ""shelp"" server console command. Simply type ""shelp LIST"" in your server console to get started!

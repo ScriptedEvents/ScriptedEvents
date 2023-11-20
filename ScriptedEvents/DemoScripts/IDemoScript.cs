@@ -6,12 +6,12 @@
     public interface IDemoScript
     {
         /// <summary>
-        /// The name of the file (without .txt).
+        /// Gets the name of the file (without .txt).
         /// </summary>
         public string FileName { get; }
 
         /// <summary>
-        /// The contents of the script.
+        /// Gets the contents of the script.
         /// </summary>
         public string Contents { get; }
     }

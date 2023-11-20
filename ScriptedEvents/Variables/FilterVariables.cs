@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Filters
 {
+#pragma warning disable SA1402 // File may only contain a single type
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -26,7 +27,6 @@
 
     public class Random : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
-
         /// <inheritdoc/>
         public string Name => "{RANDOM}";
 
@@ -198,3 +198,4 @@
         }
     }
 }
+#pragma warning restore SA1402 // File may only contain a single type

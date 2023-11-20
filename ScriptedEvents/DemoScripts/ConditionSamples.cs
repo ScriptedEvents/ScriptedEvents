@@ -20,7 +20,9 @@ STOPIF {PLAYERSALIVE} > 5
 WAITSEC 100 + (400 * {CHANCE})
 
 # Lights off for anywhere from 10 to 20 seconds, plus 1 second for each player.
-LIGHTSOFF (1 * {PLAYERS}) + 10 + (10 * {CHANCE})
+# The ""SAVE"" action creates a new variable using the input formula, and supports basic math operations.
+SAVE {LIGHTS_DURATION} (1 * {PLAYERS}) + 10 + (10 * {CHANCE})
+LIGHTSOFF * {LIGHTS_DURATION}
 ";
     }
 }

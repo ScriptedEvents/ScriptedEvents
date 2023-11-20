@@ -152,7 +152,6 @@
         /// <inheritdoc/>
         public string Value
         {
-            // Todo: Switch to using VariableSystem.TryGetPlayers() (that's what FILTER uses).
             get
             {
                 if (Arguments.Length < 1)
@@ -165,15 +164,9 @@
                 if (Arguments.Length > 1)
                     selector = Arguments[1].ToUpper();
 
-                var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source, false);
-                if (conditionVariable.Item1 is not null)
+                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
                 {
-                    if (conditionVariable.Item1 is not IPlayerVariable variable)
-                    {
-                        throw new ArgumentException($"The provided value '{conditionVariable.Item1.Name}' has no associated players. [Error Code: SE-133]");
-                    }
-
-                    IOrderedEnumerable<string> display = variable.Players.Select(ply =>
+                    IOrderedEnumerable<string> display = players.Select(ply =>
                     {
                         return selector switch
                         {
@@ -203,7 +196,7 @@
                     return string.Join(", ", display).Trim();
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
+                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
             }
         }
     }

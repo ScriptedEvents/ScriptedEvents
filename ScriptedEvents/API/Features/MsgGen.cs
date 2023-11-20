@@ -98,6 +98,12 @@
             return "Unknown error [Error Code: SE-126]";
         }
 
+        /// <summary>
+        /// Returns a string showing the amount of arguments required, given the arguments.
+        /// </summary>
+        /// <param name="name">The name of the action or variable.</param>
+        /// <param name="args">The required arguments.</param>
+        /// <returns>Formatted string to show to end-user.</returns>
         public static string VariableArgCount(string name, params string[] args)
         {
             return $"{name} requires {args.Length} argument{(args.Length > 1 ? "s" : string.Empty)} ({string.Join(", ", args)}) [Error Code: SE-130]";
@@ -123,17 +129,13 @@
         /// <returns>The display.</returns>
         public static string Display(this ActionSubgroup group)
         {
-            switch (group)
+            return group switch
             {
-                case ActionSubgroup.Cassie:
-                    return "C.A.S.S.I.E";
-                case ActionSubgroup.Misc:
-                    return "Miscellaneous";
-                case ActionSubgroup.RoundRule:
-                    return "Round Rule";
-            }
-
-            return group.ToString();
+                ActionSubgroup.Cassie => "C.A.S.S.I.E",
+                ActionSubgroup.Misc => "Miscellaneous",
+                ActionSubgroup.RoundRule => "Round Rule",
+                _ => group.ToString(),
+            };
         }
     }
 }

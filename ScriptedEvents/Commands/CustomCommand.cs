@@ -13,16 +13,28 @@
 
     public class CustomCommand : ICommand
     {
+        /// <inheritdoc/>
         public string Command { get; set; }
 
+        /// <inheritdoc/>
         public string[] Aliases { get; set; }
 
+        /// <inheritdoc/>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Gets or sets the type of command this custom command is.
+        /// </summary>
         public CommandType Type { get; set; }
 
+        /// <summary>
+        /// Gets or sets a <see cref="string"/> array of scripts to run when this command is executed.
+        /// </summary>
         public string[] Scripts { get; set; }
 
+        /// <summary>
+        /// Gets or sets the permission required to execute this command.
+        /// </summary>
         public string Permission { get; set; }
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

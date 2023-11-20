@@ -71,7 +71,7 @@
             if (!name.StartsWith("{"))
                 name = "{" + name;
             if (!name.EndsWith("}"))
-                name = name + "}";
+                name += "}";
 
             source?.DebugLog($"Defined variable {name} with value {input}");
 
@@ -92,7 +92,7 @@
             if (!name.StartsWith("{"))
                 name = "{" + name;
             if (!name.EndsWith("}"))
-                name = name + "}";
+                name += "}";
 
             DefinedPlayerVariables[name] = new(name, desc, players);
         }

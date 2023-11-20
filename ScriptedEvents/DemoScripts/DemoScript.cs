@@ -18,9 +18,9 @@ WAITUNTIL {ROUNDSTARTED}
 # Wait 5 seconds.
 WAITSEC 5
 
-# Open and lock all doors for 5secs
-DOOR OPEN * 5
-DOOR LOCK * 5
+# Open and lock all doors
+DOOR OPEN *
+DOOR LOCK *
 
 # CASSIE Announcement (note that there is no delay here between this instruction and the last two)
 CASSIE All doors have been locked opened
@@ -38,7 +38,7 @@ WAITSEC 10
 DOOR DESTROY *
 
 # Lights off for 10 seconds.
-LIGHTSOFF 10
+LIGHTSOFF * 10
 
 # Run a command. It needs / before it if it's a RA command, or . before it if its a console command.
 COMMAND /cleanup ragdolls

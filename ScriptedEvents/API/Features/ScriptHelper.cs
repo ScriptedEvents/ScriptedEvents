@@ -320,6 +320,13 @@ namespace ScriptedEvents.API.Features
             return true;
         }
 
+        /// <summary>
+        /// Try-get a <see cref="Door"/> array given an input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="doors">The doors.</param>
+        /// <param name="source">The script source.</param>
+        /// <returns>Whether or not the try-get was successful.</returns>
         public static bool TryGetDoors(string input, out Door[] doors, Script source = null)
         {
             List<Door> doorList = ListPool<Door>.Pool.Get();
@@ -349,6 +356,13 @@ namespace ScriptedEvents.API.Features
             return doors.Length > 0;
         }
 
+        /// <summary>
+        /// Try-get a <see cref="Room"/> array given an input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="rooms">The rooms.</param>
+        /// <param name="source">The script source.</param>
+        /// <returns>Whether or not the try-get was successful.</returns>
         public static bool TryGetRooms(string input, out Room[] rooms, Script source = null)
         {
             List<Room> roomList = ListPool<Room>.Pool.Get();
@@ -373,6 +387,10 @@ namespace ScriptedEvents.API.Features
             return rooms.Length > 0;
         }
 
+        /// <summary>
+        /// Immediately stops execution of all scripts.
+        /// </summary>
+        /// <returns>The amount of scripts that were stopped.</returns>
         public static int StopAllScripts()
         {
             int amount = 0;
