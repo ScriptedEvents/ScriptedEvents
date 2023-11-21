@@ -2,6 +2,9 @@
 {
     using MEC;
 
+    /// <summary>
+    /// Holds a value referencing a coroutine - either its handle or its tag.
+    /// </summary>
     public struct CoroutineData
     {
         /// <summary>
@@ -27,12 +30,12 @@
         }
 
         /// <summary>
-        /// The coroutine's tag.
+        /// Gets or sets the coroutine's tag.
         /// </summary>
         public string Key { get; set; }
 
         /// <summary>
-        /// The coroutine's handle.
+        /// Gets or sets the coroutine's handle.
         /// </summary>
         public CoroutineHandle? Handle { get; set; }
 

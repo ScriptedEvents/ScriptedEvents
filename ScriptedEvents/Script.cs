@@ -12,6 +12,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Variables;
+    using ScriptedEvents.Structures;
 
     /// <summary>
     /// Represents a script.
@@ -150,6 +151,11 @@
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> of player variables that are unique to this script.
         /// </summary>
         public Dictionary<string, CustomPlayerVariable> UniquePlayerVariables { get; set; }
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> of coroutines run by this script.
+        /// </summary>
+        public List<CoroutineData> Coroutines { get; } = new();
 
         /// <inheritdoc/>
         public void Dispose()

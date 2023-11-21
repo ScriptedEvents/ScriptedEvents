@@ -8,30 +8,40 @@
 
     public static class CoroutineHelper
     {
-        private static Dictionary<string, List<CoroutineData>> coroutines;
+        private static readonly Dictionary<string, List<CoroutineData>> Coroutines = new();
 
-        public static void AddCoroutine(string type, CoroutineHandle coroutine)
+        public static void AddCoroutine(string type, CoroutineHandle coroutine, Script source = null)
         {
-            if (coroutines.ContainsKey(type))
-                coroutines[type].Add(new(coroutine));
+            CoroutineData data = new(coroutine);
+            source?.Coroutines.Add(data);
+            if (Coroutines.ContainsKey(type))
+                Coroutines[type].Add(data);
             else
-                coroutines.Add(type, new List<CoroutineData>() { new(coroutine) });
+                Coroutines.Add(type, new List<CoroutineData>() { data });
         }
 
-        public static void AddCoroutine(string type, string tag)
+        public static void AddCoroutine(string type, string tag, Script source = null)
         {
-            if (coroutines.ContainsKey(type))
-                coroutines[type].Add(new(tag));
+            CoroutineData data = new(tag);
+            source?.Coroutines.Add(data);
+            if (Coroutines.ContainsKey(type))
+                Coroutines[type].Add(data);
             else
-                coroutines.Add(type, new List<CoroutineData>() { new(tag) });
+                Coroutines.Add(type, new List<CoroutineData>() { data });
         }
 
         public static void KillAll()
         {
-            foreach (List<CoroutineData> handleList in coroutines.Values)
-                handleList.ForEach(h => h.Kill());
+            foreach (List<CoroutineData> handleList in Coroutines.Values)
+            {
+                handleList.ForEach(h =>
+                {
+                    if (!h.IsKilled)
+                        h.Kill();
+                });
+            }
 
-            coroutines.Clear();
+            Coroutines.Clear();
         }
     }
 }

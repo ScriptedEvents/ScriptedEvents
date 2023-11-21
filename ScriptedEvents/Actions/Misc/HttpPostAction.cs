@@ -51,7 +51,7 @@
             body = VariableSystem.ReplaceVariables(body, script);
 
             string coroutineKey = $"HTTPPOST_COROUTINE_{DateTime.UtcNow.Ticks}";
-            CoroutineHelper.AddCoroutine("HTTPPOST", coroutineKey);
+            CoroutineHelper.AddCoroutine("HTTPPOST", coroutineKey, script);
             message = new(true);
             return Timing.WaitUntilDone(InternalSendHTTP(script, VariableSystem.ReplaceVariable(Arguments[0], script), body), coroutineKey);
         }

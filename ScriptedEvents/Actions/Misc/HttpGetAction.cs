@@ -45,7 +45,7 @@
             }
 
             string coroutineKey = $"HTTPGET_COROUTINE_{DateTime.UtcNow.Ticks}";
-            CoroutineHelper.AddCoroutine("HTTPGET", coroutineKey);
+            CoroutineHelper.AddCoroutine("HTTPGET", coroutineKey, script);
             message = new(true);
             return Timing.WaitUntilDone(InternalSendHTTP(script, VariableSystem.ReplaceVariable(Arguments[0], script)), coroutineKey);
         }
