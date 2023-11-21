@@ -7,6 +7,7 @@
     using MEC;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -15,8 +16,6 @@
 
     public class HttpPostAction : IHelpInfo, ITimingAction
     {
-        public static List<string> Coroutines { get; } = new();
-
         /// <inheritdoc/>
         public string Name => "HTTPPOST";
 
@@ -52,7 +51,7 @@
             body = VariableSystem.ReplaceVariables(body, script);
 
             string coroutineKey = $"HTTPPOST_COROUTINE_{DateTime.UtcNow.Ticks}";
-            Coroutines.Add(coroutineKey);
+            CoroutineHelper.AddCoroutine("HTTPPOST", coroutineKey);
             message = new(true);
             return Timing.WaitUntilDone(InternalSendHTTP(script, VariableSystem.ReplaceVariable(Arguments[0], script), body), coroutineKey);
         }

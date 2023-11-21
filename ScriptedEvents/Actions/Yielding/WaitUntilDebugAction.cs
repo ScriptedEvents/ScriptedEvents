@@ -14,8 +14,6 @@
 
     public class WaitUntilDebugAction : ITimingAction, IHiddenAction, IHelpInfo
     {
-        public static List<string> Coroutines { get; } = new();
-
         /// <inheritdoc/>
         public string Name => "WAITUNTILDEBUG";
 
@@ -47,7 +45,7 @@
             }
 
             string coroutineKey = $"WAITUNTIL_DEBUG_COROUTINE_{DateTime.UtcNow.Ticks}";
-            Coroutines.Add(coroutineKey);
+            CoroutineHelper.AddCoroutine("WAITUNTIL_DEBUG", coroutineKey);
             message = new(true);
             return Timing.WaitUntilDone(InternalWaitUntil(script, string.Join(string.Empty, Arguments)), coroutineKey);
         }

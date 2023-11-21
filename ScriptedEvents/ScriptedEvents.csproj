@@ -105,6 +105,7 @@
     <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
     <Compile Include="Actions\Player\RadioRangeAction.cs" />
     <Compile Include="Actions\Inventory\RemoveItemAction.cs" />
+    <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
     <Compile Include="Actions\Lights\LightColorAction.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
+    <Compile Include="Structures\CoroutineData.cs" />
     <Compile Include="Structures\CustomCommand.cs" />
     <Compile Include="Structures\DamageRule.cs" />
     <Compile Include="Structures\PlayerCollection.cs" />

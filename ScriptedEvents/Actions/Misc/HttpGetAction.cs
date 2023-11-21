@@ -6,6 +6,7 @@
     using MEC;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -13,8 +14,6 @@
 
     public class HttpGetAction : IHelpInfo, ITimingAction
     {
-        public static List<string> Coroutines { get; } = new();
-
         /// <inheritdoc/>
         public string Name => "HTTPGET";
 
@@ -46,7 +45,7 @@
             }
 
             string coroutineKey = $"HTTPGET_COROUTINE_{DateTime.UtcNow.Ticks}";
-            Coroutines.Add(coroutineKey);
+            CoroutineHelper.AddCoroutine("HTTPGET", coroutineKey);
             message = new(true);
             return Timing.WaitUntilDone(InternalSendHTTP(script, VariableSystem.ReplaceVariable(Arguments[0], script)), coroutineKey);
         }

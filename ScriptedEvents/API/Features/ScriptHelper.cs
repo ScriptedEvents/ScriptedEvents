@@ -403,30 +403,8 @@ namespace ScriptedEvents.API.Features
                 kvp.Key.Dispose();
             }
 
-            foreach (string key in WaitUntilAction.Coroutines)
-            {
-                Timing.KillCoroutines(key);
-            }
+            CoroutineHelper.KillAll();
 
-            foreach (string key in WaitUntilDebugAction.Coroutines)
-            {
-                Timing.KillCoroutines(key);
-            }
-
-            foreach (string key in HttpGetAction.Coroutines)
-            {
-                Timing.KillCoroutines(key);
-            }
-
-            foreach (string key in HttpPostAction.Coroutines)
-            {
-                Timing.KillCoroutines(key);
-            }
-
-            WaitUntilAction.Coroutines.Clear();
-            WaitUntilDebugAction.Coroutines.Clear();
-            HttpGetAction.Coroutines.Clear();
-            HttpPostAction.Coroutines.Clear();
             RunningScripts.Clear();
             return amount;
         }

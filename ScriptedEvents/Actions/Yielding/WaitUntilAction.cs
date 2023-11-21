@@ -13,8 +13,6 @@
 
     public class WaitUntilAction : ITimingAction, IHelpInfo
     {
-        public static List<string> Coroutines { get; } = new();
-
         /// <inheritdoc/>
         public string Name => "WAITUNTIL";
 
@@ -46,7 +44,7 @@
             }
 
             string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
-            Coroutines.Add(coroutineKey);
+            CoroutineHelper.AddCoroutine("WAITUNTIL", coroutineKey);
             message = new(true);
             return Timing.WaitUntilDone(InternalWaitUntil(script, string.Join(string.Empty, Arguments)), coroutineKey);
         }
