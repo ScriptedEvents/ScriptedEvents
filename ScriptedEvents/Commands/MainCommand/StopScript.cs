@@ -2,28 +2,38 @@
 {
     using System;
     using System.IO;
+    using System.Text;
     using CommandSystem;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using Exiled.Permissions.Extensions;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class StopAllScripts : ICommand
+    public class StopScript : ICommand
     {
         /// <inheritdoc/>
-        public string Command => "stopall";
+        public string Command => "stopscript";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "sts", "stopscr" };
 
         /// <inheritdoc/>
-        public string Description => "Stops all scripts currently running.";
+        public string Description => "Stops a script.";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("script.stopall"))
+            if (!sender.CheckPermission("script.stop"))
             {
-                response = "Missing permission: script.stopall";
+                response = "Missing permission: script.stop";
+                return false;
+            }
+
+            if (arguments.Count < 1)
+            {
+                response = "Missing argument: script name";
                 return false;
             }
 
@@ -33,13 +43,14 @@
                 return false;
             }
 
-            if (ScriptHelper.RunningScripts.Count == 0)
+            string arg0 = arguments.At(0);
+
+            int amount = ScriptHelper.StopScripts(arg0);
+            if (amount == 0)
             {
-                response = "Zero scripts are currently running.";
+                response = "Done! No scripts were stopped.";
                 return true;
             }
-
-            int amount = ScriptHelper.StopAllScripts();
 
             response = $"Done! Stopped execution of {amount} scripts.";
             return true;

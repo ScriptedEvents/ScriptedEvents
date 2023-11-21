@@ -5,28 +5,26 @@
     /// <summary>
     /// Holds a value referencing a coroutine - either its handle or its tag.
     /// </summary>
-    public struct CoroutineData
+    public class CoroutineData
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoroutineData"/> struct.
+        /// Initializes a new instance of the <see cref="CoroutineData"/> class.
         /// </summary>
         /// <param name="tag">The coroutine tag.</param>
         public CoroutineData(string tag)
         {
             Key = tag;
             Handle = null;
-            IsKilled = false;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoroutineData"/> struct.
+        /// Initializes a new instance of the <see cref="CoroutineData"/> class.
         /// </summary>
         /// <param name="handle">The <see cref="CoroutineHandle"/>.</param>
         public CoroutineData(CoroutineHandle handle)
         {
             Key = null;
             Handle = handle;
-            IsKilled = false;
         }
 
         /// <summary>

@@ -410,6 +410,50 @@ namespace ScriptedEvents.API.Features
         }
 
         /// <summary>
+        /// Stops execution of a script.
+        /// </summary>
+        /// <param name="scr">The script to stop.</param>
+        /// <returns>Whether or not stopping was successful.</returns>
+        public static bool StopScript(Script scr)
+        {
+            KeyValuePair<Script, CoroutineHandle>? found = RunningScripts.FirstOrDefault(k => k.Key == scr);
+            if (found.HasValue && found.Value.Value.IsRunning)
+            {
+                Timing.KillCoroutines(found.Value.Value);
+
+                found.Value.Key.Coroutines.ForEach(data =>
+                {
+                    if (!data.IsKilled)
+                        data.Kill();
+                });
+
+                found.Value.Key.IsRunning = false;
+                found.Value.Key.Dispose();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Stops execution of all scripts with the matching name.
+        /// </summary>
+        /// <param name="name">The name of the script.</param>
+        /// <returns>The amount of scripts stopped.</returns>
+        public static int StopScripts(string name)
+        {
+            int amount = 0;
+            foreach (KeyValuePair<Script, CoroutineHandle> kvp in RunningScripts)
+            {
+                if (kvp.Key.ScriptName == name && StopScript(kvp.Key))
+                    amount++;
+            }
+
+            return amount;
+        }
+
+        /// <summary>
         /// Reads a script.
         /// </summary>
         /// <param name="scriptName">The name of the script.</param>

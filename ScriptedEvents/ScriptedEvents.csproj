@@ -140,6 +140,7 @@
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
+    <Compile Include="Commands\MainCommand\StopScript.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
     <Compile Include="Structures\CoroutineData.cs" />

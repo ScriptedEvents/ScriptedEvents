@@ -33,7 +33,7 @@
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
                 response = "Critical error: Missing script path. Please reload plugin. [Error Code: SE-127]";
-                return true;
+                return false;
             }
 
             string[] files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.AllDirectories);

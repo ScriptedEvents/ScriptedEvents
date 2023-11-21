@@ -40,7 +40,7 @@
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
                 response = "Critical error: Missing script path. Please reload plugin.";
-                return true;
+                return false;
             }
 
             string arg0 = arguments.At(0);
