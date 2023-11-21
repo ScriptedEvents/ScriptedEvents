@@ -421,7 +421,7 @@
                     Description = custom.Description,
                     Aliases = new string[0],
                     Type = custom.Type,
-                    Permission = custom.Permission == string.Empty ? "script.command" : "script.command." + custom.Permission,
+                    Permission = custom.Permission == string.Empty ? string.Empty : "script.command." + custom.Permission,
                     Scripts = custom.Run.ToArray(),
                 };
 

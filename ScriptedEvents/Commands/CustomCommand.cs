@@ -39,9 +39,10 @@
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission(Permission))
+            if (Permission != string.Empty && !sender.CheckPermission(Permission))
             {
                 response = $"Missing permission: {Permission}";
+                return false;
             }
 
             Dictionary<string, string> failed = new();
