@@ -36,7 +36,7 @@
 
         public List<Player> GetInnerList()
         {
-            return players.ToList();
+            return players;
         }
 
         public Player[] GetArray()
