@@ -39,6 +39,11 @@
         public CoroutineHandle? Handle { get; set; }
 
         /// <summary>
+        /// Gets or sets the source script of this coroutine.
+        /// </summary>
+        public Script Source { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether or not the coroutine has been killed.
         /// </summary>
         public bool IsKilled { get; private set; }

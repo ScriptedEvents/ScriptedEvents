@@ -23,6 +23,11 @@
             else
                 Coroutines.Add(type, new List<CoroutineData>() { data });
 
+            if (coroutine.Tag is not null)
+                data.Key = coroutine.Tag;
+
+            data.Source = source;
+
             Log.Info($"Added new coroutine TYPE: {type} TAG: {coroutine.Tag ?? "N/A"} SOURCE: {source?.ScriptName ?? "N/A"} (BY HANDLE)");
         }
 
@@ -34,6 +39,8 @@
                 Coroutines[type].Add(data);
             else
                 Coroutines.Add(type, new List<CoroutineData>() { data });
+
+            data.Source = source;
 
             Log.Info($"Added new coroutine TYPE: {type} TAG: {tag} SOURCE: {source?.ScriptName ?? "N/A"} (BY TAG)");
         }

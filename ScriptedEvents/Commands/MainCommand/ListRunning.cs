@@ -64,8 +64,9 @@
                 {
                     foreach (CoroutineData item in data.Value)
                     {
+                        if (item.IsKilled || !item.IsRunning) continue;
                         i++;
-                        corobldr.AppendLine($"[{i}] TYPE: {data.Key} TAG: {item.Key ?? (item.Handle.HasValue ? (item.Handle.Value.Tag ?? "N/A") : "N/A")}");
+                        corobldr.AppendLine($"[{i}] TYPE: {data.Key} \\\\ TAG: {item.Key ?? "N/A"} \\\\ SOURCE: {item.Source?.ScriptName ?? "N/A"}");
                     }
                 }
 
