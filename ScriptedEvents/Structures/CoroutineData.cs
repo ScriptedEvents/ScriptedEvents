@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Structures
 {
+    using Exiled.API.Features;
     using MEC;
 
     /// <summary>
@@ -51,9 +52,15 @@
                 return;
 
             if (Key != null)
+            {
                 Timing.KillCoroutines(Key);
+                Log.Debug($"Stopped coroutine with tag '{Key}'");
+            }
             else if (Handle != null && Handle.HasValue)
+            {
                 Timing.KillCoroutines(Handle.Value);
+                Log.Debug($"Stopped coroutine with tag '{Handle.Value.Tag ?? "UN-TAGGED-COROUTINE"}'");
+            }
 
             IsKilled = true;
         }
