@@ -44,6 +44,11 @@
         public bool IsKilled { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether or not the coroutine is running.
+        /// </summary>
+        public bool IsRunning => !Handle.HasValue || Handle.Value.IsRunning;
+
+        /// <summary>
         /// Kills the coroutine.
         /// </summary>
         public void Kill()
