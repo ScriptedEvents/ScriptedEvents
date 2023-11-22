@@ -43,6 +43,19 @@
         public Dictionary<string, List<string>> On { get; set; } = new();
 
         [Description("[ADVANCED] Define a custom command to run a script when it is executed.")]
-        public List<CustomCommand> Commands { get; set; } = new();
+        public List<CustomCommand> Commands { get; set; } = new()
+        {
+            new CustomCommand()
+            {
+                Name = "example",
+                Enabled = false,
+                Description = "An example custom command!",
+                Type = API.Enums.CommandType.PlayerConsole,
+                Permission = "example",
+                Cooldown = -1,
+                PlayerCooldown = -1,
+                Run = new() { "MyScript1", "MyScript2" },
+            },
+        };
     }
 }

@@ -28,6 +28,16 @@
         public CommandType Type { get; set; }
 
         /// <summary>
+        /// Gets or sets the cooldown mode of the command.
+        /// </summary>
+        public CommandCooldownMode CooldownMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the command cooldown length.
+        /// </summary>
+        public int Cooldown { get; set; }
+
+        /// <summary>
         /// Gets or sets a <see cref="string"/> array of scripts to run when this command is executed.
         /// </summary>
         public string[] Scripts { get; set; }
@@ -37,12 +47,41 @@
         /// </summary>
         public string Permission { get; set; }
 
+        private DateTime globalCooldown;
+        private Dictionary<Player, DateTime> playerCooldown = new();
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (Permission != string.Empty && !sender.CheckPermission(Permission))
             {
                 response = $"Missing permission: {Permission}";
                 return false;
+            }
+
+            if (CooldownMode == CommandCooldownMode.Global)
+            {
+                if ((DateTime.UtcNow - globalCooldown).TotalSeconds < Cooldown)
+                {
+                    int cooldownLeft = (int)(Cooldown - (DateTime.UtcNow - globalCooldown).TotalSeconds);
+                    response = $"This command is on cooldown and can be used in {cooldownLeft} second{(cooldownLeft != 1 ? "s" : string.Empty)}.";
+                    return false;
+                }
+
+                globalCooldown = DateTime.UtcNow;
+            }
+
+            if (CooldownMode == CommandCooldownMode.Player && Player.TryGet(sender, out Player ply))
+            {
+                Log.Info(1);
+                if (playerCooldown.ContainsKey(ply) && (DateTime.UtcNow - playerCooldown[ply]).TotalSeconds < Cooldown)
+                {
+                    Log.Info(2);
+                    int cooldownLeft = (int)(Cooldown - (DateTime.UtcNow - playerCooldown[ply]).TotalSeconds);
+                    response = $"This command is on cooldown and can be used in {cooldownLeft} second{(cooldownLeft != 1 ? "s" : string.Empty)}.";
+                    return false;
+                }
+
+                playerCooldown[ply] = DateTime.UtcNow;
             }
 
             Dictionary<string, string> failed = new();

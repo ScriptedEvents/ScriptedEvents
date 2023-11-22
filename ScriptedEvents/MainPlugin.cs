@@ -403,6 +403,8 @@
         {
             foreach (Structures.CustomCommand custom in Config.Commands)
             {
+                if (!custom.Enabled) continue;
+
                 if (custom.Name == string.Empty)
                 {
                     Log.Warn($"Custom command is defined without a name. [Error Code: SE-128]");
@@ -415,12 +417,33 @@
                     continue;
                 }
 
+                if (custom.Cooldown != -1 && custom.PlayerCooldown != -1)
+                {
+                    Log.Warn($"Custom command '{custom.Name}' ({custom.Type}) will not be created because it has multiple cooldowns set to a value other than -1. Only one cooldown can have a value other than -1. [Error Code: SE-136]");
+                    continue;
+                }
+
+                CommandCooldownMode cooldownMode = CommandCooldownMode.None;
+                int cooldown = -1;
+                if (custom.Cooldown != -1)
+                {
+                    cooldownMode = CommandCooldownMode.Global;
+                    cooldown = custom.Cooldown;
+                }
+                else if (custom.PlayerCooldown != -1)
+                {
+                    cooldownMode = CommandCooldownMode.Player;
+                    cooldown = custom.PlayerCooldown;
+                }
+
                 CustomCommand command = new()
                 {
                     Command = custom.Name,
                     Description = custom.Description,
                     Aliases = new string[0],
                     Type = custom.Type,
+                    CooldownMode = cooldownMode,
+                    Cooldown = cooldown,
                     Permission = custom.Permission == string.Empty ? string.Empty : "script.command." + custom.Permission,
                     Scripts = custom.Run.ToArray(),
                 };

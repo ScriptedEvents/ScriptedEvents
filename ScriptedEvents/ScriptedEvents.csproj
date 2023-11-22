@@ -105,6 +105,7 @@
     <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
     <Compile Include="Actions\Player\RadioRangeAction.cs" />
     <Compile Include="Actions\Inventory\RemoveItemAction.cs" />
+    <Compile Include="API\Enums\CommandCooldownMode.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
