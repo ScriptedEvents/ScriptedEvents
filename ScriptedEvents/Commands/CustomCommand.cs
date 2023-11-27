@@ -48,7 +48,7 @@
         public string Permission { get; set; }
 
         private DateTime globalCooldown;
-        private Dictionary<Player, DateTime> playerCooldown = new();
+        private Dictionary<string, DateTime> playerCooldown = new();
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -73,15 +73,15 @@
             if (CooldownMode == CommandCooldownMode.Player && Player.TryGet(sender, out Player ply))
             {
                 Log.Info(1);
-                if (playerCooldown.ContainsKey(ply) && (DateTime.UtcNow - playerCooldown[ply]).TotalSeconds < Cooldown)
+                if (playerCooldown.ContainsKey(ply.UserId) && (DateTime.UtcNow - playerCooldown[ply.UserId]).TotalSeconds < Cooldown)
                 {
                     Log.Info(2);
-                    int cooldownLeft = (int)(Cooldown - (DateTime.UtcNow - playerCooldown[ply]).TotalSeconds);
+                    int cooldownLeft = (int)(Cooldown - (DateTime.UtcNow - playerCooldown[ply.UserId]).TotalSeconds);
                     response = $"This command is on cooldown and can be used in {cooldownLeft} second{(cooldownLeft != 1 ? "s" : string.Empty)}.";
                     return false;
                 }
 
-                playerCooldown[ply] = DateTime.UtcNow;
+                playerCooldown[ply.UserId] = DateTime.UtcNow;
             }
 
             Dictionary<string, string> failed = new();
