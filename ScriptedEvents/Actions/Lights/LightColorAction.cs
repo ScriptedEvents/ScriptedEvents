@@ -48,18 +48,18 @@
 
             if (!VariableSystem.TryParse(Arguments[1], out float r, script))
                 return new(false, $"The red component of the color is invalid.");
-            if (r < 0 || r > 255)
-                return new(false, "The red component of the color must be between 0 and 255.");
+            if (r < 0)
+                return new(false, "The red component of the color must be greater than 0.");
 
             if (!VariableSystem.TryParse(Arguments[2], out float g, script))
                 return new(false, $"The green component of the color is invalid.");
-            if (g < 0 || g > 255)
-                return new(false, "The green component of the color must be between 0 and 255.");
+            if (g < 0)
+                return new(false, "The green component of the color must be greater than 0.");
 
             if (!VariableSystem.TryParse(Arguments[3], out float b, script))
                 return new(false, $"The blue component of the color is invalid.");
-            if (b < 0 || b > 255)
-                return new(false, "The blue component of the color must be between 0 and 255.");
+            if (b < 0)
+                return new(false, "The blue component of the color must be greater than 0.");
 
             Color c = new(r / 255f, g / 255f, b / 255f);
 
