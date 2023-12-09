@@ -149,6 +149,7 @@
     <Compile Include="Structures\DamageRule.cs" />
     <Compile Include="Structures\PlayerCollection.cs" />
     <Compile Include="Structures\PlayerDisable.cs" />
+    <Compile Include="Translations.cs" />
     <Compile Include="Variables\FilterVariables.cs" />
     <Compile Include="Variables\IntercomVariables.cs" />
     <Compile Include="Variables\MapVariables.cs" />

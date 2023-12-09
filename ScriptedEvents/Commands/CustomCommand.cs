@@ -54,7 +54,7 @@
         {
             if (Permission != string.Empty && !sender.CheckPermission(Permission))
             {
-                response = $"Missing permission: {Permission}";
+                response = MainPlugin.Translations.MissingPermission.Replace("{PERMISSION}", Permission);
                 return false;
             }
 
@@ -63,7 +63,9 @@
                 if ((DateTime.UtcNow - globalCooldown).TotalSeconds < Cooldown)
                 {
                     int cooldownLeft = (int)(Cooldown - (DateTime.UtcNow - globalCooldown).TotalSeconds);
-                    response = $"This command is on cooldown and can be used in {cooldownLeft} second{(cooldownLeft != 1 ? "s" : string.Empty)}.";
+                    response = cooldownLeft == 1
+                        ? MainPlugin.Translations.CommandCooldown.Replace("{SECONDS}", cooldownLeft.ToString())
+                        : MainPlugin.Translations.CommandCooldownSingular.Replace("{SECONDS}", cooldownLeft.ToString());
                     return false;
                 }
 
@@ -77,7 +79,9 @@
                 {
                     Log.Info(2);
                     int cooldownLeft = (int)(Cooldown - (DateTime.UtcNow - playerCooldown[ply.UserId]).TotalSeconds);
-                    response = $"This command is on cooldown and can be used in {cooldownLeft} second{(cooldownLeft != 1 ? "s" : string.Empty)}.";
+                    response = cooldownLeft == 1
+                        ? MainPlugin.Translations.CommandCooldown.Replace("{SECONDS}", cooldownLeft.ToString())
+                        : MainPlugin.Translations.CommandCooldownSingular.Replace("{SECONDS}", cooldownLeft.ToString());
                     return false;
                 }
 
@@ -113,26 +117,30 @@
                 }
                 catch (DisabledScriptException)
                 {
-                    failed.Add(scr, "Script is disabled!");
+                    failed.Add(scr, MainPlugin.Translations.DisabledScript);
                 }
                 catch (FileNotFoundException)
                 {
-                    failed.Add(scr, "Script not found!");
+                    failed.Add(scr, MainPlugin.Translations.MissingScript);
                 }
             }
 
             if (failed.Count > 0)
             {
-                response = $"Successfully ran {success} scripts. {failed.Count} failed scripts:";
+                string failList = string.Empty;
                 foreach (var kvp in failed)
                 {
-                    response += $"\n{kvp.Key} - {kvp.Value}";
+                    failList += $"\n{kvp.Key} - {kvp.Value}";
                 }
 
+                response = MainPlugin.Translations.CommandSuccessWithFailure
+                    .Replace("{SUCCESSAMOUNT}", success.ToString())
+                    .Replace("{FAILAMOUNT}", failed.Count.ToString())
+                    .Replace("{FAILED}", failList);
                 return false;
             }
 
-            response = $"Successfully ran {success} scripts.";
+            response = MainPlugin.Translations.CommandSuccess.Replace("{SUCCESSAMOUNT}", success.ToString());
             return true;
         }
     }

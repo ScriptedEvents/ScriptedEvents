@@ -29,7 +29,7 @@
     using Scp914Handler = Exiled.Events.Handlers.Scp914;
     using ServerHandler = Exiled.Events.Handlers.Server;
 
-    public class MainPlugin : Plugin<Config>
+    public class MainPlugin : Plugin<Config, Translations>
     {
         /// <summary>
         /// Whether or not this build of the plugin is experimental.
@@ -55,6 +55,11 @@
         /// Gets the plugin Config singleton.
         /// </summary>
         public static Config Configs => Singleton?.Config;
+
+        /// <summary>
+        /// Gets the plugin Translations singleton.
+        /// </summary>
+        public static Translations Translations => Singleton?.Translation;
 
         /// <summary>
         /// Gets or sets the Event Handlers singleton.
