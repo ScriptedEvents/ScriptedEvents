@@ -188,8 +188,10 @@
             SpawnsByTeam[SpawnableTeamType.NineTailedFox] = 0;
             SpawnsByTeam[SpawnableTeamType.ChaosInsurgency] = 0;
 
-            Escapes[RoleTypeId.ClassD].Clear();
-            Escapes[RoleTypeId.Scientist].Clear();
+            foreach (var escapedRole in Escapes)
+            {
+                escapedRole.Value.Clear();
+            }
 
             ScriptHelper.StopAllScripts();
             VariableSystem.ClearVariables();
@@ -538,6 +540,9 @@
                 ev.IsAllowed = false;
 
             if (!ev.IsAllowed) return;
+
+            if (!Escapes.ContainsKey(ev.Player.Role.Type))
+                Escapes.Add(ev.Player.Role.Type, new());
 
             Escapes[ev.Player.Role.Type].Add(ev.Player);
         }
