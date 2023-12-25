@@ -252,7 +252,7 @@
                         continue;
 
                     EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
-                    MethodInfo subscribe = propertyInfo.PropertyType.GetMethod("Subscribe");
+                    MethodInfo subscribe = propertyInfo.PropertyType.GetMethod("Subscribe", new[] { typeof(CustomEventHandler<>) });
 
                     if (propertyInfo.PropertyType == typeof(Event))
                     {
