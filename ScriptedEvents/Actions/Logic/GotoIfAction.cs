@@ -38,7 +38,7 @@
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            ConditionResponse outcome = ConditionHelper.Evaluate(string.Join(string.Empty, Arguments.Skip(2)), script);
+            ConditionResponse outcome = ConditionHelperV2.Evaluate(string.Join(string.Empty, Arguments.Skip(2)), script);
             if (!outcome.Success)
                 return new(false, $"IF execution error: {outcome.Message}", ActionFlags.FatalError);
 

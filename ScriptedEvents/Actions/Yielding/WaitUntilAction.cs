@@ -55,7 +55,7 @@
         {
             while (true)
             {
-                ConditionResponse response = ConditionHelper.Evaluate(input, script);
+                ConditionResponse response = ConditionHelperV2.Evaluate(input, script);
                 if (response.Success)
                 {
                     if (response.Passed)

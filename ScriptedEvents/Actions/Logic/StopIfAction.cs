@@ -33,7 +33,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            ConditionResponse outcome = ConditionHelper.Evaluate(string.Join(string.Empty, Arguments), script);
+            ConditionResponse outcome = ConditionHelperV2.Evaluate(string.Join(string.Empty, Arguments), script);
             if (!outcome.Success)
                 return new(false, $"STOPIF execution error: {outcome.Message}", ActionFlags.FatalError);
 
