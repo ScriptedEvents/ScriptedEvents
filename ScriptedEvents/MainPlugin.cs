@@ -239,12 +239,23 @@
             VariableSystem.Setup();
 
             // "On" config
+            SetupEvents();
+        }
+
+        /// <summary>
+        /// Sets up the "On" config to be connected to events.
+        /// </summary>
+        public void SetupEvents()
+        {
             foreach (KeyValuePair<string, List<string>> ev in Configs.On)
             {
+                Log.Debug("Setting up new 'on' event");
+                Log.Debug($"Event: {ev.Key}");
+                Log.Debug($"Scripts: {string.Join(", ", ev.Value)}");
                 bool made = false;
                 foreach (Type handler in HandlerTypes)
                 {
-                    // Credit to DevTools for below code.
+                    // Credit to DevTools & Yamato for below code.
                     Delegate @delegate = null;
                     PropertyInfo propertyInfo = handler.GetProperty(ev.Key);
 
