@@ -155,6 +155,10 @@
 
         private static ConditionResponse EvaluateSingleCondition(string input, string raw)
         {
+            // Goofball checks first
+            if (bool.TryParse(input, out bool r))
+                return new(true, r, string.Empty);
+
             // Attempt to run math first
             IFloatCondition match = null;
             foreach (var floatCondition in FloatConditions)
@@ -228,14 +232,14 @@
                     foreach (string fragOr in orSplit)
                     {
                         Log.Debug($"FRAG [OR]: " + fragOr);
-                        string convertedInput2 = VariableSystem.ReplaceVariables(fragOr, source);
-                        ConditionResponse eval = EvaluateSingleCondition(convertedInput2, group);
+                        string convertedFrag = VariableSystem.ReplaceVariables(fragOr, source);
+                        ConditionResponse eval = EvaluateSingleCondition(convertedFrag, group);
                         if (!eval.Success)
                         {
                             return new(false, eval.Passed, eval.Message);
                         }
 
-                        convertedInput = convertedInput.Replace($"{convertedInput2}", eval.Passed.ToString().ToUpper());
+                        convertedInput = convertedInput.Replace($"{convertedFrag}", eval.Passed.ToString().ToUpper());
                     }
                 }
             }

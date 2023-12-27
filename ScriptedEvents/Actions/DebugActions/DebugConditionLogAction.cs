@@ -24,7 +24,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Info(ConditionHelperV2.Evaluate(string.Join(string.Empty, Arguments), script));
+            Log.Info(ConditionHelperV2.Evaluate(string.Join(" ", Arguments), script));
             return new(true);
         }
     }
