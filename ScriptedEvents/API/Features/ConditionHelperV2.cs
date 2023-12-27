@@ -1,18 +1,20 @@
-﻿using ScriptedEvents.Structures;
-using System.Data;
-using System;
-using ScriptedEvents.Variables;
-using ScriptedEvents.Conditions.Floats;
-using ScriptedEvents.Conditions.Interfaces;
-using ScriptedEvents.Conditions.Strings;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Exiled.API.Features.Pools;
-using System.Linq;
-using Exiled.API.Features;
-
-namespace ScriptedEvents.API.Features
+﻿namespace ScriptedEvents.API.Features
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Data;
+    using System.Text.RegularExpressions;
+
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
+
+    using ScriptedEvents.Conditions.Floats;
+    using ScriptedEvents.Conditions.Interfaces;
+    using ScriptedEvents.Conditions.Strings;
+    using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+
 #pragma warning disable SA1600 // Remove this later
     public static class ConditionHelperV2
     {
@@ -88,6 +90,9 @@ namespace ScriptedEvents.API.Features
 
         public static List<string> CaptureGroups(string input)
         {
+            if (input.IndexOf('(') == -1 && input.IndexOf(')') == -1)
+                return new() { input };
+
             List<string> ret = new();
             List<string> wip = ListPool<string>.Pool.Get();
             wip.Add(string.Empty);
@@ -118,6 +123,36 @@ namespace ScriptedEvents.API.Features
             return ret;
         }
 
+        private static ConditionResponse EvaluateAndOr(string input, Script source = null)
+        {
+            string[] andSplit = input.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
+            bool stillGo = true;
+            foreach (string fragAnd in andSplit)
+            {
+                string[] orSplit = fragAnd.Split(new[] { OR }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string fragOr in orSplit)
+                {
+                    if (bool.TryParse(fragOr, out bool r))
+                    {
+                        if (r is true)
+                        {
+                            stillGo = true;
+                            break;
+                        }
+                        else
+                        {
+                            stillGo = false;
+                        }
+                    }
+                }
+
+                if (!stillGo)
+                    break;
+            }
+
+            return new(true, stillGo, string.Empty);
+        }
+
         private static ConditionResponse EvaluateSingleCondition(string input, string raw)
         {
             // Attempt to run math first
@@ -125,7 +160,7 @@ namespace ScriptedEvents.API.Features
             foreach (var floatCondition in FloatConditions)
             {
                 int index = input.IndexOf(floatCondition.Symbol);
-                if (index != -1 && char.IsWhiteSpace(input[index - 1]) && char.IsWhiteSpace(input[index + 1]))
+                if (index != -1 && char.IsWhiteSpace(input[index - 1]) && char.IsWhiteSpace(input[index + floatCondition.Symbol.Length]))
                 {
                     match = floatCondition;
                     break;
@@ -151,7 +186,7 @@ namespace ScriptedEvents.API.Features
             foreach (var stringCondition in StringConditions)
             {
                 int index = input.IndexOf(stringCondition.Symbol);
-                if (index != -1 && char.IsWhiteSpace(input[index - 1]) && char.IsWhiteSpace(input[index + 1]))
+                if (index != -1 && char.IsWhiteSpace(input[index - 1]) && char.IsWhiteSpace(input[index + stringCondition.Symbol.Length]))
                 {
                     match2 = stringCondition;
                     break;
@@ -160,11 +195,14 @@ namespace ScriptedEvents.API.Features
 
             if (match2 is not null)
             {
-                string[] split = input.Split(new[] { match.Symbol }, StringSplitOptions.RemoveEmptyEntries);
+                string[] split = input.Split(new[] { " " + match2.Symbol + " " }, StringSplitOptions.RemoveEmptyEntries);
                 if (split.Length < 2)
                 {
                     return new(false, false, $"Malformed condition provided! Condition: {raw}");
                 }
+
+                Log.Info(split[0]);
+                Log.Info(split[1]);
 
                 return new(true, match2.Execute(split[0], split[1]), string.Empty);
             }
@@ -181,18 +219,43 @@ namespace ScriptedEvents.API.Features
             List<string> groups = CaptureGroups(input);
             foreach (string group in groups)
             {
-                string convertedInput2 = VariableSystem.ReplaceVariables(group, source);
-                ConditionResponse eval = EvaluateSingleCondition(convertedInput2, group);
-                if (!eval.Success)
+                Log.Debug($"GROUP: " + group);
+                string[] andSplit = group.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string fragAnd in andSplit)
                 {
-                    return new(false, eval.Passed, eval.Message);
-                }
+                    Log.Debug($"FRAG [AND]: " + fragAnd);
+                    string[] orSplit = fragAnd.Split(new[] { OR }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string fragOr in orSplit)
+                    {
+                        Log.Debug($"FRAG [OR]: " + fragOr);
+                        string convertedInput2 = VariableSystem.ReplaceVariables(fragOr, source);
+                        ConditionResponse eval = EvaluateSingleCondition(convertedInput2, group);
+                        if (!eval.Success)
+                        {
+                            return new(false, eval.Passed, eval.Message);
+                        }
 
-                if (!eval.Passed) // Todo: Replace this with proper AND/OR support
-                    return new(true, false, eval.Message);
+                        convertedInput = convertedInput.Replace($"{convertedInput2}", eval.Passed.ToString().ToUpper());
+                    }
+                }
             }
 
-            return new(true, true, string.Empty);
+            Log.Debug($"CONVERTED INPUT: " + convertedInput);
+
+            if (bool.TryParse(convertedInput, out bool r))
+                return new(true, r, string.Empty);
+
+            MatchCollection matches = Regex.Matches(convertedInput, @"\(([^)]*)\)");
+            if (matches.Count > 0)
+            {
+                foreach (Match match in matches)
+                {
+                    ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value, source: source);
+                    convertedInput = convertedInput.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
+                }
+            }
+
+            return EvaluateAndOr(convertedInput, source);
         }
 
         public static ConditionResponse Evaluate(string input, Script source = null)
