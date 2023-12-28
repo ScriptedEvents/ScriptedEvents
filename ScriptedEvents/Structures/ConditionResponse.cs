@@ -1,7 +1,7 @@
 ﻿namespace ScriptedEvents.Structures
 {
     /// <summary>
-    /// Represents the result of a call to <see cref="API.Helpers.ConditionHelper.Evaluate(string)"/>.
+    /// Represents the result of a call to <see cref="API.Features.ConditionHelperV2.Evaluate(string, Script)"/>.
     /// </summary>
     public class ConditionResponse
     {
