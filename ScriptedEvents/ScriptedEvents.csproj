@@ -101,8 +101,8 @@
     <Compile Include="Actions\RoundRule\DisablePlayerAction.cs" />
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
-    <Compile Include="Actions\Misc\HttpPostAction.cs" />
-    <Compile Include="Actions\Misc\HttpGetAction.cs" />
+    <Compile Include="Actions\Yielding\HttpPostAction.cs" />
+    <Compile Include="Actions\Yielding\HttpGetAction.cs" />
     <Compile Include="Actions\Round\EndRound.cs" />
     <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
     <Compile Include="Actions\Player\RadioRangeAction.cs" />

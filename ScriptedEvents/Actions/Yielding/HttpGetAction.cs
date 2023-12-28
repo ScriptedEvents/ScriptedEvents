@@ -24,7 +24,7 @@
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
+        public ActionSubgroup Subgroup => ActionSubgroup.Yielding;
 
         /// <inheritdoc/>
         public string Description => "Sends an HTTP GET request to a website.";
