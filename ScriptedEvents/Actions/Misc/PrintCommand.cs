@@ -45,7 +45,7 @@
 
             if (script.Context is ExecuteContext.PlayerConsole)
             {
-                Player.Get(script.Sender).SendConsoleMessage(message, "green");
+                Player.Get(script.Sender)?.SendConsoleMessage(message, "green");
                 return new(true);
             }
 
