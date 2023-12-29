@@ -211,13 +211,13 @@ namespace ScriptedEvents.API.Features
             else if (executor is ServerConsoleSender console)
             {
                 script.Context = ExecuteContext.ServerConsole;
-                script.Sender = console;
             }
             else if (executor is PlayerCommandSender player)
             {
                 script.Context = ExecuteContext.RemoteAdmin;
-                script.Sender = player;
             }
+
+            script.Sender = executor;
 
             script.DebugLog($"Debug script read successfully. Name: {script.ScriptName} | Actions: {string.Join(" ", script.Actions.Length)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Where(action => action is NullAction @null && @null.Type is "COMMENT").Count()}");
 

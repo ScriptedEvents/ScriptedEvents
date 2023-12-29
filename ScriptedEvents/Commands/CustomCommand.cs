@@ -38,6 +38,11 @@
         public int Cooldown { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not to do default response.
+        /// </summary>
+        public bool DoResponse { get; set; }
+
+        /// <summary>
         /// Gets or sets a <see cref="string"/> array of scripts to run when this command is executed.
         /// </summary>
         public string[] Scripts { get; set; }
@@ -97,6 +102,20 @@
                 {
                     Script body = ScriptHelper.ReadScript(scr, sender);
 
+                    // Override default script context for custom commands
+                    switch (Type)
+                    {
+                        case CommandType.PlayerConsole:
+                            body.Context = ExecuteContext.PlayerConsole;
+                            break;
+                        case CommandType.ServerConsole:
+                            body.Context = ExecuteContext.ServerConsole;
+                            break;
+                        case CommandType.RemoteAdmin:
+                            body.Context = ExecuteContext.RemoteAdmin;
+                            break;
+                    }
+
                     if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
                     {
                         body.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
@@ -140,7 +159,10 @@
                 return false;
             }
 
-            response = MainPlugin.Translations.CommandSuccess.Replace("{SUCCESSAMOUNT}", success.ToString());
+            if (DoResponse)
+                response = MainPlugin.Translations.CommandSuccess.Replace("{SUCCESSAMOUNT}", success.ToString());
+            else
+                response = string.Empty;
             return true;
         }
     }

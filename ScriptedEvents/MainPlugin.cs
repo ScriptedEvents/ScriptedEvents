@@ -460,6 +460,7 @@
                     Type = custom.Type,
                     CooldownMode = cooldownMode,
                     Cooldown = cooldown,
+                    DoResponse = custom.DefaultResponse,
                     Permission = custom.Permission == string.Empty ? string.Empty : "script.command." + custom.Permission,
                     Scripts = custom.Run.ToArray(),
                 };
