@@ -63,7 +63,7 @@
                 }
                 else
                 {
-                    Log.Warn($"[Script: {script.ScriptName}] [WAITUNTIL] WaitUntil condition error: {response.Message}");
+                    Log.Warn($"[Script: {script.ScriptName}] [WAITUNTIL] [L: {script.CurrentLine}] WaitUntil condition error: {response.Message}");
                     break;
                 }
 

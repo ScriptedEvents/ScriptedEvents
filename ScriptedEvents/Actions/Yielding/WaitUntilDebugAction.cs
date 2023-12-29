@@ -65,7 +65,7 @@
                 }
                 else
                 {
-                    Log.Warn($"[Script: {script.ScriptName}] [WAITUNTILDEBUG] WaitUntilDebug condition error: {response.Message}");
+                    Log.Warn($"[Script: {script.ScriptName}] [WAITUNTILDEBUG] [L: {script.CurrentLine + 1}] WaitUntilDebug condition error: {response.Message}");
                     break;
                 }
 

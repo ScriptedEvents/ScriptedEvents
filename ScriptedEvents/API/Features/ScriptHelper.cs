@@ -170,7 +170,7 @@ namespace ScriptedEvents.API.Features
                     }
 
                     if (!suppressWarnings)
-                        Log.Warn($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'. [Error Code: SE-102]");
+                        Log.Warn($"[L: {script.CurrentLine + 1}] Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'. [Error Code: SE-102]");
                     actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
@@ -181,7 +181,7 @@ namespace ScriptedEvents.API.Features
                 // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
                 {
-                    Log.Warn($"Notice: Action {newAction.Name} is marked as obsolete. Please follow reason directives when using. Reason: {obsoleteReason}");
+                    Log.Warn($"[L: {script.CurrentLine + 1}] Notice: Action {newAction.Name} is marked as obsolete. Please follow reason directives when using. Reason: {obsoleteReason}");
                 }
 
                 actionList.Add(newAction);
