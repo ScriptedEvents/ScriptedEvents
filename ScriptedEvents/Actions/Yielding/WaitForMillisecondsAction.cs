@@ -44,7 +44,7 @@
 
             string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments), script);
 
-            if (!ConditionHelper.TryMath(formula, out MathResult result))
+            if (!ConditionHelperV2.TryMath(formula, out MathResult result))
             {
                 message = new(MessageType.NotANumberOrCondition, this, "duration", formula, result);
                 return null;

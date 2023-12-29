@@ -55,7 +55,7 @@
             {
                 string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(3)), script);
 
-                if (!ConditionHelper.TryMath(formula, out MathResult result))
+                if (!ConditionHelperV2.TryMath(formula, out MathResult result))
                 {
                     return new(MessageType.NotANumberOrCondition, this, "max", formula, result);
                 }

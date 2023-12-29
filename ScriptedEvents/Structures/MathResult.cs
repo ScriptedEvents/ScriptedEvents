@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Represents the result of a call to <see cref="API.Helpers.ConditionHelper.TryMath(string, out MathResult)"/>.
+    /// Represents the result of a call to <see cref="API.Features.ConditionHelperV2.TryMath(string, out MathResult)"/>.
     /// </summary>
     public class MathResult
     {

@@ -24,6 +24,7 @@ namespace ScriptedEvents.API.Features
     using ScriptedEvents.Variables;
     using static Exiled.Loader.Features.MultiAdminFeatures;
     using AirlockController = Exiled.API.Features.Doors.AirlockController;
+    using ScriptedEvents.API.Extensions;
 
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
@@ -274,7 +275,7 @@ namespace ScriptedEvents.API.Features
             }
             else
             {
-                string[] variables = ConditionHelper.IsolateVariables(input, source);
+                string[] variables = VariableSystem.IsolateVariables(input, source);
                 foreach (string variable in variables)
                 {
                     try

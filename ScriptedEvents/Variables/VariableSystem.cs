@@ -7,6 +7,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using PlayerRoles;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
 
     using ScriptedEvents.Variables.Interfaces;
@@ -369,7 +370,7 @@
         /// <remarks>This is intended for strings that contain both regular text and variables. Otherwise, see <see cref="ReplaceVariable(string, Script, bool)"/>.</remarks>
         public static string ReplaceVariables(string input, Script source = null)
         {
-            string[] variables = ConditionHelper.IsolateVariables(input, source);
+            string[] variables = VariableSystem.IsolateVariables(input, source);
 
             foreach (var variable in variables)
             {
@@ -399,6 +400,33 @@
             }
 
             return input;
+        }
+
+        /// <summary>
+        /// Isolates all variables from a string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="source">The script source.</param>
+        /// <returns>The variables used within the string.</returns>
+        public static string[] IsolateVariables(string input, Script source = null)
+        {
+            source?.DebugLog($"Isolating variables from: {input}");
+            List<string> result = ListPool<string>.Pool.Get();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                char c = input[i];
+                if (c is '{')
+                {
+                    int index = input.IndexOf('}', i);
+                    source?.DebugLog($"Detected variable opening symbol, char {i}. Closing index {index}. Substring {index - i + 1}.");
+                    string variable = input.Substring(i, index - i + 1);
+                    source?.DebugLog($"Variable: {variable}");
+                    result.Add(variable);
+                }
+            }
+
+            return ListPool<string>.Pool.ToArrayReturn(result);
         }
     }
 }

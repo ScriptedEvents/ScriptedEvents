@@ -109,6 +109,7 @@
     <Compile Include="Actions\Player\RadioRangeAction.cs" />
     <Compile Include="Actions\Inventory\RemoveItemAction.cs" />
     <Compile Include="API\Enums\CommandCooldownMode.cs" />
+    <Compile Include="API\Extensions\StringExtensions.cs" />
     <Compile Include="API\Features\ConditionHelperV2.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />
@@ -218,7 +219,6 @@
     <Compile Include="Actions\Yielding\WaitUntilAction.cs" />
     <Compile Include="API\Features\ApiHelper.cs" />
     <Compile Include="Commands\MainCommand\ExecuteScript.cs" />
-    <Compile Include="API\Features\ConditionHelper.cs" />
     <Compile Include="Conditions\Floats\Equal.cs" />
     <Compile Include="Conditions\Floats\LessThan.cs" />
     <Compile Include="Conditions\Floats\GreaterThan.cs" />

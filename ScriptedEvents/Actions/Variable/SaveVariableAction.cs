@@ -44,7 +44,7 @@
 
             try
             {
-                float value = (float)ConditionHelper.Math(input);
+                float value = (float)ConditionHelperV2.Math(input);
                 VariableSystem.DefineVariable(varName, "User-defined variable.", value.ToString(), script);
                 return new(true);
             }
