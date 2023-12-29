@@ -90,36 +90,20 @@
 
         public static List<string> CaptureGroups(string input)
         {
-            if (input.IndexOf('(') == -1 && input.IndexOf(')') == -1)
-                return new() { input };
+            MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");
+            if (matches.Count == 0)
+                return new(1) { input };
 
             List<string> ret = new();
-            List<string> wip = ListPool<string>.Pool.Get();
-            wip.Add(string.Empty);
-            foreach (char c in input)
+
+            foreach (Match m in matches)
             {
-                if (c == '(')
-                {
-                    wip.Add(string.Empty);
-                }
-                else if (c == ')')
-                {
-                    ret.Add(wip[wip.Count - 1]);
-                    wip.RemoveAt(wip.Count - 1);
-                }
-                else
-                {
-                    wip[wip.Count - 1] += c;
-                }
+                ret.Add(m.Groups[1].Value);
+                input = input.Replace($"({m.Groups[1].Value})", string.Empty);
             }
 
-            if (wip.Count > 0)
-            {
-                ret.AddRange(wip);
-            }
-
-            ListPool<string>.Pool.Return(wip);
-            ret.RemoveAll(str => string.IsNullOrWhiteSpace(str));
+            ret.Add(input);
+            ret.RemoveAll(r => string.IsNullOrWhiteSpace(r));
             return ret;
         }
 
@@ -164,7 +148,7 @@
             foreach (var floatCondition in FloatConditions)
             {
                 int index = input.IndexOf(floatCondition.Symbol);
-                if (index != -1 && char.IsWhiteSpace(input[index - 1]) && char.IsWhiteSpace(input[index + floatCondition.Symbol.Length]))
+                if (index != -1 && input[index - 1] is not '<' or '>' && input[index + floatCondition.Symbol.Length] is not '<' or '>')
                 {
                     match = floatCondition;
                     break;
@@ -204,9 +188,6 @@
                 {
                     return new(false, false, $"Malformed condition provided! Condition: {raw}");
                 }
-
-                Log.Info(split[0]);
-                Log.Info(split[1]);
 
                 return new(true, match2.Execute(split[0], split[1]), string.Empty);
             }
