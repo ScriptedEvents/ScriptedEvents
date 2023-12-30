@@ -536,6 +536,10 @@ namespace ScriptedEvents.API.Features
             int safetyActionCount = 0;
             Stopwatch safety = Stopwatch.StartNew();
 
+            Stopwatch runTime = Stopwatch.StartNew();
+            int lines = 0;
+            int successfulLines = 0;
+
             for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
                 scr.DebugLog("-----------");
@@ -628,6 +632,7 @@ namespace ScriptedEvents.API.Features
                     else
                     {
                         scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine + 1}]: SUCCESS");
+                        successfulLines++;
                         if (!string.IsNullOrEmpty(resp.Message))
                         {
                             string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Response: {resp.Message}";
@@ -648,6 +653,8 @@ namespace ScriptedEvents.API.Features
                             yield return delay.Value;
                         }
                     }
+
+                    lines++;
 
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
@@ -671,7 +678,9 @@ namespace ScriptedEvents.API.Features
             }
 
             scr.DebugLog("-----------");
+            scr.DebugLog($"Script {scr.ScriptName} concluded. Total time '{runTime.Elapsed:mm':'ss':'fff}', Executed '{successfulLines}/{lines}' ({Math.Round((float)successfulLines / lines * 100)}%) actions successfully");
             MainPlugin.Info($"Finished running script {scr.ScriptName}.");
+            scr.DebugLog("-----------");
             scr.IsRunning = false;
 
             if (MainPlugin.Singleton.Config.LoopScripts is not null && MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
