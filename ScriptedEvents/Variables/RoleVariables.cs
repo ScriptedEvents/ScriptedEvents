@@ -15,16 +15,36 @@
         public string GroupName => "Roles";
 
         /// <inheritdoc/>
-        public IVariable[] Variables { get; } = new IVariable[]
+        public IVariable[] Variables
         {
-            new Guards(),
-            new MtfAndGuards(),
-            new Scps(),
-            new Mtf(),
-            new Chaos(),
-            new SerpentsHand(),
-            new UIU(),
-        };
+            get
+            {
+                var vars = this.variables ??= ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId)))
+                        .Where(role => role is not RoleTypeId.None)
+                        .Select(role => new RoleTypeVariable(role))
+                        .ToList();
+
+                List<IVariable> variables = new()
+                {
+                    new Guards(),
+                    new MtfAndGuards(),
+                    new Scps(),
+                    new Mtf(),
+                    new Chaos(),
+                    new SerpentsHand(),
+                    new UIU(),
+                };
+
+                foreach (RoleTypeVariable var in vars)
+                {
+                    variables.Add(var);
+                }
+
+                return variables.ToArray();
+            }
+        }
+
+        private List<RoleTypeVariable> variables;
     }
 
     public class Guards : IFloatVariable, IPlayerVariable

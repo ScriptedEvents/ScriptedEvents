@@ -19,13 +19,6 @@
     public static class VariableSystem
     {
         /// <summary>
-        /// Maps each <see cref="RoleTypeId"/> variable (eg. "{SCP173}") to a respective <see cref="RoleTypeVariable"/>.
-        /// </summary>
-        public static readonly Dictionary<string, RoleTypeVariable> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId)))
-            .Where(role => role is not RoleTypeId.None)
-            .ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => new RoleTypeVariable(x));
-
-        /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="IVariableGroup"/> representing all the valid condition variables.
         /// </summary>
         public static List<IVariableGroup> Groups { get; } = new();
@@ -178,9 +171,6 @@
                         result = new(boolVariable, true);
                 }
             }
-
-            if (RoleTypeIds.TryGetValue(name, out RoleTypeVariable value))
-                result = new(value, false);
 
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
                 result = new(customValue, false);
