@@ -84,6 +84,8 @@
 
         public static List<Tuple<EventInfo, Delegate>> StoredDelegates { get; } = new();
 
+        public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";
 

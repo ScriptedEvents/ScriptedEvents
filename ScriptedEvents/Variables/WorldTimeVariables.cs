@@ -2,6 +2,7 @@
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using System;
+    using Exiled.API.Features;
     using ScriptedEvents.Variables.Interfaces;
 
     public class WorldTimeVariables : IVariableGroup
@@ -82,7 +83,7 @@
         public float Value => DateTime.UtcNow.Year;
     }
 
-    public class Tick : IFloatVariable
+    public class Tick : ILongVariable
     {
         /// <inheritdoc/>
         public string Name => "{TICK}";
@@ -91,7 +92,7 @@
         public string Description => $"The amount of seconds since {new DateTime(1970, 1, 1):f}.";
 
         /// <inheritdoc/>
-        public float Value => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        public long Value => (long)(DateTime.UtcNow - MainPlugin.Epoch).TotalSeconds;
     }
 
     public class Hour : IFloatVariable

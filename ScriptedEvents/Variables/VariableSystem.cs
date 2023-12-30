@@ -377,6 +377,9 @@
                             case IFloatVariable @float:
                                 input = input.Replace(variable, @float.Value);
                                 break;
+                            case ILongVariable @long:
+                                input = input.Replace(variable, @long.Value);
+                                break;
                             case IStringVariable @string:
                                 input = input.Replace(variable, @string.Value);
                                 break;

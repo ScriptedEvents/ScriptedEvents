@@ -249,6 +249,7 @@
 
                             // sb.AppendLine($"Current Value: {(value ? "TRUE" : "FALSE")}");
                             break;
+                        case ILongVariable @long:
                         case IFloatVariable @float:
                             sb.AppendLine("Numerical");
 

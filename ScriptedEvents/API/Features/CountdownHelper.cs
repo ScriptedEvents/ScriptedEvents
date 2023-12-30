@@ -53,7 +53,25 @@
                 secondsStr = $"0{secondsStr}";
             }
 
-            return $"{time.Minutes}:{secondsStr}";
+            if (time.TotalHours < 1)
+                return $"{time.Minutes}:{secondsStr}";
+
+            string minStr = time.Minutes.ToString();
+            if (minStr.Length == 1)
+            {
+                minStr = $"0{minStr}";
+            }
+
+            if (time.TotalDays < 1)
+                return $"{time.Hours}:{minStr}:{secondsStr}";
+
+            string hourStr = time.Hours.ToString();
+            if (hourStr.Length == 1)
+            {
+                hourStr = $"0{hourStr}";
+            }
+
+            return $"{time.Days}:{hourStr}:{minStr}:{secondsStr}";
         }
 
         /// <summary>
