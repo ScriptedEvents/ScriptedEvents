@@ -663,7 +663,14 @@
 
         public void OnScpAbility(IDeniableEvent ev)
         {
-            // Todo: Per-player support
+            if (ev is IPlayerEvent playerEv)
+            {
+                if (EventToDisableKey.TryGetValue(ev.GetType(), out string key2) && (DisabledForPlayer(key2, playerEv.Player) || (key2 is "SCP106ATTACK" or "SCP049ATTACK" && DisabledForPlayer("SCPATTACK", playerEv.Player))))
+                    ev.IsAllowed = false;
+                if (DisabledForPlayer("SCPALLABILITIES", playerEv.Player))
+                    ev.IsAllowed = false;
+            }
+
             if (EventToDisableKey.TryGetValue(ev.GetType(), out string key) && (DisabledKeys.Contains(key) || (key is "SCP106ATTACK" or "SCP049ATTACK" && DisabledKeys.Contains("SCPATTACK"))))
                 ev.IsAllowed = false;
             if (DisabledKeys.Contains("SCPALLABILITIES"))
