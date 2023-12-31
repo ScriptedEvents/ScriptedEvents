@@ -161,14 +161,12 @@
                 sb.AppendLine($"Action type: {MsgGen.Display(action.Subgroup)}");
 
                 if (action.IsObsolete(out string reason))
-                {
                     sb.AppendLine($"** THIS ACTION IS MARKED AS OBSOLETE AND REASON DIRECTIVES SHOULD BE READ BEFORE USING. REASON: {reason} **");
-                    sb.AppendLine();
-                }
+
+                sb.AppendLine();
 
                 if (action is ILongDescription longDescription)
                 {
-                    sb.AppendLine("Extra Info:");
                     sb.AppendLine(longDescription.LongDescription);
                 }
 

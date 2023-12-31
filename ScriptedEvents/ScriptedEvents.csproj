@@ -142,6 +142,7 @@
     <Compile Include="API\Enums\MessageType.cs" />
     <Compile Include="API\Features\CountdownHelper.cs" />
     <Compile Include="API\Features\MsgGen.cs" />
+    <Compile Include="API\Interfaces\ILongDescription.cs" />
     <Compile Include="Commands\CustomCommand.cs" />
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
