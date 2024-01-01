@@ -9,6 +9,7 @@
     using Exiled.API.Features.Roles;
     using Exiled.CustomItems.API.Features;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
@@ -128,13 +129,13 @@
         }
     }
 
-    public class Show : IStringVariable, IArgumentVariable, INeedSourceVariable
+    public class Show : IStringVariable, IArgumentVariable, INeedSourceVariable, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "{SHOW}";
 
         /// <inheritdoc/>
-        public string Description => "Reveal certain properties about the players in a player variable. This variable is designed to only be used with a player variable containing one player. However, it CAN be used with multiple players, and will list the display in the form of a comma-separated list.";
+        public string Description => "Reveal certain properties about the players in a player variable.";
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
@@ -143,7 +144,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(string), "The name of the player variable to show.", true),
-            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\" Options: NAME, DISPLAYNAME, GROUP, USERID, PLAYERID, ROLE, TEAM, ROOM, ZONE, HP, HEALTH, INV, INVCOUNT, HELDITEM, TIER.", false),
+            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\".", false),
         };
 
         /// <inheritdoc/>
@@ -199,6 +200,31 @@
                 throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
             }
         }
+
+        /// <inheritdoc/>
+        public string LongDescription => @"This variable is designed to only be used with a player variable containing one player. However, it CAN be used with multiple players, and will list the display in the form of a comma-separated list.
+Do not use this variable for using player variables in commands. Use the 'C' variable for this.
+The following options are valid selector options:
+- NAME
+- DISPLAYNAME
+- USERID
+- PLAYERID
+- ROLE
+- TEAM
+- ROOM
+- ZONE
+- HP / HEALTH
+- INVCOUNT
+- INV
+- HELDITEM
+- GOD
+- POS
+- POSX
+- POSY
+- POSZ
+- TIER
+- GROUP
+Invalid options will default to the 'NAME' selector.";
     }
 
     public class RandomRoom : IStringVariable, IArgumentVariable, INeedSourceVariable

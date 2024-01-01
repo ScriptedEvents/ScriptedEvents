@@ -286,6 +286,11 @@
                     }
 
                     sb.AppendLine();
+
+                    if (variable is ILongDescription longDescription)
+                    {
+                        sb.AppendLine(longDescription.LongDescription);
+                    }
                 }
 
                 if (!valid)
