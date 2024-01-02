@@ -70,7 +70,7 @@
                 }
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
+            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out PlayerCollection plys, script))
                 return new(false, plys.Message);
 
             foreach (Player player in plys)
