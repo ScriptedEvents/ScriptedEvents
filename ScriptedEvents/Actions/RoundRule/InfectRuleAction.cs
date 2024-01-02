@@ -5,6 +5,7 @@
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -45,7 +46,7 @@
             if (!VariableSystem.TryParse(Arguments[1], out RoleTypeId newRole, script))
                 return new(MessageType.InvalidRole, this, "newrole", Arguments[1]);
 
-            bool movePlayer = Arguments[2].ToUpper() is "TRUE" or "YES";
+            bool movePlayer = Arguments[2].AsBool();
 
             MainPlugin.Handlers.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
             MainPlugin.Handlers.InfectionRules.Add(new(oldRole, newRole, movePlayer));

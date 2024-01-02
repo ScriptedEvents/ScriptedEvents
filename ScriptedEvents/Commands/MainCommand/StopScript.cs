@@ -2,12 +2,11 @@
 {
     using System;
     using System.IO;
-    using System.Text;
+
     using CommandSystem;
-    using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
+
     using Exiled.Permissions.Extensions;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]

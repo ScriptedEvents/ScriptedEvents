@@ -3,14 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
+
     using PlayerRoles;
     using Respawning;
-    using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 

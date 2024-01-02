@@ -104,7 +104,7 @@
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Yielding\HttpPostAction.cs" />
     <Compile Include="Actions\Yielding\HttpGetAction.cs" />
-    <Compile Include="Actions\Round\EndRound.cs" />
+    <Compile Include="Actions\Round\EndRoundAction.cs" />
     <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
     <Compile Include="Actions\Player\RadioRangeAction.cs" />
     <Compile Include="Actions\Inventory\RemoveItemAction.cs" />

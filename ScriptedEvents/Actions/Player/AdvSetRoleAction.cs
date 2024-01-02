@@ -8,6 +8,7 @@
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -48,8 +49,8 @@
             if (!VariableSystem.TryParse<RoleTypeId>(Arguments[1], out RoleTypeId roleType, script))
                 return new(MessageType.InvalidRole, this, "role", Arguments[1]);
 
-            bool setSpawnpoint = Arguments.Length == 2 || Arguments[2] is "TRUE" or "YES";
-            bool setInventory = Arguments.Length <= 3 || Arguments[3] is "TRUE" or "YES";
+            bool setSpawnpoint = Arguments.Length == 2 || Arguments[2].AsBool();
+            bool setInventory = Arguments.Length <= 3 || Arguments[3].AsBool();
 
             RoleSpawnFlags flags = RoleSpawnFlags.None;
 

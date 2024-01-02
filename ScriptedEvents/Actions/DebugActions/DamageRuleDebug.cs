@@ -8,7 +8,6 @@
 
     public class DamageRuleDebug : IScriptAction, IHiddenAction
     {
-
         /// <inheritdoc/>
         public string Name { get; } = "DAMAGERULEDEBUG";
 

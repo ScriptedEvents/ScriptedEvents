@@ -7,24 +7,27 @@ namespace ScriptedEvents.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
+
     using CommandSystem;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
-    using Interactables.Interobjects;
+
     using MEC;
     using PlayerRoles;
     using RemoteAdmin;
+
     using ScriptedEvents.Actions;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
-    using static Exiled.Loader.Features.MultiAdminFeatures;
+
     using AirlockController = Exiled.API.Features.Doors.AirlockController;
-    using ScriptedEvents.API.Extensions;
 
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.

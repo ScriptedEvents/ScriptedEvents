@@ -13,6 +13,9 @@
 
     public class CustomCommand : ICommand
     {
+        private DateTime globalCooldown;
+        private Dictionary<string, DateTime> playerCooldown = new();
+
         /// <inheritdoc/>
         public string Command { get; set; }
 
@@ -51,9 +54,6 @@
         /// Gets or sets the permission required to execute this command.
         /// </summary>
         public string Permission { get; set; }
-
-        private DateTime globalCooldown;
-        private Dictionary<string, DateTime> playerCooldown = new();
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

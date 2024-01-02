@@ -5,6 +5,7 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -86,7 +87,7 @@
                     return new(MessageType.LessThanZeroNumber, this, "sustain", limit);
             }
 
-            bool persistent = Arguments.Length > 6 && (Arguments[6] is "TRUE" or "YES");
+            bool persistent = Arguments.Length > 6 && Arguments[6].AsBool();
 
             foreach (Player ply in plys)
                 ply.AddAhp(hp, limit, decay, efficacy, sustain, persistent);

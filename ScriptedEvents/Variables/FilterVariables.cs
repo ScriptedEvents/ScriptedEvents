@@ -8,6 +8,7 @@
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using PlayerRoles;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -136,8 +137,8 @@
 
                         "GROUP" => players.Where(plr => plr.GroupName == Arguments[2]),
 
-                        "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()) == "TRUE" => players.Where(plr => plr.RemoteAdminAccess),
-                        "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()) == "FALSE" => players.Where(plr => !plr.RemoteAdminAccess),
+                        "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()).AsBool() => players.Where(plr => plr.RemoteAdminAccess),
+                        "ISSTAFF" when !VariableSystem.ReplaceVariable(Arguments[2].ToUpper()).AsBool() => players.Where(plr => !plr.RemoteAdminAccess),
                         _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{Arguments[2]}' is not valid for the specified filter method."),
                     };
                 }

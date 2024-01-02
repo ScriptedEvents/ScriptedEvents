@@ -7,8 +7,7 @@
     using System.Text.RegularExpressions;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
-
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.Conditions.Floats;
     using ScriptedEvents.Conditions.Interfaces;
     using ScriptedEvents.Conditions.Strings;
@@ -59,8 +58,8 @@
         public static float Math(string expression)
         {
             // StackOverflow my beloved
-            DataTable loDataTable = new DataTable();
-            DataColumn loDataColumn = new DataColumn("Eval", typeof(double), expression);
+            DataTable loDataTable = new();
+            DataColumn loDataColumn = new("Eval", typeof(double), expression);
             loDataTable.Columns.Add(loDataColumn);
             loDataTable.Rows.Add(0);
             return (float)(double)loDataTable.Rows[0]["Eval"];
@@ -107,7 +106,12 @@
             return ret;
         }
 
-        private static ConditionResponse EvaluateAndOr(string input, Script source = null)
+        public static ConditionResponse Evaluate(string input, Script source = null)
+        {
+            return EvaluateInternal(input, source);
+        }
+
+        private static ConditionResponse EvaluateAndOr(string input)
         {
             string[] andSplit = input.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
             bool stillGo = true;
@@ -235,17 +239,12 @@
             {
                 foreach (Match match in matches)
                 {
-                    ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value, source: source);
+                    ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value);
                     convertedInput = convertedInput.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
                 }
             }
 
-            return EvaluateAndOr(convertedInput, source);
-        }
-
-        public static ConditionResponse Evaluate(string input, Script source = null)
-        {
-            return EvaluateInternal(input, source);
+            return EvaluateAndOr(convertedInput);
         }
     }
 }
