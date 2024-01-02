@@ -658,7 +658,6 @@
             // SCP-3114
             [typeof(TryUseBodyEventArgs)] = "SCP3114DISGUISE",
             [typeof(DisguisingEventArgs)] = "SCP3114DISGUISE",
-
         };
 
         public void OnScpAbility(IDeniableEvent ev)
