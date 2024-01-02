@@ -84,7 +84,7 @@
   <ItemGroup>
     <Compile Include="Actions\CASSIE\CassiePlayerAction.cs" />
     <Compile Include="Actions\DebugActions\DebugConditionV2.cs" />
-    <Compile Include="Actions\Misc\PrintCommand.cs" />
+    <Compile Include="Actions\Misc\PrintAction.cs" />
     <Compile Include="Actions\Player\CustomInfoAction.cs" />
     <Compile Include="Actions\RoundRule\DamageRuleAction.cs" />
     <Compile Include="Actions\DebugActions\DamageRuleDebug.cs" />
