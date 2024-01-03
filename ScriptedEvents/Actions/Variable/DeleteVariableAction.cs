@@ -8,7 +8,7 @@
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
-    public class DeleteVariable : IScriptAction, IHelpInfo
+    public class DeleteVariableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "DELVARIABLE";
