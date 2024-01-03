@@ -24,6 +24,9 @@
 
         public string Message { get; }
 
+        public Player this[int position]
+            => players[position];
+
         public IEnumerator<Player> GetEnumerator()
         {
             return players.GetEnumerator();
