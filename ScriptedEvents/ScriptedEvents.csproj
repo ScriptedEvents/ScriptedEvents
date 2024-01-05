@@ -98,6 +98,7 @@
     <Compile Include="Actions\Misc\CustomAction.cs" />
     <Compile Include="Actions\Health\DamageAction.cs" />
     <Compile Include="Actions\Player\EffectPermanentAction.cs" />
+    <Compile Include="Actions\RoundRule\EffectRuleAction.cs" />
     <Compile Include="Actions\RoundRule\EnablePlayerAction.cs" />
     <Compile Include="Actions\RoundRule\DisablePlayerAction.cs" />
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
