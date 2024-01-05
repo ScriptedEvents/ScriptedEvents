@@ -24,6 +24,7 @@ namespace ScriptedEvents.API.Features
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.Integrations;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -50,6 +51,8 @@ namespace ScriptedEvents.API.Features
         public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
         public static Dictionary<string, CustomAction> CustomActions { get; } = new();
+
+        public static RueIManager Ruei { get; } = new RueIManager();
 
         /// <summary>
         /// Reads and returns the text of a script.
@@ -389,6 +392,15 @@ namespace ScriptedEvents.API.Features
 
             rooms = ListPool<Room>.Pool.ToArrayReturn(roomList);
             return rooms.Length > 0;
+        }
+
+        public static void ShowHint(string text, float duration, List<Player> players = null)
+        {
+            if (players == null)
+                players = Player.List.ToList();
+
+            Ruei.MakeNew();
+            players.ForEach(p => Ruei.ShowHint(p, text, TimeSpan.FromSeconds(duration)));
         }
 
         /// <summary>

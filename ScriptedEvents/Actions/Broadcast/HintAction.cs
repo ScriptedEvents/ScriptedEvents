@@ -6,7 +6,9 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.Integrations;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -45,7 +47,7 @@
             }
 
             string message = string.Join(" ", Arguments.Skip(1).Select(arg => VariableSystem.ReplaceVariables(arg, script)));
-            Map.ShowHint(message, duration);
+            ScriptHelper.ShowHint(message, duration);
             return new(true);
         }
     }
