@@ -85,6 +85,10 @@
                 RawText = string.Join(" ", arguments),
                 ScriptName = "ACTION COMMAND EXECUTION",
             };
+
+            if (MainPlugin.Configs.Debug)
+                mockScript.Flags.Add("DEBUG");
+
             mockScript.Flags.Add("ACTIONCOMMANDEXECUTION");
 
             ActionResponse actionResponse = scriptAction.Execute(mockScript);

@@ -7,22 +7,26 @@ namespace ScriptedEvents.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
+
     using CommandSystem;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
-    using Interactables.Interobjects;
+
     using MEC;
     using PlayerRoles;
     using RemoteAdmin;
+
     using ScriptedEvents.Actions;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
-    using static Exiled.Loader.Features.MultiAdminFeatures;
+
     using AirlockController = Exiled.API.Features.Doors.AirlockController;
 
     /// <summary>
@@ -170,7 +174,7 @@ namespace ScriptedEvents.API.Features
                     }
 
                     if (!suppressWarnings)
-                        Log.Warn($"Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'. [Error Code: SE-102]");
+                        Log.Warn($"[L: {script.CurrentLine + 1}] Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'. [Error Code: SE-102]");
                     actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
@@ -181,7 +185,7 @@ namespace ScriptedEvents.API.Features
                 // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
                 {
-                    Log.Warn($"Notice: Action {newAction.Name} is marked as obsolete. Please follow reason directives when using. Reason: {obsoleteReason}");
+                    Log.Warn($"[L: {script.CurrentLine + 1}] Notice: Action {newAction.Name} is marked as obsolete. Please follow reason directives when using. Reason: {obsoleteReason}");
                 }
 
                 actionList.Add(newAction);
@@ -211,13 +215,13 @@ namespace ScriptedEvents.API.Features
             else if (executor is ServerConsoleSender console)
             {
                 script.Context = ExecuteContext.ServerConsole;
-                script.Sender = console;
             }
             else if (executor is PlayerCommandSender player)
             {
                 script.Context = ExecuteContext.RemoteAdmin;
-                script.Sender = player;
             }
+
+            script.Sender = executor;
 
             script.DebugLog($"Debug script read successfully. Name: {script.ScriptName} | Actions: {string.Join(" ", script.Actions.Length)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Where(action => action is NullAction @null && @null.Type is "COMMENT").Count()}");
 
@@ -274,7 +278,7 @@ namespace ScriptedEvents.API.Features
             }
             else
             {
-                string[] variables = ConditionHelper.IsolateVariables(input, source);
+                string[] variables = VariableSystem.IsolateVariables(input, source);
                 foreach (string variable in variables)
                 {
                     try
@@ -535,6 +539,10 @@ namespace ScriptedEvents.API.Features
             int safetyActionCount = 0;
             Stopwatch safety = Stopwatch.StartNew();
 
+            Stopwatch runTime = Stopwatch.StartNew();
+            int lines = 0;
+            int successfulLines = 0;
+
             for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
                 scr.DebugLog("-----------");
@@ -627,6 +635,7 @@ namespace ScriptedEvents.API.Features
                     else
                     {
                         scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine + 1}]: SUCCESS");
+                        successfulLines++;
                         if (!string.IsNullOrEmpty(resp.Message))
                         {
                             string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Response: {resp.Message}";
@@ -647,6 +656,8 @@ namespace ScriptedEvents.API.Features
                             yield return delay.Value;
                         }
                     }
+
+                    lines++;
 
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
@@ -670,7 +681,9 @@ namespace ScriptedEvents.API.Features
             }
 
             scr.DebugLog("-----------");
+            scr.DebugLog($"Script {scr.ScriptName} concluded. Total time '{runTime.Elapsed:mm':'ss':'fff}', Executed '{successfulLines}/{lines}' ({Math.Round((float)successfulLines / lines * 100)}%) actions successfully");
             MainPlugin.Info($"Finished running script {scr.ScriptName}.");
+            scr.DebugLog("-----------");
             scr.IsRunning = false;
 
             if (MainPlugin.Singleton.Config.LoopScripts is not null && MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))

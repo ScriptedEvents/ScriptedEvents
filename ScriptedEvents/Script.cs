@@ -3,16 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using CommandSystem;
     using Discord;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.Variables;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     /// <summary>
     /// Represents a script.

@@ -163,6 +163,13 @@
                 if (action.IsObsolete(out string reason))
                     sb.AppendLine($"** THIS ACTION IS MARKED AS OBSOLETE AND REASON DIRECTIVES SHOULD BE READ BEFORE USING. REASON: {reason} **");
 
+                sb.AppendLine();
+
+                if (action is ILongDescription longDescription)
+                {
+                    sb.AppendLine(longDescription.LongDescription);
+                }
+
                 // Usage
                 sb.Append($"Usage: {action.Name}");
                 foreach (Argument arg in helpInfo.ExpectedArguments)
@@ -249,6 +256,7 @@
 
                             // sb.AppendLine($"Current Value: {(value ? "TRUE" : "FALSE")}");
                             break;
+                        case ILongVariable @long:
                         case IFloatVariable @float:
                             sb.AppendLine("Numerical");
 
@@ -278,6 +286,11 @@
                     }
 
                     sb.AppendLine();
+
+                    if (variable is ILongDescription longDescription)
+                    {
+                        sb.AppendLine(longDescription.LongDescription);
+                    }
                 }
 
                 if (!valid)

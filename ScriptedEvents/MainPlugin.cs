@@ -84,6 +84,8 @@
 
         public static List<Tuple<EventInfo, Delegate>> StoredDelegates { get; } = new();
 
+        public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";
 
@@ -91,7 +93,7 @@
         public override string Author => "Thunder + Johnodon";
 
         /// <inheritdoc/>
-        public override Version Version => new(2, 5, 2);
+        public override Version Version => new(2, 6, 0);
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion => new(8, 4, 4);
@@ -239,12 +241,23 @@
             VariableSystem.Setup();
 
             // "On" config
+            SetupEvents();
+        }
+
+        /// <summary>
+        /// Sets up the "On" config to be connected to events.
+        /// </summary>
+        public void SetupEvents()
+        {
             foreach (KeyValuePair<string, List<string>> ev in Configs.On)
             {
+                Log.Debug("Setting up new 'on' event");
+                Log.Debug($"Event: {ev.Key}");
+                Log.Debug($"Scripts: {string.Join(", ", ev.Value)}");
                 bool made = false;
                 foreach (Type handler in HandlerTypes)
                 {
-                    // Credit to DevTools for below code.
+                    // Credit to DevTools & Yamato for below code.
                     Delegate @delegate = null;
                     PropertyInfo propertyInfo = handler.GetProperty(ev.Key);
 
@@ -252,7 +265,7 @@
                         continue;
 
                     EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
-                    MethodInfo subscribe = propertyInfo.PropertyType.GetMethod("Subscribe");
+                    MethodInfo subscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Subscribe");
 
                     if (propertyInfo.PropertyType == typeof(Event))
                     {
@@ -449,6 +462,7 @@
                     Type = custom.Type,
                     CooldownMode = cooldownMode,
                     Cooldown = cooldown,
+                    DoResponse = custom.DefaultResponse,
                     Permission = custom.Permission == string.Empty ? string.Empty : "script.command." + custom.Permission,
                     Scripts = custom.Run.ToArray(),
                 };

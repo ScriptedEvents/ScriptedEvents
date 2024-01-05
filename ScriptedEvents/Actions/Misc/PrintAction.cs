@@ -9,10 +9,10 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class LogAction : IScriptAction, IHelpInfo
+    public class PrintAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "LOG";
+        public string Name => "PRINT";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -24,7 +24,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         /// <inheritdoc/>
-        public string Description => "Creates a server console log. Variables are supported.";
+        public string Description => "Creates a log message in the console the script was executed from. Variables are supported.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -35,7 +35,22 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Info(VariableSystem.ReplaceVariables(string.Join(" ", Arguments), script));
+            string message = VariableSystem.ReplaceVariables(string.Join(" ", Arguments), script);
+
+            if (script.Sender is null || script.Context is ExecuteContext.Automatic)
+            {
+                Log.Info(message);
+                return new(true);
+            }
+
+            if (script.Context is ExecuteContext.PlayerConsole)
+            {
+                Player.Get(script.Sender)?.SendConsoleMessage(message, "green");
+                return new(true);
+            }
+
+            script.Sender.Respond(message);
+
             return new(true);
         }
     }

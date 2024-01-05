@@ -7,6 +7,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using PlayerRoles;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
 
     using ScriptedEvents.Variables.Interfaces;
@@ -17,13 +18,6 @@
     /// </summary>
     public static class VariableSystem
     {
-        /// <summary>
-        /// Maps each <see cref="RoleTypeId"/> variable (eg. "{SCP173}") to a respective <see cref="RoleTypeVariable"/>.
-        /// </summary>
-        public static readonly Dictionary<string, RoleTypeVariable> RoleTypeIds = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId)))
-            .Where(role => role is not RoleTypeId.None)
-            .ToDictionary(x => $"{{{x.ToString().ToUpper()}}}", x => new RoleTypeVariable(x));
-
         /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="IVariableGroup"/> representing all the valid condition variables.
         /// </summary>
@@ -120,15 +114,6 @@
         }
 
         /// <summary>
-        /// Alternative to <see cref="string.Replace(string, string)"/> which takes an object as the newValue (and ToStrings it automatically).
-        /// </summary>
-        /// <param name="input">The string to perform the replacement on.</param>
-        /// <param name="oldValue">The string to look for.</param>
-        /// <param name="newValue">The value to replace it with.</param>
-        /// <returns>The modified string.</returns>
-        public static string Replace(this string input, string oldValue, object newValue) => input.Replace(oldValue, newValue.ToString());
-
-        /// <summary>
         /// Gets a variable.
         /// </summary>
         /// <param name="name">The input string.</param>
@@ -177,9 +162,6 @@
                         result = new(boolVariable, true);
                 }
             }
-
-            if (RoleTypeIds.TryGetValue(name, out RoleTypeVariable value))
-                result = new(value, false);
 
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
                 result = new(customValue, false);
@@ -369,7 +351,7 @@
         /// <remarks>This is intended for strings that contain both regular text and variables. Otherwise, see <see cref="ReplaceVariable(string, Script, bool)"/>.</remarks>
         public static string ReplaceVariables(string input, Script source = null)
         {
-            string[] variables = ConditionHelper.IsolateVariables(input, source);
+            string[] variables = VariableSystem.IsolateVariables(input, source);
 
             foreach (var variable in variables)
             {
@@ -386,6 +368,9 @@
                             case IFloatVariable @float:
                                 input = input.Replace(variable, @float.Value);
                                 break;
+                            case ILongVariable @long:
+                                input = input.Replace(variable, @long.Value);
+                                break;
                             case IStringVariable @string:
                                 input = input.Replace(variable, @string.Value);
                                 break;
@@ -399,6 +384,33 @@
             }
 
             return input;
+        }
+
+        /// <summary>
+        /// Isolates all variables from a string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="source">The script source.</param>
+        /// <returns>The variables used within the string.</returns>
+        public static string[] IsolateVariables(string input, Script source = null)
+        {
+            source?.DebugLog($"Isolating variables from: {input}");
+            List<string> result = ListPool<string>.Pool.Get();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                char c = input[i];
+                if (c is '{')
+                {
+                    int index = input.IndexOf('}', i);
+                    source?.DebugLog($"Detected variable opening symbol, char {i}. Closing index {index}. Substring {index - i + 1}.");
+                    string variable = input.Substring(i, index - i + 1);
+                    source?.DebugLog($"Variable: {variable}");
+                    result.Add(variable);
+                }
+            }
+
+            return ListPool<string>.Pool.ToArrayReturn(result);
         }
     }
 }

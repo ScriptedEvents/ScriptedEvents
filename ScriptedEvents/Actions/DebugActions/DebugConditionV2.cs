@@ -7,10 +7,10 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class DebugConditionLogAction : IScriptAction, IHiddenAction
+    public class DebugConditionV2 : IScriptAction, IHiddenAction
     {
         /// <inheritdoc/>
-        public string Name => "DEBUGCONDITIONLOG";
+        public string Name => "DEBUGCONDITIONV2";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();

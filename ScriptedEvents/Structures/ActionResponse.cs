@@ -1,8 +1,8 @@
 ﻿namespace ScriptedEvents.Structures
 {
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Interfaces;
 
     /// <summary>
     /// Represents a response to an action execution.

@@ -4,8 +4,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
+
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
@@ -46,7 +48,6 @@
 
     public class AllNpcs : IFloatVariable, IPlayerVariable
     {
-
         /// <inheritdoc/>
         public string Name => "{NPCS}";
 

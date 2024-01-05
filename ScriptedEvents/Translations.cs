@@ -17,6 +17,5 @@
         public string DisabledScript { get; set; } = "This script is disabled.";
 
         public string MissingScript { get; set; } = "This script could not be found.";
-
     }
 }

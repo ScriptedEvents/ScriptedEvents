@@ -6,6 +6,11 @@
     public enum ExecuteContext
     {
         /// <summary>
+        /// N/A.
+        /// </summary>
+        None,
+
+        /// <summary>
         /// Executed via Remote Admin.
         /// </summary>
         RemoteAdmin,
@@ -19,5 +24,10 @@
         /// Executed automatically by plugin.
         /// </summary>
         Automatic,
+
+        /// <summary>
+        /// Executed via Player Console command.
+        /// </summary>
+        PlayerConsole,
     }
 }

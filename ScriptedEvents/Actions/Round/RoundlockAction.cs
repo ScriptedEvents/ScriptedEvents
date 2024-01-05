@@ -6,6 +6,7 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
@@ -37,7 +38,7 @@
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            Round.IsLocked = Arguments.ElementAt(0).ToUpper() is "TRUE" or "YES";
+            Round.IsLocked = Arguments.ElementAt(0).AsBool();
             return new(true);
         }
     }

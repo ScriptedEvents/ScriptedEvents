@@ -15,7 +15,7 @@
 
     using Rule = ScriptedEvents.Structures.DamageRule;
 
-    public class DamageRule : IScriptAction, IHelpInfo
+    public class DamageRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "DAMAGERULE";

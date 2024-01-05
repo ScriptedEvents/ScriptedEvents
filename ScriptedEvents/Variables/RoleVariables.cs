@@ -6,25 +6,43 @@
     using System.Linq;
     using Exiled.API.Features;
     using PlayerRoles;
-    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
     public class RoleVariables : IVariableGroup
     {
+        private List<IVariable> variables;
+
         /// <inheritdoc/>
         public string GroupName => "Roles";
 
         /// <inheritdoc/>
-        public IVariable[] Variables { get; } = new IVariable[]
+        public IVariable[] Variables
         {
-            new Guards(),
-            new MtfAndGuards(),
-            new Scps(),
-            new Mtf(),
-            new Chaos(),
-            new SerpentsHand(),
-            new UIU(),
-        };
+            get
+            {
+                if (variables is not null)
+                    return variables.ToArray();
+
+                List<IVariable> roleVars = ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId)))
+                        .Where(role => role is not RoleTypeId.None)
+                        .Select(role => new RoleTypeVariable(role))
+                        .ToList<IVariable>();
+
+                roleVars.AddRange(new List<IVariable>()
+                {
+                    new Guards(),
+                    new MtfAndGuards(),
+                    new Scps(),
+                    new Mtf(),
+                    new Chaos(),
+                    new SerpentsHand(),
+                    new UIU(),
+                });
+
+                variables = roleVars;
+                return variables.ToArray();
+            }
+        }
     }
 
     public class Guards : IFloatVariable, IPlayerVariable

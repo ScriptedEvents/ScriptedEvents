@@ -2,9 +2,9 @@
 {
     using System;
 
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class StopIfAction : IScriptAction, ILogicAction, IHelpInfo
@@ -33,7 +33,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            ConditionResponse outcome = ConditionHelper.Evaluate(string.Join(string.Empty, Arguments), script);
+            ConditionResponse outcome = ConditionHelperV2.Evaluate(string.Join(" ", Arguments), script);
             if (!outcome.Success)
                 return new(false, $"STOPIF execution error: {outcome.Message}", ActionFlags.FatalError);
 

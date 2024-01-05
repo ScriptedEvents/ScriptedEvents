@@ -8,7 +8,9 @@
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using PlayerRoles;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -83,7 +85,7 @@
         }
     }
 
-    public class Filter : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
+    public class Filter : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "{FILTER}";
@@ -98,8 +100,8 @@
         public Argument[] ExpectedArguments { get; } = new[]
         {
             new Argument("name", typeof(string), "The name of the variable to filter.", true),
-            new Argument("type", typeof(string), "The mode to use to filter. Valid modes: GROUP, ROLE, ZONE, TEAM, ROOM, USERID, PLAYERID, INV, HELDITEM, ISSTAFF", true),
-            new Argument("input", typeof(string), "What to use as the filter (RoleType, ZoneType, etc)", true),
+            new Argument("type", typeof(string), "The mode to use to filter.", true),
+            new Argument("input", typeof(object), "What to use as the filter (RoleType, ZoneType, etc)", true),
         };
 
         /// <inheritdoc/>
@@ -135,8 +137,8 @@
 
                         "GROUP" => players.Where(plr => plr.GroupName == Arguments[2]),
 
-                        "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()) == "TRUE" => players.Where(plr => plr.RemoteAdminAccess),
-                        "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()) == "FALSE" => players.Where(plr => !plr.RemoteAdminAccess),
+                        "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()).AsBool() => players.Where(plr => plr.RemoteAdminAccess),
+                        "ISSTAFF" when !VariableSystem.ReplaceVariable(Arguments[2].ToUpper()).AsBool() => players.Where(plr => !plr.RemoteAdminAccess),
                         _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{Arguments[2]}' is not valid for the specified filter method."),
                     };
                 }
@@ -144,6 +146,20 @@
                 throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
             }
         }
+
+        /// <inheritdoc/>
+        public string LongDescription => @"The following options are valid mode options:
+- USERID
+- PLAYERID
+- ROLE
+- TEAM
+- ROOM
+- ZONE
+- INV
+- HELDITEM
+- GROUP
+- ISSTAFF
+Invalid options will result in a script error.";
     }
 
     public class GetByIndex : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable

@@ -25,7 +25,7 @@
         public ActionResponse Execute(Script script)
         {
             string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments), script);
-            if (!ConditionHelper.TryMath(formula, out MathResult result))
+            if (!ConditionHelperV2.TryMath(formula, out MathResult result))
             {
                 return new(MessageType.NotANumberOrCondition, this, "condition", formula, result);
             }

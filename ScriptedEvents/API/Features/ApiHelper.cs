@@ -132,7 +132,7 @@
         /// <returns>A tuple indicating success and the value.</returns>
         public static Tuple<bool, float> Math(string input)
         {
-            bool success = ConditionHelper.TryMath(VariableSystem.ReplaceVariables(input), out MathResult result);
+            bool success = ConditionHelperV2.TryMath(VariableSystem.ReplaceVariables(input), out MathResult result);
             return new(success, result.Result);
         }
     }

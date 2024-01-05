@@ -52,6 +52,7 @@
                 Description = "An example custom command!",
                 Type = API.Enums.CommandType.PlayerConsole,
                 Permission = "example",
+                DefaultResponse = true,
                 Cooldown = -1,
                 PlayerCooldown = -1,
                 Run = new() { "MyScript1", "MyScript2" },

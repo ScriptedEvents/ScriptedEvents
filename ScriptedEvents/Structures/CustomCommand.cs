@@ -16,6 +16,8 @@
 
         public CommandType Type { get; set; }
 
+        public bool DefaultResponse { get; set; }
+
         public int Cooldown { get; set; }
 
         public int PlayerCooldown { get; set; }

@@ -13,29 +13,28 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    [Obsolete("Renamed to EFFECTRULE. Functionality is still identical.")]
-    public class EffectPermanentAction : IScriptAction, IHelpInfo
+    public class EffectRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "EFFECTPERM";
+        public string Name => "EFFECTRULE";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Player;
+        public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public string Description => "Action for giving/removing permanent player effects.";
+        public string Description => "Action for setting rules to apply effects to specific roles/teams/players on-spawn.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
-            new Argument("target", typeof(object), "The players to affect, or the RoleType/Team to infect with the role.", true),
+            new Argument("target", typeof(object), "The players to affect, or the RoleType/Team to give the effect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
             new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
         };

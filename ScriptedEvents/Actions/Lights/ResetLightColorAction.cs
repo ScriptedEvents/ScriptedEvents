@@ -30,7 +30,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("room", typeof(RoomType), "The room(s) to change the color of.", true),
+            new Argument("room", typeof(RoomType), "The room to reset the color of, 'ALL' for all rooms, or a zone ('LightContainment', 'HeavyContainment', 'Entrance').", true),
         };
 
         /// <inheritdoc/>
