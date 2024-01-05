@@ -7,7 +7,6 @@
     using CommandSystem;
 
     using Exiled.Permissions.Extensions;
-
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
@@ -72,6 +71,12 @@
             if (action is ILogicAction)
             {
                 response = "Logic actions cannot be used in the action command.";
+                return false;
+            }
+
+            if (action is Actions.CommandAction)
+            {
+                response = "This action cannot be used in the action command.";
                 return false;
             }
 
