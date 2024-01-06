@@ -270,6 +270,7 @@ The following options are valid selector options:
 - POSZ
 - TIER
 - GROUP
+- CUFFED
 Invalid options will default to the 'NAME' selector.";
     }
 
