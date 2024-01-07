@@ -237,6 +237,7 @@
                             "TIER" => "0",
                             "GROUP" => ply.GroupName,
                             "CUFFED" => ply.IsCuffed.ToString().ToUpper(),
+                            "ONSERVER" => ply.IsVerified.ToString().ToUpper(),
                             _ => ply.Nickname,
                         };
                     }).OrderBy(s => s);
@@ -271,6 +272,7 @@ The following options are valid selector options:
 - TIER
 - GROUP
 - CUFFED
+- ONSERVER
 Invalid options will default to the 'NAME' selector.";
     }
 
