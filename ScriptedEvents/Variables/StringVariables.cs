@@ -412,19 +412,20 @@ Invalid options will default to the 'NAME' selector.";
                 }
 
                 string result = string.Empty;
+                int index = int.Parse(Arguments[1]);
 
                 if (Arguments.Length >= 3)
                 {
                     char listSplitChar = Arguments[2][0];
 
-                    int index = int.Parse(Arguments[1]);
+                    List<string> x = value.Value.Split(listSplitChar).ToList();
 
-                    result = value.Value.Split(listSplitChar).ToList()[index].Trim();
+                    if (index < x.Count) index = x.Count - 1;
+
+                    result = x[index].Trim();
                 }
                 else
                 {
-                    int index = int.Parse(Arguments[1]);
-
                     result = value.Value[index].ToString();
                 }
 
