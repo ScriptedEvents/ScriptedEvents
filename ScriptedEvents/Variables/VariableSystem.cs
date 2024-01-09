@@ -6,12 +6,9 @@
     using System.Reflection;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using PlayerRoles;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
-
     using ScriptedEvents.Variables.Interfaces;
-    using ScriptedEvents.Variables.Roles;
 
     /// <summary>
     /// A class used to store and retrieve all variables.
@@ -311,7 +308,15 @@
             }
 
             result = (int)floatResult;
-            return result == floatResult;
+
+            if (result == int.MaxValue)
+            {
+                result = -1;
+                return false;
+            }
+
+            Exiled.API.Features.Map.Broadcast(2, result.ToString());
+            return true;
         }
 
         /// <summary>

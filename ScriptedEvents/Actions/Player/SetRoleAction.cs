@@ -52,6 +52,7 @@
             {
                 if (!VariableSystem.TryParse(Arguments[2], out max, script))
                     return new(MessageType.NotANumber, this, "max", Arguments[2]);
+
                 if (max < 0)
                     return new(MessageType.LessThanZeroNumber, this, "max", max);
             }
