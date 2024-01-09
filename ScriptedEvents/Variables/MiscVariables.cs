@@ -1,11 +1,8 @@
 ﻿namespace ScriptedEvents.Variables.Misc
 {
     using System;
-    using Exiled.API.Enums;
-    using Exiled.API.Features.Doors;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
-#pragma warning disable SA1402 // File may only contain a single type
     using ScriptedEvents.Variables.Interfaces;
 
     public class MiscVariables : IVariableGroup

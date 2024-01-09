@@ -308,14 +308,6 @@
             }
 
             result = (int)floatResult;
-
-            if (result == int.MaxValue)
-            {
-                result = -1;
-                return false;
-            }
-
-            Exiled.API.Features.Map.Broadcast(2, result.ToString());
             return true;
         }
 

@@ -29,6 +29,7 @@
             new Show(),
 
             new RandomRoom(),
+            new Log(),
         };
     }
 
@@ -317,6 +318,52 @@ Invalid options will default to the 'NAME' selector.";
 
                 List<Room> newList = validRooms.ToList();
                 return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
+            }
+        }
+    }
+
+
+    public class Log : IStringVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LOG}";
+
+        /// <inheritdoc/>
+        public string Description => "Shows the name of the variable with its value. Useful for quick debugging.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+             new Argument("variable", typeof(string), "The name of the variable.", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                if (Arguments.Length < 1)
+                {
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "variable" }));
+                }
+
+                if (!VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
+                {
+                    throw new ArgumentException("bruh");
+                }
+ 
+                if (variable is not IStringVariable value)
+                {
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable.");
+                }
+
+                return $"{variable.Name} = {value.Value}";
             }
         }
     }
