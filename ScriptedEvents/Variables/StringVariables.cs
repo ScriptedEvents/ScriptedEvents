@@ -30,6 +30,7 @@
 
             new RandomRoom(),
             new Log(),
+            new Get(),
         };
     }
 
@@ -364,6 +365,70 @@ Invalid options will default to the 'NAME' selector.";
                 }
 
                 return $"{variable.Name} = {value.Value}";
+            }
+        }
+    }
+
+    public class Get : IStringVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{GET}";
+
+        /// <inheritdoc/>
+        public string Description => "Can get a certain thing from your variable.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+             new Argument("variable", typeof(string), "The name of the variable.", true),
+             new Argument("index", typeof(int), "The place from which the value should be taken.", true),
+             new Argument("listSplitChar", typeof(char), "A character that will split the variable into a list.", false),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                if (Arguments.Length < 2)
+                {
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "variable"));
+                }
+
+                if (!VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
+                {
+                    throw new ArgumentException($"Could not get the value of the variable {Arguments[0]}.");
+                }
+
+                if (variable is not IStringVariable value)
+                {
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a string variable.");
+                }
+
+                string result = string.Empty;
+
+                if (Arguments.Length >= 3)
+                {
+                    char listSplitChar = Arguments[2][0];
+
+                    int index = int.Parse(Arguments[1]);
+
+                    result = value.Value.Split(listSplitChar).ToList()[index].Trim();
+                }
+                else
+                {
+                    int index = int.Parse(Arguments[1]);
+
+                    result = value.Value[index].ToString();
+                }
+
+                return result;
             }
         }
     }
