@@ -249,6 +249,8 @@
             {
                 if (var is IFloatVariable floatVar)
                     return floatVar.Value;
+                if (var is ILongVariable longVar)
+                    return longVar.Value;
                 else if (var is IStringVariable stringVar && float.TryParse(stringVar.Value, out float res))
                     return res;
             }
