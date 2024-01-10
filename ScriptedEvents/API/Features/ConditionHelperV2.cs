@@ -224,27 +224,27 @@
                             return new(false, eval.Passed, eval.Message);
                         }
 
-                        convertedInput = convertedInput.Replace($"{convertedFrag}", eval.Passed.ToString().ToUpper());
+                        input = input.Replace($"{fragOr}", eval.Passed.ToString().ToUpper());
                     }
                 }
             }
 
-            Log.Debug($"CONVERTED INPUT: " + convertedInput);
+            Log.Debug($"CONVERTED INPUT: " + input);
 
-            if (bool.TryParse(convertedInput, out bool r))
+            if (bool.TryParse(input, out bool r))
                 return new(true, r, string.Empty);
 
-            MatchCollection matches = Regex.Matches(convertedInput, @"\(([^)]*)\)");
+            MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");
             if (matches.Count > 0)
             {
                 foreach (Match match in matches)
                 {
                     ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value);
-                    convertedInput = convertedInput.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
+                    input = input.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
                 }
             }
 
-            return EvaluateAndOr(convertedInput);
+            return EvaluateAndOr(input);
         }
     }
 }
