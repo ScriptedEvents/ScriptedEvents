@@ -4,10 +4,12 @@ on:
     branches:
     - main
     - dev
+    - andrzej-dev
   pull_request:
     branches:
     - main
     - dev
+    - andrzej-dev
   workflow_dispatch:
 env:
   REFERENCES_URL: https://exiled.host/build_deps/Dev.zip
