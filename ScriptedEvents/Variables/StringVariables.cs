@@ -220,6 +220,7 @@
                         {
                             "NAME" => ply.Nickname,
                             "DISPLAYNAME" => ply.DisplayNickname,
+                            "DPNAME" => ply.DisplayNickname,
                             "USERID" => ply.UserId,
                             "PLAYERID" => ply.Id.ToString(),
                             "ROLE" => ply.Role.Type.ToString(),
@@ -239,7 +240,6 @@
                             "TIER" => "0",
                             "GROUP" => ply.GroupName,
                             "CUFFED" => ply.IsCuffed.ToString().ToUpper(),
-                            "ONSERVER" => ply.IsVerified.ToString().ToUpper(),
                             _ => ply.Nickname,
                         };
                     }).OrderBy(s => s);
@@ -255,7 +255,7 @@
 Do not use this variable for using player variables in commands. Use the 'C' variable for this.
 The following options are valid selector options:
 - NAME
-- DISPLAYNAME
+- DISPLAYNAME / DPNAME
 - USERID
 - PLAYERID
 - ROLE
@@ -274,7 +274,6 @@ The following options are valid selector options:
 - TIER
 - GROUP
 - CUFFED
-- ONSERVER
 Invalid options will default to the 'NAME' selector.";
     }
 
