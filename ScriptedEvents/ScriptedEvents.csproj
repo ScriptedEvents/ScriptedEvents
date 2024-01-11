@@ -111,7 +111,8 @@
     <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
     <Compile Include="Actions\Player\RadioRangeAction.cs" />
     <Compile Include="Actions\Inventory\RemoveItemAction.cs" />
-    <Compile Include="API\Constants\ParameterMessages.cs" />
+    <Compile Include="API\Constants\Constants.cs" />
+    <Compile Include="API\Constants\ConstMessages.cs" />
     <Compile Include="API\Enums\CommandCooldownMode.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
     <Compile Include="API\Features\ConditionHelperV2.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
     <Compile Include="Integrations\RueiManager.cs" />
+    <Compile Include="Structures\Contributor.cs" />
     <Compile Include="Structures\CoroutineData.cs" />
     <Compile Include="Structures\CustomCommand.cs" />
     <Compile Include="Structures\DamageRule.cs" />
