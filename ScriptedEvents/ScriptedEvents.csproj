@@ -110,6 +110,7 @@
     <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
     <Compile Include="Actions\Player\RadioRangeAction.cs" />
     <Compile Include="Actions\Inventory\RemoveItemAction.cs" />
+    <Compile Include="API\Constants\ParameterMessages.cs" />
     <Compile Include="API\Enums\CommandCooldownMode.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
     <Compile Include="API\Features\ConditionHelperV2.cs" />
