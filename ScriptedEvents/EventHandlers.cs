@@ -238,7 +238,7 @@
 
                     if (scr.AdminEvent)
                     {
-                        Log.Warn($"The '{name}' script is set to run each round, but the script is marked as an admin event! [Error Code: SE-105]");
+                        Log.Warn(ErrorGen.Get(105, name));
                         continue;
                     }
 
@@ -246,11 +246,11 @@
                 }
                 catch (DisabledScriptException)
                 {
-                    Log.Warn($"The '{name}' script is set to run each round, but the script is disabled! [Error Code: SE-100]");
+                    Log.Warn(ErrorGen.Get(100, name));
                 }
                 catch (FileNotFoundException)
                 {
-                    Log.Warn($"The '{name}' script is set to run each round, but the script is not found! [Error Code: SE-101]");
+                    Log.Warn(ErrorGen.Get(101, name));
                 }
             }
         }
@@ -374,15 +374,15 @@
                     }
                     catch (DisabledScriptException)
                     {
-                        Log.Warn($"Error in 'On' handler (event: {eventName}): Script '{script}' is disabled! [Error Code: SE-110]");
+                        Log.Warn(ErrorGen.Get(110, eventName, script));
                     }
                     catch (FileNotFoundException)
                     {
-                        Log.Warn($"Error in 'On' handler (event: {eventName}): Script '{script}' cannot be found! [Error Code: SE-111]");
+                        Log.Warn(ErrorGen.Get(111, eventName, script));
                     }
                     catch (Exception ex)
                     {
-                        Log.Warn($"Error in 'On' handler (event: {eventName}) [Error Code: SE-112]: {ex}");
+                        Log.Warn(ErrorGen.Get(112, eventName) + $": {ex}");
                     }
                 }
             }

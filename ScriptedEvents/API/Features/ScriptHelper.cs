@@ -111,7 +111,7 @@ namespace ScriptedEvents.API.Features
                     if (!script.Flags.Contains(flag))
                         script.Flags.Add(flag);
                     else if (!suppressWarnings)
-                        Log.Warn($"Multiple definitions for the '{flag}' flag detected in script {scriptName}. [Error Code: SE-103]");
+                        Log.Warn(ErrorGen.Get(103, flag, scriptName));
 
                     actionList.Add(new NullAction("FLAG DEFINE"));
                     continue;
@@ -137,7 +137,7 @@ namespace ScriptedEvents.API.Features
                     if (!script.Labels.ContainsKey(labelName))
                         script.Labels.Add(labelName, currentline);
                     else if (!suppressWarnings)
-                        Log.Warn($"Multiple definitions for the '{labelName}' label detected in script {scriptName}. [Error Code: SE-104]");
+                        Log.Warn(ErrorGen.Get(104, labelName, scriptName));
 
                     actionList.Add(new NullAction($"{labelName} LABEL"));
 
@@ -177,7 +177,7 @@ namespace ScriptedEvents.API.Features
                     }
 
                     if (!suppressWarnings)
-                        Log.Warn($"[L: {script.CurrentLine + 1}] Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'. [Error Code: SE-102]");
+                        Log.Warn($"[L: {script.CurrentLine + 1}]" + ErrorGen.Get(102, keyword.RemoveWhitespace(), scriptName));
                     actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
@@ -680,7 +680,7 @@ namespace ScriptedEvents.API.Features
                     {
                         if (safetyActionCount > MainPlugin.Configs.MaxActionsPerSecond && !scr.Flags.Contains("NOSAFETY"))
                         {
-                            Log.Warn($"Script '{scr.ScriptName}' exceeded safety limit of {MainPlugin.Configs.MaxActionsPerSecond} actions per 1 second and has been force-stopped, saving from a potential crash. If this is intentional, add '!-- NOSAFETY' to the top of the script. All script loops should have a delay in them. [Error Code: SE-113]");
+                            Log.Warn(ErrorGen.Get(113, scr.ScriptName, MainPlugin.Configs.MaxActionsPerSecond))
                             break;
                         }
                         else

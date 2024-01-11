@@ -52,7 +52,7 @@
 
                 if (!VariableSystem.TryParse(Arguments[0], out float value))
                 {
-                    throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid number or variable containing a number. [Error Code: SE-134]");
+                    throw new ArgumentException(ErrorGen.Get(137, Arguments[1]));
                 }
 
                 string mode = Arguments.Length < 2 ? "UP" : Arguments[1];

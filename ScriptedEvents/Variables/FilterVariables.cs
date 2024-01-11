@@ -67,7 +67,7 @@
                     int max = 1;
                     if (Arguments.Length > 1 && !VariableSystem.TryParse(Arguments[1], out max, Source, false))
                     {
-                        throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid integer or variable containing an integer. [Error Code: SE-134]");
+                        throw new ArgumentException(ErrorGen.Get(134, Arguments[1]));
                     }
 
                     List<Player> list = players.ToList();
@@ -81,7 +81,7 @@
                     }
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
+                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
             }
         }
     }
@@ -144,7 +144,7 @@
                     };
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
+                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
             }
         }
 
@@ -201,16 +201,16 @@ Invalid options will result in a script error.";
                 {
                     if (!VariableSystem.TryParse(Arguments[1], out int index, Source, false))
                     {
-                        throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid integer or variable containing an integer. [Error Code: SE-134]");
+                        throw new ArgumentException(ErrorGen.Get(134, Arguments[1]));
                     }
 
                     if (index > players.Count() - 1)
-                        throw new IndexOutOfRangeException($"The provided index '{index}' is greater than the size of the player collection. [Error Code: SE-135]");
+                        throw new IndexOutOfRangeException(ErrorGen.Get(135, index));
 
                     return new List<Player>() { players.ToList()[index] }; // Todo make pretty
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
+                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
             }
         }
     }

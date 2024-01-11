@@ -112,13 +112,13 @@
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)
                     {
-                        throw new ArgumentException($"The provided value '{conditionVariable.Item1.Name}' has no associated players. [Error Code: SE-133]");
+                        throw new ArgumentException(ErrorGen.Get(133, conditionVariable.Item1.Name));
                     }
 
                     return variable.Players.Count();
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
+                throw new ArgumentException(ErrorGen.Get(132, Arguments[0]));
             }
         }
     }
@@ -162,7 +162,7 @@
 
                     if (variable is not IPlayerVariable plrVar)
                     {
-                        throw new ArgumentException($"The provided value '{variable.Name}' has no associated players. [Error Code: SE-133]");
+                        throw new ArgumentException(ErrorGen.Get(133, variable.Name));
                     }
 
                     if (plrVar.Players.Count() == 0)
@@ -171,7 +171,7 @@
                     return string.Join(".", plrVar.Players.Select(plr => plr.Id.ToString()));
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
+                throw new ArgumentException(ErrorGen.Get(132, Arguments[0]));
             }
         }
     }
@@ -246,7 +246,7 @@
                     return string.Join(", ", display).Trim();
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
+                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
             }
         }
 
