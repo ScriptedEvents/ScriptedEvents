@@ -30,7 +30,7 @@
 
             new RandomRoom(),
             new Log(),
-            new Get(),
+            new Index(),
         };
     }
 
@@ -322,7 +322,6 @@ Invalid options will default to the 'NAME' selector.";
         }
     }
 
-
     public class Log : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
@@ -355,12 +354,12 @@ Invalid options will default to the 'NAME' selector.";
 
                 if (!VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
                 {
-                    throw new ArgumentException("bruh");
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable.");
                 }
  
                 if (variable is not IStringVariable value)
                 {
-                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable.");
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid string variable.");
                 }
 
                 return $"{variable.Name} = {value.Value}";
@@ -368,10 +367,10 @@ Invalid options will default to the 'NAME' selector.";
         }
     }
 
-    public class Get : IStringVariable, IArgumentVariable, INeedSourceVariable
+    public class Index : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{GET}";
+        public string Name => "{INDEX}";
 
         /// <inheritdoc/>
         public string Description => "Can get a certain thing from your variable.";
@@ -402,20 +401,23 @@ Invalid options will default to the 'NAME' selector.";
 
                 if (!VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
                 {
-                    throw new ArgumentException($"Could not get the value of the variable {Arguments[0]}.");
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable.");
                 }
 
                 if (variable is not IStringVariable value)
                 {
-                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a string variable.");
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid string variable.");
                 }
 
-                string result = string.Empty;
-                int index = int.Parse(Arguments[1]);
+                string result;
+
+                if (!VariableSystem.TryParse(Arguments[1], out int index, Source, false))
+                    throw new ArgumentException($"Provided index '{Arguments[1]}' is not a valid integer or variable containing an integer.");
 
                 if (Arguments.Length >= 3)
                 {
-                    char listSplitChar = Arguments[2][0];
+                    if (!char.TryParse(Arguments[2], out char listSplitChar))
+                        throw new ArgumentException($"Provided split character '{Arguments[2]}' is not a valid character.");
 
                     List<string> x = value.Value.Split(listSplitChar).ToList();
 

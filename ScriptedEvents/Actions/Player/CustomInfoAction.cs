@@ -49,7 +49,7 @@
             {
                 case "SET":
                     if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-                    string text = string.Join(" ", Arguments.Skip(2).Select(arg => VariableSystem.ReplaceVariables(arg, script)))
+                    string text = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script)
                         .Replace("\\n", "\n")
                         .Replace("<br>", "\n");
                     foreach (Player ply in plys)

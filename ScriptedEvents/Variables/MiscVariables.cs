@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Misc
 {
+#pragma warning disable SA1402 // File may only contain a single type
     using System;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
@@ -65,4 +66,5 @@
             }
         }
     }
+#pragma warning restore SA1402 // File may only contain a single type.
 }
