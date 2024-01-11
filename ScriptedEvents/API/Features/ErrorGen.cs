@@ -10,6 +10,12 @@ namespace ScriptedEvents.API.Features
         public static ErrorInfo? GetError(int errorCode) =>
             ErrorList.Errors.FirstOrDefault(err => err.Id == errorCode);
 
+        public static bool TryGetError(int errorCode, out ErrorInfo? errorInfo)
+        {
+            errorInfo = GetError(errorCode);
+            return errorInfo is not null && errorInfo.HasValue;
+        }
+
         public static string Generate(int errorCode, params object[] arguments)
         {
             ErrorInfo? err = GetError(errorCode);

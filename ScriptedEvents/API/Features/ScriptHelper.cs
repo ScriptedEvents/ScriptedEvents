@@ -680,7 +680,7 @@ namespace ScriptedEvents.API.Features
                     {
                         if (safetyActionCount > MainPlugin.Configs.MaxActionsPerSecond && !scr.Flags.Contains("NOSAFETY"))
                         {
-                            Log.Warn(ErrorGen.Get(113, scr.ScriptName, MainPlugin.Configs.MaxActionsPerSecond))
+                            Log.Warn(ErrorGen.Get(113, scr.ScriptName, MainPlugin.Configs.MaxActionsPerSecond));
                             break;
                         }
                         else
