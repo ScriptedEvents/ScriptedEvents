@@ -165,5 +165,11 @@
                 response = string.Empty;
             return true;
         }
+
+        public void ResetCooldowns()
+        {
+            playerCooldown.Clear();
+            globalCooldown = new(1970, 0, 0);
+        }
     }
 }
