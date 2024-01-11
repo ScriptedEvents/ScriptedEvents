@@ -22,19 +22,19 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
-            new Random(),
+            new Max(),
             new Filter(),
             new GetByIndex(),
         };
     }
 
-    public class Random : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
+    public class Max : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{RANDOM}";
+        public string Name => "{MAX}";
 
         /// <inheritdoc/>
-        public string Description => "Pulls random player(s) from a variable.";
+        public string Description => "Filters a player variable and returns random players less than the provided amount.";
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
