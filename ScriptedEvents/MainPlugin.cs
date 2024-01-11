@@ -92,7 +92,7 @@
         public override string Name => "ScriptedEvents";
 
         /// <inheritdoc/>
-        public override string Author => "Thunder + Johnodon";
+        public override string Author => "Thunder";
 
         /// <inheritdoc/>
         public override Version Version => new(2, 6, 0);
