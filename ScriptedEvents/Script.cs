@@ -196,7 +196,7 @@
                 case "NEXT": // Simply return "true" as a success. It'll go to the next line automatically.
                     return true;
                 case "START":
-                    CurrentLine = 0;
+                    CurrentLine = -1;
                     return true;
             }
 

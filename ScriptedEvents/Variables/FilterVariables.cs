@@ -22,18 +22,19 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
+            new Max(),
             new Filter(),
             new GetByIndex(),
         };
     }
 
-    public class Random : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
+    public class Max : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{RANDOM}";
+        public string Name => "{MAX}";
 
         /// <inheritdoc/>
-        public string Description => "Pulls random player(s) from a variable.";
+        public string Description => "Filters a player variable and returns random players less than the provided amount.";
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
@@ -41,7 +42,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("name", typeof(string), "The name of the variable to select from.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the variable to select from.", true),
             new Argument("amount", typeof(int), "The amount of players to select (default: 1)", false),
         };
 
@@ -99,7 +100,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("name", typeof(string), "The name of the variable to filter.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the variable to filter.", true),
             new Argument("type", typeof(string), "The mode to use to filter.", true),
             new Argument("input", typeof(object), "What to use as the filter (RoleType, ZoneType, etc)", true),
         };
@@ -176,7 +177,7 @@ Invalid options will result in a script error.";
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("name", typeof(string), "The name of the variable to index.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the variable to index.", true),
             new Argument("type", typeof(int), "The index. Number variables can be used (if they are decimal, the decimal portion will be removed)", true),
         };
 

@@ -5,12 +5,13 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class ResetLightColorAction : IScriptAction, IHelpInfo
+    public class ResetLightColorAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "RESETLIGHTCOLOR";
@@ -28,9 +29,12 @@
         public string Description => "Resets the light color in the given room.";
 
         /// <inheritdoc/>
+        public string LongDescription => ConstMessages.RoomInput;
+
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("room", typeof(RoomType), "The room to reset the color of, 'ALL' for all rooms, or a zone ('LightContainment', 'HeavyContainment', 'Entrance').", true),
+            new Argument("room", typeof(RoomType), "The room(s) to reset the color of.", true),
         };
 
         /// <inheritdoc/>

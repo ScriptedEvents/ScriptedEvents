@@ -5,13 +5,14 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class LightsOffAction : IScriptAction, IHelpInfo
+    public class LightsOffAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "LIGHTSOFF";
@@ -29,9 +30,12 @@
         public string Description => "Turns all the lights off for a given period of time.";
 
         /// <inheritdoc/>
+        public string LongDescription => ConstMessages.RoomInput;
+
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("room", typeof(RoomType), "The room to flicker the lights off, 'ALL' for all rooms, or a zone ('LightContainment', 'HeavyContainment', 'Entrance').", true),
+            new Argument("room", typeof(RoomType), "The room(s) to flicker the lights off.", true),
             new Argument("duration", typeof(float), "The duration of the lights out. Variables are supported.", true),
         };
 

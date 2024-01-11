@@ -137,7 +137,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("name", typeof(string), "The name of the player variable.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the player variable.", true),
         };
 
         /// <inheritdoc/>
@@ -190,7 +190,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("name", typeof(string), "The name of the player variable to show.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the player variable to show.", true),
             new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\".", false),
         };
 
@@ -339,7 +339,7 @@ Invalid options will default to the 'NAME' selector.";
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("variable", typeof(string), "The name of the variable.", true),
+             new Argument("variable", typeof(IVariable), "The name of the variable.", true),
         };
 
         /// <inheritdoc/>
@@ -384,7 +384,7 @@ Invalid options will default to the 'NAME' selector.";
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("variable", typeof(string), "The name of the variable.", true),
+             new Argument("variable", typeof(IVariable), "The name of the variable.", true),
              new Argument("index", typeof(int), "The place from which the value should be taken.", true),
              new Argument("listSplitChar", typeof(char), "A character that will split the variable into a list.", false),
         };

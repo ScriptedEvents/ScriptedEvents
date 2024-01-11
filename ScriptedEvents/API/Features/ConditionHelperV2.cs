@@ -152,7 +152,9 @@
             foreach (var floatCondition in FloatConditions)
             {
                 int index = input.IndexOf(floatCondition.Symbol);
-                if (index != -1 && input[index - 1] is not '<' or '>' && input[index + floatCondition.Symbol.Length] is not '<' or '>')
+
+                // I dont like this code
+                if (index != -1 && input[index - 1] is not '<' or '>' or '=' && input[index + floatCondition.Symbol.Length] is not '<' or '>' or '=')
                 {
                     match = floatCondition;
                     break;

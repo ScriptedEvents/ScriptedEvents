@@ -28,6 +28,7 @@
         public static Dictionary<Type, string> TypeToString { get; } = new()
         {
             { typeof(string), "String (Message/Text)" },
+            { typeof(char), "Character" },
             { typeof(int), "Int (Whole Number)" },
             { typeof(byte), "Byte (Whole Number, 0-255)" },
             { typeof(float), "Float (Number)" },
@@ -42,6 +43,9 @@
             { typeof(IVariable), "Variable" },
             { typeof(IPlayerVariable), "Player Variable" },
             { typeof(IConditionVariable), "Condition Variable" },
+            { typeof(IStringVariable), "String (Message/Text) Variable" },
+            { typeof(IFloatVariable), "Numerical Variable" },
+            { typeof(ILongVariable), "Numerical Variable" },
             { typeof(object), "Any Type" },
         };
 
