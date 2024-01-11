@@ -86,11 +86,13 @@
 
         public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
+        public static List<CustomCommand> CustomCommands { get; } = new();
+
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";
 
         /// <inheritdoc/>
-        public override string Author => "Thunder + Johnodon";
+        public override string Author => "Thunder";
 
         /// <inheritdoc/>
         public override Version Version => new(2, 6, 0);
@@ -466,6 +468,8 @@
                     Permission = custom.Permission == string.Empty ? string.Empty : "script.command." + custom.Permission,
                     Scripts = custom.Run.ToArray(),
                 };
+
+                CustomCommands.Add(command);
 
                 switch (command.Type)
                 {

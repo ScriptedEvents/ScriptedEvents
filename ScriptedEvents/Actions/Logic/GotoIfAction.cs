@@ -3,12 +3,13 @@
     using System;
     using System.Linq;
 
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo
+    public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "GOTOIF";
@@ -32,6 +33,9 @@
             new Argument("falseLabel", typeof(string), "The label to jump to if the condition is FALSE, or a keyword (START/NEXT/STOP). Variables & Math are NOT supported.", true),
             new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
+
+        /// <inheritdoc/>
+        public string LongDescription => ConstMessages.GotoInput;
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)

@@ -7,7 +7,7 @@
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
-
+    using Exiled.API.Features.Roles;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
@@ -28,6 +28,7 @@
             new Staff(),
             new InRoom(),
             new NonePlayer(),
+            new Scp096Targets(),
         };
     }
 
@@ -177,5 +178,32 @@
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Enumerable.Empty<Player>();
+    }
+
+    public class Scp096Targets : IFloatVariable, IPlayerVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{SCP096TARGETS}";
+
+        /// <inheritdoc/>
+        public string Description => "The amount of players that are being targeted by an SCP-096.";
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players
+        {
+             get
+             {
+                List<Player> list = new();
+                foreach (Player ply in Player.Get(PlayerRoles.RoleTypeId.Scp096))
+                {
+                    list.AddRange((ply.Role as Scp096Role).Targets);
+                }
+
+                return list;
+             }
+        }
     }
 }

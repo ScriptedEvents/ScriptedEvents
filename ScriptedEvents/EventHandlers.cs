@@ -34,6 +34,7 @@
 
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.Commands;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -191,6 +192,11 @@
             foreach (var escapedRole in Escapes)
             {
                 escapedRole.Value.Clear();
+            }
+
+            foreach (Commands.CustomCommand cmd in MainPlugin.CustomCommands)
+            {
+                cmd.ResetCooldowns();
             }
 
             ScriptHelper.StopAllScripts();
