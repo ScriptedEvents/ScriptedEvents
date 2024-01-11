@@ -54,7 +54,7 @@
                     if (Arguments[0].ToUpper() == "STOP")
                         return new(true, flags: ActionFlags.StopEventExecution);
 
-                    return new(false, $"Failed to jump to trueLine '{Arguments[0]}'. trueLine must be an integer, a label, or a keyword.");
+                    return new(false, ErrorGen.Get(139, "trueLine", Arguments[0]));
                 }
             }
             else
@@ -65,7 +65,7 @@
                     if (Arguments[1].ToUpper() == "STOP")
                         return new(true, flags: ActionFlags.StopEventExecution);
 
-                    return new(false, $"Failed to jump to falseLine '{Arguments[1]}'. falseLine must be an integer, a label, or a keyword.");
+                    return new(false, ErrorGen.Get(139, "falseLine", Arguments[1]));
                 }
             }
 
