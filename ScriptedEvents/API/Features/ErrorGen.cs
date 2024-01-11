@@ -214,6 +214,11 @@ namespace ScriptedEvents.API.Features
                 137,
                 "The provided value '{0}' is not a valid number or variable containing a number.",
                 "This error occurs when a variable requires a variable that must be a number, or a variable containing a number. However, the provided variable is not a number or a valid number variable."),
+
+            new ErrorInfo(
+                138,
+                "Argument variables are not supported in the '{0}' variable. Please use a custom variable instead.",
+                $"This error occurs when a variable expects a variable as one of its arguments. However, the provided variable is a variable with arguments, which is not supported. This error can be resolved by using a custom variable in its place."),
         }.AsReadOnly();
     }
 }

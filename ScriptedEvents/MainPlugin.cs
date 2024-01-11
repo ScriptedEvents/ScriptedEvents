@@ -294,7 +294,6 @@
                     if (!made)
                     {
                         Log.Warn(ErrorGen.Get(108, ev.Key));
-                        Log.Warn($"The specified event '{ev.Key}' in the 'On' config was not found! [Error Code: SE-108]");
                     }
 
                     // Delete help file on startup

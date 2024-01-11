@@ -157,7 +157,7 @@
                 {
                     if (variable is IArgumentVariable)
                     {
-                        return "ERROR: ARGUMENT VARIABLE NOT SUPPORTED IN 'C'. PLEASE USE CUSTOM VARIABLE INSTEAD.";
+                        throw new ArgumentException(ErrorGen.Get(138, "C"));
                     }
 
                     if (variable is not IPlayerVariable plrVar)
