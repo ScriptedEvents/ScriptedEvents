@@ -264,7 +264,7 @@
         /// <param name="input">The input string.</param>
         /// <param name="source">The source script.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>The result of the cast, or <see cref="float.NaN"/> if the cast failed.</returns>
+        /// <returns>The result of the cast, or <see cref="int.MinValue"/> if the cast failed.</returns>
         public static int ParseInt(string input, Script source = null, bool requireBrackets = true)
         {
             if (int.TryParse(input, out int fl))
@@ -277,6 +277,31 @@
                 if (var is ILongVariable longVar)
                     return (int)longVar.Value;
                 else if (var is IStringVariable stringVar && int.TryParse(stringVar.Value, out int res))
+                    return res;
+            }
+
+            return int.MinValue;
+        }
+
+        /// <summary>
+        /// Attempts to parse a string input into a <see cref="long"/>. Functionally similar to <see cref="long.Parse(string)"/>, but also supports SE variables.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="source">The source script.</param>
+        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
+        /// <returns>The result of the cast, or <see cref="long.MinValue"/> if the cast failed.</returns>
+        public static long ParseLong(string input, Script source = null, bool requireBrackets = true)
+        {
+            if (long.TryParse(input, out long fl))
+                return fl;
+
+            if (TryGetVariable(input, out IConditionVariable var, out _, source, requireBrackets))
+            {
+                if (var is IFloatVariable floatVar)
+                    return (long)floatVar.Value;
+                if (var is ILongVariable longVar)
+                    return longVar.Value;
+                else if (var is IStringVariable stringVar && long.TryParse(stringVar.Value, out long res))
                     return res;
             }
 
@@ -328,6 +353,20 @@
         {
             result = ParseInt(input, source, requireBrackets);
             return result != int.MinValue;
+        }
+
+        /// <summary>
+        /// Attempts to parse a string input into a <see cref="long"/>. Functionally similar to <see cref="long.TryParse(string, out int)"/>, but also supports SE variables.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="result">The result of the parse.</param>
+        /// <param name="source">The source script.</param>
+        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
+        /// <returns>Whether or not the parse was successful.</returns>
+        public static bool TryParse(string input, out long result, Script source = null, bool requireBrackets = true)
+        {
+            result = ParseLong(input, source, requireBrackets);
+            return result != long.MinValue;
         }
 
         /// <summary>
