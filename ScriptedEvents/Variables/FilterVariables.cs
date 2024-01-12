@@ -62,7 +62,7 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "amount"));
                 }
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
                     int max = 1;
                     if (Arguments.Length > 1 && !VariableSystem.TryParse(Arguments[1], out max, Source, false))
@@ -70,7 +70,7 @@
                         throw new ArgumentException(ErrorGen.Get(134, Arguments[1]));
                     }
 
-                    List<Player> list = players.ToList();
+                    List<Player> list = players.GetInnerList();
 
                     for (int i = 0; i < max; i++)
                     {
@@ -121,7 +121,7 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type", "input"));
                 }
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
                     return Arguments[1].ToString() switch
                     {
@@ -197,7 +197,7 @@ Invalid options will result in a script error.";
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type"));
                 }
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
                     if (!VariableSystem.TryParse(Arguments[1], out int index, Source, false))
                     {
@@ -207,7 +207,7 @@ Invalid options will result in a script error.";
                     if (index > players.Count() - 1)
                         throw new IndexOutOfRangeException(ErrorGen.Get(135, index));
 
-                    return new List<Player>() { players.ToList()[index] }; // Todo make pretty
+                    yield return players.GetInnerList()[index];
                 }
 
                 throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));

@@ -8,6 +8,7 @@
     using Exiled.API.Features.Pools;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
@@ -218,13 +219,13 @@
         /// <returns>Whether or not players were found.</returns>
         /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="ScriptHelper.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
         /// <seealso cref="ScriptHelper.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>
-        public static bool TryGetPlayers(string name, out IEnumerable<Player> players, Script source = null, bool requireBrackets = true)
+        public static bool TryGetPlayers(string name, out PlayerCollection players, Script source = null, bool requireBrackets = true)
         {
             if (TryGetVariable(name, out IConditionVariable variable, out _, source, requireBrackets))
             {
                 if (variable is IPlayerVariable plrVariable)
                 {
-                    players = plrVariable.Players;
+                    players = new(plrVariable.Players.ToList());
                     return true;
                 }
             }

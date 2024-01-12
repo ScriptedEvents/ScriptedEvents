@@ -286,7 +286,7 @@ namespace ScriptedEvents.API.Features
                 {
                     try
                     {
-                        if (VariableSystem.TryGetPlayers(variable, out IEnumerable<Player> playersFromVariable, source))
+                        if (VariableSystem.TryGetPlayers(variable, out PlayerCollection playersFromVariable, source))
                         {
                             list.AddRange(playersFromVariable);
                         }

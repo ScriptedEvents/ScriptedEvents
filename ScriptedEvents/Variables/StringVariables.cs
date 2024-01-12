@@ -63,9 +63,9 @@
                 if (Arguments.Length < 2)
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "player", "keyName " }));
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
-                    List<Player> playerList = players.ToList();
+                    List<Player> playerList = players.GetInnerList();
                     if (playerList.Count > 1)
                         throw new ArgumentException("The 'PLAYERDATA' variable only works with one player!");
                     if (playerList[0].SessionVariables.ContainsKey(Arguments[1]))
@@ -212,7 +212,7 @@
                 if (Arguments.Length > 1)
                     selector = Arguments[1].ToUpper();
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
                     IOrderedEnumerable<string> display = players.Select(ply =>
                     {
