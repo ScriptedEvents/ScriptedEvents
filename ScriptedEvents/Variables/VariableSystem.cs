@@ -379,7 +379,7 @@
         /// <typeparam name="T">The Enum type to cast to.</typeparam>
         /// <returns>Whether or not the parse was successful.</returns>
         public static bool TryParse<T>(string input, out T result, Script source = null, bool requireBrackets = true)
-            where T : struct
+            where T : struct, Enum
         {
             if (Enum.TryParse(input, true, out result))
             {
