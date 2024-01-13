@@ -17,7 +17,7 @@
 
         public override string ToString()
         {
-            return $"{Info} [Error Code: SE-{Id}]";
+            return $"{Info} [Error Code: SE-{Id}] [Run 'shelp SE-{Id}' in server console for more details]";
         }
     }
 }

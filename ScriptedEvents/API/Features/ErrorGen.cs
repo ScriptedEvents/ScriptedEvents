@@ -1,10 +1,19 @@
-﻿using ScriptedEvents.Structures;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-
-namespace ScriptedEvents.API.Features
+﻿namespace ScriptedEvents.API.Features
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Linq;
+
+    using Exiled.API.Enums;
+
+    using PlayerRoles;
+
+    using ScriptedEvents.Structures;
+
+    /// <summary>
+    /// Exposes API to generate consistent error messages throughout the entire plugin.
+    /// </summary>
     public static class ErrorGen
     {
         public static ErrorInfo? GetError(int errorCode) =>
@@ -144,7 +153,7 @@ namespace ScriptedEvents.API.Features
             new ErrorInfo(
                 122,
                 "Invalid {0} provided in the {1} action. '{2}' is not a valid RoleType.",
-                "This error occurs when an action is executed successfully. However, a role parameter received an invalid role type. This error can be resolved by ensuring that the value of the parameter matches an internal RoleType value."),
+                $"This error occurs when an action is executed successfully. However, a role parameter received an invalid role type. This error can be resolved by ensuring that the value of the parameter matches an internal RoleType value. A full list of valid RoleTypes (as of {DateTime.Now:g}) follows:\n{string.Join("\n", ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).Where(r => r is not RoleTypeId.None).Select(r => $"- [{r:d}] {r}"))}"),
 
             new ErrorInfo(
                 123,
@@ -154,7 +163,7 @@ namespace ScriptedEvents.API.Features
             new ErrorInfo(
                 124,
                 "No rooms were found matching the given criteria '{0}' ('{1}' parameter).",
-                "This error occurs when an action is executed successfully. However, no rooms were found matching the given names or IDs. This error can be resolved by ensuring that there are no typos in the name or ID of rooms."),
+                $"This error occurs when an action is executed successfully. However, no rooms were found matching the given names or IDs. This error can be resolved by ensuring that there are no typos in the name or ID of rooms. A full list of valid Room IDs (as of {DateTime.Now:g}) follows:\n{string.Join("\n", ((RoomType[])Enum.GetValues(typeof(RoomType))).Where(r => r is not RoomType.Unknown).Select(r => $"- [{r:d}] {r}"))}"),
 
             new ErrorInfo(
                 125,
@@ -230,6 +239,16 @@ namespace ScriptedEvents.API.Features
                 139,
                 "Failed to jump to {0}, '{1}' is not a valid label or keyword.",
                 $"This error occurs when an invalid label or keyword is provided for an action that jumps to labels."),
+
+            new ErrorInfo(
+                140,
+                "Error replacing the {0} variable: {1}",
+                "This error occurs when an error occurred while replacing a variable. Please report this error in the Scripted Events Discord server."),
+
+            new ErrorInfo(
+                141,
+                "Ran into an error while running '{0}' action (please report to developer)",
+                "This error occurs when there was an unexpected error in an action. Please report this error in the Scripted Events Discord server."),
         }.AsReadOnly();
     }
 }

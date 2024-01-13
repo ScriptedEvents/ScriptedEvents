@@ -583,7 +583,7 @@ namespace ScriptedEvents.API.Features
                     }
                     catch (Exception e)
                     {
-                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] Ran into an error while running {action.Name} action (please report to developer):\n{e}";
+                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(141, action.Name)}:\n{e}";
                         switch (scr.Context)
                         {
                             case ExecuteContext.RemoteAdmin:

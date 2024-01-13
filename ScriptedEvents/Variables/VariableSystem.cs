@@ -434,7 +434,7 @@
                     }
                     catch (Exception e)
                     {
-                        Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] Error replacing the {condition.Name} variable: {(source?.Debug == true ? e : e.Message)}");
+                        Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(140, condition.Name, source?.Debug == true ? e : e.Message)}");
                     }
                 }
             }
