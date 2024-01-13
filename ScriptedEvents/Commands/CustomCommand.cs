@@ -169,7 +169,7 @@
         public void ResetCooldowns()
         {
             playerCooldown.Clear();
-            globalCooldown = new(1970, 0, 0);
+            globalCooldown = default;
         }
     }
 }
