@@ -7,7 +7,6 @@
     using CommandSystem;
 
     using Exiled.Permissions.Extensions;
-
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
@@ -75,12 +74,18 @@
                 return false;
             }
 
+            if (action is Actions.CommandAction)
+            {
+                response = "This action cannot be used in the action command.";
+                return false;
+            }
+
             scriptAction.Arguments = arguments.Skip(1).ToArray();
 
             // Fill out mock script info
             Script mockScript = new()
             {
-                Context = ExecuteContext.ServerConsole,
+                Context = sender is ServerConsoleSender ? ExecuteContext.ServerConsole : ExecuteContext.RemoteAdmin,
                 Sender = sender,
                 RawText = string.Join(" ", arguments),
                 ScriptName = "ACTION COMMAND EXECUTION",

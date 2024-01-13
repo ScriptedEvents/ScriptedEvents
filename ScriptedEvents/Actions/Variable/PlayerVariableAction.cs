@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.API.Features;
@@ -19,7 +20,7 @@
         public string Name => "PLAYERVAR";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "PVAR" };
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }

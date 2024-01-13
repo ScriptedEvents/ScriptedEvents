@@ -3,11 +3,12 @@
     using System;
     using System.Linq;
 
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class GotoAction : IScriptAction, ILogicAction, IHelpInfo
+    public class GotoAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "GOTO";
@@ -22,13 +23,16 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Moves to the provided line.";
+        public string Description => "Moves to the provided label.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("label", typeof(string), "The label to move to, or keyword (START/NEXT/STOP)", false),
         };
+
+        /// <inheritdoc/>
+        public string LongDescription => ConstMessages.GotoInput;
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)

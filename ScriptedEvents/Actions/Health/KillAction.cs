@@ -33,7 +33,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to kill.", true),
-            new Argument("damageType", typeof(DamageType), "The DamageType to apply, 'VAPORIZE' to vaporize the body, or a custom death message. Default: Unknown", false),
+            new Argument("damageType", typeof(DamageType), $"The {nameof(DamageType)} to apply, 'VAPORIZE' to vaporize the body, or a custom death message. Default: Unknown", false),
         };
 
         /// <inheritdoc/>

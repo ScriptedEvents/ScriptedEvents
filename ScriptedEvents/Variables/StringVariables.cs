@@ -29,6 +29,8 @@
             new Show(),
 
             new RandomRoom(),
+            new Log(),
+            new Index(),
         };
     }
 
@@ -61,9 +63,9 @@
                 if (Arguments.Length < 2)
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "player", "keyName " }));
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
-                    List<Player> playerList = players.ToList();
+                    List<Player> playerList = players.GetInnerList();
                     if (playerList.Count > 1)
                         throw new ArgumentException("The 'PLAYERDATA' variable only works with one player!");
                     if (playerList[0].SessionVariables.ContainsKey(Arguments[1]))
@@ -110,13 +112,13 @@
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)
                     {
-                        throw new ArgumentException($"The provided value '{conditionVariable.Item1.Name}' has no associated players. [Error Code: SE-133]");
+                        throw new ArgumentException(ErrorGen.Get(133, conditionVariable.Item1.Name));
                     }
 
                     return variable.Players.Count();
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
+                throw new ArgumentException(ErrorGen.Get(132, Arguments[0]));
             }
         }
     }
@@ -135,7 +137,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("name", typeof(string), "The name of the player variable.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the player variable.", true),
         };
 
         /// <inheritdoc/>
@@ -155,12 +157,12 @@
                 {
                     if (variable is IArgumentVariable)
                     {
-                        return "ERROR: ARGUMENT VARIABLE NOT SUPPORTED IN 'C'. PLEASE USE CUSTOM VARIABLE INSTEAD.";
+                        throw new ArgumentException(ErrorGen.Get(138, "C"));
                     }
 
                     if (variable is not IPlayerVariable plrVar)
                     {
-                        throw new ArgumentException($"The provided value '{variable.Name}' has no associated players. [Error Code: SE-133]");
+                        throw new ArgumentException(ErrorGen.Get(133, variable.Name));
                     }
 
                     if (plrVar.Players.Count() == 0)
@@ -169,7 +171,7 @@
                     return string.Join(".", plrVar.Players.Select(plr => plr.Id.ToString()));
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
+                throw new ArgumentException(ErrorGen.Get(132, Arguments[0]));
             }
         }
     }
@@ -188,7 +190,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("name", typeof(string), "The name of the player variable to show.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the player variable to show.", true),
             new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\".", false),
         };
 
@@ -210,7 +212,7 @@
                 if (Arguments.Length > 1)
                     selector = Arguments[1].ToUpper();
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
                     IOrderedEnumerable<string> display = players.Select(ply =>
                     {
@@ -218,6 +220,7 @@
                         {
                             "NAME" => ply.Nickname,
                             "DISPLAYNAME" => ply.DisplayNickname,
+                            "DPNAME" => ply.DisplayNickname,
                             "USERID" => ply.UserId,
                             "PLAYERID" => ply.Id.ToString(),
                             "ROLE" => ply.Role.Type.ToString(),
@@ -236,13 +239,14 @@
                             "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
                             "TIER" => "0",
                             "GROUP" => ply.GroupName,
+                            "CUFFED" => ply.IsCuffed.ToString().ToUpper(),
                             _ => ply.Nickname,
                         };
                     }).OrderBy(s => s);
                     return string.Join(", ", display).Trim();
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
+                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
             }
         }
 
@@ -251,7 +255,7 @@
 Do not use this variable for using player variables in commands. Use the 'C' variable for this.
 The following options are valid selector options:
 - NAME
-- DISPLAYNAME
+- DISPLAYNAME / DPNAME
 - USERID
 - PLAYERID
 - ROLE
@@ -269,6 +273,7 @@ The following options are valid selector options:
 - POSZ
 - TIER
 - GROUP
+- CUFFED
 Invalid options will default to the 'NAME' selector.";
     }
 
@@ -313,6 +318,119 @@ Invalid options will default to the 'NAME' selector.";
 
                 List<Room> newList = validRooms.ToList();
                 return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
+            }
+        }
+    }
+
+    public class Log : IStringVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LOG}";
+
+        /// <inheritdoc/>
+        public string Description => "Shows the name of the variable with its value. Useful for quick debugging.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+             new Argument("variable", typeof(IVariable), "The name of the variable.", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                if (Arguments.Length < 1)
+                {
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "variable" }));
+                }
+
+                if (!VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
+                {
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable.");
+                }
+ 
+                if (variable is not IStringVariable value)
+                {
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid string variable.");
+                }
+
+                return $"{variable.Name} = {value.Value}";
+            }
+        }
+    }
+
+    public class Index : IStringVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{INDEX}";
+
+        /// <inheritdoc/>
+        public string Description => "Can get a certain thing from your variable.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+             new Argument("variable", typeof(IVariable), "The name of the variable.", true),
+             new Argument("index", typeof(int), "The place from which the value should be taken.", true),
+             new Argument("listSplitChar", typeof(char), "A character that will split the variable into a list.", false),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                if (Arguments.Length < 2)
+                {
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "variable"));
+                }
+
+                if (!VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
+                {
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable.");
+                }
+
+                if (variable is not IStringVariable value)
+                {
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid string variable.");
+                }
+
+                string result;
+
+                if (!VariableSystem.TryParse(Arguments[1], out int index, Source, false))
+                    throw new ArgumentException($"Provided index '{Arguments[1]}' is not a valid integer or variable containing an integer.");
+
+                if (Arguments.Length >= 3)
+                {
+                    if (!char.TryParse(Arguments[2], out char listSplitChar))
+                        throw new ArgumentException($"Provided split character '{Arguments[2]}' is not a valid character.");
+
+                    List<string> x = value.Value.Split(listSplitChar).ToList();
+
+                    if (index < x.Count) index = x.Count - 1;
+
+                    result = x[index].Trim();
+                }
+                else
+                {
+                    result = value.Value[index].ToString();
+                }
+
+                return result;
             }
         }
     }

@@ -3,12 +3,13 @@
     using System;
     using System.Linq;
 
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo
+    public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "GOTOIF";
@@ -34,6 +35,9 @@
         };
 
         /// <inheritdoc/>
+        public string LongDescription => ConstMessages.GotoInput;
+
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
@@ -50,7 +54,7 @@
                     if (Arguments[0].ToUpper() == "STOP")
                         return new(true, flags: ActionFlags.StopEventExecution);
 
-                    return new(false, $"Failed to jump to trueLine '{Arguments[0]}'. trueLine must be an integer, a label, or a keyword.");
+                    return new(false, ErrorGen.Get(139, "trueLine", Arguments[0]));
                 }
             }
             else
@@ -61,7 +65,7 @@
                     if (Arguments[1].ToUpper() == "STOP")
                         return new(true, flags: ActionFlags.StopEventExecution);
 
-                    return new(false, $"Failed to jump to falseLine '{Arguments[1]}'. falseLine must be an integer, a label, or a keyword.");
+                    return new(false, ErrorGen.Get(139, "falseLine", Arguments[1]));
                 }
             }
 

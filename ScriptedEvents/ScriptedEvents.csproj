@@ -78,12 +78,14 @@
       <HintPath>$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>..\..\..\scpslfiles\SCPSL_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>$(EXILED_REFERENCES)\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\CASSIE\CassiePlayerAction.cs" />
     <Compile Include="Actions\DebugActions\DebugConditionV2.cs" />
+    <Compile Include="Actions\Map\CleanupAction.cs" />
+    <Compile Include="Actions\Map\GeneratorAction.cs" />
     <Compile Include="Actions\Misc\PrintAction.cs" />
     <Compile Include="Actions\Player\CustomInfoAction.cs" />
     <Compile Include="Actions\RoundRule\DamageRuleAction.cs" />
@@ -110,10 +112,13 @@
     <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
     <Compile Include="Actions\Player\RadioRangeAction.cs" />
     <Compile Include="Actions\Inventory\RemoveItemAction.cs" />
+    <Compile Include="API\Constants\Constants.cs" />
+    <Compile Include="API\Constants\ConstMessages.cs" />
     <Compile Include="API\Enums\CommandCooldownMode.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
     <Compile Include="API\Features\ConditionHelperV2.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
+    <Compile Include="API\Features\ErrorGen.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
     <Compile Include="Actions\Lights\LightColorAction.cs" />
@@ -152,9 +157,12 @@
     <Compile Include="Commands\MainCommand\StopScript.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
+    <Compile Include="Integrations\RueiManager.cs" />
+    <Compile Include="Structures\Contributor.cs" />
     <Compile Include="Structures\CoroutineData.cs" />
     <Compile Include="Structures\CustomCommand.cs" />
     <Compile Include="Structures\DamageRule.cs" />
+    <Compile Include="Structures\ErrorInfo.cs" />
     <Compile Include="Structures\PlayerCollection.cs" />
     <Compile Include="Structures\PlayerDisable.cs" />
     <Compile Include="Translations.cs" />
@@ -236,6 +244,7 @@
     <Compile Include="Variables\CustomVariable.cs" />
     <Compile Include="Variables\EscapesVariables.cs" />
     <Compile Include="Variables\KillsAndDeathsVariables.cs" />
+    <Compile Include="Variables\MiscVariables.cs" />
     <Compile Include="Variables\PlayerCountVariables.cs" />
     <Compile Include="Variables\RoleVariables.cs" />
     <Compile Include="Variables\RoundVariables.cs" />
@@ -268,7 +277,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">
-      <Version>8.5.0</Version>
+      <Version>8.7.0</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>

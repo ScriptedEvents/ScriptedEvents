@@ -5,6 +5,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
@@ -12,7 +13,7 @@
     using ScriptedEvents.Variables;
     using UnityEngine;
 
-    public class LightColorAction : IScriptAction, IHelpInfo
+    public class LightColorAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "LIGHTCOLOR";
@@ -28,6 +29,9 @@
 
         /// <inheritdoc/>
         public string Description => "Sets the lights in the provided room(s) to the given RGB color.";
+
+        /// <inheritdoc/>
+        public string LongDescription => ConstMessages.RoomInput;
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]

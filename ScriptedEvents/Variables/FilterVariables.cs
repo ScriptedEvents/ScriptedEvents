@@ -22,18 +22,19 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
+            new Max(),
             new Filter(),
             new GetByIndex(),
         };
     }
 
-    public class Random : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
+    public class Max : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{RANDOM}";
+        public string Name => "{MAX}";
 
         /// <inheritdoc/>
-        public string Description => "Pulls random player(s) from a variable.";
+        public string Description => "Filters a player variable and returns random players less than the provided amount.";
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
@@ -41,7 +42,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("name", typeof(string), "The name of the variable to select from.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the variable to select from.", true),
             new Argument("amount", typeof(int), "The amount of players to select (default: 1)", false),
         };
 
@@ -61,15 +62,15 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "amount"));
                 }
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
                     int max = 1;
                     if (Arguments.Length > 1 && !VariableSystem.TryParse(Arguments[1], out max, Source, false))
                     {
-                        throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid integer or variable containing an integer. [Error Code: SE-134]");
+                        throw new ArgumentException(ErrorGen.Get(134, Arguments[1]));
                     }
 
-                    List<Player> list = players.ToList();
+                    List<Player> list = players.GetInnerList();
 
                     for (int i = 0; i < max; i++)
                     {
@@ -80,7 +81,7 @@
                     }
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
+                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
             }
         }
     }
@@ -99,7 +100,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("name", typeof(string), "The name of the variable to filter.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the variable to filter.", true),
             new Argument("type", typeof(string), "The mode to use to filter.", true),
             new Argument("input", typeof(object), "What to use as the filter (RoleType, ZoneType, etc)", true),
         };
@@ -120,7 +121,7 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type", "input"));
                 }
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
                     return Arguments[1].ToString() switch
                     {
@@ -143,7 +144,7 @@
                     };
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
+                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
             }
         }
 
@@ -176,7 +177,7 @@ Invalid options will result in a script error.";
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("name", typeof(string), "The name of the variable to index.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the variable to index.", true),
             new Argument("type", typeof(int), "The index. Number variables can be used (if they are decimal, the decimal portion will be removed)", true),
         };
 
@@ -196,20 +197,20 @@ Invalid options will result in a script error.";
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type"));
                 }
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
                     if (!VariableSystem.TryParse(Arguments[1], out int index, Source, false))
                     {
-                        throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid integer or variable containing an integer. [Error Code: SE-134]");
+                        throw new ArgumentException(ErrorGen.Get(134, Arguments[1]));
                     }
 
                     if (index > players.Count() - 1)
-                        throw new IndexOutOfRangeException($"The provided index '{index}' is greater than the size of the player collection. [Error Code: SE-135]");
+                        throw new IndexOutOfRangeException(ErrorGen.Get(135, index));
 
-                    return new List<Player>() { players.ToList()[index] }; // Todo make pretty
+                    yield return players.GetInnerList()[index];
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
+                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
             }
         }
     }

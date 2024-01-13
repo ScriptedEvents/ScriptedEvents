@@ -51,10 +51,7 @@
             }
 
             string message = string.Join(" ", Arguments.Skip(2).Select(arg => VariableSystem.ReplaceVariables(arg, script)));
-            foreach (Player player in players)
-            {
-                player.ShowHint(message, duration);
-            }
+            ScriptHelper.ShowHint(message, duration, players.GetInnerList());
 
             return new(true);
         }

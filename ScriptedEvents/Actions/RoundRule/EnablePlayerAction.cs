@@ -2,13 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Exiled.API.Features;
+
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class EnablePlayerAction : IScriptAction, IHelpInfo
+    public class EnablePlayerAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "ENABLEPLAYER";
@@ -24,6 +27,9 @@
 
         /// <inheritdoc/>
         public string Description => "Enables a feature for the entire round, but only for certain player(s).";
+
+        /// <inheritdoc/>
+        public string LongDescription => ConstMessages.DisableKeys;
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]

@@ -301,6 +301,22 @@
                 return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sb)));
             }
 
+            // Error Codes
+            if (Arguments[0].StartsWith("SE-"))
+                Arguments[0] = Arguments[0].Replace("SE-", string.Empty);
+
+            if (int.TryParse(Arguments[0], out int res) && ErrorGen.TryGetError(res, out ErrorInfo info))
+            {
+                StringBuilder sb = StringBuilderPool.Pool.Get();
+                sb.AppendLine();
+                sb.AppendLine($"=== ERROR CODE: SE-{res} ===");
+                sb.AppendLine($"ID: {info.Id}");
+                sb.AppendLine(info.Info);
+                sb.AppendLine(info.LongDescription);
+
+                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sb)));
+            }
+
             // Nope
             return new(false, "Invalid argument provided for the HELP action.");
         }
@@ -326,12 +342,12 @@
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    Log.Warn($"Unable to create the help file, the plugin does not have permission to access the ScriptedEvents directory! [Error Code: SE-114]");
+                    Log.Warn(ErrorGen.Get(114));
                     return new(false, "HELP action error shown in server logs.");
                 }
                 catch (Exception e)
                 {
-                    Log.Warn($"Error when writing to file [Error Code: SE-115]: {e}");
+                    Log.Warn($"{ErrorGen.Get(115)}: {e}");
                     return new(false, "HELP action error shown in server logs.");
                 }
 

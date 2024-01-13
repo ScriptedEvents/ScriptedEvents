@@ -108,6 +108,7 @@
 
         public static ConditionResponse Evaluate(string input, Script source = null)
         {
+            source?.DebugLog($"Evaluating condition: {input}");
             return EvaluateInternal(input, source);
         }
 
@@ -152,7 +153,9 @@
             foreach (var floatCondition in FloatConditions)
             {
                 int index = input.IndexOf(floatCondition.Symbol);
-                if (index != -1 && input[index - 1] is not '<' or '>' && input[index + floatCondition.Symbol.Length] is not '<' or '>')
+
+                // I dont like this code
+                if (index != -1 && input[index - 1] is not '<' or '>' or '=' && input[index + floatCondition.Symbol.Length] is not '<' or '>' or '=')
                 {
                     match = floatCondition;
                     break;
@@ -208,15 +211,15 @@
             List<string> groups = CaptureGroups(input);
             foreach (string group in groups)
             {
-                Log.Debug($"GROUP: " + group);
+                source?.DebugLog($"GROUP: " + group);
                 string[] andSplit = group.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string fragAnd in andSplit)
                 {
-                    Log.Debug($"FRAG [AND]: " + fragAnd);
+                    source?.DebugLog($"FRAG [AND]: " + fragAnd);
                     string[] orSplit = fragAnd.Split(new[] { OR }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string fragOr in orSplit)
                     {
-                        Log.Debug($"FRAG [OR]: " + fragOr);
+                        source?.DebugLog($"FRAG [OR]: " + fragOr);
                         string convertedFrag = VariableSystem.ReplaceVariables(fragOr, source);
                         ConditionResponse eval = EvaluateSingleCondition(convertedFrag, group);
                         if (!eval.Success)
@@ -224,27 +227,27 @@
                             return new(false, eval.Passed, eval.Message);
                         }
 
-                        convertedInput = convertedInput.Replace($"{convertedFrag}", eval.Passed.ToString().ToUpper());
+                        input = input.Replace($"{fragOr}", eval.Passed.ToString().ToUpper());
                     }
                 }
             }
 
-            Log.Debug($"CONVERTED INPUT: " + convertedInput);
+            source?.DebugLog($"CONVERTED INPUT: " + input);
 
-            if (bool.TryParse(convertedInput, out bool r))
+            if (bool.TryParse(input, out bool r))
                 return new(true, r, string.Empty);
 
-            MatchCollection matches = Regex.Matches(convertedInput, @"\(([^)]*)\)");
+            MatchCollection matches = Regex.Matches(input, @"\(([^)]*)\)");
             if (matches.Count > 0)
             {
                 foreach (Match match in matches)
                 {
                     ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value);
-                    convertedInput = convertedInput.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
+                    input = input.Replace($"({match.Groups[1].Value})", conditionResult.Passed.ToString().ToUpper());
                 }
             }
 
-            return EvaluateAndOr(convertedInput);
+            return EvaluateAndOr(input);
         }
     }
 }

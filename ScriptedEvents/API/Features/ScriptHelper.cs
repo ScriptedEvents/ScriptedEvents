@@ -24,6 +24,7 @@ namespace ScriptedEvents.API.Features
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.Integrations;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -50,6 +51,8 @@ namespace ScriptedEvents.API.Features
         public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
         public static Dictionary<string, CustomAction> CustomActions { get; } = new();
+
+        public static RueIManager Ruei { get; } = new RueIManager();
 
         /// <summary>
         /// Reads and returns the text of a script.
@@ -108,7 +111,7 @@ namespace ScriptedEvents.API.Features
                     if (!script.Flags.Contains(flag))
                         script.Flags.Add(flag);
                     else if (!suppressWarnings)
-                        Log.Warn($"Multiple definitions for the '{flag}' flag detected in script {scriptName}. [Error Code: SE-103]");
+                        Log.Warn(ErrorGen.Get(103, flag, scriptName));
 
                     actionList.Add(new NullAction("FLAG DEFINE"));
                     continue;
@@ -134,7 +137,7 @@ namespace ScriptedEvents.API.Features
                     if (!script.Labels.ContainsKey(labelName))
                         script.Labels.Add(labelName, currentline);
                     else if (!suppressWarnings)
-                        Log.Warn($"Multiple definitions for the '{labelName}' label detected in script {scriptName}. [Error Code: SE-104]");
+                        Log.Warn(ErrorGen.Get(104, labelName, scriptName));
 
                     actionList.Add(new NullAction($"{labelName} LABEL"));
 
@@ -174,7 +177,7 @@ namespace ScriptedEvents.API.Features
                     }
 
                     if (!suppressWarnings)
-                        Log.Warn($"[L: {script.CurrentLine + 1}] Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'. [Error Code: SE-102]");
+                        Log.Warn($"[L: {script.CurrentLine + 1}]" + ErrorGen.Get(102, keyword.RemoveWhitespace(), scriptName));
                     actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
@@ -283,7 +286,7 @@ namespace ScriptedEvents.API.Features
                 {
                     try
                     {
-                        if (VariableSystem.TryGetPlayers(variable, out IEnumerable<Player> playersFromVariable, source))
+                        if (VariableSystem.TryGetPlayers(variable, out PlayerCollection playersFromVariable, source))
                         {
                             list.AddRange(playersFromVariable);
                         }
@@ -389,6 +392,15 @@ namespace ScriptedEvents.API.Features
 
             rooms = ListPool<Room>.Pool.ToArrayReturn(roomList);
             return rooms.Length > 0;
+        }
+
+        public static void ShowHint(string text, float duration, List<Player> players = null)
+        {
+            if (players == null)
+                players = Player.List.ToList();
+
+            Ruei.MakeNew();
+            players.ForEach(p => Ruei.ShowHint(p, text, TimeSpan.FromSeconds(duration)));
         }
 
         /// <summary>
@@ -571,7 +583,7 @@ namespace ScriptedEvents.API.Features
                     }
                     catch (Exception e)
                     {
-                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] Ran into an error while running {action.Name} action (please report to developer):\n{e}";
+                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(141, action.Name)}:\n{e}";
                         switch (scr.Context)
                         {
                             case ExecuteContext.RemoteAdmin:
@@ -668,7 +680,7 @@ namespace ScriptedEvents.API.Features
                     {
                         if (safetyActionCount > MainPlugin.Configs.MaxActionsPerSecond && !scr.Flags.Contains("NOSAFETY"))
                         {
-                            Log.Warn($"Script '{scr.ScriptName}' exceeded safety limit of {MainPlugin.Configs.MaxActionsPerSecond} actions per 1 second and has been force-stopped, saving from a potential crash. If this is intentional, add '!-- NOSAFETY' to the top of the script. All script loops should have a delay in them. [Error Code: SE-113]");
+                            Log.Warn(ErrorGen.Get(113, scr.ScriptName, MainPlugin.Configs.MaxActionsPerSecond));
                             break;
                         }
                         else

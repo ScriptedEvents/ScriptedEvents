@@ -28,6 +28,7 @@
         public static Dictionary<Type, string> TypeToString { get; } = new()
         {
             { typeof(string), "String (Message/Text)" },
+            { typeof(char), "Character" },
             { typeof(int), "Int (Whole Number)" },
             { typeof(byte), "Byte (Whole Number, 0-255)" },
             { typeof(float), "Float (Number)" },
@@ -42,6 +43,9 @@
             { typeof(IVariable), "Variable" },
             { typeof(IPlayerVariable), "Player Variable" },
             { typeof(IConditionVariable), "Condition Variable" },
+            { typeof(IStringVariable), "String (Message/Text) Variable" },
+            { typeof(IFloatVariable), "Numerical Variable" },
+            { typeof(ILongVariable), "Numerical Variable" },
             { typeof(object), "Any Type" },
         };
 
@@ -68,37 +72,37 @@
                         sb.Append($" {chars[0]}{arg.ArgumentName}{chars[1]}");
                     }
 
-                    return $"Invalid '{action.Name}' action usage. Usage: {action.Name}{StringBuilderPool.Pool.ToStringReturn(sb)} [Error Code: SE-116]";
+                    return ErrorGen.Get(116, action.Name, action.Name + StringBuilderPool.Pool.ToStringReturn(sb));
 
                 case MessageType.InvalidUsage:
-                    return $"Invalid '{action.Name}' action usage. [Error Code: SE-117]";
+                    return ErrorGen.Get(117, action.Name);
 
                 case MessageType.InvalidOption when arguments[0] is string input && arguments[1] is string options:
-                    return $"Invalid option {input} provided for the '{paramName}' parameter of the {action.Name} action. This parameter expects one of the following options: {options}. [Error Code: SE-118]";
+                    return ErrorGen.Get(118, input, paramName, action.Name, options);
 
                 case MessageType.NotANumber when arguments[0] is not null:
-                    return $"Invalid number '{arguments[0]}' provided for the '{paramName}' parameter of the {action.Name} action. [Error Code: SE-119]";
+                    return ErrorGen.Get(119, arguments[0], paramName, action.Name);
 
                 case MessageType.NotANumberOrCondition when arguments[0] is not null && arguments[1] is MathResult result:
-                    return $"Invalid {paramName} condition provided in the {action.Name} action! Condition: {arguments[0]} Error type: '{result.Exception.GetType().Name}' Message: '{result.Message}'. [Error Code: SE-120]";
+                    return ErrorGen.Get(120, paramName, action.Name, arguments[0], result.Exception.GetType().Name, result.Message);
 
                 case MessageType.LessThanZeroNumber when arguments[0] is not null:
-                    return $"Negative number '{arguments[0]}' cannot be used in the '{paramName}' parameter of the {action.Name} action. [Error Code: SE-121]";
+                    return ErrorGen.Get(121, arguments[0], paramName, action.Name);
 
                 case MessageType.InvalidRole when arguments[0] is not null:
-                    return $"Invalid {paramName} provided in the {action.Name} action. '{arguments[0]}' is not a valid RoleType. [Error Code: SE-122]";
+                    return ErrorGen.Get(122, paramName, action.Name, arguments[0]);
 
                 case MessageType.NoPlayersFound:
-                    return $"No players were found matching the given criteria ('{paramName}' parameter). [Error Code: SE-123]";
+                    return ErrorGen.Get(123, paramName);
 
                 case MessageType.NoRoomsFound:
-                    return $"No rooms were found matching the given criteria '{arguments[0]}' ('{paramName}' parameter). [Error Code: SE-124]";
+                    return ErrorGen.Get(124, arguments[0], paramName);
 
                 case MessageType.CassieCaptionNoAnnouncement:
-                    return $"Cannot show captions without a corresponding CASSIE announcement. [Error Code: SE-125]";
+                    return ErrorGen.Get(125);
             }
 
-            return "Unknown error [Error Code: SE-126]";
+            return ErrorGen.Get(126);
         }
 
         /// <summary>
@@ -109,7 +113,7 @@
         /// <returns>Formatted string to show to end-user.</returns>
         public static string VariableArgCount(string name, params string[] args)
         {
-            return $"{name} requires {args.Length} argument{(args.Length > 1 ? "s" : string.Empty)} ({string.Join(", ", args)}) [Error Code: SE-130]";
+            return ErrorGen.Get(130, name, args.Length, string.Join(", ", args));
         }
 
         /// <summary>

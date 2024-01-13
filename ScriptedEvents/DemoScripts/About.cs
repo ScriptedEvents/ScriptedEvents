@@ -2,6 +2,8 @@
 {
     using System;
 
+    using ScriptedEvents.API.Constants;
+
     /// <summary>
     /// Demo script providing information to the server host.
     /// </summary>
@@ -33,6 +35,9 @@
 
 # GitHub: {MainPlugin.GitHub}
 # Discord Server: {MainPlugin.DiscordUrl}
+
+# Contributors:
+{Constants.GenerateContributorList()}
 
 # File Generated at: {DateTime.UtcNow:f}
 # Plugin Version (as of generation): {MainPlugin.Singleton.Version}

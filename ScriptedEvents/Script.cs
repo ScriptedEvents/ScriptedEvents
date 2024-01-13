@@ -196,7 +196,7 @@
                 case "NEXT": // Simply return "true" as a success. It'll go to the next line automatically.
                     return true;
                 case "START":
-                    CurrentLine = 0;
+                    CurrentLine = -1;
                     return true;
             }
 
@@ -220,8 +220,8 @@
         /// <param name="input">The input to log.</param>
         public void DebugLog(string input)
         {
-            if (!Debug) return;
-            Log.Send($"[{MainPlugin.Singleton.Name}] [Script: {ScriptName}] {input}", LogLevel.Debug, ConsoleColor.Gray);
+            if (Debug || MainPlugin.Configs.Debug)
+                Log.Send($"[{MainPlugin.Singleton.Name}] [Script: {ScriptName}] [L: {CurrentLine + 1}] {input}", LogLevel.Debug, ConsoleColor.Gray);
         }
 
         /// <summary>

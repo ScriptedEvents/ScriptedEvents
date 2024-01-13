@@ -1,13 +1,16 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+
     using Exiled.API.Features;
+
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class DisablePlayerAction : IScriptAction, IHelpInfo
+    public class DisablePlayerAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "DISABLEPLAYER";
@@ -23,6 +26,9 @@
 
         /// <inheritdoc/>
         public string Description => "Disables a feature for the entire round, but only for certain player(s).";
+
+        /// <inheritdoc/>
+        public string LongDescription => ConstMessages.DisableKeys;
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
