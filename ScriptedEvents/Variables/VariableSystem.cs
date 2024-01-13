@@ -407,7 +407,7 @@
         /// <remarks>This is intended for strings that contain both regular text and variables. Otherwise, see <see cref="ReplaceVariable(string, Script, bool)"/>.</remarks>
         public static string ReplaceVariables(string input, Script source = null)
         {
-            string[] variables = VariableSystem.IsolateVariables(input, source);
+            string[] variables = IsolateVariables(input, source);
 
             foreach (var variable in variables)
             {

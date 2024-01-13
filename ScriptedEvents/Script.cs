@@ -221,7 +221,7 @@
         public void DebugLog(string input)
         {
             if (Debug || MainPlugin.Configs.Debug)
-                Log.Send($"[{MainPlugin.Singleton.Name}] [Script: {ScriptName}] {input}", LogLevel.Debug, ConsoleColor.Gray);
+                Log.Send($"[{MainPlugin.Singleton.Name}] [Script: {ScriptName}] [L: {CurrentLine + 1}] {input}", LogLevel.Debug, ConsoleColor.Gray);
         }
 
         /// <summary>
