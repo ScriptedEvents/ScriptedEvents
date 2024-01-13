@@ -163,6 +163,8 @@ namespace ScriptedEvents.API.Features
                         continue;
                     }
 
+                    bool hasUsedAlias = false;
+
                     // Alias support
                     foreach (Type actionType123 in ActionTypes.Values)
                     {
@@ -170,14 +172,16 @@ namespace ScriptedEvents.API.Features
                         mock.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
                         if (mock.Aliases.Contains(keyword))
                         {
+                            hasUsedAlias = true;
                             actionList.Add(mock);
                             ListPool<string>.Pool.Return(actionParts);
                             continue;
                         }
                     }
 
-                    if (!suppressWarnings)
+                    if (!suppressWarnings && !hasUsedAlias)
                         Log.Warn($"[L: {script.CurrentLine + 1}] Invalid action '{keyword.RemoveWhitespace()}' detected in script '{scriptName}'. [Error Code: SE-102]");
+
                     actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
