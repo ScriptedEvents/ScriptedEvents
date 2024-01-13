@@ -108,6 +108,7 @@
 
         public static ConditionResponse Evaluate(string input, Script source = null)
         {
+            source?.DebugLog($"Evaluating condition: {input}");
             return EvaluateInternal(input, source);
         }
 
