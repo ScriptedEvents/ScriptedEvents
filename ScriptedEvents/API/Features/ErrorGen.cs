@@ -16,23 +16,23 @@
     /// </summary>
     public static class ErrorGen
     {
-        public static ErrorInfo? GetError(int errorCode) =>
+        public static ErrorInfo GetError(int errorCode) =>
             ErrorList.Errors.FirstOrDefault(err => err.Id == errorCode);
 
-        public static bool TryGetError(int errorCode, out ErrorInfo? errorInfo)
+        public static bool TryGetError(int errorCode, out ErrorInfo errorInfo)
         {
             errorInfo = GetError(errorCode);
-            return errorInfo is not null && errorInfo.HasValue;
+            return errorInfo.Id != 0;
         }
 
         public static string Generate(int errorCode, params object[] arguments)
         {
-            ErrorInfo? err = GetError(errorCode);
+            ErrorInfo err = GetError(errorCode);
 
-            if (err is null || !err.HasValue)
+            if (err.Id == 0)
                 err = GetError(126);
 
-            return string.Format(err.Value.ToString(), arguments);
+            return string.Format(err.ToString(), arguments);
         }
 
         public static string Get(int errorCode, params object[] arguments) => Generate(errorCode, arguments);

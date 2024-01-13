@@ -305,14 +305,14 @@
             if (Arguments[0].StartsWith("SE-"))
                 Arguments[0] = Arguments[0].Replace("SE-", string.Empty);
 
-            if (int.TryParse(Arguments[0], out int res) && ErrorGen.TryGetError(res, out ErrorInfo? info) && info.HasValue)
+            if (int.TryParse(Arguments[0], out int res) && ErrorGen.TryGetError(res, out ErrorInfo info))
             {
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
                 sb.AppendLine($"=== ERROR CODE: SE-{res} ===");
-                sb.AppendLine($"ID: {info.Value.Id}");
-                sb.AppendLine(info.Value.Info);
-                sb.AppendLine(info.Value.LongDescription);
+                sb.AppendLine($"ID: {info.Id}");
+                sb.AppendLine(info.Info);
+                sb.AppendLine(info.LongDescription);
 
                 return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sb)));
             }
