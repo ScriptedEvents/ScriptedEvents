@@ -243,7 +243,7 @@
                 foreach (Match match in matches)
                 {
                     ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value);
-                    input = input.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
+                    input = input.Replace($"({match.Groups[1].Value})", conditionResult.Passed.ToString().ToUpper());
                 }
             }
 
