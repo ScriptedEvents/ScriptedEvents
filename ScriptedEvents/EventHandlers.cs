@@ -6,14 +6,13 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-
+    using System.Reflection;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
-
     // SCPs
     using Exiled.Events.EventArgs.Scp049;
     using Exiled.Events.EventArgs.Scp0492;
@@ -23,22 +22,19 @@
     using Exiled.Events.EventArgs.Scp173;
     using Exiled.Events.EventArgs.Scp3114;
     using Exiled.Events.EventArgs.Scp939;
-
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.EventArgs.Warhead;
-
+    using Exiled.Events.Features;
     using MapGeneration.Distributors;
     using MEC;
     using PlayerRoles;
     using Respawning;
-
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.Commands;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
-
     using UnityEngine;
+    using Event = Exiled.Events.Features.Event;
 
     public class EventHandlers
     {
@@ -230,6 +226,90 @@
         public void OnWaitingForPlayers()
         {
             CountdownHelper.Start();
+
+            try
+            {
+                string[] files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.AllDirectories);
+
+                foreach (string file in files)
+                {
+                    Log.Debug("Checking " + file);
+                    string allText = File.ReadAllText(file);
+                    string[] firstLine = allText.Split('\n')[0].Split(' ');
+
+                    Log.Debug(firstLine[0]);
+                    if (firstLine[0] != "@--") continue;
+
+                    Log.Debug(firstLine[1].ToUpper());
+                    if (firstLine[1].ToUpper() == "AUTORUN")
+                    {
+                        try
+                        {
+                            Script scr = ScriptHelper.ReadScript(Path.GetFileNameWithoutExtension(file), null, false);
+
+                            if (scr.AdminEvent)
+                            {
+                                Log.Warn(ErrorGen.Get(105, file));
+                                continue;
+                            }
+
+                            Log.Debug("RUN!!!!!!!!!!!!!");
+                            ScriptHelper.RunScript(scr);
+                            continue;
+                        }
+                        catch (DisabledScriptException)
+                        {
+                            Log.Warn(ErrorGen.Get(100, file));
+                            continue;
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                           Log.Warn("file not found " + ex.ToString());
+                        }
+                    }
+
+                    if (firstLine[1].ToUpper() != "EVENT") continue;
+
+                    foreach (Type handler in MainPlugin.HandlerTypes)
+                    {
+                        // Credit to DevTools & Yamato for below code.
+                        Delegate @delegate = null;
+                        PropertyInfo propertyInfo = handler.GetProperty(firstLine[2]);
+
+                        if (propertyInfo is null)
+                            continue;
+
+                        EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
+                        MethodInfo subscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Subscribe");
+
+                        if (propertyInfo.PropertyType == typeof(Event))
+                        {
+                            @delegate = new CustomEventHandler(EventHandlers.OnNonArgumentedEvent);
+                        }
+                        else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
+                        {
+                            @delegate = typeof(EventHandlers)
+                                .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
+                                .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
+                                .CreateDelegate(typeof(CustomEventHandler<>)
+                                .MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments));
+                        }
+                        else
+                        {
+                            Log.Warn(propertyInfo.Name);
+                            continue;
+                        }
+
+                        subscribe.Invoke(propertyInfo.GetValue(MainPlugin.Handlers), new object[] { @delegate });
+                        MainPlugin.StoredDelegates.Add(new Tuple<EventInfo, Delegate>(eventInfo, @delegate));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex.ToString());
+            }
+
             foreach (string name in MainPlugin.Singleton.Config.AutoRunScripts)
             {
                 try

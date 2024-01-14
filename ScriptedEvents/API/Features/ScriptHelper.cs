@@ -116,6 +116,10 @@ namespace ScriptedEvents.API.Features
                     actionList.Add(new NullAction("FLAG DEFINE"));
                     continue;
                 }
+                else if (action.StartsWith("@--"))
+                {
+                    continue;
+                }
 
                 // Regular string.Split(' '), except ignore spaces inside of variable names
                 // Allows spaces in variable names without giving a bizarre error.
