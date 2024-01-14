@@ -13,7 +13,6 @@
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
-    // SCPs
     using Exiled.Events.EventArgs.Scp049;
     using Exiled.Events.EventArgs.Scp0492;
     using Exiled.Events.EventArgs.Scp079;
@@ -270,6 +269,8 @@
 
                     if (firstLine[1].ToUpper() != "EVENT") continue;
 
+                    // this below i just copied from somewhere idk cant remember
+                    // it doesnt work but i expected it since i cant even begin to understand what it does
                     foreach (Type handler in MainPlugin.HandlerTypes)
                     {
                         // Credit to DevTools & Yamato for below code.
