@@ -16,10 +16,10 @@
 
         private Action<ReferenceHub, string, float, TimeSpan> shower;
 
-        private static Assembly RueiAssembly { get; } = Exiled.Loader.Loader.Dependencies.FirstOrDefault(x => x.GetName().Name == RUEINAME);
-
         public RueIManager()
             => MakeNew();
+
+        private static Assembly RueiAssembly { get; } = Exiled.Loader.Loader.Dependencies.FirstOrDefault(x => x.GetName().Name == RUEINAME);
 
         public void MakeNew()
         {

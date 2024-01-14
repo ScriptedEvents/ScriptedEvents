@@ -207,7 +207,7 @@ Invalid options will result in a script error.";
                     if (index > players.Count() - 1)
                         throw new IndexOutOfRangeException(ErrorGen.Get(135, index));
 
-                    yield return players.GetInnerList()[index];
+                    return new List<Player>() { players.ToList()[index] }; // Todo: better solution (yield return didn't work??)
                 }
 
                 throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
