@@ -7,7 +7,7 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class CommandAction : IScriptAction, IHelpInfo
+    public class CommandAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "COMMAND";
@@ -22,7 +22,11 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         /// <inheritdoc/>
-        public string Description => "Runs a server command with full permission.";
+        public string Description => "Runs a server command with full permission. Variables are supported.";
+
+        /// <inheritdoc/>
+        public string LongDescription => @"This action executes commands as the server. Therefore, the command needs '/' before it if it's a RA command, or '.' before it if its a console command.
+Note: Player variables will be converted to the amount of players when used directly. In order to use player variables to target players within a command, encase them within the 'C' variable. For example: 'COMMAND /kill {C:PLAYERS}' to kill all players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]

@@ -39,12 +39,11 @@
             {
                 switch (Arguments[0].ToUpper())
                 {
-                    // Todo: Convert to IsOpen when Exiled fixes it
                     case "OPEN":
-                        generator.Base.ServerSetFlag(MapGeneration.Distributors.Scp079Generator.GeneratorFlags.Open, true);
+                        generator.IsOpen = true;
                         break;
                     case "CLOSE":
-                        generator.Base.ServerSetFlag(MapGeneration.Distributors.Scp079Generator.GeneratorFlags.Open, false);
+                        generator.IsOpen = false;
                         break;
                     case "LOCK":
                         generator.IsUnlocked = false;

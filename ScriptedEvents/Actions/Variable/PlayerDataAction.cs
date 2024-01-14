@@ -16,7 +16,7 @@
         public string Name => "PLAYERDATA";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "PDATA" };
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
