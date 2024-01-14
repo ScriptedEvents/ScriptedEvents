@@ -86,6 +86,7 @@
     <Compile Include="Actions\CASSIE\CassiePlayerAction.cs" />
     <Compile Include="Actions\DebugActions\DebugConditionV2.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
+    <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
     <Compile Include="Actions\Misc\PrintAction.cs" />
     <Compile Include="Actions\Player\CustomInfoAction.cs" />
