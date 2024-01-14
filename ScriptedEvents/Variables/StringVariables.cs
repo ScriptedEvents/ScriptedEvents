@@ -356,7 +356,7 @@ Invalid options will default to the 'NAME' selector.";
                 {
                     throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable.");
                 }
- 
+
                 if (variable is not IStringVariable value)
                 {
                     throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid string variable.");

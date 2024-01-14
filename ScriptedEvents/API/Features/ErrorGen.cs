@@ -16,15 +16,32 @@
     /// </summary>
     public static class ErrorGen
     {
+        /// <summary>
+        /// Get a <see cref="ErrorInfo"/> from the given code.
+        /// </summary>
+        /// <param name="errorCode">Error code.</param>
+        /// <returns>An <see cref="ErrorInfo"/> object. Its <see cref="ErrorInfo.Id"/> will be <c>0</c> if the operation was unsuccessful.</returns>
         public static ErrorInfo GetError(int errorCode) =>
             ErrorList.Errors.FirstOrDefault(err => err.Id == errorCode);
 
+        /// <summary>
+        /// Try-get a <see cref="ErrorInfo"/> from the given code.
+        /// </summary>
+        /// <param name="errorCode">Error code.</param>
+        /// <param name="errorInfo">The <see cref="ErrorInfo"/> object.</param>
+        /// <returns>Whether or not the process was successful.</returns>
         public static bool TryGetError(int errorCode, out ErrorInfo errorInfo)
         {
             errorInfo = GetError(errorCode);
             return errorInfo.Id != 0;
         }
 
+        /// <summary>
+        /// Generates an error string given an error code.
+        /// </summary>
+        /// <param name="errorCode">Error code.</param>
+        /// <param name="arguments">Arguments for the error.</param>
+        /// <returns>An error string.</returns>
         public static string Generate(int errorCode, params object[] arguments)
         {
             ErrorInfo err = GetError(errorCode);
@@ -35,12 +52,21 @@
             return string.Format(err.ToString(), arguments);
         }
 
+        /// <summary>
+        /// Generates an error string given an error code.
+        /// </summary>
+        /// <param name="errorCode">Error code.</param>
+        /// <param name="arguments">Arguments for the error.</param>
+        /// <returns>An error string.</returns>
         public static string Get(int errorCode, params object[] arguments) => Generate(errorCode, arguments);
     }
 
     internal static class ErrorList
     {
-        public static ReadOnlyCollection<ErrorInfo> Errors = new List<ErrorInfo>()
+        /// <summary>
+        /// Gets a list of all possible SE errors.
+        /// </summary>
+        public static ReadOnlyCollection<ErrorInfo> Errors { get; } = new List<ErrorInfo>()
         {
             new ErrorInfo(
                 100,
