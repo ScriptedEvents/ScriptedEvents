@@ -14,7 +14,7 @@
         public string Name => "DELVARIABLE";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "DEL" };
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
