@@ -108,6 +108,7 @@
 
         public static ConditionResponse Evaluate(string input, Script source = null)
         {
+            source?.DebugLog($"Evaluating condition: {input}");
             return EvaluateInternal(input, source);
         }
 
@@ -210,15 +211,15 @@
             List<string> groups = CaptureGroups(input);
             foreach (string group in groups)
             {
-                Log.Debug($"GROUP: " + group);
+                source?.DebugLog($"GROUP: " + group);
                 string[] andSplit = group.Split(new[] { AND }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string fragAnd in andSplit)
                 {
-                    Log.Debug($"FRAG [AND]: " + fragAnd);
+                    source?.DebugLog($"FRAG [AND]: " + fragAnd);
                     string[] orSplit = fragAnd.Split(new[] { OR }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (string fragOr in orSplit)
                     {
-                        Log.Debug($"FRAG [OR]: " + fragOr);
+                        source?.DebugLog($"FRAG [OR]: " + fragOr);
                         string convertedFrag = VariableSystem.ReplaceVariables(fragOr, source);
                         ConditionResponse eval = EvaluateSingleCondition(convertedFrag, group);
                         if (!eval.Success)
@@ -231,7 +232,7 @@
                 }
             }
 
-            Log.Debug($"CONVERTED INPUT: " + input);
+            source?.DebugLog($"CONVERTED INPUT: " + input);
 
             if (bool.TryParse(input, out bool r))
                 return new(true, r, string.Empty);
@@ -242,7 +243,7 @@
                 foreach (Match match in matches)
                 {
                     ConditionResponse conditionResult = EvaluateAndOr(match.Groups[1].Value);
-                    input = input.Replace($"({match.Groups[1].Value})", conditionResult.ObjectResult ?? conditionResult.Passed);
+                    input = input.Replace($"({match.Groups[1].Value})", conditionResult.Passed.ToString().ToUpper());
                 }
             }
 

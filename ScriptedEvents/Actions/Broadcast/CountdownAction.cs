@@ -44,7 +44,7 @@
             if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players, script))
                 return new(false, players.Message);
 
-            if (!VariableSystem.TryParse(Arguments[1], out float duration, script)) // Todo: Use long here
+            if (!VariableSystem.TryParse(Arguments[1], out long duration, script))
                 return new(MessageType.NotANumber, this, "duration", Arguments[1]);
 
             string text = null;

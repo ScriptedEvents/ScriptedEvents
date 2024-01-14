@@ -23,7 +23,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Moves to the provided line.";
+        public string Description => "Moves to the provided label.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]

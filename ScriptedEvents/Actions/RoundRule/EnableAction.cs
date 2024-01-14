@@ -2,11 +2,12 @@
 {
     using System;
 
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class EnableAction : IScriptAction, IHelpInfo
+    public class EnableAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "ENABLE";
@@ -22,6 +23,9 @@
 
         /// <inheritdoc/>
         public string Description => "Enables a previously disabled round feature.";
+
+        /// <inheritdoc/>
+        public string LongDescription => ConstMessages.DisableKeys;
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]

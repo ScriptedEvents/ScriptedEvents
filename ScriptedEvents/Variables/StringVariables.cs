@@ -63,9 +63,9 @@
                 if (Arguments.Length < 2)
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "player", "keyName " }));
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
-                    List<Player> playerList = players.ToList();
+                    List<Player> playerList = players.GetInnerList();
                     if (playerList.Count > 1)
                         throw new ArgumentException("The 'PLAYERDATA' variable only works with one player!");
                     if (playerList[0].SessionVariables.ContainsKey(Arguments[1]))
@@ -112,13 +112,13 @@
                 {
                     if (conditionVariable.Item1 is not IPlayerVariable variable)
                     {
-                        throw new ArgumentException($"The provided value '{conditionVariable.Item1.Name}' has no associated players. [Error Code: SE-133]");
+                        throw new ArgumentException(ErrorGen.Get(133, conditionVariable.Item1.Name));
                     }
 
                     return variable.Players.Count();
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
+                throw new ArgumentException(ErrorGen.Get(132, Arguments[0]));
             }
         }
     }
@@ -157,12 +157,12 @@
                 {
                     if (variable is IArgumentVariable)
                     {
-                        return "ERROR: ARGUMENT VARIABLE NOT SUPPORTED IN 'C'. PLEASE USE CUSTOM VARIABLE INSTEAD.";
+                        throw new ArgumentException(ErrorGen.Get(138, "C"));
                     }
 
                     if (variable is not IPlayerVariable plrVar)
                     {
-                        throw new ArgumentException($"The provided value '{variable.Name}' has no associated players. [Error Code: SE-133]");
+                        throw new ArgumentException(ErrorGen.Get(133, variable.Name));
                     }
 
                     if (plrVar.Players.Count() == 0)
@@ -171,7 +171,7 @@
                     return string.Join(".", plrVar.Players.Select(plr => plr.Id.ToString()));
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable. [Error Code: SE-132]");
+                throw new ArgumentException(ErrorGen.Get(132, Arguments[0]));
             }
         }
     }
@@ -212,7 +212,7 @@
                 if (Arguments.Length > 1)
                     selector = Arguments[1].ToUpper();
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out IEnumerable<Player> players, Source, false))
+                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
                 {
                     IOrderedEnumerable<string> display = players.Select(ply =>
                     {
@@ -246,7 +246,7 @@
                     return string.Join(", ", display).Trim();
                 }
 
-                throw new ArgumentException($"The provided value '{Arguments[0]}' is not a valid variable or has no associated players. [Error Code: SE-131]");
+                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
             }
         }
 

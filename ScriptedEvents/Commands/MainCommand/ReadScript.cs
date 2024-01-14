@@ -42,7 +42,7 @@
 
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
-                response = "Critical error: Missing script path. Please reload plugin. [Error Code: SE-127]";
+                response = ErrorGen.Get(127);
                 return false;
             }
 

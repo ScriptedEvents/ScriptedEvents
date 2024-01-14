@@ -95,10 +95,10 @@
         public override string Author => "Thunder";
 
         /// <inheritdoc/>
-        public override Version Version => new(2, 6, 0);
+        public override Version Version => new(2, 7, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new(8, 4, 4);
+        public override Version RequiredExiledVersion => new(8, 7, 0);
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
@@ -134,12 +134,12 @@
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    Log.Error($"Unable to create the required ScriptedEvents directories due to a permission error. Please ensure that ScriptedEvents has proper system permissions to Exiled's Config folder. [Error Code: SE-106] Full error: {e}");
+                    Log.Error(ErrorGen.Get(106) + $": {e}");
                     return;
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"Unable to load ScriptedEvents due to a directory error. [Error Code: SE-107] {e}");
+                    Log.Error(ErrorGen.Get(107) + $": {e}");
                     return;
                 }
 
@@ -293,7 +293,7 @@
 
                     if (!made)
                     {
-                        Log.Warn($"The specified event '{ev.Key}' in the 'On' config was not found! [Error Code: SE-108]");
+                        Log.Warn(ErrorGen.Get(108, ev.Key));
                     }
 
                     // Delete help file on startup
@@ -427,19 +427,19 @@
 
                 if (custom.Name == string.Empty)
                 {
-                    Log.Warn($"Custom command is defined without a name. [Error Code: SE-128]");
+                    Log.Warn(ErrorGen.Get(128));
                     continue;
                 }
 
                 if (custom.Run is null || custom.Run.Count == 0)
                 {
-                    Log.Warn($"Custom command '{custom.Name}' ({custom.Type}) will not be created because it is set to run zero scripts. [Error Code: SE-129]");
+                    Log.Warn(ErrorGen.Get(129, custom.Name, custom.Type));
                     continue;
                 }
 
                 if (custom.Cooldown != -1 && custom.PlayerCooldown != -1)
                 {
-                    Log.Warn($"Custom command '{custom.Name}' ({custom.Type}) will not be created because it has multiple cooldowns set to a value other than -1. Only one cooldown can have a value other than -1. [Error Code: SE-136]");
+                    Log.Warn(ErrorGen.Get(136, custom.Name, custom.Type));
                     continue;
                 }
 
