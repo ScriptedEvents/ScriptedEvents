@@ -94,7 +94,7 @@
                     case "CLOSED":
                         return Generator.Get(gen => gen.IsOpen is false).Count();
                     default:
-                        throw new Exception($"Mode {Arguments[0]} is not ENGAGED/ACTIVATING/UNLOCKED or OPENED.");
+                        throw new Exception($"Mode {Arguments[0]} is not ENGAGED/ACTIVATING/UNLOCKED/OPENED or CLOSED.");
                 }
             }
         }
