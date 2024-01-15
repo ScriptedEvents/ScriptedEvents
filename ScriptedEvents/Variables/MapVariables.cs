@@ -68,7 +68,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode for which to check for generators. Valid modes are ENGAGED/ACTIVATING/UNLOCKED/OPEN.", true),
+            new Argument("mode", typeof(string), "The mode for which to check for generators. Valid modes are ENGAGED/ACTIVATING/UNLOCKED/OPENED/CLOSED.", true),
         };
 
         /// <inheritdoc/>
@@ -89,10 +89,12 @@
                         return Generator.Get(GeneratorState.Activating).Count();
                     case "UNLOCKED":
                         return Generator.Get(GeneratorState.Unlocked).Count();
-                    case "OPEN":
+                    case "OPENED":
                         return Generator.Get(GeneratorState.Open).Count();
+                    case "CLOSED":
+                        return Generator.Get(gen => gen.IsOpen is false).Count();
                     default:
-                        throw new Exception($"Mode {Arguments[0]} is not ENGAGED/ACTIVATING/UNLOCKED or OPEN.");
+                        throw new Exception($"Mode {Arguments[0]} is not ENGAGED/ACTIVATING/UNLOCKED or OPENED.");
                 }
             }
         }
