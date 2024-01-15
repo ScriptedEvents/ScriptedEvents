@@ -54,13 +54,13 @@
         public string Description => "The amount of generators which are fully engaged.";
     }
 
-    public class Generators : IFloatVariable, IArgumentVariable, INeedSourceVariable
+    public class Generators : IFloatVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{GENERATORS}";
 
         /// <inheritdoc/>
-        public string Description => "Gets the number of generaotors fufilling the requirements..";
+        public string Description => "Gets the number of generators fulfilling the requirements.";
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
@@ -70,9 +70,6 @@
         {
             new Argument("mode", typeof(string), "The mode for which to check for generators. Valid modes are ENGAGED/ACTIVATING/UNLOCKED/OPEN.", true),
         };
-
-        /// <inheritdoc/>
-        public Script Source { get; set; } = null;
 
         /// <inheritdoc/>
         public float Value
