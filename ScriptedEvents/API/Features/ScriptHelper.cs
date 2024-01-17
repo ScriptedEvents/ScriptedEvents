@@ -778,7 +778,7 @@ namespace ScriptedEvents.API.Features
             scr.DebugLog("-----------");
             scr.IsRunning = false;
 
-            if (MainPlugin.Singleton.Config.LoopScripts is not null && MainPlugin.Singleton.Config.LoopScripts.Contains(scr.ScriptName))
+            if (scr.Flags.Contains("LOOP"))
             {
                 scr.DebugLog("Re-running looped script.");
                 ReadAndRun(scr.ScriptName, scr.Sender); // so that it re-reads the content of the text file.
