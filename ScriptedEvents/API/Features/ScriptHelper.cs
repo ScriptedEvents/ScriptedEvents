@@ -178,9 +178,8 @@ namespace ScriptedEvents.API.Features
 #if DEBUG
                 Log.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}");
 #endif
-                ActionTypes.TryGetValue(keyword, out Type actionType);
 
-                if (actionType is null)
+                if (!ActionTypes.TryGetValue(keyword, out Type actionType))
                 {
                     // Check for custom actions
                     if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
@@ -200,21 +199,21 @@ namespace ScriptedEvents.API.Features
                     foreach (Type actionType123 in ActionTypes.Values)
                     {
                         var mock = (IAction)Activator.CreateInstance(actionType123);
-                        mock.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
                         if (mock.Aliases.Contains(keyword))
                         {
+                            actionType = actionType123;
                             hasUsedAlias = true;
-                            actionList.Add(mock);
-                            ListPool<string>.Pool.Return(actionParts);
-                            continue;
                         }
                     }
 
-                    if (!suppressWarnings && !hasUsedAlias)
-                        Log.Warn($"[L: {script.CurrentLine + 1}]" + ErrorGen.Get(102, keyword.RemoveWhitespace(), scriptName));
+                    if (!hasUsedAlias)
+                    {
+                        if (!suppressWarnings)
+                            Log.Warn($"[L: {script.CurrentLine + 1}]" + ErrorGen.Get(102, keyword.RemoveWhitespace(), scriptName));
 
-                    actionList.Add(new NullAction("ERROR"));
-                    continue;
+                        actionList.Add(new NullAction("ERROR"));
+                        continue;
+                    }
                 }
 
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
