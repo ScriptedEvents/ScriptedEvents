@@ -23,12 +23,12 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Stops the event execution at this line.";
+        public string Description => "Stops the event execution at this line, or stop a script with the specific name.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("scriptName", typeof(string), "The script name to be stopped.", false),
+            new Argument("scriptName", typeof(string), "The script name to be stopped. Leave empty to stop this script.", false),
         };
 
         /// <inheritdoc/>
@@ -38,9 +38,7 @@
 
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
-                // thunder add the error code cause i cant be bothered
-                // thankies >wo
-                throw new Exception("ooga booga");
+                return new(false, ErrorGen.Get(127));
             }
 
             ScriptHelper.StopScripts(Arguments[0]);
