@@ -6,6 +6,7 @@ namespace ScriptedEvents.API.Features
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
     using System.Text.RegularExpressions;
 
     using CommandSystem;
@@ -72,6 +73,33 @@ namespace ScriptedEvents.API.Features
         {
             InternalRead(scriptName, out string path);
             return path;
+        }
+
+        /// <summary>
+        /// Retrieves a list of all scripts in the server.
+        /// </summary>
+        /// <param name="sender">Optional sender.</param>
+        /// <returns>A list of all scripts.</returns>
+        /// <remarks>WARNING: Scripts created through this method are NOT DISPOSED!!! Call <see cref="Script.Dispose"/> when done with them.</remarks>
+        public static List<Script> ListScripts(ICommandSender sender = null)
+        {
+            List<Script> scripts = new();
+            string[] files = Directory.GetFiles(ScriptPath, "*.txt", SearchOption.AllDirectories);
+
+            foreach (string file in files)
+            {
+                if (File.ReadAllText(file).Contains("!-- HELPRESPONSE"))
+                    continue;
+
+                try
+                {
+                    Script scr = ReadScript(Path.GetFileNameWithoutExtension(file), sender, true);
+                    scripts.Add(scr);
+                }
+                catch { }
+            }
+
+            return scripts;
         }
 
         /// <summary>

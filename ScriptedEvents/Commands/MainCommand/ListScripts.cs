@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.Commands.MainCommand
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Text;
     using CommandSystem;
@@ -36,33 +37,19 @@
                 return false;
             }
 
-            string[] files = Directory.GetFiles(ScriptHelper.ScriptPath, "*.txt", SearchOption.AllDirectories);
+            List<Script> scripts = ScriptHelper.ListScripts(sender);
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
             int i = 0;
 
-            foreach (string file in files)
+            foreach (Script scr in scripts)
             {
-                if (File.ReadAllText(file).Contains("!-- HELPRESPONSE"))
-                    continue;
-
-                try
-                {
-                    Script scr = ScriptHelper.ReadScript(Path.GetFileNameWithoutExtension(file), sender, true);
-
-                    i++;
-
-                    bldr.AppendLine($"[{i}] {scr.ScriptName} (perm: {scr.ExecutePermission}) (last ran: {scr.LastRead:g}) (edited: {scr.LastEdited:g})");
-
-                    scr.Dispose();
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
+                i++;
+                bldr.AppendLine($"[{i}] {scr.ScriptName} (perm: {scr.ExecutePermission}) (last ran: {scr.LastRead:g}) (edited: {scr.LastEdited:g})");
+                scr.Dispose();
             }
 
-            response = $"All found scripts: \n\n{StringBuilderPool.Pool.ToStringReturn(bldr)}";
+            response = $"All found scripts ({i}): \n\n{StringBuilderPool.Pool.ToStringReturn(bldr)}";
             return true;
         }
     }
