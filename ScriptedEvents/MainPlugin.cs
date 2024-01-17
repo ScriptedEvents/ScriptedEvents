@@ -16,6 +16,7 @@
 
     using MEC;
     using RemoteAdmin;
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Commands;
@@ -151,10 +152,18 @@
                 });
             }
 
-            if (IsExperimental)
+            Timing.CallDelayed(3f, () =>
             {
-                Log.Warn($"This {Name} DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
-            }
+                if (IsExperimental)
+                {
+                    Log.Warn($"This {Name} DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
+                }
+
+                if (DateTime.Now.Month == 1 && DateTime.Now.Day == 25)
+                {
+                    Log.Info(Constants.ItsMyBirthday);
+                }
+            });
 
             PlayerHandler.ChangingRole += Handlers.OnChangingRole;
             PlayerHandler.Hurting += Handlers.OnHurting;
