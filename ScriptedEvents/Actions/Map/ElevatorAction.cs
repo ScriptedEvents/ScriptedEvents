@@ -30,7 +30,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode.", true),
+            new Argument("mode", typeof(string), "The mode (SEND/LOCK/UNLOCK).", true),
             new Argument("elevators", typeof(List<>), "The elevators to affect.", true),
         };
 
@@ -84,7 +84,7 @@
                     break;
 
                 default:
-                    return new(MessageType.InvalidOption, this, "mode", Arguments[0], "OPEN/CLOSE/LOCK/UNLOCK/DESTROY");
+                    return new(MessageType.InvalidOption, this, "mode", Arguments[0], "SEND/LOCK/UNLOCK");
             }
 
             foreach (Lift lift in lifts)
