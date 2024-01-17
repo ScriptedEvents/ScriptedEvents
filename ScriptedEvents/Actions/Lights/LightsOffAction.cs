@@ -35,7 +35,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("room", typeof(RoomType), "The room to flicker the lights off, 'ALL' for all rooms, or a zone ('LightContainment', 'HeavyContainment', 'Entrance').", true),
+            new Argument("room", typeof(RoomType), "The room to flicker the lights off.", true),
             new Argument("duration", typeof(float), "The duration of the lights out. Variables are supported.", true),
         };
 
