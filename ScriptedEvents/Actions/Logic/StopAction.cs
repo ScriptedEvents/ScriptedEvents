@@ -1,8 +1,10 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+    using System.IO;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
@@ -24,12 +26,26 @@
         public string Description => "Stops the event execution at this line.";
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments => Array.Empty<Argument>();
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("scriptName", typeof(string), "The script name to be stopped.", false),
+        };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(true, flags: ActionFlags.StopEventExecution);
+            if (Arguments.Length == 0) return new(true, flags: ActionFlags.StopEventExecution);
+
+            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            {
+                // thunder add the error code cause i cant be bothered
+                // thankies >wo
+                throw new Exception("ooga booga");
+            }
+
+            ScriptHelper.StopScripts(Arguments[0]);
+
+            return new(true);
         }
     }
 }
