@@ -21,9 +21,6 @@
         [Description("If set to true, players with overwatch enabled will not be affected by any commands related to players.")]
         public bool IgnoreOverwatch { get; set; } = true;
 
-        [Description("List of scripts to automatically re-run as soon as they finish.")]
-        public List<string> LoopScripts { get; set; } = new();
-
         [Description("The string to use for countdowns.")]
         public string CountdownString { get; set; } = "<size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\\n{TIME}";
 
