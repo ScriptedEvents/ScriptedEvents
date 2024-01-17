@@ -161,6 +161,7 @@
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
     <Compile Include="Integrations\RueiManager.cs" />
+    <Compile Include="Structures\ActionNameData.cs" />
     <Compile Include="Structures\Contributor.cs" />
     <Compile Include="Structures\CoroutineData.cs" />
     <Compile Include="Structures\CustomCommand.cs" />

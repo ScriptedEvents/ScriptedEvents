@@ -46,18 +46,10 @@
                 return false;
             }
 
-            if (!ScriptHelper.ActionTypes.TryGetValue(actionName.ToUpper(), out Type argType))
+            if (!ScriptHelper.TryGetActionType(actionName.ToUpper(), out Type argType))
             {
-                KeyValuePair<string, Type>? alias = ScriptHelper.ActionTypes.FirstOrDefault(kpv => ((IAction)Activator.CreateInstance(kpv.Value)).Aliases.Contains(actionName.ToUpper()));
-                if (alias.HasValue)
-                {
-                    argType = alias.Value.Value;
-                }
-                else
-                {
-                    response = "Invalid argument name provided.";
-                    return false;
-                }
+                response = "Invalid argument name provided.";
+                return false;
             }
 
             IAction action = Activator.CreateInstance(argType) as IAction;
