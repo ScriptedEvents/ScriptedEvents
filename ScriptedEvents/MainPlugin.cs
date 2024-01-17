@@ -16,6 +16,7 @@
 
     using MEC;
     using RemoteAdmin;
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Commands;
@@ -84,6 +85,8 @@
 
         public static List<Tuple<EventInfo, Delegate>> StoredDelegates { get; } = new();
 
+        public static List<string> AutoRunScripts { get; } = new();
+
         public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
         public static List<CustomCommand> CustomCommands { get; } = new();
@@ -151,10 +154,18 @@
                 });
             }
 
-            if (IsExperimental)
+            Timing.CallDelayed(3f, () =>
             {
-                Log.Warn($"This {Name} DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
-            }
+                if (IsExperimental)
+                {
+                    Log.Warn($"This {Name} DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
+                }
+
+                if (DateTime.Now.Month == 1 && DateTime.Now.Day == 25)
+                {
+                    Log.Info(Constants.ItsMyBirthday);
+                }
+            });
 
             PlayerHandler.ChangingRole += Handlers.OnChangingRole;
             PlayerHandler.Hurting += Handlers.OnHurting;
@@ -241,6 +252,19 @@
             // Setup systems
             ApiHelper.RegisterActions();
             VariableSystem.Setup();
+
+            // Setup auto-run scripts
+            Log.Debug("Initializing auto-run scripts");
+            foreach (Script scr in ScriptHelper.ListScripts())
+            {
+                if (scr.Flags.Contains("AUTORUN"))
+                {
+                    Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
+                    AutoRunScripts.Add(scr.ScriptName);
+                }
+
+                scr.Dispose();
+            }
 
             // "On" config
             SetupEvents();
