@@ -13,6 +13,9 @@ Fair warning: This plugin is very complex and has a lot of features. However, on
   * Note to Pterodactyl users: Pterodactyl does not like opening files on demand and will generally throw a permission error. It will still generate the file inside your `Configs/ScriptedEvents` folder, it will just not open it. As such, it is encouraged to use a local server for using this command.
 * The parent remote-admin command for this plugin is `scriptedevents` (aliases: `script`, `scr`). Running this command will show examples on how to use it.
 
+### Code Validation
+The wonderful @Elektryk-Andrzej has provided a Visual Studio Code extension to validate scripts in real-time! If you are using VS Code to write your scripts, you can add [this extension](https://marketplace.visualstudio.com/items?itemName=ElektrykAndrzej.e-secas) to validate your scripts while writing them!
+
 ### Permissions
 * `script.action` - Run a single non-logic action via command.
 * `script.execute` - Execute a script.
