@@ -28,9 +28,6 @@
         {
             Labels = DictionaryPool<string, int>.Pool.Get();
             Flags = ListPool<string>.Pool.Get();
-
-            Map.Broadcast(new Broadcast(Flags.ToArray().ToString()));
-
             UniqueVariables = DictionaryPool<string, CustomVariable>.Pool.Get();
             UniquePlayerVariables = DictionaryPool<string, CustomPlayerVariable>.Pool.Get();
             UniqueId = Guid.NewGuid();
