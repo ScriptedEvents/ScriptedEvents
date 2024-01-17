@@ -36,6 +36,7 @@
         /// </summary>
         public static void Setup()
         {
+            Log.Debug("Initializing variable system");
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
                 if (typeof(IVariableGroup).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
