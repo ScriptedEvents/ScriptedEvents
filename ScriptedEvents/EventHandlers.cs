@@ -230,7 +230,7 @@
         public void OnWaitingForPlayers()
         {
             CountdownHelper.Start();
-            foreach (string name in MainPlugin.Singleton.Config.AutoRunScripts)
+            foreach (string name in MainPlugin.AutoRunScripts)
             {
                 try
                 {

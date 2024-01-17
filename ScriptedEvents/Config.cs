@@ -21,9 +21,6 @@
         [Description("If set to true, players with overwatch enabled will not be affected by any commands related to players.")]
         public bool IgnoreOverwatch { get; set; } = true;
 
-        [Description("List of scripts to run as soon as the round finishes (re)starting (Waiting For Players).")]
-        public List<string> AutoRunScripts { get; set; } = new();
-
         [Description("List of scripts to automatically re-run as soon as they finish.")]
         public List<string> LoopScripts { get; set; } = new();
 

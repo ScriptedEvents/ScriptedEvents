@@ -96,7 +96,10 @@ namespace ScriptedEvents.API.Features
                     Script scr = ReadScript(Path.GetFileNameWithoutExtension(file), sender, true);
                     scripts.Add(scr);
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
             }
 
             return scripts;

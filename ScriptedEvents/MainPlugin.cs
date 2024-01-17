@@ -85,6 +85,8 @@
 
         public static List<Tuple<EventInfo, Delegate>> StoredDelegates { get; } = new();
 
+        public static List<string> AutoRunScripts { get; } = new();
+
         public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
         public static List<CustomCommand> CustomCommands { get; } = new();
@@ -250,6 +252,19 @@
             // Setup systems
             ApiHelper.RegisterActions();
             VariableSystem.Setup();
+
+            // Setup auto-run scripts
+            Log.Debug("Initializing auto-run scripts");
+            foreach (Script scr in ScriptHelper.ListScripts())
+            {
+                if (scr.Flags.Contains("AUTORUN"))
+                {
+                    Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
+                    AutoRunScripts.Add(scr.ScriptName);
+                }
+
+                scr.Dispose();
+            }
 
             // "On" config
             SetupEvents();
