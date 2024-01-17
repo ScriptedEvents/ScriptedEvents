@@ -397,6 +397,33 @@ namespace ScriptedEvents.API.Features
         }
 
         /// <summary>
+        /// Try-get a <see cref="Lift"/> array given an input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="lifts">The lift objects.</param>
+        /// <param name="source">The script source.</param>
+        /// <returns>Whether or not the try-get was successful.</returns>
+        public static bool TryGetLifts(string input, out Lift[] lifts, Script source = null)
+        {
+            List<Lift> liftList = ListPool<Lift>.Pool.Get();
+            if (input is "*" or "ALL")
+            {
+                liftList = Lift.List.ToList();
+            }
+            else if (VariableSystem.TryParse<ElevatorType>(input, out ElevatorType et, source))
+            {
+                liftList = Lift.List.Where(l => l.Type == et).ToList();
+            }
+            else
+            {
+                liftList = Lift.List.Where(l => l.Name.ToLower() == input.ToLower()).ToList();
+            }
+
+            lifts = ListPool<Lift>.Pool.ToArrayReturn(liftList);
+            return lifts.Length > 0;
+        }
+
+        /// <summary>
         /// Try-get a <see cref="Room"/> array given an input.
         /// </summary>
         /// <param name="input">The input.</param>

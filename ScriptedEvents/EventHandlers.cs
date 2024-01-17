@@ -6,15 +6,13 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-
+    using System.Reflection;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
-
-    // SCPs
     using Exiled.Events.EventArgs.Scp049;
     using Exiled.Events.EventArgs.Scp0492;
     using Exiled.Events.EventArgs.Scp079;
@@ -23,22 +21,19 @@
     using Exiled.Events.EventArgs.Scp173;
     using Exiled.Events.EventArgs.Scp3114;
     using Exiled.Events.EventArgs.Scp939;
-
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.EventArgs.Warhead;
-
+    using Exiled.Events.Features;
     using MapGeneration.Distributors;
     using MEC;
     using PlayerRoles;
     using Respawning;
-
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.Commands;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
-
     using UnityEngine;
+    using Event = Exiled.Events.Features.Event;
 
     public class EventHandlers
     {

@@ -23,6 +23,7 @@
             new EngagedGenerators(),
             new Scp914Active(),
             new DoorState(),
+            new Generators(),
         };
     }
 
@@ -51,6 +52,52 @@
 
         /// <inheritdoc/>
         public string Description => "The amount of generators which are fully engaged.";
+    }
+
+    public class Generators : IFloatVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{GENERATORS}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets the number of generators fulfilling the requirements.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("mode", typeof(string), "The mode for which to check for generators. Valid modes are ENGAGED/ACTIVATING/UNLOCKED/OPENED/CLOSED.", true),
+        };
+
+        /// <inheritdoc/>
+        public float Value
+        {
+            get
+            {
+                if (Arguments.Length < 1)
+                {
+                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
+                }
+
+                switch (Arguments[0].ToUpper())
+                {
+                    case "ENGAGED":
+                        return Generator.Get(GeneratorState.Engaged).Count();
+                    case "ACTIVATING":
+                        return Generator.Get(GeneratorState.Activating).Count();
+                    case "UNLOCKED":
+                        return Generator.Get(GeneratorState.Unlocked).Count();
+                    case "OPENED":
+                        return Generator.Get(GeneratorState.Open).Count();
+                    case "CLOSED":
+                        return Generator.Get(gen => gen.IsOpen is false).Count();
+                    default:
+                        throw new Exception($"Mode {Arguments[0]} is not ENGAGED/ACTIVATING/UNLOCKED/OPENED or CLOSED.");
+                }
+            }
+        }
     }
 
     public class Scp914Active : IBoolVariable
