@@ -44,7 +44,7 @@ namespace ScriptedEvents.API.Features
         /// <summary>
         /// Gets a dictionary of action names and their respective types.
         /// </summary>
-        public static Dictionary<string, Type> ActionTypes { get; } = new();
+        public static Dictionary<ActionNameData, Type> ActionTypes { get; } = new();
 
         /// <summary>
         /// Gets a dictionary of <see cref="Script"/> that are currently running, and the <see cref="CoroutineHandle"/> that is running them.
@@ -54,6 +54,21 @@ namespace ScriptedEvents.API.Features
         public static Dictionary<string, CustomAction> CustomActions { get; } = new();
 
         public static RueIManager Ruei { get; } = new RueIManager();
+
+        public static bool TryGetActionType(string name, out Type type)
+        {
+            foreach (var actionData in ActionTypes)
+            {
+                if (actionData.Key.Name == name || actionData.Key.Aliases.Contains(name))
+                {
+                    type = actionData.Value;
+                    return true;
+                }
+            }
+
+            type = null;
+            return false;
+        }
 
         /// <summary>
         /// Reads and returns the text of a script.
@@ -179,7 +194,7 @@ namespace ScriptedEvents.API.Features
                 Log.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}");
 #endif
 
-                if (!ActionTypes.TryGetValue(keyword, out Type actionType))
+                if (!TryGetActionType(keyword, out Type actionType))
                 {
                     // Check for custom actions
                     if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
@@ -193,27 +208,11 @@ namespace ScriptedEvents.API.Features
                         continue;
                     }
 
-                    bool hasUsedAlias = false;
+                    if (!suppressWarnings)
+                        Log.Warn($"[L: {script.CurrentLine + 1}]" + ErrorGen.Get(102, keyword.RemoveWhitespace(), scriptName));
 
-                    // Alias support
-                    foreach (Type actionType123 in ActionTypes.Values)
-                    {
-                        var mock = (IAction)Activator.CreateInstance(actionType123);
-                        if (mock.Aliases.Contains(keyword))
-                        {
-                            actionType = actionType123;
-                            hasUsedAlias = true;
-                        }
-                    }
-
-                    if (!hasUsedAlias)
-                    {
-                        if (!suppressWarnings)
-                            Log.Warn($"[L: {script.CurrentLine + 1}]" + ErrorGen.Get(102, keyword.RemoveWhitespace(), scriptName));
-
-                        actionList.Add(new NullAction("ERROR"));
-                        continue;
-                    }
+                    actionList.Add(new NullAction("ERROR"));
+                    continue;
                 }
 
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
@@ -580,7 +579,7 @@ namespace ScriptedEvents.API.Features
                     IAction temp = (IAction)Activator.CreateInstance(type);
 
                     Log.Debug($"Adding Action: {temp.Name} | From Assembly: {assembly.GetName().Name}");
-                    ActionTypes.Add(temp.Name, type);
+                    ActionTypes.Add(new() { Name = temp.Name, Aliases = temp.Aliases }, type);
                     i++;
                 }
             }
