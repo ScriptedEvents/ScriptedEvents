@@ -36,7 +36,7 @@
         {
             new Argument("players", typeof(List<Player>), "The players to set the role as.", true),
             new Argument("role", typeof(RoleTypeId), "The role to set the appearance of all the players as.", true),
-            new Argument("targetPlayers", typeof(List<Player>), "The players that will actually see reskin taking place.", false),
+            new Argument("targetPlayers", typeof(List<Player>), "The players that will see reskin taking place. Do not provide this variable for all players to see the reskin.", false),
         };
 
         /// <inheritdoc/>
