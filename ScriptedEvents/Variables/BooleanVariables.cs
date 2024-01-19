@@ -55,7 +55,7 @@
             {
                 if (Arguments.Length < 1) return false;
 
-                return VariableSystem.GetVariable(Arguments[0], Source, false)?.Item1 != null;
+                return VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection _, Source, true);
             }
         }
     }
