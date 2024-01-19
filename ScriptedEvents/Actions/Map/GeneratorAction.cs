@@ -55,7 +55,8 @@
 
             List<Generator> x = new List<Generator>(Generator.List);
 
-            // c# is dark fckn magic so chatgpt to the resque i guess
+            // c# is dark fckn magic so chatgpt to the resque i guess\
+            // update: doesnt work
             static List<T> ShuffleList<T>(List<T> list, int max)
             {
                 Random random = new Random();
