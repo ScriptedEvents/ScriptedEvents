@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Chance
 {
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
 #pragma warning disable SA1402 // File may only contain a single type
     using ScriptedEvents.Variables.Interfaces;
@@ -110,7 +111,7 @@
         public Argument[] ExpectedArguments => new[]
         {
                 new Argument("startNumber", typeof(int), "A starting number of the random range.", false),
-                new Argument("endNumber", typeof(string), "An ending number of the random range.", false),
+                new Argument("endNumber", typeof(int), "An ending number of the random range.", false),
         };
 
         /// <inheritdoc/>
@@ -121,13 +122,13 @@
                 if (Arguments.Length == 0) return UnityEngine.Random.value;
                 if (Arguments.Length < 2) throw new ArgumentException("To make a range you need to provide 2 numbers!");
 
-                if (!int.TryParse(Arguments[0], out int startNumber))
-                    throw new ArgumentException("startNumber is not a number");
+                if (!VariableSystem.TryParse(Arguments[0], out float startNum))
+                    throw new ArgumentException(ErrorGen.Get(137, Arguments[0]));
 
-                if (!int.TryParse(Arguments[1], out int endNumber))
-                    throw new ArgumentException("endNumber is not a number");
+                if (!VariableSystem.TryParse(Arguments[0], out float endNum))
+                    throw new ArgumentException(ErrorGen.Get(137, Arguments[0]));
 
-                return UnityEngine.Random.Range(startNumber, endNumber);
+                return UnityEngine.Random.Range(startNum, endNum);
             }
         }
     }
