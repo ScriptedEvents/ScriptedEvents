@@ -125,8 +125,8 @@
                 if (!VariableSystem.TryParse(Arguments[0], out float startNum))
                     throw new ArgumentException(ErrorGen.Get(137, Arguments[0]));
 
-                if (!VariableSystem.TryParse(Arguments[0], out float endNum))
-                    throw new ArgumentException(ErrorGen.Get(137, Arguments[0]));
+                if (!VariableSystem.TryParse(Arguments[1], out float endNum))
+                    throw new ArgumentException(ErrorGen.Get(137, Arguments[1]));
 
                 return UnityEngine.Random.Range(startNum, endNum);
             }
