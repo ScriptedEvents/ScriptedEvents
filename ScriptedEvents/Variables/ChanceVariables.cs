@@ -135,7 +135,7 @@
                 else
                 {
                     endNum = startNum;
-                    startNum = 0;
+                    startNum = 1;
                 }
 
                 return UnityEngine.Random.Range(startNum, endNum);
