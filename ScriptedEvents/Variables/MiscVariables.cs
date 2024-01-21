@@ -25,7 +25,7 @@
         public string Name => "{ROUND}";
 
         /// <inheritdoc/>
-        public string Description => "Returns a rounded version of a variable.";
+        public string Description => "Returns a rounded number.";
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
