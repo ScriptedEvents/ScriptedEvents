@@ -50,9 +50,9 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "variable" }));
                 }
 
-                if (!VariableSystem.TryParse(Arguments[0], out float value))
+                if (!VariableSystem.TryParse(Arguments[0], out float value, Source, false))
                 {
-                    throw new ArgumentException(ErrorGen.Get(137, Arguments[1]));
+                    throw new ArgumentException(ErrorGen.Get(137, Arguments[0]));
                 }
 
                 string mode = Arguments.Length < 2 ? "UP" : Arguments[1];

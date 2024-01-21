@@ -685,6 +685,12 @@
                 ev.IsAllowed = false;
         }
 
+        public void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev)
+        {
+            if (DisabledKeys.Contains("SCPANNOUNCEMENT"))
+                ev.IsAllowed = false;
+        }
+
         public void OnStartingWarhead(StartingEventArgs ev)
         {
             if (DisabledKeys.Contains("WARHEAD") || DisabledForPlayer("WARHEAD", ev.Player))

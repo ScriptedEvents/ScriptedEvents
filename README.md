@@ -35,10 +35,6 @@ scripted_events:
   broadcast_issues: true
   # If set to true, players with overwatch enabled will not be affected by any commands related to players.
   ignore_overwatch: true
-  # List of scripts to run as soon as the round starts.
-  auto_run_scripts: []
-  # List of scripts to automatically re-run as soon as they finish.
-  loop_scripts: []
   # The string to use for countdowns.
   countdown_string: '<size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\n{TIME}'
   # The maximum amount of actions that can run in one second, before the script is force-stopped. Increasing this value allows for more actions to occur at the same time, but increases the risk of the server crashing (or restarting due to missed heartbeats). This maximum can be bypassed entirely by including the "!-- NOSAFETY" flag in a script.
@@ -48,6 +44,8 @@ scripted_events:
     ExampleScriptNameHere: examplepermission
   # [ADVANCED] Define scripts to execute when certain events occur.
   on: {}
+  # [ADVANCED] Define a custom command to run a script when it is executed.
+  commands: []
 ```
 
 ## For developers

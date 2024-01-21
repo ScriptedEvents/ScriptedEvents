@@ -21,6 +21,14 @@
         public const string AND = " AND ";
         public const string OR = " OR ";
 
+        public static readonly char[] IgnoreChars = new[]
+        {
+            '>',
+            '<',
+            '=',
+            '!',
+        };
+
         // Conditions
 
         /// <summary>
@@ -154,12 +162,21 @@
             {
                 int index = input.IndexOf(floatCondition.Symbol);
 
-                // I dont like this code
-                if (index != -1 && input[index - 1] is not '<' or '>' or '=' && input[index + floatCondition.Symbol.Length] is not '<' or '>' or '=')
+                Log.Debug($"CND: {floatCondition.GetType().FullName}");
+                if (index != -1)
                 {
-                    match = floatCondition;
-                    break;
+                    Log.Debug($"INDEX: " + index);
+                    Log.Debug("SYM BEF: " + input[index - 1]);
+                    Log.Debug("SYM AFT: " + input[index + floatCondition.Symbol.Length]);
+                    if (!IgnoreChars.Contains(input[index - 1]) && !IgnoreChars.Contains(input[index + floatCondition.Symbol.Length]))
+                    {
+                        Log.Debug("MATCH: TRUE");
+                        match = floatCondition;
+                        break;
+                    }
                 }
+
+                Log.Debug("MATCH: FALSE");
             }
 
             if (match is not null)
@@ -181,11 +198,22 @@
             foreach (var stringCondition in StringConditions)
             {
                 int index = input.IndexOf(stringCondition.Symbol);
-                if (index != -1 && char.IsWhiteSpace(input[index - 1]) && char.IsWhiteSpace(input[index + stringCondition.Symbol.Length]))
+
+                Log.Debug($"CND: {stringCondition.GetType().FullName}");
+                if (index != -1)
                 {
-                    match2 = stringCondition;
-                    break;
+                    Log.Debug($"INDEX: " + index);
+                    Log.Debug("SYM BEF: " + input[index - 1]);
+                    Log.Debug("SYM AFT: " + input[index + stringCondition.Symbol.Length]);
+                    if (!IgnoreChars.Contains(input[index - 1]) && !IgnoreChars.Contains(input[index + stringCondition.Symbol.Length]))
+                    {
+                        Log.Debug("MATCH: TRUE");
+                        match2 = stringCondition;
+                        break;
+                    }
                 }
+
+                Log.Debug("MATCH: FALSE");
             }
 
             if (match2 is not null)

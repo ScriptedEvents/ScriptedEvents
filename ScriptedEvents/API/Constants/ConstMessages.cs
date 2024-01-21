@@ -15,7 +15,6 @@
 - NEXT - Moves to the next line.";
 
         public const string DisableKeys = @"The following keys contain functionality when used in DISABLE/ENABLE and DISABLEPLAYER/ENABLEPLAYER.
-A '*' next to the key indicates that the key does NOT have any functionality when used in DISABLEPLAYER/ENABLEPLAYER.
 
 - DOORS - Disables all door interactions.
 - DROPPING - Disables dropping and throwing items.
@@ -28,9 +27,7 @@ A '*' next to the key indicates that the key does NOT have any functionality whe
 - ITEMPICKUPS - Disables all item pickup functionality.
 - LOCKERS - Disables all locker functionality.
 - MICROPICKUPS - Disables item pickup functionality only for Micro-HID drops.
-- NTFANNOUNCEMENT * - Disables NTF spawn announcement.
 - PEDESTALS - Disables all pedestal functionality.
-- RESPAWNS * - Prevents player(s) from respawning as Chaos/NTF.
 - SCP049ATTACK - Disables SCP-049's primary attack.
 - SCP0492ATTACK - Disables SCP-049-2's primary attack.
 - SCP096ATTACK - Disables SCP-096's primary attack.
@@ -46,6 +43,11 @@ A '*' next to the key indicates that the key does NOT have any functionality whe
 - TESLAS - Disables all tesla functionality.
 - WARHEAD - Prevents player(s) from interacting with the warhead.
 - WORKSTATIONS - Disables all workstation functionality.
+
+The following keys can ONLY be used in DISABLE and ENABLE. They cannot be tied to specific players.
+- NTFANNOUNCEMENT * - Disables NTF spawn announcements.
+- RESPAWNS - Prevents player(s) from respawning as Chaos/NTF.
+- SCPANNOUNCEMENT - Disables SCP termination announcements.
 ";
     }
 }

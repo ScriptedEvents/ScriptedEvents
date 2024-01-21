@@ -200,6 +200,7 @@
             PlayerHandler.DeactivatingWorkstation += Handlers.OnWorkStationEvent;
 
             MapHandler.AnnouncingNtfEntrance += Handlers.OnAnnouncingNtfEntrance;
+            MapHandler.AnnouncingScpTermination += Handlers.OnAnnouncingScpTermination;
 
             Scp330Handler.InteractingScp330 += Handlers.OnScp330Event;
 
@@ -367,6 +368,7 @@
             PlayerHandler.DeactivatingWorkstation -= Handlers.OnWorkStationEvent;
 
             MapHandler.AnnouncingNtfEntrance -= Handlers.OnAnnouncingNtfEntrance;
+            MapHandler.AnnouncingScpTermination -= Handlers.OnAnnouncingScpTermination;
 
             Scp330Handler.InteractingScp330 -= Handlers.OnScp330Event;
 
