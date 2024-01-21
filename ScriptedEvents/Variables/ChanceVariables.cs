@@ -21,6 +21,7 @@
             new Chance10(),
             new Chance20(),
             new Chance100(),
+            new Rand(),
         };
     }
 
