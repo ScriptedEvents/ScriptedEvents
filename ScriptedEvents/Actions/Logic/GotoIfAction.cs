@@ -47,7 +47,7 @@
 
                 ConditionResponse deprecatedOutcome = ConditionHelperV2.Evaluate(string.Join(" ", Arguments.Skip(2)), script);
                 if (!deprecatedOutcome.Success)
-                    return new(false, $"IF execution error: {deprecatedOutcome.Message}", ActionFlags.FatalError);
+                    return new(false, $"GOTOIF execution error: {deprecatedOutcome.Message}", ActionFlags.FatalError);
 
                 if (deprecatedOutcome.Passed)
                 {
@@ -80,18 +80,13 @@
 
             ConditionResponse outcome = ConditionHelperV2.Evaluate(string.Join(" ", Arguments.Skip(1)), script);
             if (!outcome.Success)
-                return new(false, $"IF execution error: {outcome.Message}", ActionFlags.FatalError);
+                return new(false, $"GOTOIF execution error: {outcome.Message}. If you are using an older script, add \"!-- OLD-GOTOIF\" flag for old GOTOIF support or update the script accordingly.", ActionFlags.FatalError);
 
             if (outcome.Passed)
             {
                 script.DebugLog($"GOTOIF result: true. Jumping to line {Arguments[0]}.");
                 if (!script.Jump(Arguments[0]))
-                {
-                    if (Arguments[0].ToUpper() == "STOP")
-                        return new(true, flags: ActionFlags.StopEventExecution);
-
                     return new(false, ErrorGen.Get(139, "trueLine", Arguments[0]));
-                }
             }
             else
             {
