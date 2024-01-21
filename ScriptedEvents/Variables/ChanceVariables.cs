@@ -111,8 +111,8 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-                new Argument("startNumber", typeof(int), "A starting number of the random range.", false),
-                new Argument("endNumber", typeof(int), "An ending number of the random range.", false),
+                new Argument("number", typeof(int), "A starting number of the random range. If an ending number is not provided, it will be treated as end number, and 0 as start number.", false),
+                new Argument("number", typeof(int), "An ending number of the random range.", false),
         };
 
         /// <inheritdoc/>
@@ -121,13 +121,22 @@
             get
             {
                 if (Arguments.Length == 0) return UnityEngine.Random.value;
-                if (Arguments.Length < 2) throw new ArgumentException("To make a range you need to provide 2 numbers!");
 
                 if (!VariableSystem.TryParse(Arguments[0], out float startNum))
                     throw new ArgumentException(ErrorGen.Get(137, Arguments[0]));
 
-                if (!VariableSystem.TryParse(Arguments[1], out float endNum))
-                    throw new ArgumentException(ErrorGen.Get(137, Arguments[1]));
+                float endNum;
+
+                if (Arguments.Length >= 2)
+                {
+                    if (!VariableSystem.TryParse(Arguments[1], out endNum))
+                        throw new ArgumentException(ErrorGen.Get(137, Arguments[1]));
+                }
+                else
+                {
+                    endNum = startNum;
+                    startNum = 0;
+                }
 
                 return UnityEngine.Random.Range(startNum, endNum);
             }
