@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class WarheadAction : IScriptAction, IHelpInfo
+    public class WarheadAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "WARHEAD";
@@ -28,8 +28,21 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("action", typeof(string), "The action to run. Valid options: START, STOP, LOCK, UNLOCK, DETONATE, BLASTDOORS", true),
+            new Argument("action", typeof(string), "The action to run.", true),
         };
+
+        /// <inheritdoc/>
+        public string LongDescription { get; } = @$"Valid options:
+- START - Starts the warhead (even if it is disarmed or on cooldown)
+- STOP - Stops the warhead
+- LOCK - Prevents the warhead from being enabled
+- UNLOCK Allows the warhead to be enabled again
+- DETONATE - Detonates the warhead immediately
+- BLASTDOORS - Closes the surface blast doors, doesn't start or detonate the warhead
+- ARM - Arms the warhead (switches lever to ON)
+- DISARM - Disarms the warhead (switches lever to OFF)
+- OPEN - Opens the keycard panel on the surface
+- CLOSE - Closes the keycard panel on the surface";
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
@@ -53,11 +66,24 @@
                 case "UNLOCK":
                     Warhead.IsLocked = false;
                     break;
+                case "ARM":
+                    Warhead.LeverStatus = true;
+                    break;
+                case "DISARM":
+                    Warhead.LeverStatus = false;
+                    break;
+                case "OPEN":
+                    Warhead.IsKeycardActivated = true;
+                    break;
+                case "CLOSE":
+                    Warhead.IsKeycardActivated = false;
+                    break;
                 case "BLASTDOORS":
                     Warhead.CloseBlastDoors();
                     break;
                 default:
                     return new(MessageType.InvalidOption, this, "action", Arguments[0], "START/STOP/DETONATE/LOCK/UNLOCK/BLASTDOORS");
+                    return new(MessageType.InvalidOption, this, "action", Arguments[0], "START/STOP/DETONATE/LOCK/UNLOCK/BLASTDOORS/ARM/DISARM/OPEN/CLOSE");
             }
 
             return new(true);
