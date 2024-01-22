@@ -66,6 +66,7 @@
                 case "UNLOCK":
                     Warhead.IsLocked = false;
                     break;
+// Jraylor Zone
                 case "ARM":
                     Warhead.LeverStatus = true;
                     break;
@@ -78,6 +79,7 @@
                 case "CLOSE":
                     Warhead.IsKeycardActivated = false;
                     break;
+// Jraylor Zone
                 case "BLASTDOORS":
                     Warhead.CloseBlastDoors();
                     break;
