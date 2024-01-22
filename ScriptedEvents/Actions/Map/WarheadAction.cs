@@ -82,7 +82,6 @@
                     Warhead.CloseBlastDoors();
                     break;
                 default:
-                    return new(MessageType.InvalidOption, this, "action", Arguments[0], "START/STOP/DETONATE/LOCK/UNLOCK/BLASTDOORS");
                     return new(MessageType.InvalidOption, this, "action", Arguments[0], "START/STOP/DETONATE/LOCK/UNLOCK/BLASTDOORS/ARM/DISARM/OPEN/CLOSE");
             }
 
