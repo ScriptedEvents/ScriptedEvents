@@ -77,7 +77,7 @@
 
                     foreach (Player player in plys)
                     {
-                        player.ChangeEffectIntensity(effect, (byte)intensity);
+                        player.ChangeEffectIntensity(effect, intensity);
                         player.EnableEffect(effect, duration);
                     }
 
