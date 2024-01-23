@@ -8,7 +8,7 @@
         public Flag(string key, IEnumerable<string> arguments)
         {
             Key = key;
-            Arguments = arguments.ToArray();
+            Arguments = arguments.Select(s => s.Trim()).ToArray();
         }
 
         public string Key { get; set; }

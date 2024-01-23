@@ -10,6 +10,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -185,6 +186,8 @@
             SpawnsByTeam[SpawnableTeamType.NineTailedFox] = 0;
             SpawnsByTeam[SpawnableTeamType.ChaosInsurgency] = 0;
 
+            MainPlugin.Singleton.NukeOnConnections();
+
             foreach (var escapedRole in Escapes)
             {
                 escapedRole.Value.Clear();
@@ -226,7 +229,7 @@
         public void OnWaitingForPlayers()
         {
             CountdownHelper.Start();
-            List<string> autoRun = new();
+            List<string> autoRun = ListPool<string>.Pool.Get();
 
             foreach (Script scr in ScriptHelper.ListScripts())
             {
@@ -262,6 +265,9 @@
                     Log.Warn(ErrorGen.Get(101, name));
                 }
             }
+
+            ListPool<string>.Pool.Return(autoRun);
+            MainPlugin.Singleton.SetupEvents();
         }
 
         public void OnRoundStarted()
@@ -351,7 +357,7 @@
         // Reflection: ON config
         public void OnAnyEvent(string eventName, IExiledEvent ev = null)
         {
-            if (MainPlugin.Configs.On.TryGetValue(eventName, out List<string> scripts))
+            if (MainPlugin.CurrentEventData is not null && MainPlugin.CurrentEventData.TryGetValue(eventName, out List<string> scripts))
             {
                 foreach (string script in scripts)
                 {
