@@ -152,7 +152,7 @@ namespace ScriptedEvents.API.Features
                 }
                 else if (action.StartsWith("!--"))
                 {
-                    string flag = action.Replace("!--", string.Empty);
+                    string flag = action.Replace("!--", string.Empty).Trim();
 
                     if (!script.Flags.Contains(flag))
                     {
