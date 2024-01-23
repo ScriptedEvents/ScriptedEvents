@@ -89,6 +89,7 @@
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
+    <Compile Include="Actions\Misc\PluginAction.cs" />
     <Compile Include="Actions\Misc\PrintAction.cs" />
     <Compile Include="Actions\Player\CustomInfoAction.cs" />
     <Compile Include="Actions\RoundRule\DamageRuleAction.cs" />
