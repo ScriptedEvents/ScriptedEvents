@@ -48,6 +48,17 @@
             if (!VariableSystem.TryParse<EffectType>(Arguments[2], out EffectType effect, script))
                 return new(false, "Invalid effect type provided.");
 
+            int intensity = 1;
+
+            if (Arguments.Length > 3)
+            {
+                if (!VariableSystem.TryParse(Arguments[3], out intensity, script))
+                    return new(MessageType.NotANumber, this, "intensity", Arguments[3]);
+
+                if (intensity < 0)
+                    return new(MessageType.LessThanZeroNumber, this, "intensity", Arguments[3]);
+            }
+
             int duration = 0;
 
             if (Arguments.Length > 4)
@@ -65,20 +76,13 @@
             switch (mode)
             {
                 case "GIVE":
-                    string intensityString = "1";
-                    if (Arguments.Length > 3)
-                        intensityString = Arguments[3];
-
-                    if (!VariableSystem.TryParse(intensityString, out int intensity, script))
-                        return new(MessageType.NotANumber, this, "intensity", Arguments[3]);
-
-                    if (intensity < 0 || intensity > 255)
+                    if (intensity > 255)
                         return new(false, "Effect intensity must be between 0-255.");
 
                     foreach (Player player in plys)
                     {
-                        player.ChangeEffectIntensity(effect, (byte)intensity);
-                        player.EnableEffect(effect, duration);
+                        Effect eff = new(effect, duration, (byte)intensity);
+                        player.SyncEffect(eff);
                     }
 
                     return new(true);

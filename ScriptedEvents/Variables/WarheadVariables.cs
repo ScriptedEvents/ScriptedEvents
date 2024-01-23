@@ -13,6 +13,8 @@
         {
             new DetonationTime(),
             new WarheadCounting(),
+            new WarheadArmed(),
+            new WarheadOpened(),
             new WarheadDetonated(),
         };
     }
@@ -42,6 +44,36 @@
 
         /// <inheritdoc/>
         public bool Value => Warhead.IsInProgress;
+    }
+
+    public class WarheadArmed : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{WARHEADARMED}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!WARHEADARMED}";
+
+        /// <inheritdoc/>
+        public string Description => "Whether or not the Alpha Warhead is armed (the lever is switched to ON).";
+
+        /// <inheritdoc/>
+        public bool Value => Warhead.LeverStatus;
+    }
+
+    public class WarheadOpened : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{WARHEADOPENED}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!WARHEADOPENED}";
+
+        /// <inheritdoc/>
+        public string Description => "Whether or not the Alpha Warhead keycard panel (on the surface) is unlocked.";
+
+        /// <inheritdoc/>
+        public bool Value => Warhead.IsKeycardActivated;
     }
 
     public class WarheadDetonated : IBoolVariable

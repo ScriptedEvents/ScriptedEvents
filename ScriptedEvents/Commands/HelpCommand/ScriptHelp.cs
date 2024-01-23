@@ -5,6 +5,7 @@
     using CommandSystem;
     using ScriptedEvents.Actions;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.Structures;
 
     [CommandHandler(typeof(GameConsoleCommandHandler))]

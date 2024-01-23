@@ -10,6 +10,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -28,6 +29,7 @@
     using MEC;
     using PlayerRoles;
     using Respawning;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
@@ -184,6 +186,8 @@
             SpawnsByTeam[SpawnableTeamType.NineTailedFox] = 0;
             SpawnsByTeam[SpawnableTeamType.ChaosInsurgency] = 0;
 
+            MainPlugin.Singleton.NukeOnConnections();
+
             foreach (var escapedRole in Escapes)
             {
                 escapedRole.Value.Clear();
@@ -225,7 +229,20 @@
         public void OnWaitingForPlayers()
         {
             CountdownHelper.Start();
-            foreach (string name in MainPlugin.AutoRunScripts)
+            List<string> autoRun = ListPool<string>.Pool.Get();
+
+            foreach (Script scr in ScriptHelper.ListScripts())
+            {
+                if (scr.Flags.Contains("AUTORUN"))
+                {
+                    Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
+                    autoRun.Add(scr.ScriptName);
+                }
+
+                scr.Dispose();
+            }
+
+            foreach (string name in autoRun)
             {
                 try
                 {
@@ -248,6 +265,9 @@
                     Log.Warn(ErrorGen.Get(101, name));
                 }
             }
+
+            ListPool<string>.Pool.Return(autoRun);
+            MainPlugin.Singleton.SetupEvents();
         }
 
         public void OnRoundStarted()
@@ -337,7 +357,7 @@
         // Reflection: ON config
         public void OnAnyEvent(string eventName, IExiledEvent ev = null)
         {
-            if (MainPlugin.Configs.On.TryGetValue(eventName, out List<string> scripts))
+            if (MainPlugin.CurrentEventData is not null && MainPlugin.CurrentEventData.TryGetValue(eventName, out List<string> scripts))
             {
                 foreach (string script in scripts)
                 {

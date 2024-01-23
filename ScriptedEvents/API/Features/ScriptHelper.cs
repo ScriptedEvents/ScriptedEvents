@@ -152,12 +152,18 @@ namespace ScriptedEvents.API.Features
                 }
                 else if (action.StartsWith("!--"))
                 {
-                    string flag = action.Substring(3).RemoveWhitespace();
+                    string flag = action.Replace("!--", string.Empty);
 
                     if (!script.Flags.Contains(flag))
-                        script.Flags.Add(flag);
+                    {
+                        string[] arguments = flag.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        Flag fl = new(arguments[0], arguments.Skip(1));
+                        script.Flags.Add(fl);
+                    }
                     else if (!suppressWarnings)
+                    {
                         Log.Warn(ErrorGen.Get(103, flag, scriptName));
+                    }
 
                     actionList.Add(new NullAction("FLAG DEFINE"));
                     continue;

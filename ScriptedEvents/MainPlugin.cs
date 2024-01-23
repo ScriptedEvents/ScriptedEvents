@@ -18,9 +18,11 @@
     using RemoteAdmin;
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Commands;
     using ScriptedEvents.DemoScripts;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
     using Event = Exiled.Events.Features.Event;
@@ -85,11 +87,9 @@
 
         public static List<Tuple<EventInfo, Delegate>> StoredDelegates { get; } = new();
 
-        public static List<string> AutoRunScripts { get; } = new();
-
         public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
-        public static List<CustomCommand> CustomCommands { get; } = new();
+        public static List<Commands.CustomCommand> CustomCommands { get; } = new();
 
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";
@@ -105,6 +105,8 @@
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
+
+        internal static Dictionary<string, List<string>> CurrentEventData { get; set; }
 
         /// <summary>
         /// Equivalent to <see cref="Log.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
@@ -254,21 +256,10 @@
             ApiHelper.RegisterActions();
             VariableSystem.Setup();
 
-            // Setup auto-run scripts
-            Log.Debug("Initializing auto-run scripts");
-            foreach (Script scr in ScriptHelper.ListScripts())
-            {
-                if (scr.Flags.Contains("AUTORUN"))
-                {
-                    Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
-                    AutoRunScripts.Add(scr.ScriptName);
-                }
-
-                scr.Dispose();
-            }
-
-            // "On" config
-            SetupEvents();
+            // Delete help file on startup
+            string helpPath = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
+            if (File.Exists(helpPath))
+                File.Delete(helpPath);
         }
 
         /// <summary>
@@ -276,7 +267,27 @@
         /// </summary>
         public void SetupEvents()
         {
-            foreach (KeyValuePair<string, List<string>> ev in Configs.On)
+            CurrentEventData = new();
+
+            foreach (Script scr in ScriptHelper.ListScripts())
+            {
+                if (scr.Flags.TryGet("EVENT", out Flag f))
+                {
+                    string evName = f.Arguments[0];
+                    if (CurrentEventData.ContainsKey(evName))
+                    {
+                        CurrentEventData[evName].Add(scr.ScriptName);
+                    }
+                    else
+                    {
+                        CurrentEventData.Add(evName, new List<string>() { scr.ScriptName });
+                    }
+                }
+
+                scr.Dispose();
+            }
+
+            foreach (KeyValuePair<string, List<string>> ev in CurrentEventData)
             {
                 Log.Debug("Setting up new 'on' event");
                 Log.Debug($"Event: {ev.Key}");
@@ -314,18 +325,14 @@
 
                     subscribe.Invoke(propertyInfo.GetValue(Handlers), new object[] { @delegate });
                     StoredDelegates.Add(new Tuple<EventInfo, Delegate>(eventInfo, @delegate));
+
                     made = true;
-
-                    if (!made)
-                    {
-                        Log.Warn(ErrorGen.Get(108, ev.Key));
-                    }
-
-                    // Delete help file on startup
-                    string helpPath = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
-                    if (File.Exists(helpPath))
-                        File.Delete(helpPath);
                 }
+
+                if (made)
+                    Log.Debug($"Event {ev.Key} connected successfully");
+                else
+                    Log.Debug($"Event {ev.Key} failed to be connected");
             }
         }
 
@@ -418,6 +425,17 @@
             Scp939.SavingVoice -= Handlers.OnScpAbility;
             Scp3114.TryUseBody -= Handlers.OnScpAbility;
 
+            NukeOnConnections();
+
+            ScriptHelper.StopAllScripts();
+            ScriptHelper.ActionTypes.Clear();
+
+            Singleton = null;
+            Handlers = null;
+        }
+
+        public void NukeOnConnections()
+        {
             for (int i = 0; i < StoredDelegates.Count; i++)
             {
                 Tuple<EventInfo, Delegate> tuple = StoredDelegates[i];
@@ -438,11 +456,7 @@
                 StoredDelegates.Remove(tuple);
             }
 
-            ScriptHelper.StopAllScripts();
-            ScriptHelper.ActionTypes.Clear();
-
-            Singleton = null;
-            Handlers = null;
+            CurrentEventData = null;
         }
 
         public override void OnRegisteringCommands()
@@ -482,7 +496,7 @@
                     cooldown = custom.PlayerCooldown;
                 }
 
-                CustomCommand command = new()
+                Commands.CustomCommand command = new()
                 {
                     Command = custom.Name,
                     Description = custom.Description,

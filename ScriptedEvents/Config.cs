@@ -33,9 +33,6 @@
             { "ExampleScriptNameHere", "examplepermission" },
         };
 
-        [Description("[ADVANCED] Define scripts to execute when certain events occur.")]
-        public Dictionary<string, List<string>> On { get; set; } = new();
-
         [Description("[ADVANCED] Define a custom command to run a script when it is executed.")]
         public List<CustomCommand> Commands { get; set; } = new()
         {

@@ -160,22 +160,23 @@
                 sb.AppendLine($"{helpInfo.Description}");
                 sb.AppendLine($"Action type: {MsgGen.Display(action.Subgroup)}");
 
-                if (action.IsObsolete(out string reason))
-                    sb.AppendLine($"** THIS ACTION IS MARKED AS OBSOLETE AND REASON DIRECTIVES SHOULD BE READ BEFORE USING. REASON: {reason} **");
-
-                sb.AppendLine();
-
-                if (action is ILongDescription longDescription)
-                {
-                    sb.AppendLine(longDescription.LongDescription);
-                }
-
                 // Usage
                 sb.Append($"Usage: {action.Name}");
                 foreach (Argument arg in helpInfo.ExpectedArguments)
                 {
                     string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
                     sb.Append($" {chars[0]}{arg.ArgumentName.ToUpper()}{chars[1]}");
+                }
+
+                sb.AppendLine();
+
+                if (action.IsObsolete(out string reason))
+                    sb.AppendLine($"** THIS ACTION IS MARKED AS OBSOLETE AND REASON DIRECTIVES SHOULD BE READ BEFORE USING. REASON: {reason} **");
+
+                if (action is ILongDescription longDescription)
+                {
+                    sb.AppendLine();
+                    sb.AppendLine(longDescription.LongDescription);
                 }
 
                 sb.AppendLine();
@@ -364,7 +365,7 @@
                 // Set file attributes
                 FileInfo info = new(path)
                 {
-                    Attributes = FileAttributes.Temporary,
+                    Attributes = FileAttributes.Temporary | FileAttributes.Hidden,
                 };
 
                 try

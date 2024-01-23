@@ -6,13 +6,14 @@
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
 
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class GiveAction : IScriptAction, IHelpInfo
+    public class GiveAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "GIVE";
@@ -28,6 +29,9 @@
 
         /// <inheritdoc/>
         public string Description => "Gives the targeted players an item.";
+
+        /// <inheritdoc/>
+        public string LongDescription => ConstMessages.ItemInput;
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
