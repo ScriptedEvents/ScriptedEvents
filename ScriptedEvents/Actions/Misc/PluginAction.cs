@@ -44,7 +44,7 @@
             {
                 case "ENABLE":
 
-                    string assemblyPath = Path.Combine(Paths.Plugins, $"{Arguments[1]}.dll");
+                    string assemblyPath = Path.Combine(Paths.Plugins, $"{string.Join(" ", Arguments.Skip(1))}.dll");
                     Assembly assembly = Loader.LoadAssembly(assemblyPath);
                     if (assembly is null)
                     {
