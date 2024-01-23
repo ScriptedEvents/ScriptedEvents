@@ -13,6 +13,7 @@
 
     using ScriptedEvents.Actions.Samples;
     using ScriptedEvents.Actions.Samples.Interfaces;
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
@@ -139,6 +140,24 @@
                 }
 
                 return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbList)));
+            }
+
+            // List Enums
+            else if (Arguments[0].ToUpper() is "LISTENUM" or "ENUMLIST")
+            {
+                StringBuilder sbEnumList = StringBuilderPool.Pool.Get();
+                sbEnumList.AppendLine();
+                sbEnumList.AppendLine("=== ENUMS ===");
+                sbEnumList.AppendLine("Enums are, at the basic level, 'options' in code. Different 'Enum' inputs are required for various actions, such as roles, items, etc.");
+                sbEnumList.AppendLine("Type 'shelp <enum name>' to see each different enum's valid options.");
+                sbEnumList.AppendLine();
+
+                foreach (EnumDefinition def in EnumDefinitions.Definitions)
+                {
+                    sbEnumList.AppendLine($"{def.EnumType.Name} - {def.Description}");
+                }
+
+                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbEnumList)));
             }
 
             // Action Help
@@ -300,6 +319,29 @@
                 }
 
                 return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sb)));
+            }
+
+            // Enum help
+            EnumDefinition match = EnumDefinitions.Definitions.FirstOrDefault(def => def.EnumType.Name.ToUpper() == Arguments[0].ToUpper());
+            if (match is not null)
+            {
+                StringBuilder sbEnum = StringBuilderPool.Pool.Get();
+                sbEnum.AppendLine();
+                sbEnum.AppendLine($"=== ENUM ===");
+                sbEnum.AppendLine($"Name: {match.EnumType.Name}");
+                sbEnum.AppendLine(match.Description);
+                if (!string.IsNullOrWhiteSpace(match.LongDescription))
+                    sbEnum.AppendLine(match.LongDescription);
+
+                sbEnum.AppendLine();
+                sbEnum.AppendLine("Options:");
+                foreach (object item in match.ObjectItems)
+                {
+                    int n = Convert.ToInt32(item);
+                    sbEnum.AppendLine($"{n} - {item}");
+                }
+
+                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbEnum)));
             }
 
             // Error Codes

@@ -118,6 +118,7 @@
     <Compile Include="Actions\Inventory\RemoveItemAction.cs" />
     <Compile Include="API\Constants\Constants.cs" />
     <Compile Include="API\Constants\ConstMessages.cs" />
+    <Compile Include="API\Constants\EnumDefinitions.cs" />
     <Compile Include="API\Enums\CommandCooldownMode.cs" />
     <Compile Include="API\Extensions\ListExtensions.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Structures\CoroutineData.cs" />
     <Compile Include="Structures\CustomCommand.cs" />
     <Compile Include="Structures\DamageRule.cs" />
+    <Compile Include="Structures\EnumDefinition.cs" />
     <Compile Include="Structures\ErrorInfo.cs" />
     <Compile Include="Structures\Flag.cs" />
     <Compile Include="Structures\PlayerCollection.cs" />
