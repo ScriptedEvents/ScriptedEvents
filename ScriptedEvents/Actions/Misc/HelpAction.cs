@@ -52,12 +52,27 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             IsFile = false;
 
             if (script.Sender is ServerConsoleSender) IsFile = true;
             if (Arguments.Length > 1 && Arguments[1].ToUpper() == "NOFILE" && script.Sender is ServerConsoleSender) IsFile = false;
+
+            if (Arguments.Length < 1)
+            {
+                string text = $@"
+Welcome to the HELP command! This command is your one-stop shop for all {MainPlugin.Singleton.Name} documentation and information.
+Please use one of the following options to continue:
+- 'LIST' - Lists all available actions.
+- 'LISTVAR' - Lists all available variables.
+- 'LISTENUM' - Lists all enums that are used in {MainPlugin.Singleton.Name}, and show more info about enums.
+- An error code returned from an error message (example: 'SE-101').
+
+Every value returned from those lists can also be used in shelp to retrieve documentation about specific features. For example, 'TESLA' will give you more information about the TESLA action.
+Struggling? Join our Discord server for immediate and useful assistance: {MainPlugin.DiscordUrl}
+Interested in helping others learn the plugin? Let {MainPlugin.Singleton.Author} know on Discord. We'd be happy to have you on our team of volunteer helpers!
+Thanks for using my plugin. <3";
+                return Display(new(true, text));
+            }
 
             // List Help
             if (Arguments[0].ToUpper() == "LIST")
