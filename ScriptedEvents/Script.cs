@@ -10,6 +10,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -27,7 +28,7 @@
         public Script()
         {
             Labels = DictionaryPool<string, int>.Pool.Get();
-            Flags = ListPool<string>.Pool.Get();
+            Flags = ListPool<Flag>.Pool.Get();
             UniqueVariables = DictionaryPool<string, CustomVariable>.Pool.Get();
             UniquePlayerVariables = DictionaryPool<string, CustomPlayerVariable>.Pool.Get();
             UniqueId = Guid.NewGuid();
@@ -111,7 +112,7 @@
         /// <summary>
         /// Gets a list of flags on the script.
         /// </summary>
-        public List<string> Flags { get; }
+        public List<Flag> Flags { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the script is enabled.
@@ -169,7 +170,7 @@
             FilePath = null;
 
             DictionaryPool<string, int>.Pool.Return(Labels);
-            ListPool<string>.Pool.Return(Flags);
+            ListPool<Flag>.Pool.Return(Flags);
             DictionaryPool<string, CustomVariable>.Pool.Return(UniqueVariables);
             DictionaryPool<string, CustomPlayerVariable>.Pool.Return(UniquePlayerVariables);
             GC.SuppressFinalize(this);
