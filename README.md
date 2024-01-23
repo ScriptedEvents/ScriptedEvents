@@ -42,8 +42,6 @@ scripted_events:
   # Define a custom set of permissions used to run a certain script. The provided permission will be added AFTER script.execute (eg. script.execute.examplepermission for the provided example).
   required_permissions:
     ExampleScriptNameHere: examplepermission
-  # [ADVANCED] Define scripts to execute when certain events occur.
-  on: {}
   # [ADVANCED] Define a custom command to run a script when it is executed.
   commands: []
 ```
