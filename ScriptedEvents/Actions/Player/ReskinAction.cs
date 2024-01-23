@@ -61,6 +61,7 @@
                 return new(true);
             }
 
+
             foreach (Player player in plys)
                 player.ChangeAppearance(roleType, false, 0);
 

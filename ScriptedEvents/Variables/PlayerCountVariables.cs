@@ -29,6 +29,7 @@
             new InRoom(),
             new NonePlayer(),
             new Scp096Targets(),
+            new Scp173Observers(),
         };
     }
 
@@ -204,6 +205,33 @@
 
                 return list;
              }
+        }
+    }
+
+    public class Scp173Observers : IFloatVariable, IPlayerVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{SCP173OBSERVERS}";
+
+        /// <inheritdoc/>
+        public string Description => "The amount of players that are looking at SCP-173.";
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                List<Player> list = new();
+                foreach (Player ply in Player.Get(PlayerRoles.RoleTypeId.Scp173))
+                {
+                    list.AddRange((ply.Role as Scp173Role).ObservingPlayers);
+                }
+
+                return list;
+            }
         }
     }
 }

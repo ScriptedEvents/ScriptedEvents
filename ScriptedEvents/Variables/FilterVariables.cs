@@ -62,26 +62,24 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "amount"));
                 }
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
+                if (!VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
+                    throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
+
+                int max = 1;
+                if (Arguments.Length > 1 && !VariableSystem.TryParse(Arguments[1], out max, Source, false))
                 {
-                    int max = 1;
-                    if (Arguments.Length > 1 && !VariableSystem.TryParse(Arguments[1], out max, Source, false))
-                    {
-                        throw new ArgumentException(ErrorGen.Get(134, Arguments[1]));
-                    }
-
-                    List<Player> list = players.GetInnerList();
-
-                    for (int i = 0; i < max; i++)
-                    {
-                        if (list.Count == 0)
-                            yield break;
-
-                        yield return list.PullRandomItem();
-                    }
+                    throw new ArgumentException(ErrorGen.Get(134, Arguments[1]));
                 }
 
-                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
+                List<Player> list = players.GetInnerList();
+
+                for (int i = 0; i < max; i++)
+                {
+                    if (list.Count == 0)
+                        yield break;
+
+                    yield return list.PullRandomItem();
+                }
             }
         }
     }
