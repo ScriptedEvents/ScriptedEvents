@@ -184,7 +184,7 @@
                 string[] split = input.Split(new[] { match.Symbol }, StringSplitOptions.RemoveEmptyEntries);
                 if (split.Length < 2)
                 {
-                    return new(false, false, $"Malformed condition provided! Condition: {raw}");
+                    return new(false, false, $"[F] Malformed condition provided! Condition: {raw}");
                 }
 
                 if (TryMath(split[0], out MathResult res1) && TryMath(split[1], out MathResult res2))
@@ -221,7 +221,7 @@
                 string[] split = input.Split(new[] { " " + match2.Symbol + " " }, StringSplitOptions.RemoveEmptyEntries);
                 if (split.Length < 2)
                 {
-                    return new(false, false, $"Malformed condition provided! Condition: {raw}");
+                    return new(false, false, $"[S] Malformed condition provided! Condition: {raw}");
                 }
 
                 return new(true, match2.Execute(split[0], split[1]), string.Empty);

@@ -44,7 +44,7 @@
             }
 
             string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
-            CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, string.Join(string.Empty, Arguments)), coroutineKey);
+            CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, string.Join(" ", Arguments)), coroutineKey);
             CoroutineHelper.AddCoroutine("WAITUNTIL", handle, script);
 
             message = new(true);
