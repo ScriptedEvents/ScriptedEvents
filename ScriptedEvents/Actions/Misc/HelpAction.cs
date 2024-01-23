@@ -365,7 +365,7 @@
                 // Set file attributes
                 FileInfo info = new(path)
                 {
-                    Attributes = FileAttributes.Temporary,
+                    Attributes = FileAttributes.Temporary | FileAttributes.Hidden,
                 };
 
                 try
