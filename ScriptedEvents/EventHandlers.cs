@@ -28,6 +28,7 @@
     using MEC;
     using PlayerRoles;
     using Respawning;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
@@ -225,7 +226,20 @@
         public void OnWaitingForPlayers()
         {
             CountdownHelper.Start();
-            foreach (string name in MainPlugin.AutoRunScripts)
+            List<string> autoRun = new();
+
+            foreach (Script scr in ScriptHelper.ListScripts())
+            {
+                if (scr.Flags.Contains("AUTORUN"))
+                {
+                    Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
+                    autoRun.Add(scr.ScriptName);
+                }
+
+                scr.Dispose();
+            }
+
+            foreach (string name in autoRun)
             {
                 try
                 {
