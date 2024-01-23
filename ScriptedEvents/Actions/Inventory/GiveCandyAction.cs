@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Linq;
     using Exiled.API.Features;
 
     using InventorySystem.Items.Usables.Scp330;
@@ -13,7 +13,7 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class GiveCandyAction : IScriptAction, IHelpInfo
+    public class GiveCandyAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "GIVECANDY";
@@ -29,6 +29,10 @@
 
         /// <inheritdoc/>
         public string Description => "Gives the targeted players a candy.";
+
+        /// <inheritdoc/>
+        public string LongDescription => $@" A full list of valid Candy IDs (as of {DateTime.Now:g}) follows:
+{string.Join("\n", ((CandyKindID[])Enum.GetValues(typeof(CandyKindID))).Where(r => r is not CandyKindID.None).Select(r => $"- [{r:d}] {r}"))}";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]

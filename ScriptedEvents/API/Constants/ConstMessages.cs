@@ -1,14 +1,11 @@
-﻿namespace ScriptedEvents.API.Constants
+﻿using Exiled.API.Enums;
+using System;
+using System.Linq;
+
+namespace ScriptedEvents.API.Constants
 {
     public static class ConstMessages
     {
-        public const string RoomInput = @"The following inputs can be used to target rooms:
-- '*'/'ALL' - Targets ALL rooms
-- 'LightContainment' - Targets light containment rooms
-- 'HeavyContainment' - Targets heavy containment rooms
-- 'Entrance' - Targets entrance rooms
-- The ID of a room. All valid room IDs can be found on Exiled's documentation at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.RoomType.html";
-
         public const string GotoInput = @"The following keywords can be used in place of a label:
 - START - Moves to the start of the script.
 - STOP - Immediately stops the script.
@@ -49,5 +46,17 @@ The following keys can ONLY be used in DISABLE and ENABLE. They cannot be tied t
 - RESPAWNS - Prevents player(s) from respawning as Chaos/NTF.
 - SCPANNOUNCEMENT - Disables SCP termination announcements.
 ";
+
+        public static readonly string RoomInput = $@"The following inputs can be used to target rooms:
+- '*'/'ALL' - Targets ALL rooms
+- 'LightContainment' - Targets light containment rooms
+- 'HeavyContainment' - Targets heavy containment rooms
+- 'Entrance' - Targets entrance rooms
+
+Alternatively, a Room ID can be used. A full list of valid Room IDs (as of {DateTime.Now:g}) follows:
+{string.Join("\n", ((RoomType[])Enum.GetValues(typeof(RoomType))).Where(r => r is not RoomType.Unknown).Select(r => $"- [{r:d}] {r}"))}";
+
+        public static readonly string ItemInput = $@" A full list of valid Item IDs (as of {DateTime.Now:g}) follows:
+{string.Join("\n", ((ItemType[])Enum.GetValues(typeof(ItemType))).Where(r => r is not ItemType.None).Select(r => $"- [{r:d}] {r}"))}";
     }
 }

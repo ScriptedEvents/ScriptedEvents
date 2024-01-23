@@ -7,13 +7,14 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
+    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class RemoveItemAction : IScriptAction, IHelpInfo
+    public class RemoveItemAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "REMOVEITEM";
@@ -29,6 +30,9 @@
 
         /// <inheritdoc/>
         public string Description => "Removes an item from the targeted players.";
+
+        /// <inheritdoc/>
+        public string LongDescription => ConstMessages.ItemInput;
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
