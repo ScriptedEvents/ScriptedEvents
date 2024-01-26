@@ -330,9 +330,9 @@
                 }
 
                 if (made)
-                    Log.Debug($"Event {ev.Key} connected successfully");
+                    Log.Debug($"Dynamic event {ev.Key} connected successfully");
                 else
-                    Log.Debug($"Event {ev.Key} failed to be connected");
+                    Log.Debug($"Dynamic event {ev.Key} failed to be connected");
             }
         }
 
@@ -454,6 +454,7 @@
                 }
 
                 StoredDelegates.Remove(tuple);
+                Log.Debug($"Removed dynamic connection for event '{eventInfo.Name}'");
             }
 
             CurrentEventData = null;
