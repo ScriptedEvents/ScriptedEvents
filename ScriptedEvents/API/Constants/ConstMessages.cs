@@ -29,7 +29,7 @@ namespace ScriptedEvents.API.Constants
 - SCP0492ATTACK - Disables SCP-049-2's primary attack.
 - SCP096ATTACK - Disables SCP-096's primary attack.
 - SCP106ATTACK - Disables SCP-106's primary attack.
-- SCP173ATTACKv - Disables SCP-173's primary attack.
+- SCP173ATTACK - Disables SCP-173's primary attack.
 - SCP330 - Disables all SCP-330 functionality.
 - SCP914 - Disables all SCP-914 functionality.
 - SCP939ATTACK - Disables SCP-939's primary attack.
