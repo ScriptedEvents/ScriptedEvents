@@ -46,13 +46,25 @@
         public string Value => Server.IpAddress;
     }
 
+    public class ServerName : IStringVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{SERVERNAME}";
+
+        /// <inheritdoc/>
+        public string Description => "This server's name";
+
+        /// <inheritdoc/>
+        public string Value => Server.Name;
+    }
+
     public class Port : IFloatVariable
     {
         /// <inheritdoc/>
         public string Name => "{PORT}";
 
         /// <inheritdoc/>
-        public string Description => "This server's PORT.";
+        public string Description => "This server's port.";
 
         /// <inheritdoc/>
         public float Value => Server.Port;
