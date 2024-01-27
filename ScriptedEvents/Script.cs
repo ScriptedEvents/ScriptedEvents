@@ -145,6 +145,11 @@
         public ICommandSender Sender { get; internal set; }
 
         /// <summary>
+        /// Gets or sets all line positions from where a CALL action was executed..
+        /// </summary>
+        public List<int> CallLines { get; set; } = new();
+
+        /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
         /// </summary>
         public Dictionary<string, CustomVariable> UniqueVariables { get; set; }
