@@ -28,7 +28,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("label", typeof(string), "The label to move to, or keyword (START/NEXT/STOP)", false),
+            new Argument("label", typeof(string), "The label to move to, or keyword (START/NEXT/STOP)", true),
         };
 
         /// <inheritdoc/>
@@ -41,9 +41,7 @@
 
             if (!script.Jump(Arguments.ElementAt(0)))
             {
-                if (Arguments[0].ToUpper() == "STOP")
-                    return new(true, flags: ActionFlags.StopEventExecution);
-                return new(false, "Invalid line or label provided!");
+                return new(false, "Invalid label provided.");
             }
 
             return new(true);
