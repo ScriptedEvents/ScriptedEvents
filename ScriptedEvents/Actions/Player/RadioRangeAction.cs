@@ -9,6 +9,7 @@
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -23,7 +24,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
@@ -45,14 +49,9 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 3)
-                return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+            PlayerCollection players = (PlayerCollection)Arguments[1];
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection players, script))
-                return new(false, players.Message);
-
-            if (!VariableSystem.TryParse(Arguments[2], out RadioRange range, script))
-                return new(false, "Invalid radio range provided. Must be: Short, Medium, Long, Ultra.");
+            RadioRange range = (RadioRange)Arguments[2];
 
             if (Arguments[0].ToUpper() is "LOCK" or "SET")
             {

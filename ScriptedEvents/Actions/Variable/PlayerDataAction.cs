@@ -4,6 +4,7 @@
     using System.Linq;
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -19,7 +20,10 @@
         public string[] Aliases => new[] { "PDATA" };
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
@@ -39,12 +43,9 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+            PlayerCollection players = (PlayerCollection)Arguments[1];
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection players, script))
-                return new(false, players.Message);
-
-            switch (Arguments[0].ToUpper())
+            switch (((string)Arguments[0]).ToUpper())
             {
                 case "GET" when Arguments.Length < 4:
                 case "SET" when Arguments.Length < 4:
@@ -52,28 +53,31 @@
                 case "GET":
                     if (players.Length > 1)
                         return new(false, "The 'GET' mode of the PLAYERDATA action only works on variables with exactly one player!");
-                    string varName = Arguments[3];
+                    string varName = (string)Arguments[3];
+                    string keyName = (string)Arguments[2];
                     Player ply1 = players[0];
-                    if (ply1.SessionVariables.ContainsKey(Arguments[2]))
-                        VariableSystem.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", ply1.SessionVariables[Arguments[2]].ToString(), script);
+                    if (ply1.SessionVariables.ContainsKey(keyName))
+                        VariableSystem.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", ply1.SessionVariables[keyName].ToString(), script);
                     else
                         VariableSystem.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", "NONE", script);
                     break;
                 case "SET":
+                    keyName = (string)Arguments[2];
                     foreach (Player ply in players)
                     {
-                        if (ply.SessionVariables.ContainsKey(Arguments[2]))
-                            ply.SessionVariables[Arguments[2]] = string.Join(" ", Arguments.Skip(3));
+                        if (ply.SessionVariables.ContainsKey(keyName))
+                            ply.SessionVariables[keyName] = Arguments.JoinMessage(3);
                         else
-                            ply.SessionVariables.Add(Arguments[2], string.Join(" ", Arguments.Skip(3)));
+                            ply.SessionVariables.Add(keyName, Arguments.JoinMessage(3));
                     }
 
                     break;
                 case "DELETE":
+                    keyName = (string)Arguments[2];
                     foreach (Player ply in players)
                     {
-                        if (ply.SessionVariables.ContainsKey(Arguments[2]))
-                            ply.SessionVariables.Remove(Arguments[2]);
+                        if (ply.SessionVariables.ContainsKey(keyName))
+                            ply.SessionVariables.Remove(keyName);
                     }
 
                     break;

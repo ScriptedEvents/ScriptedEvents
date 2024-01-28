@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.API.Interfaces
 {
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Structures;
 
     /// <summary>
     /// Represents any action.
@@ -10,12 +11,12 @@
         /// <summary>
         /// Gets the name of the action.
         /// </summary>
-        string Name { get; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets aliases of the action. Currently unused.
         /// </summary>
-        string[] Aliases { get; }
+        public string[] Aliases { get; }
 
         /// <summary>
         /// Gets this action's <see cref="ActionSubgroup"/>.
@@ -25,6 +26,16 @@
         /// <summary>
         /// Gets or sets the arguments that this action instance will run with.
         /// </summary>
-        string[] Arguments { get; set; }
+        public object[] Arguments { get; set; }
+
+        /// <summary>
+        /// Gets or sets the raw arguments.
+        /// </summary>
+        public string[] RawArguments { get; set; }
+
+        /// <summary>
+        /// Gets an array of expected arguments for the action.
+        /// </summary>
+        public Argument[] ExpectedArguments { get; }
     }
 }

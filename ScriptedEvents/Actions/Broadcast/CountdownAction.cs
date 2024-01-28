@@ -6,6 +6,7 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -20,7 +21,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
@@ -39,18 +43,14 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+            PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players, script))
-                return new(false, players.Message);
-
-            if (!VariableSystem.TryParse(Arguments[1], out long duration, script))
-                return new(MessageType.NotANumber, this, "duration", Arguments[1]);
+            long duration = (long)Arguments[1];
 
             string text = null;
 
             if (Arguments.Length > 2)
-                text = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(2)), script);
+                text = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script);
 
             foreach (Player ply in players)
                 CountdownHelper.AddCountdown(ply, text, TimeSpan.FromSeconds(duration), script);

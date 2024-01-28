@@ -20,7 +20,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Lights;
@@ -34,16 +37,13 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("room", typeof(RoomType), "The room(s) to reset the color of.", true),
+            new Argument("room", typeof(Room[]), "The room(s) to reset the color of.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms, script))
-                return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
+            Room[] rooms = (Room[])Arguments[0];
 
             foreach (Room room in rooms)
             {

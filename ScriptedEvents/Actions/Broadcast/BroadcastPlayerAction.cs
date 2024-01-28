@@ -7,6 +7,7 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -21,7 +22,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
@@ -32,7 +36,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(List<Player>), "The players to show. Variables are supported.", true),
+            new Argument("players", typeof(Player[]), "The players to show. Variables are supported.", true),
             new Argument("duration", typeof(float), "The duration of the message. Variables are supported.", true),
             new Argument("message", typeof(string), "The message. Variables are supported.", true),
         };
@@ -40,17 +44,10 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+            PlayerCollection players = (PlayerCollection)Arguments[0];
+            float duration = (float)Arguments[1];
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players, script))
-                return new(false, players.Message);
-
-            if (!VariableSystem.TryParse(Arguments[1], out float duration, script))
-            {
-                return new(MessageType.NotANumber, this, "duration", Arguments[0]);
-            }
-
-            string message = string.Join(" ", Arguments.Skip(2).Select(arg => VariableSystem.ReplaceVariables(arg, script)));
+            string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script);
             foreach (Player player in players)
             {
                 player.Broadcast((ushort)duration, message);

@@ -11,10 +11,5 @@
         /// Gets the description of the action.
         /// </summary>
         public string Description { get; }
-
-        /// <summary>
-        /// Gets an array of expected arguments for the action.
-        /// </summary>
-        public Argument[] ExpectedArguments { get; }
     }
 }

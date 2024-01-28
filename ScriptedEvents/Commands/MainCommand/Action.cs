@@ -73,7 +73,7 @@
                 return false;
             }
 
-            scriptAction.Arguments = arguments.Skip(1).ToArray();
+            scriptAction.RawArguments = arguments.Skip(1).ToArray();
 
             // Fill out mock script info
             Script mockScript = new()
@@ -82,6 +82,7 @@
                 Sender = sender,
                 RawText = string.Join(" ", arguments),
                 ScriptName = "ACTION COMMAND EXECUTION",
+                Actions = new[] { scriptAction },
             };
 
             if (MainPlugin.Configs.Debug)
@@ -89,12 +90,19 @@
 
             mockScript.Flags.Add("ACTIONCOMMANDEXECUTION");
 
-            ActionResponse actionResponse = scriptAction.Execute(mockScript);
+            try
+            {
+                ScriptHelper.RunScript(mockScript);
+            }
+            catch (Exception ex)
+            {
+                response = $"Error while running action: {ex.Message}";
+                mockScript.Dispose();
+                return false;
+            }
 
-            response = string.IsNullOrWhiteSpace(actionResponse.Message) ? "Done" : actionResponse.Message;
-
-            mockScript.Dispose();
-            return actionResponse.Success;
+            response = "Done";
+            return true;
         }
     }
 }

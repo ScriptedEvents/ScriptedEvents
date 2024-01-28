@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using Exiled.API.Enums;
+    using InventorySystem.Items.Usables.Scp330;
     using PlayerRoles;
     using Respawning;
     using ScriptedEvents.Structures;
@@ -14,6 +15,7 @@
             new EnumDefinition<RoleTypeId>("The list of valid in-game roles."),
             new EnumDefinition<Team>("The list of valid in-game teams."),
             new EnumDefinition<ItemType>("The list of valid in-game items."),
+            new EnumDefinition<CandyKindID>("The list of valid in-game SCP-330 candies."),
             new EnumDefinition<ZoneType>("The list of valid in-game zones."),
             new EnumDefinition<RoomType>("The list of valid in-game rooms."),
             new EnumDefinition<DamageType>("The list of valid in-game damage types."),

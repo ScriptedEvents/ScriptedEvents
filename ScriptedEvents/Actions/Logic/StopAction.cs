@@ -17,7 +17,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
@@ -41,7 +44,7 @@
                 return new(false, ErrorGen.Get(127));
             }
 
-            ScriptHelper.StopScripts(Arguments[0]);
+            ScriptHelper.StopScripts((string)Arguments[0]);
 
             return new(true);
         }

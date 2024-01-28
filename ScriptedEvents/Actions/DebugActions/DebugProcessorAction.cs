@@ -1,17 +1,19 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+    using System.Collections.Generic;
     using Exiled.API.Features;
+    using InventorySystem.Items.Usables.Scp330;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
-    public class DebugConditionLogAction : IScriptAction, IHiddenAction
+    public class DebugProcessorAction : IScriptAction, IHiddenAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "DEBUGCONDITIONLOG";
+        public string Name => "DEBUGPROCESSOR";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -25,16 +27,23 @@
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Debug;
 
+        /// <inheritdoc/>
+        public string Description => string.Empty;
+
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("condition", typeof(string), "Condition to debug", true),
+            new Argument("input", typeof(string), string.Empty, true),
+            new Argument("number", typeof(bool), string.Empty, true),
+            new Argument("players", typeof(Player[]), string.Empty, true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Info(ConditionHelperV2.Evaluate(Arguments.JoinMessage(0), script));
-            return new(true);
+            ArgumentProcessResult result = ArgumentProcessor.Process(ExpectedArguments, RawArguments, this, script);
+
+            return new(true, result.Message.ToString());
         }
     }
 }

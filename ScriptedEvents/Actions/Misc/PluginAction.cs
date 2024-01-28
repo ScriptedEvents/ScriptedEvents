@@ -8,6 +8,7 @@
     using Exiled.API.Interfaces;
     using Exiled.Loader;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
@@ -20,7 +21,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
@@ -38,13 +42,11 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             switch (Arguments[0].ToUpper())
             {
                 case "ENABLE":
 
-                    string assemblyPath = Path.Combine(Paths.Plugins, $"{string.Join(" ", Arguments.Skip(1))}.dll");
+                    string assemblyPath = Path.Combine(Paths.Plugins, $"{Arguments.JoinMessage(1)}.dll");
                     Assembly assembly = Loader.LoadAssembly(assemblyPath);
                     if (assembly is null)
                     {
@@ -77,7 +79,7 @@
                     plugin.OnRegisteringCommands();
                     break;
                 case "DISABLE":
-                    IPlugin<IConfig> plugin2 = Loader.GetPlugin(Arguments[1]);
+                    IPlugin<IConfig> plugin2 = Loader.GetPlugin((string)Arguments[1]);
                     if (plugin2 is null)
                     {
                         return new(false, "Plugin not enabled or not found.");

@@ -3,6 +3,7 @@
     using System.Linq;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -17,7 +18,10 @@
         public string[] Aliases => new[] { "SAVEVARIABLE" };
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
@@ -35,10 +39,8 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            string varName = Arguments[0];
-            string input = string.Join(" ", Arguments.Skip(1));
+            string varName = (string)Arguments[0];
+            string input = Arguments.JoinMessage(1);
 
             input = VariableSystem.ReplaceVariables(input, script);
 

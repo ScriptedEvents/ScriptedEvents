@@ -21,7 +21,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Cassie;
@@ -42,15 +45,12 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 5) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+            PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players, script))
-                return new(false, players.Message);
-
-            bool waitToFinish = Arguments[1].AsBool();
-            bool isLoud = Arguments[2].AsBool();
-            bool hasSubtitles = Arguments[3].AsBool();
-            string text = string.Join(" ", Arguments.Skip(4));
+            bool waitToFinish = ((string)Arguments[1]).AsBool();
+            bool isLoud = ((string)Arguments[2]).AsBool();
+            bool hasSubtitles = ((string)Arguments[3]).AsBool();
+            string text = Arguments.JoinMessage(4);
 
             if (string.IsNullOrWhiteSpace(text))
                 return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

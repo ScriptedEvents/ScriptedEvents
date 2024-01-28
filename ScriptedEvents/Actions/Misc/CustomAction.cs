@@ -26,7 +26,10 @@
         public string[] Aliases { get; } = Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
@@ -37,9 +40,12 @@
         public Func<string[], Tuple<bool, string>> Action { get; }
 
         /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = Array.Empty<Argument>();
+
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Tuple<bool, string> result = Action(Arguments);
+            Tuple<bool, string> result = Action(RawArguments);
             return new(result.Item1, result.Item2);
         }
     }

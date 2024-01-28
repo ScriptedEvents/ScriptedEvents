@@ -340,7 +340,7 @@
         public static bool TryParse(string input, out float result, Script source = null, bool requireBrackets = true)
         {
             result = Parse(input, source, requireBrackets);
-            return result != float.NaN;
+            return result != float.NaN && result.ToString() != "NaN"; // Hacky but fixes it?
         }
 
         /// <summary>
@@ -399,6 +399,31 @@
             return false;
         }
 
+        public static object Parse(string input, Type enumType, Script source = null, bool requireBrackets = true)
+        {
+            try
+            {
+                object result = Enum.Parse(enumType, input, true);
+                return result;
+            }
+            catch { }
+
+            if (TryGetVariable(input, out IConditionVariable vr, out _, source, requireBrackets))
+            {
+                if (vr is IStringVariable strVar)
+                {
+                    try
+                    {
+                        object result = Enum.Parse(enumType, strVar.Value, true);
+                        return result;
+                    }
+                    catch { }
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Replaces all the occurrences of variables in a string.
         /// </summary>
@@ -442,6 +467,9 @@
 
             return input;
         }
+
+        public static string ReplaceVariables(object input, Script source = null)
+            => ReplaceVariables(input.ToString(), source);
 
         /// <summary>
         /// Isolates all variables from a string.

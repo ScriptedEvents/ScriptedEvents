@@ -18,7 +18,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
@@ -36,17 +39,13 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!VariableSystem.TryParse<RoleTypeId>(Arguments[0], out RoleTypeId roleType, script))
-                return new(MessageType.InvalidRole, this, "spawnrole", Arguments[0]);
-
+            RoleTypeId roleType = (RoleTypeId)Arguments[0];
             int max = -1;
 
             if (Arguments.Length > 1)
             {
-                if (!VariableSystem.TryParse(Arguments[1], out max, script))
-                    return new(MessageType.NotANumber, this, "max", Arguments[1]);
+                max = (int)Arguments[1];
+
                 if (max < 0)
                     return new(MessageType.LessThanZeroNumber, this, "max", max);
             }

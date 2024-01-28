@@ -15,22 +15,32 @@
         public string[] Aliases { get; } = Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Debug;
 
         /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("input1", typeof(string), string.Empty, true),
+            new Argument("input2", typeof(string), string.Empty, false),
+        };
+
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments[0] == "CLEAR")
+            if ((string)Arguments[0] == "CLEAR")
             {
                 MainPlugin.Handlers.DamageRules.Clear();
                 return new(true);
             }
 
-            Player attacker = Player.Get(Arguments[0]);
-            Player receiver = Player.Get(Arguments[1]);
+            Player attacker = Player.Get((string)Arguments[0]);
+            Player receiver = Player.Get((string)Arguments[1]);
 
             foreach (var rule in MainPlugin.Handlers.DamageRules)
             {

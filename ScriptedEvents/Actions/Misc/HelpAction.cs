@@ -15,6 +15,7 @@
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -30,7 +31,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
@@ -41,7 +45,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("input", typeof(string), "The name of the action/variable, \"LIST\" for all actions, or \"LISTVAR\" for all variables. Case-sensitive.", true),
+            new Argument("input", typeof(string), "The name of the action/variable, \"LIST\" for all actions, or \"LISTVAR\" for all variables. Case-sensitive.", false),
         };
 
         /// <summary>
@@ -185,7 +189,7 @@ Thanks for using my plugin. <3";
 
                 StringBuilder sb = StringBuilderPool.Pool.Get();
 
-                if (helpInfo.ExpectedArguments.Length > 0)
+                if (action.ExpectedArguments.Length > 0)
                 {
                     sb.AppendLine();
                 }
@@ -196,7 +200,7 @@ Thanks for using my plugin. <3";
 
                 // Usage
                 sb.Append($"Usage: {action.Name}");
-                foreach (Argument arg in helpInfo.ExpectedArguments)
+                foreach (Argument arg in action.ExpectedArguments)
                 {
                     string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
                     sb.Append($" {chars[0]}{arg.ArgumentName.ToUpper()}{chars[1]}");
@@ -215,13 +219,13 @@ Thanks for using my plugin. <3";
 
                 sb.AppendLine();
 
-                if (helpInfo.ExpectedArguments.Length > 0)
+                if (action.ExpectedArguments.Length > 0)
                 {
                     sb.AppendLine();
                     sb.Append("Arguments:");
                 }
 
-                foreach (Argument arg in helpInfo.ExpectedArguments)
+                foreach (Argument arg in action.ExpectedArguments)
                 {
                     string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
                     sb.AppendLine();
@@ -257,7 +261,7 @@ Thanks for using my plugin. <3";
             }
 
             // Variable help
-            else if (Arguments[0].StartsWith("{") && Arguments[0].EndsWith("}"))
+            else if (((string)Arguments[0]).StartsWith("{") && ((string)Arguments[0]).EndsWith("}"))
             {
                 bool valid = false;
 
@@ -360,10 +364,10 @@ Thanks for using my plugin. <3";
             }
 
             // Error Codes
-            if (Arguments[0].StartsWith("SE-"))
-                Arguments[0] = Arguments[0].Replace("SE-", string.Empty);
+            if (((string)Arguments[0]).StartsWith("SE-"))
+                Arguments[0] = ((string)Arguments[0]).Replace("SE-", string.Empty);
 
-            if (int.TryParse(Arguments[0], out int res) && ErrorGen.TryGetError(res, out ErrorInfo info))
+            if (int.TryParse((string)Arguments[0], out int res) && ErrorGen.TryGetError(res, out ErrorInfo info))
             {
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();

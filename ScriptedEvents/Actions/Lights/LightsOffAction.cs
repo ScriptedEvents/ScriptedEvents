@@ -21,7 +21,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Lights;
@@ -35,22 +38,15 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("room", typeof(RoomType), "The room to flicker the lights off.", true),
+            new Argument("room", typeof(Room[]), "The room to flicker the lights off.", true),
             new Argument("duration", typeof(float), "The duration of the lights out. Variables are supported.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms, script))
-                return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
-
-            if (!VariableSystem.TryParse(Arguments[1], out float duration, script))
-            {
-                return new(MessageType.NotANumber, this, "duration", Arguments[1]);
-            }
+            Room[] rooms = (Room[])Arguments[0];
+            float duration = (float)Arguments[1];
 
             foreach (Room room in rooms)
                 room.TurnOffLights(duration);

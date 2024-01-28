@@ -22,7 +22,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Inventory;
@@ -37,7 +40,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(List<Player>), "The players to give the candy to.", true),
+            new Argument("players", typeof(Player[]), "The players to give the candy to.", true),
             new Argument("item", typeof(CandyKindID), "The candy to give.", true),
             new Argument("amount", typeof(int), "The amount to give. Variables are supported. Default: 1", false),
         };
@@ -45,21 +48,15 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!VariableSystem.TryParse<CandyKindID>(Arguments[1], out CandyKindID itemType, script))
-                return new(false, "Invalid candy type provided.");
-
+            CandyKindID itemType = (CandyKindID)Arguments[1];
             int amt = 1;
 
             if (Arguments.Length > 2)
             {
-                if (!VariableSystem.TryParse(Arguments[2], out amt, script))
-                    return new(MessageType.NotANumber, this, "amount", Arguments[2]);
+                int amount = (int)Arguments[2];
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
-                return new(false, plys.Message);
+            PlayerCollection plys = (PlayerCollection)Arguments[0];
 
             foreach (Player player in plys)
             {

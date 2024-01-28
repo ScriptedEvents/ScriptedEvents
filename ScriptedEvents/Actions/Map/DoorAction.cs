@@ -7,6 +7,7 @@
     using Exiled.API.Features.Doors;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -20,7 +21,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
@@ -32,16 +36,13 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (LOCK, UNLOCK, OPEN, CLOSE, DESTROY).", true),
-            new Argument("doors", typeof(List<Door>), "The doors to affect.", true),
+            new Argument("doors", typeof(Door[]), "The doors to affect.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!ScriptHelper.TryGetDoors(Arguments[1], out Door[] doors, script))
-                return new(false, "Invalid door(s) provided!");
+            Door[] doors = (Door[])Arguments[1];
 
             Action<Door> action;
             switch (Arguments[0].ToUpper())

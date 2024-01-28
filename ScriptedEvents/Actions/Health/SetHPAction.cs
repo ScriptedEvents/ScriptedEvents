@@ -22,7 +22,10 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Health;
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string Description => "Set the HP of the targeted players.";
@@ -37,13 +40,9 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+            PlayerCollection plys = (PlayerCollection)Arguments[0];
+            float hp = (float)Arguments[1];
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
-                return new(false, plys.Message);
-
-            if (!VariableSystem.TryParse(Arguments[1], out float hp, script))
-                return new(MessageType.NotANumber, this, "health", Arguments[1]);
             if (hp < 0)
                 return new(MessageType.LessThanZeroNumber, this, "health", hp);
 

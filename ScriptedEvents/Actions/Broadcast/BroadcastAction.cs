@@ -6,6 +6,7 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -19,7 +20,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
@@ -37,14 +41,9 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+            float duration = (float)Arguments[0];
 
-            if (!VariableSystem.TryParse(Arguments[0], out float duration, script))
-            {
-                return new(MessageType.NotANumber, this, "duration", Arguments[0]);
-            }
-
-            string message = string.Join(" ", Arguments.Skip(1).Select(arg => VariableSystem.ReplaceVariables(arg, script)));
+            string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script);
             Map.Broadcast((ushort)duration, message);
             return new(true);
         }

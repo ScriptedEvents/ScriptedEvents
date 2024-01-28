@@ -9,6 +9,7 @@
     using Exiled.API.Features.Pickups;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -23,7 +24,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
@@ -41,15 +45,13 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             switch (Arguments[0].ToUpper())
             {
                 case "ITEMS":
                     ItemType type = ItemType.None;
                     if (Arguments.Length > 1)
                     {
-                        if (!VariableSystem.TryParse(Arguments[1], out type, script))
+                        if (!VariableSystem.TryParse((string)Arguments[1], out type, script))
                             return new(false, "Invalid ItemType provided."); // Todo: Use error code
                     }
 
@@ -63,7 +65,7 @@
                     RoleTypeId rType = RoleTypeId.None;
                     if (Arguments.Length > 1)
                     {
-                        if (!VariableSystem.TryParse(Arguments[1], out rType, script))
+                        if (!VariableSystem.TryParse((string)Arguments[1], out rType, script))
                             return new(MessageType.InvalidRole, this, "filter", Arguments[1]);
                     }
 

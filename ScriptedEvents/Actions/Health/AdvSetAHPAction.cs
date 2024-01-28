@@ -23,7 +23,10 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Health;
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string Description => "Add AHP to the targeted players, with advanced settings.";
@@ -43,19 +46,13 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
-                return new(false, plys.Message);
-
-            if (!VariableSystem.TryParse(Arguments[1], out float hp, script))
-                return new(MessageType.NotANumber, this, "health", Arguments[1]);
+            PlayerCollection plys = (PlayerCollection)Arguments[0];
+            float hp = (float)Arguments[1];
 
             float limit = 75;
             if (Arguments.Length > 2)
             {
-                if (!VariableSystem.TryParse(Arguments[2], out limit, script))
-                    return new(MessageType.NotANumber, this, "limit", Arguments[2]);
+                limit = (float)Arguments[2];
                 if (limit < 0)
                     return new(MessageType.LessThanZeroNumber, this, "limit", limit);
             }
@@ -63,8 +60,7 @@
             float decay = 1.2f;
             if (Arguments.Length > 3)
             {
-                if (!VariableSystem.TryParse(Arguments[3], out decay, script))
-                    return new(MessageType.NotANumber, this, "decay", Arguments[2]);
+                decay = (float)Arguments[3];
                 if (decay < 0)
                     return new(MessageType.LessThanZeroNumber, this, "decay", limit);
             }
@@ -72,8 +68,7 @@
             float efficacy = 0.7f;
             if (Arguments.Length > 4)
             {
-                if (!VariableSystem.TryParse(Arguments[4], out efficacy, script))
-                    return new(MessageType.NotANumber, this, "efficacy", Arguments[2]);
+                efficacy = (float)Arguments[4];
                 if (efficacy < 0)
                     return new(MessageType.LessThanZeroNumber, this, "efficacy", limit);
             }
@@ -81,13 +76,12 @@
             float sustain = 0f;
             if (Arguments.Length > 5)
             {
-                if (!VariableSystem.TryParse(Arguments[5], out sustain, script))
-                    return new(MessageType.NotANumber, this, "sustain", Arguments[5]);
+                sustain = (float)Arguments[5];
                 if (sustain < 0)
                     return new(MessageType.LessThanZeroNumber, this, "sustain", limit);
             }
 
-            bool persistent = Arguments.Length > 6 && Arguments[6].AsBool();
+            bool persistent = Arguments.Length > 6 && (bool)Arguments[6];
 
             foreach (Player ply in plys)
                 ply.AddAhp(hp, limit, decay, efficacy, sustain, persistent);
