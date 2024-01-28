@@ -5,6 +5,7 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -18,7 +19,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Cassie;
@@ -37,7 +41,7 @@
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            string text = string.Join(" ", Arguments);
+            string text = Arguments.JoinMessage(0);
 
             if (string.IsNullOrWhiteSpace(text))
                 return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);

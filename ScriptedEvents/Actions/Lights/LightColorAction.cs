@@ -22,7 +22,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Lights;
@@ -47,21 +50,17 @@
         {
             if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms, script))
-                return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
+            Room[] rooms = (Room[])Arguments[0];
+            float r = (float)Arguments[1];
+            float g = (float)Arguments[2];
+            float b = (float)Arguments[3];
 
-            if (!VariableSystem.TryParse(Arguments[1], out float r, script))
-                return new(false, $"The red component of the color is invalid.");
             if (r < 0)
                 return new(false, "The red component of the color must be greater than 0.");
 
-            if (!VariableSystem.TryParse(Arguments[2], out float g, script))
-                return new(false, $"The green component of the color is invalid.");
             if (g < 0)
                 return new(false, "The green component of the color must be greater than 0.");
 
-            if (!VariableSystem.TryParse(Arguments[3], out float b, script))
-                return new(false, $"The blue component of the color is invalid.");
             if (b < 0)
                 return new(false, "The blue component of the color must be greater than 0.");
 

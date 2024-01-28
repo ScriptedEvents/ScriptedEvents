@@ -13,6 +13,7 @@
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -30,7 +31,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
@@ -42,7 +46,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode to run. Valid options: PLAYERS, ROLETYPE, DISABLE, ENABLE", true),
-            new Argument("target", typeof(object), "The targets. Different type based on the mode.\nPLAYERS: A list of players.\nROLETYPE: A valid RoleType (eg. ClassD, Scp173, etc)\nDISABLE & ENABLE: None", true),
+            new Argument("target", typeof(object), "The targets. Different type based on the mode.\nPLAYERS: A list of players.\nROLETYPE: A valid RoleType (eg. ClassD, Scp173, etc)\nDISABLE & ENABLE: None", false),
             new Argument("duration", typeof(float), "The time before reversing the effect. Variables are supported.", false),
         };
 
@@ -53,15 +57,15 @@
         {
             if (Arguments.Length < 2)
             {
-                if (Arguments.Length < 1 || Arguments[0] != "DISABLE")
+                if (Arguments.Length < 1 || (string)Arguments[0] != "DISABLE")
                 {
                     return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
                 }
             }
 
             string mode = Arguments[0].ToUpper();
-            string target = mode == "DISABLE" ? null : Arguments[1];
-            string duration = Arguments.Length > 2 ? string.Join(string.Empty, Arguments.Skip(2)) : null;
+            string target = mode == "DISABLE" ? null : (string)Arguments[1];
+            string duration = Arguments.Length > 2 ? Arguments.JoinMessage(2, string.Empty) : null;
 
             switch (mode)
             {
@@ -84,11 +88,11 @@
                         Tesla.IgnoredRoles.Add(roleType);
                     return Reverse(mode, roleType, duration, script);
                 case "DISABLE":
-                    duration = Arguments.Length > 1 ? string.Join(string.Empty, Arguments.Skip(1)) : null;
+                    duration = Arguments.Length > 1 ? Arguments.JoinMessage(1, string.Empty) : null;
                     MainPlugin.Handlers.TeslasDisabled = true;
                     return Reverse(mode, null, duration, script);
                 case "ENABLE":
-                    duration = Arguments.Length > 1 ? string.Join(string.Empty, Arguments.Skip(1)) : null;
+                    duration = Arguments.Length > 1 ? Arguments.JoinMessage(1, string.Empty) : null;
                     MainPlugin.Handlers.TeslasDisabled = false;
                     return Reverse(mode, null, duration, script);
                 default:

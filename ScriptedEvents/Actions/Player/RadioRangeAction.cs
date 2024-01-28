@@ -23,7 +23,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
@@ -48,8 +51,7 @@
             if (Arguments.Length < 3)
                 return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection players, script))
-                return new(false, players.Message);
+            PlayerCollection players = (PlayerCollection)Arguments[1];
 
             if (!VariableSystem.TryParse(Arguments[2], out RadioRange range, script))
                 return new(false, "Invalid radio range provided. Must be: Short, Medium, Long, Ultra.");

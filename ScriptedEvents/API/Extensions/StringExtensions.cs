@@ -1,4 +1,8 @@
-﻿namespace ScriptedEvents.API.Extensions
+﻿using Exiled.API.Features.Pools;
+using System.Linq;
+using System.Text;
+
+namespace ScriptedEvents.API.Extensions
 {
     public static class StringExtensions
     {
@@ -53,5 +57,24 @@
         /// <param name="newValue">The value to replace it with.</param>
         /// <returns>The modified string.</returns>
         public static string Replace(this string input, string oldValue, object newValue) => input.Replace(oldValue, newValue.ToString());
+
+        public static string ToUpper(this object input) => input.ToString().ToUpper();
+
+        public static string JoinMessage(this object[] param, int skipCount = 0, string sep = " ")
+        {
+            StringBuilder sb = StringBuilderPool.Pool.Get();
+            var list = param.Skip(skipCount);
+
+            foreach (object obj in list)
+            {
+                if (obj is string s)
+                    sb.Append(s + sep);
+                else
+                    sb.Append(obj.ToString() + sep);
+            }
+
+            string str = StringBuilderPool.Pool.ToStringReturn(sb);
+            return str.Substring(0, str.Length - sep.Length);
+        }
     }
 }

@@ -30,7 +30,7 @@
             Script mockScript = new Script();
             mockScript.Context = ExecuteContext.ServerConsole;
             mockScript.Sender = sender;
-            mockScript.RawText = $"HELP {string.Join(" ", arguments)}";
+            mockScript.RawText = $"HELP {Arguments.JoinMessage(0)}";
             mockScript.ScriptName = "HELP COMMAND EXECUTION";
             mockScript.Flags.Add("HELPCOMMANDEXECUTION");
 

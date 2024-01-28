@@ -22,7 +22,10 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Health;
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string Description => "Set the Maximum HP of the targeted players.";
@@ -39,8 +42,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
-                return new(false, plys.Message);
+            PlayerCollection plys = (PlayerCollection)Arguments[0];
 
             if (!VariableSystem.TryParse(Arguments[1], out float hp, script))
                 return new(MessageType.NotANumber, this, "maxhealth", Arguments[1]);

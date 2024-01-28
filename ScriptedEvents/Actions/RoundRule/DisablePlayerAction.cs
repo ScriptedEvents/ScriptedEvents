@@ -19,7 +19,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
@@ -41,8 +44,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players, script))
-                return new(false, players.Message);
+            PlayerCollection players = (PlayerCollection)Arguments[0];
 
             string key = Arguments[1].ToUpper();
             var rule = MainPlugin.Handlers.GetPlayerDisableRule(key);

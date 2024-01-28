@@ -16,7 +16,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
@@ -39,7 +42,7 @@ Note: Player variables will be converted to the amount of players when used dire
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            string text = VariableSystem.ReplaceVariables(string.Join(" ", Arguments), script);
+            string text = VariableSystem.ReplaceVariables(Arguments.JoinMessage(0), script);
             GameCore.Console.singleton.TypeCommand(text);
             return new(true, string.Empty);
         }

@@ -222,7 +222,7 @@ namespace ScriptedEvents.API.Features
                 }
 
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
-                newAction.Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                newAction.RawArguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
                 // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
@@ -651,13 +651,15 @@ namespace ScriptedEvents.API.Features
                     float? delay = null;
 
                     // Process Arguments
-                    ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, action.Arguments, action, scr);
+                    ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, action.RawArguments, action, scr);
                     if (!res.Success)
                     {
                         // Todo: Place error better later
                         Log.Warn($"Error trying to check '{res.FailedArgument}' argument: {res.Message}");
                         break;
                     }
+
+                    action.Arguments = res.NewParameters.ToArray();
 
                     try
                     {

@@ -17,7 +17,7 @@
 
         public override string ToString()
         {
-            return $"!-- {Key} [{string.Join(" ", Arguments)}]";
+            return $"!-- {Key} [{Arguments.JoinMessage(0)}]";
         }
     }
 }

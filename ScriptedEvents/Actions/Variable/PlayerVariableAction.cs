@@ -7,6 +7,7 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -23,7 +24,10 @@
         public string[] Aliases => new[] { "PVAR" };
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
@@ -46,15 +50,15 @@
             if (Arguments.Length < 2)
                 return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            string mode = Arguments[0].ToUpper();
-            string varName = Arguments[1];
+            string mode = ((string)Arguments[0]).ToUpper();
+            string varName = (string)Arguments[1];
             PlayerCollection players = null;
 
             int max = -1;
 
             if (Arguments.Length > 3)
             {
-                string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(3)), script);
+                string formula = VariableSystem.ReplaceVariables(Arguments.JoinMessage(3), script);
 
                 if (!ConditionHelperV2.TryMath(formula, out MathResult result))
                 {
@@ -74,7 +78,9 @@
                 if (Arguments.Length < 3)
                     return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-                if (!ScriptHelper.TryGetPlayers(Arguments[2], max, out players, script))
+                // Todo: Need to find a better solution where the 'max' parameter is required
+                // Math does not work inside of variables
+                if (!ScriptHelper.TryGetPlayers(RawArguments[2], max, out players, script))
                     return new(false, players.Message);
             }
 

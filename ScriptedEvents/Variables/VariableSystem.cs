@@ -443,6 +443,9 @@
             return input;
         }
 
+        public static string ReplaceVariables(object input, Script source = null)
+            => ReplaceVariables(input.ToString(), source);
+
         /// <summary>
         /// Isolates all variables from a string.
         /// </summary>

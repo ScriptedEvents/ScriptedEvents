@@ -23,7 +23,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
@@ -47,8 +50,7 @@
             if (!VariableSystem.TryParse<RoleTypeId>(Arguments[1], out RoleTypeId roleType, script))
                 return new(MessageType.InvalidRole, this, "role", Arguments[1]);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
-                return new(false, plys.Message);
+            PlayerCollection plys = (PlayerCollection)Arguments[0];
 
             if (Arguments.Length >= 3)
             {

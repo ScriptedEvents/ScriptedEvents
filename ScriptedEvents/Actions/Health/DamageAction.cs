@@ -7,6 +7,7 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -21,7 +22,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Health;
@@ -49,8 +53,7 @@ Using the word 'VAPORIZE' instead of a DamageType or custom message will vaporiz
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection plys, script))
-                return new(false, plys.Message);
+            PlayerCollection plys = (PlayerCollection)Arguments[0];
 
             if (!VariableSystem.TryParse(Arguments[1], out float damage, script))
                 return new(MessageType.NotANumber, this, "damage", Arguments[1]);
@@ -66,7 +69,7 @@ Using the word 'VAPORIZE' instead of a DamageType or custom message will vaporiz
                 if (!VariableSystem.TryParse(Arguments[2], out DamageType damageType, script))
                 {
                     useDeathType = false;
-                    customDeath = string.Join(" ", Arguments.Skip(2));
+                    customDeath = Arguments.JoinMessage(2);
                 }
 
                 foreach (Player player in plys)

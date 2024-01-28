@@ -26,7 +26,10 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string Description => "Action for giving/removing permanent player effects.";

@@ -23,7 +23,10 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string Description => "Action for giving/removing player effects.";
@@ -70,8 +73,7 @@
                     return new(MessageType.LessThanZeroNumber, this, "duration", Arguments[4]);
             }
 
-            if (!ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection plys, script))
-                return new(false, plys.Message);
+            PlayerCollection plys = (PlayerCollection)Arguments[1];
 
             switch (mode)
             {

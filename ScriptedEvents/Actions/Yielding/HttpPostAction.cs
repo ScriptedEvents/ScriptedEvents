@@ -7,6 +7,7 @@
     using MEC;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -23,7 +24,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Yielding;
@@ -55,11 +59,11 @@ These variables are created as per-script variables, meaning they can only be us
                 return null;
             }
 
-            string body = string.Join(" ", Arguments.Skip(1));
+            string body = Arguments.JoinMessage(1);
             body = VariableSystem.ReplaceVariables(body, script);
 
             string coroutineKey = $"HTTPPOST_COROUTINE_{DateTime.UtcNow.Ticks}";
-            CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, VariableSystem.ReplaceVariable(Arguments[0], script), body), coroutineKey);
+            CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, VariableSystem.ReplaceVariable((string)Arguments[0], script), body), coroutineKey);
             CoroutineHelper.AddCoroutine("HTTPPOST", handle, script);
             message = new(true);
             return Timing.WaitUntilDone(handle);

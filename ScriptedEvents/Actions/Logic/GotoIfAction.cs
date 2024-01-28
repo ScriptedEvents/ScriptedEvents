@@ -20,7 +20,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
@@ -46,7 +49,7 @@
             {
                 if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-                ConditionResponse deprecatedOutcome = ConditionHelperV2.Evaluate(string.Join(" ", Arguments.Skip(2)), script);
+                ConditionResponse deprecatedOutcome = ConditionHelperV2.Evaluate(Arguments.JoinMessage(2), script);
                 if (!deprecatedOutcome.Success)
                     return new(false, $"GOTOIF execution error: {deprecatedOutcome.Message}", ActionFlags.FatalError);
 
@@ -79,7 +82,7 @@
             // Standard GOTOIF
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            ConditionResponse outcome = ConditionHelperV2.Evaluate(string.Join(" ", Arguments.Skip(1)), script);
+            ConditionResponse outcome = ConditionHelperV2.Evaluate(Arguments.JoinMessage(1), script);
             if (!outcome.Success)
                 return new(false, $"GOTOIF execution error: {outcome.Message}. If you are using an older script, add \"!-- OLD-GOTOIF\" flag for old GOTOIF support or update the script accordingly.", ActionFlags.FatalError);
 

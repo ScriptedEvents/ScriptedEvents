@@ -237,7 +237,6 @@
     <Compile Include="Actions\Player\SetRoleAction.cs" />
     <Compile Include="Actions\Logic\StopAction.cs" />
     <Compile Include="Actions\Logic\StopIfAction.cs" />
-    <Compile Include="Actions\Switch.cs" />
     <Compile Include="Actions\Variable\SaveVariableAction.cs" />
     <Compile Include="Actions\Map\TeslaAction.cs" />
     <Compile Include="Actions\Yielding\WaitForSecondsAction.cs" />

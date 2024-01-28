@@ -7,6 +7,7 @@
     using Respawning;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -20,7 +21,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Round;
@@ -40,11 +44,8 @@
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!VariableSystem.TryParse<SpawnableTeamType>(Arguments[1], out SpawnableTeamType team, script))
-                return new(false, "Invalid spawnable role provided. Must be ChaosInsurgency or NineTailedFox.");
-
-            if (!VariableSystem.TryParse(Arguments[2], out float amount, script))
-                return new(MessageType.NotANumber, this, "amount", Arguments[1]);
+            SpawnableTeamType team = (SpawnableTeamType)Arguments[1];
+            float amount = (float)Arguments[2];
 
             switch (Arguments[0].ToUpper())
             {

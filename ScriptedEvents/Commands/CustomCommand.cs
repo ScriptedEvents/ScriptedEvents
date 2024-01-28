@@ -129,7 +129,7 @@
                         body.AddVariable($"{{ARG{i + 1}}}", $"Argument #{i + 1} of the command.", arguments.At(i).ToString());
                     }
 
-                    body.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));
+                    body.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", Arguments.JoinMessage(0));
 
                     ScriptHelper.RunScript(body);
                     success++;

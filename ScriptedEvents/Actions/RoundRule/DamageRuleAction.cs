@@ -1,9 +1,6 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Collections.Generic;
-
-    using Exiled.API.Features;
 
     using PlayerRoles;
 
@@ -24,7 +21,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
@@ -45,9 +45,7 @@
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!VariableSystem.TryParse(Arguments[2], out float multiplier, script))
-                return new(MessageType.NotANumber, this, "multiplier", Arguments[2]);
-
+            float multiplier = (float)Arguments[2];
             Rule rule = null;
 
             // Roles

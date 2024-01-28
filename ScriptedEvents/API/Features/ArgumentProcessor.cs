@@ -1,10 +1,12 @@
 ﻿namespace ScriptedEvents.API.Features
 {
     using System.Linq;
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using InventorySystem.Items.Usables.Scp330;
     using PlayerRoles;
+    using Respawning;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
@@ -43,6 +45,13 @@
                 success.NewParameters.AddRange(res.NewParameters);
             }
 
+            // If the raw argument list is larger than the expected list, do not process any extra arguments
+            // Edge-cases with long strings being the last parameter
+            if (args.Length > expected.Length)
+            {
+                success.NewParameters.AddRange(args.Skip(expected.Length));
+            }
+
             return success;
         }
 
@@ -63,6 +72,12 @@
                         return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
 
                     success.NewParameters.Add(intRes);
+                    break;
+                case "Int64": // long
+                    if (!VariableSystem.TryParse(input, out long longRes, source))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
+
+                    success.NewParameters.Add(longRes);
                     break;
                 case "Single": // float
                     if (!VariableSystem.TryParse(input, out float floatRes, source))
@@ -85,11 +100,29 @@
 
                     success.NewParameters.Add(roleTypeRes);
                     break;
+                case "Team":
+                    if (!VariableSystem.TryParse(input, out Team teamRes, source))
+                        return new(false, expected.ArgumentName, "Invalid team type provided.");
+
+                    success.NewParameters.Add(teamRes);
+                    break;
                 case "ItemType":
                     if (!VariableSystem.TryParse(input, out ItemType itemTypeRes, source))
                         return new(false, expected.ArgumentName, "Invalid ItemType or Custom Item name provided.");
 
                     success.NewParameters.Add(itemTypeRes);
+                    break;
+                case "EffectType":
+                    if (!VariableSystem.TryParse(input, out EffectType effectRes, source))
+                        return new(false, expected.ArgumentName, "Invalid effect type provided.");
+
+                    success.NewParameters.Add(effectRes);
+                    break;
+                case "SpawnableTeamType":
+                    if (!VariableSystem.TryParse(input, out SpawnableTeamType sttRes, source))
+                        return new(false, expected.ArgumentName, "Invalid spawnable role provided. Must be ChaosInsurgency or NineTailedFox.");
+
+                    success.NewParameters.Add(sttRes);
                     break;
 
                 // Array Types:

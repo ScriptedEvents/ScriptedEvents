@@ -20,7 +20,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
@@ -44,7 +47,7 @@
             {
                 case "ENABLE":
 
-                    string assemblyPath = Path.Combine(Paths.Plugins, $"{string.Join(" ", Arguments.Skip(1))}.dll");
+                    string assemblyPath = Path.Combine(Paths.Plugins, $"{Arguments.JoinMessage(1)}.dll");
                     Assembly assembly = Loader.LoadAssembly(assemblyPath);
                     if (assembly is null)
                     {

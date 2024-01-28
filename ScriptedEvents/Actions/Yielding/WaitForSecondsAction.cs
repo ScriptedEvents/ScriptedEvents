@@ -19,7 +19,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Yielding;
@@ -42,7 +45,7 @@
                 return null;
             }
 
-            string formula = VariableSystem.ReplaceVariables(string.Join(" ", Arguments), script);
+            string formula = VariableSystem.ReplaceVariables(Arguments.JoinMessage(0), script);
 
             if (!ConditionHelperV2.TryMath(formula, out MathResult result))
             {
