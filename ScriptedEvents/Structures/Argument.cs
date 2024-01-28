@@ -47,5 +47,8 @@
         /// Gets the <see cref="Type"/> in a human-readable form.
         /// </summary>
         public string TypeString => Type.Display();
+
+        public override string ToString() =>
+            $"{ArgumentName} [T: {TypeString}] [R: {Required}] | {Description}";
     }
 }

@@ -86,6 +86,7 @@
     <Compile Include="Actions\CASSIE\SilentCassiePlayerAction.cs" />
     <Compile Include="Actions\CASSIE\CassiePlayerAction.cs" />
     <Compile Include="Actions\DebugActions\DebugConditionV2.cs" />
+    <Compile Include="Actions\DebugActions\DebugProcessorAction.cs" />
     <Compile Include="Actions\Logic\CallAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="API\Enums\CommandCooldownMode.cs" />
     <Compile Include="API\Extensions\ListExtensions.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
+    <Compile Include="API\Features\ArgumentProcessor.cs" />
     <Compile Include="API\Features\ConditionHelperV2.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Features\ErrorGen.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="Conditions\Strings\StringContains.cs" />
     <Compile Include="Integrations\RueiManager.cs" />
     <Compile Include="Structures\ActionNameData.cs" />
+    <Compile Include="Structures\ArgumentProcessResult.cs" />
     <Compile Include="Structures\Contributor.cs" />
     <Compile Include="Structures\CoroutineData.cs" />
     <Compile Include="Structures\CustomCommand.cs" />
