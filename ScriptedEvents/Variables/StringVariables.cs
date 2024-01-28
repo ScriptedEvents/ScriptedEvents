@@ -275,6 +275,7 @@ The following options are valid selector options:
 - TIER
 - GROUP
 - CUFFED
+- CUSTOMINFO
 Invalid options will default to the 'NAME' selector.";
     }
 
