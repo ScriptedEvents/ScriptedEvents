@@ -1,9 +1,10 @@
-﻿using Exiled.API.Enums;
-using System;
-using System.Linq;
-
-namespace ScriptedEvents.API.Constants
+﻿namespace ScriptedEvents.API.Constants
 {
+    using System;
+    using System.Linq;
+
+    using Exiled.API.Enums;
+
     public static class ConstMessages
     {
         public const string GotoInput = @"The following keywords can be used in place of a label:
