@@ -131,6 +131,7 @@ namespace ScriptedEvents.API.Features
         public static Script ReadScript(string scriptName, ICommandSender executor, bool suppressWarnings = false)
         {
             string allText = ReadScriptText(scriptName);
+            bool inMultilineComment = false;
             Script script = new();
 
             List<IAction> actionList = ListPool<IAction>.Pool.Get();
@@ -145,7 +146,13 @@ namespace ScriptedEvents.API.Features
                     actionList.Add(new NullAction("BLANK LINE"));
                     continue;
                 }
-                else if (action.StartsWith("#"))
+                else if (action.StartsWith("##"))
+                {
+                    inMultilineComment = !inMultilineComment;
+                    actionList.Add(new NullAction("COMMENT"));
+                    continue;
+                }
+                else if (action.StartsWith("#") || inMultilineComment)
                 {
                     actionList.Add(new NullAction("COMMENT"));
                     continue;
