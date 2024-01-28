@@ -373,7 +373,7 @@ Invalid options will default to the 'NAME' selector.";
         public string Name => "{INDEX}";
 
         /// <inheritdoc/>
-        public string Description => "Can get a certain thing from your variable.";
+        public string Description => "Extract a certain part of a variables value using an index.";
 
         /// <inheritdoc/>
         public string[] Arguments { get; set; }
@@ -401,12 +401,22 @@ Invalid options will default to the 'NAME' selector.";
 
                 if (!VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
                 {
-                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable.");
+                    throw new ArgumentException($"'{Arguments[0]}' is not a valid variable.");
                 }
 
-                if (variable is not IStringVariable value)
+                string value;
+
+                if (variable is IStringVariable strValue)
                 {
-                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid string variable.");
+                    value = strValue.Value;
+                }
+                else if (variable is IFloatVariable floatValue)
+                {
+                    value = floatValue.Value.ToString();
+                }
+                else
+                {
+                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable for this operation.");
                 }
 
                 string result;
@@ -416,18 +426,17 @@ Invalid options will default to the 'NAME' selector.";
 
                 if (Arguments.Length >= 3)
                 {
-                    if (!char.TryParse(Arguments[2], out char listSplitChar))
-                        throw new ArgumentException($"Provided split character '{Arguments[2]}' is not a valid character.");
+                    string delimiter = VariableSystem.ReplaceVariable(Arguments[2]);
 
-                    List<string> x = value.Value.Split(listSplitChar).ToList();
+                    List<string> resultList = value.Split(new[] { delimiter }, StringSplitOptions.None).ToList();
 
-                    if (index < x.Count) index = x.Count - 1;
+                    if (index < resultList.Count) index = resultList.Count - 1;
 
-                    result = x[index].Trim();
+                    result = resultList[index].Trim();
                 }
                 else
                 {
-                    result = value.Value[index].ToString();
+                    result = value[index].ToString();
                 }
 
                 return result;
