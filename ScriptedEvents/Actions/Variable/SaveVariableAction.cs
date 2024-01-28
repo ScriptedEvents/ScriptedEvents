@@ -3,6 +3,7 @@
     using System.Linq;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -40,7 +41,7 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            string varName = Arguments[0];
+            string varName = (string)Arguments[0];
             string input = Arguments.JoinMessage(1);
 
             input = VariableSystem.ReplaceVariables(input, script);

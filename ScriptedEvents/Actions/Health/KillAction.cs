@@ -37,14 +37,12 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to kill.", true),
-            new Argument("damageType", typeof(DamageType), $"The {nameof(DamageType)} to apply, 'VAPORIZE' to vaporize the body, or a custom death message. Default: Unknown", false),
+            new Argument("damageType", typeof(string), $"The {nameof(DamageType)} to apply, 'VAPORIZE' to vaporize the body, or a custom death message. Default: Unknown", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             PlayerCollection plys = (PlayerCollection)Arguments[0];
 
             if (Arguments.Length > 1)
@@ -52,7 +50,7 @@
                 bool useDeathType = true;
                 string customDeath = null;
 
-                if (!VariableSystem.TryParse(Arguments[1], out DamageType damageType, script))
+                if (!VariableSystem.TryParse((string)Arguments[1], out DamageType damageType, script))
                 {
                     useDeathType = false;
                     customDeath = Arguments.JoinMessage(1);

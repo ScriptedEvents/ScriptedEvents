@@ -56,7 +56,7 @@
                 if (deprecatedOutcome.Passed)
                 {
                     script.DebugLog($"GOTOIF result: true. Jumping to line {Arguments[0]}.");
-                    if (!script.Jump(Arguments[0]))
+                    if (!script.Jump((string)Arguments[0]))
                     {
                         if (Arguments[0].ToUpper() == "STOP")
                             return new(true, flags: ActionFlags.StopEventExecution);
@@ -67,7 +67,7 @@
                 else
                 {
                     script.DebugLog($"GOTOIF result: false. Jumping to line {Arguments[1]}.");
-                    if (!script.Jump(Arguments[1]))
+                    if (!script.Jump((string)Arguments[1]))
                     {
                         if (Arguments[1].ToUpper() == "STOP")
                             return new(true, flags: ActionFlags.StopEventExecution);
@@ -89,7 +89,7 @@
             if (outcome.Passed)
             {
                 script.DebugLog($"GOTOIF result: true. Jumping to line {Arguments[0]}.");
-                if (!script.Jump(Arguments[0]))
+                if (!script.Jump((string)Arguments[0]))
                     return new(false, ErrorGen.Get(139, "trueLine", Arguments[0]));
             }
             else

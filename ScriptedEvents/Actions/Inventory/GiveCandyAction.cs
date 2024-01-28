@@ -48,17 +48,12 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!VariableSystem.TryParse<CandyKindID>(Arguments[1], out CandyKindID itemType, script))
-                return new(false, "Invalid candy type provided.");
-
+            CandyKindID itemType = (CandyKindID)Arguments[1];
             int amt = 1;
 
             if (Arguments.Length > 2)
             {
-                if (!VariableSystem.TryParse(Arguments[2], out amt, script))
-                    return new(MessageType.NotANumber, this, "amount", Arguments[2]);
+                int amount = (int)Arguments[2];
             }
 
             PlayerCollection plys = (PlayerCollection)Arguments[0];
