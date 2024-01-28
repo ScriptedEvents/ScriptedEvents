@@ -767,6 +767,11 @@ namespace ScriptedEvents.API.Features
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
 
+                    if (scr.Flags.Contains("BETTERSAFETY"))
+                    {
+                        yield return Timing.WaitForSeconds(0.01f);
+                    }
+
                     // Safety
                     safetyActionCount++;
                     if (safety.Elapsed.TotalSeconds > 1)
