@@ -85,7 +85,7 @@
         public static Type[] HandlerTypes { get; } = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
             .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
 
-        public static List<Tuple<EventInfo, Delegate>> StoredDelegates { get; } = new();
+        public static List<Tuple<PropertyInfo, Delegate>> StoredDelegates { get; } = new();
 
         public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
@@ -98,7 +98,7 @@
         public override string Author => "Thunder";
 
         /// <inheritdoc/>
-        public override Version Version => new(2, 7, 0);
+        public override Version Version => new(2, 8, 0);
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion => new(8, 7, 0);
@@ -324,7 +324,7 @@
                     }
 
                     subscribe.Invoke(propertyInfo.GetValue(Handlers), new object[] { @delegate });
-                    StoredDelegates.Add(new Tuple<EventInfo, Delegate>(eventInfo, @delegate));
+                    StoredDelegates.Add(new Tuple<PropertyInfo, Delegate>(propertyInfo, @delegate));
 
                     made = true;
                 }
@@ -436,27 +436,21 @@
 
         public void NukeOnConnections()
         {
-            for (int i = 0; i < StoredDelegates.Count; i++)
+            foreach (Tuple<PropertyInfo, Delegate> tuple in StoredDelegates)
             {
-                Tuple<EventInfo, Delegate> tuple = StoredDelegates[i];
-                EventInfo eventInfo = tuple.Item1;
+                PropertyInfo propertyInfo = tuple.Item1;
                 Delegate handler = tuple.Item2;
 
-                if (eventInfo.DeclaringType != null)
-                {
-                    MethodInfo removeMethod = eventInfo.DeclaringType.GetMethod($"remove_{eventInfo.Name}", BindingFlags.Instance | BindingFlags.NonPublic);
-                    removeMethod.Invoke(null, new object[] { handler });
-                }
-                else
-                {
-                    MethodInfo removeMethod = eventInfo.GetRemoveMethod(true);
-                    removeMethod.Invoke(null, new[] { handler });
-                }
+                Log.Debug($"Removing dynamic connection for event '{propertyInfo.Name}'");
 
-                StoredDelegates.Remove(tuple);
-                Log.Debug($"Removed dynamic connection for event '{eventInfo.Name}'");
+                EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
+                MethodInfo unSubscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Unsubscribe");
+
+                unSubscribe.Invoke(propertyInfo.GetValue(Handlers), new[] { handler });
+                Log.Debug($"Removed dynamic connection for event '{propertyInfo.Name}'");
             }
 
+            StoredDelegates.Clear();
             CurrentEventData = null;
         }
 
