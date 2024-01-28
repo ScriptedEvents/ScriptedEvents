@@ -6,6 +6,7 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -47,17 +48,13 @@
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             string mode = Arguments[0].ToUpper();
-
-            if (!VariableSystem.TryParse<EffectType>(Arguments[2], out EffectType effect, script))
-                return new(false, "Invalid effect type provided.");
+            EffectType effect = (EffectType)Arguments[2];
 
             int intensity = 1;
 
             if (Arguments.Length > 3)
             {
-                if (!VariableSystem.TryParse(Arguments[3], out intensity, script))
-                    return new(MessageType.NotANumber, this, "intensity", Arguments[3]);
-
+                intensity = (int)Arguments[3];
                 if (intensity < 0)
                     return new(MessageType.LessThanZeroNumber, this, "intensity", Arguments[3]);
             }
@@ -66,9 +63,7 @@
 
             if (Arguments.Length > 4)
             {
-                if (!VariableSystem.TryParse(Arguments[4], out duration, script))
-                    return new(MessageType.NotANumber, this, "duration", Arguments[4]);
-
+                duration = (int)Arguments[4];
                 if (duration < 0)
                     return new(MessageType.LessThanZeroNumber, this, "duration", Arguments[4]);
             }

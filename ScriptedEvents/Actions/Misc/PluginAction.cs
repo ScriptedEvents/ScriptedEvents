@@ -8,6 +8,7 @@
     using Exiled.API.Interfaces;
     using Exiled.Loader;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
@@ -80,7 +81,7 @@
                     plugin.OnRegisteringCommands();
                     break;
                 case "DISABLE":
-                    IPlugin<IConfig> plugin2 = Loader.GetPlugin(Arguments[1]);
+                    IPlugin<IConfig> plugin2 = Loader.GetPlugin((string)Arguments[1]);
                     if (plugin2 is null)
                     {
                         return new(false, "Plugin not enabled or not found.");

@@ -45,9 +45,7 @@
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             PlayerCollection players = (PlayerCollection)Arguments[0];
-
-            if (!VariableSystem.TryParse(Arguments[1], out SpawnLocationType rt, script))
-                return new(false, $"Invalid spawn: {Arguments[1]}. View all valid spawns at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.SpawnLocationType.html");
+            SpawnLocationType rt = (SpawnLocationType)Arguments[1];
 
             foreach (Player ply in players)
             {

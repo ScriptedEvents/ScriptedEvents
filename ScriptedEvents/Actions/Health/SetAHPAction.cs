@@ -43,9 +43,8 @@
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             PlayerCollection plys = (PlayerCollection)Arguments[0];
+            float hp = (float)Arguments[1];
 
-            if (!VariableSystem.TryParse(Arguments[1], out float hp, script))
-                return new(MessageType.NotANumber, this, "health", Arguments[1]);
             if (hp < 0)
                 return new(MessageType.LessThanZeroNumber, this, "health", hp);
 

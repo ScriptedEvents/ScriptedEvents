@@ -9,6 +9,7 @@
     using Exiled.API.Features.Pickups;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -52,7 +53,7 @@
                     ItemType type = ItemType.None;
                     if (Arguments.Length > 1)
                     {
-                        if (!VariableSystem.TryParse(Arguments[1], out type, script))
+                        if (!VariableSystem.TryParse((string)Arguments[1], out type, script))
                             return new(false, "Invalid ItemType provided."); // Todo: Use error code
                     }
 
@@ -66,7 +67,7 @@
                     RoleTypeId rType = RoleTypeId.None;
                     if (Arguments.Length > 1)
                     {
-                        if (!VariableSystem.TryParse(Arguments[1], out rType, script))
+                        if (!VariableSystem.TryParse((string)Arguments[1], out rType, script))
                             return new(MessageType.InvalidRole, this, "filter", Arguments[1]);
                     }
 

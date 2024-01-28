@@ -47,9 +47,7 @@
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             PlayerCollection players = (PlayerCollection)Arguments[0];
-
-            if (!ScriptHelper.TryGetRooms(Arguments[1], out Room[] rooms, script))
-                return new(MessageType.NoRoomsFound, this, "room", Arguments[1]);
+            Room[] rooms = (Room[])Arguments[1];
 
             foreach (Player ply in players)
             {

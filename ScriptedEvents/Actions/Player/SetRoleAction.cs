@@ -38,32 +38,14 @@
         {
             new Argument("players", typeof(Player[]), "The players to set the role as.", true),
             new Argument("role", typeof(RoleTypeId), "The role to set all the players as.", true),
-            new Argument("max", typeof(int), "The maximum amount of players to set the role of. Variables are supported. (default: unlimited).", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+            RoleTypeId roleType = (RoleTypeId)Arguments[1];
 
-            if (!VariableSystem.TryParse<RoleTypeId>(Arguments[1], out RoleTypeId roleType, script))
-                return new(MessageType.InvalidRole, this, "role", Arguments[1]);
-
-            int max = -1;
-
-            if (Arguments.Length > 2)
-            {
-                if (!VariableSystem.TryParse(Arguments[2], out max, script))
-                    return new(MessageType.NotANumber, this, "max", Arguments[2]);
-
-                if (max < 0)
-                    return new(MessageType.LessThanZeroNumber, this, "max", max);
-            }
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out PlayerCollection plys, script))
-                return new(false, plys.Message);
-
-            foreach (Player player in plys)
+            foreach (Player player in (PlayerCollection)Arguments[0])
                 player.Role.Set(roleType);
 
             return new(true);

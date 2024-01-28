@@ -36,10 +36,9 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to rescale.", true),
-            new Argument("size X", typeof(float), "The X size to put on the player.", true),
-            new Argument("size Y", typeof(float), "The Y size to put on the player.", true),
-            new Argument("size Z", typeof(float), "The Z size to put on the player.", true),
-            new Argument("max", typeof(int), "The maximum amount of players to rescale (default: unlimited).", false),
+            new Argument("x", typeof(float), "The X size to put on the player.", true),
+            new Argument("y", typeof(float), "The Y size to put on the player.", true),
+            new Argument("z", typeof(float), "The Z size to put on the player.", true),
         };
 
         /// <inheritdoc/>
@@ -47,29 +46,11 @@
         {
             if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!VariableSystem.TryParse(Arguments.ElementAt(1), out float x, script))
-                return new(MessageType.NotANumber, this, "X", Arguments.ElementAt(1));
+            float x = (float)Arguments[1];
+            float y = (float)Arguments[2];
+            float z = (float)Arguments[3];
 
-            if (!VariableSystem.TryParse(Arguments.ElementAt(2), out float y, script))
-                return new(MessageType.NotANumber, this, "Y", Arguments.ElementAt(2));
-
-            if (!VariableSystem.TryParse(Arguments.ElementAt(3), out float z, script))
-                return new(MessageType.NotANumber, this, "Z", Arguments.ElementAt(3));
-
-            int max = -1;
-
-            if (Arguments.Length > 4)
-            {
-                if (!VariableSystem.TryParse(Arguments[4], out max, script))
-                    return new(MessageType.NotANumber, this, "max", Arguments[4]);
-                if (max < 0)
-                    return new(MessageType.LessThanZeroNumber, this, "max", max);
-            }
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out PlayerCollection plys, script))
-                return new(false, plys.Message);
-
-            foreach (Player player in plys)
+            foreach (Player player in (PlayerCollection)Arguments[0])
                 player.Scale = new(x, y, z);
 
             return new(true);

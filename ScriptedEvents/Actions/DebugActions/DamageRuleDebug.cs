@@ -33,14 +33,14 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments[0] == "CLEAR")
+            if ((string)Arguments[0] == "CLEAR")
             {
                 MainPlugin.Handlers.DamageRules.Clear();
                 return new(true);
             }
 
-            Player attacker = Player.Get(Arguments[0]);
-            Player receiver = Player.Get(Arguments[1]);
+            Player attacker = Player.Get((string)Arguments[0]);
+            Player receiver = Player.Get((string)Arguments[1]);
 
             foreach (var rule in MainPlugin.Handlers.DamageRules)
             {

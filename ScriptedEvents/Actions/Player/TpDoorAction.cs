@@ -4,6 +4,7 @@
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Roles;
 
     using ScriptedEvents.API.Enums;
@@ -36,7 +37,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to teleport", true),
-            new Argument("door", typeof(DoorType), "The door type to teleport to.", true),
+            new Argument("door", typeof(Door[]), "The door type to teleport to.", true),
         };
 
         /// <inheritdoc/>
@@ -45,14 +46,12 @@
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             PlayerCollection players = (PlayerCollection)Arguments[0];
-
-            if (!VariableSystem.TryParse(Arguments[1], out DoorType dt, script))
-                return new(false, $"Invalid door: {Arguments[1]}");
+            Door[] doors = (Door[])Arguments[1];
 
             foreach (Player ply in players)
             {
                 if (ply.Role is not FpcRole || !ply.IsConnected) continue;
-                ply.Teleport(dt);
+                ply.Teleport(doors[0]);
             }
 
             return new(true);

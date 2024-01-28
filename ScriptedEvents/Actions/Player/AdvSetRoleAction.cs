@@ -41,7 +41,6 @@
             new Argument("role", typeof(RoleTypeId), "The role to set all the players as.", true),
             new Argument("spawnpoint", typeof(bool), "Use spawnpoint? default: true", false),
             new Argument("inventory", typeof(bool), "Use default inventory? default: true", false),
-            new Argument("max", typeof(int), "The maximum amount of players to set the role of. Variables are supported. (default: unlimited).", false),
         };
 
         /// <inheritdoc/>
@@ -49,11 +48,11 @@
         {
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!VariableSystem.TryParse<RoleTypeId>(Arguments[1], out RoleTypeId roleType, script))
-                return new(MessageType.InvalidRole, this, "role", Arguments[1]);
+            RoleTypeId roleType = (RoleTypeId)Arguments[1];
+            PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            bool setSpawnpoint = Arguments.Length == 2 || Arguments[2].AsBool();
-            bool setInventory = Arguments.Length <= 3 || Arguments[3].AsBool();
+            bool setSpawnpoint = Arguments.Length == 2 || (bool)Arguments[2];
+            bool setInventory = Arguments.Length <= 3 || (bool)Arguments[3];
 
             RoleSpawnFlags flags = RoleSpawnFlags.None;
 
@@ -63,20 +62,7 @@
             if (setInventory)
                 flags |= RoleSpawnFlags.AssignInventory;
 
-            int max = -1;
-
-            if (Arguments.Length > 4)
-            {
-                if (!VariableSystem.TryParse(Arguments[4], out max, script))
-                {
-                    return new(MessageType.NotANumber, this, "max", Arguments[4]);
-                }
-            }
-
-            if (!ScriptHelper.TryGetPlayers(Arguments[0], max, out PlayerCollection plys, script))
-                return new(false, plys.Message);
-
-            foreach (Player player in plys)
+            foreach (Player player in players)
                 player.Role.Set(roleType, flags);
 
             return new(true);

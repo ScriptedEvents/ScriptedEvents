@@ -40,8 +40,7 @@
         {
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!VariableSystem.TryParse(Arguments[0], out RoleTypeId oldRole, script))
-                return new(MessageType.InvalidRole, this, "role", Arguments[0]);
+            RoleTypeId oldRole = (RoleTypeId)Arguments[0];
 
             MainPlugin.Handlers.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
 

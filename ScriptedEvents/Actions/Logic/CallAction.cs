@@ -1,13 +1,10 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Linq;
 
-    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Strings;
 
     public class CallAction : IScriptAction, ILogicAction, IHelpInfo
     {
@@ -42,7 +39,7 @@
 
             int curLine = script.CurrentLine;
 
-            if (!script.Jump(Arguments.ElementAt(0)))
+            if (!script.Jump((string)Arguments[0]))
             {
                 return new(false, "Invalid line or label provided!");
             }

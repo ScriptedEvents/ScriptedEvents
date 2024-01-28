@@ -7,6 +7,7 @@
     using LightContainmentZoneDecontamination;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
@@ -42,11 +43,11 @@
             switch (Arguments[0].ToUpper())
             {
                 case "DISABLE":
-                    // Is there an Exiled API for this?
+                    // Todo: Is there an Exiled API for this?
                     DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.Disabled;
                     break;
                 case "ENABLE":
-                    // And this?
+                    // Todo: And this?
                     DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.None;
                     break;
                 case "FORCE":

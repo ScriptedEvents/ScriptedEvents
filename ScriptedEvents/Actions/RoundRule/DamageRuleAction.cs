@@ -49,61 +49,61 @@
             Rule rule = null;
 
             // Roles
-            if (VariableSystem.TryParse(Arguments[0], out RoleTypeId attackerRole, script))
+            if (VariableSystem.TryParse((string)Arguments[0], out RoleTypeId attackerRole, script))
             {
-                if (VariableSystem.TryParse(Arguments[1], out RoleTypeId receiverRole, script))
+                if (VariableSystem.TryParse((string)Arguments[1], out RoleTypeId receiverRole, script))
                 {
                     rule = new(attackerRole, receiverRole);
                 }
-                else if (VariableSystem.TryParse(Arguments[1], out Team receiverTeam, script))
+                else if (VariableSystem.TryParse((string)Arguments[1], out Team receiverTeam, script))
                 {
                     rule = new(attackerRole, receiverTeam);
                 }
-                else if (ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection players, script))
+                else if (ScriptHelper.TryGetPlayers((string)Arguments[1], null, out PlayerCollection players, script))
                 {
                     rule = new(attackerRole, players);
                 }
             }
-            else if (VariableSystem.TryParse(Arguments[1], out RoleTypeId attackerRole2, script))
+            else if (VariableSystem.TryParse((string)Arguments[1], out RoleTypeId attackerRole2, script))
             {
-                if (VariableSystem.TryParse(Arguments[0], out Team receiverTeam2, script))
+                if (VariableSystem.TryParse((string)Arguments[0], out Team receiverTeam2, script))
                 {
                     rule = new(receiverTeam2, attackerRole2);
                 }
-                else if (ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players2, script))
+                else if (ScriptHelper.TryGetPlayers((string)Arguments[0], null, out PlayerCollection players2, script))
                 {
                     rule = new(players2, attackerRole2);
                 }
             }
 
             // Teams
-            if (VariableSystem.TryParse(Arguments[0], out Team attackerTeam, script))
+            if (VariableSystem.TryParse((string)Arguments[0], out Team attackerTeam, script))
             {
-                if (VariableSystem.TryParse(Arguments[1], out Team receiverTeam, script))
+                if (VariableSystem.TryParse((string)Arguments[1], out Team receiverTeam, script))
                 {
                     rule = new(attackerTeam, receiverTeam);
                 }
-                else if (VariableSystem.TryParse(Arguments[1], out RoleTypeId receiverRole, script))
+                else if (VariableSystem.TryParse((string)Arguments[1], out RoleTypeId receiverRole, script))
                 {
                     rule = new(attackerTeam, receiverRole);
                 }
-                else if (ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection players, script))
+                else if (ScriptHelper.TryGetPlayers((string)Arguments[1], null, out PlayerCollection players, script))
                 {
                     rule = new(attackerTeam, players);
                 }
             }
-            else if (VariableSystem.TryParse(Arguments[1], out Team attackerTeam2, script))
+            else if (VariableSystem.TryParse((string)Arguments[1], out Team attackerTeam2, script))
             {
-                if (VariableSystem.TryParse(Arguments[0], out RoleTypeId receiverRole2, script))
+                if (VariableSystem.TryParse((string)Arguments[0], out RoleTypeId receiverRole2, script))
                 {
                     rule = new(receiverRole2, attackerTeam2);
                 }
-                else if (ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection players2, script))
+                else if (ScriptHelper.TryGetPlayers((string)Arguments[0], null, out PlayerCollection players2, script))
                 {
                     rule = new(players2, attackerTeam2);
                 }
             }
-            else if (ScriptHelper.TryGetPlayers(Arguments[0], null, out PlayerCollection attackers, script) && ScriptHelper.TryGetPlayers(Arguments[1], null, out PlayerCollection receivers, script))
+            else if (ScriptHelper.TryGetPlayers((string)Arguments[0], null, out PlayerCollection attackers, script) && ScriptHelper.TryGetPlayers((string)Arguments[1], null, out PlayerCollection receivers, script))
             {
                 rule = new(attackers, receivers);
             }

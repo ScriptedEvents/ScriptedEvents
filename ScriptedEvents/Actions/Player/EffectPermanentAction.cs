@@ -8,6 +8,7 @@
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -38,7 +39,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
-            new Argument("target", typeof(object), "The players to affect, or the RoleType/Team to infect with the role.", true),
+            new Argument("target", typeof(string), "The players to affect, or the RoleType/Team to infect with the role.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
             new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
         };
@@ -49,17 +50,12 @@
             if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             string mode = Arguments[0].ToUpper();
-
-            if (!VariableSystem.TryParse<EffectType>(Arguments[2], out EffectType effect, script))
-                return new(false, "Invalid effect type provided.");
+            EffectType effect = (EffectType)Arguments[2];
 
             int intensity = 1;
             if (Arguments.Length > 3)
             {
-                if (!VariableSystem.TryParse(Arguments[3], out intensity, script))
-                {
-                    return new(false, "Intensity must be a whole number from 0-255.");
-                }
+                intensity = (int)Arguments[3];
 
                 if (intensity < 0 || intensity > 255)
                 {
@@ -73,15 +69,15 @@
             RoleTypeId rt = RoleTypeId.None;
             PlayerCollection players = null;
 
-            if (VariableSystem.TryParse(Arguments[1], out team, script))
+            if (VariableSystem.TryParse((string)Arguments[1], out team, script))
             {
                 list = 1;
             }
-            else if (VariableSystem.TryParse(Arguments[1], out rt, script))
+            else if (VariableSystem.TryParse((string)Arguments[1], out rt, script))
             {
                 list = 2;
             }
-            else if (ScriptHelper.TryGetPlayers(Arguments[1], null, out players, script))
+            else if (ScriptHelper.TryGetPlayers((string)Arguments[1], null, out players, script))
             {
                 if (!players.Success)
                 {

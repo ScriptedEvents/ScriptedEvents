@@ -6,6 +6,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -34,16 +35,13 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (SEND/LOCK/UNLOCK).", true),
-            new Argument("elevators", typeof(List<>), "The elevators to affect.", true),
+            new Argument("elevators", typeof(Lift[]), "The elevators to affect.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!ScriptHelper.TryGetLifts(Arguments[1], out Lift[] lifts, script))
-                return new(false, "Invalid lift(s) provided!");
+            Lift[] lifts = (Lift[])Arguments[1];
 
             Action<Lift> action;
             switch (Arguments[0].ToUpper())

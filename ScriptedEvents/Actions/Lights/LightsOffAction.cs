@@ -45,15 +45,8 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms, script))
-                return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
-
-            if (!VariableSystem.TryParse(Arguments[1], out float duration, script))
-            {
-                return new(MessageType.NotANumber, this, "duration", Arguments[1]);
-            }
+            Room[] rooms = (Room[])Arguments[0];
+            float duration = (float)Arguments[1];
 
             foreach (Room room in rooms)
                 room.TurnOffLights(duration);

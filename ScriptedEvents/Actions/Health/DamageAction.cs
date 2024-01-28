@@ -51,12 +51,8 @@ Using the word 'VAPORIZE' instead of a DamageType or custom message will vaporiz
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             PlayerCollection plys = (PlayerCollection)Arguments[0];
-
-            if (!VariableSystem.TryParse(Arguments[1], out float damage, script))
-                return new(MessageType.NotANumber, this, "damage", Arguments[1]);
+            float damage = (float)Arguments[1];
 
             if (damage < 0)
                 return new(MessageType.LessThanZeroNumber, this, "damage", damage);
@@ -66,7 +62,7 @@ Using the word 'VAPORIZE' instead of a DamageType or custom message will vaporiz
                 bool useDeathType = true;
                 string customDeath = null;
 
-                if (!VariableSystem.TryParse(Arguments[2], out DamageType damageType, script))
+                if (!VariableSystem.TryParse((string)Arguments[2], out DamageType damageType, script))
                 {
                     useDeathType = false;
                     customDeath = Arguments.JoinMessage(2);

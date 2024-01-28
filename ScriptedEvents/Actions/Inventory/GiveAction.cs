@@ -40,7 +40,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to give the item to.", true),
-            new Argument("item", typeof(ItemType), "The item to give.", true),
+            new Argument("item", typeof(string), "The item to give.", true),
             new Argument("amount", typeof(int), "The amount to give. Variables are supported. Default: 1", false),
         };
 
@@ -50,18 +50,16 @@
             if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
             bool useCustom;
-            CustomItem item = null;
+            CustomItem item;
             ItemType itemType = ItemType.None;
 
-            if (CustomItem.TryGet(Arguments[1], out CustomItem customItem))
+            if (CustomItem.TryGet((string)Arguments[1], out item))
             {
                 useCustom = true;
-                item = customItem;
             }
-            else if (VariableSystem.TryParse<ItemType>(Arguments[1], out ItemType itemType2, script))
+            else if (VariableSystem.TryParse((string)Arguments[1], out itemType, script))
             {
                 useCustom = false;
-                itemType = itemType2;
             }
             else
             {
@@ -72,8 +70,7 @@
 
             if (Arguments.Length > 2)
             {
-                if (!VariableSystem.TryParse(Arguments[2], out amt, script))
-                    return new(MessageType.NotANumber, this, "amount", Arguments[4]);
+                amt = (int)Arguments[2];
             }
 
             PlayerCollection plys = (PlayerCollection)Arguments[0];

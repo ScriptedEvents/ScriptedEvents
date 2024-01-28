@@ -124,6 +124,18 @@
 
                     success.NewParameters.Add(sttRes);
                     break;
+                case "RadioRange":
+                    if (!VariableSystem.TryParse(input, out RadioRange radioRangeRes, source))
+                        return new(false, expected.ArgumentName, "Invalid radio range provided. Must be: Short, Medium, Long, Ultra.");
+
+                    success.NewParameters.Add(radioRangeRes);
+                    break;
+                case "SpawnLocationType":
+                    if (!VariableSystem.TryParse(input, out SpawnLocationType spltres, source))
+                        return new(false, expected.ArgumentName, "Invalid SpawnLocation type provided. View all valid spawns at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.SpawnLocationType.html");
+
+                    success.NewParameters.Add(spltres);
+                    break;
 
                 // Array Types:
                 case "Player[]":
@@ -143,6 +155,12 @@
                         return new(false, expected.ArgumentName, "Invalid door(s) provided!");
 
                     success.NewParameters.Add(doors);
+                    break;
+                case "Lift[]":
+                    if (!ScriptHelper.TryGetLifts(input, out Lift[] lifts, source))
+                        return new(false, expected.ArgumentName, "Invalid lift(s) provided!");
+
+                    success.NewParameters.Add(lifts);
                     break;
                 default:
                     success.NewParameters.Add(input);

@@ -45,20 +45,14 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!VariableSystem.TryParse<RoleTypeId>(Arguments[1], out RoleTypeId roleType, script))
-                return new(MessageType.InvalidRole, this, "role", Arguments[1]);
-
             PlayerCollection plys = (PlayerCollection)Arguments[0];
+            RoleTypeId roleType = (RoleTypeId)Arguments[1];
 
             if (Arguments.Length >= 3)
             {
-                if (!ScriptHelper.TryGetPlayers(Arguments[2], null, out PlayerCollection tagretPlys, script))
-                    return new(false, plys.Message);
-
+                PlayerCollection targetPlys = (PlayerCollection)Arguments[2];
                 foreach (Player player in plys)
-                    player.ChangeAppearance(roleType, tagretPlys, false, 0);
+                    player.ChangeAppearance(roleType, targetPlys, false, 0);
 
                 return new(true);
             }

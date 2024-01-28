@@ -45,8 +45,7 @@
         {
             if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
-            if (!ScriptHelper.TryGetRooms(Arguments[0], out Room[] rooms, script))
-                return new(MessageType.NoRoomsFound, this, "rooms", Arguments[0]);
+            Room[] rooms = (Room[])Arguments[0];
 
             foreach (Room room in rooms)
             {

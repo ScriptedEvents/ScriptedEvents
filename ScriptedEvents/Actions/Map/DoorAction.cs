@@ -7,6 +7,7 @@
     using Exiled.API.Features.Doors;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -41,10 +42,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!ScriptHelper.TryGetDoors(Arguments[1], out Door[] doors, script))
-                return new(false, "Invalid door(s) provided!");
+            Door[] doors = (Door[])Arguments[1];
 
             Action<Door> action;
             switch (Arguments[0].ToUpper())

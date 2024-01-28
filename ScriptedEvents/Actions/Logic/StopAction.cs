@@ -44,7 +44,7 @@
                 return new(false, ErrorGen.Get(127));
             }
 
-            ScriptHelper.StopScripts(Arguments[0]);
+            ScriptHelper.StopScripts((string)Arguments[0]);
 
             return new(true);
         }

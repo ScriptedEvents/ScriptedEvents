@@ -58,6 +58,8 @@ Alternatively, a Room ID can be used. A full list of valid Room IDs (as of {Date
 {string.Join("\n", ((RoomType[])Enum.GetValues(typeof(RoomType))).Where(r => r is not RoomType.Unknown).Select(r => $"- [{r:d}] {r}"))}";
 
         public static readonly string ItemInput = $@" A full list of valid Item IDs (as of {DateTime.Now:g}) follows:
-{string.Join("\n", ((ItemType[])Enum.GetValues(typeof(ItemType))).Where(r => r is not ItemType.None).Select(r => $"- [{r:d}] {r}"))}";
+{string.Join("\n", ((ItemType[])Enum.GetValues(typeof(ItemType))).Where(r => r is not ItemType.None).Select(r => $"- [{r:d}] {r}"))}
+
+Alternatively, the ID of a CustomItem can be used.";
     }
 }

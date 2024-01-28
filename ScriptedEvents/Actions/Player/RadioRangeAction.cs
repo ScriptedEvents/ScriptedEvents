@@ -9,6 +9,7 @@
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -53,8 +54,7 @@
 
             PlayerCollection players = (PlayerCollection)Arguments[1];
 
-            if (!VariableSystem.TryParse(Arguments[2], out RadioRange range, script))
-                return new(false, "Invalid radio range provided. Must be: Short, Medium, Long, Ultra.");
+            RadioRange range = (RadioRange)Arguments[2];
 
             if (Arguments[0].ToUpper() is "LOCK" or "SET")
             {

@@ -40,12 +40,9 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             PlayerCollection plys = (PlayerCollection)Arguments[0];
+            float hp = (float)Arguments[1];
 
-            if (!VariableSystem.TryParse(Arguments[1], out float hp, script))
-                return new(MessageType.NotANumber, this, "maxhealth", Arguments[1]);
             if (hp < 0)
                 return new(MessageType.LessThanZeroNumber, this, "maxhealth", hp);
 
