@@ -399,6 +399,31 @@
             return false;
         }
 
+        public static object Parse(string input, Type enumType, Script source = null, bool requireBrackets = true)
+        {
+            try
+            {
+                object result = Enum.Parse(enumType, input, true);
+                return result;
+            }
+            catch { }
+
+            if (TryGetVariable(input, out IConditionVariable vr, out _, source, requireBrackets))
+            {
+                if (vr is IStringVariable strVar)
+                {
+                    try
+                    {
+                        object result = Enum.Parse(enumType, strVar.Value, true);
+                        return result;
+                    }
+                    catch { }
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Replaces all the occurrences of variables in a string.
         /// </summary>

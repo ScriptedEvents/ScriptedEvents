@@ -1,5 +1,7 @@
 ﻿namespace ScriptedEvents.API.Features
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -52,6 +54,8 @@
                 success.NewParameters.AddRange(args.Skip(expected.Length));
             }
 
+            success.NewParameters.RemoveAll(o => o is string st && string.IsNullOrWhiteSpace(st));
+
             return success;
         }
 
@@ -86,57 +90,6 @@
                     success.NewParameters.Add(floatRes);
                     break;
 
-                // Enumerations:
-                case "CandyKindID":
-                    if (!VariableSystem.TryParse(input, out CandyKindID candyRes, source))
-                        return new(false, expected.ArgumentName, "Invalid candy type provided.");
-
-                    success.NewParameters.Add(candyRes);
-                    break;
-                case "RoleTypeId":
-                    // Todo: Better error message here
-                    if (!VariableSystem.TryParse(input, out RoleTypeId roleTypeRes, source))
-                        return new(false, expected.ArgumentName, MsgGen.Generate(MessageType.InvalidRole, action, expected.ArgumentName, input));
-
-                    success.NewParameters.Add(roleTypeRes);
-                    break;
-                case "Team":
-                    if (!VariableSystem.TryParse(input, out Team teamRes, source))
-                        return new(false, expected.ArgumentName, "Invalid team type provided.");
-
-                    success.NewParameters.Add(teamRes);
-                    break;
-                case "ItemType":
-                    if (!VariableSystem.TryParse(input, out ItemType itemTypeRes, source))
-                        return new(false, expected.ArgumentName, "Invalid ItemType or Custom Item name provided.");
-
-                    success.NewParameters.Add(itemTypeRes);
-                    break;
-                case "EffectType":
-                    if (!VariableSystem.TryParse(input, out EffectType effectRes, source))
-                        return new(false, expected.ArgumentName, "Invalid effect type provided.");
-
-                    success.NewParameters.Add(effectRes);
-                    break;
-                case "SpawnableTeamType":
-                    if (!VariableSystem.TryParse(input, out SpawnableTeamType sttRes, source))
-                        return new(false, expected.ArgumentName, "Invalid spawnable role provided. Must be ChaosInsurgency or NineTailedFox.");
-
-                    success.NewParameters.Add(sttRes);
-                    break;
-                case "RadioRange":
-                    if (!VariableSystem.TryParse(input, out RadioRange radioRangeRes, source))
-                        return new(false, expected.ArgumentName, "Invalid radio range provided. Must be: Short, Medium, Long, Ultra.");
-
-                    success.NewParameters.Add(radioRangeRes);
-                    break;
-                case "SpawnLocationType":
-                    if (!VariableSystem.TryParse(input, out SpawnLocationType spltres, source))
-                        return new(false, expected.ArgumentName, "Invalid SpawnLocation type provided. View all valid spawns at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.SpawnLocationType.html");
-
-                    success.NewParameters.Add(spltres);
-                    break;
-
                 // Array Types:
                 case "Player[]":
                     if (!ScriptHelper.TryGetPlayers(input, null, out PlayerCollection players, source))
@@ -162,8 +115,18 @@
 
                     success.NewParameters.Add(lifts);
                     break;
-                default:
+                case "String":
                     success.NewParameters.Add(input);
+                    break;
+                default:
+                    // Handle all enum types
+                    object res = VariableSystem.Parse(input, expected.Type, source);
+                    if (res is null)
+                    {
+                        return new(false, expected.ArgumentName, $"Invalid {expected.Type.Name} provided. See all options by running 'shelp {expected.Type.Name}' in the server console.");
+                    }
+
+                    success.NewParameters.Add(res);
                     break;
             }
 
