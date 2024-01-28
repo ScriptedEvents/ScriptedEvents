@@ -240,6 +240,7 @@
                             "TIER" => "0",
                             "GROUP" => ply.GroupName,
                             "CUFFED" => ply.IsCuffed.ToString().ToUpper(),
+                            "CUSTOMINFO" => ply.CustomInfo.ToString(),
                             _ => ply.Nickname,
                         };
                     }).OrderBy(s => s);
