@@ -36,8 +36,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             foreach (Generator generator in Generator.List)
             {
                 switch (Arguments[0].ToUpper())

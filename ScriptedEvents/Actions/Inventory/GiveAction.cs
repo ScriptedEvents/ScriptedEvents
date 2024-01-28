@@ -47,8 +47,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             bool useCustom;
             CustomItem item;
             ItemType itemType = ItemType.None;

@@ -39,8 +39,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             string text = Arguments.JoinMessage(0);
 
             if (string.IsNullOrWhiteSpace(text))

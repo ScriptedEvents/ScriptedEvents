@@ -49,12 +49,6 @@ These variables are created as per-script variables, meaning they can only be us
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
-            if (Arguments.Length < 1)
-            {
-                message = new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-                return null;
-            }
-
             string coroutineKey = $"HTTPGET_COROUTINE_{DateTime.UtcNow.Ticks}";
             CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, VariableSystem.ReplaceVariable((string)Arguments[0], script)), coroutineKey);
             CoroutineHelper.AddCoroutine("HTTPGET", handle, script);

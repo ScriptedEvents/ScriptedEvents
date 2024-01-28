@@ -39,8 +39,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             PlayerCollection plys = (PlayerCollection)Arguments[0];
 
             foreach (Player player in plys)

@@ -41,8 +41,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             float duration = (float)Arguments[0];
 
             string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script);

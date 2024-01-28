@@ -39,8 +39,6 @@
 
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             string key = Arguments[0].ToUpper();
 
             if (MainPlugin.Handlers.DisabledKeys.Contains(key))

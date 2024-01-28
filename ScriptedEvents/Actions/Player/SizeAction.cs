@@ -44,8 +44,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             float x = (float)Arguments[1];
             float y = (float)Arguments[2];
             float z = (float)Arguments[3];

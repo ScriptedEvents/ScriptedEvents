@@ -40,8 +40,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             PlayerCollection plys = (PlayerCollection)Arguments[0];
             float hp = (float)Arguments[1];
 

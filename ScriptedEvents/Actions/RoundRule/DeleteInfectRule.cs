@@ -38,8 +38,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             RoleTypeId oldRole = (RoleTypeId)Arguments[0];
 
             MainPlugin.Handlers.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);

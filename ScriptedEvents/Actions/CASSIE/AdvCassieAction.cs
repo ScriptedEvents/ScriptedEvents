@@ -45,8 +45,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 5) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             PlayerCollection players = (PlayerCollection)Arguments[0];
 
             bool waitToFinish = ((string)Arguments[1]).AsBool();

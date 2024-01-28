@@ -53,12 +53,6 @@ These variables are created as per-script variables, meaning they can only be us
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
-            if (Arguments.Length < 1)
-            {
-                message = new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-                return null;
-            }
-
             string body = Arguments.JoinMessage(1);
             body = VariableSystem.ReplaceVariables(body, script);
 

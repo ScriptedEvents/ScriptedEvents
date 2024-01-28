@@ -36,8 +36,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             Server.Name = Arguments.JoinMessage(0);
             return new(true);
         }

@@ -42,8 +42,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             switch (Arguments[0].ToUpper())
             {
                 case "ENABLE":

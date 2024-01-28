@@ -44,8 +44,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             PlayerCollection players = (PlayerCollection)Arguments[0];
 
             float duration = (float)Arguments[1];

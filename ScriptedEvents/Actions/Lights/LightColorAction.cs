@@ -48,8 +48,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 4) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             Room[] rooms = (Room[])Arguments[0];
             float r = (float)Arguments[1];
             float g = (float)Arguments[2];

@@ -38,9 +38,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
             string scriptName = (string)Arguments[0];
-
             try
             {
                 ScriptHelper.ReadAndRun(scriptName, script.Sender);

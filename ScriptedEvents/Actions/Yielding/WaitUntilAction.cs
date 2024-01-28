@@ -41,12 +41,6 @@
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
-            if (Arguments.Length < 1)
-            {
-                message = new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-                return null;
-            }
-
             string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
             CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, Arguments.JoinMessage(0)), coroutineKey);
             CoroutineHelper.AddCoroutine("WAITUNTIL", handle, script);

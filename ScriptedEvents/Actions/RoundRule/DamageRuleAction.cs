@@ -43,8 +43,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             float multiplier = (float)Arguments[2];
             Rule rule = null;
 

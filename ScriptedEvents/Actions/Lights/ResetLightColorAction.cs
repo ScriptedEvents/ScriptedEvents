@@ -43,8 +43,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             Room[] rooms = (Room[])Arguments[0];
 
             foreach (Room room in rooms)

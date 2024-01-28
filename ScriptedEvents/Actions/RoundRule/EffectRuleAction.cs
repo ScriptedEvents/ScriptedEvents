@@ -46,8 +46,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             string mode = Arguments[0].ToUpper();
             EffectType effect = (EffectType)Arguments[2];
 

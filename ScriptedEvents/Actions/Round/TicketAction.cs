@@ -40,10 +40,9 @@
             new Argument("amount", typeof(int), "The amount to apply. Variables are supported.", true),
         };
 
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             SpawnableTeamType team = (SpawnableTeamType)Arguments[1];
             float amount = (float)Arguments[2];
 

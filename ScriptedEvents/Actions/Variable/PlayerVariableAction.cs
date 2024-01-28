@@ -47,9 +47,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2)
-                return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             string mode = ((string)Arguments[0]).ToUpper();
             string varName = (string)Arguments[1];
             PlayerCollection players = null;
@@ -75,9 +72,6 @@
 
             if (mode != "DELETE")
             {
-                if (Arguments.Length < 3)
-                    return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
                 // Todo: Need to find a better solution where the 'max' parameter is required
                 // Math does not work inside of variables
                 if (!ScriptHelper.TryGetPlayers(RawArguments[2], max, out players, script))

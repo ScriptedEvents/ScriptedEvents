@@ -46,8 +46,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
             RoleTypeId roleType = (RoleTypeId)Arguments[1];
             PlayerCollection players = (PlayerCollection)Arguments[0];
 

@@ -39,9 +39,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 1) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            Round.IsLocked = ((string)Arguments[0]).AsBool();
+            Round.IsLocked = (bool)Arguments[0];
             return new(true);
         }
     }
