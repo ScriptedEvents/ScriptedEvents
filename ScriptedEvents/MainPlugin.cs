@@ -85,7 +85,7 @@
         public static Type[] HandlerTypes { get; } = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
             .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
 
-        public static List<Tuple<EventInfo, Delegate>> StoredDelegates { get; } = new();
+        public static List<Tuple<PropertyInfo, Delegate>> StoredDelegates { get; } = new();
 
         public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
@@ -324,7 +324,7 @@
                     }
 
                     subscribe.Invoke(propertyInfo.GetValue(Handlers), new object[] { @delegate });
-                    StoredDelegates.Add(new Tuple<EventInfo, Delegate>(eventInfo, @delegate));
+                    StoredDelegates.Add(new Tuple<PropertyInfo, Delegate>(propertyInfo, @delegate));
 
                     made = true;
                 }
@@ -438,21 +438,14 @@
         {
             for (int i = 0; i < StoredDelegates.Count; i++)
             {
-                Tuple<EventInfo, Delegate> tuple = StoredDelegates[i];
-                EventInfo eventInfo = tuple.Item1;
+                Tuple<PropertyInfo, Delegate> tuple = StoredDelegates[i];
+                PropertyInfo propertyInfo = tuple.Item1;
                 Delegate handler = tuple.Item2;
 
-                if (eventInfo.DeclaringType != null)
-                {
-                    MethodInfo removeMethod = eventInfo.DeclaringType.GetMethod($"remove_{eventInfo.Name}", BindingFlags.Instance | BindingFlags.NonPublic);
-                    removeMethod.Invoke(null, new object[] { handler });
-                }
-                else
-                {
-                    MethodInfo removeMethod = eventInfo.GetRemoveMethod(true);
-                    removeMethod.Invoke(null, new[] { handler });
-                }
+                EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
+                MethodInfo unSubscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Unsubscribe");
 
+                unSubscribe.Invoke(propertyInfo.GetValue(Handlers), new[] { handler });
                 StoredDelegates.Remove(tuple);
                 Log.Debug($"Removed dynamic connection for event '{eventInfo.Name}'");
             }
