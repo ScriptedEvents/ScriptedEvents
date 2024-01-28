@@ -436,20 +436,21 @@
 
         public void NukeOnConnections()
         {
-            for (int i = 0; i < StoredDelegates.Count; i++)
+            foreach (Tuple<PropertyInfo, Delegate> tuple in StoredDelegates)
             {
-                Tuple<PropertyInfo, Delegate> tuple = StoredDelegates[i];
                 PropertyInfo propertyInfo = tuple.Item1;
                 Delegate handler = tuple.Item2;
+
+                Log.Debug($"Removing dynamic connection for event '{propertyInfo.Name}'");
 
                 EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
                 MethodInfo unSubscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Unsubscribe");
 
                 unSubscribe.Invoke(propertyInfo.GetValue(Handlers), new[] { handler });
-                StoredDelegates.Remove(tuple);
-                Log.Debug($"Removed dynamic connection for event '{eventInfo.Name}'");
+                Log.Debug($"Removed dynamic connection for event '{propertyInfo.Name}'");
             }
 
+            StoredDelegates.Clear();
             CurrentEventData = null;
         }
 
