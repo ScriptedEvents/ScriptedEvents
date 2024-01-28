@@ -4,6 +4,7 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.Structures;
 
     // Represents a line in a file that does not have any actions.
     public class NullAction : IAction, IHiddenAction, ICustomReadDisplay
@@ -41,6 +42,9 @@
         /// Gets the type of NULL action.
         /// </summary>
         public string Type { get; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = Array.Empty<Argument>();
 
         /// <inheritdoc/>
         public bool Read(out string display)

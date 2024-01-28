@@ -58,7 +58,7 @@
                 case "Boolean":
                     success.NewParameters.Add(input.AsBool());
                     break;
-                case "Int32":
+                case "Int32": // int
                     if (!VariableSystem.TryParse(input, out int intRes, source))
                         return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
 

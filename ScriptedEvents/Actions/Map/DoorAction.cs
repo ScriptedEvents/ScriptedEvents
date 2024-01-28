@@ -32,7 +32,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode (LOCK, UNLOCK, OPEN, CLOSE, DESTROY).", true),
-            new Argument("doors", typeof(List<Door>), "The doors to affect.", true),
+            new Argument("doors", typeof(Door[]), "The doors to affect.", true),
         };
 
         /// <inheritdoc/>

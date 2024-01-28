@@ -340,7 +340,7 @@
         public static bool TryParse(string input, out float result, Script source = null, bool requireBrackets = true)
         {
             result = Parse(input, source, requireBrackets);
-            return result != float.NaN;
+            return result != float.NaN && result.ToString() != "NaN"; // Hacky but fixes it?
         }
 
         /// <summary>

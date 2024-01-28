@@ -32,7 +32,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(List<Player>), "The players to rescale.", true),
+            new Argument("players", typeof(Player[]), "The players to rescale.", true),
             new Argument("size X", typeof(float), "The X size to put on the player.", true),
             new Argument("size Y", typeof(float), "The Y size to put on the player.", true),
             new Argument("size Z", typeof(float), "The Z size to put on the player.", true),

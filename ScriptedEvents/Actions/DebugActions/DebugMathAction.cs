@@ -21,6 +21,11 @@
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Debug;
 
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("math", typeof(string), "The math to debug", true),
+        };
+
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {

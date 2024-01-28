@@ -21,6 +21,13 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Debug;
 
         /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("input1", typeof(string), string.Empty, true),
+            new Argument("input2", typeof(string), string.Empty, false),
+        };
+
+        /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             if (Arguments[0] == "CLEAR")

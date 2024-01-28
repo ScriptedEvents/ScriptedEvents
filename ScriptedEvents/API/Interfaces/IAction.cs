@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.API.Interfaces
 {
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Structures;
 
     /// <summary>
     /// Represents any action.
@@ -26,5 +27,10 @@
         /// Gets or sets the arguments that this action instance will run with.
         /// </summary>
         string[] Arguments { get; set; }
+
+        /// <summary>
+        /// Gets an array of expected arguments for the action.
+        /// </summary>
+        public Argument[] ExpectedArguments { get; }
     }
 }

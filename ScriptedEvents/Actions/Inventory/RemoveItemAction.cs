@@ -37,7 +37,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(List<Player>), "The players to remove the item from.", true),
+            new Argument("players", typeof(Player[]), "The players to remove the item from.", true),
             new Argument("item", typeof(ItemType), "The item to remove.", true),
             new Argument("amount", typeof(int), "The amount to remove. Variables are supported. Default: 1", false),
         };

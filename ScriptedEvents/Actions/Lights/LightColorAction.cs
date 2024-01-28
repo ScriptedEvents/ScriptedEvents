@@ -36,10 +36,10 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("room", typeof(RoomType), "The room to change the color of.", true),
-            new Argument("red", typeof(byte), "The red component of the color", true),
-            new Argument("green", typeof(byte), "The green component of the color", true),
-            new Argument("blue", typeof(byte), "The blue component of the color", true),
+            new Argument("room", typeof(Room[]), "The room to change the color of.", true),
+            new Argument("red", typeof(float), "The red component of the color", true),
+            new Argument("green", typeof(float), "The green component of the color", true),
+            new Argument("blue", typeof(float), "The blue component of the color", true),
         };
 
         /// <inheritdoc/>

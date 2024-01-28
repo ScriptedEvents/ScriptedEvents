@@ -650,6 +650,15 @@ namespace ScriptedEvents.API.Features
                     ActionResponse resp;
                     float? delay = null;
 
+                    // Process Arguments
+                    ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, action.Arguments, action, scr);
+                    if (!res.Success)
+                    {
+                        // Todo: Place error better later
+                        Log.Warn($"Error trying to check '{res.FailedArgument}' argument: {res.Message}");
+                        break;
+                    }
+
                     try
                     {
                         switch (action)

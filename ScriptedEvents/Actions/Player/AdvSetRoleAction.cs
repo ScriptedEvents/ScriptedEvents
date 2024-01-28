@@ -34,7 +34,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(List<Player>), "The players to set the role as.", true),
+            new Argument("players", typeof(Player[]), "The players to set the role as.", true),
             new Argument("role", typeof(RoleTypeId), "The role to set all the players as.", true),
             new Argument("spawnpoint", typeof(bool), "Use spawnpoint? default: true", false),
             new Argument("inventory", typeof(bool), "Use default inventory? default: true", false),
