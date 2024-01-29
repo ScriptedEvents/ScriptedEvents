@@ -3,19 +3,16 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
 
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class SetNameeAction : IScriptAction, IHelpInfo
+    public class SetNameAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "SETNAME";
@@ -24,7 +21,10 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
@@ -42,10 +42,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-
-            if (!VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, script))
-                return new(MessageType.NoPlayersFound, this, "players", Arguments[0]);
+            PlayerCollection players = (PlayerCollection)Arguments[0];
 
             string name = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(1)));
 

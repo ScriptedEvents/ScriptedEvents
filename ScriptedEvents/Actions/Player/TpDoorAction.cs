@@ -2,16 +2,13 @@
 {
     using System;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Roles;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class TpDoorAction : IScriptAction, IHelpInfo
     {
