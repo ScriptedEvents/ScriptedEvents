@@ -662,6 +662,7 @@ namespace ScriptedEvents.API.Features
                     if (!res.Success)
                     {
                         // Todo: Place error better later
+                        // -> [WARN] Error trying to check 'value' argument: Invalid Object provided. See all options by running 'shelp Object' in the server console.
                         Log.Warn($"Error trying to check '{res.FailedArgument}' argument: {res.Message}");
                         break;
                     }

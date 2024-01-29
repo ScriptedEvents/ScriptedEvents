@@ -13,6 +13,7 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
+    using Exiled.API.Features.Doors;
 
     public class StringVariables : IVariableGroup
     {
@@ -23,14 +24,13 @@
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new PlayerData(),
-
             new Len(),
             new Command(),
             new Show(),
-
             new RandomRoom(),
             new Log(),
             new Index(),
+            new RandomDoor(),
         };
     }
 
@@ -319,6 +319,51 @@ Invalid options will default to the 'NAME' selector.";
                 }
 
                 List<Room> newList = validRooms.ToList();
+                return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
+            }
+        }
+    }
+
+    public class RandomDoor : IStringVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{RANDOMDOOR}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets the DoorType of a random door. Can be filtered by zone.";
+
+        /// <inheritdoc/>
+        public string[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("zone", typeof(ZoneType), "A zone to filter by (optional).", false),
+        };
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                ZoneType filter = ZoneType.Unspecified;
+
+                if (Arguments.Length > 0 && !VariableSystem.TryParse(Arguments[0], out filter, Source, false))
+                {
+                    throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid ZoneType.");
+                }
+
+                IEnumerable<Door> validDoors = Door.List;
+
+                if (filter is not ZoneType.Unspecified)
+                {
+                    validDoors = validDoors.Where(door => door.Zone.HasFlag(filter));
+                }
+
+                List<Door> newList = validDoors.ToList();
                 return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
             }
         }

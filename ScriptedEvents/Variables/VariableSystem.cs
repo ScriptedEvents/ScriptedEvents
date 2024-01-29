@@ -10,6 +10,7 @@
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
+    using UnityEngine.Windows;
 
     /// <summary>
     /// A class used to store and retrieve all variables.
@@ -56,8 +57,9 @@
         /// <param name="desc">A description of the variable.</param>
         /// <param name="input">The value of the variable.</param>
         /// <param name="source">The script source.</param>
+        /// <param name="local">If should be this script exclusive.</param>
         /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
-        public static void DefineVariable(string name, string desc, string input, Script source = null)
+        public static void DefineVariable(string name, string desc, string input, Script source = null, bool local = false)
         {
             name = name.RemoveWhitespace();
 
@@ -66,9 +68,20 @@
             if (!name.EndsWith("}"))
                 name += "}";
 
-            source?.DebugLog($"Defined variable {name} with value {input}");
+            if (!local)
+            {
+                DefinedVariables[name] = new(name, desc, input);
+            }
+            else if (source is not null && local)
+            {
+                source.AddVariable(name, desc, input);
+            }
+            else
+            {
+                throw new Exception($"Cannot save the {name} variable.");
+            }
 
-            DefinedVariables[name] = new(name, desc, input);
+            source?.DebugLog($"Defined variable {name} with value {input}");
         }
 
         /// <summary>
@@ -77,8 +90,10 @@
         /// <param name="name">The name of the variable.</param>
         /// <param name="desc">A description of the variable.</param>
         /// <param name="players">The players.</param>
+        /// <param name="source">The script source.</param>
+        /// <param name="local">If should be this script exclusive.</param>
         /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
-        public static void DefineVariable(string name, string desc, List<Player> players)
+        public static void DefineVariable(string name, string desc, List<Player> players, Script source = null, bool local = false)
         {
             name = name.RemoveWhitespace();
 
@@ -87,29 +102,33 @@
             if (!name.EndsWith("}"))
                 name += "}";
 
-            DefinedPlayerVariables[name] = new(name, desc, players);
-        }
+            if (!local)
+            {
+                DefinedPlayerVariables[name] = new(name, desc, players);
+            }
+            else if (source is not null && local)
+            {
+                source.AddPlayerVariable(name, desc, players);
+            }
+            else
+            {
+                throw new Exception($"Cannot save the {name} variable.");
+            }
 
-        /// <summary>
-        /// Removes a previously-defined variable.
-        /// </summary>
-        /// <param name="name">The name of the variable, with curly braces.</param>
-        public static void RemoveVariable(string name)
-        {
-            if (DefinedVariables.ContainsKey(name))
-                DefinedVariables.Remove(name);
-
-            if (DefinedPlayerVariables.ContainsKey(name))
-                DefinedPlayerVariables.Remove(name);
+            source?.DebugLog($"Defined player variable {name}");
         }
 
         /// <summary>
         /// Removes all defined variables.
         /// </summary>
-        public static void ClearVariables()
+        /// <param name="source">The script source.</param>
+        public static void ClearVariables(Script source)
         {
             DefinedVariables.Clear();
             DefinedPlayerVariables.Clear();
+
+            source.UniqueVariables.Clear();
+            source.UniquePlayerVariables.Clear();
         }
 
         /// <summary>

@@ -86,7 +86,7 @@
                 case "DELETE":
                     if (VariableSystem.DefinedPlayerVariables.ContainsKey(varName))
                     {
-                        VariableSystem.RemoveVariable(varName);
+                        VariableSystem.DefinedPlayerVariables.Remove(varName);
                         return new(true);
                     }
                     else
