@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// Exception thrown when a disabled script is executed.
+    /// Exception thrown when a variable errors.
     /// </summary>
     public class VariableException : Exception
     {
