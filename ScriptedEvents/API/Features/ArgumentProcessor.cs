@@ -14,10 +14,11 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Interfaces;
 
     public static class ArgumentProcessor
     {
-        public static ArgumentProcessResult Process(Argument[] expected, string[] args, IAction action, Script source)
+        public static ArgumentProcessResult Process(Argument[] expected, string[] args, IScriptComponent action, Script source, bool requireBrackets = true)
         {
             if (expected is null || expected.Length == 0)
                 return new(true);
@@ -40,7 +41,7 @@
                 else
                     continue;
 
-                ArgumentProcessResult res = ProcessIndividualParameter(expect, input, action, source);
+                ArgumentProcessResult res = ProcessIndividualParameter(expect, input, action, source, requireBrackets);
                 if (!res.Success)
                     return res; // Throw issue to end-user
 
@@ -59,7 +60,7 @@
             return success;
         }
 
-        public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input, IAction action, Script source)
+        public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input, IScriptComponent action, Script source, bool requireBrackets = true)
         {
             ArgumentProcessResult success = new(true);
 
@@ -71,22 +72,52 @@
                     success.NewParameters.Add(input.AsBool());
                     break;
                 case "Int32": // int
-                    if (!VariableSystem.TryParse(input, out int intRes, source))
+                    if (!VariableSystem.TryParse(input, out int intRes, source, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
 
                     success.NewParameters.Add(intRes);
                     break;
                 case "Int64": // long
-                    if (!VariableSystem.TryParse(input, out long longRes, source))
+                    if (!VariableSystem.TryParse(input, out long longRes, source, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
 
                     success.NewParameters.Add(longRes);
                     break;
                 case "Single": // float
-                    if (!VariableSystem.TryParse(input, out float floatRes, source))
+                    if (!VariableSystem.TryParse(input, out float floatRes, source, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(137, input));
 
                     success.NewParameters.Add(floatRes);
+                    break;
+                case "Char":
+                    if (!char.TryParse(input, out char charRes))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(146, input));
+
+                    success.NewParameters.Add(charRes);
+                    break;
+
+                // Variable Interfaces
+                case "IConditionVariable":
+                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable, out _, source, requireBrackets))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+
+                    success.NewParameters.Add(variable);
+                    break;
+                case "IStringVariable":
+                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable2, out _, source, requireBrackets))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+                    if (variable2 is not IStringVariable strVar)
+                        return new(false, expected.ArgumentName, ErrorGen.Get(145, input));
+
+                    success.NewParameters.Add(strVar);
+                    break;
+                case "IPlayerVariable":
+                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable3, out _, source, requireBrackets))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+                    if (variable3 is not IPlayerVariable playerVar)
+                        return new(false, expected.ArgumentName, ErrorGen.Get(133, input));
+
+                    success.NewParameters.Add(playerVar);
                     break;
 
                 // Array Types:
@@ -114,6 +145,18 @@
 
                     success.NewParameters.Add(lifts);
                     break;
+
+                // Special
+                case "RoleTypeIdOrTeam":
+                    if (VariableSystem.TryParse(input, out RoleTypeId rtResult, source, requireBrackets))
+                        success.NewParameters.Add(rtResult);
+                    else if (VariableSystem.TryParse(input, out Team teamResult, source, requireBrackets))
+                        success.NewParameters.Add(teamResult);
+                    else
+                        return new(false, expected.ArgumentName, ErrorGen.Get(147, input));
+
+                    break;
+
                 default:
                     // Handle all enum types
                     if (expected.Type.BaseType == typeof(Enum))
@@ -121,7 +164,7 @@
                         object res = VariableSystem.Parse(input, expected.Type, source);
                         if (res is null)
                         {
-                            return new(false, expected.ArgumentName, ErrorGen.Get(144, expected.Type.Name));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(144, input, expected.Type.Name));
                         }
 
                         success.NewParameters.Add(res);

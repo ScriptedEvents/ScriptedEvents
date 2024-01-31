@@ -8,6 +8,7 @@
     using Exiled.API.Features.Pools;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -119,7 +120,7 @@
         /// <param name="source">The script source.</param>
         /// <param name="requireBrackets">If brackets are required to parse the variable.</param>
         /// <returns>A tuple containing the variable and whether or not it's a reversed boolean value.</returns>
-        public static Tuple<IConditionVariable, bool> GetVariable(string name, Script source = null, bool requireBrackets = true)
+        public static VariableResult GetVariable(string name, Script source = null, bool requireBrackets = true, bool skipProcessing = false)
         {
             // Do this here so individual files dont have to do it anymore
             if (!requireBrackets)
@@ -178,7 +179,14 @@
             {
                 if (result.Item1 is IArgumentVariable argSupport)
                 {
-                    argSupport.Arguments = argList.ToArray();
+                    argSupport.RawArguments = argList.ToArray();
+
+                    ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, false);
+
+                    if (!processResult.Success && !skipProcessing)
+                        return new(false, null, processResult.Message);
+
+                    argSupport.Arguments = processResult.NewParameters.ToArray();
                 }
 
                 if (result.Item1 is INeedSourceVariable sourcePls)
@@ -188,7 +196,7 @@
             }
 
             ListPool<string>.Pool.Return(argList);
-            return result;
+            return new(true, result.Item1, string.Empty, result.Item2);
         }
 
         /// <summary>
@@ -200,12 +208,15 @@
         /// <param name="source">The script source.</param>
         /// <param name="requireBrackets">If brackets are required to parse the variable.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source = null, bool requireBrackets = true)
+        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source = null, bool requireBrackets = true, bool skipProcessing = false)
         {
-            Tuple<IConditionVariable, bool> res = GetVariable(name, source, requireBrackets);
+            VariableResult res = GetVariable(name, source, requireBrackets, skipProcessing);
 
-            variable = res.Item1;
-            reversed = res.Item2;
+            if (!res.Success && !skipProcessing)
+                throw new VariableException(res.Message);
+
+            variable = res.Variable;
+            reversed = res.Reversed;
 
             return variable != null;
         }

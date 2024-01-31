@@ -7,6 +7,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
@@ -63,7 +64,10 @@
         public string Description => "Gets the number of generators fulfilling the requirements.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -124,7 +128,10 @@
         public string Description => "Reveals the state of a door (either 'OPEN' or 'CLOSED').";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Script Source { get; set; }
@@ -145,13 +152,11 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "door" }));
                 }
 
-                if (!VariableSystem.TryParse(Arguments[0], out DoorType dt, Source, false))
-                    throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid DoorType.");
-
+                DoorType dt = (DoorType)Arguments[0];
                 Door d = Door.Get(dt);
 
                 return d is null
-                    ? throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid DoorType.")
+                    ? throw new ArgumentException(ErrorGen.Get(144, dt.ToString(), nameof(DoorType)))
                     : (d.IsOpen ? "OPEN" : "CLOSED");
             }
         }

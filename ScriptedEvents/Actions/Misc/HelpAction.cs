@@ -268,7 +268,7 @@ Thanks for using my plugin. <3";
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
 
-                if (VariableSystem.TryGetVariable(Arguments[0].ToUpper(), out IConditionVariable variable, out bool reversed, script))
+                if (VariableSystem.TryGetVariable(Arguments[0].ToUpper(), out IConditionVariable variable, out bool reversed, script, skipProcessing: true))
                 {
                     valid = true;
                     sb.AppendLine("=== VARIABLE ===");

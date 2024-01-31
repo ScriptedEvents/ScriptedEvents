@@ -45,6 +45,7 @@
             { typeof(IStringVariable), "String (Message/Text) Variable" },
             { typeof(IFloatVariable), "Numerical Variable" },
             { typeof(ILongVariable), "Numerical Variable" },
+            { typeof(RoleTypeIdOrTeam), "RoleTypeId (ID / Number) OR Team (ID / Number)" },
             { typeof(object), "Any Type" },
         };
 
@@ -56,7 +57,7 @@
         /// <param name="paramName">The name of the parameter that is causing a skill issue.</param>
         /// <param name="arguments">The arguments of the MessageType. See <see cref="ActionResponse.ActionResponse(MessageType, IAction, string, object[])"/> for documentation on what MessageTypes require what arguments.</param>
         /// <returns>The string to display to the user.</returns>
-        public static string Generate(MessageType type, IAction action, string paramName, params object[] arguments)
+        public static string Generate(MessageType type, IScriptComponent action, string paramName, params object[] arguments)
         {
             switch (type)
             {

@@ -129,6 +129,7 @@
     <Compile Include="API\Features\ConditionHelperV2.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Features\ErrorGen.cs" />
+    <Compile Include="API\Features\Exceptions\VariableException.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
     <Compile Include="Actions\Lights\LightColorAction.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="API\Features\CountdownHelper.cs" />
     <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="API\Interfaces\ILongDescription.cs" />
+    <Compile Include="API\Interfaces\IScriptComponent.cs" />
     <Compile Include="Commands\CustomCommand.cs" />
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
@@ -179,6 +181,8 @@
     <Compile Include="Structures\Flag.cs" />
     <Compile Include="Structures\PlayerCollection.cs" />
     <Compile Include="Structures\PlayerDisable.cs" />
+    <Compile Include="Structures\RoleTypeIdOrTeam.cs" />
+    <Compile Include="Structures\VariableResult.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="Variables\FilterVariables.cs" />
     <Compile Include="Variables\IntercomVariables.cs" />

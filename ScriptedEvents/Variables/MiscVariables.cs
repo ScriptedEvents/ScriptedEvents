@@ -28,7 +28,10 @@
         public string Description => "Returns a rounded number.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Script Source { get; set; }
@@ -50,12 +53,8 @@
                     throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "variable" }));
                 }
 
-                if (!VariableSystem.TryParse(Arguments[0], out float value, Source, false))
-                {
-                    throw new ArgumentException(ErrorGen.Get(137, Arguments[0]));
-                }
-
-                string mode = Arguments.Length < 2 ? "UP" : Arguments[1];
+                float value = (float)Arguments[0];
+                string mode = Arguments.Length < 2 ? "UP" : (string)Arguments[1];
 
                 return mode.ToUpper() switch
                 {
