@@ -115,18 +115,22 @@
 
                     success.NewParameters.Add(lifts);
                     break;
-                case "String":
-                    success.NewParameters.Add(input);
-                    break;
                 default:
                     // Handle all enum types
-                    object res = VariableSystem.Parse(input, expected.Type, source);
-                    if (res is null)
+                    if (expected.Type.BaseType == typeof(Enum))
                     {
-                        return new(false, expected.ArgumentName, $"Invalid {expected.Type.Name} provided. See all options by running 'shelp {expected.Type.Name}' in the server console.");
+                        object res = VariableSystem.Parse(input, expected.Type, source);
+                        if (res is null)
+                        {
+                            return new(false, expected.ArgumentName, $"Invalid {expected.Type.Name} provided. See all options by running 'shelp {expected.Type.Name}' in the server console.");
+                        }
+
+                        success.NewParameters.Add(res);
+                        break;
                     }
 
-                    success.NewParameters.Add(res);
+                    // Unsupported types: Add the string input
+                    success.NewParameters.Add(input);
                     break;
             }
 
