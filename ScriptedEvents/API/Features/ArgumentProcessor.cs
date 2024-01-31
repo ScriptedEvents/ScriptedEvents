@@ -66,7 +66,6 @@
             source.DebugLog($"Param {expected.ArgumentName} needs a {expected.Type.Name}");
             switch (expected.Type.Name)
             {
-                // Todo: Add enumerations (RoomType, ZoneType, DamageType)
                 // Number Types:
                 case "Boolean":
                     success.NewParameters.Add(input.AsBool());
@@ -105,13 +104,13 @@
                     break;
                 case "Door[]":
                     if (!ScriptHelper.TryGetDoors(input, out Door[] doors, source))
-                        return new(false, expected.ArgumentName, "Invalid door(s) provided!");
+                        return new(false, expected.ArgumentName, ErrorGen.Get(142, input));
 
                     success.NewParameters.Add(doors);
                     break;
                 case "Lift[]":
                     if (!ScriptHelper.TryGetLifts(input, out Lift[] lifts, source))
-                        return new(false, expected.ArgumentName, "Invalid lift(s) provided!");
+                        return new(false, expected.ArgumentName, ErrorGen.Get(143, input));
 
                     success.NewParameters.Add(lifts);
                     break;
@@ -122,7 +121,7 @@
                         object res = VariableSystem.Parse(input, expected.Type, source);
                         if (res is null)
                         {
-                            return new(false, expected.ArgumentName, $"Invalid {expected.Type.Name} provided. See all options by running 'shelp {expected.Type.Name}' in the server console.");
+                            return new(false, expected.ArgumentName, ErrorGen.Get(144, expected.Type.Name));
                         }
 
                         success.NewParameters.Add(res);

@@ -275,6 +275,21 @@
                 141,
                 "Ran into an error while running '{0}' action (please report to developer)",
                 "This error occurs when there was an unexpected error in an action. Please report this error in the Scripted Events Discord server."),
+
+            new ErrorInfo(
+                142,
+                "'{0} is not a valid door input.",
+                "This error occurs when an input to target in-game doors was expected, but the input was invalid. This error can be resolved by using a proper door input, such as 'ALL', a ZoneType/RoomType, or the name/ID of a door."),
+
+            new ErrorInfo(
+                143,
+                "'{0} is not a valid lift input.",
+                "This error occurs when an input to target in-game lift was expected, but the input was invalid. This error can be resolved by using a proper lift input, such as 'ALL' or the name/ID of a door."),
+
+            new ErrorInfo(
+                144,
+                "Invalid {0} provided. See all options by running 'shelp {0}' in the server console.",
+                "This when an input to a specific enum was expected, but the input was invalid. This error can be resolved by using a valid enum input. All valid enum inputs can be seen by running 'shelp <name of the enum here>' in the server console."),
         }.AsReadOnly();
     }
 }
