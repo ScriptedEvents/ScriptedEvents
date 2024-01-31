@@ -106,17 +106,6 @@
         }
 
         /// <summary>
-        /// Returns a string showing the amount of arguments required, given the arguments.
-        /// </summary>
-        /// <param name="name">The name of the action or variable.</param>
-        /// <param name="args">The required arguments.</param>
-        /// <returns>Formatted string to show to end-user.</returns>
-        public static string VariableArgCount(string name, params string[] args)
-        {
-            return ErrorGen.Get(130, name, args.Length, string.Join(", ", args));
-        }
-
-        /// <summary>
         /// Gets a pretty display for a type.
         /// </summary>
         /// <param name="type">The type to get the display of.</param>

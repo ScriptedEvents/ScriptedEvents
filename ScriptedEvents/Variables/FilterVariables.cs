@@ -60,11 +60,6 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "amount"));
-                }
-
                 IEnumerable<Player> players = ((IPlayerVariable)Arguments[0]).Players;
 
                 int max = 1;
@@ -118,11 +113,6 @@
         {
             get
             {
-                if (Arguments.Length < 3)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type", "input"));
-                }
-
                 IEnumerable<Player> players = ((IPlayerVariable)Arguments[0]).Players;
                 string input = (string)Arguments[2];
 
@@ -197,11 +187,6 @@ Invalid options will result in a script error.";
         {
             get
             {
-                if (Arguments.Length < 2)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type"));
-                }
-
                 IEnumerable<Player> players = ((IPlayerVariable)Arguments[0]).Players;
                 int index = (int)Arguments[1];
 

@@ -154,11 +154,6 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "roomType" }));
-                }
-
                 RoomType rt = (RoomType)Arguments[0];
                 return Player.Get(plr => plr.CurrentRoom.Type == rt);
             }

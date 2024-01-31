@@ -48,11 +48,6 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "variable" }));
-                }
-
                 float value = (float)Arguments[0];
                 string mode = Arguments.Length < 2 ? "UP" : (string)Arguments[1];
 

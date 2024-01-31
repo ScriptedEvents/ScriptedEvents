@@ -64,9 +64,6 @@
         {
             get
             {
-                if (Arguments.Length < 2)
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "player", "keyName" }));
-
                 List<Player> players = ((IPlayerVariable)Arguments[0]).Players.ToList();
                 string key = (string)Arguments[1];
 
@@ -108,11 +105,6 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
-                }
-
                 IPlayerVariable variable = (IPlayerVariable)Arguments[0];
                 return variable.Players.Count();
             }
@@ -147,11 +139,6 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
-                }
-
                 IPlayerVariable variable = (IPlayerVariable)Arguments[0];
 
                 if (variable is IArgumentVariable)
@@ -196,11 +183,6 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
-                }
-
                 string selector = "NAME";
 
                 if (Arguments.Length > 1)
@@ -340,11 +322,6 @@ Invalid options will default to the 'NAME' selector.";
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "variable" }));
-                }
-
                 IConditionVariable variable = (IConditionVariable)Arguments[0];
 
                 return variable switch
@@ -389,11 +366,6 @@ Invalid options will default to the 'NAME' selector.";
         {
             get
             {
-                if (Arguments.Length < 2)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "variable"));
-                }
-
                 IStringVariable value = (IStringVariable)Arguments[0];
                 int index = (int)Arguments[1];
                 string result;

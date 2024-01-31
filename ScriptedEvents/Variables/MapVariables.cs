@@ -80,11 +80,6 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
-                }
-
                 switch (Arguments[0].ToUpper())
                 {
                     case "ENGAGED":
@@ -147,11 +142,6 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "door" }));
-                }
-
                 DoorType dt = (DoorType)Arguments[0];
                 Door d = Door.Get(dt);
 
