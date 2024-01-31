@@ -218,8 +218,8 @@
 
             new ErrorInfo(
                 130,
-                "{0} requires {1} argument(s) ({2})",
-                "This error occurs when a variable is used with an insufficient amount of arguments. Some variables require arguments, separated by :, such as {FILTER:PLAYERS:ROLE:ClassD}. This error can be resolved by supplying the proper amount of arguments."),
+                "The '{0}' {1} requires {2} argument(s) ({3})",
+                "This error occurs when an action or variable is used with an insufficient amount of arguments. Most actions require arguments, separated by spaces, such as 'LOG TEST'. Likewise, some variables require arguments, separated by :, such as '{FILTER:PLAYERS:ROLE:ClassD}'. This error can be resolved by supplying the proper amount of arguments."),
 
             new ErrorInfo(
                 131,

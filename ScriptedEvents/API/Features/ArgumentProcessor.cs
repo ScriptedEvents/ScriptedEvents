@@ -25,9 +25,11 @@
 
             int required = expected.Count(arg => arg.Required);
 
-            // Todo: Better error message here
             if (args.Length < required)
-                return new(false, string.Empty, MsgGen.Generate(MessageType.InvalidUsage, action, string.Empty, (object)expected));
+            {
+                IEnumerable<string> args2 = expected.Select(arg => $"{(arg.Required ? "<" : "[")}{arg.ArgumentName}{(arg.Required ? ">" : "]")}");
+                return new(false, string.Empty, ErrorGen.Get(130, action.Name, action is IAction ? "action" : "variable", required, string.Join(", ", args2)));
+            }
 
             ArgumentProcessResult success = new(true);
 
