@@ -24,6 +24,7 @@
             new EngagedGenerators(),
             new Scp914Active(),
             new DoorState(),
+            new Overcharged(),
             new Generators(),
         };
     }
@@ -53,6 +54,21 @@
 
         /// <inheritdoc/>
         public string Description => "The amount of generators which are fully engaged.";
+    }
+
+    public class Overcharged : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{OVERCHARGED}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!OVERCHARGED}";
+
+        /// <inheritdoc/>
+        public string Description => "Indicates whether or not SCP-079 was successfully contained via overcharge sequence.";
+
+        /// <inheritdoc/>
+        public bool Value => Recontainer.IsContainmentSequenceSuccessful;
     }
 
     public class Generators : IFloatVariable, IArgumentVariable
