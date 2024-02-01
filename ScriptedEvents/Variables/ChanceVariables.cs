@@ -106,7 +106,10 @@
         public string Description => "Returns a random number from provided range. If range is not provided, will return a random number from 0 to 1.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -122,15 +125,12 @@
             {
                 if (Arguments.Length == 0) return UnityEngine.Random.value;
 
-                if (!VariableSystem.TryParse(Arguments[0], out float startNum))
-                    throw new ArgumentException(ErrorGen.Get(137, Arguments[0]));
-
+                float startNum = (float)Arguments[0];
                 float endNum;
 
                 if (Arguments.Length >= 2)
                 {
-                    if (!VariableSystem.TryParse(Arguments[1], out endNum))
-                        throw new ArgumentException(ErrorGen.Get(137, Arguments[1]));
+                    endNum = (float)Arguments[1];
                 }
                 else
                 {

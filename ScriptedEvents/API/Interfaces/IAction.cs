@@ -6,13 +6,8 @@
     /// <summary>
     /// Represents any action.
     /// </summary>
-    public interface IAction
+    public interface IAction : IScriptComponent
     {
-        /// <summary>
-        /// Gets the name of the action.
-        /// </summary>
-        public string Name { get; }
-
         /// <summary>
         /// Gets aliases of the action. Currently unused.
         /// </summary>

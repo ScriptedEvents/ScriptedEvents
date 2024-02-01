@@ -14,19 +14,22 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Interfaces;
 
     public static class ArgumentProcessor
     {
-        public static ArgumentProcessResult Process(Argument[] expected, string[] args, IAction action, Script source)
+        public static ArgumentProcessResult Process(Argument[] expected, string[] args, IScriptComponent action, Script source, bool requireBrackets = true)
         {
             if (expected is null || expected.Length == 0)
                 return new(true);
 
             int required = expected.Count(arg => arg.Required);
 
-            // Todo: Better error message here
             if (args.Length < required)
-                return new(false, string.Empty, MsgGen.Generate(MessageType.InvalidUsage, action, string.Empty, (object)expected));
+            {
+                IEnumerable<string> args2 = expected.Select(arg => $"{(arg.Required ? "<" : "[")}{arg.ArgumentName}{(arg.Required ? ">" : "]")}");
+                return new(false, string.Empty, ErrorGen.Get(130, action.Name, action is IAction ? "action" : "variable", required, string.Join(", ", args2)));
+            }
 
             ArgumentProcessResult success = new(true);
 
@@ -40,7 +43,7 @@
                 else
                     continue;
 
-                ArgumentProcessResult res = ProcessIndividualParameter(expect, input, action, source);
+                ArgumentProcessResult res = ProcessIndividualParameter(expect, input, action, source, requireBrackets);
                 if (!res.Success)
                     return res; // Throw issue to end-user
 
@@ -59,35 +62,64 @@
             return success;
         }
 
-        public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input, IAction action, Script source)
+        public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input, IScriptComponent action, Script source, bool requireBrackets = true)
         {
             ArgumentProcessResult success = new(true);
 
             source.DebugLog($"Param {expected.ArgumentName} needs a {expected.Type.Name}");
             switch (expected.Type.Name)
             {
-                // Todo: Add enumerations (RoomType, ZoneType, DamageType)
                 // Number Types:
                 case "Boolean":
                     success.NewParameters.Add(input.AsBool());
                     break;
                 case "Int32": // int
-                    if (!VariableSystem.TryParse(input, out int intRes, source))
+                    if (!VariableSystem.TryParse(input, out int intRes, source, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
 
                     success.NewParameters.Add(intRes);
                     break;
                 case "Int64": // long
-                    if (!VariableSystem.TryParse(input, out long longRes, source))
+                    if (!VariableSystem.TryParse(input, out long longRes, source, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
 
                     success.NewParameters.Add(longRes);
                     break;
                 case "Single": // float
-                    if (!VariableSystem.TryParse(input, out float floatRes, source))
+                    if (!VariableSystem.TryParse(input, out float floatRes, source, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(137, input));
 
                     success.NewParameters.Add(floatRes);
+                    break;
+                case "Char":
+                    if (!char.TryParse(input, out char charRes))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(146, input));
+
+                    success.NewParameters.Add(charRes);
+                    break;
+
+                // Variable Interfaces
+                case "IConditionVariable":
+                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable, out _, source, requireBrackets))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+
+                    success.NewParameters.Add(variable);
+                    break;
+                case "IStringVariable":
+                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable2, out _, source, requireBrackets))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+                    if (variable2 is not IStringVariable strVar)
+                        return new(false, expected.ArgumentName, ErrorGen.Get(145, input));
+
+                    success.NewParameters.Add(strVar);
+                    break;
+                case "IPlayerVariable":
+                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable3, out _, source, requireBrackets))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+                    if (variable3 is not IPlayerVariable playerVar)
+                        return new(false, expected.ArgumentName, ErrorGen.Get(133, input));
+
+                    success.NewParameters.Add(playerVar);
                     break;
 
                 // Array Types:
@@ -105,28 +137,44 @@
                     break;
                 case "Door[]":
                     if (!ScriptHelper.TryGetDoors(input, out Door[] doors, source))
-                        return new(false, expected.ArgumentName, "Invalid door(s) provided!");
+                        return new(false, expected.ArgumentName, ErrorGen.Get(142, input));
 
                     success.NewParameters.Add(doors);
                     break;
                 case "Lift[]":
                     if (!ScriptHelper.TryGetLifts(input, out Lift[] lifts, source))
-                        return new(false, expected.ArgumentName, "Invalid lift(s) provided!");
+                        return new(false, expected.ArgumentName, ErrorGen.Get(143, input));
 
                     success.NewParameters.Add(lifts);
                     break;
-                case "String":
-                    success.NewParameters.Add(input);
+
+                // Special
+                case "RoleTypeIdOrTeam":
+                    if (VariableSystem.TryParse(input, out RoleTypeId rtResult, source, requireBrackets))
+                        success.NewParameters.Add(rtResult);
+                    else if (VariableSystem.TryParse(input, out Team teamResult, source, requireBrackets))
+                        success.NewParameters.Add(teamResult);
+                    else
+                        return new(false, expected.ArgumentName, ErrorGen.Get(147, input));
+
                     break;
+
                 default:
                     // Handle all enum types
-                    object res = VariableSystem.Parse(input, expected.Type, source);
-                    if (res is null)
+                    if (expected.Type.BaseType == typeof(Enum))
                     {
-                        return new(false, expected.ArgumentName, $"Invalid {expected.Type.Name} provided. See all options by running 'shelp {expected.Type.Name}' in the server console.");
+                        object res = VariableSystem.Parse(input, expected.Type, source);
+                        if (res is null)
+                        {
+                            return new(false, expected.ArgumentName, ErrorGen.Get(144, input, expected.Type.Name));
+                        }
+
+                        success.NewParameters.Add(res);
+                        break;
                     }
 
-                    success.NewParameters.Add(res);
+                    // Unsupported types: Add the string input
+                    success.NewParameters.Add(input);
                     break;
             }
 

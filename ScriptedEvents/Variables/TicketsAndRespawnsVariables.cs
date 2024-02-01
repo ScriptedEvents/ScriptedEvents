@@ -154,7 +154,10 @@
         public string Description => "The amount of players that have respawned in the most recent respawn wave.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -174,9 +177,9 @@
             get
             {
                 // This is technically not necessary anymore since {FILTER} exists. TODO Think about this
-                if (Arguments.Length > 0 && VariableSystem.TryParse(Arguments[0], out RoleTypeId rt, Source, false))
+                if (Arguments.Length > 0)
                 {
-                    return MainPlugin.Handlers.RecentlyRespawned.Where(ply => ply.Role == rt);
+                    return MainPlugin.Handlers.RecentlyRespawned.Where(ply => ply.Role == (RoleTypeId)Arguments[0]);
                 }
 
                 return MainPlugin.Handlers.RecentlyRespawned;

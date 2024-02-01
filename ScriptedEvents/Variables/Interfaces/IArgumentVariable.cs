@@ -8,9 +8,14 @@
     public interface IArgumentVariable
     {
         /// <summary>
+        /// Gets or sets the variable raw arguments.
+        /// </summary>
+        public string[] RawArguments { get; set; }
+
+        /// <summary>
         /// Gets or sets the variable arguments.
         /// </summary>
-        public string[] Arguments { get; set; }
+        public object[] Arguments { get; set; }
 
         /// <summary>
         /// Gets the expected arguments.

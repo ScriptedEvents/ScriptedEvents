@@ -37,7 +37,10 @@
         public string Description => "Whether or not the variable with the given name exists in the current context.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
@@ -55,7 +58,7 @@
             {
                 if (Arguments.Length < 1) return false;
 
-                return VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection _, Source, true);
+                return VariableSystem.TryGetPlayers((string)Arguments[0], out PlayerCollection _, Source, true);
             }
         }
     }
@@ -102,7 +105,10 @@
         public string Description => "Whether or not a specific script is running.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
@@ -115,12 +121,7 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "scriptName" }));
-                }
-
-                string scriptName = Arguments[0];
+                string scriptName = (string)Arguments[0];
                 return ScriptHelper.RunningScripts.Any(scr => scr.Key.ScriptName == scriptName && scr.Value.IsRunning);
             }
         }

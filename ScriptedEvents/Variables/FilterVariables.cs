@@ -37,7 +37,10 @@
         public string Description => "Filters a player variable and returns random players less than the provided amount.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
@@ -57,21 +60,14 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "amount"));
-                }
-
-                if (!VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
-                    throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
+                IEnumerable<Player> players = ((IPlayerVariable)Arguments[0]).Players;
 
                 int max = 1;
-                if (Arguments.Length > 1 && !VariableSystem.TryParse(Arguments[1], out max, Source, false))
-                {
-                    throw new ArgumentException(ErrorGen.Get(134, Arguments[1]));
-                }
 
-                List<Player> list = players.GetInnerList();
+                if (Arguments.Length > 1)
+                    max = (int)Arguments[1];
+
+                List<Player> list = players.ToList();
 
                 for (int i = 0; i < max; i++)
                 {
@@ -93,14 +89,17 @@
         public string Description => "Filters a player variable by a certain type.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
             new Argument("name", typeof(IPlayerVariable), "The name of the variable to filter.", true),
             new Argument("type", typeof(string), "The mode to use to filter.", true),
-            new Argument("input", typeof(object), "What to use as the filter (RoleType, ZoneType, etc)", true),
+            new Argument("input", typeof(string), "What to use as the filter (RoleType, ZoneType, etc)", true),
         };
 
         /// <inheritdoc/>
@@ -114,35 +113,30 @@
         {
             get
             {
-                if (Arguments.Length < 3)
+                IEnumerable<Player> players = ((IPlayerVariable)Arguments[0]).Players;
+                string input = (string)Arguments[2];
+
+                return Arguments[1].ToString() switch
                 {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type", "input"));
-                }
+                    "ROLE" when VariableSystem.TryParse(input, out RoleTypeId rt, Source, false) => players.Where(plr => plr.Role.Type == rt),
+                    "TEAM" when VariableSystem.TryParse(input, out Team team, Source, false) => players.Where(plr => plr.Role.Team == team),
+                    "ZONE" when VariableSystem.TryParse(input, out ZoneType zt, Source, false) => players.Where(plr => plr.Zone.HasFlag(zt)),
+                    "ROOM" when VariableSystem.TryParse(input, out RoomType room, Source, false) => players.Where(plr => plr.CurrentRoom?.Type == room),
+                    "USERID" => players.Where(plr => plr.UserId == VariableSystem.ReplaceVariable(input, Source, false)),
+                    "PLAYERID" => players.Where(plr => plr.Id.ToString() == VariableSystem.ReplaceVariable(input, Source, false)),
+                    "INV" when VariableSystem.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
+                    "INV" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
+                    "HELDITEM" when VariableSystem.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.CurrentItem?.Type == item),
+                    "HELDITEM" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => CustomItem.TryGet(plr.CurrentItem, out CustomItem customItem2) && customItem == customItem2),
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
-                {
-                    return Arguments[1].ToString() switch
-                    {
-                        "ROLE" when VariableSystem.TryParse(Arguments[2], out RoleTypeId rt, Source, false) => players.Where(plr => plr.Role.Type == rt),
-                        "TEAM" when VariableSystem.TryParse(Arguments[2], out Team team, Source, false) => players.Where(plr => plr.Role.Team == team),
-                        "ZONE" when VariableSystem.TryParse(Arguments[2], out ZoneType zt, Source, false) => players.Where(plr => plr.Zone.HasFlag(zt)),
-                        "ROOM" when VariableSystem.TryParse(Arguments[2], out RoomType room, Source, false) => players.Where(plr => plr.CurrentRoom?.Type == room),
-                        "USERID" => players.Where(plr => plr.UserId == VariableSystem.ReplaceVariable(Arguments[2], Source, false)),
-                        "PLAYERID" => players.Where(plr => plr.Id.ToString() == VariableSystem.ReplaceVariable(Arguments[2], Source, false)),
-                        "INV" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
-                        "INV" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
-                        "HELDITEM" when VariableSystem.TryParse(Arguments[2], out ItemType item, Source, false) => players.Where(plr => plr.CurrentItem?.Type == item),
-                        "HELDITEM" when CustomItem.TryGet(Arguments[2], out CustomItem customItem) => players.Where(plr => CustomItem.TryGet(plr.CurrentItem, out CustomItem customItem2) && customItem == customItem2),
+                    "GROUP" => players.Where(plr => plr.GroupName == input),
 
-                        "GROUP" => players.Where(plr => plr.GroupName == Arguments[2]),
+                    "ISSTAFF" when VariableSystem.ReplaceVariable(input.ToUpper()).AsBool() => players.Where(plr => plr.RemoteAdminAccess),
+                    "ISSTAFF" when !VariableSystem.ReplaceVariable(input.ToUpper()).AsBool() => players.Where(plr => !plr.RemoteAdminAccess),
+                    _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{input}' is not valid for the specified filter method."),
+                };
 
-                        "ISSTAFF" when VariableSystem.ReplaceVariable(Arguments[2].ToUpper()).AsBool() => players.Where(plr => plr.RemoteAdminAccess),
-                        "ISSTAFF" when !VariableSystem.ReplaceVariable(Arguments[2].ToUpper()).AsBool() => players.Where(plr => !plr.RemoteAdminAccess),
-                        _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{Arguments[2]}' is not valid for the specified filter method."),
-                    };
-                }
-
-                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
+                throw new ArgumentException(ErrorGen.Get(126));
             }
         }
 
@@ -170,7 +164,10 @@ Invalid options will result in a script error.";
         public string Description => "Indexes a player variable and gets ONE player at the specified position.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
@@ -190,25 +187,13 @@ Invalid options will result in a script error.";
         {
             get
             {
-                if (Arguments.Length < 2)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "name", "type"));
-                }
+                IEnumerable<Player> players = ((IPlayerVariable)Arguments[0]).Players;
+                int index = (int)Arguments[1];
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
-                {
-                    if (!VariableSystem.TryParse(Arguments[1], out int index, Source, false))
-                    {
-                        throw new ArgumentException(ErrorGen.Get(134, Arguments[1]));
-                    }
+                if (index > players.Count() - 1)
+                    throw new IndexOutOfRangeException(ErrorGen.Get(135, index));
 
-                    if (index > players.Count() - 1)
-                        throw new IndexOutOfRangeException(ErrorGen.Get(135, index));
-
-                    return new List<Player>() { players.ToList()[index] }; // Todo: better solution (yield return didn't work??)
-                }
-
-                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
+                return new List<Player>() { players.ToList()[index] }; // Todo: better solution (yield return didn't work??)
             }
         }
     }

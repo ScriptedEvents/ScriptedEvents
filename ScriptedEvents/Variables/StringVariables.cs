@@ -8,6 +8,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.CustomItems.API.Features;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -43,12 +44,15 @@
         public string Description => "Retrieves the value of a key from a player's player data.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("player", typeof(string), "The player to get the key from. MUST BE ONLY ONE PLAYER", true),
+            new Argument("player", typeof(IPlayerVariable), "The player to get the key from. MUST BE ONLY ONE PLAYER", true),
             new Argument("keyName", typeof(string), "The name of the key.", true),
         };
 
@@ -60,17 +64,13 @@
         {
             get
             {
-                if (Arguments.Length < 2)
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "player", "keyName " }));
+                List<Player> players = ((IPlayerVariable)Arguments[0]).Players.ToList();
+                string key = (string)Arguments[1];
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
-                {
-                    List<Player> playerList = players.GetInnerList();
-                    if (playerList.Count > 1)
-                        throw new ArgumentException("The 'PLAYERDATA' variable only works with one player!");
-                    if (playerList[0].SessionVariables.ContainsKey(Arguments[1]))
-                        return playerList[0].SessionVariables[Arguments[1]].ToString();
-                }
+                if (players.Count > 1)
+                    throw new ArgumentException("The 'PLAYERDATA' variable only works with one player!");
+                if (players[0].SessionVariables.ContainsKey(key))
+                    return players[0].SessionVariables[key].ToString();
 
                 return "NONE";
             }
@@ -86,12 +86,15 @@
         public string Description => "Reveals the length of a player variable.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("name", typeof(string), "The name of the player variable to retrieve the length of.", true),
+            new Argument("name", typeof(IPlayerVariable), "The name of the player variable to retrieve the length of.", true),
         };
 
         /// <inheritdoc/>
@@ -102,23 +105,8 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
-                }
-
-                var conditionVariable = VariableSystem.GetVariable(Arguments[0], Source, false);
-                if (conditionVariable.Item1 is not null)
-                {
-                    if (conditionVariable.Item1 is not IPlayerVariable variable)
-                    {
-                        throw new ArgumentException(ErrorGen.Get(133, conditionVariable.Item1.Name));
-                    }
-
-                    return variable.Players.Count();
-                }
-
-                throw new ArgumentException(ErrorGen.Get(132, Arguments[0]));
+                IPlayerVariable variable = (IPlayerVariable)Arguments[0];
+                return variable.Players.Count();
             }
         }
     }
@@ -132,7 +120,10 @@
         public string Description => "Convert a player variable into a format to use with commands.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
@@ -148,30 +139,17 @@
         {
             get
             {
-                if (Arguments.Length < 1)
+                IPlayerVariable variable = (IPlayerVariable)Arguments[0];
+
+                if (variable is IArgumentVariable)
                 {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
+                    throw new ArgumentException(ErrorGen.Get(138, "C"));
                 }
 
-                if (VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
-                {
-                    if (variable is IArgumentVariable)
-                    {
-                        throw new ArgumentException(ErrorGen.Get(138, "C"));
-                    }
+                if (variable.Players.Count() == 0)
+                    return string.Empty;
 
-                    if (variable is not IPlayerVariable plrVar)
-                    {
-                        throw new ArgumentException(ErrorGen.Get(133, variable.Name));
-                    }
-
-                    if (plrVar.Players.Count() == 0)
-                        return string.Empty;
-
-                    return string.Join(".", plrVar.Players.Select(plr => plr.Id.ToString()));
-                }
-
-                throw new ArgumentException(ErrorGen.Get(132, Arguments[0]));
+                return string.Join(".", variable.Players.Select(plr => plr.Id.ToString()));
             }
         }
     }
@@ -185,7 +163,10 @@
         public string Description => "Reveal certain properties about the players in a player variable.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -202,19 +183,15 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "name" }));
-                }
-
                 string selector = "NAME";
 
                 if (Arguments.Length > 1)
                     selector = Arguments[1].ToUpper();
 
-                if (VariableSystem.TryGetPlayers(Arguments[0], out PlayerCollection players, Source, false))
+                IEnumerable<Player> players = ((IPlayerVariable)Arguments[0]).Players;
+                IOrderedEnumerable<string> display = players.Select(ply =>
                 {
-                    IOrderedEnumerable<string> display = players.Select(ply =>
+                    return selector switch
                     {
                         return selector switch
                         {
@@ -246,8 +223,7 @@
                     }).OrderBy(s => s);
                     return string.Join(", ", display).Trim();
                 }
-
-                throw new ArgumentException(ErrorGen.Get(131, Arguments[0]));
+                return string.Join(", ", display).Trim();
             }
         }
 
@@ -288,7 +264,10 @@ Invalid options will default to the 'NAME' selector.";
         public string Description => "Gets the RoomType of a random room. Can be filtered by zone.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
@@ -306,17 +285,13 @@ Invalid options will default to the 'NAME' selector.";
             {
                 ZoneType filter = ZoneType.Unspecified;
 
-                if (Arguments.Length > 0 && !VariableSystem.TryParse(Arguments[0], out filter, Source, false))
-                {
-                    throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid ZoneType.");
-                }
+                if (Arguments.Length > 0)
+                    filter = (ZoneType)Arguments[0];
 
                 IEnumerable<Room> validRooms = Room.List.Where(room => room.Type != RoomType.Pocket);
 
                 if (filter is not ZoneType.Unspecified)
-                {
                     validRooms = validRooms.Where(room => room.Zone.HasFlag(filter));
-                }
 
                 List<Room> newList = validRooms.ToList();
                 return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
@@ -378,7 +353,10 @@ Invalid options will default to the 'NAME' selector.";
         public string Description => "Shows the name of the variable with its value. Useful for quick debugging.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Script Source { get; set; }
@@ -386,7 +364,7 @@ Invalid options will default to the 'NAME' selector.";
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("variable", typeof(IVariable), "The name of the variable.", true),
+             new Argument("variable", typeof(IConditionVariable), "The name of the variable.", true),
         };
 
         /// <inheritdoc/>
@@ -394,22 +372,16 @@ Invalid options will default to the 'NAME' selector.";
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "variable" }));
-                }
+                IConditionVariable variable = (IConditionVariable)Arguments[0];
 
-                if (!VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
+                return variable switch
                 {
-                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable.");
-                }
-
-                if (variable is not IStringVariable value)
-                {
-                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid string variable.");
-                }
-
-                return $"{variable.Name} = {value.Value}";
+                    IStringVariable strV => $"{strV.Name} = {strV.Value}",
+                    IFloatVariable floatV => $"{floatV.Name} = {floatV.Value}",
+                    ILongVariable longV => $"{longV.Name} = {longV.Value}",
+                    IBoolVariable boolV => $"{boolV.Name} = {boolV.Value}",
+                    _ => $"{variable.Name} = UNKNOWN VALUE",
+                };
             }
         }
     }
@@ -423,7 +395,10 @@ Invalid options will default to the 'NAME' selector.";
         public string Description => "Extract a certain part of a variables value using an index.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Script Source { get; set; }
@@ -431,7 +406,7 @@ Invalid options will default to the 'NAME' selector.";
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("variable", typeof(IVariable), "The name of the variable.", true),
+             new Argument("variable", typeof(IStringVariable), "The name of the variable.", true),
              new Argument("index", typeof(int), "The place from which the value should be taken.", true),
              new Argument("listSplitChar", typeof(char), "A character that will split the variable into a list.", false),
         };
@@ -441,39 +416,15 @@ Invalid options will default to the 'NAME' selector.";
         {
             get
             {
-                if (Arguments.Length < 2)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, "variable"));
-                }
 
-                if (!VariableSystem.TryGetVariable(Arguments[0], out IConditionVariable variable, out _, Source, false))
-                {
-                    throw new ArgumentException($"'{Arguments[0]}' is not a valid variable.");
-                }
-
-                string value;
-
-                if (variable is IStringVariable strValue)
-                {
-                    value = strValue.Value;
-                }
-                else if (variable is IFloatVariable floatValue)
-                {
-                    value = floatValue.Value.ToString();
-                }
-                else
-                {
-                    throw new ArgumentException($"Provided variable '{Arguments[0]}' is not a valid variable for this operation.");
-                }
-
+                IStringVariable value = (IStringVariable)Arguments[0];
+                int index = (int)Arguments[1];
                 string result;
-
-                if (!VariableSystem.TryParse(Arguments[1], out int index, Source, false))
-                    throw new ArgumentException($"Provided index '{Arguments[1]}' is not a valid integer or variable containing an integer.");
 
                 if (Arguments.Length >= 3)
                 {
                     string delimiter = VariableSystem.ReplaceVariable(Arguments[2]);
+                    char listSplitChar = (char)Arguments[2];
 
                     List<string> resultList = value.Split(new[] { delimiter }, StringSplitOptions.None).ToList();
 

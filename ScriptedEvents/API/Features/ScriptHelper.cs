@@ -686,6 +686,26 @@ namespace ScriptedEvents.API.Features
                                 continue;
                         }
                     }
+                    catch (VariableException variableException)
+                    {
+                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {variableException.Message}";
+                        switch (scr.Context)
+                        {
+                            case ExecuteContext.RemoteAdmin:
+                                Player ply = Player.Get(scr.Sender);
+                                ply.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
+
+                                if (MainPlugin.Configs.BroadcastIssues)
+                                    ply?.Broadcast(5, $"Error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+
+                                break;
+                            default:
+                                Log.Warn(message);
+                                break;
+                        }
+
+                        continue;
+                    }
                     catch (Exception e)
                     {
                         string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(141, action.Name)}:\n{e}";

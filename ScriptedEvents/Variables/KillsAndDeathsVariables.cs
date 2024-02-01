@@ -6,7 +6,7 @@
     using Exiled.API.Features;
 
     using PlayerRoles;
-
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -32,7 +32,10 @@
         public string Description => "The amount of kills, the amount of kills per-role, or -1 if an invalid role type is provided.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Script Source { get; set; }
@@ -40,7 +43,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("role", typeof(RoleTypeId), "The role or team to filter by. Optional.", false),
+            new Argument("role", typeof(RoleTypeIdOrTeam), "The role or team to filter by. Optional.", false),
         };
 
         /// <inheritdoc/>
@@ -54,14 +57,14 @@
                 }
                 else
                 {
-                    if (VariableSystem.TryParse(Arguments[0], out RoleTypeId rt, Source))
+                    if (Arguments[0] is RoleTypeId rt)
                     {
                         if (MainPlugin.Handlers.Kills.TryGetValue(rt, out int amt))
                             return amt;
                         else
                             return 0;
                     }
-                    else if (VariableSystem.TryParse(Arguments[0], out Team team, Source))
+                    else if (Arguments[0] is Team team)
                     {
                         int total = 0;
                         foreach (var kills in MainPlugin.Handlers.Kills)
@@ -72,9 +75,9 @@
 
                         return total;
                     }
-
-                    throw new ArgumentException($"The 'role' argument must be a valid Team or RoleType. Value '{Arguments[0]}' is not a valid Team or RoleType.");
                 }
+
+                throw new ArgumentException(ErrorGen.Get(126));
             }
         }
     }

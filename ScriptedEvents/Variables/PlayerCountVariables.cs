@@ -132,7 +132,10 @@
         public string Description => "The amount of players in the specified room.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -151,17 +154,8 @@
         {
             get
             {
-                if (Arguments.Length < 1)
-                {
-                    throw new ArgumentException(MsgGen.VariableArgCount(Name, new[] { "roomType" }));
-                }
-
-                if (VariableSystem.TryParse<RoomType>(Arguments[0], out RoomType rt, Source, false))
-                {
-                    return Player.Get(plr => plr.CurrentRoom.Type == rt);
-                }
-
-                throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid RoomType or the variable does not provide a RoomType.");
+                RoomType rt = (RoomType)Arguments[0];
+                return Player.Get(plr => plr.CurrentRoom.Type == rt);
             }
         }
     }

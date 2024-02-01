@@ -218,8 +218,8 @@
 
             new ErrorInfo(
                 130,
-                "{0} requires {1} argument(s) ({2})",
-                "This error occurs when a variable is used with an insufficient amount of arguments. Some variables require arguments, separated by :, such as {FILTER:PLAYERS:ROLE:ClassD}. This error can be resolved by supplying the proper amount of arguments."),
+                "The '{0}' {1} requires {2} argument(s) ({3})",
+                "This error occurs when an action or variable is used with an insufficient amount of arguments. Most actions require arguments, separated by spaces, such as 'LOG TEST'. Likewise, some variables require arguments, separated by :, such as '{FILTER:PLAYERS:ROLE:ClassD}'. This error can be resolved by supplying the proper amount of arguments."),
 
             new ErrorInfo(
                 131,
@@ -233,7 +233,7 @@
 
             new ErrorInfo(
                 133,
-                "The provided value '{0}' has no associated players.",
+                "The provided variable '{0}' has no associated players.",
                 "This error occurs when a variable requires another player variable as an argument, but the other variable is not a variable that contains players. This error can be resolved by providing a valid variable that contains players."),
 
             new ErrorInfo(
@@ -275,6 +275,36 @@
                 141,
                 "Ran into an error while running '{0}' action (please report to developer)",
                 "This error occurs when there was an unexpected error in an action. Please report this error in the Scripted Events Discord server."),
+
+            new ErrorInfo(
+                142,
+                "'{0} is not a valid door input.",
+                "This error occurs when an input to target in-game doors was expected, but the input was invalid. This error can be resolved by using a proper door input, such as 'ALL', a ZoneType/RoomType, or the name/ID of a door."),
+
+            new ErrorInfo(
+                143,
+                "'{0} is not a valid lift input.",
+                "This error occurs when an input to target in-game lift was expected, but the input was invalid. This error can be resolved by using a proper lift input, such as 'ALL' or the name/ID of a door."),
+
+            new ErrorInfo(
+                144,
+                "Provided value '{0}' is not a valid {1} input. See all options by running 'shelp {1}' in the server console.",
+                "This error occurs when an input to a specific enum was expected, but the input was invalid. This error can be resolved by using a valid enum input. All valid enum inputs can be seen by running 'shelp <name of the enum here>' in the server console."),
+
+            new ErrorInfo(
+                145,
+                "Provided variable '{0}' is not a valid string variable.",
+                "This error occurs when a string variable was expected, but is not provided. This error can be resolved by providing a valid string variable."),
+
+            new ErrorInfo(
+                146,
+                "Provided value '{0}' is not a valid character.",
+                "This error occurs when a single character input was expected, but the input is not a valid character. This error can be resolved by providing a valid character."),
+
+            new ErrorInfo(
+                147,
+                "Provided value '{0}' is not a valid RoleTypeId or Team.",
+                $"This error occurs when a RoleTypeId or Team input was expected, but the input is not either. This error can be resolved by providing a valid RoleTypeId or Team. A full list of valid RoleTypeId IDs (as of {DateTime.Now:g}) follows:\n{string.Join("\n", ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).Where(r => r is not RoleTypeId.None).Select(r => $"- [{r:d}] {r}"))}\n A full list of valid Team IDs (as of {DateTime.Now:g}) follows:\n{string.Join("\n", ((Team[])Enum.GetValues(typeof(Team))).Select(r => $"- [{r:d}] {r}"))}"),
         }.AsReadOnly();
     }
 }
