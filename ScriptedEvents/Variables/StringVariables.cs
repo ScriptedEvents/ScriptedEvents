@@ -193,36 +193,32 @@
                 {
                     return selector switch
                     {
-                        return selector switch
-                        {
-                            "NAME" => ply.Nickname,
-                            "DISPLAYNAME" => ply.DisplayNickname,
-                            "DPNAME" => ply.DisplayNickname,
-                            "USERID" => ply.UserId,
-                            "PLAYERID" => ply.Id.ToString(),
-                            "ROLE" => ply.Role.Type.ToString(),
-                            "TEAM" => ply.Role.Team.ToString(),
-                            "ROOM" => ply.CurrentRoom.Type.ToString(),
-                            "ZONE" => ply.Zone.ToString(),
-                            "HP" or "HEALTH" => ply.Health.ToString(),
-                            "INVCOUNT" => ply.Items.Count.ToString(),
-                            "INV" => string.Join(", ", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())),
-                            "HELDITEM" => (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci) ? ci.Name : ply.CurrentItem?.Type.ToString()) ?? ItemType.None.ToString(),
-                            "GOD" => ply.IsGodModeEnabled.ToString().ToUpper(),
-                            "POS" => $"{ply.Position.x} {ply.Position.y} {ply.Position.z}",
-                            "POSX" => ply.Position.x.ToString(),
-                            "POSY" => ply.Position.y.ToString(),
-                            "POSZ" => ply.Position.z.ToString(),
-                            "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
-                            "TIER" => "0",
-                            "GROUP" => ply.GroupName,
-                            "CUFFED" => ply.IsCuffed.ToString().ToUpper(),
-                            "CUSTOMINFO" => ply.CustomInfo.ToString(),
-                            _ => ply.Nickname,
-                        };
+                        "NAME" => ply.Nickname,
+                        "DISPLAYNAME" => ply.DisplayNickname,
+                        "DPNAME" => ply.DisplayNickname,
+                        "USERID" => ply.UserId,
+                        "PLAYERID" => ply.Id.ToString(),
+                        "ROLE" => ply.Role.Type.ToString(),
+                        "TEAM" => ply.Role.Team.ToString(),
+                        "ROOM" => ply.CurrentRoom.Type.ToString(),
+                        "ZONE" => ply.Zone.ToString(),
+                        "HP" or "HEALTH" => ply.Health.ToString(),
+                        "INVCOUNT" => ply.Items.Count.ToString(),
+                        "INV" => string.Join(", ", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())),
+                        "HELDITEM" => (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci) ? ci.Name : ply.CurrentItem?.Type.ToString()) ?? ItemType.None.ToString(),
+                        "GOD" => ply.IsGodModeEnabled.ToString().ToUpper(),
+                        "POS" => $"{ply.Position.x} {ply.Position.y} {ply.Position.z}",
+                        "POSX" => ply.Position.x.ToString(),
+                        "POSY" => ply.Position.y.ToString(),
+                        "POSZ" => ply.Position.z.ToString(),
+                        "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
+                        "TIER" => "0",
+                        "GROUP" => ply.GroupName,
+                        "CUFFED" => ply.IsCuffed.ToString().ToUpper(),
+                        "CUSTOMINFO" => ply.CustomInfo.ToString(),
+                        _ => ply.Nickname,
+                    };
                     }).OrderBy(s => s);
-                    return string.Join(", ", display).Trim();
-                }
                 return string.Join(", ", display).Trim();
             }
         }
@@ -299,7 +295,7 @@ Invalid options will default to the 'NAME' selector.";
         }
     }
 
-    public class RandomDoor : IStringVariable, IArgumentVariable, INeedSourceVariable
+    public class RandomDoor : IStringVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{RANDOMDOOR}";
@@ -423,10 +419,9 @@ Invalid options will default to the 'NAME' selector.";
 
                 if (Arguments.Length >= 3)
                 {
-                    string delimiter = VariableSystem.ReplaceVariable(Arguments[2]);
-                    char listSplitChar = (char)Arguments[2];
+                    string delimiter = VariableSystem.ReplaceVariable((string)Arguments[2]);
 
-                    List<string> resultList = value.Split(new[] { delimiter }, StringSplitOptions.None).ToList();
+                    List<string> resultList = value.ToString().Split(new[] { delimiter }, StringSplitOptions.None).ToList();
 
                     if (index < resultList.Count) index = resultList.Count - 1;
 
@@ -434,7 +429,7 @@ Invalid options will default to the 'NAME' selector.";
                 }
                 else
                 {
-                    result = value[index].ToString();
+                    result = value.ToString()[index].ToString();
                 }
 
                 return result;
