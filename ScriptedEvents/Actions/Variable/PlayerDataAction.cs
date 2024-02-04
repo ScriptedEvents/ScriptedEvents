@@ -66,9 +66,9 @@
                     foreach (Player ply in players)
                     {
                         if (ply.SessionVariables.ContainsKey(keyName))
-                            ply.SessionVariables[keyName] = Arguments.JoinMessage(3);
+                            ply.SessionVariables[keyName] = VariableSystem.ReplaceVariables(Arguments.JoinMessage(3), script);
                         else
-                            ply.SessionVariables.Add(keyName, Arguments.JoinMessage(3));
+                            ply.SessionVariables.Add(keyName, VariableSystem.ReplaceVariables(Arguments.JoinMessage(3), script));
                     }
 
                     break;
