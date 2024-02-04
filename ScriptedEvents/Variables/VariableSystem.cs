@@ -123,10 +123,12 @@
         /// Removes all defined variables.
         /// </summary>
         /// <param name="source">The script source.</param>
-        public static void ClearVariables(Script source)
+        public static void ClearVariables(Script source = null)
         {
             DefinedVariables.Clear();
             DefinedPlayerVariables.Clear();
+
+            if (source is null) return;
 
             source.UniqueVariables.Clear();
             source.UniquePlayerVariables.Clear();
