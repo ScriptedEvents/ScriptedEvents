@@ -19,7 +19,7 @@
         };
     }
 
-    public class Round : IFloatVariable, IArgumentVariable, INeedSourceVariable
+    public class Round : IFloatVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{ROUND}";
@@ -34,12 +34,9 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Script Source { get; set; }
-
-        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-                new Argument("variable", typeof(IFloatVariable), "The name of the variable to round. Requires the variable to be a number.", true),
+                new Argument("variable", typeof(float), "The name of the variable to round. Requires the variable to be a number.", true),
                 new Argument("mode", typeof(string), "Way of rounding the variable, either UP or DOWN.", true),
         };
 
