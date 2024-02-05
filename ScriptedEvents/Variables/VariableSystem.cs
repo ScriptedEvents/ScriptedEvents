@@ -469,35 +469,35 @@
 
             foreach (var variable in variables)
             {
-                if (TryGetVariable(variable, out IConditionVariable condition, out bool reversed, source))
+                if (!TryGetVariable(variable, out IConditionVariable condition, out bool reversed, source))
+                    continue;
+
+                try
                 {
-                    try
+                    switch (condition)
                     {
-                        switch (condition)
-                        {
-                            case IBoolVariable @bool:
-                                bool result = reversed ? !@bool.Value : @bool.Value;
-                                input = input.Replace(variable, result.ToString().ToUpper());
-                                break;
-                            case IFloatVariable @float:
-                                input = input.Replace(variable, @float.Value);
-                                break;
-                            case ILongVariable @long:
-                                input = input.Replace(variable, @long.Value);
-                                break;
-                            case IStringVariable @string:
-                                input = input.Replace(variable, @string.Value);
-                                break;
-                        }
+                    case IBoolVariable @bool:
+                        bool result = reversed ? !@bool.Value : @bool.Value;
+                        input = input.Replace(variable, result.ToString().ToUpper());
+                        break;
+                    case IFloatVariable @float:
+                        input = input.Replace(variable, @float.Value);
+                        break;
+                    case ILongVariable @long:
+                        input = input.Replace(variable, @long.Value);
+                        break;
+                    case IStringVariable @string:
+                        input = input.Replace(variable, @string.Value);
+                        break;
                     }
-                    catch (InvalidCastException e)
-                    {
-                        Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(140, condition.Name, e.Message)}");
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(140, condition.Name, source?.Debug == true ? e : e.Message)}");
-                    }
+                }
+                catch (InvalidCastException e)
+                {
+                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(140, condition.Name, e.Message)}");
+                }
+                catch (Exception e)
+                {
+                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(140, condition.Name, source?.Debug == true ? e : e.Message)}");
                 }
             }
 
