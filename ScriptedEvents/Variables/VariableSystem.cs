@@ -477,7 +477,7 @@
                         {
                             case IBoolVariable @bool:
                                 bool result = reversed ? !@bool.Value : @bool.Value;
-                                input = input.Replace(variable, result ? "TRUE" : "FALSE");
+                                input = input.Replace(variable, result.ToString().ToUpper());
                                 break;
                             case IFloatVariable @float:
                                 input = input.Replace(variable, @float.Value);
@@ -489,6 +489,10 @@
                                 input = input.Replace(variable, @string.Value);
                                 break;
                         }
+                    }
+                    catch (InvalidCastException e)
+                    {
+                        Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(140, condition.Name, e.Message)}");
                     }
                     catch (Exception e)
                     {
@@ -520,9 +524,13 @@
                 if (c is '{')
                 {
                     int index = input.IndexOf('}', i);
+
                     source?.DebugLog($"Detected variable opening symbol, char {i}. Closing index {index}. Substring {index - i + 1}.");
+
                     string variable = input.Substring(i, index - i + 1);
+
                     source?.DebugLog($"Variable: {variable}");
+
                     result.Add(variable);
                 }
             }
