@@ -1,5 +1,8 @@
 ﻿namespace ScriptedEvents.API.Interfaces
 {
+    /// <summary>
+    /// Indicates a component that can be used in scripts (actions or variables).
+    /// </summary>
     public interface IScriptComponent
     {
         /// <summary>

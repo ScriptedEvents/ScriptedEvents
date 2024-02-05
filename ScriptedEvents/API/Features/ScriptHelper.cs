@@ -51,10 +51,22 @@ namespace ScriptedEvents.API.Features
         /// </summary>
         public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
+        /// <summary>
+        /// Gets all defined custom actions.
+        /// </summary>
         public static Dictionary<string, CustomAction> CustomActions { get; } = new();
 
+        /// <summary>
+        /// Gets RueI instance.
+        /// </summary>
         public static RueIManager Ruei { get; } = new RueIManager();
 
+        /// <summary>
+        /// Returns an action type, if its name or aliases match the input.
+        /// </summary>
+        /// <param name="name">The name of the action.</param>
+        /// <param name="type">The action.</param>
+        /// <returns>Whether or not the try-get was successful.</returns>
         public static bool TryGetActionType(string name, out Type type)
         {
             foreach (var actionData in ActionTypes)
@@ -463,12 +475,17 @@ namespace ScriptedEvents.API.Features
             return rooms.Length > 0;
         }
 
+        /// <summary>
+        /// Shows a RueI hint.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="duration">The duration.</param>
+        /// <param name="players">The players to show (or all).</param>
         public static void ShowHint(string text, float duration, List<Player> players = null)
         {
-            if (players == null)
-                players = Player.List.ToList();
+            players ??= Player.List.ToList();
 
-            Ruei.MakeNew();
+            // Ruei.MakeNew();
             players.ForEach(p => Ruei.ShowHint(p, text, TimeSpan.FromSeconds(duration)));
         }
 
@@ -615,7 +632,7 @@ namespace ScriptedEvents.API.Features
                     IAction temp = (IAction)Activator.CreateInstance(type);
 
                     Log.Debug($"Adding Action: {temp.Name} | From Assembly: {assembly.GetName().Name}");
-                    ActionTypes.Add(new() { Name = temp.Name, Aliases = temp.Aliases }, type);
+                    ActionTypes.Add(new(temp.Name, temp.Aliases), type);
                     i++;
                 }
             }
