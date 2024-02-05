@@ -12,7 +12,7 @@ on:
     - andrzej-dev
   workflow_dispatch:
 env:
-  REFERENCES_URL: https://exiled.host/build_deps/Dev.zip
+  REFERENCES_URL: https://misaka-zerotwo.github.io/SL-References/Dev.zip
   REFERENCES_PATH: ${{ github.workspace }}/References
 jobs:
   build:
