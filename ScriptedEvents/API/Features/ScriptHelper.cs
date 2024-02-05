@@ -183,6 +183,9 @@ namespace ScriptedEvents.API.Features
 
                 foreach (Match m in collection)
                 {
+                    if (string.IsNullOrWhiteSpace(m.Value))
+                        continue;
+
                     actionParts.Add(m.Value);
                 }
 
