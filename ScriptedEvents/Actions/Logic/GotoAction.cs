@@ -7,6 +7,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class GotoAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
     {
@@ -31,7 +32,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("label", typeof(string), "The label to move to, or keyword (START/NEXT/STOP)", true),
+            new Argument("label", typeof(string), "The label to move to. Variables are supported.", true),
         };
 
         /// <inheritdoc/>
@@ -40,7 +41,9 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (!script.Jump((string)Arguments[0]))
+            string label = VariableSystem.ReplaceVariable((string)Arguments[0], script);
+
+            if (!script.Jump(label))
             {
                 return new(false, "Invalid label provided.");
             }
