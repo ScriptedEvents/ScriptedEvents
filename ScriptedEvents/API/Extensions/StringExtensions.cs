@@ -70,11 +70,11 @@ namespace ScriptedEvents.API.Extensions
                 if (obj is string s)
                     sb.Append(s + sep);
                 else
-                    sb.Append(obj.ToString() + sep);
+                    sb.Append(obj.ToString());
             }
 
             string str = StringBuilderPool.Pool.ToStringReturn(sb);
-            return str.Substring(0, str.Length - sep.Length);
+            return str.TrimEnd();
         }
     }
 }
