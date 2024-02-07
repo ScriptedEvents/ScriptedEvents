@@ -8,6 +8,7 @@
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -35,7 +36,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(List<Player>), "The players to set the name for.", true),
+            new Argument("players", typeof(Player[]), "The players to set the name for.", true),
             new Argument("name", typeof(RoleTypeId), "The name to set.", true),
         };
 
@@ -44,7 +45,7 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            string name = VariableSystem.ReplaceVariables(string.Join(" ", Arguments.Skip(1)));
+            string name = VariableSystem.ReplaceVariables(Arguments.JoinMessage(1));
 
             foreach (Player player in players)
             {
