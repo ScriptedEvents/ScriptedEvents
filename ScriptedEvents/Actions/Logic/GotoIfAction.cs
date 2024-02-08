@@ -29,12 +29,12 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Reads the condition and jumps to the first provided line if the condition is TRUE, or the second provided line if the condition is FALSE.";
+        public string Description => "Moves to the provided label if the condition evaluates to TRUE.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("label", typeof(string), "The label to jump to if the condition is TRUE. Variables are supported.", true),
+            new Argument("label", typeof(string), "The label to jump to. Variables are supported.", true),
             new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
 
