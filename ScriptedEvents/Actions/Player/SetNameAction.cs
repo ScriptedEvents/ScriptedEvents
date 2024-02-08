@@ -1,11 +1,8 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using Discord;
     using Exiled.API.Features;
-
-    using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
@@ -37,7 +34,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to set the name for.", true),
-            new Argument("name", typeof(RoleTypeId), "The name to set.", true),
+            new Argument("name", typeof(string), "The name to set.", true),
         };
 
         /// <inheritdoc/>
@@ -45,7 +42,7 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            string name = VariableSystem.ReplaceVariables(Arguments.JoinMessage(1));
+            string name = VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script);
 
             foreach (Player player in players)
             {
