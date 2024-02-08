@@ -6,11 +6,8 @@ namespace ScriptedEvents.API.Features
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
-    using System.Text.RegularExpressions;
 
     using CommandSystem;
-
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
@@ -176,17 +173,16 @@ namespace ScriptedEvents.API.Features
                     continue;
                 }
 
-                // Regular string.Split(' '), except ignore spaces inside of variable names
-                // Allows spaces in variable names without giving a bizarre error.
-                MatchCollection collection = Regex.Matches(action, "\\[[^]]*]|\\{[^}]*}|[^ ]+");
+                // remove regex for variable spaces bc its politely saying dumb
+                string[] collection = action.Split(' ');
                 List<string> actionParts = ListPool<string>.Pool.Get();
 
-                foreach (Match m in collection)
+                foreach (string m in collection)
                 {
-                    if (string.IsNullOrWhiteSpace(m.Value))
+                    if (string.IsNullOrWhiteSpace(m))
                         continue;
 
-                    actionParts.Add(m.Value);
+                    actionParts.Add(m.Replace("\n", string.Empty));
                 }
 
                 string keyword = actionParts[0].RemoveWhitespace();
