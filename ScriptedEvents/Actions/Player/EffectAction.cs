@@ -38,7 +38,7 @@
             new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
-            new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
+            new Argument("intensity", typeof(int), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
             new Argument("duration", typeof(int), "The duration of the effect, or no duration for a permanent effect. Variables are supported.", false),
         };
 
@@ -46,6 +46,7 @@
         public ActionResponse Execute(Script script)
         {
             string mode = Arguments[0].ToUpper();
+            PlayerCollection plys = (PlayerCollection)Arguments[1];
             EffectType effect = (EffectType)Arguments[2];
 
             int intensity = 1;
@@ -65,8 +66,6 @@
                 if (duration < 0)
                     return new(MessageType.LessThanZeroNumber, this, "duration", Arguments[4]);
             }
-
-            PlayerCollection plys = (PlayerCollection)Arguments[1];
 
             switch (mode)
             {
