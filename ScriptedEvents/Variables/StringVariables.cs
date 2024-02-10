@@ -296,7 +296,7 @@ Invalid options will default to the 'NAME' selector.";
         }
     }
 
-    public class RandomDoor : IStringVariable, INeedSourceVariable
+    public class RandomDoor : IStringVariable, INeedSourceVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{RANDOMDOOR}";
@@ -305,7 +305,10 @@ Invalid options will default to the 'NAME' selector.";
         public string Description => "Gets the DoorType of a random door. Can be filtered by zone.";
 
         /// <inheritdoc/>
-        public string[] Arguments { get; set; }
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
@@ -323,10 +326,8 @@ Invalid options will default to the 'NAME' selector.";
             {
                 ZoneType filter = ZoneType.Unspecified;
 
-                if (Arguments.Length > 0 && !VariableSystem.TryParse(Arguments[0], out filter, Source, false))
-                {
-                    throw new ArgumentException($"Provided value '{Arguments[0]}' is not a valid ZoneType.");
-                }
+                if (Arguments.Length > 0)
+                    filter = (ZoneType)Arguments[0];
 
                 IEnumerable<Door> validDoors = Door.List;
 
