@@ -6,7 +6,7 @@ namespace ScriptedEvents.API.Features
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
+    using System.Text.RegularExpressions;
     using CommandSystem;
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -315,32 +315,49 @@ namespace ScriptedEvents.API.Features
         public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source = null)
         {
             source.DebugLog($"TRYGETPLAYERS {input}");
+
             input = input.RemoveWhitespace();
             List<Player> list = ListPool<Player>.Pool.Get();
             if (input.ToUpper() is "*" or "ALL")
             {
-                ListPool<Player>.Pool.Return(list);
-
                 collection = new(Player.List.ToList());
                 return true;
             }
-            else
+
+            string patternForPlayerIdUsage = @"^\d+(\.\d+)*\.?$";
+            if (Regex.IsMatch(input, patternForPlayerIdUsage))
             {
-                string[] variables = VariableSystem.IsolateVariables(input, source);
-                foreach (string variable in variables)
+                string[] splitInput = input.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string idInStr in splitInput)
                 {
-                    try
+                    if (!int.TryParse(idInStr, out int playerId))
+                        continue;
+
+                    if (!Player.TryGet(playerId, out Player player))
+                        continue;
+
+                    list.Add(player);
+                }
+
+                collection = new(list);
+                return true;
+            }
+
+            string[] variables = VariableSystem.IsolateVariables(input, source);
+            foreach (string variable in variables)
+            {
+                try
+                {
+                    if (VariableSystem.TryGetPlayers(variable, out PlayerCollection playersFromVariable, source))
                     {
-                        if (VariableSystem.TryGetPlayers(variable, out PlayerCollection playersFromVariable, source))
-                        {
-                            list.AddRange(playersFromVariable);
-                        }
+                        list.AddRange(playersFromVariable);
                     }
-                    catch (Exception e)
-                    {
-                        collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
-                        return false;
-                    }
+                }
+                catch (Exception e)
+                {
+                    collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
+                    return false;
                 }
             }
 
