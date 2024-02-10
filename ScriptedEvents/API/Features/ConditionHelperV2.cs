@@ -233,9 +233,7 @@
         private static ConditionResponse EvaluateInternal(string input, Script source = null)
         {
             string convertedInput = VariableSystem.ReplaceVariables(input, source);
-
-            string convertedInputForCSParser = convertedInput.Replace(" = ", " == ").Replace(" OR ", " || ").Replace(" AND ", " && ");
-            if (bool.TryParse(convertedInputForCSParser, out bool boolResult))
+            if (bool.TryParse(convertedInput, out bool boolResult))
                 return new ConditionResponse(true, boolResult, string.Empty);
 
             List<string> groups = CaptureGroups(input);
