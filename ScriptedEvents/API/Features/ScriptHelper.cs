@@ -332,6 +332,8 @@ namespace ScriptedEvents.API.Features
             List<Player> list = ListPool<Player>.Pool.Get();
             if (input.ToUpper() is "*" or "ALL")
             {
+                ListPool<Player>.Pool.Return(list);
+
                 collection = new(Player.List.ToList());
                 return true;
             }
