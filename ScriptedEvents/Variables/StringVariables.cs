@@ -15,6 +15,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
+    using Exiled.API.Features.Doors;
 
     public class StringVariables : IVariableGroup
     {
@@ -25,14 +26,13 @@
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new PlayerData(),
-
             new Len(),
             new Command(),
             new Show(),
-
             new RandomRoom(),
             new Log(),
             new Index(),
+            new RandomDoor(),
         };
     }
 
@@ -216,10 +216,10 @@
                         "TIER" => "0",
                         "GROUP" => ply.GroupName,
                         "CUFFED" => ply.IsCuffed.ToString().ToUpper(),
+                        "CUSTOMINFO" => ply.CustomInfo.ToString(),
                         _ => ply.Nickname,
                     };
-                }).OrderBy(s => s);
-
+                    }).OrderBy(s => s);
                 return string.Join(", ", display).Trim();
             }
         }
@@ -248,6 +248,7 @@ The following options are valid selector options:
 - TIER
 - GROUP
 - CUFFED
+- CUSTOMINFO
 Invalid options will default to the 'NAME' selector.";
     }
 
@@ -290,6 +291,52 @@ Invalid options will default to the 'NAME' selector.";
                     validRooms = validRooms.Where(room => room.Zone.HasFlag(filter));
 
                 List<Room> newList = validRooms.ToList();
+                return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
+            }
+        }
+    }
+
+    public class RandomDoor : IStringVariable, INeedSourceVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{RANDOMDOOR}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets the DoorType of a random door. Can be filtered by zone.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("zone", typeof(ZoneType), "A zone to filter by (optional).", false),
+        };
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                ZoneType filter = ZoneType.Unspecified;
+
+                if (Arguments.Length > 0)
+                    filter = (ZoneType)Arguments[0];
+
+                IEnumerable<Door> validDoors = Door.List;
+
+                if (filter is not ZoneType.Unspecified)
+                {
+                    validDoors = validDoors.Where(door => door.Zone.HasFlag(filter));
+                }
+
+                List<Door> newList = validDoors.ToList();
                 return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
             }
         }
@@ -343,7 +390,7 @@ Invalid options will default to the 'NAME' selector.";
         public string Name => "{INDEX}";
 
         /// <inheritdoc/>
-        public string Description => "Can get a certain thing from your variable.";
+        public string Description => "Extract a certain part of a variables value using an index.";
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -367,23 +414,24 @@ Invalid options will default to the 'NAME' selector.";
         {
             get
             {
+
                 IStringVariable value = (IStringVariable)Arguments[0];
                 int index = (int)Arguments[1];
                 string result;
 
                 if (Arguments.Length >= 3)
                 {
-                    char listSplitChar = (char)Arguments[2];
+                    string delimiter = VariableSystem.ReplaceVariable((string)Arguments[2]);
 
-                    List<string> x = value.Value.Split(listSplitChar).ToList();
+                    List<string> resultList = value.ToString().Split(new[] { delimiter }, StringSplitOptions.None).ToList();
 
-                    if (index < x.Count) index = x.Count - 1;
+                    if (index < resultList.Count) index = resultList.Count - 1;
 
-                    result = x[index].Trim();
+                    result = resultList[index].Trim();
                 }
                 else
                 {
-                    result = value.Value[index].ToString();
+                    result = value.ToString()[index].ToString();
                 }
 
                 return result;
