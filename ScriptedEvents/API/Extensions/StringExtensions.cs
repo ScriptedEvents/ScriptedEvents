@@ -86,11 +86,11 @@
                 if (obj is string s)
                     sb.Append(s + sep);
                 else
-                    sb.Append(obj.ToString());
+                    sb.Append(obj.ToString() + sep);
             }
 
             string str = StringBuilderPool.Pool.ToStringReturn(sb);
-            return str.TrimEnd();
+            return str.Substring(0, str.Length - sep.Length);
         }
     }
 }
