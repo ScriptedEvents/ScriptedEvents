@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.Structures
 {
     using System;
+
     using ScriptedEvents.API.Features;
 
     /// <summary>

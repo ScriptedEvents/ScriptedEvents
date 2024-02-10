@@ -1,7 +1,7 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using Discord;
+
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;

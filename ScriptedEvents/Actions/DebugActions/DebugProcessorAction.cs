@@ -1,14 +1,13 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Collections.Generic;
+
     using Exiled.API.Features;
-    using InventorySystem.Items.Usables.Scp330;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class DebugProcessorAction : IScriptAction, IHiddenAction, IHelpInfo
     {

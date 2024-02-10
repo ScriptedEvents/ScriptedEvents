@@ -2,7 +2,9 @@
 {
     using System;
     using System.IO;
+
     using CommandSystem;
+
     using Exiled.Permissions.Extensions;
     using ScriptedEvents.API.Features;
 

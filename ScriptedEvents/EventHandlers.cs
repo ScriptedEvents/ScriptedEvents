@@ -6,7 +6,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
@@ -24,18 +24,19 @@
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.EventArgs.Warhead;
-    using Exiled.Events.Features;
+
     using MapGeneration.Distributors;
     using MEC;
     using PlayerRoles;
     using Respawning;
+
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+
     using UnityEngine;
-    using Event = Exiled.Events.Features.Event;
 
     public class EventHandlers
     {

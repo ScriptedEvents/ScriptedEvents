@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;

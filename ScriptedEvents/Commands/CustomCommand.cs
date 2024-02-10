@@ -3,10 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+
     using CommandSystem;
+
     using Exiled.API.Features;
     using Exiled.Permissions.Extensions;
+
     using RemoteAdmin;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
