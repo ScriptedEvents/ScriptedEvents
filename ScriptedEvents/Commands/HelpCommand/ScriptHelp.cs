@@ -2,7 +2,9 @@
 {
     using System;
     using System.Linq;
+
     using CommandSystem;
+
     using ScriptedEvents.Actions;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;

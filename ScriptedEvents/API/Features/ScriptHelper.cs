@@ -7,7 +7,9 @@ namespace ScriptedEvents.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
+
     using CommandSystem;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;

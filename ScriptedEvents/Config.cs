@@ -2,7 +2,9 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+
     using Exiled.API.Interfaces;
+
     using ScriptedEvents.Structures;
 
     public class Config : IConfig

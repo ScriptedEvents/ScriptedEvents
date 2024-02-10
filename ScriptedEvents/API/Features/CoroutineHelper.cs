@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.API.Features
 {
     using System.Collections.Generic;
+
     using Exiled.API.Features;
 
     using MEC;

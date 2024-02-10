@@ -2,9 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Exiled.API.Features;
+
     using MEC;
+
     using ScriptedEvents.Structures;
+
     using UnityEngine;
 
     /// <summary>

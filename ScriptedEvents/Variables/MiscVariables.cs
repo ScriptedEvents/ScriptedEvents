@@ -2,7 +2,7 @@
 {
 #pragma warning disable SA1402 // File may only contain a single type
     using System;
-    using ScriptedEvents.API.Features;
+
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
     using UnityEngine;

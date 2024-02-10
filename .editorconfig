@@ -1,5 +1,6 @@
 ﻿[*.cs]
 
+# Hide These
 # SA1000: Keywords should be spaced correctly
 dotnet_diagnostic.SA1000.severity = none
 
@@ -11,3 +12,30 @@ dotnet_diagnostic.SA1503.severity = none
 
 # SA1633: The file header is missing or not located at the top of the file.
 dotnet_diagnostic.SA1633.severity = none
+
+# Suggestion
+# SE1600: Elements should be documented
+dotnet_diagnostic.SA1600.severity = suggestion
+
+# Enforce These
+# IDE0005: Using directive is unnecessary.
+dotnet_diagnostic.IDE0005.severity = error
+
+# SA1028: Code should not contain trailing whitespace.
+dotnet_diagnostic.SA1028.severity = error
+
+# SA1208: Using directive for '{0}' should appear before directive for '{1}'
+dotnet_diagnostic.SA1208.severity = error
+
+# SA1505: An opening brace should not be followed by a blank line.
+dotnet_diagnostic.SA1505.severity = error
+
+# SA1508: A closing brace should not be preceded by a blank line.
+dotnet_diagnostic.SA1508.severity = error
+
+# SA1507: Code should not contain multiple blank lines in a row
+dotnet_diagnostic.SA1507.severity = error
+
+# SE1516: Using directives should be separated by blank line.
+dotnet_diagnostic.SA1516.severity = error
+

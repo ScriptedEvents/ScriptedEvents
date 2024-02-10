@@ -414,7 +414,6 @@ Invalid options will default to the 'NAME' selector.";
         {
             get
             {
-
                 IStringVariable value = (IStringVariable)Arguments[0];
                 int index = (int)Arguments[1];
                 string result;
