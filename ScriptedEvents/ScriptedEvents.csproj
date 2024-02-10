@@ -95,6 +95,7 @@
     <Compile Include="Actions\Misc\PluginAction.cs" />
     <Compile Include="Actions\Misc\PrintAction.cs" />
     <Compile Include="Actions\Player\CustomInfoAction.cs" />
+    <Compile Include="Actions\Player\SetNameAction.cs" />
     <Compile Include="Actions\RoundRule\DamageRuleAction.cs" />
     <Compile Include="Actions\DebugActions\DamageRuleDebug.cs" />
     <Compile Include="Actions\RoundRule\DeleteInfectRule.cs" />
@@ -112,7 +113,9 @@
     <Compile Include="Actions\RoundRule\DisablePlayerAction.cs" />
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
+    <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
     <Compile Include="Actions\Variable\PlayerDataAction.cs" />
+    <Compile Include="Actions\Variable\LocalSaveAction.cs" />
     <Compile Include="Actions\Yielding\HttpPostAction.cs" />
     <Compile Include="Actions\Yielding\HttpGetAction.cs" />
     <Compile Include="Actions\Round\EndRoundAction.cs" />
@@ -302,6 +305,5 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

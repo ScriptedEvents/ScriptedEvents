@@ -25,7 +25,7 @@
         public string CountdownString { get; set; } = "<size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\\n{TIME}";
 
         [Description("The maximum amount of actions that can run in one second, before the script is force-stopped. Increasing this value allows for more actions to occur at the same time, but increases the risk of the server crashing (or restarting due to missed heartbeats). This maximum can be bypassed entirely by including the \"!-- NOSAFETY\" flag in a script.")]
-        public int MaxActionsPerSecond { get; set; } = 25;
+        public int MaxActionsPerSecond { get; set; } = 250;
 
         [Description("Define a custom set of permissions used to run a certain script. The provided permission will be added AFTER script.execute (eg. script.execute.examplepermission for the provided example).")]
         public Dictionary<string, string> RequiredPermissions { get; set; } = new()

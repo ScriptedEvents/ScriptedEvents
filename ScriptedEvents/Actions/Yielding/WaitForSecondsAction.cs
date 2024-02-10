@@ -40,7 +40,7 @@
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
-            string formula = VariableSystem.ReplaceVariables(Arguments.JoinMessage(0), script);
+            string formula = VariableSystem.ReplaceVariables(Arguments.JoinMessage(), script);
 
             if (!ConditionHelperV2.TryMath(formula, out MathResult result))
             {

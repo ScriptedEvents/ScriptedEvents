@@ -1,7 +1,6 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Collections.Generic;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
@@ -9,10 +8,8 @@
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class ReskinAction : IScriptAction, IHelpInfo
     {

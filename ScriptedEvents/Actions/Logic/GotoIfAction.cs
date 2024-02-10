@@ -9,7 +9,7 @@
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
+    using ScriptedEvents.Variables;
 
     public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
     {
@@ -29,12 +29,12 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Reads the condition and jumps to the first provided line if the condition is TRUE, or the second provided line if the condition is FALSE.";
+        public string Description => "Moves to the provided label if the condition evaluates to TRUE.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("label", typeof(string), "The label to jump to if the condition is TRUE. Variables & Math are NOT supported.", true),
+            new Argument("label", typeof(string), "The label to jump to. Variables are supported.", true),
             new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
 
@@ -80,7 +80,7 @@
             }
 
             // Standard GOTOIF
-            if (Arguments.Length < 2) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+            string label = VariableSystem.ReplaceVariable((string)Arguments[0], script);
 
             ConditionResponse outcome = ConditionHelperV2.Evaluate(Arguments.JoinMessage(1), script);
             if (!outcome.Success)
@@ -89,7 +89,7 @@
             if (outcome.Passed)
             {
                 script.DebugLog($"GOTOIF result: true. Jumping to line {Arguments[0]}.");
-                if (!script.Jump((string)Arguments[0]))
+                if (!script.Jump(label))
                     return new(false, ErrorGen.Get(139, "trueLine", Arguments[0]));
             }
             else
