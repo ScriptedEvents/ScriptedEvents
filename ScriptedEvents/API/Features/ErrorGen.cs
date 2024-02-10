@@ -61,6 +61,9 @@
         public static string Get(int errorCode, params object[] arguments) => Generate(errorCode, arguments);
     }
 
+    /// <summary>
+    /// Contains all error messages.
+    /// </summary>
     internal static class ErrorList
     {
         /// <summary>

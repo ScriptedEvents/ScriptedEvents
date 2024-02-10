@@ -16,8 +16,20 @@
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
+    /// <summary>
+    /// Contains methods to process action or variable arguments.
+    /// </summary>
     public static class ArgumentProcessor
     {
+        /// <summary>
+        /// Processes arguments.
+        /// </summary>
+        /// <param name="expected">The expected arguments.</param>
+        /// <param name="args">The provided arguments.</param>
+        /// <param name="action">The action or variable performing the process.</param>
+        /// <param name="source">The script source.</param>
+        /// <param name="requireBrackets">If brackets are required to convert variables.</param>
+        /// <returns>The result of the process.</returns>
         public static ArgumentProcessResult Process(Argument[] expected, string[] args, IScriptComponent action, Script source, bool requireBrackets = true)
         {
             if (expected is null || expected.Length == 0)
@@ -62,11 +74,20 @@
             return success;
         }
 
+        /// <summary>
+        /// Processes an individual argument.
+        /// </summary>
+        /// <param name="expected">The expected argument.</param>
+        /// <param name="input">The provided input.</param>
+        /// <param name="action">The action or variable performing the process.</param>
+        /// <param name="source">The script source.</param>
+        /// <param name="requireBrackets">If brackets are required to convert variables.</param>
+        /// <returns>The output of the process.</returns>
         public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input, IScriptComponent action, Script source, bool requireBrackets = true)
         {
             ArgumentProcessResult success = new(true);
 
-            source.DebugLog($"Param {expected.ArgumentName} needs a {expected.Type.Name}");
+            source.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} needs a {expected.Type.Name}");
             switch (expected.Type.Name)
             {
                 // Number Types:

@@ -1,9 +1,13 @@
-﻿using Exiled.API.Features.Pools;
-using System.Linq;
-using System.Text;
-
-namespace ScriptedEvents.API.Extensions
+﻿namespace ScriptedEvents.API.Extensions
 {
+    using System.Linq;
+    using System.Text;
+
+    using Exiled.API.Features.Pools;
+
+    /// <summary>
+    /// Contains useful extensions.
+    /// </summary>
     public static class StringExtensions
     {
         /// <summary>
@@ -58,8 +62,20 @@ namespace ScriptedEvents.API.Extensions
         /// <returns>The modified string.</returns>
         public static string Replace(this string input, string oldValue, object newValue) => input.Replace(oldValue, newValue.ToString());
 
+        /// <summary>
+        /// Converts an object to a string and uppercases it.
+        /// </summary>
+        /// <param name="input">The input object.</param>
+        /// <returns>The new string.</returns>
         public static string ToUpper(this object input) => input.ToString().ToUpper();
 
+        /// <summary>
+        /// Joins object parameters into a string message.
+        /// </summary>
+        /// <param name="param">The parameters.</param>
+        /// <param name="skipCount">Amount of parameters to skip.</param>
+        /// <param name="sep">The separator string.</param>
+        /// <returns>The new string.</returns>
         public static string JoinMessage(this object[] param, int skipCount = 0, string sep = " ")
         {
             StringBuilder sb = StringBuilderPool.Pool.Get();

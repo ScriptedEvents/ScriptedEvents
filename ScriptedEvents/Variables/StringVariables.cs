@@ -4,15 +4,16 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using Exiled.CustomItems.API.Features;
+
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
     using Exiled.API.Features.Doors;
 
