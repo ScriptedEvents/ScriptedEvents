@@ -1,5 +1,9 @@
 ﻿namespace ScriptedEvents.Actions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
@@ -36,7 +40,7 @@
         {
             new Argument("mode", typeof(string), "The action to perform (SAVE/DELETE/ADD/REMOVE).", true),
             new Argument("variableName", typeof(string), "The name of the variable.", true),
-            new Argument("players", typeof(Player[]), "The players. Not required if mode is 'DELETE', but required otherwise.", false),
+            new Argument("players", typeof(Player[]), "The players. Not required if mode is 'DELETE', but required otherwise.", true),
             new Argument("max", typeof(int), "The maximum amount of players to save/add/remove. No effect if mode is 'DELETE'. Math and variables are supported. (default: unlimited).", false),
         };
 
@@ -82,7 +86,7 @@
                 case "DELETE":
                     if (VariableSystem.DefinedPlayerVariables.ContainsKey(varName))
                     {
-                        VariableSystem.DefinedPlayerVariables.Remove(varName);
+                        VariableSystem.RemoveVariable(varName);
                         return new(true);
                     }
                     else

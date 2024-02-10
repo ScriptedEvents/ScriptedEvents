@@ -6,8 +6,11 @@ namespace ScriptedEvents.API.Features
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
     using System.Text.RegularExpressions;
+
     using CommandSystem;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
@@ -140,7 +143,6 @@ namespace ScriptedEvents.API.Features
         public static Script ReadScript(string scriptName, ICommandSender executor, bool suppressWarnings = false)
         {
             string allText = ReadScriptText(scriptName);
-            bool inMultilineComment = false;
             Script script = new();
 
             List<IAction> actionList = ListPool<IAction>.Pool.Get();
@@ -155,13 +157,7 @@ namespace ScriptedEvents.API.Features
                     actionList.Add(new NullAction("BLANK LINE"));
                     continue;
                 }
-                else if (action.StartsWith("##"))
-                {
-                    inMultilineComment = !inMultilineComment;
-                    actionList.Add(new NullAction("COMMENT"));
-                    continue;
-                }
-                else if (action.StartsWith("#") || inMultilineComment)
+                else if (action.StartsWith("#"))
                 {
                     actionList.Add(new NullAction("COMMENT"));
                     continue;
@@ -185,16 +181,17 @@ namespace ScriptedEvents.API.Features
                     continue;
                 }
 
-                // remove regex for variable spaces bc its politely saying dumb
-                string[] collection = action.Split(' ');
+                // Regular string.Split(' '), except ignore spaces inside of variable names
+                // Allows spaces in variable names without giving a bizarre error.
+                MatchCollection collection = Regex.Matches(action, "\\[[^]]*]|\\{[^}]*}|[^ ]+");
                 List<string> actionParts = ListPool<string>.Pool.Get();
 
-                foreach (string str in collection)
+                foreach (Match m in collection)
                 {
-                    if (string.IsNullOrWhiteSpace(str))
+                    if (string.IsNullOrWhiteSpace(m.Value))
                         continue;
 
-                    actionParts.Add(str);
+                    actionParts.Add(m.Value);
                 }
 
                 string keyword = actionParts[0].RemoveWhitespace();
@@ -327,7 +324,6 @@ namespace ScriptedEvents.API.Features
         public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source = null)
         {
             source.DebugLog($"TRYGETPLAYERS {input}");
-
             input = input.RemoveWhitespace();
             List<Player> list = ListPool<Player>.Pool.Get();
             if (input.ToUpper() is "*" or "ALL")
@@ -337,41 +333,23 @@ namespace ScriptedEvents.API.Features
                 collection = new(Player.List.ToList());
                 return true;
             }
-
-            string patternForPlayerIdUsage = @"^\d+(\.\d+)*\.?$";
-            if (Regex.IsMatch(input, patternForPlayerIdUsage))
+            else
             {
-                string[] splitInput = input.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (string idInStr in splitInput)
+                string[] variables = VariableSystem.IsolateVariables(input, source);
+                foreach (string variable in variables)
                 {
-                    if (!int.TryParse(idInStr, out int playerId))
-                        continue;
-
-                    if (!Player.TryGet(playerId, out Player player))
-                        continue;
-
-                    list.Add(player);
-                }
-
-                collection = new(list);
-                return true;
-            }
-
-            string[] variables = VariableSystem.IsolateVariables(input, source);
-            foreach (string variable in variables)
-            {
-                try
-                {
-                    if (VariableSystem.TryGetPlayers(variable, out PlayerCollection playersFromVariable, source))
+                    try
                     {
-                        list.AddRange(playersFromVariable);
+                        if (VariableSystem.TryGetPlayers(variable, out PlayerCollection playersFromVariable, source))
+                        {
+                            list.AddRange(playersFromVariable);
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
-                    return false;
+                    catch (Exception e)
+                    {
+                        collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
+                        return false;
+                    }
                 }
             }
 
@@ -697,8 +675,7 @@ namespace ScriptedEvents.API.Features
                     if (!res.Success)
                     {
                         // Todo: Place error better later
-                        // -> [WARN] Error trying to check 'value' argument: Invalid Object provided. See all options by running 'shelp Object' in the server console.
-                        Log.Warn($"[{scr.ScriptName}] Error trying to check '{res.FailedArgument}' argument: {res.Message}");
+                        Log.Warn($"Error trying to check '{res.FailedArgument}' argument: {res.Message}");
                         break;
                     }
 
@@ -833,11 +810,6 @@ namespace ScriptedEvents.API.Features
 
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
-
-                    if (scr.Flags.Contains("BETTERSAFETY"))
-                    {
-                        yield return Timing.WaitForSeconds(0.01f);
-                    }
 
                     // Safety
                     safetyActionCount++;

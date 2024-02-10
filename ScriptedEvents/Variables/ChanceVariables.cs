@@ -1,7 +1,7 @@
 ﻿namespace ScriptedEvents.Variables.Chance
 {
     using System;
-    using Exiled.API.Features;
+
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
 #pragma warning disable SA1402 // File may only contain a single type
@@ -114,8 +114,8 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-                new Argument("number", typeof(float), "A starting number of the random range. If an ending number is not provided, it will be treated as end number, and 0 as start number.", false),
-                new Argument("number", typeof(float), "An ending number of the random range.", false),
+                new Argument("number", typeof(int), "A starting number of the random range. If an ending number is not provided, it will be treated as end number, and 0 as start number.", false),
+                new Argument("number", typeof(int), "An ending number of the random range.", false),
         };
 
         /// <inheritdoc/>

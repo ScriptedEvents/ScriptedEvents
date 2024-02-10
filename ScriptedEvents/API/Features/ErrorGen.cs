@@ -266,7 +266,7 @@
 
             new ErrorInfo(
                 139,
-                "Failed to jump to {0}, '{1}' value is not a valid label.",
+                "Failed to jump to {0}, '{1}' is not a valid label or keyword.",
                 $"This error occurs when an invalid label or keyword is provided for an action that jumps to labels."),
 
             new ErrorInfo(

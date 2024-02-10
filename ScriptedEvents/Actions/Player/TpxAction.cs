@@ -6,8 +6,10 @@
     using Exiled.API.Features.Roles;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     using UnityEngine;
 

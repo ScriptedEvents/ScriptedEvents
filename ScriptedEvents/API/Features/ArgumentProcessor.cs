@@ -3,9 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
+    using InventorySystem.Items.Usables.Scp330;
     using PlayerRoles;
+    using Respawning;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;

@@ -10,8 +10,10 @@
     using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class RadioRangeAction : IScriptAction, IHelpInfo, ISampleAction
     {

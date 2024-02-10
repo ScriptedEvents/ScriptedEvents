@@ -243,9 +243,6 @@
         /// <param name="value">The value of the variable.</param>
         public void AddVariable(string name, string desc, string value)
         {
-            if (UniqueVariables.ContainsKey(name))
-                UniqueVariables.Remove(name);
-
             UniqueVariables.Add(name, new(name, desc, value));
         }
 
@@ -257,9 +254,6 @@
         /// <param name="value">The <see cref="IEnumerable{T}"/> of Players for this variable.</param>
         public void AddPlayerVariable(string name, string desc, IEnumerable<Player> value)
         {
-            if (UniquePlayerVariables.ContainsKey(name))
-                UniquePlayerVariables.Remove(name);
-
             UniquePlayerVariables.Add(name, new(name, desc, value.ToList()));
         }
     }
