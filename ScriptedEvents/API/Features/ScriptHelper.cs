@@ -189,12 +189,12 @@ namespace ScriptedEvents.API.Features
                 string[] collection = action.Split(' ');
                 List<string> actionParts = ListPool<string>.Pool.Get();
 
-                foreach (string m in collection)
+                foreach (string str in collection)
                 {
-                    if (string.IsNullOrWhiteSpace(m))
+                    if (string.IsNullOrWhiteSpace(str))
                         continue;
 
-                    actionParts.Add(m.Replace("\n", string.Empty));
+                    actionParts.Add(str);
                 }
 
                 string keyword = actionParts[0].RemoveWhitespace();
