@@ -15,7 +15,9 @@
 
     using UnityEngine;
 
+#pragma warning disable SA1600 // Elements should be documented
     public class LocalPlayerVariableAction : IScriptAction, IHelpInfo
+#pragma warning restore SA1600 // Elements should be documented
     {
         /// <inheritdoc/>
         public string Name => "LOCALPLAYERVAR";
