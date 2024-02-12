@@ -1,9 +1,6 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Linq;
-
-    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -35,7 +32,7 @@
         public ActionResponse Execute(Script script)
         {
             if (script.CallLines.Count == 0)
-                throw new Exception("RETURN action cannot be executed before the CALL action");
+                return new(false, "This action must be run after the CALL action.");
 
             int lastLine = script.CallLines.Count - 1;
 
