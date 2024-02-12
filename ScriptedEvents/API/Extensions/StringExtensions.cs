@@ -62,12 +62,14 @@
         /// <returns>The modified string.</returns>
         public static string Replace(this string input, string oldValue, object newValue) => input.Replace(oldValue, newValue.ToString());
 
+        public static string String(this object input) => input is string str ? str : input.ToString();
+
         /// <summary>
         /// Converts an object to a string and uppercases it.
         /// </summary>
         /// <param name="input">The input object.</param>
         /// <returns>The new string.</returns>
-        public static string ToUpper(this object input) => input.ToString().ToUpper();
+        public static string ToUpper(this object input) => input.String().ToUpper();
 
         /// <summary>
         /// Joins object parameters into a string message.
