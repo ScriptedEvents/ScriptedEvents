@@ -117,11 +117,12 @@
         /// Gets a list of players using the input string.
         /// </summary>
         /// <param name="input">Input string.</param>
+        /// /// <param name="script">Script object.</param>
         /// <param name="max">Maximum amount of players to get. Leave below zero for unlimited.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of players.</returns>
-        public static Player[] GetPlayers(string input, int max = -1)
+        public static Player[] GetPlayers(string input, Script script, int max = -1)
         {
-            ScriptHelper.TryGetPlayers(input, max, out PlayerCollection list);
+            ScriptHelper.TryGetPlayers(input, max, out PlayerCollection list, script);
             return list.GetInnerList().ToArray();
         }
 
@@ -129,10 +130,11 @@
         /// Evaluates a string math equation, replacing all variables in the string.
         /// </summary>
         /// <param name="input">The input string.</param>
+        /// <param name="script">Script object.</param>
         /// <returns>A tuple indicating success and the value.</returns>
-        public static Tuple<bool, float> Math(string input)
+        public static Tuple<bool, float> Math(string input, Script script)
         {
-            bool success = ConditionHelperV2.TryMath(VariableSystem.ReplaceVariables(input), out MathResult result);
+            bool success = ConditionHelperV2.TryMath(VariableSystem.ReplaceVariables(input, script), out MathResult result);
             return new(success, result.Result);
         }
     }

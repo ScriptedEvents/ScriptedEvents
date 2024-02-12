@@ -61,7 +61,7 @@
         /// <param name="source">The script source.</param>
         /// <param name="local">If should be this script exclusive.</param>
         /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
-        public static void DefineVariable(string name, string desc, string input, Script source = null, bool local = false)
+        public static void DefineVariable(string name, string desc, string input, Script source, bool local = false)
         {
             name = name.RemoveWhitespace();
 
@@ -95,7 +95,7 @@
         /// <param name="source">The script source.</param>
         /// <param name="local">If should be this script exclusive.</param>
         /// <remarks>Curly braces will be added automatically if they are not present already.</remarks>
-        public static void DefineVariable(string name, string desc, List<Player> players, Script source = null, bool local = false)
+        public static void DefineVariable(string name, string desc, List<Player> players, Script source, bool local = false)
         {
             name = name.RemoveWhitespace();
 
@@ -123,16 +123,10 @@
         /// <summary>
         /// Removes all defined variables.
         /// </summary>
-        /// <param name="source">The script source.</param>
-        public static void ClearVariables(Script source = null)
+        public static void ClearVariables()
         {
             DefinedVariables.Clear();
             DefinedPlayerVariables.Clear();
-
-            if (source is null) return;
-
-            source.UniqueVariables.Clear();
-            source.UniquePlayerVariables.Clear();
         }
 
         /// <summary>
@@ -142,7 +136,7 @@
         /// <param name="source">The script source.</param>
         /// <param name="requireBrackets">If brackets are required to parse the variable.</param>
         /// <returns>A tuple containing the variable and whether or not it's a reversed boolean value.</returns>
-        public static VariableResult GetVariable(string name, Script source = null, bool requireBrackets = true, bool skipProcessing = false)
+        public static VariableResult GetVariable(string name, Script source, bool requireBrackets = true, bool skipProcessing = false)
         {
             // Do this here so individual files dont have to do it anymore
             if (!requireBrackets)
@@ -230,7 +224,7 @@
         /// <param name="source">The script source.</param>
         /// <param name="requireBrackets">If brackets are required to parse the variable.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source = null, bool requireBrackets = true, bool skipProcessing = false)
+        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source, bool requireBrackets = true, bool skipProcessing = false)
         {
             VariableResult res = GetVariable(name, source, requireBrackets, skipProcessing);
 
@@ -253,7 +247,7 @@
         /// <returns>Whether or not players were found.</returns>
         /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="ScriptHelper.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
         /// <seealso cref="ScriptHelper.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>
-        public static bool TryGetPlayers(string name, out PlayerCollection players, Script source = null, bool requireBrackets = true)
+        public static bool TryGetPlayers(string name, out PlayerCollection players, Script source, bool requireBrackets = true)
         {
             if (TryGetVariable(name, out IConditionVariable variable, out _, source, requireBrackets))
             {
@@ -275,7 +269,7 @@
         /// <param name="source">The source script.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>The result of the cast, or <see cref="float.NaN"/> if the cast failed.</returns>
-        public static float Parse(string input, Script source = null, bool requireBrackets = true)
+        public static float Parse(string input, Script source, bool requireBrackets = true)
         {
             if (float.TryParse(input, out float fl))
                 return fl;
@@ -300,7 +294,7 @@
         /// <param name="source">The source script.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>The result of the cast, or <see cref="int.MinValue"/> if the cast failed.</returns>
-        public static int ParseInt(string input, Script source = null, bool requireBrackets = true)
+        public static int ParseInt(string input, Script source, bool requireBrackets = true)
         {
             if (int.TryParse(input, out int fl))
                 return fl;
@@ -325,7 +319,7 @@
         /// <param name="source">The source script.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>The result of the cast, or <see cref="long.MinValue"/> if the cast failed.</returns>
-        public static long ParseLong(string input, Script source = null, bool requireBrackets = true)
+        public static long ParseLong(string input, Script source, bool requireBrackets = true)
         {
             if (long.TryParse(input, out long fl))
                 return fl;
@@ -351,7 +345,7 @@
         /// <param name="requireBrackets">Require brackets to replace?.</param>
         /// <returns>A string.</returns>
         /// <remarks>This is intended for a string that is either a variable entirely or a string entirely - this will not isolate and replace all variables in a string. See <see cref="ReplaceVariables(string, Script)"/>.</remarks>
-        public static string ReplaceVariable(string input, Script source = null, bool requireBrackets = true)
+        public static string ReplaceVariable(string input, Script source, bool requireBrackets = true)
         {
             if (TryGetVariable(input, out IConditionVariable var, out _, source, requireBrackets))
             {
@@ -370,7 +364,7 @@
         /// <param name="source">The source script.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse(string input, out float result, Script source = null, bool requireBrackets = true)
+        public static bool TryParse(string input, out float result, Script source, bool requireBrackets = true)
         {
             result = Parse(input, source, requireBrackets);
             return result != float.NaN && result.ToString() != "NaN"; // Hacky but fixes it?
@@ -384,7 +378,7 @@
         /// <param name="source">The source script.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse(string input, out int result, Script source = null, bool requireBrackets = true)
+        public static bool TryParse(string input, out int result, Script source, bool requireBrackets = true)
         {
             result = ParseInt(input, source, requireBrackets);
             return result != int.MinValue;
@@ -398,7 +392,7 @@
         /// <param name="source">The source script.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse(string input, out long result, Script source = null, bool requireBrackets = true)
+        public static bool TryParse(string input, out long result, Script source, bool requireBrackets = true)
         {
             result = ParseLong(input, source, requireBrackets);
             return result != long.MinValue;
@@ -413,7 +407,7 @@
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <typeparam name="T">The Enum type to cast to.</typeparam>
         /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse<T>(string input, out T result, Script source = null, bool requireBrackets = true)
+        public static bool TryParse<T>(string input, out T result, Script source, bool requireBrackets = true)
             where T : struct, Enum
         {
             if (Enum.TryParse(input, true, out result))
@@ -432,7 +426,7 @@
             return false;
         }
 
-        public static object Parse(string input, Type enumType, Script source = null, bool requireBrackets = true)
+        public static object Parse(string input, Type enumType, Script source, bool requireBrackets = true)
         {
             try
             {
@@ -464,7 +458,7 @@
         /// <param name="source">The script that is currently running to replace variables. Used only for per-script variables.</param>
         /// <returns>The modified string.</returns>
         /// <remarks>This is intended for strings that contain both regular text and variables. Otherwise, see <see cref="ReplaceVariable(string, Script, bool)"/>.</remarks>
-        public static string ReplaceVariables(string input, Script source = null)
+        public static string ReplaceVariables(string input, Script source)
         {
             string[] variables = IsolateVariables(input, source);
 
@@ -505,7 +499,7 @@
             return input;
         }
 
-        public static string ReplaceVariables(object input, Script source = null)
+        public static string ReplaceVariables(object input, Script source)
             => ReplaceVariables(input.ToString(), source);
 
         /// <summary>
@@ -514,7 +508,7 @@
         /// <param name="input">The input string.</param>
         /// <param name="source">The script source.</param>
         /// <returns>The variables used within the string.</returns>
-        public static string[] IsolateVariables(string input, Script source = null)
+        public static string[] IsolateVariables(string input, Script source)
         {
             source?.DebugLog($"Isolating variables from: {input}");
             List<string> result = ListPool<string>.Pool.Get();

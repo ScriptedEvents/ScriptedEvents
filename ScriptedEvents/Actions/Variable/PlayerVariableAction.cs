@@ -77,7 +77,7 @@
             switch (mode)
             {
                 case "SAVE":
-                    VariableSystem.DefineVariable(varName, "Script-defined variable", players.GetInnerList());
+                    VariableSystem.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script);
                     return new(true);
                 case "DELETE":
                     if (VariableSystem.DefinedPlayerVariables.ContainsKey(varName))

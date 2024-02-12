@@ -420,7 +420,7 @@ Invalid options will default to the 'NAME' selector.";
 
                 if (Arguments.Length >= 3)
                 {
-                    string delimiter = VariableSystem.ReplaceVariable((string)Arguments[2]);
+                    string delimiter = VariableSystem.ReplaceVariable((string)Arguments[2], Source);
 
                     List<string> resultList = value.ToString().Split(new[] { delimiter }, StringSplitOptions.None).ToList();
 

@@ -1,7 +1,6 @@
 ﻿namespace ScriptedEvents.Structures
 {
     using System;
-    using System.Linq;
 
     public class EnumDefinition
     {

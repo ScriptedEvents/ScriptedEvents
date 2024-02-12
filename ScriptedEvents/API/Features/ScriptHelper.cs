@@ -326,7 +326,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="collection">A <see cref="PlayerCollection"/> representing the players.</param>
         /// <param name="source">The script using the API. Used for per-script variables.</param>
         /// <returns>Whether or not the process errored.</returns>
-        public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source = null)
+        public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source)
         {
             source.DebugLog($"TRYGETPLAYERS {input}");
 
@@ -412,7 +412,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="doors">The doors.</param>
         /// <param name="source">The script source.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetDoors(string input, out Door[] doors, Script source = null)
+        public static bool TryGetDoors(string input, out Door[] doors, Script source)
         {
             List<Door> doorList = ListPool<Door>.Pool.Get();
             if (input is "*" or "ALL")
@@ -448,7 +448,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="lifts">The lift objects.</param>
         /// <param name="source">The script source.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetLifts(string input, out Lift[] lifts, Script source = null)
+        public static bool TryGetLifts(string input, out Lift[] lifts, Script source)
         {
             List<Lift> liftList = ListPool<Lift>.Pool.Get();
             if (input is "*" or "ALL")
@@ -475,7 +475,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="rooms">The rooms.</param>
         /// <param name="source">The script source.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetRooms(string input, out Room[] rooms, Script source = null)
+        public static bool TryGetRooms(string input, out Room[] rooms, Script source)
         {
             List<Room> roomList = ListPool<Room>.Pool.Get();
             if (input is "*" or "ALL")
