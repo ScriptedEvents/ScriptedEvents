@@ -4,14 +4,15 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
+
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
-    using UnityEngine.Windows;
 
     /// <summary>
     /// A class used to store and retrieve all variables.
