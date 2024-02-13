@@ -53,21 +53,19 @@
 
             if (Arguments[0].ToUpper() is "LOCK" or "SET")
             {
-                foreach (Player ply in players)
+                return new(MessageType.InvalidOption, this, "mode", Arguments[0], "SET/LOCK");
+            }
+
+            foreach (Player ply in players)
+            {
+                foreach (Item item in ply.Items)
                 {
-                    foreach (Item item in ply.Items)
+                    if (item is Radio radio)
                     {
-                        if (item is Radio radio)
-                        {
-                            radio.Range = range;
-                            radio.Base.SendStatusMessage();
-                        }
+                        radio.Range = range;
+                        radio.Base.SendStatusMessage();
                     }
                 }
-            }
-            else
-            {
-                return new(MessageType.InvalidOption, this, "mode", Arguments[0], "SET/LOCK");
             }
 
             if (Arguments[0].ToUpper() is "LOCK")
