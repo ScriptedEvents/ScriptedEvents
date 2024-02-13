@@ -72,6 +72,7 @@
                     }
 
                     return new(true);
+
                 case "CLEAR":
                     foreach (Player ply in plys)
                     {
