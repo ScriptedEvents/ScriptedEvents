@@ -98,6 +98,7 @@
     <Compile Include="Actions\Player\KickAction.cs" />
     <Compile Include="Actions\Player\BanAction.cs" />
     <Compile Include="Actions\Player\CustomInfoAction.cs" />
+    <Compile Include="Actions\Player\NoclipAction.cs" />
     <Compile Include="Actions\Player\SetNameAction.cs" />
     <Compile Include="Actions\RoundRule\DamageRuleAction.cs" />
     <Compile Include="Actions\DebugActions\DamageRuleDebug.cs" />
