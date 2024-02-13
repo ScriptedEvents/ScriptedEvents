@@ -1,10 +1,12 @@
 ﻿namespace ScriptedEvents.Variables.Intercom
 {
+    using System;
 #pragma warning disable SA1402 // File may only contain a single type.
     using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.API.Features;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
     public class IntercomVariables : IVariableGroup
@@ -88,6 +90,45 @@
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => Intercom.Speaker == player);
+    }
+
+    public class GeneralIntercom : IStringVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{INTERCOM}";
+
+        /// <inheritdoc/>
+        public string Description => "All-in-one variable for Intercom related information.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("mode", typeof(string), "The mode (READY/INUSE/TIMELEFT/COOLDOWNTIME)", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                string mode = (string)Arguments[0];
+
+                return mode.ToUpper() switch
+                {
+                    "READY" => (!Intercom.InUse && Intercom.RemainingCooldown <= 0).ToString().ToUpper(),
+                    "INUSE" => Intercom.InUse.ToString().ToUpper(),
+                    "COOLDOWNTIME" => Intercom.RemainingCooldown.ToString(),
+                    "TIMELEFT" => Intercom.SpeechRemainingTime.ToString(),
+                    _ => throw new ArgumentException("Invalid mode.", mode),
+                };
+            }
+        }
     }
 #pragma warning restore SA1402 // File may only contain a single type.
 }
