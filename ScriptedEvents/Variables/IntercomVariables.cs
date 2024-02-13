@@ -20,6 +20,7 @@
             new IntercomCooldown(),
             new IntercomUseTime(),
             new IntercomSpeaker(),
+            new GeneralIntercom(),
         };
     }
 

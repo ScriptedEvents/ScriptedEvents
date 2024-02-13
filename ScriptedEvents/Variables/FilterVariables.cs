@@ -130,9 +130,7 @@
                     "INV" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
                     "HELDITEM" when VariableSystem.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.CurrentItem?.Type == item),
                     "HELDITEM" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => CustomItem.TryGet(plr.CurrentItem, out CustomItem customItem2) && customItem == customItem2),
-
                     "GROUP" => players.Where(plr => plr.GroupName == input),
-
                     "ISSTAFF" when VariableSystem.ReplaceVariable(input.ToUpper(), Source).AsBool() => players.Where(plr => plr.RemoteAdminAccess),
                     "ISSTAFF" when !VariableSystem.ReplaceVariable(input.ToUpper(), Source).AsBool() => players.Where(plr => !plr.RemoteAdminAccess),
                     _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{input}' is not valid for the specified filter method."),
