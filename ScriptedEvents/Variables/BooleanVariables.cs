@@ -56,9 +56,15 @@
         {
             get
             {
-                if (Arguments.Length < 1) return false;
+                if (Arguments.Length < 1) throw new ArgumentException("No variable provided");
 
-                return VariableSystem.TryGetPlayers((string)Arguments[0], out PlayerCollection _, Source, true);
+                if (VariableSystem.TryGetPlayers((string)Arguments[0], out PlayerCollection _, Source, true))
+                    return true;
+
+                if (VariableSystem.TryGetVariable((string)Arguments[0], out IConditionVariable _, out bool _, Source))
+                    return true;
+
+                return false;
             }
         }
     }
