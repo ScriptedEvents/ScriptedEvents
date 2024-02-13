@@ -58,10 +58,10 @@
             {
                 if (Arguments.Length < 1) throw new ArgumentException("No variable provided");
 
-                if (VariableSystem.TryGetPlayers((string)Arguments[0], out PlayerCollection _, Source, true))
+                if (VariableSystem.TryGetPlayers((string)Arguments[0], out PlayerCollection _, Source, requireBrackets: false))
                     return true;
 
-                if (VariableSystem.TryGetVariable((string)Arguments[0], out IConditionVariable _, out bool _, Source))
+                if (VariableSystem.TryGetVariable((string)Arguments[0], out IConditionVariable _, out bool _, Source, requireBrackets: false))
                     return true;
 
                 return false;
