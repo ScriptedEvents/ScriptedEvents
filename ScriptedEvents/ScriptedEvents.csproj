@@ -94,6 +94,7 @@
     <Compile Include="Actions\Misc\ServerNameAction.cs" />
     <Compile Include="Actions\Misc\PluginAction.cs" />
     <Compile Include="Actions\Misc\PrintAction.cs" />
+    <Compile Include="Actions\Player\AdvCustomInfoAction.cs" />
     <Compile Include="Actions\Player\BypassAction.cs" />
     <Compile Include="Actions\Player\GodmodeAction.cs" />
     <Compile Include="Actions\Player\KickAction.cs" />
