@@ -7,6 +7,7 @@
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Roles;
     using Exiled.CustomItems.API.Features;
 
@@ -15,7 +16,6 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
-    using Exiled.API.Features.Doors;
 
     public class StringVariables : IVariableGroup
     {
@@ -33,6 +33,7 @@
             new Log(),
             new Index(),
             new RandomDoor(),
+            new RandomItem(),
         };
     }
 
@@ -338,6 +339,25 @@ Invalid options will default to the 'NAME' selector.";
 
                 List<Door> newList = validDoors.ToList();
                 return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
+            }
+        }
+    }
+
+    public class RandomItem : IStringVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{RANDOMITEM}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets the ItemType of a random item.";
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                ItemType[] items = (ItemType[])Enum.GetValues(typeof(ItemType));
+                return items[UnityEngine.Random.Range(0, items.Length)].ToString();
             }
         }
     }
