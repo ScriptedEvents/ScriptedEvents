@@ -44,6 +44,7 @@
 
             switch (((string)Arguments[0]).ToUpper())
             {
+                case "SAVE" when Arguments.Length < 4:
                 case "GET" when Arguments.Length < 4:
                 case "SET" when Arguments.Length < 4:
                     return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
@@ -58,6 +59,7 @@
                     else
                         VariableSystem.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", "NONE", script);
                     break;
+                case "SAVE":
                 case "SET":
                     keyName = (string)Arguments[2];
                     foreach (Player ply in players)
@@ -69,6 +71,7 @@
                     }
 
                     break;
+                case "REMOVE":
                 case "DELETE":
                     keyName = (string)Arguments[2];
                     foreach (Player ply in players)
@@ -78,6 +81,8 @@
                     }
 
                     break;
+                default:
+                    return new(false, "Invalid mode provided.");
             }
 
             return new(true);
