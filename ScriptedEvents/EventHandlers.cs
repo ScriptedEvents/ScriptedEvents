@@ -358,48 +358,50 @@
         // Reflection: ON config
         public void OnAnyEvent(string eventName, IExiledEvent ev = null)
         {
-            if (MainPlugin.CurrentEventData is not null && MainPlugin.CurrentEventData.TryGetValue(eventName, out List<string> scripts))
+            if (MainPlugin.CurrentEventData is null || !MainPlugin.CurrentEventData.TryGetValue(eventName, out List<string> scripts))
             {
-                foreach (string script in scripts)
+                return;
+            }
+
+            foreach (string script in scripts)
+            {
+                try
                 {
-                    try
-                    {
-                        Script scr = ScriptHelper.ReadScript(script, null);
+                    Script scr = ScriptHelper.ReadScript(script, null);
 
-                        // Add variables based on event.
-                        if (ev is IPlayerEvent playerEvent)
-                        {
-                            scr.AddPlayerVariable("{EVPLAYER}", "The player that is involved with this event.", new[] { playerEvent.Player });
-                        }
-
-                        if (ev is IAttackerEvent attackerEvent)
-                        {
-                            scr.AddPlayerVariable("{EVATTACKER}", "The attacker that is involved with this event.", new[] { attackerEvent.Attacker });
-                        }
-
-                        if (ev is IItemEvent item)
-                        {
-                            scr.AddVariable("{EVITEM}", "The ItemType of the item involved with this event.", item.Item.Type.ToString());
-                        }
-                        else if (ev is IPickupEvent pickup)
-                        {
-                            scr.AddVariable("{EVITEM}", "The ItemType of the pickup associated with this event.", pickup.Pickup.Type.ToString());
-                        }
-
-                        ScriptHelper.RunScript(scr);
-                    }
-                    catch (DisabledScriptException)
+                    // Add variables based on event.
+                    if (ev is IPlayerEvent playerEvent && playerEvent.Player is not null)
                     {
-                        Log.Warn(ErrorGen.Get(110, eventName, script));
+                        scr.AddPlayerVariable("{EVPLAYER}", "The player that is involved with this event.", new[] { playerEvent.Player });
                     }
-                    catch (FileNotFoundException)
+
+                    if (ev is IAttackerEvent attackerEvent && attackerEvent.Attacker is not null)
                     {
-                        Log.Warn(ErrorGen.Get(111, eventName, script));
+                        scr.AddPlayerVariable("{EVATTACKER}", "The attacker that is involved with this event.", new[] { attackerEvent.Attacker });
                     }
-                    catch (Exception ex)
+
+                    if (ev is IItemEvent item && item.Item is not null)
                     {
-                        Log.Warn(ErrorGen.Get(112, eventName) + $": {ex}");
+                        scr.AddVariable("{EVITEM}", "The ItemType of the item involved with this event.", item.Item.Type.ToString());
                     }
+                    else if (ev is IPickupEvent pickup && pickup.Pickup is not null)
+                    {
+                        scr.AddVariable("{EVITEM}", "The ItemType of the pickup associated with this event.", pickup.Pickup.Type.ToString());
+                    }
+
+                    ScriptHelper.RunScript(scr);
+                }
+                catch (DisabledScriptException)
+                {
+                    Log.Warn(ErrorGen.Get(110, eventName, script));
+                }
+                catch (FileNotFoundException)
+                {
+                    Log.Warn(ErrorGen.Get(111, eventName, script));
+                }
+                catch (Exception ex)
+                {
+                    Log.Warn(ErrorGen.Get(112, eventName) + $": {ex}");
                 }
             }
         }
