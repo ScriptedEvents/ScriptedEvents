@@ -45,30 +45,22 @@
         {
             PlayerCollection plys = (PlayerCollection)Arguments[1];
 
-            string mode = Arguments[0].ToUpper();
-            switch (mode)
+            switch (Arguments[0].ToUpper())
             {
                 case "SET":
                     if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-                    string text = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script)
+
+                    string text = VariableSystem.ReplaceVariables(Arguments.JoinMessage(3), script)
                         .Replace("\\n", "\n")
                         .Replace("<br>", "\n");
 
-                    if (Arguments.Length >= 4)
-                    {
-                        PlayerCollection targetPlys = (PlayerCollection)Arguments[3];
-                        foreach (Player ply in plys)
-                        {
-                            foreach (Player targetPlayer in targetPlys)
-                            {
-                                ply.SetPlayerInfoForTargetOnly(targetPlayer, text);
-                            }
-                        }
-                    }
-
+                    PlayerCollection targetPlys = (PlayerCollection)Arguments[2];
                     foreach (Player ply in plys)
                     {
-                        ply.CustomInfo = text;
+                        foreach (Player targetPlayer in targetPlys)
+                        {
+                            ply.SetPlayerInfoForTargetOnly(targetPlayer, text);
+                        }
                     }
 
                     return new(true);
