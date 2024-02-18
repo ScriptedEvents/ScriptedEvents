@@ -172,7 +172,7 @@ namespace ScriptedEvents.API.Features
                 {
                     string flag = action.Replace("!--", string.Empty).Trim();
 
-                    if (!script.Flags.Contains(flag))
+                    if (!script.HasFlag(flag))
                     {
                         string[] arguments = flag.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         Flag fl = new(arguments[0], arguments.Skip(1));
@@ -846,7 +846,7 @@ namespace ScriptedEvents.API.Features
             scr.DebugLog("-----------");
             scr.IsRunning = false;
 
-            if (scr.Flags.Contains("LOOP"))
+            if (scr.HasFlag("LOOP"))
             {
                 scr.DebugLog("Re-running looped script.");
                 ReadAndRun(scr.ScriptName, scr.Sender); // so that it re-reads the content of the text file.

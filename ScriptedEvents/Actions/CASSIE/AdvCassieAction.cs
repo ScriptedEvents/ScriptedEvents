@@ -46,9 +46,9 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            bool waitToFinish = ((string)Arguments[1]).AsBool();
-            bool isLoud = ((string)Arguments[2]).AsBool();
-            bool hasSubtitles = ((string)Arguments[3]).AsBool();
+            bool waitToFinish = (bool)Arguments[1];
+            bool isLoud = (bool)Arguments[2];
+            bool hasSubtitles = (bool)Arguments[3];
             string text = Arguments.JoinMessage(4);
 
             if (string.IsNullOrWhiteSpace(text))

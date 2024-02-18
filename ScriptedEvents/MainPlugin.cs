@@ -9,7 +9,6 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
-    using Exiled.Events;
     using Exiled.Events.Features;
     using Exiled.Events.Handlers;
     using Exiled.Loader;
@@ -18,9 +17,7 @@
     using RemoteAdmin;
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.Commands;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -271,7 +268,7 @@
 
             foreach (Script scr in ScriptHelper.ListScripts())
             {
-                if (scr.Flags.TryGet("EVENT", out Flag f))
+                if (scr.HasFlag("EVENT", out Flag f))
                 {
                     string evName = f.Arguments[0];
                     if (CurrentEventData.ContainsKey(evName))

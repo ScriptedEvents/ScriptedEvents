@@ -134,7 +134,6 @@
     <Compile Include="API\Constants\ConstMessages.cs" />
     <Compile Include="API\Constants\EnumDefinitions.cs" />
     <Compile Include="API\Enums\CommandCooldownMode.cs" />
-    <Compile Include="API\Extensions\ListExtensions.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
     <Compile Include="API\Features\ArgumentProcessor.cs" />
     <Compile Include="API\Features\ConditionHelperV2.cs" />

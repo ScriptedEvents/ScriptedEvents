@@ -7,7 +7,6 @@
 
     using ScriptedEvents.Actions;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.Structures;
 
     [CommandHandler(typeof(GameConsoleCommandHandler))]
@@ -34,7 +33,7 @@
             mockScript.Sender = sender;
             mockScript.RawText = $"HELP {string.Join(" ", arguments)}";
             mockScript.ScriptName = "HELP COMMAND EXECUTION";
-            mockScript.Flags.Add("HELPCOMMANDEXECUTION");
+            mockScript.AddFlag("HELPCOMMANDEXECUTION");
 
             ActionResponse actionResponse = help.Execute(mockScript);
 

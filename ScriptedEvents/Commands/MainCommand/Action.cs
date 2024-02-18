@@ -1,17 +1,14 @@
 ﻿namespace ScriptedEvents.Commands.MainCommand
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using CommandSystem;
 
     using Exiled.Permissions.Extensions;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Action : ICommand
@@ -86,9 +83,9 @@
             };
 
             if (MainPlugin.Configs.Debug)
-                mockScript.Flags.Add("DEBUG");
+                mockScript.AddFlag("DEBUG");
 
-            mockScript.Flags.Add("ACTIONCOMMANDEXECUTION");
+            mockScript.AddFlag("ACTIONCOMMANDEXECUTION");
 
             try
             {
