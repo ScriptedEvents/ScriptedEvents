@@ -678,9 +678,6 @@ namespace ScriptedEvents.API.Features
             scr.IsRunning = true;
             scr.RunDate = DateTime.UtcNow;
 
-            int safetyActionCount = 0;
-            Stopwatch safety = Stopwatch.StartNew();
-
             Stopwatch runTime = Stopwatch.StartNew();
             int lines = 0;
             int successfulLines = 0;
@@ -836,25 +833,9 @@ namespace ScriptedEvents.API.Features
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
 
-                    if (scr.Flags.Contains("BETTERSAFETY"))
+                    if (!scr.Flags.Contains("NOSAFETY"))
                     {
                         yield return Timing.WaitForSeconds(0.01f);
-                    }
-
-                    // Safety
-                    safetyActionCount++;
-                    if (safety.Elapsed.TotalSeconds > 1)
-                    {
-                        if (safetyActionCount > MainPlugin.Configs.MaxActionsPerSecond && !scr.Flags.Contains("NOSAFETY"))
-                        {
-                            Log.Warn(ErrorGen.Get(113, scr.ScriptName, MainPlugin.Configs.MaxActionsPerSecond));
-                            break;
-                        }
-                        else
-                        {
-                            safety.Restart();
-                            safetyActionCount = 0;
-                        }
                     }
                 }
             }
