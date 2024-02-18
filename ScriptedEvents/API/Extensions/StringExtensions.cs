@@ -1,6 +1,5 @@
 ﻿namespace ScriptedEvents.API.Extensions
 {
-    using System;
     using System.Linq;
     using System.Text;
 
