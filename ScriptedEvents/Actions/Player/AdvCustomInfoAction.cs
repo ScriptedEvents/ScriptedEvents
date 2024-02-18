@@ -59,7 +59,7 @@
                     {
                         foreach (Player targetPlayer in targetPlys)
                         {
-                            ply.SetPlayerInfoForTargetOnly(targetPlayer, text);
+                            targetPlayer.SetPlayerInfoForTargetOnly(ply, text);
                         }
                     }
 
