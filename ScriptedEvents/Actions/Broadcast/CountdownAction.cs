@@ -12,7 +12,7 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    public class CountdownAction : IScriptAction, IHelpInfo
+    public class CountdownAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "COUNTDOWN";
@@ -39,6 +39,10 @@
             new Argument("duration", typeof(int), "The duration of the countdown. Variables are supported.", true),
             new Argument("text", typeof(string), "The text to show on the broadcast. Variables are supported.", true),
         };
+
+        public string LongDescription => $@"Countdowns use the broadcast system. As such, players who are given a countdown cannot see any other broadcasts until the countdown concludes or is terminated.
+
+The text of the broadcast will be formatted using the countdown_string Exiled config. If the text parameter is not provided, the text displayed will simply be 'Countdown'.";
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
