@@ -312,7 +312,7 @@
             new ErrorInfo(
                 148,
                 "Provided value '{0}' is not a valid boolean.",
-                "This error occurs when a single boolean input was expected, but the input is not a valid boolean. This error can be resolved by providing a valid boolean input. Valid inputs are as follows: 'TRUE', 'FALSE', 'YES', 'Y', 'NO', 'N'."),
+                "This error occurs when a single boolean input was expected, but the input is not a valid boolean. This error can be resolved by providing a valid boolean input. Valid inputs are as follows: 'TRUE', 'T', 'FALSE', 'F', 'YES', 'Y', 'NO', 'N'."),
         }.AsReadOnly();
     }
 }

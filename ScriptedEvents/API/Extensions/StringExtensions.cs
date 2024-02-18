@@ -49,12 +49,12 @@
                 value = r;
                 return true;
             }
-            else if (input.ToUpper() is "YES" or "Y")
+            else if (input.ToUpper() is "YES" or "Y" or "T")
             {
                 value = true;
                 return true;
             }
-            else if (input.ToUpper() is "NO" or "N")
+            else if (input.ToUpper() is "NO" or "N" or "F")
             {
                 value = false;
                 return true;
