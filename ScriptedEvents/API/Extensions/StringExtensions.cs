@@ -1,9 +1,12 @@
 ﻿namespace ScriptedEvents.API.Extensions
 {
+    using System;
     using System.Linq;
     using System.Text;
 
     using Exiled.API.Features.Pools;
+    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
     /// Contains useful extensions.
@@ -37,7 +40,7 @@
             return newString;
         }
 
-        public static bool IsBool(this string input, out bool value)
+        public static bool IsBool(this string input, out bool value, Script source = null)
         {
             if (input is null)
             {
@@ -60,6 +63,19 @@
                 return true;
             }
 
+            if (VariableSystem.TryGetVariable(input, out IConditionVariable vr, out _, source))
+            {
+                if (vr is IStringVariable strVar)
+                {
+                    return IsBool(strVar.Value, out value, source);
+                }
+                else if (vr is IBoolVariable boolVar)
+                {
+                    value = boolVar.Value;
+                    return true;
+                }
+            }
+
             value = false;
             return false;
         }
@@ -68,10 +84,11 @@
         /// Converts a string input to a boolean.
         /// </summary>
         /// <param name="input">The input string.</param>
+        /// <param name="source">The script source.</param>
         /// <returns>The boolean.</returns>
-        public static bool AsBool(this string input)
+        public static bool AsBool(this string input, Script source = null)
         {
-            IsBool(input, out bool v);
+            IsBool(input, out bool v, source);
             return v;
         }
 

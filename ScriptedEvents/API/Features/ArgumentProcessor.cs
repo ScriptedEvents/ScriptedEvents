@@ -92,7 +92,7 @@
             {
                 // Number Types:
                 case "Boolean":
-                    if (!input.IsBool(out bool result))
+                    if (!input.IsBool(out bool result, source))
                         return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
 
                     success.NewParameters.Add(result);

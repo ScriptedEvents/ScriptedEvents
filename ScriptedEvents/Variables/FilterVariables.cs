@@ -133,8 +133,8 @@
 
                     "GROUP" => players.Where(plr => plr.GroupName == input),
 
-                    "ISSTAFF" when VariableSystem.ReplaceVariable(input.ToUpper()).AsBool() => players.Where(plr => plr.RemoteAdminAccess),
-                    "ISSTAFF" when !VariableSystem.ReplaceVariable(input.ToUpper()).AsBool() => players.Where(plr => !plr.RemoteAdminAccess),
+                    "ISSTAFF" when VariableSystem.ReplaceVariable(input.ToUpper()).AsBool(Source) => players.Where(plr => plr.RemoteAdminAccess),
+                    "ISSTAFF" when !VariableSystem.ReplaceVariable(input.ToUpper()).AsBool(Source) => players.Where(plr => !plr.RemoteAdminAccess),
                     _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{input}' is not valid for the specified filter method."),
                 };
 
