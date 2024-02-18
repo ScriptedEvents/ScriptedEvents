@@ -833,7 +833,7 @@ namespace ScriptedEvents.API.Features
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
 
-                    if (!scr.Flags.Contains("NOSAFETY"))
+                    if (!scr.HasFlag("NOSAFETY"))
                     {
                         yield return Timing.WaitForSeconds(0.01f);
                     }
