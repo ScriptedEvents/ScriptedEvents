@@ -10,7 +10,6 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -117,22 +116,22 @@
         /// <summary>
         /// Gets a value indicating whether or not the script is enabled.
         /// </summary>
-        public bool Disabled => Flags.Contains("DISABLE");
+        public bool Disabled => HasFlag("DISABLE");
 
         /// <summary>
         /// Gets a value indicating whether or not the script is running in debug mode.
         /// </summary>
-        public bool Debug => Flags.Contains("DEBUG");
+        public bool Debug => HasFlag("DEBUG");
 
         /// <summary>
         /// Gets a value indicating whether or not the script is marked as an admin-event (CedMod compatibility).
         /// </summary>
-        public bool AdminEvent => Flags.Contains("ADMINEVENT");
+        public bool AdminEvent => HasFlag("ADMINEVENT");
 
         /// <summary>
         /// Gets a value indicating whether or not warnings are suppressed.
         /// </summary>
-        public bool SuppressWarnings => Flags.Contains("SUPPRESSWARNINGS");
+        public bool SuppressWarnings => HasFlag("SUPPRESSWARNINGS");
 
         /// <summary>
         /// Gets the context that the script was executed in.
@@ -262,5 +261,17 @@
 
             UniquePlayerVariables.Add(name, new(name, desc, value.ToList()));
         }
+
+        public bool HasFlag(string key, out Flag flag)
+        {
+            flag = Flags.FirstOrDefault(fl => fl.Key == key);
+            return flag.Key is not null;
+        }
+
+        public bool HasFlag(string key)
+            => HasFlag(key, out _);
+
+        public void AddFlag(string key, IEnumerable<string> arguments = null)
+            => Flags.Add(new(key, arguments));
     }
 }

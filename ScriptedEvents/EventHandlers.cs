@@ -30,7 +30,6 @@
     using PlayerRoles;
     using Respawning;
 
-    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
@@ -234,7 +233,7 @@
 
             foreach (Script scr in ScriptHelper.ListScripts())
             {
-                if (scr.Flags.Contains("AUTORUN"))
+                if (scr.HasFlag("AUTORUN"))
                 {
                     Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
                     autoRun.Add(scr.ScriptName);

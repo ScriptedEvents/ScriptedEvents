@@ -1,7 +1,6 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Linq;
 
     using Exiled.API.Features;
 

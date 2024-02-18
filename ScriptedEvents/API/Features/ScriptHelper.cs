@@ -172,7 +172,7 @@ namespace ScriptedEvents.API.Features
                 {
                     string flag = action.Replace("!--", string.Empty).Trim();
 
-                    if (!script.Flags.Contains(flag))
+                    if (!script.HasFlag(flag))
                     {
                         string[] arguments = flag.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         Flag fl = new(arguments[0], arguments.Skip(1));
@@ -836,7 +836,7 @@ namespace ScriptedEvents.API.Features
                     if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
 
-                    if (scr.Flags.Contains("BETTERSAFETY"))
+                    if (scr.HasFlag("BETTERSAFETY"))
                     {
                         yield return Timing.WaitForSeconds(0.01f);
                     }
@@ -845,7 +845,7 @@ namespace ScriptedEvents.API.Features
                     safetyActionCount++;
                     if (safety.Elapsed.TotalSeconds > 1)
                     {
-                        if (safetyActionCount > MainPlugin.Configs.MaxActionsPerSecond && !scr.Flags.Contains("NOSAFETY"))
+                        if (safetyActionCount > MainPlugin.Configs.MaxActionsPerSecond && !scr.HasFlag("NOSAFETY"))
                         {
                             Log.Warn(ErrorGen.Get(113, scr.ScriptName, MainPlugin.Configs.MaxActionsPerSecond));
                             break;
@@ -865,7 +865,7 @@ namespace ScriptedEvents.API.Features
             scr.DebugLog("-----------");
             scr.IsRunning = false;
 
-            if (scr.Flags.Contains("LOOP"))
+            if (scr.HasFlag("LOOP"))
             {
                 scr.DebugLog("Re-running looped script.");
                 ReadAndRun(scr.ScriptName, scr.Sender); // so that it re-reads the content of the text file.

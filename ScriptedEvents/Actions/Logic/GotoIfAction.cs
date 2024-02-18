@@ -1,7 +1,6 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Linq;
 
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
@@ -45,7 +44,7 @@
         public ActionResponse Execute(Script script)
         {
             // Support for old GOTOIF
-            if (script.Flags.Contains("OLD-GOTOIF"))
+            if (script.HasFlag("OLD-GOTOIF"))
             {
                 if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
 
