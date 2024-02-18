@@ -83,6 +83,11 @@
                 case "BLASTDOORS":
                     Warhead.CloseBlastDoors();
                     break;
+                case "STARTDETONATION":
+                    Warhead.DetonationTimer = 10;
+                    Warhead.Controller.InstantPrepare();
+                    Warhead.Controller.StartDetonation(false, true);
+                    break;
                 default:
                     return new(MessageType.InvalidOption, this, "action", Arguments[0], "START/STOP/DETONATE/LOCK/UNLOCK/BLASTDOORS/ARM/DISARM/OPEN/CLOSE");
             }
