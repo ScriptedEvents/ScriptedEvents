@@ -416,6 +416,7 @@
         public static bool TryParse<T>(string input, out T result, Script source = null, bool requireBrackets = true)
             where T : struct, Enum
         {
+            input = input.Trim();
             if (Enum.TryParse(input, true, out result))
             {
                 return true;
