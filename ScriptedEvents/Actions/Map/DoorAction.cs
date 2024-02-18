@@ -5,7 +5,7 @@
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Doors;
-
+    using Exiled.API.Interfaces;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -68,7 +68,7 @@
                 case "DESTROY":
                     action = (door) =>
                     {
-                        if (door is BreakableDoor breaker && !breaker.IsDestroyed)
+                        if (door is IDamageableDoor breaker && !breaker.IsDestroyed)
                             breaker.Break();
                     };
                     break;
