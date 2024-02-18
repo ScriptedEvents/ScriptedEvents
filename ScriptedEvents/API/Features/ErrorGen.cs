@@ -308,6 +308,11 @@
                 147,
                 "Provided value '{0}' is not a valid RoleTypeId or Team.",
                 $"This error occurs when a RoleTypeId or Team input was expected, but the input is not either. This error can be resolved by providing a valid RoleTypeId or Team. A full list of valid RoleTypeId IDs (as of {DateTime.Now:g}) follows:\n{string.Join("\n", ((RoleTypeId[])Enum.GetValues(typeof(RoleTypeId))).Where(r => r is not RoleTypeId.None).Select(r => $"- [{r:d}] {r}"))}\n A full list of valid Team IDs (as of {DateTime.Now:g}) follows:\n{string.Join("\n", ((Team[])Enum.GetValues(typeof(Team))).Select(r => $"- [{r:d}] {r}"))}"),
+
+            new ErrorInfo(
+                148,
+                "Provided value '{0}' is not a valid boolean.",
+                "This error occurs when a single boolean input was expected, but the input is not a valid boolean. This error can be resolved by providing a valid boolean input. Valid inputs are as follows: 'TRUE', 'FALSE', 'YES', 'Y', 'NO', 'N'."),
         }.AsReadOnly();
     }
 }

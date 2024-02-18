@@ -37,6 +37,33 @@
             return newString;
         }
 
+        public static bool IsBool(this string input, out bool value)
+        {
+            if (input is null)
+            {
+                value = false;
+                return false;
+            }
+            else if (bool.TryParse(input, out bool r))
+            {
+                value = r;
+                return true;
+            }
+            else if (input.ToUpper() is "YES" or "Y")
+            {
+                value = true;
+                return true;
+            }
+            else if (input.ToUpper() is "NO" or "N")
+            {
+                value = false;
+                return true;
+            }
+
+            value = false;
+            return false;
+        }
+
         /// <summary>
         /// Converts a string input to a boolean.
         /// </summary>
@@ -44,13 +71,8 @@
         /// <returns>The boolean.</returns>
         public static bool AsBool(this string input)
         {
-            if (input is null)
-                return false;
-
-            if (bool.TryParse(input, out bool r))
-                return r;
-
-            return input.ToUpper() is "Y" or "YES";
+            IsBool(input, out bool v);
+            return v;
         }
 
         /// <summary>

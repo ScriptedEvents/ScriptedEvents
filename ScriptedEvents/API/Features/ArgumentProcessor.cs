@@ -92,7 +92,10 @@
             {
                 // Number Types:
                 case "Boolean":
-                    success.NewParameters.Add(input.AsBool());
+                    if (!input.IsBool(out bool result))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
+
+                    success.NewParameters.Add(result);
                     break;
                 case "Int32": // int
                     if (!VariableSystem.TryParse(input, out int intRes, source, requireBrackets))

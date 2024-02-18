@@ -44,7 +44,7 @@
             RoleTypeId oldRole = (RoleTypeId)Arguments[0];
             RoleTypeId newRole = (RoleTypeId)Arguments[1];
 
-            bool movePlayer = ((string)Arguments[2]).AsBool();
+            bool movePlayer = (bool)Arguments[2];
 
             MainPlugin.Handlers.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
             MainPlugin.Handlers.InfectionRules.Add(new(oldRole, newRole, movePlayer));
