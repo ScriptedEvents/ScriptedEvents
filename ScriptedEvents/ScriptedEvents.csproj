@@ -90,6 +90,7 @@
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
+    <Compile Include="Actions\Map\GeneratorRuleAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
     <Compile Include="Actions\Misc\ServerNameAction.cs" />
     <Compile Include="Actions\Misc\PluginAction.cs" />
