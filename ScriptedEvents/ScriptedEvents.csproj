@@ -59,7 +59,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Andrzej Debug|AnyCPU'">
     <OutputPath>..\..\..\..\AppData\Roaming\EXILED\Plugins\</OutputPath>
     <DefineConstants>TRACE;DEBUG;ADEBUG</DefineConstants>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Andrzej Debug|x64'">
