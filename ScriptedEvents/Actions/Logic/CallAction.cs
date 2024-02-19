@@ -59,10 +59,10 @@
                 script.DebugLog(script.CallLines[0].ToString());
                 return new(true);
             }
-            else if (mode == "SCRIPT")
+
+            if (mode == "SCRIPT")
             {
                 string scriptName = (string)Arguments[1];
-                string[] variables = Arguments.JoinMessage(2).Split(' ');
                 Script calledScript;
 
                 try
@@ -78,6 +78,9 @@
                     return new(false, $"Script '{scriptName}' not found.");
                 }
 
+                if (Arguments.Length < 3) return new(true);
+
+                string[] variables = Arguments.JoinMessage(2).Split(' ');
                 foreach (string varName in variables)
                 {
                     if (VariableSystem.TryGetPlayers(varName, out PlayerCollection val, script, requireBrackets: true))
