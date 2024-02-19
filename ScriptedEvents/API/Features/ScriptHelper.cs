@@ -311,11 +311,13 @@ namespace ScriptedEvents.API.Features
         /// <param name="executor">The executor that is running the script. Can be null.</param>
         /// <exception cref="FileNotFoundException">The script was not found.</exception>
         /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
-        public static void ReadAndRun(string scriptName, ICommandSender executor)
+        public static Script ReadAndRun(string scriptName, ICommandSender executor)
         {
             Script scr = ReadScript(scriptName, executor);
             if (scr is not null)
                 RunScript(scr);
+
+            return scr;
         }
 
         /// <summary>
