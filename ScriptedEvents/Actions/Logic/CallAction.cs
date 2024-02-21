@@ -67,7 +67,7 @@
 
                 try
                 {
-                    calledScript = ScriptHelper.ReadAndRun(scriptName, script.Sender, false);
+                    calledScript = ScriptHelper.ReadScript(scriptName, script.Sender, false);
                 }
                 catch (DisabledScriptException)
                 {
@@ -80,7 +80,7 @@
 
                 if (Arguments.Length < 3)
                 {
-                    calledScript.Dispose();
+                    calledScript.Execute();
                     return new(true);
                 }
 
@@ -106,7 +106,7 @@
                     Log.Warn(ErrorGen.Get(132));
                 }
 
-                calledScript.Dispose();
+                calledScript.Execute();
                 return new(true);
             }
 
