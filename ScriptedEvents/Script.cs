@@ -232,7 +232,7 @@
         /// <summary>
         /// Execute the script.
         /// </summary>
-        public void Execute() => ScriptHelper.RunScript(this);
+        public void Execute(bool dispose = true) => ScriptHelper.RunScript(this, dispose);
 
         /// <summary>
         /// Adds a variable.
