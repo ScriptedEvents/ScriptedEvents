@@ -67,7 +67,7 @@
 
                 try
                 {
-                    calledScript = ScriptHelper.ReadAndRun(scriptName, script.Sender);
+                    calledScript = ScriptHelper.ReadAndRun(scriptName, script.Sender, false);
                 }
                 catch (DisabledScriptException)
                 {
@@ -78,7 +78,11 @@
                     return new(false, $"Script '{scriptName}' not found.");
                 }
 
-                if (Arguments.Length < 3) return new(true);
+                if (Arguments.Length < 3)
+                {
+                    calledScript.Dispose();
+                    return new(true);
+                }
 
                 string[] variables = Arguments.JoinMessage(2).Split(' ');
                 foreach (string varName in variables)
@@ -102,6 +106,7 @@
                     Log.Warn(ErrorGen.Get(132));
                 }
 
+                calledScript.Dispose();
                 return new(true);
             }
 

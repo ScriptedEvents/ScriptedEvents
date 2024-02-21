@@ -295,12 +295,12 @@ namespace ScriptedEvents.API.Features
         /// </summary>
         /// <param name="scr">The script to run.</param>
         /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
-        public static void RunScript(Script scr)
+        public static void RunScript(Script scr, bool dispose = true)
         {
             if (scr.Disabled)
                 throw new DisabledScriptException(scr.ScriptName);
 
-            CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr), $"SCRIPT_{scr.UniqueId}");
+            CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr, dispose), $"SCRIPT_{scr.UniqueId}");
             RunningScripts.Add(scr, handle);
         }
 
@@ -311,11 +311,11 @@ namespace ScriptedEvents.API.Features
         /// <param name="executor">The executor that is running the script. Can be null.</param>
         /// <exception cref="FileNotFoundException">The script was not found.</exception>
         /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
-        public static Script ReadAndRun(string scriptName, ICommandSender executor)
+        public static Script ReadAndRun(string scriptName, ICommandSender executor, bool dispose = true)
         {
             Script scr = ReadScript(scriptName, executor);
             if (scr is not null)
-                RunScript(scr);
+                RunScript(scr, dispose);
 
             return scr;
         }
@@ -671,7 +671,7 @@ namespace ScriptedEvents.API.Features
         /// </summary>
         /// <param name="scr">The script to run.</param>
         /// <returns>Coroutine iterator.</returns>
-        private static IEnumerator<float> RunScriptInternal(Script scr)
+        private static IEnumerator<float> RunScriptInternal(Script scr, bool dispose = true)
         {
             MainPlugin.Info($"Running script {scr.ScriptName}.");
 
@@ -857,7 +857,8 @@ namespace ScriptedEvents.API.Features
             scr.DebugLog("Removing script from running scripts.");
             RunningScripts.Remove(scr);
 
-            scr.Dispose();
+            if (dispose)
+                scr.Dispose();
         }
     }
 }
