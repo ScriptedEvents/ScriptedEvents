@@ -85,7 +85,7 @@
         public string Name => "{LEN}";
 
         /// <inheritdoc/>
-        public string Description => "Reveals the length of a player variable.";
+        public string Description => "[OBSOLETE] Reveals the length of a player variable.";
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -119,7 +119,7 @@
         public string Name => "{C}";
 
         /// <inheritdoc/>
-        public string Description => "Convert a player variable into a format to use with commands.";
+        public string Description => "Converts a player variable into a format to use with commands.";
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
