@@ -56,6 +56,7 @@
                     "PORT" => Server.Port.ToString(),
                     "NAME" => Server.Name,
                     "MAXPLAYERS" => Server.MaxPlayerCount.ToString(),
+                    "TPS" => Server.Tps.ToString(),
                     _ => throw new ArgumentException("No mode provided")
                 };
             }
