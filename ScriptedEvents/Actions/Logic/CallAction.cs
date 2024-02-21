@@ -96,8 +96,7 @@
 
                     if (VariableSystem.TryGetVariable(varName, out IConditionVariable var, out bool _, script, requireBrackets: true))
                     {
-                        IStringVariable varVal = (IStringVariable)var;
-                        calledScript.AddVariable(varName, "Variable created using the CALL action.", varVal.Value);
+                        calledScript.AddVariable(varName, "Variable created using the CALL action.", var.String());
 
                         script.DebugLog($"Added variable '{varName}' to the called script.");
                         continue;

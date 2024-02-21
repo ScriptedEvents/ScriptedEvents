@@ -470,22 +470,7 @@
 
                 try
                 {
-                    switch (condition)
-                    {
-                    case IBoolVariable @bool:
-                        bool result = reversed ? !@bool.Value : @bool.Value;
-                        input = input.Replace(variable, result.ToString().ToUpper());
-                        break;
-                    case IFloatVariable @float:
-                        input = input.Replace(variable, @float.Value);
-                        break;
-                    case ILongVariable @long:
-                        input = input.Replace(variable, @long.Value);
-                        break;
-                    case IStringVariable @string:
-                        input = input.Replace(variable, @string.Value);
-                        break;
-                    }
+                    input = input.Replace(variable, condition.String(reversed));
                 }
                 catch (InvalidCastException e)
                 {
