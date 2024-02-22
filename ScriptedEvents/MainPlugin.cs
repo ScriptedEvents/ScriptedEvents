@@ -157,11 +157,12 @@
             {
                 if (IsExperimental)
                 {
-                    Log.Warn($"This {Name} DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
-                }
 #if ADEBUG
-                Log.Warn($"This version of ScriptedEvents has been made by Elektryk_Andrzej. Consider it highly experimental.");
+                    Log.Warn($"This {Name} DLL has been made by Elektryk_Andrzej, a pre-release experimental version.");
+#else
+                    Log.Warn($"This {Name} DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
 #endif
+                }
 
                 if (DateTime.Now.Month == 1 && DateTime.Now.Day == 25)
                 {
