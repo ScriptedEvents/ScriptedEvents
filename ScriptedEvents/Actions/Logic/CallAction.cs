@@ -85,20 +85,24 @@
                 }
 
                 string[] variables = Arguments.JoinMessage(2).Split(' ');
+
+                int arg = 0;
                 foreach (string varName in variables)
                 {
+                    arg++;
                     if (VariableSystem.TryGetPlayers(varName, out PlayerCollection val, script, requireBrackets: true))
                     {
-                        calledScript.AddPlayerVariable(varName, "Variable created using the CALL action.", val);
-                        script.DebugLog($"Added player variable '{varName}' to the called script.");
+                        calledScript.AddPlayerVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", val);
+
+                        script.DebugLog($"Added player variable {varName} (as '{{ARG{arg}}}') to the called script.");
                         continue;
                     }
 
                     if (VariableSystem.TryGetVariable(varName, out IConditionVariable var, out bool _, script, requireBrackets: true))
                     {
-                        calledScript.AddVariable(varName, "Variable created using the CALL action.", var.String());
+                        calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String());
 
-                        script.DebugLog($"Added variable '{varName}' to the called script.");
+                        script.DebugLog($"Added variable {varName} (as '{{ARG{arg}}}') to the called script.");
                         continue;
                     }
 

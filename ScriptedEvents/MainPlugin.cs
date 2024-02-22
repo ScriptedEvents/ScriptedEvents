@@ -158,7 +158,7 @@
                 if (IsExperimental)
                 {
 #if ADEBUG
-                    Log.Warn($"This {Name} DLL has been made by Elektryk_Andrzej, a pre-release experimental version.");
+                    Log.Warn($"This DLL is an experimental pre-release version of {Name} by Elektryk_Andrzej.");
 #else
                     Log.Warn($"This {Name} DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
 #endif
