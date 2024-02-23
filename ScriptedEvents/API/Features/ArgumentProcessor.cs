@@ -28,14 +28,25 @@
         /// <param name="args">The provided arguments.</param>
         /// <param name="action">The action or variable performing the process.</param>
         /// <param name="source">The script source.</param>
+        /// <param name="failedConditionBlock">S.</param>
         /// <param name="requireBrackets">If brackets are required to convert variables.</param>
         /// <returns>The result of the process.</returns>
-        public static ArgumentProcessResult Process(Argument[] expected, string[] args, IScriptComponent action, Script source, bool requireBrackets = true)
+        public static ArgumentProcessResult Process(Argument[] expected, string[] args, IScriptComponent action, Script source, out bool failedConditionBlock, bool requireBrackets = true)
         {
+            failedConditionBlock = false;
             if (expected is null || expected.Length == 0)
                 return new(true);
 
             int required = expected.Count(arg => arg.Required);
+
+            int conditionSectionKeyword = args.IndexOf("#IF");
+            if (conditionSectionKeyword != -1)
+            {
+                string[] conditionArgs = args.Skip(conditionSectionKeyword + 1).ToArray();
+                args = args.Take(conditionSectionKeyword).ToArray();
+                source.DebugLog($"args = {string.Join(",", args)} | conditionArgs = {string.Join(",", conditionArgs)}");
+                failedConditionBlock = !ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source).Passed;
+            }
 
             if (args.Length < required)
             {

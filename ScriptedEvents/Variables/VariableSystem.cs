@@ -197,7 +197,7 @@
                 {
                     argSupport.RawArguments = argList.ToArray();
 
-                    ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, false);
+                    ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, out bool _, false);
 
                     if (!processResult.Success && !skipProcessing)
                         return new(false, null, processResult.Message);

@@ -40,8 +40,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            ArgumentProcessResult result = ArgumentProcessor.Process(ExpectedArguments, RawArguments, this, script);
-
+            ArgumentProcessResult result = ArgumentProcessor.Process(ExpectedArguments, RawArguments, this, script, out bool _);
             return new(true, result.Message.ToString());
         }
     }

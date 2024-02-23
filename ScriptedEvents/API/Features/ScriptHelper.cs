@@ -688,71 +688,102 @@ namespace ScriptedEvents.API.Features
             {
                 scr.DebugLog("-----------");
                 scr.DebugLog($"Current Line: {scr.CurrentLine + 1}");
-                if (scr.Actions.TryGet(scr.CurrentLine, out IAction action) && action != null)
+                if (!scr.Actions.TryGet(scr.CurrentLine, out IAction action) || action == null)
+                    continue;
+
+                ActionResponse resp;
+                float? delay = null;
+
+                // Process Arguments
+                ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, action.RawArguments, action, scr, out bool failedConditionBlock);
+                if (!res.Success)
                 {
-                    ActionResponse resp;
-                    float? delay = null;
+                    // Todo: Place error better later
+                    // -> [WARN] Error trying to check 'value' argument: Invalid Object provided. See all options by running 'shelp Object' in the server console.
+                    Log.Warn($"[{scr.ScriptName}] Error trying to check '{res.FailedArgument}' argument: {res.Message}");
+                    break;
+                }
 
-                    // Process Arguments
-                    ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, action.RawArguments, action, scr);
-                    if (!res.Success)
+                if (failedConditionBlock)
+                {
+                    scr.DebugLog($"The condition block returned false, skipping execution of this action.");
+                    continue;
+                }
+
+                action.Arguments = res.NewParameters.ToArray();
+
+                try
+                {
+                    switch (action)
                     {
-                        // Todo: Place error better later
-                        // -> [WARN] Error trying to check 'value' argument: Invalid Object provided. See all options by running 'shelp Object' in the server console.
-                        Log.Warn($"[{scr.ScriptName}] Error trying to check '{res.FailedArgument}' argument: {res.Message}");
-                        break;
+                        case ITimingAction timed:
+                            scr.DebugLog($"Running {action.Name} action (timed) on line {scr.CurrentLine + 1}...");
+                            delay = timed.Execute(scr, out resp);
+                            break;
+                        case IScriptAction scriptAction:
+                            scr.DebugLog($"Running {action.Name} action on line {scr.CurrentLine + 1}...");
+                            resp = scriptAction.Execute(scr);
+                            break;
+                        default:
+                            scr.DebugLog($"Skipping line {scr.CurrentLine + 1} (no runnable action on line)");
+                            continue;
+                    }
+                }
+                catch (VariableException variableException)
+                {
+                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {variableException.Message}";
+                    switch (scr.Context)
+                    {
+                        case ExecuteContext.RemoteAdmin:
+                            Player ply = Player.Get(scr.Sender);
+                            ply.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
+
+                            if (MainPlugin.Configs.BroadcastIssues)
+                                ply?.Broadcast(5, $"Error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+
+                            break;
+                        default:
+                            Log.Warn(message);
+                            break;
                     }
 
-                    action.Arguments = res.NewParameters.ToArray();
+                    continue;
+                }
+                catch (Exception e)
+                {
+                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(141, action.Name)}:\n{e}";
+                    switch (scr.Context)
+                    {
+                        case ExecuteContext.RemoteAdmin:
+                            Player ply = Player.Get(scr.Sender);
+                            ply.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
 
-                    try
-                    {
-                        switch (action)
-                        {
-                            case ITimingAction timed:
-                                scr.DebugLog($"Running {action.Name} action (timed) on line {scr.CurrentLine + 1}...");
-                                delay = timed.Execute(scr, out resp);
-                                break;
-                            case IScriptAction scriptAction:
-                                scr.DebugLog($"Running {action.Name} action on line {scr.CurrentLine + 1}...");
-                                resp = scriptAction.Execute(scr);
-                                break;
-                            default:
-                                scr.DebugLog($"Skipping line {scr.CurrentLine + 1} (no runnable action on line)");
-                                continue;
-                        }
+                            if (MainPlugin.Configs.BroadcastIssues)
+                                ply?.Broadcast(5, $"Error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+
+                            break;
+                        default:
+                            Log.Error(message);
+                            break;
                     }
-                    catch (VariableException variableException)
+
+                    continue;
+                }
+
+                if (!resp.Success)
+                {
+                    scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine + 1}]: FAIL");
+                    if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                     {
-                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {variableException.Message}";
+                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Fatal action error! {resp.Message}";
                         switch (scr.Context)
                         {
                             case ExecuteContext.RemoteAdmin:
                                 Player ply = Player.Get(scr.Sender);
-                                ply.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
+                                ply?.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
 
                                 if (MainPlugin.Configs.BroadcastIssues)
-                                    ply?.Broadcast(5, $"Error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
-
-                                break;
-                            default:
-                                Log.Warn(message);
-                                break;
-                        }
-
-                        continue;
-                    }
-                    catch (Exception e)
-                    {
-                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(141, action.Name)}:\n{e}";
-                        switch (scr.Context)
-                        {
-                            case ExecuteContext.RemoteAdmin:
-                                Player ply = Player.Get(scr.Sender);
-                                ply.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
-
-                                if (MainPlugin.Configs.BroadcastIssues)
-                                    ply?.Broadcast(5, $"Error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+                                    ply?.Broadcast(5, $"Fatal action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
 
                                 break;
                             default:
@@ -760,85 +791,60 @@ namespace ScriptedEvents.API.Features
                                 break;
                         }
 
-                        continue;
-                    }
-
-                    if (!resp.Success)
-                    {
-                        scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine + 1}]: FAIL");
-                        if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
-                        {
-                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Fatal action error! {resp.Message}";
-                            switch (scr.Context)
-                            {
-                                case ExecuteContext.RemoteAdmin:
-                                    Player ply = Player.Get(scr.Sender);
-                                    ply?.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
-
-                                    if (MainPlugin.Configs.BroadcastIssues)
-                                        ply?.Broadcast(5, $"Fatal action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
-
-                                    break;
-                                default:
-                                    Log.Error(message);
-                                    break;
-                            }
-
-                            break;
-                        }
-                        else if (!scr.SuppressWarnings)
-                        {
-                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Action error! {resp.Message}";
-                            switch (scr.Context)
-                            {
-                                case ExecuteContext.RemoteAdmin:
-                                    Player ply = Player.Get(scr.Sender);
-                                    ply?.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
-
-                                    if (MainPlugin.Configs.BroadcastIssues)
-                                        ply?.Broadcast(5, $"Action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
-
-                                    break;
-                                default:
-                                    Log.Warn(message);
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine + 1}]: SUCCESS");
-                        successfulLines++;
-                        if (!string.IsNullOrEmpty(resp.Message))
-                        {
-                            string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Response: {resp.Message}";
-                            switch (scr.Context)
-                            {
-                                case ExecuteContext.RemoteAdmin:
-                                    Player.Get(scr.Sender)?.RemoteAdminMessage(message, true, MainPlugin.Singleton.Name);
-                                    break;
-                                default:
-                                    Log.Info(message);
-                                    break;
-                            }
-                        }
-
-                        if (delay.HasValue)
-                        {
-                            scr.DebugLog($"Action '{action.Name}' on line {scr.CurrentLine + 1} delaying script. Length of delay: {delay.Value}");
-                            yield return delay.Value;
-                        }
-                    }
-
-                    lines++;
-
-                    if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                         break;
-
-                    if (!scr.HasFlag("NOSAFETY"))
-                    {
-                        yield return Timing.WaitForSeconds(0.01f);
                     }
+                    else if (!scr.SuppressWarnings)
+                    {
+                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Action error! {resp.Message}";
+                        switch (scr.Context)
+                        {
+                            case ExecuteContext.RemoteAdmin:
+                                Player ply = Player.Get(scr.Sender);
+                                ply?.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
+
+                                if (MainPlugin.Configs.BroadcastIssues)
+                                    ply?.Broadcast(5, $"Action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
+
+                                break;
+                            default:
+                                Log.Warn(message);
+                                break;
+                        }
+                    }
+                }
+                else
+                {
+                    scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine + 1}]: SUCCESS");
+                    successfulLines++;
+                    if (!string.IsNullOrEmpty(resp.Message))
+                    {
+                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Response: {resp.Message}";
+                        switch (scr.Context)
+                        {
+                            case ExecuteContext.RemoteAdmin:
+                                Player.Get(scr.Sender)?.RemoteAdminMessage(message, true, MainPlugin.Singleton.Name);
+                                break;
+                            default:
+                                Log.Info(message);
+                                break;
+                        }
+                    }
+
+                    if (delay.HasValue)
+                    {
+                        scr.DebugLog($"Action '{action.Name}' on line {scr.CurrentLine + 1} delaying script. Length of delay: {delay.Value}");
+                        yield return delay.Value;
+                    }
+                }
+
+                lines++;
+
+                if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
+                    break;
+
+                if (!scr.HasFlag("NOSAFETY"))
+                {
+                    yield return Timing.WaitForSeconds(0.01f);
                 }
             }
 

@@ -113,6 +113,7 @@
     <Compile Include="Actions\Player\MuteAction.cs" />
     <Compile Include="Actions\Player\NoclipAction.cs" />
     <Compile Include="Actions\Player\SetNameAction.cs" />
+    <Compile Include="Actions\Player\CameraShakeAction.cs" />
     <Compile Include="Actions\RoundRule\DamageRuleAction.cs" />
     <Compile Include="Actions\DebugActions\DamageRuleDebug.cs" />
     <Compile Include="Actions\RoundRule\DeleteInfectRule.cs" />
