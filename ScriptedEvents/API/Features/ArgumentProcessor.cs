@@ -39,7 +39,7 @@
 
             int required = expected.Count(arg => arg.Required);
 
-            int conditionSectionKeyword = args.IndexOf("#IF");
+            int conditionSectionKeyword = args.IndexOf("!IF");
             if (conditionSectionKeyword != -1)
             {
                 string[] conditionArgs = args.Skip(conditionSectionKeyword + 1).ToArray();
