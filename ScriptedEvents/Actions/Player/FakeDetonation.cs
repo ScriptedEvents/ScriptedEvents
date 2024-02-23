@@ -8,10 +8,10 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class CameraShakeAction : IScriptAction, IHelpInfo
+    public class FakeDetonation : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "FAKEEXPLOSION";
+        public string Name => "FAKEDETONATION";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
