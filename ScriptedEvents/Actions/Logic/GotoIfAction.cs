@@ -10,6 +10,7 @@
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
+    [Obsolete("From now on, please use the GOTO action with the condition block $IF.")]
     public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
