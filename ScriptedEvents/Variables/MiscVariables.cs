@@ -16,6 +16,7 @@
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new Round(),
+            new This(),
         };
     }
 
@@ -54,6 +55,35 @@
                     "DOWN" => Mathf.Floor(value),
                     _ => throw new ArgumentException($"'{mode}' is not a valid mode. Valid options: UP, DOWN"),
                 };
+            }
+        }
+    }
+
+    public class This : IStringVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{THIS}";
+
+        /// <inheritdoc/>
+        public string Description => "Returns the script name.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; set; }
+
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                return Source.ScriptName;
             }
         }
     }
