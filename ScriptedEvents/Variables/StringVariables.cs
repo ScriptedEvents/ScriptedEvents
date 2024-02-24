@@ -426,7 +426,7 @@ Invalid options will default to the 'NAME' selector.";
         {
              new Argument("variable", typeof(IStringVariable), "The name of the variable.", true),
              new Argument("index", typeof(int), "The place from which the value should be taken.", true),
-             new Argument("listSplitChar", typeof(char), "A character that will split the variable into a list.", false),
+             new Argument("listSplitChar", typeof(string), "The string that will split the variable into a list.", false),
         };
 
         /// <inheritdoc/>
