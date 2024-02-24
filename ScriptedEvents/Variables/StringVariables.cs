@@ -442,7 +442,7 @@ Invalid options will default to the 'NAME' selector.";
                 {
                     string delimiter = VariableSystem.ReplaceVariable((string)Arguments[2], Source);
 
-                    List<string> resultList = value.ToString().Split(new[] { delimiter }, StringSplitOptions.None).ToList();
+                    List<string> resultList = value.Value.Split(new[] { delimiter }, StringSplitOptions.None).ToList();
 
                     if (index < resultList.Count) index = resultList.Count - 1;
 
@@ -450,7 +450,7 @@ Invalid options will default to the 'NAME' selector.";
                 }
                 else
                 {
-                    result = value.ToString()[index].ToString();
+                    result = value.Value[index].ToString();
                 }
 
                 return result;
