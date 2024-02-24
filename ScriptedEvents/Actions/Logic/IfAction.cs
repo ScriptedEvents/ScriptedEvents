@@ -10,6 +10,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    [Obsolete("Replaced with STOPIF. $IF keyword is currently used for action condition block.")]
     public class IfAction : IScriptAction, ILogicAction, IHelpInfo, ISampleAction
     {
         /// <inheritdoc/>
