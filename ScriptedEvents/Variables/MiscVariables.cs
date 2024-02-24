@@ -76,6 +76,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; set; }
 
+        /// <inheritdoc/>
         public Script Source { get; set; }
 
         /// <inheritdoc/>
