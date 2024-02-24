@@ -247,7 +247,7 @@ namespace ScriptedEvents.API.Features
                 // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
                 {
-                    Log.Warn($"[L: {script.CurrentLine + 1}] [{scriptName}] Action {newAction.Name} is obsolete;: {obsoleteReason}");
+                    Log.Warn($"[L: {script.CurrentLine + 1}] [{scriptName}] Action {newAction.Name} is obsolete; {obsoleteReason}");
                 }
 
                 actionList.Add(newAction);
