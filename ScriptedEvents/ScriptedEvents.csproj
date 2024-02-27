@@ -135,6 +135,7 @@
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
     <Compile Include="Actions\Variable\PlayerDataAction.cs" />
     <Compile Include="Actions\Variable\LocalSaveAction.cs" />
+    <Compile Include="Actions\Variable\StorageAction.cs" />
     <Compile Include="Actions\Yielding\HttpPostAction.cs" />
     <Compile Include="Actions\Yielding\HttpGetAction.cs" />
     <Compile Include="Actions\Round\EndRoundAction.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Features\ErrorGen.cs" />
     <Compile Include="API\Features\Exceptions\VariableException.cs" />
+    <Compile Include="API\Features\VariableStorage.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
     <Compile Include="Actions\Lights\LightColorAction.cs" />

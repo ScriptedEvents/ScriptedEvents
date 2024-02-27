@@ -23,6 +23,9 @@
         [Description("If set to true, players with overwatch enabled will not be affected by any commands related to players.")]
         public bool IgnoreOverwatch { get; set; } = true;
 
+        [Description("The name of the folder which will store variables long term. This can be a path, but it will start from the ScriptedEvents directory, not root.")]
+        public string StorageFoldername { get; set; } = "VariableStorage";
+
         [Description("The string to use for countdowns.")]
         public string CountdownString { get; set; } = "<size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\\n{TIME}";
 
