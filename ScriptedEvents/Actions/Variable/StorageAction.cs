@@ -6,11 +6,13 @@
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Interfaces;
 
     public class StorageAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "STORAGE";
+        public string Name => "STORE";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -25,19 +27,21 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => ".............";
+        public string Description => "Saves variables to long-term storage (.txt file) in the specified storage folder. This action doesn't work on player variables.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("variableName", typeof(string), "The name of the new variable. Braces will be added automatically if not provided.", false),
-            new Argument("value", typeof(object), "The value to store. Variables & Math are supported.", false),
+            new Argument("variableName", typeof(string), "The variable to save.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            VariableStorage.Save("test", "testststtsys");
+            if (!VariableSystem.TryGetVariable((string)Arguments[0], out IConditionVariable var, out bool _, script))
+                return new(false, "Invalid variable to store has been provided.");
+
+            VariableStorage.Save(var);
             return new(true);
         }
     }
