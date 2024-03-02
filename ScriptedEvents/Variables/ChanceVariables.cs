@@ -122,12 +122,12 @@
             {
                 if (Arguments.Length == 0) return UnityEngine.Random.value;
 
-                float startNum = (float)Arguments[0];
-                float endNum;
+                int startNum = (int)Arguments[0];
+                int endNum;
 
                 if (Arguments.Length >= 2)
                 {
-                    endNum = (float)Arguments[1];
+                    endNum = (int)Arguments[1];
                 }
                 else
                 {
