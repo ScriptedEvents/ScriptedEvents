@@ -20,6 +20,8 @@
             new RoundMinutes(),
             new RoundSeconds(),
             new LobbyTime(),
+            new RoundLock(),
+            new LobbyLock(),
         };
     }
 
@@ -121,6 +123,46 @@
                     return -1f;
 
                 return Round.LobbyWaitingTime;
+            }
+        }
+    }
+
+    public class RoundLock : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{ROUNDLOCK}";
+
+        public string ReversedName => "{!ROUNDLOCK}";
+
+        /// <inheritdoc/>
+        public string Description => "Returns the roundlock setting status.";
+
+        /// <inheritdoc/>
+        public bool Value
+        {
+            get
+            {
+                return Round.IsLocked;
+            }
+        }
+    }
+
+    public class LobbyLock : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{LOBBYLOCK}";
+
+        public string ReversedName => "{!LOBBYLOCK}";
+
+        /// <inheritdoc/>
+        public string Description => "Returns the lobbylock setting status.";
+
+        /// <inheritdoc/>
+        public bool Value
+        {
+            get
+            {
+                return Round.IsLobbyLocked;
             }
         }
     }
