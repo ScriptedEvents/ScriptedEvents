@@ -196,10 +196,9 @@
                     return selector switch
                     {
                         "NAME" => ply.Nickname,
-                        "DISPLAYNAME" => ply.DisplayNickname,
-                        "DPNAME" => ply.DisplayNickname,
-                        "USERID" => ply.UserId,
-                        "PLAYERID" => ply.Id.ToString(),
+                        "DISPLAYNAME" or "DPNAME" => ply.DisplayNickname,
+                        "USERID" or "UID" => ply.UserId,
+                        "PLAYERID" or "PID" => ply.Id.ToString(),
                         "ROLE" => ply.Role.Type.ToString(),
                         "TEAM" => ply.Role.Team.ToString(),
                         "ROOM" => ply.CurrentRoom.Type.ToString(),
@@ -217,7 +216,10 @@
                         "TIER" => "0",
                         "GROUP" => ply.GroupName,
                         "CUFFED" => ply.IsCuffed.ToString().ToUpper(),
-                        "CUSTOMINFO" => ply.CustomInfo.ToString(),
+                        "CUSTOMINFO" or "CINFO" or "CUSTOMI" => ply.CustomInfo.ToString(),
+                        "XSIZE" => ply.Scale.x.ToString(),
+                        "YSIZE" => ply.Scale.y.ToString(),
+                        "ZSIZE" => ply.Scale.z.ToString(),
                         _ => ply.Nickname,
                     };
                     }).OrderBy(s => s);
@@ -231,8 +233,8 @@ Do not use this variable for using player variables in commands. Use the 'C' var
 The following options are valid selector options:
 - NAME
 - DISPLAYNAME / DPNAME
-- USERID
-- PLAYERID
+- USERID / UID
+- PLAYERID / PID
 - ROLE
 - TEAM
 - ROOM
@@ -249,7 +251,10 @@ The following options are valid selector options:
 - TIER
 - GROUP
 - CUFFED
-- CUSTOMINFO
+- CUSTOMINFO / CINFO / CUSTOMI
+- XSIZE 
+- YSIZE
+- ZSIZE
 Invalid options will default to the 'NAME' selector.";
     }
 
