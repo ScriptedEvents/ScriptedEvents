@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+    using System.Linq;
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
@@ -32,17 +33,37 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
+            new Argument("mode", typeof(string), "The mode to use. Either LITERAL or PLAYER.", true),
             new Argument("variableName", typeof(string), "The variable to save.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (!VariableSystem.TryGetVariable((string)Arguments[0], out IConditionVariable var, out bool _, script))
-                return new(false, "Invalid variable to store has been provided.");
+            string mode = ((string)Arguments[0]).ToUpper();
 
-            VariableStorage.Save(var);
-            return new(true);
+            if (mode == "LITERAL")
+            {
+                if (!VariableSystem.TryGetVariable((string)Arguments[1], out IConditionVariable var, out bool _, script))
+                    return new(false, "Invalid literal variable to store has been provided.");
+
+                VariableStorage.Save(var);
+                return new(true);
+            }
+
+            if (mode == "PLAYER")
+            {
+                string varName = RawArguments[1];
+
+                if (!VariableSystem.TryGetPlayers(varName, out PlayerCollection var, script))
+                    return new(false, "Invalid player variable to store has been provided.");
+
+                string formattedVar = string.Join(".", var.ToList());
+                VariableStorage.Save(varName, formattedVar);
+                return new(true);
+            }
+
+            return new(false, $"Invalid mode '{mode}' selected.");
         }
     }
 }
