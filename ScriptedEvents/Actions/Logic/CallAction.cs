@@ -85,7 +85,7 @@
                 }
 
                 calledScript.AddVariable($"{{ARGS}}", "Variable created using the CALL action.", Arguments.JoinMessage(2));
-                string[] variables = Arguments.JoinMessage(2).Split(' ');
+                string[] variables = RawArguments.JoinMessage(2).Split(' ');
 
                 int arg = 0;
                 foreach (string varName in variables)

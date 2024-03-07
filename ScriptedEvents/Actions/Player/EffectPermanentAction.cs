@@ -75,7 +75,7 @@
             {
                 list = 2;
             }
-            else if (ScriptHelper.TryGetPlayers((string)Arguments[1], null, out players, script))
+            else if (ScriptHelper.TryGetPlayers(RawArguments[1], null, out players, script))
             {
                 if (!players.Success)
                 {

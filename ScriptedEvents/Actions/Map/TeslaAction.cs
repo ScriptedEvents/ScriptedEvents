@@ -64,7 +64,7 @@
             }
 
             string mode = Arguments[0].ToUpper();
-            string target = mode == "DISABLE" ? null : (string)Arguments[1];
+            string target = mode == "DISABLE" ? null : RawArguments[1];
             string duration = Arguments.Length > 2 ? Arguments.JoinMessage(2, string.Empty) : null;
 
             switch (mode)

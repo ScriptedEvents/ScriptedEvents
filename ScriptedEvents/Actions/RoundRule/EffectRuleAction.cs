@@ -65,15 +65,15 @@
             RoleTypeId rt = RoleTypeId.None;
             PlayerCollection players = null;
 
-            if (VariableSystem.TryParse(Arguments[1].ToString(), out team, script))
+            if (VariableSystem.TryParse(RawArguments[1], out team, script))
             {
                 list = 1;
             }
-            else if (VariableSystem.TryParse(Arguments[1].ToString(), out rt, script))
+            else if (VariableSystem.TryParse(RawArguments[1], out rt, script))
             {
                 list = 2;
             }
-            else if (ScriptHelper.TryGetPlayers(Arguments[1].ToString(), null, out players, script))
+            else if (ScriptHelper.TryGetPlayers(RawArguments[1], null, out players, script))
             {
                 if (!players.Success)
                 {
