@@ -673,7 +673,7 @@ namespace ScriptedEvents.API.Features
         /// <returns>Coroutine iterator.</returns>
         private static IEnumerator<float> RunScriptInternal(Script scr, bool dispose = true)
         {
-            MainPlugin.Info($"Running script {scr.ScriptName}.");
+            MainPlugin.Info($"Started running the '{scr.ScriptName}' script.");
 
             yield return Timing.WaitForOneFrame;
 
@@ -706,7 +706,7 @@ namespace ScriptedEvents.API.Features
 
                 if (failedConditionBlock)
                 {
-                    scr.DebugLog($"The condition block returned false, skipping execution of this action.");
+                    scr.DebugLog($"The condition block returned FALSE, skipping execution of this action.");
                     continue;
                 }
 
