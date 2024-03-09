@@ -113,8 +113,8 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-                new Argument("startNumber", typeof(object), "A starting number of the random range.", true),
-                new Argument("endNumber", typeof(object), "An ending number of the random range.", true),
+                new Argument("startNumber", typeof(float), "A starting number of the random range.", true),
+                new Argument("endNumber", typeof(float), "An ending number of the random range.", true),
         };
 
         /// <inheritdoc/>
@@ -122,12 +122,12 @@
         {
             get
             {
-                if (Arguments[0] is int int0 && Arguments[1] is int int1)
+                if ((Arguments[0] is string x0 && x0.Contains(".")) || (Arguments[1] is string x1 && x1.Contains(".")))
                 {
-                    return UnityEngine.Random.Range(int0, int1);
+                    return UnityEngine.Random.Range(Convert.ToSingle(Arguments[0]), Convert.ToSingle(Arguments[1]));
                 }
 
-                return UnityEngine.Random.Range(Convert.ToSingle(Arguments[0]), Convert.ToSingle(Arguments[1]));
+                return UnityEngine.Random.Range(Convert.ToInt16(Arguments[0]), Convert.ToInt16(Arguments[1]) + 1);
             }
         }
     }
