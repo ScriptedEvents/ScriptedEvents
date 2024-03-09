@@ -2,6 +2,7 @@
 {
     using System;
 
+    using Exiled.API.Features;
     using ScriptedEvents.Structures;
 #pragma warning disable SA1402 // File may only contain a single type
     using ScriptedEvents.Variables.Interfaces;
@@ -113,8 +114,8 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-                new Argument("startNumber", typeof(float), "A starting number of the random range.", true),
-                new Argument("endNumber", typeof(float), "An ending number of the random range.", true),
+                new Argument("startNumber", typeof(object), "A starting number of the random range.", true),
+                new Argument("endNumber", typeof(object), "An ending number of the random range.", true),
         };
 
         /// <inheritdoc/>
@@ -127,7 +128,7 @@
                     return UnityEngine.Random.Range(Convert.ToSingle(Arguments[0]), Convert.ToSingle(Arguments[1]));
                 }
 
-                return UnityEngine.Random.Range(Convert.ToInt16(Arguments[0]), Convert.ToInt16(Arguments[1]) + 1);
+                return UnityEngine.Random.Range(Convert.ToInt32(Arguments[0]), Convert.ToInt32(Arguments[1]) + 1);
             }
         }
     }
