@@ -2,7 +2,6 @@
 {
     using System;
 
-    using Exiled.API.Features;
     using ScriptedEvents.Structures;
 #pragma warning disable SA1402 // File may only contain a single type
     using ScriptedEvents.Variables.Interfaces;
