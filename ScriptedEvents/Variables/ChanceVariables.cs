@@ -1,5 +1,7 @@
 ﻿namespace ScriptedEvents.Variables.Chance
 {
+    using System;
+
     using ScriptedEvents.Structures;
 #pragma warning disable SA1402 // File may only contain a single type
     using ScriptedEvents.Variables.Interfaces;
@@ -100,7 +102,7 @@
         public string Name => "{RAND}";
 
         /// <inheritdoc/>
-        public string Description => "Returns a random number from provided range. If range is not provided, will return a random number from 0 to 1.";
+        public string Description => "Returns a random number from provided range. When a range composed of integers only, the return number will be an integer. If the range is composed of at least 1 float, then a float will be returned.";
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -111,8 +113,8 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-                new Argument("number", typeof(float), "A starting number of the random range. If an ending number is not provided, it will be treated as end number, and 0 as start number.", false),
-                new Argument("number", typeof(float), "An ending number of the random range.", false),
+                new Argument("startNumber", typeof(object), "A starting number of the random range.", true),
+                new Argument("endNumber", typeof(object), "An ending number of the random range.", true),
         };
 
         /// <inheritdoc/>
@@ -120,22 +122,12 @@
         {
             get
             {
-                if (Arguments.Length == 0) return UnityEngine.Random.value;
-
-                int startNum = (int)Arguments[0];
-                int endNum;
-
-                if (Arguments.Length >= 2)
+                if (Arguments[0] is int int0 && Arguments[1] is int int1)
                 {
-                    endNum = (int)Arguments[1];
-                }
-                else
-                {
-                    endNum = startNum;
-                    startNum = 1;
+                    return UnityEngine.Random.Range(int0, int1);
                 }
 
-                return UnityEngine.Random.Range(startNum, endNum);
+                return UnityEngine.Random.Range(Convert.ToSingle(Arguments[0]), Convert.ToSingle(Arguments[1]));
             }
         }
     }
