@@ -431,7 +431,7 @@ Invalid options will default to the 'NAME' selector.";
         {
              new Argument("variable", typeof(IStringVariable), "The name of the variable.", true),
              new Argument("index", typeof(int), "The place from which the value should be taken.", true),
-             new Argument("listSplitChar", typeof(string), "The string that will split the variable into a list.", false),
+             new Argument("listSplitChar", typeof(char), "The character that will split the variable into a list. Must be a 1 character only.", false),
         };
 
         /// <inheritdoc/>
@@ -445,11 +445,9 @@ Invalid options will default to the 'NAME' selector.";
 
                 if (Arguments.Length >= 3)
                 {
-                    string delimiter = VariableSystem.ReplaceVariable((string)Arguments[2], Source);
+                    char delimiter = (char)Arguments[2];
 
-                    List<string> resultList = value.Value.Split(new[] { delimiter }, StringSplitOptions.None).ToList();
-
-                    if (index < resultList.Count) index = resultList.Count - 1;
+                    string[] resultList = value.Value.Split(delimiter);
 
                     result = resultList[index].Trim();
                 }
