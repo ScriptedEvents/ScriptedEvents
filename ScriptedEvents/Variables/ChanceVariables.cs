@@ -24,6 +24,7 @@
         };
     }
 
+    [Obsolete("Please use the {RAND} variable.")]
     public class Chance : IFloatVariable
     {
         /// <inheritdoc/>
@@ -36,6 +37,7 @@
         public float Value => UnityEngine.Random.value;
     }
 
+    [Obsolete("Please use the {RAND} variable.")]
     public class Chance3 : IFloatVariable
     {
         /// <inheritdoc/>
@@ -48,6 +50,7 @@
         public float Value => UnityEngine.Random.Range(1, 4);
     }
 
+    [Obsolete("Please use the {RAND} variable.")]
     public class Chance5 : IFloatVariable
     {
         /// <inheritdoc/>
@@ -60,6 +63,7 @@
         public float Value => UnityEngine.Random.Range(1, 6);
     }
 
+    [Obsolete("Please use the {RAND} variable.")]
     public class Chance10 : IFloatVariable
     {
         /// <inheritdoc/>
@@ -72,6 +76,7 @@
         public float Value => UnityEngine.Random.Range(1, 11);
     }
 
+    [Obsolete("Please use the {RAND} variable.")]
     public class Chance20 : IFloatVariable
     {
         /// <inheritdoc/>
@@ -84,6 +89,7 @@
         public float Value => UnityEngine.Random.Range(1, 21);
     }
 
+    [Obsolete("Please use the {RAND} variable.")]
     public class Chance100 : IFloatVariable
     {
         /// <inheritdoc/>
