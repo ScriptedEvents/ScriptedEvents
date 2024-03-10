@@ -7,6 +7,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -28,6 +29,7 @@
             new NonePlayer(),
             new Scp096Targets(),
             new Scp173Observers(),
+            new StoredPlayers(),
         };
     }
 
@@ -225,5 +227,42 @@
                 return list;
             }
         }
+    }
+
+    public class StoredPlayers : IPlayerVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{STOREDPLAYERS}";
+
+        /// <inheritdoc/>
+        public string Description => "Retrieves the player variable from the variable storage.";
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                string playersAsString = VariableStorage.Read((string)Arguments[0]);
+                List<Player> list = new();
+
+                if (ScriptHelper.TryGetPlayers(playersAsString, null, out PlayerCollection collection, Source))
+                {
+                    return list;
+                }
+
+                return collection.ToList();
+            }
+        }
+
+        public string[] RawArguments { get; set; }
+
+        public object[] Arguments { get; set; }
+
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("variable", typeof(string), "The variable name to retrieve players from.", true),
+        };
+
+        public Script Source { get; set; }
     }
 }
