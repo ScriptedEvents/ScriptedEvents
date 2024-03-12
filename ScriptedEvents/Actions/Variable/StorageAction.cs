@@ -28,13 +28,13 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => "Saves variables to long-term storage (.txt file) in the specified storage folder. This action doesn't work on player variables.";
+        public string Description => "Saves variables to long-term storage (.txt file) in the specified storage folder.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode to use. Either LITERAL or PLAYER.", true),
-            new Argument("variableName", typeof(string), "The variable to save.", true),
+            new Argument("variable", typeof(string), "The variable to save.", true),
         };
 
         /// <inheritdoc/>
