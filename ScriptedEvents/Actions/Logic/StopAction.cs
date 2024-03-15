@@ -31,7 +31,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("scriptName", typeof(string), "The script name to be stopped. Leave empty to stop this script.", false),
+            new Argument("scriptName", typeof(string), "The script name to be stopped. Leave empty to stop this script. Use '*' to stop all scripts except the one running the action.", false),
         };
 
         /// <inheritdoc/>
@@ -39,13 +39,24 @@
         {
             if (Arguments.Length == 0) return new(true, flags: ActionFlags.StopEventExecution);
 
+            string scriptName = (string)Arguments[0];
+
+            if (scriptName == "*")
+            {
+                foreach (Script toStop in ScriptHelper.RunningScripts.Keys)
+                {
+                    if (toStop != script) ScriptHelper.StopScript(toStop);
+                }
+
+                return new(true);
+            }
+
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
                 return new(false, ErrorGen.Get(127));
             }
 
-            ScriptHelper.StopScripts((string)Arguments[0]);
-
+            ScriptHelper.StopScripts(scriptName);
             return new(true);
         }
     }
