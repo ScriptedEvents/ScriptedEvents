@@ -32,7 +32,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode. Either SET or REMOVE", true),
+            new Argument("mode", typeof(string), "The mode. Either SET or REMOVE.", true),
             new Argument("players", typeof(Player[]), "Players to change mute status for.", true),
             new Argument("long-term", typeof(bool), "If TRUE, player will be muted even after rejoining.", true),
         };
@@ -42,6 +42,7 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[1];
             bool longTerm = (bool)Arguments[2];
+            string x = (string)Arguments[0];
 
             Action<Player> playerAction;
 
