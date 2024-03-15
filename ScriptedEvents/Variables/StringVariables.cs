@@ -220,6 +220,9 @@
                         "XSIZE" => ply.Scale.x.ToString(),
                         "YSIZE" => ply.Scale.y.ToString(),
                         "ZSIZE" => ply.Scale.z.ToString(),
+                        "KILLS" => MainPlugin.Handlers.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "-1",
+                        "EFFECTS" when ply.ActiveEffects.Count() != 0 => string.Join("|", ply.ActiveEffects.Select(eff => eff.name)),
+                        "EFFECTS" => "None",
                         _ => ply.Nickname,
                     };
                     }).OrderBy(s => s);
@@ -255,6 +258,8 @@ The following options are valid selector options:
 - XSIZE 
 - YSIZE
 - ZSIZE
+- KILLS
+- EFFECTS
 Invalid options will default to the 'NAME' selector.";
     }
 
