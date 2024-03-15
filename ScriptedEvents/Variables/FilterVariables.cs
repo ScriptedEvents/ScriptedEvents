@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using CustomPlayerEffects;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
@@ -133,6 +134,7 @@
                     "GROUP" => players.Where(plr => plr.GroupName == input),
                     "ISSTAFF" when VariableSystem.ReplaceVariable(input.ToUpper(), Source).AsBool(Source) => players.Where(plr => plr.RemoteAdminAccess),
                     "ISSTAFF" when !VariableSystem.ReplaceVariable(input.ToUpper(), Source).AsBool(Source) => players.Where(plr => !plr.RemoteAdminAccess),
+                    "EFFECT" when VariableSystem.TryParse(input, out EffectType et, Source, false) => players.Where(plr => plr.TryGetEffect(et, out StatusEffectBase seb)),
                     _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{input}' is not valid for the specified filter method."),
                 };
 
@@ -152,6 +154,7 @@
 - HELDITEM
 - GROUP
 - ISSTAFF
+- EFFECT
 Invalid options will result in a script error.";
     }
 
