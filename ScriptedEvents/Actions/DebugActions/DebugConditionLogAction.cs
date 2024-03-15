@@ -13,7 +13,7 @@
     public class DebugConditionLogAction : IScriptAction, IHiddenAction
     {
         /// <inheritdoc/>
-        public string Name => "DEBUGCONDITIONLOG";
+        public string Name => "DEBUGCOND";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
