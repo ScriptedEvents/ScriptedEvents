@@ -120,6 +120,11 @@
         public Dictionary<RoleTypeId, int> Kills { get; } = new();
 
         /// <summary>
+        /// Gets a dictionary of round kills by specific players.
+        /// </summary>
+        public Dictionary<Player, int> PlayerKills { get; } = new();
+
+        /// <summary>
         /// Gets a dictionary of players with locked radio settings.
         /// </summary>
         public Dictionary<Player, RadioRange> LockedRadios { get; } = new();
@@ -201,6 +206,7 @@
             ScriptHelper.StopAllScripts();
             VariableSystem.ClearVariables();
             Kills.Clear();
+            PlayerKills.Clear();
             LockedRadios.Clear();
 
             DisabledPlayerKeys.Clear();
@@ -476,6 +482,11 @@
                     Kills[ev.Attacker.Role.Type]++;
                 else
                     Kills.Add(ev.Attacker.Role.Type, 1);
+
+                if (PlayerKills.ContainsKey(ev.Attacker))
+                    PlayerKills[ev.Attacker]++;
+                else
+                    PlayerKills.Add(ev.Attacker, 1);
             }
         }
 
