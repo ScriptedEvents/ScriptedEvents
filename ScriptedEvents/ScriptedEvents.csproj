@@ -95,6 +95,7 @@
     <Compile Include="Actions\CASSIE\SilentCassiePlayerAction.cs" />
     <Compile Include="Actions\CASSIE\CassiePlayerAction.cs" />
     <Compile Include="Actions\DebugActions\DebugProcessorAction.cs" />
+    <Compile Include="Actions\Inventory\LoadoutAction.cs" />
     <Compile Include="Actions\Logic\CallAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
