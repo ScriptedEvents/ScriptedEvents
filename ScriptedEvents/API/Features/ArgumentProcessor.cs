@@ -209,7 +209,7 @@
                     }
 
                     // Unsupported types: Add the string input
-                    success.NewParameters.Add(input);
+                    success.NewParameters.Add(VariableSystem.ReplaceVariable(input, source, true));
                     break;
             }
 
