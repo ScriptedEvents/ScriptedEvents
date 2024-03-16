@@ -239,7 +239,6 @@
     <Compile Include="Commands\MainCommand\ScriptedEventsParent.cs" />
     <Compile Include="Actions\Broadcast\BroadcastPlayerAction.cs" />
     <Compile Include="Actions\Broadcast\BroadcastAction.cs" />
-    <Compile Include="Actions\Variable\DeleteVariableAction.cs" />
     <Compile Include="Actions\Misc\ExecuteScriptAction.cs" />
     <Compile Include="Actions\Inventory\GiveAction.cs" />
     <Compile Include="Actions\Logic\GotoAction.cs" />
