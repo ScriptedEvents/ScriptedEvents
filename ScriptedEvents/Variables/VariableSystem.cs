@@ -138,6 +138,9 @@
         /// <returns>A tuple containing the variable and whether or not it's a reversed boolean value.</returns>
         public static VariableResult GetVariable(string name, Script source, bool requireBrackets = true, bool skipProcessing = false)
         {
+            if ((!name.StartsWith("{") || !name.EndsWith("}")) && !(!name.StartsWith("{") && !name.EndsWith("}")))
+                source.DebugLog($"Provided variable '{name}' has malformed brackets!!!");
+
             // Do this here so individual files dont have to do it anymore
             if (!requireBrackets)
             {
@@ -161,6 +164,7 @@
                     string arg = argument;
                     if (arg.EndsWith("}")) arg = arg.Replace("}", string.Empty);
                     argList.Add(arg);
+                    source.DebugLog($"Formatted argument '{argument} to '{arg}'");
                 }
             }
 

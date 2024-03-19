@@ -33,6 +33,8 @@
         /// <returns>The result of the process.</returns>
         public static ArgumentProcessResult Process(Argument[] expected, string[] args, IScriptComponent action, Script source, out bool failedConditionBlock, bool requireBrackets = true)
         {
+            args = AccountForSpacesInVariables(args, source);
+
             failedConditionBlock = false;
             if (expected is null || expected.Length == 0)
                 return new(true);
@@ -216,6 +218,46 @@
             source.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
 
             return success;
+        }
+
+        private static string[] AccountForSpacesInVariables(string[] inputList, Script source)
+        {
+            if (inputList is null || source is null) return inputList;
+
+            List<string> transformedList = new List<string>();
+
+            for (int i = 0; i < inputList.Length; i++)
+            {
+                string current = inputList[i];
+                if (current.StartsWith("{") && !current.EndsWith("}"))
+                {
+                    source.DebugLog("A variable has no closing bracket. Trying to fix the issue...");
+                    string combinedString = current;
+
+                    while (!current.EndsWith("}"))
+                    {
+                        i++;
+                        if (i >= inputList.Length)
+                        {
+                            Log.Warn("Provided arguments seem to have malformed brackets. Please verify your script or report to dev team.");
+                            source.DebugLog("----> Accounting for spaces failed! There seems to be no closing bracket. Please check debug log for more info.");
+                            return inputList.ToArray();
+                        }
+
+                        current = inputList[i];
+                        combinedString += " " + current;
+                    }
+
+                    source.DebugLog("A closing bracket was found; the variable has been combined successfully.");
+                    transformedList.Add(combinedString);
+                }
+                else
+                {
+                    transformedList.Add(current);
+                }
+            }
+
+            return transformedList.ToArray();
         }
     }
 }
