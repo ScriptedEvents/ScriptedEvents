@@ -242,7 +242,7 @@
         {
             get
             {
-                string playersAsString = VariableStorage.Read((string)Arguments[0]);
+                string playersAsString = VariableStorage.Read(RawArguments[0]);
                 List<Player> list = new();
 
                 if (ScriptHelper.TryGetPlayers(playersAsString, null, out PlayerCollection collection, Source))

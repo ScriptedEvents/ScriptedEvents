@@ -213,6 +213,8 @@
                     break;
             }
 
+            source.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a value '{success.NewParameters.Last()}'");
+
             return success;
         }
     }

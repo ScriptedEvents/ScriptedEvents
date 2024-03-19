@@ -8,7 +8,6 @@
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
     {
@@ -55,22 +54,24 @@
                 if (deprecatedOutcome.Passed)
                 {
                     script.DebugLog($"GOTOIF result: true. Jumping to line {Arguments[0]}.");
+
+                    if (Arguments[0].ToUpper() == "STOP")
+                        return new(true, flags: ActionFlags.StopEventExecution);
+
                     if (!script.Jump((string)Arguments[0]))
                     {
-                        if (Arguments[0].ToUpper() == "STOP")
-                            return new(true, flags: ActionFlags.StopEventExecution);
-
                         return new(false, ErrorGen.Get(139, "trueLine", Arguments[0]));
                     }
                 }
                 else
                 {
                     script.DebugLog($"GOTOIF result: false. Jumping to line {Arguments[1]}.");
+
+                    if (Arguments[1].ToUpper() == "STOP")
+                        return new(true, flags: ActionFlags.StopEventExecution);
+
                     if (!script.Jump((string)Arguments[1]))
                     {
-                        if (Arguments[1].ToUpper() == "STOP")
-                            return new(true, flags: ActionFlags.StopEventExecution);
-
                         return new(false, ErrorGen.Get(139, "falseLine", Arguments[1]));
                     }
                 }
@@ -79,7 +80,7 @@
             }
 
             // Standard GOTOIF
-            string label = VariableSystem.ReplaceVariable((string)Arguments[0], script);
+            string label = (string)Arguments[0];
 
             ConditionResponse outcome = ConditionHelperV2.Evaluate(Arguments.JoinMessage(1), script);
             if (!outcome.Success)

@@ -39,7 +39,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string varName = (string)Arguments[0];
+            string varName = RawArguments[0];
             string input = Arguments.JoinMessage(1);
 
             input = VariableSystem.ReplaceVariables(input, script);

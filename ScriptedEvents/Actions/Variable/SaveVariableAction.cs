@@ -1,7 +1,5 @@
 ﻿namespace ScriptedEvents.Actions
 {
-    using System.Linq;
-
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -39,7 +37,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string varName = (string)Arguments[0];
+            string varName = RawArguments[0];
             string input = Arguments.JoinMessage(1);
 
             input = VariableSystem.ReplaceVariables(input, script);

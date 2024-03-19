@@ -307,6 +307,45 @@ Invalid options will default to the 'NAME' selector.";
         }
     }
 
+    public class ReplaceVariable : IStringVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{REPLACE}";
+
+        /// <inheritdoc/>
+        public string Description => "Replaces character sequneces.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("variableName", typeof(string), "The name of the variable on which the operation will be performed.", true),
+            new Argument("targetSequence", typeof(string), "The sequence which will be replaced.", true),
+            new Argument("replacingSequence", typeof(string), "The sequence which will be replacing the old one.", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                if (!VariableSystem.TryGetVariable(RawArguments[0], out IConditionVariable processedVar, out bool _, Source, requireBrackets: false))
+                {
+                    throw new ArgumentException("Provided variable is invalid.");
+                }
+
+                return processedVar.String().Replace(Arguments[1].ToString(), Arguments[2].ToString());
+            }
+        }
+
+        public Script Source { get; set; }
+    }
+
     public class RandomDoor : IStringVariable, INeedSourceVariable, IArgumentVariable
     {
         /// <inheritdoc/>

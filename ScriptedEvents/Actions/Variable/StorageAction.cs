@@ -44,7 +44,7 @@
 
             if (mode == "LITERAL")
             {
-                if (!VariableSystem.TryGetVariable((string)Arguments[1], out IConditionVariable var, out bool _, script))
+                if (!VariableSystem.TryGetVariable(RawArguments[1], out IConditionVariable var, out bool _, script))
                     return new(false, "Invalid literal variable to store has been provided.");
 
                 VariableStorage.Save(var);

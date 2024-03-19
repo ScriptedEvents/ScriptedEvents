@@ -5,6 +5,7 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
@@ -35,7 +36,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if ((string)Arguments[0] == "CLEAR")
+            if (Arguments[0].ToUpper() == "CLEAR")
             {
                 MainPlugin.Handlers.DamageRules.Clear();
                 return new(true);

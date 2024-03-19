@@ -42,7 +42,6 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[1];
             bool longTerm = (bool)Arguments[2];
-            string x = (string)Arguments[0];
 
             Action<Player> playerAction;
 

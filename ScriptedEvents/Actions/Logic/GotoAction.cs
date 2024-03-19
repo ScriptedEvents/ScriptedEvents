@@ -1,13 +1,11 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Linq;
 
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class GotoAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
     {
@@ -41,7 +39,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string label = VariableSystem.ReplaceVariable((string)Arguments[0], script);
+            string label = (string)Arguments[0];
 
             if (!script.Jump(label))
             {

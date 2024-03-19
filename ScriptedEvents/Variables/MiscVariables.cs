@@ -107,7 +107,7 @@
         {
             get
             {
-                return VariableStorage.Read((string)Arguments[0]);
+                return VariableStorage.Read(RawArguments[0]);
             }
         }
     }

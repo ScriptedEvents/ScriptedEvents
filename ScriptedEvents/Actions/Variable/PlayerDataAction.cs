@@ -48,17 +48,21 @@
                 case "GET" when Arguments.Length < 4:
                 case "SET" when Arguments.Length < 4:
                     return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+
                 case "GET":
                     if (players.Length > 1)
                         return new(false, "The 'GET' mode of the PLAYERDATA action only works on variables with exactly one player!");
-                    string varName = (string)Arguments[3];
+
+                    string varName = RawArguments[3];
                     string keyName = (string)Arguments[2];
                     Player ply1 = players[0];
+
                     if (ply1.SessionVariables.ContainsKey(keyName))
                         VariableSystem.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", ply1.SessionVariables[keyName].ToString(), script);
                     else
                         VariableSystem.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", "NONE", script);
                     break;
+
                 case "SAVE":
                 case "SET":
                     keyName = (string)Arguments[2];

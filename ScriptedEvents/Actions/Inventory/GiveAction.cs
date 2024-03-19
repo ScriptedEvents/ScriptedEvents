@@ -1,14 +1,12 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Collections.Generic;
 
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
 
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;

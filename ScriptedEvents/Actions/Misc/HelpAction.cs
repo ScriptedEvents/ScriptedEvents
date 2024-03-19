@@ -261,14 +261,14 @@ Thanks for using my plugin. <3";
             }
 
             // Variable help
-            else if (((string)Arguments[0]).StartsWith("{") && ((string)Arguments[0]).EndsWith("}"))
+            else if (RawArguments[0].StartsWith("{") && RawArguments[0].EndsWith("}"))
             {
                 bool valid = false;
 
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
 
-                if (VariableSystem.TryGetVariable(Arguments[0].ToUpper(), out IConditionVariable variable, out bool reversed, script, skipProcessing: true))
+                if (VariableSystem.TryGetVariable(RawArguments[0].ToUpper(), out IConditionVariable variable, out bool reversed, script, skipProcessing: true))
                 {
                     valid = true;
                     sb.AppendLine("=== VARIABLE ===");

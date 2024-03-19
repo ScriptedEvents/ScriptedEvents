@@ -43,8 +43,8 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string mode = ((string)Arguments[0]).ToUpper();
-            string varName = (string)Arguments[1];
+            string mode = Arguments[0].ToUpper();
+            string varName = RawArguments[1];
             PlayerCollection players = null;
 
             int max = -1;

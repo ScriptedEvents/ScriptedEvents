@@ -56,7 +56,7 @@ These variables are created as per-script variables, meaning they can only be us
             body = VariableSystem.ReplaceVariables(body, script);
 
             string coroutineKey = $"HTTPPOST_COROUTINE_{DateTime.UtcNow.Ticks}";
-            CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, VariableSystem.ReplaceVariable((string)Arguments[0], script), body), coroutineKey);
+            CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, VariableSystem.ReplaceVariable(RawArguments[0], script), body), coroutineKey);
             CoroutineHelper.AddCoroutine("HTTPPOST", handle, script);
             message = new(true);
             return Timing.WaitUntilDone(handle);
