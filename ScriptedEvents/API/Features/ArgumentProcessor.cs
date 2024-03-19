@@ -213,7 +213,7 @@
                     break;
             }
 
-            source.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a value '{success.NewParameters.Last()}'");
+            source.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
 
             return success;
         }
