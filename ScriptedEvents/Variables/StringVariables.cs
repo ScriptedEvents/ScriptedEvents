@@ -34,6 +34,7 @@
             new Index(),
             new RandomDoor(),
             new RandomItem(),
+            new ReplaceVariable(),
         };
     }
 
@@ -324,9 +325,9 @@ Invalid options will default to the 'NAME' selector.";
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("variableName", typeof(string), "The name of the variable on which the operation will be performed.", true),
+            new Argument("variableName", typeof(IStringVariable), "The variable on which the operation will be performed.", true),
             new Argument("targetSequence", typeof(string), "The sequence which will be replaced.", true),
-            new Argument("replacingSequence", typeof(string), "The sequence which will be replacing the old one.", true),
+            new Argument("replacingSequence", typeof(string), "The value to replace with.", true),
         };
 
         /// <inheritdoc/>
@@ -334,11 +335,7 @@ Invalid options will default to the 'NAME' selector.";
         {
             get
             {
-                if (!VariableSystem.TryGetVariable(RawArguments[0], out IConditionVariable processedVar, out bool _, Source, requireBrackets: false))
-                {
-                    throw new ArgumentException("Provided variable is invalid.");
-                }
-
+                IStringVariable processedVar = (IStringVariable)Arguments[0];
                 return processedVar.String().Replace(Arguments[1].ToString(), Arguments[2].ToString());
             }
         }
