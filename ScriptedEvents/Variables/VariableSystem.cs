@@ -168,16 +168,26 @@
 
             Tuple<IConditionVariable, bool> result = new(null, false);
 
+            bool foundVar = false;
             foreach (IVariableGroup group in Groups)
             {
                 foreach (IVariable variable in group.Variables)
                 {
                     if (variable.Name == variableName && variable is IConditionVariable condition)
+                    {
                         result = new(condition, false);
+                        foundVar = true;
+                    }
                     else if (variable is IBoolVariable boolVariable && boolVariable.ReversedName == variableName)
+                    {
                         result = new(boolVariable, true);
+                        foundVar = true;
+                    }
                 }
             }
+
+            if (!foundVar)
+                source?.DebugLog("The variable provided is not a ScriptedEvents predefined variable.");
 
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
                 result = new(customValue, false);
@@ -212,6 +222,7 @@
             }
 
             ListPool<string>.Pool.Return(argList);
+            source?.DebugLog($"Returning the variable value as {result.Item1}");
             return new(true, result.Item1, string.Empty, result.Item2);
         }
 
