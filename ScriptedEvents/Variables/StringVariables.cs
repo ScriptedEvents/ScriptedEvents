@@ -206,7 +206,7 @@
                         "ZONE" => ply.Zone.ToString(),
                         "HP" or "HEALTH" => ply.Health.ToString(),
                         "INVCOUNT" => ply.Items.Count.ToString(),
-                        "INV" => string.Join(", ", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())),
+                        "INV" => string.Join("|", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())),
                         "HELDITEM" => (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci) ? ci.Name : ply.CurrentItem?.Type.ToString()) ?? ItemType.None.ToString(),
                         "GOD" => ply.IsGodModeEnabled.ToString().ToUpper(),
                         "POS" => $"{ply.Position.x} {ply.Position.y} {ply.Position.z}",
