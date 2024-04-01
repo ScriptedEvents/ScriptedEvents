@@ -138,8 +138,11 @@
         /// <returns>A tuple containing the variable and whether or not it's a reversed boolean value.</returns>
         public static VariableResult GetVariable(string name, Script source, bool requireBrackets = true, bool skipProcessing = false)
         {
-            if ((!name.StartsWith("{") || !name.EndsWith("}")) && !(!name.StartsWith("{") && !name.EndsWith("}")))
-                source.DebugLog($"Provided variable '{name}' has malformed brackets!!!");
+            bool surroundedWithBothBrackets = name.StartsWith("{") && name.EndsWith("}");
+            bool missingOneOrMoreBrackets = !name.StartsWith("{") || !name.EndsWith("}");
+
+            if (!surroundedWithBothBrackets && missingOneOrMoreBrackets)
+                source.DebugLog($"Provided variable '{name}' has malformed brackets! [surroundedWithBothBrackets: {surroundedWithBothBrackets}] [missingOneOrMoreBrackets: {missingOneOrMoreBrackets}]");
 
             // Do this here so individual files dont have to do it anymore
             if (!requireBrackets)
@@ -168,7 +171,7 @@
                 }
             }
 
-            source?.DebugLog($"Attempting to retrieve variable {variableName} with args {string.Join(" ", argList)}");
+            source?.DebugLog($"Attempting to retrieve variable '{variableName}' with args '{string.Join(", ", argList)}'");
 
             Tuple<IConditionVariable, bool> result = new(null, false);
 
@@ -191,7 +194,7 @@
             }
 
             if (!foundVar)
-                source?.DebugLog("The variable provided is not a ScriptedEvents predefined variable.");
+                source?.DebugLog("The variable provided is not a variable predefined by ScriptedEvents.");
 
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
                 result = new(customValue, false);
