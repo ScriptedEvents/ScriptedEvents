@@ -98,6 +98,7 @@
     <Compile Include="Actions\Inventory\LoadoutAction.cs" />
     <Compile Include="Actions\Logic\CallAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
+    <Compile Include="Actions\Logic\TriggerAction.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\GeneratorRuleAction.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="API\Constants\ConstMessages.cs" />
     <Compile Include="API\Constants\EnumDefinitions.cs" />
     <Compile Include="API\Enums\CommandCooldownMode.cs" />
+    <Compile Include="API\Enums\PlayerVariableProperties.cs" />
     <Compile Include="API\Extensions\InterfaceExtensions.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
     <Compile Include="API\Features\ArgumentProcessor.cs" />
