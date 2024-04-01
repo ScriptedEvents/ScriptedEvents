@@ -105,6 +105,8 @@
 
         internal static Dictionary<string, List<string>> CurrentEventData { get; set; }
 
+        internal static Dictionary<string, List<string>> CurrentCustomEventData { get; set; }
+
         /// <summary>
         /// Equivalent to <see cref="Log.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
         /// </summary>
@@ -269,6 +271,7 @@
         public void SetupEvents()
         {
             CurrentEventData = new();
+            CurrentCustomEventData = new();
 
             foreach (Script scr in ScriptHelper.ListScripts())
             {
@@ -282,6 +285,19 @@
                     else
                     {
                         CurrentEventData.Add(evName, new List<string>() { scr.ScriptName });
+                    }
+                }
+
+                if (scr.HasFlag("CUSTOMEVENT", out Flag cf))
+                {
+                    string cEvName = cf.Arguments[0];
+                    if (CurrentCustomEventData.ContainsKey(cEvName))
+                    {
+                        CurrentCustomEventData[cEvName].Add(scr.ScriptName);
+                    }
+                    else
+                    {
+                        CurrentCustomEventData.Add(cEvName, new List<string>() { scr.ScriptName });
                     }
                 }
 
@@ -457,7 +473,7 @@
 
         public override void OnRegisteringCommands()
         {
-            foreach (Structures.CustomCommand custom in Config.Commands)
+            foreach (CustomCommand custom in Config.Commands)
             {
                 if (!custom.Enabled) continue;
 
