@@ -38,6 +38,12 @@
         public ActionResponse Execute(Script script)
         {
             string varName = RawArguments[0];
+            if (Arguments.Length < 2)
+            {
+                VariableSystem.DefineVariable(varName, "User-defined variable.", string.Empty, script);
+                return new(true);
+            }
+
             string input = Arguments.JoinMessage(1);
 
             input = VariableSystem.ReplaceVariables(input, script);
