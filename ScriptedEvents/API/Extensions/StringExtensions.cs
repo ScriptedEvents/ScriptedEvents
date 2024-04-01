@@ -120,6 +120,7 @@
         {
             StringBuilder sb = StringBuilderPool.Pool.Get();
             var list = param.Skip(skipCount);
+            if (list.Count() == 0) return string.Empty;
 
             foreach (object obj in list)
             {
