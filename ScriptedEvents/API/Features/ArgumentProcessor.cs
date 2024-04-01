@@ -33,9 +33,8 @@
         /// <returns>The result of the process.</returns>
         public static ArgumentProcessResult Process(Argument[] expected, string[] args, IScriptComponent action, Script source, out bool failedConditionBlock, bool requireBrackets = true)
         {
-            args = AccountForSpacesInVariables(args, source);
-
             failedConditionBlock = false;
+
             if (expected is null || expected.Length == 0)
                 return new(true);
 
@@ -69,8 +68,7 @@
                     continue;
 
                 ArgumentProcessResult res = ProcessIndividualParameter(expect, input, action, source, requireBrackets);
-                if (!res.Success)
-                    return res; // Throw issue to end-user
+                if (!res.Success) return res; // Throw issue to end-user
 
                 success.NewParameters.AddRange(res.NewParameters);
             }
@@ -215,14 +213,14 @@
                     break;
             }
 
-            source.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
+            source?.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
 
             return success;
         }
 
         private static string[] AccountForSpacesInVariables(string[] inputList, Script source)
         {
-            if (inputList is null || source is null) return inputList;
+            return inputList;
 
             List<string> transformedList = new List<string>();
 
@@ -239,7 +237,7 @@
                         i++;
                         if (i >= inputList.Length)
                         {
-                            Log.Warn("Provided arguments seem to have malformed brackets. Please verify your script or report to dev team.");
+                            Log.Warn($"[{source.ScriptName} @ {source.CurrentLine}] Provided arguments seem to have malformed brackets. Please verify your script or report to dev team.");
                             source.DebugLog("----> Accounting for spaces failed! There seems to be no closing bracket. Please check debug log for more info.");
                             return inputList.ToArray();
                         }
