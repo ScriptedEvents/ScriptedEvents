@@ -388,10 +388,12 @@
                     if (ev is IItemEvent item && item.Item is not null)
                     {
                         scr.AddVariable("{EVITEM}", "The ItemType of the item involved with this event.", item.Item.Type.ToString());
+                        scr.AddVariable("{EVITEMID}", "The Id of the ItemType of the item involved with this event.", item.Item.Base.ItemSerial.ToString());
                     }
                     else if (ev is IPickupEvent pickup && pickup.Pickup is not null)
                     {
                         scr.AddVariable("{EVITEM}", "The ItemType of the pickup associated with this event.", pickup.Pickup.Type.ToString());
+                        scr.AddVariable("{EVITEMID}", "The Id of the ItemType of the pickup associated with this event.", pickup.Pickup.Serial.ToString());
                     }
 
                     ScriptHelper.RunScript(scr);
