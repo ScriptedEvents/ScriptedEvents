@@ -224,6 +224,7 @@
                         "KILLS" => MainPlugin.Handlers.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "-1",
                         "EFFECTS" when ply.ActiveEffects.Count() != 0 => string.Join("|", ply.ActiveEffects.Select(eff => eff.name)),
                         "EFFECTS" => "None",
+                        "NOCLIP" => ply.Role is FpcRole role ? role.IsNoclipEnabled.ToUpper() : "FALSE",
                         _ => ply.Nickname,
                     };
                     }).OrderBy(s => s);
@@ -261,6 +262,7 @@ The following options are valid selector options:
 - ZSIZE
 - KILLS
 - EFFECTS
+- NOCLIP
 Invalid options will default to the 'NAME' selector.";
     }
 
