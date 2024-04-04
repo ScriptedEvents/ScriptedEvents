@@ -1,0 +1,43 @@
+﻿namespace ScriptedEvents.Commands.MainCommand
+{
+    using System;
+
+    using CommandSystem;
+
+    using Exiled.Permissions.Extensions;
+
+    using ScriptedEvents.API.Features;
+
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    public class ExecuteAutorunScript : ICommand
+    {
+        /// <inheritdoc/>
+        public string Command => "executeautorun";
+
+        /// <inheritdoc/>
+        public string[] Aliases => new[] { "exa", "runa" };
+
+        /// <inheritdoc/>
+        public string Description => "Start all scripts marked as autorun.";
+
+        /// <inheritdoc/>
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        {
+            if (!sender.CheckPermission("script.execute-autorun"))
+            {
+                response = "Missing permission: script.execute-autorun";
+                return false;
+            }
+
+            string ranScripts = string.Empty;
+            foreach (string scrName in MainPlugin.AutorunScripts)
+            {
+                ScriptHelper.ReadAndRun(scrName, sender);
+                ranScripts += scrName + ',';
+            }
+
+            response = $"Running scripts: {ranScripts.Remove(ranScripts.Length - 1)}";
+            return true;
+        }
+    }
+}
