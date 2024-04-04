@@ -52,9 +52,7 @@
                     action = (lift) =>
                     {
                         if (lift.IsLocked)
-                        {
                             return;
-                        }
 
                         foreach (var door in lift.Doors)
                         {

@@ -135,6 +135,7 @@
         /// <param name="name">The input string.</param>
         /// <param name="source">The script source.</param>
         /// <param name="requireBrackets">If brackets are required to parse the variable.</param>
+        /// <param name="skipProcessing">If processing is to be skipped.</param>
         /// <returns>A tuple containing the variable and whether or not it's a reversed boolean value.</returns>
         public static VariableResult GetVariable(string name, Script source, bool requireBrackets = true, bool skipProcessing = false)
         {
@@ -241,6 +242,7 @@
         /// <param name="reversed">If the value is a reversed boolean value.</param>
         /// <param name="source">The script source.</param>
         /// <param name="requireBrackets">If brackets are required to parse the variable.</param>
+        /// <param name="skipProcessing">If processing is to be skipped.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
         public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source, bool requireBrackets = true, bool skipProcessing = false)
         {
@@ -452,7 +454,9 @@
                 object result = Enum.Parse(enumType, input, true);
                 return result;
             }
-            catch { }
+            catch
+            {
+            }
 
             if (TryGetVariable(input, out IConditionVariable vr, out _, source, requireBrackets))
             {
@@ -463,7 +467,9 @@
                         object result = Enum.Parse(enumType, strVar.Value, true);
                         return result;
                     }
-                    catch { }
+                    catch
+                    {
+                    }
                 }
             }
 
