@@ -217,45 +217,5 @@
 
             return success;
         }
-
-        private static string[] AccountForSpacesInVariables(string[] inputList, Script source)
-        {
-            return inputList;
-
-            List<string> transformedList = new List<string>();
-
-            for (int i = 0; i < inputList.Length; i++)
-            {
-                string current = inputList[i];
-                if (current.StartsWith("{") && !current.EndsWith("}"))
-                {
-                    source.DebugLog("A variable has no closing bracket. Trying to fix the issue...");
-                    string combinedString = current;
-
-                    while (!current.EndsWith("}"))
-                    {
-                        i++;
-                        if (i >= inputList.Length)
-                        {
-                            Log.Warn($"[{source.ScriptName} @ {source.CurrentLine}] Provided arguments seem to have malformed brackets. Please verify your script or report to dev team.");
-                            source.DebugLog("----> Accounting for spaces failed! There seems to be no closing bracket. Please check debug log for more info.");
-                            return inputList.ToArray();
-                        }
-
-                        current = inputList[i];
-                        combinedString += " " + current;
-                    }
-
-                    source.DebugLog("A closing bracket was found; the variable has been combined successfully.");
-                    transformedList.Add(combinedString);
-                }
-                else
-                {
-                    transformedList.Add(current);
-                }
-            }
-
-            return transformedList.ToArray();
-        }
     }
 }
