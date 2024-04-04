@@ -243,6 +243,7 @@
                 {
                     Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
                     autoRun.Add(scr.ScriptName);
+                    MainPlugin.AutorunScripts.Add(scr.ScriptName);
                 }
 
                 scr.Dispose();

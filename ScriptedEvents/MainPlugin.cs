@@ -107,6 +107,8 @@
 
         internal static Dictionary<string, List<string>> CurrentCustomEventData { get; set; }
 
+        internal static List<string> AutorunScripts { get; set; }
+
         /// <summary>
         /// Equivalent to <see cref="Log.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
         /// </summary>
