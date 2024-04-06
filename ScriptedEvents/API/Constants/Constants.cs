@@ -9,7 +9,7 @@
 
     public static class Constants
     {
-        public static readonly string ItsMyBirthday = @$"ScriptedEvents has turned {DateTime.Now.Year - 2023} year old today!";
+        public static readonly string ItsMyBirthday = @$"ScriptedEvents has turned {DateTime.Now.Year - 2023} years old today!";
 
         public static readonly Contributor[] Contributors =
         {
