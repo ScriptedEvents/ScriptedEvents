@@ -398,6 +398,28 @@
                         scr.AddVariable("{EVITEMID}", "The Id of the ItemType of the pickup associated with this event.", pickup.Pickup.Serial.ToString());
                     }
 
+                    if (ev is BanningEventArgs ban)
+                    {
+                        scr.AddPlayerVariable("{EVPLAYER}", "The ban issuer.", new[] { ban.Player });
+                        scr.AddVariable("{EVREASON}", "The ban reason.", ban.Reason.ToString());
+                        scr.AddVariable("{EVDURATION}", "The ban duration.", ban.Duration.ToString());
+                        scr.AddVariable("{EVTARGET}", "The ban target.", ban.Target.Nickname);
+                    }
+
+                    if (ev is LocalReportingEventArgs rep)
+                    {
+                        scr.AddPlayerVariable("{EVPLAYER}", "The report issuer.", new[] { rep.Player });
+                        scr.AddVariable("{EVREASON}", "The report reason.", rep.Reason.ToString());
+                        scr.AddPlayerVariable("{EVTARGET}", "The report target.", new[] { rep.Target });
+                    }
+
+                    if (ev is KickingEventArgs kick)
+                    {
+                        scr.AddPlayerVariable("{EVPLAYER}", "The issuer.", new[] { kick.Player });
+                        scr.AddVariable("{EVREASON}", "The reason.", kick.Reason.ToString());
+                        scr.AddPlayerVariable("{EVTARGET}", "The target.", new[] { kick.Target });
+                    }
+
                     ScriptHelper.RunScript(scr);
                 }
                 catch (DisabledScriptException)
