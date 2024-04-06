@@ -33,10 +33,16 @@
             foreach (string scrName in MainPlugin.AutorunScripts)
             {
                 ScriptHelper.ReadAndRun(scrName, sender);
-                ranScripts += scrName + ',';
+                ranScripts += scrName + ", ";
             }
 
-            response = $"Running scripts: {ranScripts.Remove(ranScripts.Length - 1)}";
+            if (MainPlugin.AutorunScripts.Count > 0)
+            {
+                response = $"Running scripts: {ranScripts.Remove(ranScripts.Length - 2)}";
+                return true;
+            }
+
+            response = $"There are 0 autorun scripts.";
             return true;
         }
     }
