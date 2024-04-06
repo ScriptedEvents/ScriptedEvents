@@ -151,13 +151,13 @@
 
                 // Welcome message :)
                 // 3s delay to show after other console spam
-                Timing.CallDelayed(3f, () =>
+                Timing.CallDelayed(6f, () =>
                 {
                     Log.Warn($"Thank you for installing Scripted Events! View the README file located at {ScriptHelper.ScriptPath} for information on how to use and get the most out of this plugin.");
                 });
             }
 
-            Timing.CallDelayed(3f, () =>
+            Timing.CallDelayed(6f, () =>
             {
                 if (IsExperimental)
                 {
