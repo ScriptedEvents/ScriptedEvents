@@ -66,7 +66,7 @@
                     break;
                 }
 
-                yield return Timing.WaitForSeconds(1f);
+                yield return Timing.WaitForSeconds(1 / MainPlugin.Configs.WaitUntilFrequency);
             }
         }
     }

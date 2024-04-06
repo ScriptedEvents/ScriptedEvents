@@ -29,6 +29,9 @@
         [Description("The string to use for countdowns.")]
         public string CountdownString { get; set; } = "<size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\\n{TIME}";
 
+        [Description("The amount of times the WAITUNTIL action will update per second. Can cause performace issues if set too high.")]
+        public float WaitUntilFrequency { get; set; } = 2f;
+
         [Description("Define a custom set of permissions used to run a certain script. The provided permission will be added AFTER script.execute (eg. script.execute.examplepermission for the provided example).")]
         public Dictionary<string, string> RequiredPermissions { get; set; } = new()
         {
