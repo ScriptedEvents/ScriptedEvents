@@ -149,6 +149,11 @@
         public List<int> CallLines { get; set; } = new();
 
         /// <summary>
+        /// Gets the original script which ran this script using the CALL action.
+        /// </summary>
+        public Script CallerScript { get; internal set; }
+
+        /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
         /// </summary>
         public Dictionary<string, CustomVariable> UniqueVariables { get; set; }

@@ -13,7 +13,7 @@
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
-    public class CallAction : IScriptAction, ILogicAction, IHelpInfo
+    public class CallAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "CALL";
@@ -31,7 +31,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Moves to the provided label. When RETURN action is used, script will continue to execute from the last CALL action.";
+        public string Description => "Moves to the provided label or executes a script.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -68,6 +68,7 @@
                 try
                 {
                     calledScript = ScriptHelper.ReadScript(scriptName, script.Sender, false);
+                    calledScript.CallerScript = script;
                 }
                 catch (DisabledScriptException)
                 {
