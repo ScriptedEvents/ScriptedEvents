@@ -79,7 +79,7 @@ Thanks for using my plugin. <3";
             }
 
             // List Help
-            if (Arguments[0].ToUpper() == "LIST")
+            if (Arguments[0].ToUpper() is "LIST" or "ACTIONS" or "ACTS")
             {
                 StringBuilder sbList = StringBuilderPool.Pool.Get();
                 sbList.AppendLine();
@@ -118,7 +118,7 @@ Thanks for using my plugin. <3";
             }
 
             // List Variables
-            if (Arguments[0].ToUpper() is "LISTVAR" or "VARLIST")
+            if (Arguments[0].ToUpper() is "LISTVAR" or "VARLIST" or "VARIABLES" or "VARS")
             {
                 var conditionList = VariableSystem.Groups.OrderBy(group => group.GroupName);
 
@@ -127,6 +127,7 @@ Thanks for using my plugin. <3";
                 sbList.AppendLine("=== VARIABLES ===");
                 sbList.AppendLine("The following variables can all be used in conditions, such as IF, GOTOIF, WAITUNTIL, etc. Additionally, each RoleType has its own variable (eg. {NTFCAPTAIN}).");
                 sbList.AppendLine("An asterisk [*] before the name of a variable indicates it also stores players, which can be used in numerous actions such as SETROLE.");
+                sbList.AppendLine();
 
                 foreach (IVariableGroup group in conditionList)
                 {
@@ -137,25 +138,6 @@ Thanks for using my plugin. <3";
                     }
 
                     sbList.AppendLine();
-                }
-
-                sbList.AppendLine("+ Script Defined +");
-                sbList.AppendLine("These variables are defined by a script. These variables can be used in any script and are erased when the round restarts.");
-                if (VariableSystem.DefinedVariables.Count == 0)
-                {
-                    sbList.AppendLine("None");
-                }
-                else
-                {
-                    foreach (var userDefined in VariableSystem.DefinedVariables.OrderBy(v => v.Key))
-                    {
-                        sbList.AppendLine($"{userDefined.Value.Name}");
-                    }
-
-                    foreach (var userDefined2 in VariableSystem.DefinedPlayerVariables.OrderBy(v => v.Key))
-                    {
-                        sbList.AppendLine($"[*] {userDefined2.Value.Name}");
-                    }
                 }
 
                 return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbList)));
