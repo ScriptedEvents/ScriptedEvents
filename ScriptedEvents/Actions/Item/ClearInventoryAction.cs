@@ -2,17 +2,16 @@
 {
     using System;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using PlayerRoles;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class LoadoutAction : IScriptAction, IHelpInfo
+    public class ClearInventoryAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "LOADOUT";
+        public string Name => "CLEARINVENTORY";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -24,30 +23,27 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Inventory;
+        public ActionSubgroup Subgroup => ActionSubgroup.Item;
 
         /// <inheritdoc/>
-        public string Description => "Gives players a class loadout.";
+        public string Description => "Clears inventory of the targeted players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to grant loadout to.", true),
-            new Argument("class", typeof(RoleTypeId), "The class of which the loadout will be granted.", true),
+            new Argument("players", typeof(Player[]), "The players to remove the items from.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             PlayerCollection plys = (PlayerCollection)Arguments[0];
-            RoleTypeId role = (RoleTypeId)Arguments[1];
 
             foreach (Player player in plys)
             {
-                foreach (ItemType itemType in role.GetStartingInventory())
-                {
-                    player.AddItem(itemType);
-                }
+                player.Inventory.UserInventory.ReserveAmmo.Clear();
+                player.Inventory.SendAmmoNextFrame = true;
+                player.ClearInventory();
             }
 
             return new(true);

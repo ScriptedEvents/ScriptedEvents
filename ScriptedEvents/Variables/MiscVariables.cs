@@ -3,6 +3,7 @@
 #pragma warning disable SA1402 // File may only contain a single type
     using System;
 
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
@@ -61,25 +62,43 @@
         }
     }
 
-    public class This : IStringVariable, INeedSourceVariable
+    public class This : IStringVariable, INeedSourceVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{THIS}";
 
         /// <inheritdoc/>
-        public string Description => "Returns the script name.";
+        public string Description => "Returns information about the script.";
 
         /// <inheritdoc/>
-        public Script Source { get; set; }
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("mode", typeof(string), "The mode to use.", false),
+        };
 
         /// <inheritdoc/>
         public string Value
         {
             get
             {
-                return Source.ScriptName;
+                if (Arguments.Length == 0) return Source.ScriptName;
+
+                string mode = Arguments[0].ToUpper();
+                return mode switch
+                {
+                    "CALLER" => Source.CallerScript is not null ? Source.CallerScript.ScriptName : "NONE"
+                };
             }
         }
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
     }
 
     public class Storage : IStringVariable, IArgumentVariable

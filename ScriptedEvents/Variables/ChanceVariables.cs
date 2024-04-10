@@ -49,7 +49,7 @@ If 'type' is set to 'INT':
 > My integer is 60
 
 If 'type' is set to 'FLOAT':
-> act PRINT My float is {{RAND:0:1}}
+> act PRINT My float is {{RAND:0:1:FLOAT}}
 > My float is 0.35227";
 
         /// <inheritdoc/>
@@ -60,9 +60,9 @@ If 'type' is set to 'FLOAT':
                 string mode = Arguments[2].ToUpper();
                 return mode switch
                 {
-                    "INT" => UnityEngine.Random.Range(Convert.ToInt64(Arguments[0]), Convert.ToInt64(Arguments[1]) + 1),
+                    "INT" => UnityEngine.Random.Range(Convert.ToInt32(Arguments[0]), Convert.ToInt32(Arguments[1]) + 1),
                     "FLOAT" => UnityEngine.Random.Range(Convert.ToSingle(Arguments[0]), Convert.ToSingle(Arguments[1])),
-                    _ => throw new ArgumentException($"Invalid type.", mode)
+                    _ => throw new ArgumentException("Invalid type.", mode)
                 };
             }
         }

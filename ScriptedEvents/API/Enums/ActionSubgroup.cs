@@ -26,9 +26,9 @@
         Health,
 
         /// <summary>
-        /// Inventory-related action.
+        /// Item-related action.
         /// </summary>
-        Inventory,
+        Item,
 
         /// <summary>
         /// Facility lighting related action.

@@ -95,7 +95,7 @@
     <Compile Include="Actions\CASSIE\SilentCassiePlayerAction.cs" />
     <Compile Include="Actions\CASSIE\CassiePlayerAction.cs" />
     <Compile Include="Actions\DebugActions\DebugProcessorAction.cs" />
-    <Compile Include="Actions\Inventory\LoadoutAction.cs" />
+    <Compile Include="Actions\Item\LoadoutAction.cs" />
     <Compile Include="Actions\Logic\CallAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Logic\TriggerAction.cs" />
@@ -119,11 +119,11 @@
     <Compile Include="Actions\RoundRule\DamageRuleAction.cs" />
     <Compile Include="Actions\DebugActions\DamageRuleDebug.cs" />
     <Compile Include="Actions\RoundRule\DeleteInfectRule.cs" />
-    <Compile Include="Actions\Inventory\GiveCandyAction.cs" />
+    <Compile Include="Actions\Item\GiveCandyAction.cs" />
     <Compile Include="Actions\Broadcast\HintPlayerAction.cs" />
     <Compile Include="Actions\Broadcast\HintAction.cs" />
     <Compile Include="Actions\CASSIE\ClearCassieAction.cs" />
-    <Compile Include="Actions\Inventory\ClearInventoryAction.cs" />
+    <Compile Include="Actions\Item\ClearInventoryAction.cs" />
     <Compile Include="Actions\Broadcast\CountdownAction.cs" />
     <Compile Include="Actions\Misc\CustomAction.cs" />
     <Compile Include="Actions\Health\DamageAction.cs" />
@@ -143,7 +143,7 @@
     <Compile Include="Actions\Round\EndRoundAction.cs" />
     <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
     <Compile Include="Actions\Player\RadioRangeAction.cs" />
-    <Compile Include="Actions\Inventory\RemoveItemAction.cs" />
+    <Compile Include="Actions\Item\RemoveItemAction.cs" />
     <Compile Include="API\Constants\Constants.cs" />
     <Compile Include="API\Constants\ConstMessages.cs" />
     <Compile Include="API\Constants\EnumDefinitions.cs" />
@@ -212,6 +212,8 @@
     <Compile Include="Structures\RoleTypeIdOrTeam.cs" />
     <Compile Include="Structures\VariableResult.cs" />
     <Compile Include="Translations.cs" />
+    <Compile Include="Variables\Interfaces\IItemVariable.cs" />
+    <Compile Include="Variables\ItemVariables.cs" />
     <Compile Include="Variables\FilterVariables.cs" />
     <Compile Include="Variables\IntercomVariables.cs" />
     <Compile Include="Variables\Interfaces\ILongVariable.cs" />
@@ -242,7 +244,7 @@
     <Compile Include="Actions\Broadcast\BroadcastPlayerAction.cs" />
     <Compile Include="Actions\Broadcast\BroadcastAction.cs" />
     <Compile Include="Actions\Misc\ExecuteScriptAction.cs" />
-    <Compile Include="Actions\Inventory\GiveAction.cs" />
+    <Compile Include="Actions\Item\GiveAction.cs" />
     <Compile Include="Actions\Logic\GotoAction.cs" />
     <Compile Include="Actions\Logic\GotoIfAction.cs" />
     <Compile Include="Actions\Misc\HelpAction.cs" />

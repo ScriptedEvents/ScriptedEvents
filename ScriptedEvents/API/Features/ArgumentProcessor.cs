@@ -6,7 +6,7 @@
 
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
-
+    using Exiled.API.Features.Items;
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
@@ -155,6 +155,17 @@
                         return new(false, expected.ArgumentName, ErrorGen.Get(133, input));
 
                     success.NewParameters.Add(playerVar);
+                    break;
+
+                case "IItemVariable":
+                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable4, out _, source, requireBrackets))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+                    if (variable4 is not IItemVariable itemVar)
+                        return new(false, expected.ArgumentName, ErrorGen.Get(133, input));
+                    if (Item.Get(itemVar.Value) is null)
+                        return new(false, expected.ArgumentName, "The provided item variable is not valid.");
+
+                    success.NewParameters.Add(itemVar);
                     break;
 
                 // Array Types:

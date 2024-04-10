@@ -11,7 +11,7 @@
     /// </summary>
     public class PlayerCollection : IEnumerable<Player>
     {
-        private List<Player> players;
+        private readonly List<Player> players;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerCollection"/> class.

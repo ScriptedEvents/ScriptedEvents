@@ -390,13 +390,11 @@
 
                     if (ev is IItemEvent item && item.Item is not null)
                     {
-                        scr.AddVariable("{EVITEM}", "The ItemType of the item involved with this event.", item.Item.Type.ToString());
-                        scr.AddVariable("{EVITEMID}", "The Id of the ItemType of the item involved with this event.", item.Item.Base.ItemSerial.ToString());
+                        scr.AddVariable("{EVITEM}", "The Id of the ItemType of the item involved with this event.", item.Item.Base.ItemSerial.ToString());
                     }
                     else if (ev is IPickupEvent pickup && pickup.Pickup is not null)
                     {
-                        scr.AddVariable("{EVITEM}", "The ItemType of the pickup associated with this event.", pickup.Pickup.Type.ToString());
-                        scr.AddVariable("{EVITEMID}", "The Id of the ItemType of the pickup associated with this event.", pickup.Pickup.Serial.ToString());
+                        scr.AddVariable("{EVITEM}", "The Id of the ItemType of the pickup associated with this event.", pickup.Pickup.Serial.ToString());
                     }
 
                     if (ev is BanningEventArgs ban)
@@ -419,6 +417,16 @@
                         scr.AddPlayerVariable("{EVPLAYER}", "The issuer.", new[] { kick.Player });
                         scr.AddVariable("{EVREASON}", "The reason.", kick.Reason.ToString());
                         scr.AddPlayerVariable("{EVTARGET}", "The target.", new[] { kick.Target });
+                    }
+
+                    if (ev is HurtingEventArgs hurting)
+                    {
+                        scr.AddVariable("{EVAMMOUNT}", "The amount of damage dealt.", hurting.Amount.ToString());
+                    }
+
+                    if (ev is IDoorEvent door && door.Door is not null)
+                    {
+                        scr.AddVariable("{EVDOOR}", "The door type.", door.Door.Type.ToString());
                     }
 
                     ScriptHelper.RunScript(scr);
