@@ -63,9 +63,20 @@
                     scr.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
                 }
 
+                for (int i = 1; i < 20; i++)
+                {
+                    if (arguments.Count <= i)
+                        break;
+
+                    scr.DebugLog($"Assigned {{ARG{i}}} variable to executed script.");
+                    scr.AddVariable($"{{ARG{i}}}", $"Argument #{i} of the command.", arguments.At(i).ToString());
+                }
+
+                scr.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));
+
                 ScriptHelper.RunScript(scr);
 
-                response = $"Executed {scr.ScriptName} successfully.";
+                response = $"Script '{scr.ScriptName}' executed successfully.";
             }
             catch (DisabledScriptException)
             {
