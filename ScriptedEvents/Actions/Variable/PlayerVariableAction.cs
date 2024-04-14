@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
-
+    using ScriptedEvents.Variables.Interfaces;
     using UnityEngine;
 
     public class PlayerVariableAction : IScriptAction, IHelpInfo
@@ -70,7 +70,13 @@
             {
                 // Todo: Need to find a better solution where the 'max' parameter is required
                 // Math does not work inside of variables
-                if (!ScriptHelper.TryGetPlayers(RawArguments[2], max, out players, script))
+                if (Arguments[2] is IPlayerVariable)
+                {
+                    if (!ScriptHelper.TryGetPlayers(RawArguments[2], max, out players, script))
+                        return new(false, players.Message);
+                }
+
+                if (!ScriptHelper.TryGetPlayers(VariableSystem.ReplaceVariable(RawArguments[2], script), max, out players, script))
                     return new(false, players.Message);
             }
 
