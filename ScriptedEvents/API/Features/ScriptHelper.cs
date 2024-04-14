@@ -365,15 +365,22 @@ namespace ScriptedEvents.API.Features
             string[] variables = VariableSystem.IsolateVariables(input, source);
             foreach (string variable in variables)
             {
+                source.DebugLog($"Checking is variable {variable} contains players");
                 try
                 {
                     if (VariableSystem.TryGetPlayers(variable, out PlayerCollection playersFromVariable, source))
                     {
+                        source.DebugLog("Success! Variable contains players.");
                         list.AddRange(playersFromVariable);
+                    }
+                    else
+                    {
+                        source.DebugLog("Failure! Variable does not contian players!");
                     }
                 }
                 catch (Exception e)
                 {
+                    source.DebugLog("Failure! Variable does not contian players!");
                     collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
                     return false;
                 }
