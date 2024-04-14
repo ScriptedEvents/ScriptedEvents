@@ -34,7 +34,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("mode", typeof(string), "The mode to use. Either LITERAL or PLAYER.", true),
-            new Argument("variable", typeof(string), "The variable to save.", true),
+            new Argument("variable", typeof(IVariable), "The variable to save.", true),
         };
 
         /// <inheritdoc/>
