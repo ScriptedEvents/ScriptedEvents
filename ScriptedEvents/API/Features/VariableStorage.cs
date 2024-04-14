@@ -82,10 +82,7 @@
             }
         }
 
-        private static string GetFilePath(string varName)
-        {
-            return Path.Combine(DirPath, $"{varName}.txt");
-        }
+        private static string GetFilePath(string varName) => Path.Combine(DirPath, $"{varName}.txt");
 
         private static string StripBrackets(string varName)
         {
