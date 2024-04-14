@@ -86,16 +86,17 @@
                 string mode = Arguments[0].ToUpper();
                 return mode switch
                 {
-                    "CALLER" => Source.CallerScript is not null ? Source.CallerScript.ScriptName : "NONE"
+                    "CALLER" => Source.CallerScript is not null ? Source.CallerScript.ScriptName : "NONE",
+                    _ => throw new ArgumentException("Invalid mode.", mode)
                 };
             }
         }
 
         /// <inheritdoc/>
-        public string[] RawArguments { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public Script Source { get; set; }
