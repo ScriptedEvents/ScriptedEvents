@@ -7,7 +7,7 @@
     using System.Text.RegularExpressions;
 
     using Exiled.API.Features;
-    using ScriptedEvents.API.Extensions;
+
     using ScriptedEvents.Conditions.Floats;
     using ScriptedEvents.Conditions.Interfaces;
     using ScriptedEvents.Conditions.Strings;
