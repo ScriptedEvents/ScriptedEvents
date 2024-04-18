@@ -130,7 +130,7 @@
                         if (arguments.Count <= i)
                             break;
 
-                        body.AddVariable($"{{ARG{i}}}", $"Argument #{i} of the command.", arguments.At(i-1).ToString());
+                        body.AddVariable($"{{ARG{i}}}", $"Argument #{i} of the command.", arguments.At(i - 1).ToString());
                     }
 
                     body.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));

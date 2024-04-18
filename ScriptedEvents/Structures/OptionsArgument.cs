@@ -2,12 +2,12 @@
 {
     public class OptionsArgument : Argument
     {
-        public OptionsArgument(string argumentName, string description, bool required, params string[] options)
-            : base(argumentName, typeof(string), description, required)
+        public OptionsArgument(string argumentName, bool required, params Option[] options)
+            : base(argumentName, typeof(string), $"The {argumentName} to use.", required)
         {
             Options = options;
         }
 
-        public string[] Options { get; }
+        public Option[] Options { get; }
     }
 }

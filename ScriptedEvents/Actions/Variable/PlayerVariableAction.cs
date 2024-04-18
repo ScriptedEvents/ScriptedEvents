@@ -34,7 +34,11 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The action to perform (SAVE/DELETE/ADD/REMOVE).", true),
+            new OptionsArgument("mode", true,
+                new("SAVE", "Saves a new player variable."),
+                new("DELETE", "Deletes a previously-saved player variable."),
+                new("ADD", "Adds player(s) to an established player variable."),
+                new("REMOVE", "Removes player(s) from an established player variable.")),
             new Argument("variableName", typeof(string), "The name of the variable.", true),
             new Argument("players", typeof(Player[]), "The players. Not required if mode is 'DELETE', but required otherwise.", false),
             new Argument("max", typeof(int), "The maximum amount of players to save/add/remove. No effect if mode is 'DELETE'. Math and variables are supported. (default: unlimited).", false),
@@ -89,7 +93,7 @@
                     if (VariableSystem.DefinedPlayerVariables.ContainsKey(varName))
                     {
                         VariableSystem.DefinedPlayerVariables.Remove(varName);
-                        return new(true);
+                        break;
                     }
                     else
                     {
@@ -100,7 +104,7 @@
                     if (VariableSystem.DefinedPlayerVariables.TryGetValue(varName, out CustomPlayerVariable var))
                     {
                         var.Add(players.GetArray());
-                        return new(true);
+                        break;
                     }
                     else
                     {
@@ -111,7 +115,7 @@
                     if (VariableSystem.DefinedPlayerVariables.TryGetValue(varName, out CustomPlayerVariable var2))
                     {
                         var2.Remove(players.GetArray());
-                        return new(true);
+                        break;
                     }
                     else
                     {
@@ -119,7 +123,7 @@
                     }
             }
 
-            return new(MessageType.InvalidOption, this, "mode", "SAVE/DELETE/ADD/REMOVE");
+            return new(true);
         }
     }
 }

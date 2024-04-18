@@ -32,9 +32,11 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode. Either SET or REMOVE.", true),
+            new OptionsArgument("mode", true,
+                new("SET", "Mute player(s)."),
+                new("REMOVE", "Unmute player(s).")),
             new Argument("players", typeof(Player[]), "Players to change mute status for.", true),
-            new Argument("long-term", typeof(bool), "If TRUE, player will be muted even after rejoining.", true),
+            new Argument("longterm", typeof(bool), "If TRUE, player will be muted even after rejoining.", true),
         };
 
         /// <inheritdoc/>

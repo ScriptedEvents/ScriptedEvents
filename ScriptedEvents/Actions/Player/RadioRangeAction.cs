@@ -36,7 +36,9 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to run. Valid options: SET, LOCK", true),
+            new OptionsArgument("mode", true,
+                new("SET", "Only sets the range of the radio."),
+                new("LOCK", "Sets the range and locks its value so it cannot be changed.")),
             new Argument("players", typeof(Player[]), "The players to change the radio settings of.", true),
             new Argument("range", typeof(RadioRange), "The new radio range. Must be: Short, Medium, Long, or Ultra", true),
         };
@@ -48,13 +50,7 @@
         public ActionResponse Execute(Script script)
         {
             PlayerCollection players = (PlayerCollection)Arguments[1];
-
             RadioRange range = (RadioRange)Arguments[2];
-
-            if (Arguments[0].ToUpper() is "LOCK" or "SET")
-            {
-                return new(MessageType.InvalidOption, this, "mode", Arguments[0], "SET/LOCK");
-            }
 
             foreach (Player ply in players)
             {

@@ -33,7 +33,9 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to return with. Use LABEL to go back to the called label, or SCRIPT to stop the execution. Defaults to LABEL", false),
+            new OptionsArgument("mode", false,
+                new("LABEL", "Return to the called label. Default option."),
+                new("SCRIPT", "Stop the script execution.")),
             new Argument("values", typeof(object), "The variables to return. These variables will be copied to the original caller with the same name and value. Used only with SCRIPT mode.", false),
         };
 

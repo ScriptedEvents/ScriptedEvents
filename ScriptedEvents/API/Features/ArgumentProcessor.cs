@@ -103,7 +103,7 @@
             // Extra magic for options
             if (expected is OptionsArgument options)
             {
-                if (options.Options.Any(o => o.ToUpper() == input.ToUpper()))
+                if (options.Options.Any(o => o.Name.ToUpper() == input.ToUpper()))
                     success.NewParameters.Add(input);
                 else
                     return new(false, expected.ArgumentName, ErrorGen.Get(118, input, expected.ArgumentName, action.Name, string.Join(", ", options.Options)));

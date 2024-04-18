@@ -33,7 +33,12 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode (LOCK, UNLOCK, OPEN, CLOSE, DESTROY).", true),
+            new OptionsArgument("mode", true,
+                new("LOCK", "Lock doors."),
+                new("UNLOCK", "Unlock doors."),
+                new("OPEN", "Open doors."),
+                new("CLOSE", "Close doors."),
+                new("DESTROY", "Permanently destroy doors.")),
             new Argument("doors", typeof(Door[]), "The doors to affect.", true),
         };
 
@@ -42,7 +47,7 @@
         {
             Door[] doors = (Door[])Arguments[1];
 
-            Action<Door> action;
+            Action<Door> action = null;
             switch (Arguments[0].ToUpper())
             {
                 case "OPEN":
@@ -70,8 +75,6 @@
                             breaker.Break();
                     };
                     break;
-                default:
-                    return new(MessageType.InvalidOption, this, "mode", Arguments[0], "OPEN/CLOSE/LOCK/UNLOCK/DESTROY");
             }
 
             foreach (Door door in doors)

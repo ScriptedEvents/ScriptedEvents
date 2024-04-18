@@ -33,7 +33,9 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to use. Either LITERAL or PLAYER.", true),
+            new OptionsArgument("mode", true,
+                new("LITERAL", "Saves the value as-is."),
+                new("PLAYER", "Saves player(s).")),
             new Argument("variable", typeof(IVariable), "The variable to save.", true),
         };
 
@@ -48,7 +50,6 @@
                     return new(false, "Invalid literal variable to store has been provided.");
 
                 VariableStorage.Save(var);
-                return new(true);
             }
 
             if (mode == "PLAYER")
@@ -60,10 +61,9 @@
 
                 string formattedVar = string.Join(".", var.ToList());
                 VariableStorage.Save(varName, formattedVar);
-                return new(true);
             }
 
-            return new(false, $"Invalid mode '{mode}' selected.");
+            return new(true);
         }
     }
 }

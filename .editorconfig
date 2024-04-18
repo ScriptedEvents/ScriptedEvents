@@ -7,6 +7,9 @@ dotnet_diagnostic.SA1000.severity = none
 # SA1101: Prefix local calls with this
 dotnet_diagnostic.SA1101.severity = none
 
+# SA1117: The parameters should all be placed on the same line or each parameter should be placed on its own line.
+dotnet_diagnostic.SA1117.severity = none
+
 # SA1503: Braces should not be omitted.
 dotnet_diagnostic.SA1503.severity = none
 

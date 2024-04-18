@@ -10,7 +10,6 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class TicketAction : IScriptAction, IHelpInfo
     {
@@ -35,7 +34,10 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new OptionsArgument("mode", "The action.", true, "ADD", "REMOVE", "SET"),
+            new OptionsArgument("mode", true,
+                new("ADD", "Adds tickets to a team."),
+                new("REMOVE", "Removes tickets from a team."),
+                new("SET", "Set's a team's ticket amount.")),
             new Argument("team", typeof(SpawnableTeamType), "The spawn team (ChaosInsurgency or NineTailedFox).", true),
             new Argument("amount", typeof(int), "The amount to apply. Variables are supported.", true),
         };

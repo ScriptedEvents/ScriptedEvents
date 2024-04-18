@@ -31,7 +31,12 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to use (GET/SET/DELETE).", true),
+            new OptionsArgument("mode", true,
+                new("GET", "Creates a variable containing the value of the player data."),
+                new("SET", "Sets the player data."),
+                new("SAVE", "Sets the player data. Alias of SET."),
+                new("DELETE", "Deletes the player data."),
+                new("REMOVE", "Deletes the player data. Alias of DELETE.")),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("keyName", typeof(string), "The name of the key.", true),
             new Argument("value", typeof(string), "GET - The variable to create containing the value of the accessed key, SET - The new value of the key, DELETE - N/A", false),
@@ -85,8 +90,6 @@
                     }
 
                     break;
-                default:
-                    return new(false, "Invalid mode provided.");
             }
 
             return new(true);

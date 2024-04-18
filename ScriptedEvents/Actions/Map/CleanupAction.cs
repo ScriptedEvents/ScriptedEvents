@@ -37,7 +37,9 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode (ITEMS, RAGDOLLS).", true),
+            new OptionsArgument("mode", true,
+                new("ITEMS", "Clean items."),
+                new("RAGDOLLS", "Clean ragdolls.")),
             new Argument("filter", typeof(string), "Optionally, an ItemType/RoleTypeId of items/ragdolls to remove.", false),
         };
 
@@ -74,8 +76,6 @@
                     }
 
                     break;
-                default:
-                    return new(MessageType.InvalidOption, this, "mode", "ITEMS/RAGDOLLS");
             }
 
             return new(true);

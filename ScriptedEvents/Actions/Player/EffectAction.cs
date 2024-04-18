@@ -33,7 +33,9 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
+            new OptionsArgument("mode", true,
+                new("GIVE", "Gives effects to players."),
+                new("REMOVE", "Removes effects from players.")),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
             new Argument("intensity", typeof(int), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
@@ -77,17 +79,17 @@
                         player.SyncEffect(eff);
                     }
 
-                    return new(true);
+                    break;
                 case "REMOVE":
                     foreach (Player player in plys)
                     {
                         player.DisableEffect(effect);
                     }
 
-                    return new(true);
-                default:
-                    return new(MessageType.InvalidOption, this, "mode", mode, "GIVE/REMOVE");
+                    break;
             }
+
+            return new(true);
         }
     }
 }

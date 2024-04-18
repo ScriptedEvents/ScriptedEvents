@@ -7,7 +7,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class SpawnRuleAction : IScriptAction, IHelpInfo
     {

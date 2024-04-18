@@ -21,11 +21,6 @@
         InvalidUsage,
 
         /// <summary>
-        /// Invalid option out of a string list of options.
-        /// </summary>
-        InvalidOption,
-
-        /// <summary>
         /// Provided input was not a number.
         /// </summary>
         NotANumber,
