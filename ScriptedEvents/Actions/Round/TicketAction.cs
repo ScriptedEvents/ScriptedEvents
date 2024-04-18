@@ -35,7 +35,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The action (ADD, REMOVE, SET).", true),
+            new OptionsArgument("mode", "The action.", true, "ADD", "REMOVE", "SET"),
             new Argument("team", typeof(SpawnableTeamType), "The spawn team (ChaosInsurgency or NineTailedFox).", true),
             new Argument("amount", typeof(int), "The amount to apply. Variables are supported.", true),
         };
@@ -66,8 +66,6 @@
                     }
 
                     break;
-                default:
-                    return new(MessageType.InvalidOption, this, "mode", "ADD/REMOVE/SET");
             }
 
             return new(true);
