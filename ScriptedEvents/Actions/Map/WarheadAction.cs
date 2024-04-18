@@ -36,7 +36,7 @@
         };
 
         /// <inheritdoc/>
-        public string LongDescription { get; } = @$"Valid options:
+        public string LongDescription => @$"Valid options:
 - START - Starts the warhead (even if it is disarmed or on cooldown)
 - STOP - Stops the warhead
 - LOCK - Prevents the warhead from being enabled
