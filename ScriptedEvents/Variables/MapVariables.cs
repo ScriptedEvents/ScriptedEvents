@@ -88,7 +88,12 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode for which to check for generators. Valid modes are ENGAGED/ACTIVATING/UNLOCKED/OPENED/CLOSED.", true),
+            new OptionsArgument("mode", true,
+                new("ENGAGED"),
+                new("ACTIVATING"),
+                new("UNLOCKED"),
+                new("OPENED"),
+                new("CLOSED")),
         };
 
         /// <inheritdoc/>
