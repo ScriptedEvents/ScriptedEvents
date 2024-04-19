@@ -72,34 +72,34 @@
                         sb.Append($" {chars[0]}{arg.ArgumentName}{chars[1]}");
                     }
 
-                    return ErrorGen.Get(116, action.Name, action.Name + StringBuilderPool.Pool.ToStringReturn(sb));
+                    return ErrorGen.Get(ErrorCode.InvalidActionUsage, action.Name, action.Name + StringBuilderPool.Pool.ToStringReturn(sb));
 
                 case MessageType.InvalidUsage:
-                    return ErrorGen.Get(117, action.Name);
+                    return ErrorGen.Get(ErrorCode.LEGACY_InvalidActionUsage, action.Name);
 
                 case MessageType.NotANumber when arguments[0] is not null:
-                    return ErrorGen.Get(119, arguments[0], paramName, action.Name);
+                    return ErrorGen.Get(ErrorCode.ParameterError_Number, arguments[0], paramName, action.Name);
 
                 case MessageType.NotANumberOrCondition when arguments[0] is not null && arguments[1] is MathResult result:
-                    return ErrorGen.Get(120, paramName, action.Name, arguments[0], result.Exception.GetType().Name, result.Message);
+                    return ErrorGen.Get(ErrorCode.ParameterError_Condition, paramName, action.Name, arguments[0], result.Exception.GetType().Name, result.Message);
 
                 case MessageType.LessThanZeroNumber when arguments[0] is not null:
-                    return ErrorGen.Get(121, arguments[0], paramName, action.Name);
+                    return ErrorGen.Get(ErrorCode.ParameterError_LessThanZeroNumber, arguments[0], paramName, action.Name);
 
                 case MessageType.InvalidRole when arguments[0] is not null:
-                    return ErrorGen.Get(122, paramName, action.Name, arguments[0]);
+                    return ErrorGen.Get(ErrorCode.ParameterError_RoleType, paramName, action.Name, arguments[0]);
 
                 case MessageType.NoPlayersFound:
-                    return ErrorGen.Get(123, paramName);
+                    return ErrorGen.Get(ErrorCode.ParameterError_Players, paramName);
 
                 case MessageType.NoRoomsFound:
-                    return ErrorGen.Get(124, arguments[0], paramName);
+                    return ErrorGen.Get(ErrorCode.ParameterError_Rooms, arguments[0], paramName);
 
                 case MessageType.CassieCaptionNoAnnouncement:
-                    return ErrorGen.Get(125);
+                    return ErrorGen.Get(ErrorCode.ParameterError_CassieNoAnnc);
             }
 
-            return ErrorGen.Get(126);
+            return ErrorGen.Get(ErrorCode.UnknownError);
         }
 
         /// <summary>

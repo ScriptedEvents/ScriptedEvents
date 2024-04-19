@@ -10,7 +10,7 @@
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using PlayerRoles;
-
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
@@ -138,7 +138,7 @@
                     _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{input}' is not valid for the specified filter method."),
                 };
 
-                throw new ArgumentException(ErrorGen.Get(126));
+                throw new ArgumentException(ErrorGen.Get(ErrorCode.UnknownError));
             }
         }
 
@@ -194,7 +194,7 @@ Invalid options will result in a script error.";
                 int index = (int)Arguments[1];
 
                 if (index > players.Count() - 1)
-                    throw new IndexOutOfRangeException(ErrorGen.Get(135, index));
+                    throw new IndexOutOfRangeException(ErrorGen.Get(ErrorCode.IndexTooLarge, index));
 
                 return new List<Player>() { players.ToList()[index] }; // Todo: better solution (yield return didn't work??)
             }

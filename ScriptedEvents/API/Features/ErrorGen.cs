@@ -83,6 +83,7 @@
         /// <param name="errorID">Error ID.</param>
         /// <param name="arguments">Arguments for the error.</param>
         /// <returns>An error string.</returns>
+        [Obsolete("Use overload with enum.")]
         public static string Get(int errorID, params object[] arguments) => Generate(errorID, arguments);
 
         /// <summary>

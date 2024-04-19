@@ -10,7 +10,7 @@
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Roles;
     using Exiled.CustomItems.API.Features;
-
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
@@ -146,7 +146,7 @@
 
                 if (variable is IArgumentVariable)
                 {
-                    throw new ArgumentException(ErrorGen.Get(138, "C"));
+                    throw new ArgumentException(ErrorGen.Get(ErrorCode.UnsupportedArgumentVariables, Name));
                 }
 
                 if (variable.Players.Count() == 0)

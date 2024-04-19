@@ -180,7 +180,7 @@ namespace ScriptedEvents.API.Features
                     }
                     else if (!suppressWarnings)
                     {
-                        Log.Warn(ErrorGen.Get(103, flag, scriptName));
+                        Log.Warn(ErrorGen.Get(ErrorCode.MultipleFlagDefs, flag, scriptName));
                     }
 
                     actionList.Add(new NullAction("FLAG DEFINE"));
@@ -209,7 +209,7 @@ namespace ScriptedEvents.API.Features
                     if (!script.Labels.ContainsKey(labelName))
                         script.Labels.Add(labelName, currentline);
                     else if (!suppressWarnings)
-                        Log.Warn(ErrorGen.Get(104, labelName, scriptName));
+                        Log.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
 
                     actionList.Add(new NullAction($"{labelName} LABEL"));
 
@@ -235,7 +235,7 @@ namespace ScriptedEvents.API.Features
                     }
 
                     if (!suppressWarnings)
-                        Log.Warn($"[L: {script.CurrentLine + 1}]" + ErrorGen.Get(102, keyword.RemoveWhitespace(), scriptName));
+                        Log.Warn($"[L: {script.CurrentLine + 1}]" + ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName));
 
                     actionList.Add(new NullAction("ERROR"));
                     continue;
@@ -310,8 +310,10 @@ namespace ScriptedEvents.API.Features
         /// </summary>
         /// <param name="scriptName">The name of the script.</param>
         /// <param name="executor">The executor that is running the script. Can be null.</param>
+        /// <param name="dispose">Whether to dispose of the script as soon as execution is finished.</param>
         /// <exception cref="FileNotFoundException">The script was not found.</exception>
         /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
+        /// <returns>The script object.</returns>
         public static Script ReadAndRun(string scriptName, ICommandSender executor, bool dispose = true)
         {
             Script scr = ReadScript(scriptName, executor);
@@ -759,7 +761,7 @@ namespace ScriptedEvents.API.Features
                 }
                 catch (Exception e)
                 {
-                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(141, action.Name)}:\n{e}";
+                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(ErrorCode.UnknownActionError, action.Name)}:\n{e}";
                     switch (scr.Context)
                     {
                         case ExecuteContext.RemoteAdmin:

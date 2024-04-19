@@ -30,7 +30,7 @@
     using PlayerRoles;
 
     using Respawning;
-
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
@@ -259,7 +259,7 @@
 
                     if (scr.AdminEvent)
                     {
-                        Log.Warn(ErrorGen.Get(105, name));
+                        Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, name));
                         continue;
                     }
 
@@ -267,11 +267,11 @@
                 }
                 catch (DisabledScriptException)
                 {
-                    Log.Warn(ErrorGen.Get(100, name));
+                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, name));
                 }
                 catch (FileNotFoundException)
                 {
-                    Log.Warn(ErrorGen.Get(101, name));
+                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, name));
                 }
             }
 
@@ -433,15 +433,15 @@
                 }
                 catch (DisabledScriptException)
                 {
-                    Log.Warn(ErrorGen.Get(110, eventName, script));
+                    Log.Warn(ErrorGen.Get(ErrorCode.On_DisabledScript, eventName, script));
                 }
                 catch (FileNotFoundException)
                 {
-                    Log.Warn(ErrorGen.Get(111, eventName, script));
+                    Log.Warn(ErrorGen.Get(ErrorCode.On_NotFoundScript, eventName, script));
                 }
                 catch (Exception ex)
                 {
-                    Log.Warn(ErrorGen.Get(112, eventName) + $": {ex}");
+                    Log.Warn(ErrorGen.Get(ErrorCode.On_UnknownError, eventName) + $": {ex}");
                 }
             }
         }

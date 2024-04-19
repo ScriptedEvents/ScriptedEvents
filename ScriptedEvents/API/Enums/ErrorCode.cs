@@ -3,7 +3,7 @@
 #pragma warning disable SA1602
     public enum ErrorCode
     {
-        AutoRun_Disabled,
+        AutoRun_Disabled = 100,
         AutoRun_NotFound,
 
         InvalidAction,

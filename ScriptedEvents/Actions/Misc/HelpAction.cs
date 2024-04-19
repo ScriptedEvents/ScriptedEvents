@@ -403,12 +403,12 @@ Thanks for using my plugin. <3";
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    Log.Warn(ErrorGen.Get(114));
+                    Log.Warn(ErrorGen.Get(ErrorCode.IOHelpPermissionError));
                     return new(false, "HELP action error shown in server logs.");
                 }
                 catch (Exception e)
                 {
-                    Log.Warn($"{ErrorGen.Get(115)}: {e}");
+                    Log.Warn($"{ErrorGen.Get(ErrorCode.IOHelpError)}: {e}");
                     return new(false, "HELP action error shown in server logs.");
                 }
 

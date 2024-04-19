@@ -110,7 +110,7 @@
                         continue;
                     }
 
-                    Log.Warn(ErrorGen.Get(132));
+                    Log.Warn(ErrorGen.Get(ErrorCode.InvalidVariable));
                 }
 
                 calledScript.Execute();

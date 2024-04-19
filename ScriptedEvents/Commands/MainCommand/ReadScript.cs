@@ -9,7 +9,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.Permissions.Extensions;
-
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
 
@@ -42,7 +42,7 @@
 
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
-                response = ErrorGen.Get(127);
+                response = ErrorGen.Get(ErrorCode.IOMissing);
                 return false;
             }
 

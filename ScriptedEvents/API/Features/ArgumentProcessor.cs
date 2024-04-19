@@ -52,7 +52,7 @@
             if (args.Length < required)
             {
                 IEnumerable<string> args2 = expected.Select(arg => $"{(arg.Required ? "<" : "[")}{arg.ArgumentName}{(arg.Required ? ">" : "]")}");
-                return new(false, string.Empty, ErrorGen.Get(130, action.Name, action is IAction ? "action" : "variable", required, string.Join(", ", args2)));
+                return new(false, string.Empty, ErrorGen.Get(ErrorCode.MissingArguments, action.Name, action is IAction ? "action" : "variable", required, string.Join(", ", args2)));
             }
 
             ArgumentProcessResult success = new(true);
@@ -106,7 +106,7 @@
                 if (options.Options.Any(o => o.Name.ToUpper() == input.ToUpper()))
                     success.NewParameters.Add(input);
                 else
-                    return new(false, expected.ArgumentName, ErrorGen.Get(118, input, expected.ArgumentName, action.Name, string.Join(", ", options.Options)));
+                    return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Option, input, expected.ArgumentName, action.Name, string.Join(", ", options.Options)));
             }
             else
             {
@@ -115,31 +115,31 @@
                     // Number Types:
                     case "Boolean":
                         if (!input.IsBool(out bool result, source))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(148, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidBoolean, input));
 
                         success.NewParameters.Add(result);
                         break;
                     case "Int32": // int
                         if (!VariableSystem.TryParse(input, out int intRes, source, requireBrackets))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                         success.NewParameters.Add(intRes);
                         break;
                     case "Int64": // long
                         if (!VariableSystem.TryParse(input, out long longRes, source, requireBrackets))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(134, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                         success.NewParameters.Add(longRes);
                         break;
                     case "Single": // float
                         if (!VariableSystem.TryParse(input, out float floatRes, source, requireBrackets))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(137, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
 
                         success.NewParameters.Add(floatRes);
                         break;
                     case "Char":
                         if (!char.TryParse(input, out char charRes))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(146, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidCharacter, input));
 
                         success.NewParameters.Add(charRes);
                         break;
@@ -147,31 +147,33 @@
                     // Variable Interfaces
                     case "IConditionVariable":
                         if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable, out _, source, requireBrackets))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
 
                         success.NewParameters.Add(variable);
                         break;
                     case "IStringVariable":
                         if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable2, out _, source, requireBrackets))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                         if (variable2 is not IStringVariable strVar)
-                            return new(false, expected.ArgumentName, ErrorGen.Get(145, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidStringVariable, input));
 
                         success.NewParameters.Add(strVar);
                         break;
                     case "IPlayerVariable":
                         if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable3, out _, source, requireBrackets))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                         if (variable3 is not IPlayerVariable playerVar)
-                            return new(false, expected.ArgumentName, ErrorGen.Get(133, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
 
                         success.NewParameters.Add(playerVar);
                         break;
 
                     case "IItemVariable":
                         if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable4, out _, source, requireBrackets))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(132, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                         if (variable4 is not IItemVariable itemVar)
+
+                            // TODO: ???
                             return new(false, expected.ArgumentName, ErrorGen.Get(133, input));
                         if (Item.Get(itemVar.Value) is null)
                             return new(false, expected.ArgumentName, "The provided item variable is not valid.");
@@ -194,13 +196,13 @@
                         break;
                     case "Door[]":
                         if (!ScriptHelper.TryGetDoors(input, out Door[] doors, source))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(142, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidDoor, input));
 
                         success.NewParameters.Add(doors);
                         break;
                     case "Lift[]":
                         if (!ScriptHelper.TryGetLifts(input, out Lift[] lifts, source))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(143, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidLift, input));
 
                         success.NewParameters.Add(lifts);
                         break;
@@ -212,7 +214,7 @@
                         else if (VariableSystem.TryParse(input, out Team teamResult, source, requireBrackets))
                             success.NewParameters.Add(teamResult);
                         else
-                            return new(false, expected.ArgumentName, ErrorGen.Get(147, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidRoleTypeOrTeam, input));
 
                         break;
 
@@ -223,7 +225,7 @@
                             object res = VariableSystem.Parse(input, expected.Type, source);
                             if (res is null)
                             {
-                                return new(false, expected.ArgumentName, ErrorGen.Get(144, input, expected.Type.Name));
+                                return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidEnumGeneric, input, expected.Type.Name));
                             }
 
                             success.NewParameters.Add(res);
