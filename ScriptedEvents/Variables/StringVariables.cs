@@ -38,10 +38,13 @@
         };
     }
 
-    public class PlayerData : IStringVariable, IArgumentVariable, INeedSourceVariable
+    public class PlayerData : IStringVariable, IArgumentVariable, INeedSourceVariable, IHasAliasVariable
     {
         /// <inheritdoc/>
         public string Name => "{PLAYERDATA}";
+
+        /// <inheritdoc/>
+        public string Alias => "{PDATA}";
 
         /// <inheritdoc/>
         public string Description => "Retrieves the value of a key from a player's player data.";
