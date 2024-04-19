@@ -215,6 +215,8 @@
     <Compile Include="Structures\VariableResult.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="Variables\Interfaces\IItemVariable.cs" />
+    <Compile Include="Variables\Interfaces\IHasAliasVariable.cs" />
+    <Compile Include="Variables\Interfaces\IStringVariable.cs" />
     <Compile Include="Variables\ItemVariables.cs" />
     <Compile Include="Variables\FilterVariables.cs" />
     <Compile Include="Variables\IntercomVariables.cs" />
@@ -315,7 +317,6 @@
     <Compile Include="Variables\Interfaces\IFloatVariable.cs" />
     <Compile Include="Variables\Interfaces\INeedSourceVariable.cs" />
     <Compile Include="Variables\Interfaces\IPlayerVariable.cs" />
-    <Compile Include="Variables\Interfaces\IStringVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariableGroup.cs" />
     <Compile Include="Variables\CustomPlayerVariable.cs" />
