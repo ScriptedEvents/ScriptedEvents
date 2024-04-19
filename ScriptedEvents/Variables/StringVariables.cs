@@ -178,7 +178,34 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(IPlayerVariable), "The name of the player variable to show.", true),
-            new Argument("selector", typeof(string), "The type to show. Defaults to \"NAME\".", false),
+            new OptionsArgument("selector", false,
+                new("NAME", "Player's name"),
+                new("DPNAME", "Player's display name"),
+                new("UID", "Player's user id"),
+                new("PID", "Player's player id"),
+                new("ROLE", "Player's role"),
+                new("TEAM", "Player's team"),
+                new("ROOM", "Room where player is"),
+                new("ZONE", "Zone where player is"),
+                new("HP", "Player's health"),
+                new("ITEMCOUNT", "Amount of items in player's inventory"),
+                new("ITEMS", "Items in player's inventory"),
+                new("HELDITEM", "Item which player is holding"),
+                new("ISGOD", "Player's god status"),
+                new("POSX", "Player's X position"),
+                new("POSY", "Player's Y position"),
+                new("POSZ", "Player's Z position"),
+                new("TIER", "Player's tier as SCP079 (-1 if player is not SCP079)"),
+                new("GROUP", "Player's remote admin rank"),
+                new("ISCUFFED", "Is player cuffed"),
+                new("CUSTOMI", "Player's custom info"),
+                new("XSIZE", "Player's size on X axis"),
+                new("YSIZE", "Player's size on Y axis"),
+                new("ZSIZE", "Player's size on Z axis"),
+                new("KILLS", "Player's kills"),
+                new("EFFECTS", "Player's current effects"),
+                new("USINGNOCLIP", "Is player using noclip"),
+                new("CANNOCLIP", "Is player permitted to use noclip")),
         };
 
         /// <inheritdoc/>
@@ -217,17 +244,18 @@
                         "POSY" => ply.Position.y.ToString(),
                         "POSZ" => ply.Position.z.ToString(),
                         "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
-                        "TIER" => "0",
+                        "TIER" => "-1",
                         "GROUP" => ply.GroupName,
                         "CUFFED" => ply.IsCuffed.ToString().ToUpper(),
                         "CUSTOMINFO" or "CINFO" or "CUSTOMI" => ply.CustomInfo.ToString(),
                         "XSIZE" => ply.Scale.x.ToString(),
                         "YSIZE" => ply.Scale.y.ToString(),
                         "ZSIZE" => ply.Scale.z.ToString(),
-                        "KILLS" => MainPlugin.Handlers.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "-1",
+                        "KILLS" => MainPlugin.Handlers.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "0",
                         "EFFECTS" when ply.ActiveEffects.Count() != 0 => string.Join("|", ply.ActiveEffects.Select(eff => eff.name)),
                         "EFFECTS" => "None",
-                        "NOCLIP" => ply.Role is FpcRole role ? role.IsNoclipEnabled.ToUpper() : "FALSE",
+                        "USINGNOCLIP" => ply.Role is FpcRole role ? role.IsNoclipEnabled.ToUpper() : "FALSE",
+                        "CANNOCLIP" => ply.IsNoclipPermitted.ToUpper(),
                         _ => ply.Nickname,
                     };
                     }).OrderBy(s => s);
@@ -236,37 +264,9 @@
         }
 
         /// <inheritdoc/>
-        public string LongDescription => @"This variable is designed to only be used with a player variable containing one player. However, it CAN be used with multiple players, and will list the display in the form of a comma-separated list.
-Do not use this variable for using player variables in commands. Use the 'C' variable for this.
-The following options are valid selector options:
-- NAME
-- DISPLAYNAME / DPNAME
-- USERID / UID
-- PLAYERID / PID
-- ROLE
-- TEAM
-- ROOM
-- ZONE
-- HP / HEALTH
-- INVCOUNT
-- INV
-- HELDITEM
-- GOD
-- POS
-- POSX
-- POSY
-- POSZ
-- TIER
-- GROUP
-- CUFFED
-- CUSTOMINFO / CINFO / CUSTOMI
-- XSIZE 
-- YSIZE
-- ZSIZE
-- KILLS
-- EFFECTS
-- NOCLIP
-Invalid options will default to the 'NAME' selector.";
+        public string LongDescription => @"This variable is designed to only be used with a player variable containing one player. 
+However, it CAN be used with multiple players, and will list the display in the form of a comma-separated list.
+Do not use this variable for using player variables in commands. Use the '{C}' variable for this.";
     }
 
     public class RandomRoom : IStringVariable, IArgumentVariable, INeedSourceVariable
