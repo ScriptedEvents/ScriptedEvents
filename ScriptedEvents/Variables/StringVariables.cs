@@ -266,7 +266,7 @@
         /// <inheritdoc/>
         public string LongDescription => @"This variable is designed to only be used with a player variable containing one player. 
 However, it CAN be used with multiple players, and will list the display in the form of a comma-separated list.
-Do not use this variable for using player variables in commands. Use the '{C}' variable for this.";
+Do not use this variable for using player variables in commands. Use the 'C' variable for this.";
     }
 
     public class RandomRoom : IStringVariable, IArgumentVariable, INeedSourceVariable
