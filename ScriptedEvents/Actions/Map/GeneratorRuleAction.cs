@@ -32,7 +32,11 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to use. Valid options: ACTIVATIONTIME, DEACTIVATIONTIME, LEVERDELAY, INTERACTIONCOOLDOWN", true),
+            new OptionsArgument("mode", true,
+                    new("ACTIVATIONTIME", "The amount of time for generators to activate."),
+                    new("DEACTIVATIONTIME", "The amount of time for generators to deactivate."),
+                    new("LEVERDELAY", "The delay to change generator levers."),
+                    new("INTERACTIONCOOLDOWN", "The cooldown for interacting with generators.")),
             new Argument("value", typeof(int), "The value to set as the rule.", true),
         };
 
@@ -57,8 +61,6 @@
                     case "INTERACTIONCOOLDOWN":
                         generator.InteractionCooldown = value;
                         break;
-                    default:
-                        return new(MessageType.InvalidOption, this, "mode", Arguments[0], "Valid options: ACTIVATIONTIME, DEACTIVATIONTIME, LEVERDELAY, INTERACTIONCOOLDOWN");
                 }
             }
 

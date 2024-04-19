@@ -32,7 +32,10 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode (SEND/LOCK/UNLOCK).", true),
+            new OptionsArgument("mode", true,
+                new("SEND", "Moves the elevator."),
+                new("LOCK", "Locks the elevator, preventing it from being used."),
+                new("UNLOCK", "Unlocks the previously-locked elevator, allowing it to be used again.")),
             new Argument("elevators", typeof(Lift[]), "The elevators to affect.", true),
         };
 
@@ -41,7 +44,7 @@
         {
             Lift[] lifts = (Lift[])Arguments[1];
 
-            Action<Lift> action;
+            Action<Lift> action = null;
             switch (Arguments[0].ToUpper())
             {
                 case "SEND":
@@ -79,9 +82,6 @@
                         }
                     };
                     break;
-
-                default:
-                    return new(MessageType.InvalidOption, this, "mode", Arguments[0], "SEND/LOCK/UNLOCK");
             }
 
             foreach (Lift lift in lifts)

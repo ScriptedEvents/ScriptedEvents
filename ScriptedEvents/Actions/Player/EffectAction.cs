@@ -33,11 +33,13 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode (GIVE, REMOVE)", true),
+            new OptionsArgument("mode", true,
+                new("GIVE", "Gives effects to players."),
+                new("REMOVE", "Removes effects from players.")),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
             new Argument("intensity", typeof(int), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
-            new Argument("duration", typeof(int), "The duration of the effect, or no duration for a permanent effect. Variables are supported.", false),
+            new Argument("duration", typeof(float), "The duration of the effect, or no duration for a permanent effect. Variables are supported.", false),
         };
 
         /// <inheritdoc/>
@@ -56,11 +58,11 @@
                     return new(MessageType.LessThanZeroNumber, this, "intensity", Arguments[3]);
             }
 
-            int duration = 0;
+            float duration = 0;
 
             if (Arguments.Length > 4)
             {
-                duration = (int)Arguments[4];
+                duration = (float)Arguments[4];
                 if (duration < 0)
                     return new(MessageType.LessThanZeroNumber, this, "duration", Arguments[4]);
             }
@@ -77,17 +79,17 @@
                         player.SyncEffect(eff);
                     }
 
-                    return new(true);
+                    break;
                 case "REMOVE":
                     foreach (Player player in plys)
                     {
                         player.DisableEffect(effect);
                     }
 
-                    return new(true);
-                default:
-                    return new(MessageType.InvalidOption, this, "mode", mode, "GIVE/REMOVE");
+                    break;
             }
+
+            return new(true);
         }
     }
 }

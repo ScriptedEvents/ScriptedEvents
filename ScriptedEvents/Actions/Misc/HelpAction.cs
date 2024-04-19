@@ -215,6 +215,18 @@ Thanks for using my plugin. <3";
                     sb.AppendLine($"  Required: {(arg.Required ? "YES" : "NO")}");
                     sb.AppendLine($"  Type: {arg.TypeString}");
                     sb.AppendLine($"  {arg.Description}");
+
+                    if (arg is OptionsArgument options)
+                    {
+                        sb.AppendLine($"  Valid options for this argument:");
+                        foreach (Option option in options.Options)
+                        {
+                            if (option.Description is null)
+                                sb.AppendLine($"    - '{option.Name}'");
+                            else
+                                sb.AppendLine($"    - '{option.Name}' - {option.Description}");
+                        }
+                    }
                 }
 
                 if (action is ISampleAction sampleAction)
@@ -296,6 +308,18 @@ Thanks for using my plugin. <3";
                             sb.AppendLine($"  Required: {(arg.Required ? "YES" : "NO")}");
                             sb.AppendLine($"  Type: {arg.TypeString}");
                             sb.AppendLine($"  {arg.Description}");
+
+                            if (arg is OptionsArgument options)
+                            {
+                                sb.AppendLine($"  Valid options for this argument:");
+                                foreach (Option option in options.Options)
+                                {
+                                    if (option.Description is null)
+                                        sb.AppendLine($"    - '{option.Name}'");
+                                    else
+                                        sb.AppendLine($"    - '{option.Name}' - {option.Description}");
+                                }
+                            }
                         }
                     }
 

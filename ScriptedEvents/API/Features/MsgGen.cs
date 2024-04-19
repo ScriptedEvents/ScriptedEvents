@@ -77,9 +77,6 @@
                 case MessageType.InvalidUsage:
                     return ErrorGen.Get(117, action.Name);
 
-                case MessageType.InvalidOption when arguments[0] is string input && arguments[1] is string options:
-                    return ErrorGen.Get(118, input, paramName, action.Name, options);
-
                 case MessageType.NotANumber when arguments[0] is not null:
                     return ErrorGen.Get(119, arguments[0], paramName, action.Name);
 

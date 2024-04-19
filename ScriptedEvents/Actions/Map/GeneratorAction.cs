@@ -32,7 +32,14 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to use. Valid options: OPEN, CLOSE, LOCK, UNLOCK, OVERCHARGE, ACTIVATE, DEACTIVATE", true),
+            new OptionsArgument("mode", true,
+                new("OPEN", "Opens all generators."),
+                new("CLOSE", "Closes all generators."),
+                new("LOCK", "Locks all generators, requiring a keycard to use."),
+                new("UNLOCK", "Unlocks all generators, no longer requiring a keycard to use."),
+                new("OVERCHARGE", "Engages all generators, causing an overcharge."),
+                new("ACTIVATE", "Begins activating all generators."),
+                new("DEACTIVATE", "Deactivates all generators.")),
         };
 
         /// <inheritdoc/>
@@ -63,8 +70,6 @@
                     case "DEACTIVATE":
                         generator.IsActivating = false;
                         break;
-                    default:
-                        return new(MessageType.InvalidOption, this, "mode", Arguments[0], "Valid options: OPEN, CLOSE, LOCK, UNLOCK, OVERCHARGE, ACTIVATE, DEACTIVATE");
                 }
             }
 

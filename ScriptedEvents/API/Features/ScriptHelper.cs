@@ -294,6 +294,7 @@ namespace ScriptedEvents.API.Features
         /// Runs the script and disposes of it as soon as the script execution is complete.
         /// </summary>
         /// <param name="scr">The script to run.</param>
+        /// <param name="dispose">If <see langword="true"/>, the script will be disposed after finishing execution.</param>
         /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
         public static void RunScript(Script scr, bool dispose = true)
         {

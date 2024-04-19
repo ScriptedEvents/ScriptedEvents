@@ -37,7 +37,9 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode (ENABLE/DISABLE).", true),
+            new OptionsArgument("mode", true,
+                new("ENABLE", "Enables a plugin. Requires the name of the plugin DLL."),
+                new("DISABLE", "Disables a previously-enabled plugin. Requires the name of the plugin.")),
             new Argument("plugin", typeof(string), "The plugin to toggle.", true),
         };
 
@@ -92,8 +94,6 @@
                     Loader.Plugins.Remove(plugin2);
                     Loader.Locations.Remove(plugin2.Assembly);
                     break;
-                default:
-                    return new(MessageType.InvalidOption, this, "mode", Arguments[0], "ENABLE/DISABLE");
             }
 
             return new(true);

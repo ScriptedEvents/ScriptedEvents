@@ -44,7 +44,11 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to run. Valid options: PLAYERS, ROLETYPE, DISABLE, ENABLE", true),
+            new OptionsArgument("mode", true,
+                new("PLAYERS", "Disables tesla gates for specific players."),
+                new("ROLETYPE", "Disables tesla gates for a specific role."),
+                new("DISABLE", "Disables tesla gates entirely."),
+                new("ENABLE", "Enables tesla gates after previously disabling them.")),
             new Argument("target", typeof(object), "The targets. Different type based on the mode.\nPLAYERS: A list of players.\nROLETYPE: A valid RoleType (eg. ClassD, Scp173, etc)\nDISABLE & ENABLE: None", false),
             new Argument("duration", typeof(float), "The time before reversing the effect. Variables are supported.", false),
         };
@@ -94,9 +98,9 @@
                     duration = Arguments.Length > 1 ? Arguments.JoinMessage(1, string.Empty) : null;
                     MainPlugin.Handlers.TeslasDisabled = false;
                     return Reverse(mode, null, duration, script);
-                default:
-                    return new(MessageType.InvalidOption, this, "mode", mode, "PLAYERS/ROLETYPE/DISABLE/ENABLE");
             }
+
+            return new(true);
         }
 
         /// <summary>

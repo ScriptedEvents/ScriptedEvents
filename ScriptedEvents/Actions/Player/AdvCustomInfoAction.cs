@@ -34,7 +34,9 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("mode", typeof(string), "The mode (SET, CLEAR).", true),
+            new OptionsArgument("mode", true,
+                new("SET", "Sets players' custom info."),
+                new("CLEAR", "Clears players' custom info.")),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("targets", typeof(Player[]), "The players that will see the action taking place. Only used if mode is SET.", false),
             new Argument("text", typeof(string), "The text to set custom info to. Only used if mode is SET.", false),
@@ -63,7 +65,7 @@
                         }
                     }
 
-                    return new(true);
+                    break;
 
                 case "CLEAR":
                     foreach (Player ply in plys)
@@ -71,10 +73,10 @@
                         ply.CustomInfo = null;
                     }
 
-                    return new(true);
+                    break;
             }
 
-            return new(MessageType.InvalidOption, this, "mode", "SET/CLEAR");
+            return new(true);
         }
     }
 }

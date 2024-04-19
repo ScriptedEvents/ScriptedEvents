@@ -36,7 +36,9 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to use. Either LABEL or SCRIPT.", true),
+            new OptionsArgument("mode", true,
+                new("LABEL", "Moves to a specific label."),
+                new("SCRIPT", "Executes a different script.")),
             new Argument("destination", typeof(string), "The target of this action. Dictated by the mode selected.", true),
             new Argument("vars", typeof(string), "The variables to create for a called script. Seperate variables with spaces to create multiple. Used only for the SCRIPT mode.", false),
         };
