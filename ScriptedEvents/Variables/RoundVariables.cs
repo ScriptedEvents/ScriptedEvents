@@ -130,9 +130,9 @@
     public class RoundLock : IBoolVariable
     {
         /// <inheritdoc/>
-        public string Name => "{ROUNDLOCK}";
+        public string Name => "{ROUNDLOCKED}";
 
-        public string ReversedName => "{!ROUNDLOCK}";
+        public string ReversedName => "{!ROUNDLOCKED}";
 
         /// <inheritdoc/>
         public string Description => "Returns the roundlock setting status.";
@@ -150,9 +150,9 @@
     public class LobbyLock : IBoolVariable
     {
         /// <inheritdoc/>
-        public string Name => "{LOBBYLOCK}";
+        public string Name => "{LOBBYLOCKED}";
 
-        public string ReversedName => "{!LOBBYLOCK}";
+        public string ReversedName => "{!LOBBYLOCKED}";
 
         /// <inheritdoc/>
         public string Description => "Returns the lobbylock setting status.";
