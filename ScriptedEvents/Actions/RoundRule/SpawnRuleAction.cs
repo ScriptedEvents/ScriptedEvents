@@ -32,7 +32,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("role", typeof(RoleTypeId), "The role to create the rule for.", true),
-            new Argument("max", typeof(int), "The maximum amount of players to spawn as this role. If not provided, EVERY player who does not become a role with a different spawn rule will become this role. Variables are supported.", false),
+            new Argument("max", typeof(int), "The maximum amount of players to spawn as this role. If not provided, EVERY player who does not become a role with a different spawn rule will become this role.", false),
         };
 
         /// <inheritdoc/>

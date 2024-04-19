@@ -30,7 +30,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("label", typeof(string), "The label to move to. Variables are supported.", true),
+            new Argument("label", typeof(string), "The label to move to.", true),
         };
 
         /// <inheritdoc/>

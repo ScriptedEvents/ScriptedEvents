@@ -39,7 +39,7 @@
         {
             new Argument("players", typeof(Player[]), "The players to give the item to.", true),
             new Argument("item", typeof(string), "The item to give.", true),
-            new Argument("amount", typeof(int), "The amount to give. Variables are supported. Default: 1", false),
+            new Argument("amount", typeof(int), "The amount to give. Default: 1", false),
         };
 
         /// <inheritdoc/>

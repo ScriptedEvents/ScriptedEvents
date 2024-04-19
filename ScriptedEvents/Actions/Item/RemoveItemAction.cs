@@ -42,7 +42,7 @@
         {
             new Argument("players", typeof(Player[]), "The players to remove the item from.", true),
             new Argument("item", typeof(ItemType), "The item to remove.", true),
-            new Argument("amount", typeof(int), "The amount to remove. Variables are supported. Default: 1", false),
+            new Argument("amount", typeof(int), "The amount to remove. Default: 1", false),
         };
 
         /// <inheritdoc/>

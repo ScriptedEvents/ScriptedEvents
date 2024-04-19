@@ -34,7 +34,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to affect.", true),
-            new Argument("health", typeof(float), "The amount of artificial health to add to the player. Variables are supported.", true),
+            new Argument("health", typeof(float), "The amount of artificial health to add to the player.", true),
         };
 
         /// <inheritdoc/>

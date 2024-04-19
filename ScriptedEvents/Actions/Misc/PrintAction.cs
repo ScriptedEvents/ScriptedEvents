@@ -28,7 +28,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         /// <inheritdoc/>
-        public string Description => "Creates a log message in the console the script was executed from. Variables are supported.";
+        public string Description => "Creates a log message in the console the script was executed from.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]

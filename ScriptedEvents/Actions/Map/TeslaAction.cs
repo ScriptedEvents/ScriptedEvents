@@ -50,7 +50,7 @@
                 new("DISABLE", "Disables tesla gates entirely."),
                 new("ENABLE", "Enables tesla gates after previously disabling them.")),
             new Argument("target", typeof(object), "The targets. Different type based on the mode.\nPLAYERS: A list of players.\nROLETYPE: A valid RoleType (eg. ClassD, Scp173, etc)\nDISABLE & ENABLE: None", false),
-            new Argument("duration", typeof(float), "The time before reversing the effect. Variables are supported.", false),
+            new Argument("duration", typeof(float), "The time before reversing the effect.", false),
         };
 
         public ISampleProvider Samples { get; } = new TeslaSamples();

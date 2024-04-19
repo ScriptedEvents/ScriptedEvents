@@ -39,7 +39,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("room", typeof(Room[]), "The room to flicker the lights off.", true),
-            new Argument("duration", typeof(float), "The duration of the lights out. Variables are supported.", true),
+            new Argument("duration", typeof(float), "The duration of the lights out.", true),
         };
 
         /// <inheritdoc/>

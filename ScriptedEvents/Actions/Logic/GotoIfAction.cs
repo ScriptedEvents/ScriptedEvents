@@ -32,7 +32,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("label", typeof(string), "The label to jump to. Variables are supported.", true),
+            new Argument("label", typeof(string), "The label to jump to.", true),
             new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
         };
 

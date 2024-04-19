@@ -46,7 +46,7 @@ These variables are created as per-script variables, meaning they can only be us
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("url", typeof(string), "The URL to send a POST request to.", true),
-            new Argument("body", typeof(string), "The body to send (JSON formatting). Variables are supported.", true),
+            new Argument("body", typeof(string), "The body to send (JSON formatting).", true),
         };
 
         /// <inheritdoc/>

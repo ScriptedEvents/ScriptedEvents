@@ -26,7 +26,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         /// <inheritdoc/>
-        public string Description => "Runs a server command with full permission. Variables are supported.";
+        public string Description => "Runs a server command with full permission.";
 
         /// <inheritdoc/>
         public string LongDescription => @"This action executes commands as the server. Therefore, the command needs '/' before it if it's a RA command, or '.' before it if its a console command.

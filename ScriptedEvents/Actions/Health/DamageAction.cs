@@ -43,7 +43,7 @@ Using the word 'VAPORIZE' instead of a DamageType or custom message will vaporiz
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to kill.", true),
-            new Argument("damage", typeof(float), "The amount of damage to apply. Variables are supported.", true),
+            new Argument("damage", typeof(float), "The amount of damage to apply.", true),
             new Argument("damageType", typeof(string), $"The type of damage to apply. If a {nameof(DamageType)} is not matched, this will act as a custom message instead. Default: Unknown", false),
         };
 

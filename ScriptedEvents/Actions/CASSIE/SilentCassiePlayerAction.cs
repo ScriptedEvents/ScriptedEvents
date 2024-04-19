@@ -37,7 +37,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to play the CASSIE announcement for.", true),
-            new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption. Variables are supported.", true),
+            new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption.", true),
         };
 
         /// <inheritdoc/>

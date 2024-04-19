@@ -36,8 +36,8 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("duration", typeof(float), "The duration of the message. Variables are supported.", true),
-            new Argument("message", typeof(string), "The message. Variables are supported.", true),
+            new Argument("duration", typeof(float), "The duration of the message.", true),
+            new Argument("message", typeof(string), "The message.", true),
         };
 
         /// <inheritdoc/>

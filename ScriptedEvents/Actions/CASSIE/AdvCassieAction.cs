@@ -38,7 +38,7 @@
             new Argument("delay", typeof(bool), "If FALSE, CASSIE will make the broadcast as soon as possible. The subtitles may be out of sync as result.", true),
             new Argument("isLoud", typeof(bool), "If FALSE, CASSIE will not make the jingle sound.", true),
             new Argument("hasSubtitles", typeof(bool), "If FALSE, subtitles will not be shown.", true),
-            new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption. Variables are supported.", true),
+            new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption.", true),
         };
 
         /// <inheritdoc/>
