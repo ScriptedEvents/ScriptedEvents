@@ -107,6 +107,8 @@
                     return new(false, expected.ArgumentName, ErrorGen.Get(118, input, expected.ArgumentName, action.Name, string.Join(", ", options.Options)));
 
                 success.NewParameters.Add(input);
+                source?.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
+                return success;
             }
 
             switch (expected.Type.Name)
