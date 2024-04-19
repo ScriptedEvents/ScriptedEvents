@@ -40,8 +40,8 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("variable", typeof(float), "The name of the variable to round. Requires the variable to be a number.", true),
-            new Argument("mode", typeof(string), "Way of rounding the variable, either UP or DOWN.", true),
+            new Argument("variable", typeof(float), "Thee variable to round. Requires the variable to be a number.", true),
+            new OptionsArgument("mode", false, new("UP"), new("DOWN"), new("NEAREST")),
         };
 
         /// <inheritdoc/>
@@ -50,13 +50,14 @@
             get
             {
                 float value = (float)Arguments[0];
-                string mode = Arguments.Length < 2 ? "UP" : (string)Arguments[1];
+                string mode = Arguments.Length < 2 ? "NEAREST" : (string)Arguments[1];
 
                 return mode.ToUpper() switch
                 {
                     "UP" => Mathf.Ceil(value),
                     "DOWN" => Mathf.Floor(value),
-                    _ => throw new ArgumentException($"'{mode}' is not a valid mode. Valid options: UP, DOWN"),
+                    "NEAREST" => Mathf.Round(value),
+                    _ => throw new ArgumentException(),
                 };
             }
         }
