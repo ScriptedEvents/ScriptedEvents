@@ -346,8 +346,8 @@ Thanks for using my plugin. <3";
             {
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
-                sb.AppendLine($"=== ERROR CODE: SE-{res} ===");
-                sb.AppendLine($"ID: {info.Id}");
+                sb.AppendLine($"=== ERROR CODE ===");
+                sb.AppendLine($"ID: SE-{info.Id}");
                 sb.AppendLine(info.Info);
                 sb.AppendLine(info.LongDescription);
 
