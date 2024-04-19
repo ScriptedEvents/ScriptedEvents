@@ -67,8 +67,7 @@
                 return new(true);
             }
 
-            foreach (Player player in plys)
-                player.Kill(DamageType.Unknown);
+            foreach (Player player in plys) player.Kill(DamageType.Unknown);
 
             return new(true);
         }
