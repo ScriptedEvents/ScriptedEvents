@@ -35,7 +35,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SAVE", "Saves a new player variable."),
+                new("SET", "Saves a new player variable."),
                 new("DELETE", "Deletes a previously-saved player variable."),
                 new("ADD", "Adds player(s) to an established player variable."),
                 new("REMOVE", "Removes player(s) from an established player variable.")),
@@ -86,7 +86,7 @@
 
             switch (mode)
             {
-                case "SAVE":
+                case "SET":
                     VariableSystem.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script, true);
                     return new(true);
                 case "DELETE":

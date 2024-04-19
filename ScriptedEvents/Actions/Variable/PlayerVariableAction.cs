@@ -35,8 +35,8 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SAVE", "Saves a new player variable."),
-                new("DELETE", "Deletes a previously-saved player variable."),
+                new("SET", "Saves a new player variable."),
+                new("DEL", "Deletes a previously-saved player variable."),
                 new("ADD", "Adds player(s) to an established player variable."),
                 new("REMOVE", "Removes player(s) from an established player variable.")),
             new Argument("variableName", typeof(string), "The name of the variable.", true),
