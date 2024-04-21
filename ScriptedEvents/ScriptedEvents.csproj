@@ -104,6 +104,7 @@
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\GeneratorRuleAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
+    <Compile Include="Actions\Misc\ErrorAction.cs" />
     <Compile Include="Actions\Misc\ServerNameAction.cs" />
     <Compile Include="Actions\Misc\PluginAction.cs" />
     <Compile Include="Actions\Misc\PrintAction.cs" />
