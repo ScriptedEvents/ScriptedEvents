@@ -53,7 +53,7 @@
 
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
-                return new(false, ErrorGen.Get(127));
+                return new(false, ErrorGen.Get(ErrorCode.IOMissing));
             }
 
             ScriptHelper.StopScripts(scriptName);

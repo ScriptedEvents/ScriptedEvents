@@ -6,7 +6,7 @@
     using CommandSystem;
 
     using Exiled.Permissions.Extensions;
-
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
@@ -38,7 +38,7 @@
 
             if (!Directory.Exists(ScriptHelper.ScriptPath))
             {
-                response = ErrorGen.Get(127);
+                response = ErrorGen.Get(ErrorCode.IOMissing);
                 return false;
             }
 

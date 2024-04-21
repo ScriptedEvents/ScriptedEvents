@@ -140,12 +140,12 @@
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    Log.Error(ErrorGen.Get(106) + $": {e}");
+                    Log.Error(ErrorGen.Get(ErrorCode.IOPermissionError) + $": {e}");
                     return;
                 }
                 catch (Exception e)
                 {
-                    Log.Error(ErrorGen.Get(107) + $": {e}");
+                    Log.Error(ErrorGen.Get(ErrorCode.IOError) + $": {e}");
                     return;
                 }
 
@@ -481,19 +481,19 @@
 
                 if (custom.Name == string.Empty)
                 {
-                    Log.Warn(ErrorGen.Get(128));
+                    Log.Warn(ErrorGen.Get(ErrorCode.CustomCommand_NoName));
                     continue;
                 }
 
                 if (custom.Run is null || custom.Run.Count == 0)
                 {
-                    Log.Warn(ErrorGen.Get(129, custom.Name, custom.Type));
+                    Log.Warn(ErrorGen.Get(ErrorCode.CustomCommand_NoScripts, custom.Name, custom.Type));
                     continue;
                 }
 
                 if (custom.Cooldown != -1 && custom.PlayerCooldown != -1)
                 {
-                    Log.Warn(ErrorGen.Get(136, custom.Name, custom.Type));
+                    Log.Warn(ErrorGen.Get(ErrorCode.CustomCommand_MultCooldowns, custom.Name, custom.Type));
                     continue;
                 }
 

@@ -6,6 +6,7 @@
     using Exiled.API.Features;
 
     using PlayerRoles;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
@@ -73,7 +74,7 @@
                     return total;
                 }
 
-                throw new ArgumentException(ErrorGen.Get(126));
+                throw new ArgumentException(ErrorGen.Get(ErrorCode.UnknownError));
             }
         }
     }

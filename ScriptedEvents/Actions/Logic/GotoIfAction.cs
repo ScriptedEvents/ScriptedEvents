@@ -60,7 +60,7 @@
 
                     if (!script.Jump((string)Arguments[0]))
                     {
-                        return new(false, ErrorGen.Get(139, "trueLine", Arguments[0]));
+                        return new(false, ErrorGen.Get(ErrorCode.ScriptJumpFailed, "trueLine", Arguments[0]));
                     }
                 }
                 else
@@ -72,7 +72,7 @@
 
                     if (!script.Jump((string)Arguments[1]))
                     {
-                        return new(false, ErrorGen.Get(139, "falseLine", Arguments[1]));
+                        return new(false, ErrorGen.Get(ErrorCode.ScriptJumpFailed, "falseLine", Arguments[1]));
                     }
                 }
 
@@ -90,7 +90,7 @@
             {
                 script.DebugLog($"GOTOIF result: true. Jumping to line {Arguments[0]}.");
                 if (!script.Jump(label))
-                    return new(false, ErrorGen.Get(139, "trueLine", Arguments[0]));
+                    return new(false, ErrorGen.Get(ErrorCode.ScriptJumpFailed, "trueLine", Arguments[0]));
             }
             else
             {

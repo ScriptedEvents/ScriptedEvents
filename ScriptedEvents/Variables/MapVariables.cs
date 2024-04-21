@@ -7,6 +7,7 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
@@ -167,7 +168,7 @@
                 Door d = Door.Get(dt);
 
                 return d is null
-                    ? throw new ArgumentException(ErrorGen.Get(144, dt.ToString(), nameof(DoorType)))
+                    ? throw new ArgumentException(ErrorGen.Get(ErrorCode.InvalidEnumGeneric, dt.ToString(), nameof(DoorType)))
                     : (d.IsOpen ? "OPEN" : "CLOSED");
             }
         }
