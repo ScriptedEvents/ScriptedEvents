@@ -279,6 +279,12 @@
             {
                 if (scr.HasFlag("EVENT", out Flag f))
                 {
+                    if (f.Arguments.Length == 0)
+                    {
+                        Log.Error($"Script {scr.ScriptName} has an invalid EVENT flag.");
+                        continue;
+                    }
+
                     string evName = f.Arguments[0];
                     if (CurrentEventData.ContainsKey(evName))
                     {
@@ -292,6 +298,12 @@
 
                 if (scr.HasFlag("CUSTOMEVENT", out Flag cf))
                 {
+                    if (cf.Arguments.Length == 0)
+                    {
+                        Log.Error($"Script {scr.ScriptName} has an invalid CUSTOMEVENT flag.");
+                        continue;
+                    }
+
                     string cEvName = cf.Arguments[0];
                     if (CurrentCustomEventData.ContainsKey(cEvName))
                     {
