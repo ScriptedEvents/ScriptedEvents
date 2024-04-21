@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
 
     using CommandSystem;
 
@@ -72,7 +73,7 @@
                     scr.AddVariable($"{{ARG{i}}}", $"Argument #{i} of the command.", arguments.At(i).ToString());
                 }
 
-                scr.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));
+                scr.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments.Skip(1)));
 
                 ScriptHelper.RunScript(scr);
 
