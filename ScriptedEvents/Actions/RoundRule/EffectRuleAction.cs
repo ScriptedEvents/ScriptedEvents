@@ -38,7 +38,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("GIVE", "Rule to give effects."),
+                new("SET", "Rule to give effects."),
                 new("REMOVE", "Removes a previously-established rule.")),
             new Argument("target", typeof(object), "The players to affect, or the RoleType/Team to give the effect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
@@ -94,7 +94,7 @@
 
             switch (mode)
             {
-                case "GIVE":
+                case "SET":
                     if (list is 0)
                     {
                         foreach (Player ply in players)

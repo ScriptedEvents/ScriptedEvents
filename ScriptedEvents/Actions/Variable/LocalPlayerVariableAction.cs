@@ -36,7 +36,7 @@
         {
             new OptionsArgument("mode", true,
                 new("SET", "Saves a new player variable."),
-                new("DELETE", "Deletes a previously-saved player variable."),
+                new("DEL", "Deletes a previously-saved player variable."),
                 new("ADD", "Adds player(s) to an established player variable."),
                 new("REMOVE", "Removes player(s) from an established player variable.")),
             new Argument("variableName", typeof(string), "The name of the variable.", true),
@@ -70,7 +70,7 @@
                 max = Mathf.RoundToInt(result.Result);
             }
 
-            if (mode != "DELETE")
+            if (mode != "DEL")
             {
                 // Todo: Need to find a better solution where the 'max' parameter is required
                 // Math does not work inside of variables
@@ -89,7 +89,7 @@
                 case "SET":
                     VariableSystem.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script, true);
                     return new(true);
-                case "DELETE":
+                case "DEL":
                     if (script.UniquePlayerVariables.ContainsKey(varName))
                     {
                         script.UniquePlayerVariables.Remove(varName);

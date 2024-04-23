@@ -34,7 +34,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("GIVE", "Gives effects to players."),
+                new("SET", "Gives effects to players."),
                 new("REMOVE", "Removes effects from players.")),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
@@ -69,7 +69,7 @@
 
             switch (mode)
             {
-                case "GIVE":
+                case "SET":
                     if (intensity > 255)
                         return new(false, "Effect intensity must be between 0-255.");
 
