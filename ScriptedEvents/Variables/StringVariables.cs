@@ -205,7 +205,8 @@
                 new("KILLS", "Player's kills"),
                 new("EFFECTS", "Player's current effects"),
                 new("USINGNOCLIP", "Is player using noclip"),
-                new("CANNOCLIP", "Is player permitted to use noclip")),
+                new("CANNOCLIP", "Is player permitted to use noclip"),
+                new("STAMINA", "Is player permitted to use noclip")),
         };
 
         /// <inheritdoc/>
@@ -256,6 +257,7 @@
                         "EFFECTS" => "None",
                         "USINGNOCLIP" => ply.Role is FpcRole role ? role.IsNoclipEnabled.ToUpper() : "FALSE",
                         "CANNOCLIP" => ply.IsNoclipPermitted.ToUpper(),
+                        "STAMINA" => ply.Stamina.ToString(),
                         _ => ply.Nickname,
                     };
                     }).OrderBy(s => s);
