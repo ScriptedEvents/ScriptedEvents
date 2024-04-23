@@ -98,6 +98,7 @@
     <Compile Include="Actions\Item\SpawnGrenadeAction.cs" />
     <Compile Include="Actions\Item\LoadoutAction.cs" />
     <Compile Include="Actions\Logic\CallAction.cs" />
+    <Compile Include="Actions\Logic\EndIfAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Logic\TriggerAction.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="API\Features\ErrorGen.cs" />
     <Compile Include="API\Features\Exceptions\VariableException.cs" />
     <Compile Include="API\Features\VariableStorage.cs" />
+    <Compile Include="API\Interfaces\IIgnoresSkipAction.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
     <Compile Include="Actions\Lights\LightColorAction.cs" />
