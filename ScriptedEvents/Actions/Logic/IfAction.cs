@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class IfAction : IScriptAction, ILogicAction, IHelpInfo, IIgnoresSkipAction
+    public class IfAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "IF";
