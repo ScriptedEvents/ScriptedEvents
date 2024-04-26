@@ -150,6 +150,8 @@ namespace ScriptedEvents.API.Features
             string[] array = allText.Split('\n');
             for (int currentline = 0; currentline < array.Length; currentline++)
             {
+                array[currentline] = array[currentline].TrimStart();
+
                 // NoAction
                 string action = array[currentline];
                 if (string.IsNullOrWhiteSpace(action))
