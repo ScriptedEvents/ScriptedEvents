@@ -32,7 +32,6 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("action", typeof(string), "The action to run.", true),
             new OptionsArgument("action", true,
                 new("START", "Starts the warhead."),
                 new("STOP", "Stops the warhead."),
