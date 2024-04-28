@@ -162,9 +162,9 @@
                 if (IsExperimental)
                 {
 #if ADEBUG
-                    Log.Warn($"You are using pre-release version of {Name} by Elektryk_Andrzej. Please report any issues encountered, thank you.");
+                    Log.Warn($"You are using a pre-release version of {Name} by Elektryk_Andrzej. Please report any issues encountered, thank you.");
 #else
-                    Log.Warn($"You are using pre-release version of {Name}. Please report any issues encountered, thank you.");
+                    Log.Warn($"You are using a pre-release version of {Name}. Please report any issues encountered, thank you.");
 #endif
                 }
 
