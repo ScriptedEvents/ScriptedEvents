@@ -9,7 +9,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription, IIgnoresSkipAction
+    public class GotoIfAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "GOTOIF";
@@ -33,7 +33,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("label", typeof(string), "The label to jump to.", true),
-            new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
+            new Argument("condition", typeof(string), "The condition to check. Math is supported.", true),
         };
 
         /// <inheritdoc/>
@@ -42,7 +42,6 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            script.SkipExecution = false;
             string label = (string)Arguments[0];
 
             ConditionResponse outcome = ConditionHelperV2.Evaluate(Arguments.JoinMessage(1), script);
