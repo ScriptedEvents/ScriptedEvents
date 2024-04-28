@@ -703,7 +703,7 @@ namespace ScriptedEvents.API.Features
                 if (!scr.Actions.TryGet(scr.CurrentLine, out IAction action) || action == null)
                     continue;
 
-                if (scr.SkipExecution && action is not IIgnoresSkipAction)
+                if (scr.SkipExecution && action is not IIgnoreSkipAction)
                     continue;
 
                 ActionResponse resp;
