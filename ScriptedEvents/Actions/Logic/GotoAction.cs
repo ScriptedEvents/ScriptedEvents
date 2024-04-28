@@ -7,7 +7,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class GotoAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
+    public class GotoAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription, IIgnoresSkipAction
     {
         /// <inheritdoc/>
         public string Name => "GOTO";
@@ -39,6 +39,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            script.SkipExecution = false;
             string label = (string)Arguments[0];
 
             if (!script.Jump(label))

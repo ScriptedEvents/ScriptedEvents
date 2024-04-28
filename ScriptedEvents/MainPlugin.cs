@@ -162,9 +162,9 @@
                 if (IsExperimental)
                 {
 #if ADEBUG
-                    Log.Warn($"This DLL is an experimental pre-release version of {Name} by Elektryk_Andrzej.");
+                    Log.Warn($"You are using pre-release version of {Name} by Elektryk_Andrzej. Please report any issues encountered, thank you.");
 #else
-                    Log.Warn($"This {Name} DLL is marked as Experimental. Use at your own risk; expect bugs and issues.");
+                    Log.Warn($"You are using pre-release version of {Name}. Please report any issues encountered, thank you.");
 #endif
                 }
 
@@ -292,7 +292,7 @@
                     }
                     else
                     {
-                        CurrentEventData.Add(evName, new List<string>() { scr.ScriptName });
+                        CurrentEventData.Add(evName, new() { scr.ScriptName });
                     }
                 }
 
@@ -311,7 +311,7 @@
                     }
                     else
                     {
-                        CurrentCustomEventData.Add(cEvName, new List<string>() { scr.ScriptName });
+                        CurrentCustomEventData.Add(cEvName, new() { scr.ScriptName });
                     }
                 }
 
