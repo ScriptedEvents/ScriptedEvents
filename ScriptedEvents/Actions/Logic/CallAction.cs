@@ -1,9 +1,11 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
 
     using Exiled.API.Features;
+    using MEC;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -13,7 +15,7 @@
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
-    public class CallAction : IScriptAction, IHelpInfo
+    public class CallAction : IHelpInfo, ITimingAction
     {
         /// <inheritdoc/>
         public string Name => "CALL";
@@ -44,7 +46,7 @@
         };
 
         /// <inheritdoc/>
-        public ActionResponse Execute(Script script)
+        public float? Execute(Script script, out ActionResponse message)
         {
             string mode = Arguments[0].ToUpper();
             if (mode == "LABEL")
@@ -53,13 +55,15 @@
 
                 if (!script.Jump((string)Arguments[1]))
                 {
-                    return new(false, "Invalid line or label provided!");
+                    message = new(false, "Invalid line or label provided!");
+                    return 0;
                 }
 
                 script.CallLines.Add(curLine);
 
                 script.DebugLog(script.CallLines[0].ToString());
-                return new(true);
+                message = new(true);
+                return 0;
             }
 
             if (mode == "SCRIPT")
@@ -74,17 +78,19 @@
                 }
                 catch (DisabledScriptException)
                 {
-                    return new(false, $"Script '{scriptName}' is disabled.");
+                    message = new(false, $"Script '{scriptName}' is disabled.");
+                    return 0;
                 }
                 catch (FileNotFoundException)
                 {
-                    return new(false, $"Script '{scriptName}' not found.");
+                    message = new(false, $"Script '{scriptName}' not found.");
+                    return 0;
                 }
 
                 if (Arguments.Length < 3)
                 {
-                    calledScript.Execute();
-                    return new(true);
+                    message = new(true);
+                    return Timing.WaitUntilDone(RunScript(calledScript, script));
                 }
 
                 calledScript.AddVariable($"{{ARGS}}", "Variable created using the CALL action.", Arguments.JoinMessage(2));
@@ -113,11 +119,29 @@
                     Log.Warn(ErrorGen.Get(ErrorCode.InvalidVariable));
                 }
 
-                calledScript.Execute();
-                return new(true);
+                message = new(true);
+                return Timing.WaitUntilDone(RunScript(calledScript, script));
             }
 
-            return new(false, "Invalid mode provided.");
+            message = new(false, "Invalid mode provided.");
+            return 0;
+        }
+
+        private CoroutineHandle RunScript(Script scriptToCall, Script script)
+        {
+            scriptToCall.Execute();
+            string coroutineKey = $"CALL_WAIT_FOR_FINISH_COROUTINE_{DateTime.UtcNow.Ticks}";
+            CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(scriptToCall), coroutineKey);
+            CoroutineHelper.AddCoroutine("CALL", handle, script);
+            return handle;
+        }
+
+        private IEnumerator<float> InternalWaitUntil(Script calledScript)
+        {
+            while (ScriptHelper.RunningScripts.ContainsKey(calledScript))
+            {
+                yield return Timing.WaitForSeconds(1 / MainPlugin.Configs.WaitUntilFrequency);
+            }
         }
     }
 }
