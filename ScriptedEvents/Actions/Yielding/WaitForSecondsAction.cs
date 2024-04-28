@@ -34,7 +34,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("seconds", typeof(float), "The amount of seconds. Variables & Math are supported.", true),
+            new Argument("seconds", typeof(float), "The amount of seconds. Math is supported.", true),
         };
 
         /// <inheritdoc/>

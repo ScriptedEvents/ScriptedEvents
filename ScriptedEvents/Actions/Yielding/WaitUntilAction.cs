@@ -36,7 +36,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
+            new Argument("condition", typeof(string), "The condition to check. Math is supported.", true),
         };
 
         /// <inheritdoc/>
