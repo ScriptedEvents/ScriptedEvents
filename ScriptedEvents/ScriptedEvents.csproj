@@ -141,6 +141,7 @@
     <Compile Include="Actions\Variable\PlayerDataAction.cs" />
     <Compile Include="Actions\Variable\LocalSaveAction.cs" />
     <Compile Include="Actions\Variable\StorageAction.cs" />
+    <Compile Include="Actions\Variable\TempVariableAction.cs" />
     <Compile Include="Actions\Yielding\HttpPostAction.cs" />
     <Compile Include="Actions\Yielding\HttpGetAction.cs" />
     <Compile Include="Actions\Round\EndRoundAction.cs" />
@@ -298,6 +299,7 @@
     <Compile Include="Variables\CustomVariable.cs" />
     <Compile Include="Variables\EscapesVariables.cs" />
     <Compile Include="Variables\KillsAndDeathsVariables.cs" />
+    <Compile Include="Variables\MathVariables.cs" />
     <Compile Include="Variables\MiscVariables.cs" />
     <Compile Include="Variables\PlayerCountVariables.cs" />
     <Compile Include="Variables\RoleVariables.cs" />
