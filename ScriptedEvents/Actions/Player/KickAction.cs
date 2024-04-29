@@ -44,7 +44,7 @@
 
             foreach (Player player in players)
             {
-                player.Kick(VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script));
+                player.Kick(VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script).Replace("\\n", "\n"));
             }
 
             return new(true);

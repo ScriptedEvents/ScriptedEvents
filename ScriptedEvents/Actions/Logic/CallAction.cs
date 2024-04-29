@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using Exiled.API.Features;
     using MEC;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
@@ -116,7 +115,7 @@
                         continue;
                     }
 
-                    Log.Warn(ErrorGen.Get(ErrorCode.InvalidVariable));
+                    calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", varName);
                 }
 
                 message = new(true);

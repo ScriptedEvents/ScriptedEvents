@@ -98,7 +98,6 @@
     <Compile Include="Actions\Item\SpawnGrenadeAction.cs" />
     <Compile Include="Actions\Item\LoadoutAction.cs" />
     <Compile Include="Actions\Logic\CallAction.cs" />
-    <Compile Include="Actions\Logic\ElseIfAction.cs" />
     <Compile Include="Actions\Logic\EndIfAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Logic\TriggerAction.cs" />
