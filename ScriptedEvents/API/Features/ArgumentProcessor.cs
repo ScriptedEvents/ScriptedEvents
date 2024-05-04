@@ -190,7 +190,7 @@
                         break;
                     case "Room[]":
                         if (!ScriptHelper.TryGetRooms(input, out Room[] rooms, source))
-                            return new(false, expected.ArgumentName, MsgGen.Generate(MessageType.NoRoomsFound, action, expected.ArgumentName, input));
+                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
 
                         success.NewParameters.Add(rooms);
                         break;
