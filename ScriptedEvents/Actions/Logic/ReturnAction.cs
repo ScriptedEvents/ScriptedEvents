@@ -81,6 +81,7 @@
                 }
             }
 
+            if (mode == "SCRIPT") return new(true, flags: ActionFlags.StopEventExecution);
             return new(true);
         }
     }
