@@ -3,6 +3,7 @@
     using System;
 
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups.Projectiles;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -35,6 +36,7 @@
             new Argument("y", typeof(float), "The Y coordinate.", true),
             new Argument("z", typeof(float), "The Z coordinate.", true),
             new Argument("fuseTimeSeconds", typeof(float), "Fuse time for the grenade.", true),
+            new Argument("scale", typeof(float), "The scale of the granade.", false),
         };
 
         /// <inheritdoc/>
@@ -47,7 +49,13 @@
                 (float)Arguments[2]);
 
             grenade.FuseTime = (float)Arguments[3];
-            grenade.SpawnActive(pos);
+            ExplosionGrenadeProjectile gren = grenade.SpawnActive(pos);
+
+            if (Arguments.Length > 4)
+            {
+                float scale = (float)Arguments[4];
+                gren.Scale = new(scale, scale, scale);
+            }
 
             return new(true);
         }
