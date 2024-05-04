@@ -739,9 +739,9 @@ namespace ScriptedEvents.API.Features
                             continue;
                     }
                 }
-                catch (VariableException variableException)
+                catch (ScriptedEventsException seException)
                 {
-                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {variableException.Message}";
+                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {seException.Message}";
                     switch (scr.Context)
                     {
                         case ExecuteContext.RemoteAdmin:
