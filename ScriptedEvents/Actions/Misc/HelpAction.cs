@@ -372,6 +372,10 @@ Thanks for using my plugin. <3";
                 sb.AppendLine();
                 sb.AppendLine($"=== ERROR CODE ===");
                 sb.AppendLine($"ID: SE-{info.Id}");
+
+                if (script.Debug)
+                    sb.AppendLine($"Internal ID: {info.Code}");
+
                 sb.AppendLine(info.Info);
                 sb.AppendLine(info.LongDescription);
 
