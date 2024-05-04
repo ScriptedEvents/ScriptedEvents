@@ -302,6 +302,7 @@
     <Compile Include="Variables\MathVariables.cs" />
     <Compile Include="Variables\MiscVariables.cs" />
     <Compile Include="Variables\PlayerCountVariables.cs" />
+    <Compile Include="Variables\PlayerInfoVariables.cs" />
     <Compile Include="Variables\RoleVariables.cs" />
     <Compile Include="Variables\RoundVariables.cs" />
     <Compile Include="Variables\ServerInfoVariables.cs" />
