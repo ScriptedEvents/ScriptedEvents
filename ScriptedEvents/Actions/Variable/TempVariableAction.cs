@@ -27,7 +27,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => "Saves a new  variable '{^}' in the local scope.";
+        public string Description => "Saves a new variable with the name of '{^}' in the local scope. It works the same as doing 'LOCAL {^} ...'. The variable will be able to be used until its overwritten by another TEMP action.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
