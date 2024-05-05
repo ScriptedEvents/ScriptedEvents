@@ -187,11 +187,11 @@
                     if (!ScriptHelper.TryGetPlayers(input, null, out PlayerCollection players, source))
                         return new(false, expected.ArgumentName, players.Message);
 
-                        success.NewParameters.Add(players);
-                        break;
-                    case "Room[]":
-                        if (!ScriptHelper.TryGetRooms(input, out Room[] rooms, source))
-                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
+                    success.NewParameters.Add(players);
+                    break;
+                case "Room[]":
+                    if (!ScriptHelper.TryGetRooms(input, out Room[] rooms, source))
+                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
 
                     success.NewParameters.Add(rooms);
                     break;
