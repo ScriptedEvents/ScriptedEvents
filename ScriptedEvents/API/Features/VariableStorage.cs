@@ -4,7 +4,9 @@
     using System.IO;
 
     using Exiled.API.Features;
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
@@ -76,9 +78,13 @@
                 using StreamWriter writer = new(filePath, false, System.Text.Encoding.UTF8);
                 writer.WriteLine(varValue);
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new ScriptedEventsException(ErrorGen.Get(ErrorCode.IOPermissionError) + $": {ex}");
+            }
             catch (Exception ex)
             {
-                throw new Exception($"Error when saving variable to storage: {ex}");
+                throw new ScriptedEventsException(ErrorGen.Get(ErrorCode.IOError) + $": {ex}");
             }
         }
 

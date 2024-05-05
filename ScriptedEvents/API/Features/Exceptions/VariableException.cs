@@ -1,11 +1,9 @@
 ﻿namespace ScriptedEvents.API.Features.Exceptions
 {
-    using System;
-
     /// <summary>
     /// Exception thrown when a variable errors.
     /// </summary>
-    public class VariableException : Exception
+    public class VariableException : ScriptedEventsException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VariableException"/> class.

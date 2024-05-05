@@ -1,11 +1,9 @@
 ﻿namespace ScriptedEvents.API.Features.Exceptions
 {
-    using System;
-
     /// <summary>
     /// Exception thrown when a disabled script is executed.
     /// </summary>
-    public class DisabledScriptException : Exception
+    public class DisabledScriptException : ScriptedEventsException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DisabledScriptException"/> class.

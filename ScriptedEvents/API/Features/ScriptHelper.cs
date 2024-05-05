@@ -744,43 +744,17 @@ namespace ScriptedEvents.API.Features
                             continue;
                     }
                 }
-                catch (VariableException variableException)
+                catch (ScriptedEventsException seException)
                 {
-                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {variableException.Message}";
-                    switch (scr.Context)
-                    {
-                        case ExecuteContext.RemoteAdmin:
-                            Player ply = Player.Get(scr.Sender);
-                            ply.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
-
-                            if (MainPlugin.Configs.BroadcastIssues)
-                                ply?.Broadcast(5, $"Error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
-
-                            break;
-                        default:
-                            Log.Warn(message);
-                            break;
-                    }
+                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {seException.Message}";
+                    LogSystem.ScriptError(message, scr, scr.Context, scr.Sender);
 
                     continue;
                 }
                 catch (Exception e)
                 {
                     string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(ErrorCode.UnknownActionError, action.Name)}:\n{e}";
-                    switch (scr.Context)
-                    {
-                        case ExecuteContext.RemoteAdmin:
-                            Player ply = Player.Get(scr.Sender);
-                            ply.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
-
-                            if (MainPlugin.Configs.BroadcastIssues)
-                                ply?.Broadcast(5, $"Error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
-
-                            break;
-                        default:
-                            Log.Error(message);
-                            break;
-                    }
+                    LogSystem.ScriptError(message, scr, scr.Context, scr.Sender);
 
                     continue;
                 }
@@ -791,40 +765,14 @@ namespace ScriptedEvents.API.Features
                     if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                     {
                         string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Fatal action error! {resp.Message}";
-                        switch (scr.Context)
-                        {
-                            case ExecuteContext.RemoteAdmin:
-                                Player ply = Player.Get(scr.Sender);
-                                ply?.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
-
-                                if (MainPlugin.Configs.BroadcastIssues)
-                                    ply?.Broadcast(5, $"Fatal action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
-
-                                break;
-                            default:
-                                Log.Error(message);
-                                break;
-                        }
+                        LogSystem.ScriptError(message, scr, scr.Context, scr.Sender, fatal: true);
 
                         break;
                     }
                     else if (!scr.SuppressWarnings)
                     {
                         string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Action error! {resp.Message}";
-                        switch (scr.Context)
-                        {
-                            case ExecuteContext.RemoteAdmin:
-                                Player ply = Player.Get(scr.Sender);
-                                ply?.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
-
-                                if (MainPlugin.Configs.BroadcastIssues)
-                                    ply?.Broadcast(5, $"Action error when running the <b>{scr.ScriptName}</b> script. See text RemoteAdmin for details.");
-
-                                break;
-                            default:
-                                Log.Warn(message);
-                                break;
-                        }
+                        LogSystem.ScriptError(message, scr, scr.Context, scr.Sender);
                     }
                 }
                 else

@@ -159,6 +159,8 @@
     <Compile Include="API\Features\ConditionHelperV2.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Features\ErrorGen.cs" />
+    <Compile Include="API\Features\LogSystem.cs" />
+    <Compile Include="API\Features\Exceptions\ScriptedEventsException.cs" />
     <Compile Include="API\Features\Exceptions\VariableException.cs" />
     <Compile Include="API\Features\VariableStorage.cs" />
     <Compile Include="API\Interfaces\IIgnoreSkipAction.cs" />

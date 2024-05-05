@@ -121,7 +121,7 @@
         /// <summary>
         /// Gets a value indicating whether or not the script is running in debug mode.
         /// </summary>
-        public bool Debug => HasFlag("DEBUG");
+        public bool Debug => HasFlag("DEBUG") || MainPlugin.Configs.Debug;
 
         /// <summary>
         /// Gets a value indicating whether or not the script is marked as an admin-event (CedMod compatibility).
@@ -235,13 +235,14 @@
         /// <param name="input">The input to log.</param>
         public void DebugLog(string input)
         {
-            if (Debug || MainPlugin.Configs.Debug)
+            if (Debug)
                 Log.Send($"[{MainPlugin.Singleton.Name}] [Script: {ScriptName}] [L: {CurrentLine + 1}] {input}", LogLevel.Debug, ConsoleColor.Gray);
         }
 
         /// <summary>
         /// Execute the script.
         /// </summary>
+        /// <param name="dispose">Whether or not to dispose at conclusion of execution.</param>
         public void Execute(bool dispose = true) => ScriptHelper.RunScript(this, dispose);
 
         /// <summary>
