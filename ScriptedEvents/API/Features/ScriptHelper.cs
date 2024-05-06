@@ -36,9 +36,14 @@ namespace ScriptedEvents.API.Features
     public static class ScriptHelper
     {
         /// <summary>
+        /// The base path to SE files.
+        /// </summary>
+        public static readonly string BaseFilePath = Path.Combine(Paths.Configs, "ScriptedEvents");
+
+        /// <summary>
         /// The base path to the script folder.
         /// </summary>
-        public static readonly string ScriptPath = Path.Combine(Paths.Configs, "ScriptedEvents");
+        public static readonly string ScriptPath = Path.Combine(BaseFilePath, "Scripts");
 
         /// <summary>
         /// Gets a dictionary of action names and their respective types.
@@ -114,9 +119,6 @@ namespace ScriptedEvents.API.Features
 
             foreach (string file in files)
             {
-                if (File.ReadAllText(file).Contains("!-- HELPRESPONSE"))
-                    continue;
-
                 try
                 {
                     Script scr = ReadScript(Path.GetFileNameWithoutExtension(file), sender, true);
@@ -631,24 +633,21 @@ namespace ScriptedEvents.API.Features
                 fileDirectory = mainFolderFile;
                 text = File.ReadAllText(mainFolderFile);
             }
-
-            foreach (string directory in Directory.GetDirectories(ScriptPath))
+            else
             {
-                string fileName = Path.Combine(directory, scriptName + ".txt");
-                if (File.Exists(fileName))
+                foreach (string directory in Directory.GetDirectories(ScriptPath))
                 {
-                    fileDirectory = fileName;
-                    text = File.ReadAllText(fileName);
+                    string fileName = Path.Combine(directory, scriptName + ".txt");
+                    if (File.Exists(fileName))
+                    {
+                        fileDirectory = fileName;
+                        text = File.ReadAllText(fileName);
+                    }
                 }
             }
 
             if (text is not null && fileDirectory is not null)
-            {
-                if (text.Contains("!-- HELPRESPONSE"))
-                    throw new FileNotFoundException($"Script {scriptName} does not exist.");
-
                 return text;
-            }
 
             throw new FileNotFoundException($"Script {scriptName} does not exist.");
         }

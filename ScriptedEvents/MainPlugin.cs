@@ -71,7 +71,6 @@
         /// </summary>
         public static IDemoScript[] DemoScripts { get; } = new IDemoScript[]
         {
-            new About(),
             new DemoScript(),
             new ConditionSamples(),
         };
@@ -137,6 +136,8 @@
                     {
                         File.WriteAllText(Path.Combine(demoScriptFolder.FullName, $"{demo.FileName}.txt"), demo.Contents);
                     }
+
+                    File.WriteAllText(Path.Combine(ScriptHelper.BaseFilePath, "README.txt"), new About().Contents);
                 }
                 catch (UnauthorizedAccessException e)
                 {
@@ -153,7 +154,7 @@
                 // 3s delay to show after other console spam
                 Timing.CallDelayed(6f, () =>
                 {
-                    Log.Warn($"Thank you for installing Scripted Events! View the README file located at {ScriptHelper.ScriptPath} for information on how to use and get the most out of this plugin.");
+                    Log.Warn($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(ScriptHelper.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
                 });
             }
 
@@ -262,7 +263,7 @@
             VariableSystem.Setup();
 
             // Delete help file on startup
-            string helpPath = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
+            string helpPath = Path.Combine(ScriptHelper.BaseFilePath, "HelpCommandResponse.txt");
             if (File.Exists(helpPath))
                 File.Delete(helpPath);
         }
