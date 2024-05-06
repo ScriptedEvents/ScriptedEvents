@@ -395,8 +395,8 @@ Thanks for using my plugin. <3";
         {
             if (IsFile)
             {
-                string message = $"!-- HELPRESPONSE\nAuto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n{response.Message}";
-                string path = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
+                string message = $"Auto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n{response.Message}";
+                string path = Path.Combine(ScriptHelper.BaseFilePath, "HelpCommandResponse.txt");
 
                 if (File.Exists(path))
                     File.Delete(path);

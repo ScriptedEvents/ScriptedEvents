@@ -262,7 +262,7 @@
             VariableSystem.Setup();
 
             // Delete help file on startup
-            string helpPath = Path.Combine(ScriptHelper.ScriptPath, "HelpCommandResponse.txt");
+            string helpPath = Path.Combine(ScriptHelper.BaseFilePath, "HelpCommandResponse.txt");
             if (File.Exists(helpPath))
                 File.Delete(helpPath);
         }
