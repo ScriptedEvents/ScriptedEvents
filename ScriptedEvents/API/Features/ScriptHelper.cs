@@ -631,14 +631,16 @@ namespace ScriptedEvents.API.Features
                 fileDirectory = mainFolderFile;
                 text = File.ReadAllText(mainFolderFile);
             }
-
-            foreach (string directory in Directory.GetDirectories(ScriptPath))
+            else
             {
-                string fileName = Path.Combine(directory, scriptName + ".txt");
-                if (File.Exists(fileName))
+                foreach (string directory in Directory.GetDirectories(ScriptPath))
                 {
-                    fileDirectory = fileName;
-                    text = File.ReadAllText(fileName);
+                    string fileName = Path.Combine(directory, scriptName + ".txt");
+                    if (File.Exists(fileName))
+                    {
+                        fileDirectory = fileName;
+                        text = File.ReadAllText(fileName);
+                    }
                 }
             }
 
