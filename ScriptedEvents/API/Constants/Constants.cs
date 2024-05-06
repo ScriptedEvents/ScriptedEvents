@@ -30,7 +30,7 @@
             StringBuilder sb = StringBuilderPool.Pool.Get();
             foreach (Contributor c in Contributors)
             {
-                sb.AppendLine(c.ToString());
+                sb.AppendLine("# " + c.ToString());
             }
 
             return StringBuilderPool.Pool.ToStringReturn(sb);
