@@ -40,7 +40,7 @@
 
             foreach (string scriptName in MainPlugin.CurrentCustomEventData[ev])
             {
-                ScriptHelper.ReadAndRun(scriptName, script.Sender);
+                ScriptModule.ReadAndRun(scriptName, script.Sender);
             }
 
             return new(true);

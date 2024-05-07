@@ -4,25 +4,22 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
-    using Exiled.Events.Features;
     using Exiled.Events.Handlers;
-    using Exiled.Loader;
 
     using MEC;
     using RemoteAdmin;
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
-    using Event = Exiled.Events.Features.Event;
     using MapHandler = Exiled.Events.Handlers.Map;
     using PlayerHandler = Exiled.Events.Handlers.Player;
     using Scp330Handler = Exiled.Events.Handlers.Scp330;
@@ -75,17 +72,14 @@
             new ConditionSamples(),
         };
 
-        /// <summary>
-        /// Gets an array of Event "Handler" types defined by Exiled.
-        /// </summary>
-        public static Type[] HandlerTypes { get; } = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
-            .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
-
-        public static List<Tuple<PropertyInfo, Delegate>> StoredDelegates { get; } = new();
-
         public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
         public static List<Commands.CustomCommand> CustomCommands { get; } = new();
+
+        /// <summary>
+        /// The base path to SE files.
+        /// </summary>
+        public static readonly string BaseFilePath = Path.Combine(Paths.Configs, "ScriptedEvents");
 
         /// <inheritdoc/>
         public override string Name => "ScriptedEvents";
@@ -102,11 +96,13 @@
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
 
-        internal static Dictionary<string, List<string>> CurrentEventData { get; set; }
-
-        internal static Dictionary<string, List<string>> CurrentCustomEventData { get; set; }
-
         internal static List<string> AutorunScripts { get; set; }
+
+        public static List<IModule> Modules { get; } = new()
+        {
+            new ScriptModule(),
+            new EventScriptModule(),
+        };
 
         /// <summary>
         /// Equivalent to <see cref="Log.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
@@ -118,6 +114,9 @@
                 Log.Info(message);
         }
 
+        public static T GetModule<T>()
+            where T : IModule => (T)Modules.FirstOrDefault(m => m.GetType() == typeof(T));
+
         /// <inheritdoc/>
         public override void OnEnabled()
         {
@@ -126,36 +125,12 @@
             Singleton = this;
             Handlers = new();
 
-            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            foreach (IModule module in Modules)
             {
-                try
-                {
-                    DirectoryInfo info = Directory.CreateDirectory(ScriptHelper.ScriptPath);
-                    DirectoryInfo demoScriptFolder = Directory.CreateDirectory(Path.Combine(info.FullName, "DemoScripts"));
-                    foreach (IDemoScript demo in DemoScripts)
-                    {
-                        File.WriteAllText(Path.Combine(demoScriptFolder.FullName, $"{demo.FileName}.txt"), demo.Contents);
-                    }
+                if (module.ShouldGenerateFiles)
+                    module.GenerateFiles();
 
-                    File.WriteAllText(Path.Combine(ScriptHelper.BaseFilePath, "README.txt"), new About().Contents);
-                }
-                catch (UnauthorizedAccessException e)
-                {
-                    Log.Error(ErrorGen.Get(ErrorCode.IOPermissionError) + $": {e}");
-                    return;
-                }
-                catch (Exception e)
-                {
-                    Log.Error(ErrorGen.Get(ErrorCode.IOError) + $": {e}");
-                    return;
-                }
-
-                // Welcome message :)
-                // 3s delay to show after other console spam
-                Timing.CallDelayed(6f, () =>
-                {
-                    Log.Warn($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(ScriptHelper.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
-                });
+                module.Init();
             }
 
             Timing.CallDelayed(6f, () =>
@@ -263,97 +238,9 @@
             VariableSystem.Setup();
 
             // Delete help file on startup
-            string helpPath = Path.Combine(ScriptHelper.BaseFilePath, "HelpCommandResponse.txt");
+            string helpPath = Path.Combine(BaseFilePath, "HelpCommandResponse.txt");
             if (File.Exists(helpPath))
                 File.Delete(helpPath);
-        }
-
-        /// <summary>
-        /// Sets up the "On" config to be connected to events.
-        /// </summary>
-        public void SetupEvents()
-        {
-            CurrentEventData = new();
-            CurrentCustomEventData = new();
-
-            foreach (Script scr in ScriptHelper.ListScripts())
-            {
-                if (scr.HasFlag("EVENT", out Flag f))
-                {
-                    string evName = f.Arguments[0];
-                    if (CurrentEventData.ContainsKey(evName))
-                    {
-                        CurrentEventData[evName].Add(scr.ScriptName);
-                    }
-                    else
-                    {
-                        CurrentEventData.Add(evName, new List<string>() { scr.ScriptName });
-                    }
-                }
-
-                if (scr.HasFlag("CUSTOMEVENT", out Flag cf))
-                {
-                    string cEvName = cf.Arguments[0];
-                    if (CurrentCustomEventData.ContainsKey(cEvName))
-                    {
-                        CurrentCustomEventData[cEvName].Add(scr.ScriptName);
-                    }
-                    else
-                    {
-                        CurrentCustomEventData.Add(cEvName, new List<string>() { scr.ScriptName });
-                    }
-                }
-
-                scr.Dispose();
-            }
-
-            foreach (KeyValuePair<string, List<string>> ev in CurrentEventData)
-            {
-                Log.Debug("Setting up new 'on' event");
-                Log.Debug($"Event: {ev.Key}");
-                Log.Debug($"Scripts: {string.Join(", ", ev.Value)}");
-                bool made = false;
-                foreach (Type handler in HandlerTypes)
-                {
-                    // Credit to DevTools & Yamato for below code.
-                    Delegate @delegate = null;
-                    PropertyInfo propertyInfo = handler.GetProperty(ev.Key);
-
-                    if (propertyInfo is null)
-                        continue;
-
-                    EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
-                    MethodInfo subscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Subscribe");
-
-                    if (propertyInfo.PropertyType == typeof(Event))
-                    {
-                        @delegate = new CustomEventHandler(EventHandlers.OnNonArgumentedEvent);
-                    }
-                    else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
-                    {
-                        @delegate = typeof(EventHandlers)
-                            .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
-                            .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
-                            .CreateDelegate(typeof(CustomEventHandler<>)
-                            .MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments));
-                    }
-                    else
-                    {
-                        Log.Warn(propertyInfo.Name);
-                        continue;
-                    }
-
-                    subscribe.Invoke(propertyInfo.GetValue(Handlers), new object[] { @delegate });
-                    StoredDelegates.Add(new Tuple<PropertyInfo, Delegate>(propertyInfo, @delegate));
-
-                    made = true;
-                }
-
-                if (made)
-                    Log.Debug($"Dynamic event {ev.Key} connected successfully");
-                else
-                    Log.Debug($"Dynamic event {ev.Key} failed to be connected");
-            }
         }
 
         /// <inheritdoc/>
@@ -361,6 +248,11 @@
         {
             Handlers.OnRestarting();
             base.OnDisabled();
+
+            foreach (IModule module in Modules)
+            {
+                module.Kill();
+            }
 
             PlayerHandler.ChangingRole -= Handlers.OnChangingRole;
             PlayerHandler.Hurting -= Handlers.OnHurting;
@@ -445,33 +337,8 @@
             Scp939.SavingVoice -= Handlers.OnScpAbility;
             Scp3114.TryUseBody -= Handlers.OnScpAbility;
 
-            NukeOnConnections();
-
-            ScriptHelper.StopAllScripts();
-            ScriptHelper.ActionTypes.Clear();
-
             Singleton = null;
             Handlers = null;
-        }
-
-        public void NukeOnConnections()
-        {
-            foreach (Tuple<PropertyInfo, Delegate> tuple in StoredDelegates)
-            {
-                PropertyInfo propertyInfo = tuple.Item1;
-                Delegate handler = tuple.Item2;
-
-                Log.Debug($"Removing dynamic connection for event '{propertyInfo.Name}'");
-
-                EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
-                MethodInfo unSubscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Unsubscribe");
-
-                unSubscribe.Invoke(propertyInfo.GetValue(Handlers), new[] { handler });
-                Log.Debug($"Removed dynamic connection for event '{propertyInfo.Name}'");
-            }
-
-            StoredDelegates.Clear();
-            CurrentEventData = null;
         }
 
         public override void OnRegisteringCommands()

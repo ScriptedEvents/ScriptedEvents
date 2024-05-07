@@ -36,7 +36,7 @@
                 return false;
             }
 
-            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            if (!Directory.Exists(ScriptModule.ScriptPath))
             {
                 response = ErrorGen.Get(ErrorCode.IOMissing);
                 return false;
@@ -44,7 +44,7 @@
 
             string arg0 = arguments.At(0);
 
-            int amount = ScriptHelper.StopScripts(arg0);
+            int amount = ScriptModule.StopScripts(arg0);
             if (amount == 0)
             {
                 response = "Done! No scripts were stopped.";

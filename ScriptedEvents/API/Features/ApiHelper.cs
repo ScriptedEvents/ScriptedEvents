@@ -23,7 +23,7 @@
         /// <param name="assembly">The assembly to search through.</param>
         public static void RegisterActions(Assembly assembly)
         {
-            ScriptHelper.RegisterActions(assembly);
+            ScriptModule.RegisterActions(assembly);
         }
 
         /// <summary>
@@ -55,13 +55,13 @@
 
             name = name.ToUpper();
 
-            if (ScriptHelper.CustomActions.ContainsKey(name))
+            if (ScriptModule.CustomActions.ContainsKey(name))
             {
                 return "The custom action with the provided name already exists!";
             }
 
             CustomAction custom = new(name, action);
-            ScriptHelper.CustomActions.Add(name, custom);
+            ScriptModule.CustomActions.Add(name, custom);
             Log.Info($"Assembly '{Assembly.GetCallingAssembly().GetName().Name}' has registered custom action: '{name}'.");
             return "Success";
         }
@@ -80,12 +80,12 @@
 
             name = name.ToUpper();
 
-            if (!ScriptHelper.CustomActions.ContainsKey(name))
+            if (!ScriptModule.CustomActions.ContainsKey(name))
             {
                 return "The custom action with the provided name does not exist.";
             }
 
-            ScriptHelper.CustomActions.Remove(name);
+            ScriptModule.CustomActions.Remove(name);
             return "Success";
         }
 
@@ -122,7 +122,7 @@
         /// <returns>A <see cref="IEnumerable{T}"/> of players.</returns>
         public static Player[] GetPlayers(string input, Script script, int max = -1)
         {
-            ScriptHelper.TryGetPlayers(input, max, out PlayerCollection list, script);
+            ScriptModule.TryGetPlayers(input, max, out PlayerCollection list, script);
             return list.GetInnerList().ToArray();
         }
 

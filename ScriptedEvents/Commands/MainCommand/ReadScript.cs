@@ -40,7 +40,7 @@
                 return false;
             }
 
-            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            if (!Directory.Exists(ScriptModule.ScriptPath))
             {
                 response = ErrorGen.Get(ErrorCode.IOMissing);
                 return false;
@@ -50,7 +50,7 @@
 
             try
             {
-                Script scr = ScriptHelper.ReadScript(arg0, sender);
+                Script scr = ScriptModule.ReadScript(arg0, sender);
 
                 if (!sender.CheckPermission(scr.ReadPermission))
                 {

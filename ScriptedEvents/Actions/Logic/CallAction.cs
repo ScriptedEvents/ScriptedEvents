@@ -69,7 +69,7 @@
 
                 try
                 {
-                    calledScript = ScriptHelper.ReadScript(scriptName, script.Sender, false);
+                    calledScript = ScriptModule.ReadScript(scriptName, script.Sender, false);
                     calledScript.CallerScript = script;
                 }
                 catch (DisabledScriptException)

@@ -33,6 +33,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -147,6 +148,8 @@
 
         public List<DamageRule> DamageRules { get; } = new();
 
+        public ScriptModule ScriptModule { get; } = MainPlugin.GetModule<ScriptModule>();
+
         // Helpful method
         public PlayerDisable? GetPlayerDisableRule(string key)
         {
@@ -204,7 +207,7 @@
                 cmd.ResetCooldowns();
             }
 
-            ScriptHelper.StopAllScripts();
+            ScriptModule.StopAllScripts();
             VariableSystem.ClearVariables();
             Kills.Clear();
             PlayerKills.Clear();
@@ -238,7 +241,7 @@
             CountdownHelper.Start();
             List<string> autoRun = ListPool<string>.Pool.Get();
 
-            foreach (Script scr in ScriptHelper.ListScripts())
+            foreach (Script scr in ScriptModule.ListScripts())
             {
                 if (scr.HasFlag("AUTORUN"))
                 {
@@ -255,7 +258,7 @@
             {
                 try
                 {
-                    Script scr = ScriptHelper.ReadScript(name, null);
+                    Script scr = ScriptModule.ReadScript(name, null);
 
                     if (scr.AdminEvent)
                     {
@@ -263,7 +266,7 @@
                         continue;
                     }
 
-                    ScriptHelper.RunScript(scr);
+                    ScriptModule.RunScript(scr);
                 }
                 catch (DisabledScriptException)
                 {
@@ -276,7 +279,6 @@
             }
 
             ListPool<string>.Pool.Return(autoRun);
-            MainPlugin.Singleton.SetupEvents();
         }
 
         public void OnRoundStarted()
@@ -364,9 +366,13 @@
         }
 
         // Reflection: ON config
+        public EventScriptModule ESModule => MainPlugin.GetModule<EventScriptModule>();
+
         public void OnAnyEvent(string eventName, IExiledEvent ev = null)
         {
-            if (MainPlugin.CurrentEventData is null || !MainPlugin.CurrentEventData.TryGetValue(eventName, out List<string> scripts))
+            // TODO: Temporary workaround
+            // Switch to handling this entirely in the EventScriptModule
+            if (ESModule.CurrentEventData is null || !ESModule.CurrentEventData.TryGetValue(eventName, out List<string> scripts))
             {
                 return;
             }
@@ -375,7 +381,7 @@
             {
                 try
                 {
-                    Script scr = ScriptHelper.ReadScript(script, null);
+                    Script scr = ScriptModule.ReadScript(script, null);
 
                     // Add variables based on event.
                     if (ev is IPlayerEvent playerEvent && playerEvent.Player is not null)
@@ -429,7 +435,7 @@
                         scr.AddVariable("{EVDOOR}", "The door type.", door.Door.Type.ToString());
                     }
 
-                    ScriptHelper.RunScript(scr);
+                    ScriptModule.RunScript(scr);
                 }
                 catch (DisabledScriptException)
                 {

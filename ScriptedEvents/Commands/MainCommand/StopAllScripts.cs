@@ -30,19 +30,19 @@
                 return false;
             }
 
-            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            if (!Directory.Exists(ScriptModule.ScriptPath))
             {
                 response = ErrorGen.Get(ErrorCode.IOMissing);
                 return false;
             }
 
-            if (ScriptHelper.RunningScripts.Count == 0)
+            if (ScriptModule.RunningScripts.Count == 0)
             {
                 response = "Zero scripts are currently running.";
                 return true;
             }
 
-            int amount = ScriptHelper.StopAllScripts();
+            int amount = ScriptModule.StopAllScripts();
 
             response = $"Done! Stopped execution of {amount} scripts.";
             return true;

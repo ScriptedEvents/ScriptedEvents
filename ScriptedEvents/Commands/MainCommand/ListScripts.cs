@@ -33,13 +33,13 @@
                 return false;
             }
 
-            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            if (!Directory.Exists(ScriptModule.ScriptPath))
             {
                 response = ErrorGen.Get(ErrorCode.IOMissing);
                 return false;
             }
 
-            List<Script> scripts = ScriptHelper.ListScripts(sender);
+            List<Script> scripts = ScriptModule.ListScripts(sender);
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
             int i = 0;

@@ -104,7 +104,7 @@
             {
                 try
                 {
-                    Script body = ScriptHelper.ReadScript(scr, sender);
+                    Script body = ScriptModule.ReadScript(scr, sender);
 
                     // Override default script context for custom commands
                     switch (Type)
@@ -135,7 +135,7 @@
 
                     body.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));
 
-                    ScriptHelper.RunScript(body);
+                    ScriptModule.RunScript(body);
                     success++;
                 }
                 catch (DisabledScriptException)

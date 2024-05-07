@@ -34,7 +34,7 @@
                 return false;
             }
 
-            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            if (!Directory.Exists(ScriptModule.ScriptPath))
             {
                 response = "Critical error: Missing script path. Please reload plugin.";
                 return false;
@@ -43,7 +43,7 @@
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
             int i = 0;
-            foreach (var scriptPair in ScriptHelper.RunningScripts)
+            foreach (var scriptPair in ScriptModule.RunningScripts)
             {
                 if (!scriptPair.Key.IsRunning)
                     continue;

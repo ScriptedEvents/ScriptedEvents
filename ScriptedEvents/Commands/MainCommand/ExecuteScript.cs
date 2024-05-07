@@ -39,7 +39,7 @@
                 return false;
             }
 
-            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            if (!Directory.Exists(ScriptModule.ScriptPath))
             {
                 response = "Critical error: Missing script path. Please reload plugin.";
                 return false;
@@ -50,7 +50,7 @@
 
             try
             {
-                scr = ScriptHelper.ReadScript(arg0, sender);
+                scr = ScriptModule.ReadScript(arg0, sender);
 
                 if (!sender.CheckPermission(scr.ExecutePermission))
                 {
@@ -74,7 +74,7 @@
 
                 scr.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));
 
-                ScriptHelper.RunScript(scr);
+                ScriptModule.RunScript(scr);
 
                 response = $"Script '{scr.ScriptName}' executed successfully.";
             }

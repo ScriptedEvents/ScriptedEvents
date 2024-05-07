@@ -183,25 +183,25 @@
 
                     // Array Types:
                     case "Player[]":
-                        if (!ScriptHelper.TryGetPlayers(input, null, out PlayerCollection players, source))
+                        if (!ScriptModule.TryGetPlayers(input, null, out PlayerCollection players, source))
                             return new(false, expected.ArgumentName, players.Message);
 
                         success.NewParameters.Add(players);
                         break;
                     case "Room[]":
-                        if (!ScriptHelper.TryGetRooms(input, out Room[] rooms, source))
+                        if (!ScriptModule.TryGetRooms(input, out Room[] rooms, source))
                             return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
 
                         success.NewParameters.Add(rooms);
                         break;
                     case "Door[]":
-                        if (!ScriptHelper.TryGetDoors(input, out Door[] doors, source))
+                        if (!ScriptModule.TryGetDoors(input, out Door[] doors, source))
                             return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidDoor, input));
 
                         success.NewParameters.Add(doors);
                         break;
                     case "Lift[]":
-                        if (!ScriptHelper.TryGetLifts(input, out Lift[] lifts, source))
+                        if (!ScriptModule.TryGetLifts(input, out Lift[] lifts, source))
                             return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidLift, input));
 
                         success.NewParameters.Add(lifts);

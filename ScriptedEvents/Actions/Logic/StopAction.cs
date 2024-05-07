@@ -43,20 +43,20 @@
 
             if (scriptName == "*")
             {
-                foreach (Script toStop in ScriptHelper.RunningScripts.Keys)
+                foreach (Script toStop in ScriptModule.RunningScripts.Keys)
                 {
-                    if (toStop != script) ScriptHelper.StopScript(toStop);
+                    if (toStop != script) ScriptModule.StopScript(toStop);
                 }
 
                 return new(true);
             }
 
-            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            if (!Directory.Exists(ScriptModule.ScriptPath))
             {
                 return new(false, ErrorGen.Get(ErrorCode.IOMissing));
             }
 
-            ScriptHelper.StopScripts(scriptName);
+            ScriptModule.StopScripts(scriptName);
             return new(true);
         }
     }

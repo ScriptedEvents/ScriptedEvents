@@ -192,6 +192,8 @@
     <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="API\Interfaces\ILongDescription.cs" />
     <Compile Include="API\Interfaces\IScriptComponent.cs" />
+    <Compile Include="API\Modules\EventScriptModule.cs" />
+    <Compile Include="API\Modules\IModule.cs" />
     <Compile Include="Commands\CustomCommand.cs" />
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
@@ -311,7 +313,7 @@
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
-    <Compile Include="API\Features\ScriptHelper.cs" />
+    <Compile Include="API\Modules\ScriptModule.cs" />
     <Compile Include="Structures\InfectRule.cs" />
     <Compile Include="Variables\Interfaces\IBoolVariable.cs" />
     <Compile Include="Variables\Interfaces\IConditionVariable.cs" />

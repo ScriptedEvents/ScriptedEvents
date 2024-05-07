@@ -265,8 +265,8 @@
         /// <param name="source">The source script.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>Whether or not players were found.</returns>
-        /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="ScriptHelper.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
-        /// <seealso cref="ScriptHelper.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>
+        /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="ScriptModule.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
+        /// <seealso cref="ScriptModule.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>
         public static bool TryGetPlayers(string name, out PlayerCollection players, Script source, bool requireBrackets = true)
         {
             if (TryGetVariable(name, out IConditionVariable variable, out _, source, requireBrackets))
