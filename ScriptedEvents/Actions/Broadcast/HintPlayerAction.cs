@@ -49,7 +49,7 @@
             float duration = (float)Arguments[1];
 
             string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script);
-            ScriptModule.ShowHint(message, duration, players.GetInnerList());
+            MainPlugin.ScriptModule.ShowHint(message, duration, players.GetInnerList());
 
             return new(true);
         }

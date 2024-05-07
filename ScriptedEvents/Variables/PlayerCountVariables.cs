@@ -8,6 +8,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 

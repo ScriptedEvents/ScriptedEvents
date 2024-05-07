@@ -1,4 +1,4 @@
-namespace ScriptedEvents.API.Features
+namespace ScriptedEvents.API.Modules
 {
     using System;
     using System.Collections.Generic;
@@ -22,9 +22,9 @@ namespace ScriptedEvents.API.Features
     using ScriptedEvents.Actions;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Integrations;
     using ScriptedEvents.Structures;
@@ -35,7 +35,7 @@ namespace ScriptedEvents.API.Features
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
     /// </summary>
-    public class ScriptModule : IModule
+    public class ScriptModule : SEModule
     {
         /// <summary>
         /// The base path to the script folder.
@@ -63,13 +63,15 @@ namespace ScriptedEvents.API.Features
         public RueIManager Ruei { get; } = new RueIManager();
 
         /// <inheritdoc/>
-        public string Name { get; } = "ScriptModule";
+        public override string Name { get; } = "ScriptModule";
 
-        public bool ShouldGenerateFiles
+        public override bool ShouldGenerateFiles
             => !Directory.Exists(BasePath);
 
-        public void GenerateFiles()
+        public override void GenerateFiles()
         {
+            base.GenerateFiles();
+
             try
             {
                 DirectoryInfo info = Directory.CreateDirectory(BasePath);
@@ -96,17 +98,18 @@ namespace ScriptedEvents.API.Features
             // 3s delay to show after other console spam
             Timing.CallDelayed(6f, () =>
             {
-                Log.Warn($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(ScriptModule.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
+                Log.Warn($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(MainPlugin.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
             });
         }
 
-        public void Init()
+        public override void Init()
         {
-
+            ApiHelper.RegisterActions();
         }
 
-        public void Kill()
+        public override void Kill()
         {
+            base.Kill();
             StopAllScripts();
             ActionTypes.Clear();
         }
@@ -651,7 +654,7 @@ namespace ScriptedEvents.API.Features
             fileDirectory = null;
 
             string text = null;
-            string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
+            string mainFolderFile = Path.Combine(BasePath, scriptName + ".txt");
             if (File.Exists(mainFolderFile))
             {
                 fileDirectory = mainFolderFile;
@@ -659,7 +662,7 @@ namespace ScriptedEvents.API.Features
             }
             else
             {
-                foreach (string directory in Directory.GetDirectories(ScriptPath))
+                foreach (string directory in Directory.GetDirectories(BasePath))
                 {
                     string fileName = Path.Combine(directory, scriptName + ".txt");
                     if (File.Exists(fileName))

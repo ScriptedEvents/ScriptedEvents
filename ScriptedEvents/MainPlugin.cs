@@ -98,11 +98,13 @@
 
         internal static List<string> AutorunScripts { get; set; }
 
-        public static List<IModule> Modules { get; } = new()
+        public static readonly List<SEModule> Modules = new()
         {
             new ScriptModule(),
             new EventScriptModule(),
         };
+
+        public static ScriptModule ScriptModule => GetModule<ScriptModule>();
 
         /// <summary>
         /// Equivalent to <see cref="Log.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
@@ -115,7 +117,7 @@
         }
 
         public static T GetModule<T>()
-            where T : IModule => (T)Modules.FirstOrDefault(m => m.GetType() == typeof(T));
+            where T : SEModule => (T)Modules.FirstOrDefault(m => m.GetType() == typeof(T));
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -125,7 +127,7 @@
             Singleton = this;
             Handlers = new();
 
-            foreach (IModule module in Modules)
+            foreach (SEModule module in Modules)
             {
                 if (module.ShouldGenerateFiles)
                     module.GenerateFiles();
@@ -234,7 +236,6 @@
             Scp3114.TryUseBody += Handlers.OnScpAbility;
 
             // Setup systems
-            ApiHelper.RegisterActions();
             VariableSystem.Setup();
 
             // Delete help file on startup
@@ -249,7 +250,7 @@
             Handlers.OnRestarting();
             base.OnDisabled();
 
-            foreach (IModule module in Modules)
+            foreach (SEModule module in Modules)
             {
                 module.Kill();
             }

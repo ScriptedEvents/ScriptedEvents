@@ -17,7 +17,7 @@
         /// <summary>
         /// Path to the variable storage folder.
         /// </summary>
-        public static readonly string DirPath = Path.Combine(ScriptModule.BaseFilePath, MainPlugin.Configs.StorageFoldername);
+        public static readonly string DirPath = Path.Combine(MainPlugin.BaseFilePath, MainPlugin.Configs.StorageFoldername);
 
         /// <summary>
         /// Save variable to variable storage.

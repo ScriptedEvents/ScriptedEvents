@@ -44,7 +44,7 @@
                 return false;
             }
 
-            if (!ScriptModule.TryGetActionType(actionName.ToUpper(), out Type argType))
+            if (!MainPlugin.ScriptModule.TryGetActionType(actionName.ToUpper(), out Type argType))
             {
                 response = "Invalid argument name provided.";
                 return false;
@@ -89,7 +89,7 @@
 
             try
             {
-                ScriptModule.RunScript(mockScript);
+                MainPlugin.ScriptModule.RunScript(mockScript);
             }
             catch (Exception ex)
             {

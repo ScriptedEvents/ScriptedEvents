@@ -12,6 +12,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ReadScript : ICommand
@@ -40,7 +41,7 @@
                 return false;
             }
 
-            if (!Directory.Exists(ScriptModule.ScriptPath))
+            if (!Directory.Exists(ScriptModule.BasePath))
             {
                 response = ErrorGen.Get(ErrorCode.IOMissing);
                 return false;
@@ -50,7 +51,7 @@
 
             try
             {
-                Script scr = ScriptModule.ReadScript(arg0, sender);
+                Script scr = MainPlugin.ScriptModule.ReadScript(arg0, sender);
 
                 if (!sender.CheckPermission(scr.ReadPermission))
                 {

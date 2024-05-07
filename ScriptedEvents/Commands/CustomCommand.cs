@@ -12,7 +12,6 @@
     using RemoteAdmin;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
 
     public class CustomCommand : ICommand
@@ -104,7 +103,7 @@
             {
                 try
                 {
-                    Script body = ScriptModule.ReadScript(scr, sender);
+                    Script body = MainPlugin.ScriptModule.ReadScript(scr, sender);
 
                     // Override default script context for custom commands
                     switch (Type)
@@ -135,7 +134,7 @@
 
                     body.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));
 
-                    ScriptModule.RunScript(body);
+                    MainPlugin.ScriptModule.RunScript(body);
                     success++;
                 }
                 catch (DisabledScriptException)

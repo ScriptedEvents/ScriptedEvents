@@ -193,7 +193,7 @@
     <Compile Include="API\Interfaces\ILongDescription.cs" />
     <Compile Include="API\Interfaces\IScriptComponent.cs" />
     <Compile Include="API\Modules\EventScriptModule.cs" />
-    <Compile Include="API\Modules\IModule.cs" />
+    <Compile Include="API\Modules\SEModule.cs" />
     <Compile Include="Commands\CustomCommand.cs" />
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />

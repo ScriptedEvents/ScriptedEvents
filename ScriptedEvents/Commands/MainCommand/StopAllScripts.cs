@@ -8,6 +8,7 @@
     using Exiled.Permissions.Extensions;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Modules;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class StopAllScripts : ICommand
@@ -30,19 +31,19 @@
                 return false;
             }
 
-            if (!Directory.Exists(ScriptModule.ScriptPath))
+            if (!Directory.Exists(ScriptModule.BasePath))
             {
                 response = ErrorGen.Get(ErrorCode.IOMissing);
                 return false;
             }
 
-            if (ScriptModule.RunningScripts.Count == 0)
+            if (MainPlugin.ScriptModule.RunningScripts.Count == 0)
             {
                 response = "Zero scripts are currently running.";
                 return true;
             }
 
-            int amount = ScriptModule.StopAllScripts();
+            int amount = MainPlugin.ScriptModule.StopAllScripts();
 
             response = $"Done! Stopped execution of {amount} scripts.";
             return true;

@@ -9,22 +9,16 @@
     using Exiled.Events.Features;
     using Exiled.Loader;
 
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
 
-    public class EventScriptModule : IModule
+    public class EventScriptModule : SEModule
     {
         /// <summary>
         /// Gets an array of Event "Handler" types defined by Exiled.
         /// </summary>
-        public static Type[] HandlerTypes { get; } = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
-            .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
+        public static Type[] HandlerTypes { get; private set; }
 
-        public string Name => "EventScriptModule";
-
-        public bool ShouldGenerateFiles => false;
-
-        public ScriptModule ScriptModule { get; } = MainPlugin.GetModule<ScriptModule>();
+        public override string Name => "EventScriptModule";
 
         public List<Tuple<PropertyInfo, Delegate>> StoredDelegates { get; } = new();
 
@@ -32,16 +26,23 @@
 
         public Dictionary<string, List<string>> CurrentCustomEventData { get; set; }
 
-        public void GenerateFiles()
+        public override void Init()
         {
+            base.Init();
+
+            HandlerTypes = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
+            .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
         }
 
-        public void Init()
+        public void BeginConnections()
         {
+            if (CurrentEventData is not null)
+                return;
+
             CurrentEventData = new();
             CurrentCustomEventData = new();
 
-            foreach (Script scr in ScriptModule.ListScripts())
+            foreach (Script scr in MainPlugin.ScriptModule.ListScripts())
             {
                 if (scr.HasFlag("EVENT", out Flag f))
                 {
@@ -121,7 +122,7 @@
             }
         }
 
-        public void Kill()
+        public void TerminateConnections()
         {
             foreach (Tuple<PropertyInfo, Delegate> tuple in StoredDelegates)
             {
@@ -139,6 +140,13 @@
 
             StoredDelegates.Clear();
             CurrentEventData = null;
+            CurrentCustomEventData = null;
+        }
+
+        public override void Kill()
+        {
+            base.Kill();
+            TerminateConnections();
         }
     }
 }

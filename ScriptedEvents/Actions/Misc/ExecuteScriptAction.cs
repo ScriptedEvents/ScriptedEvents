@@ -41,7 +41,7 @@
             string scriptName = (string)Arguments[0];
             try
             {
-                ScriptModule.ReadAndRun(scriptName, script.Sender);
+                MainPlugin.ScriptModule.ReadAndRun(scriptName, script.Sender);
                 return new(true);
             }
             catch (DisabledScriptException)

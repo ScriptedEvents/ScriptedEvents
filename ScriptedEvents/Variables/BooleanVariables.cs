@@ -128,7 +128,7 @@
             get
             {
                 string scriptName = (string)Arguments[0];
-                return ScriptModule.RunningScripts.Any(scr => scr.Key.ScriptName == scriptName && scr.Value.IsRunning);
+                return MainPlugin.ScriptModule.RunningScripts.Any(scr => scr.Key.ScriptName == scriptName && scr.Value.IsRunning);
             }
         }
     }

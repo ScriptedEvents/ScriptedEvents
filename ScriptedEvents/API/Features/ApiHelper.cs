@@ -6,6 +6,7 @@
 
     using Exiled.API.Features;
     using ScriptedEvents.Actions;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -23,7 +24,7 @@
         /// <param name="assembly">The assembly to search through.</param>
         public static void RegisterActions(Assembly assembly)
         {
-            ScriptModule.RegisterActions(assembly);
+            MainPlugin.ScriptModule.RegisterActions(assembly);
         }
 
         /// <summary>
@@ -55,13 +56,13 @@
 
             name = name.ToUpper();
 
-            if (ScriptModule.CustomActions.ContainsKey(name))
+            if (MainPlugin.ScriptModule.CustomActions.ContainsKey(name))
             {
                 return "The custom action with the provided name already exists!";
             }
 
             CustomAction custom = new(name, action);
-            ScriptModule.CustomActions.Add(name, custom);
+            MainPlugin.ScriptModule.CustomActions.Add(name, custom);
             Log.Info($"Assembly '{Assembly.GetCallingAssembly().GetName().Name}' has registered custom action: '{name}'.");
             return "Success";
         }
@@ -80,12 +81,12 @@
 
             name = name.ToUpper();
 
-            if (!ScriptModule.CustomActions.ContainsKey(name))
+            if (!MainPlugin.ScriptModule.CustomActions.ContainsKey(name))
             {
                 return "The custom action with the provided name does not exist.";
             }
 
-            ScriptModule.CustomActions.Remove(name);
+            MainPlugin.ScriptModule.CustomActions.Remove(name);
             return "Success";
         }
 

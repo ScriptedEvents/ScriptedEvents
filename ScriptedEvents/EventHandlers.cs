@@ -195,7 +195,7 @@
             SpawnsByTeam[SpawnableTeamType.NineTailedFox] = 0;
             SpawnsByTeam[SpawnableTeamType.ChaosInsurgency] = 0;
 
-            MainPlugin.Singleton.NukeOnConnections();
+            MainPlugin.GetModule<EventScriptModule>().TerminateConnections();
 
             foreach (var escapedRole in Escapes)
             {
@@ -207,7 +207,7 @@
                 cmd.ResetCooldowns();
             }
 
-            ScriptModule.StopAllScripts();
+            MainPlugin.ScriptModule.StopAllScripts();
             VariableSystem.ClearVariables();
             Kills.Clear();
             PlayerKills.Clear();
@@ -241,7 +241,7 @@
             CountdownHelper.Start();
             List<string> autoRun = ListPool<string>.Pool.Get();
 
-            foreach (Script scr in ScriptModule.ListScripts())
+            foreach (Script scr in MainPlugin.ScriptModule.ListScripts())
             {
                 if (scr.HasFlag("AUTORUN"))
                 {
@@ -258,7 +258,7 @@
             {
                 try
                 {
-                    Script scr = ScriptModule.ReadScript(name, null);
+                    Script scr = MainPlugin.ScriptModule.ReadScript(name, null);
 
                     if (scr.AdminEvent)
                     {
@@ -266,7 +266,7 @@
                         continue;
                     }
 
-                    ScriptModule.RunScript(scr);
+                    MainPlugin.ScriptModule.RunScript(scr);
                 }
                 catch (DisabledScriptException)
                 {
@@ -277,6 +277,8 @@
                     Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, name));
                 }
             }
+
+            MainPlugin.GetModule<EventScriptModule>().BeginConnections();
 
             ListPool<string>.Pool.Return(autoRun);
         }
@@ -381,7 +383,7 @@
             {
                 try
                 {
-                    Script scr = ScriptModule.ReadScript(script, null);
+                    Script scr = MainPlugin.ScriptModule.ReadScript(script, null);
 
                     // Add variables based on event.
                     if (ev is IPlayerEvent playerEvent && playerEvent.Player is not null)
@@ -435,7 +437,7 @@
                         scr.AddVariable("{EVDOOR}", "The door type.", door.Door.Type.ToString());
                     }
 
-                    ScriptModule.RunScript(scr);
+                    MainPlugin.ScriptModule.RunScript(scr);
                 }
                 catch (DisabledScriptException)
                 {

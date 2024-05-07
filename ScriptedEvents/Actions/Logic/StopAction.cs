@@ -6,6 +6,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     public class StopAction : IScriptAction, ILogicAction, IHelpInfo
@@ -43,20 +44,20 @@
 
             if (scriptName == "*")
             {
-                foreach (Script toStop in ScriptModule.RunningScripts.Keys)
+                foreach (Script toStop in MainPlugin.ScriptModule.RunningScripts.Keys)
                 {
-                    if (toStop != script) ScriptModule.StopScript(toStop);
+                    if (toStop != script) MainPlugin.ScriptModule.StopScript(toStop);
                 }
 
                 return new(true);
             }
 
-            if (!Directory.Exists(ScriptModule.ScriptPath))
+            if (!Directory.Exists(ScriptModule.BasePath))
             {
                 return new(false, ErrorGen.Get(ErrorCode.IOMissing));
             }
 
-            ScriptModule.StopScripts(scriptName);
+            MainPlugin.ScriptModule.StopScripts(scriptName);
             return new(true);
         }
     }

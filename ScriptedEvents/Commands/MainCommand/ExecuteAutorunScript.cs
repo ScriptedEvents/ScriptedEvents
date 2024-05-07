@@ -32,7 +32,7 @@
             string ranScripts = string.Empty;
             foreach (string scrName in MainPlugin.AutorunScripts)
             {
-                ScriptModule.ReadAndRun(scrName, sender);
+                MainPlugin.ScriptModule.ReadAndRun(scrName, sender);
                 ranScripts += scrName + ", ";
             }
 
