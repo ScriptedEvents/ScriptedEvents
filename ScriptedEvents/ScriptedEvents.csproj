@@ -308,7 +308,7 @@
     <Compile Include="Variables\WorldTimeVariables.cs" />
     <Compile Include="Variables\ZoneVariables.cs" />
     <Compile Include="Variables\VariableSystem.cs" />
-    <Compile Include="EventHandlers.cs" />
+    <Compile Include="API\Modules\EventHandlingModule.cs" />
     <Compile Include="Actions\Map\WarheadAction.cs" />
     <Compile Include="MainPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

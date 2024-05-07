@@ -8,8 +8,6 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
-    using Exiled.Events.Handlers;
-
     using MEC;
     using RemoteAdmin;
     using ScriptedEvents.API.Constants;
@@ -19,12 +17,6 @@
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
-
-    using MapHandler = Exiled.Events.Handlers.Map;
-    using PlayerHandler = Exiled.Events.Handlers.Player;
-    using Scp330Handler = Exiled.Events.Handlers.Scp330;
-    using Scp914Handler = Exiled.Events.Handlers.Scp914;
-    using ServerHandler = Exiled.Events.Handlers.Server;
 
     public class MainPlugin : Plugin<Config, Translations>
     {
@@ -57,11 +49,6 @@
         /// Gets the plugin Translations singleton.
         /// </summary>
         public static Translations Translations => Singleton?.Translation;
-
-        /// <summary>
-        /// Gets or sets the Event Handlers singleton.
-        /// </summary>
-        public static EventHandlers Handlers { get; set; }
 
         /// <summary>
         /// Gets a list of demo scripts.
@@ -102,9 +89,12 @@
         {
             new ScriptModule(),
             new EventScriptModule(),
+            new EventHandlingModule(),
         };
 
         public static ScriptModule ScriptModule => GetModule<ScriptModule>();
+
+        public static EventHandlingModule Handlers => GetModule<EventHandlingModule>();
 
         /// <summary>
         /// Equivalent to <see cref="Log.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
@@ -125,7 +115,6 @@
             base.OnEnabled();
 
             Singleton = this;
-            Handlers = new();
 
             foreach (SEModule module in Modules)
             {
@@ -152,89 +141,6 @@
                 }
             });
 
-            PlayerHandler.ChangingRole += Handlers.OnChangingRole;
-            PlayerHandler.Hurting += Handlers.OnHurting;
-            PlayerHandler.Died += Handlers.OnDied;
-            PlayerHandler.Dying += Handlers.OnDying;
-            PlayerHandler.TriggeringTesla += Handlers.OnTriggeringTesla;
-            PlayerHandler.Shooting += Handlers.OnShooting;
-            PlayerHandler.DroppingAmmo += Handlers.OnDroppingItem;
-            PlayerHandler.DroppingItem += Handlers.OnDroppingItem;
-            PlayerHandler.SearchingPickup += Handlers.OnSearchingPickup;
-            PlayerHandler.InteractingDoor += Handlers.OnInteractingDoor;
-            PlayerHandler.InteractingLocker += Handlers.OnInteractingLocker;
-            PlayerHandler.InteractingElevator += Handlers.OnInteractingElevator;
-            PlayerHandler.Escaping += Handlers.OnEscaping;
-            PlayerHandler.Spawned += Handlers.OnSpawned;
-
-            PlayerHandler.PickingUpItem += Handlers.OnPickingUpItem;
-            PlayerHandler.ChangingRadioPreset += Handlers.OnChangingRadioPreset;
-
-            PlayerHandler.ActivatingWarheadPanel += Handlers.OnActivatingWarheadPanel;
-            Exiled.Events.Handlers.Warhead.Starting += Handlers.OnStartingWarhead; // why is this located specially??
-
-            PlayerHandler.ActivatingGenerator += Handlers.GeneratorEvent;
-            PlayerHandler.OpeningGenerator += Handlers.GeneratorEvent;
-            PlayerHandler.StoppingGenerator += Handlers.GeneratorEvent;
-            PlayerHandler.UnlockingGenerator += Handlers.GeneratorEvent;
-
-            PlayerHandler.EnteringEnvironmentalHazard += Handlers.OnHazardEvent;
-            PlayerHandler.ExitingEnvironmentalHazard += Handlers.OnHazardEvent;
-
-            PlayerHandler.ActivatingWorkstation += Handlers.OnWorkStationEvent;
-            PlayerHandler.DeactivatingWorkstation += Handlers.OnWorkStationEvent;
-
-            MapHandler.AnnouncingNtfEntrance += Handlers.OnAnnouncingNtfEntrance;
-            MapHandler.AnnouncingScpTermination += Handlers.OnAnnouncingScpTermination;
-
-            Scp330Handler.InteractingScp330 += Handlers.OnScp330Event;
-
-            Scp914Handler.Activating += Handlers.OnScp914Event;
-            Scp914Handler.ChangingKnobSetting += Handlers.OnScp914Event;
-            Scp914Handler.UpgradingPickup += Handlers.OnScp914Event;
-            Scp914Handler.UpgradingInventoryItem += Handlers.OnScp914Event;
-            Scp914Handler.UpgradingPlayer += Handlers.OnScp914Event;
-
-            ServerHandler.RestartingRound += Handlers.OnRestarting;
-            ServerHandler.WaitingForPlayers += Handlers.OnWaitingForPlayers;
-            ServerHandler.RoundStarted += Handlers.OnRoundStarted;
-            ServerHandler.RespawningTeam += Handlers.OnRespawningTeam;
-
-            // SCP abilities
-            Scp049.ActivatingSense += Handlers.OnScpAbility;
-            Scp049.Attacking += Handlers.OnScpAbility;
-            Scp049.StartingRecall += Handlers.OnScpAbility;
-            Scp049.SendingCall += Handlers.OnScpAbility;
-            Scp0492.ConsumingCorpse += Handlers.OnScpAbility;
-            Scp0492.TriggeringBloodlust += Handlers.OnScpAbility;
-            Scp079.ChangingCamera += Handlers.OnScpAbility;
-            Scp079.ChangingSpeakerStatus += Handlers.OnScpAbility;
-            Scp079.ElevatorTeleporting += Handlers.OnScpAbility;
-            Scp079.GainingExperience += Handlers.OnScpAbility;
-            Scp079.GainingLevel += Handlers.OnScpAbility;
-            Scp079.InteractingTesla += Handlers.OnScpAbility;
-            Scp079.LockingDown += Handlers.OnScpAbility;
-            Scp079.Pinging += Handlers.OnScpAbility;
-            Scp079.RoomBlackout += Handlers.OnScpAbility;
-            Scp079.TriggeringDoor += Handlers.OnScpAbility;
-            Scp079.ZoneBlackout += Handlers.OnScpAbility;
-            Scp096.AddingTarget += Handlers.OnScpAbility;
-            Scp096.Charging += Handlers.OnScpAbility;
-            Scp096.Enraging += Handlers.OnScpAbility;
-            Scp096.TryingNotToCry += Handlers.OnScpAbility;
-            Scp106.Attacking += Handlers.OnScpAbility;
-            Scp106.Teleporting += Handlers.OnScpAbility;
-            Scp106.Stalking += Handlers.OnScpAbility;
-            Scp173.Blinking += Handlers.OnScpAbility;
-            Scp173.PlacingTantrum += Handlers.OnScpAbility;
-            Scp173.UsingBreakneckSpeeds += Handlers.OnScpAbility;
-            Scp939.ChangingFocus += Handlers.OnScpAbility;
-            Scp939.PlacingAmnesticCloud += Handlers.OnScpAbility;
-            Scp939.PlayingSound += Handlers.OnScpAbility;
-            Scp939.PlayingVoice += Handlers.OnScpAbility;
-            Scp939.SavingVoice += Handlers.OnScpAbility;
-            Scp3114.TryUseBody += Handlers.OnScpAbility;
-
             // Setup systems
             VariableSystem.Setup();
 
@@ -255,91 +161,7 @@
                 module.Kill();
             }
 
-            PlayerHandler.ChangingRole -= Handlers.OnChangingRole;
-            PlayerHandler.Hurting -= Handlers.OnHurting;
-            PlayerHandler.Died -= Handlers.OnDied;
-            PlayerHandler.Dying -= Handlers.OnDying;
-            PlayerHandler.TriggeringTesla -= Handlers.OnTriggeringTesla;
-            PlayerHandler.Shooting -= Handlers.OnShooting;
-            PlayerHandler.DroppingAmmo -= Handlers.OnDroppingItem;
-            PlayerHandler.DroppingItem -= Handlers.OnDroppingItem;
-            PlayerHandler.SearchingPickup -= Handlers.OnSearchingPickup;
-            PlayerHandler.InteractingDoor -= Handlers.OnInteractingDoor;
-            PlayerHandler.InteractingLocker -= Handlers.OnInteractingLocker;
-            PlayerHandler.InteractingElevator -= Handlers.OnInteractingElevator;
-            PlayerHandler.Escaping -= Handlers.OnEscaping;
-            PlayerHandler.Spawned -= Handlers.OnSpawned;
-
-            PlayerHandler.PickingUpItem -= Handlers.OnPickingUpItem;
-            PlayerHandler.ChangingRadioPreset -= Handlers.OnChangingRadioPreset;
-
-            PlayerHandler.ActivatingWarheadPanel -= Handlers.OnActivatingWarheadPanel;
-            Exiled.Events.Handlers.Warhead.Starting -= Handlers.OnStartingWarhead; // why is this located specially??
-
-            PlayerHandler.ActivatingGenerator -= Handlers.GeneratorEvent;
-            PlayerHandler.OpeningGenerator -= Handlers.GeneratorEvent;
-            PlayerHandler.StoppingGenerator -= Handlers.GeneratorEvent;
-            PlayerHandler.UnlockingGenerator -= Handlers.GeneratorEvent;
-
-            PlayerHandler.EnteringEnvironmentalHazard -= Handlers.OnHazardEvent;
-            PlayerHandler.ExitingEnvironmentalHazard -= Handlers.OnHazardEvent;
-
-            PlayerHandler.ActivatingWorkstation -= Handlers.OnWorkStationEvent;
-            PlayerHandler.DeactivatingWorkstation -= Handlers.OnWorkStationEvent;
-
-            MapHandler.AnnouncingNtfEntrance -= Handlers.OnAnnouncingNtfEntrance;
-            MapHandler.AnnouncingScpTermination -= Handlers.OnAnnouncingScpTermination;
-
-            Scp330Handler.InteractingScp330 -= Handlers.OnScp330Event;
-
-            Scp914Handler.Activating -= Handlers.OnScp914Event;
-            Scp914Handler.ChangingKnobSetting -= Handlers.OnScp914Event;
-            Scp914Handler.UpgradingPickup -= Handlers.OnScp914Event;
-            Scp914Handler.UpgradingInventoryItem -= Handlers.OnScp914Event;
-            Scp914Handler.UpgradingPlayer -= Handlers.OnScp914Event;
-
-            ServerHandler.RestartingRound -= Handlers.OnRestarting;
-            ServerHandler.WaitingForPlayers -= Handlers.OnWaitingForPlayers;
-            ServerHandler.RoundStarted -= Handlers.OnRoundStarted;
-            ServerHandler.RespawningTeam -= Handlers.OnRespawningTeam;
-
-            // SCP abilities
-            Scp049.ActivatingSense -= Handlers.OnScpAbility;
-            Scp049.Attacking -= Handlers.OnScpAbility;
-            Scp049.StartingRecall -= Handlers.OnScpAbility;
-            Scp049.SendingCall -= Handlers.OnScpAbility;
-            Scp0492.ConsumingCorpse -= Handlers.OnScpAbility;
-            Scp0492.TriggeringBloodlust -= Handlers.OnScpAbility;
-            Scp079.ChangingCamera -= Handlers.OnScpAbility;
-            Scp079.ChangingSpeakerStatus -= Handlers.OnScpAbility;
-            Scp079.ElevatorTeleporting -= Handlers.OnScpAbility;
-            Scp079.GainingExperience -= Handlers.OnScpAbility;
-            Scp079.GainingLevel -= Handlers.OnScpAbility;
-            Scp079.InteractingTesla -= Handlers.OnScpAbility;
-            Scp079.LockingDown -= Handlers.OnScpAbility;
-            Scp079.Pinging -= Handlers.OnScpAbility;
-            Scp079.RoomBlackout -= Handlers.OnScpAbility;
-            Scp079.TriggeringDoor -= Handlers.OnScpAbility;
-            Scp079.ZoneBlackout -= Handlers.OnScpAbility;
-            Scp096.AddingTarget -= Handlers.OnScpAbility;
-            Scp096.Charging -= Handlers.OnScpAbility;
-            Scp096.Enraging -= Handlers.OnScpAbility;
-            Scp096.TryingNotToCry -= Handlers.OnScpAbility;
-            Scp106.Attacking -= Handlers.OnScpAbility;
-            Scp106.Teleporting -= Handlers.OnScpAbility;
-            Scp106.Stalking -= Handlers.OnScpAbility;
-            Scp173.Blinking -= Handlers.OnScpAbility;
-            Scp173.PlacingTantrum -= Handlers.OnScpAbility;
-            Scp173.UsingBreakneckSpeeds -= Handlers.OnScpAbility;
-            Scp939.ChangingFocus -= Handlers.OnScpAbility;
-            Scp939.PlacingAmnesticCloud -= Handlers.OnScpAbility;
-            Scp939.PlayingSound -= Handlers.OnScpAbility;
-            Scp939.PlayingVoice -= Handlers.OnScpAbility;
-            Scp939.SavingVoice -= Handlers.OnScpAbility;
-            Scp3114.TryUseBody -= Handlers.OnScpAbility;
-
             Singleton = null;
-            Handlers = null;
         }
 
         public override void OnRegisteringCommands()

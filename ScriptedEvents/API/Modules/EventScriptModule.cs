@@ -93,12 +93,12 @@
 
                     if (propertyInfo.PropertyType == typeof(Event))
                     {
-                        @delegate = new CustomEventHandler(EventHandlers.OnNonArgumentedEvent);
+                        @delegate = new CustomEventHandler(EventHandlingModule.OnNonArgumentedEvent);
                     }
                     else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
                     {
-                        @delegate = typeof(EventHandlers)
-                            .GetMethod(nameof(EventHandlers.OnArgumentedEvent))
+                        @delegate = typeof(EventHandlingModule)
+                            .GetMethod(nameof(EventHandlingModule.OnArgumentedEvent))
                             .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
                             .CreateDelegate(typeof(CustomEventHandler<>)
                             .MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments));
