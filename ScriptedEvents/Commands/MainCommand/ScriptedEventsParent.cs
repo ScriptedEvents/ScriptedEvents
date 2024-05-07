@@ -28,6 +28,7 @@
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(new ExecuteScript());
+            RegisterCommand(new ExecuteAutorunScript());
             RegisterCommand(new ListScripts());
             RegisterCommand(new ListRunning());
             RegisterCommand(new ReadScript());
@@ -48,6 +49,7 @@
             sb.AppendLine("- SCRIPT LISTR - Lists all scripts that are currently running.");
             sb.AppendLine("- SCRIPT RSR <SCRIPTNAME> - Reads a script and returns a list of all of its actions.");
             sb.AppendLine("- SCRIPT STS <SCRIPTNAME> - Stops script(s) that are currently running.");
+            sb.AppendLine("- SCRIPT EXA - Runs all auto-run scripts again.");
             sb.AppendLine("- SCRIPT STOPALL - Stops all currently executing scripts.");
 
             response = StringBuilderPool.Pool.ToStringReturn(sb);
