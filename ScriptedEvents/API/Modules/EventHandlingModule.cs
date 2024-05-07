@@ -382,8 +382,6 @@
             SpawnsByTeam[SpawnableTeamType.NineTailedFox] = 0;
             SpawnsByTeam[SpawnableTeamType.ChaosInsurgency] = 0;
 
-            MainPlugin.GetModule<EventScriptModule>().TerminateConnections();
-
             foreach (var escapedRole in Escapes)
             {
                 escapedRole.Value.Clear();
@@ -464,8 +462,6 @@
                     Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, name));
                 }
             }
-
-            MainPlugin.GetModule<EventScriptModule>().BeginConnections();
 
             ListPool<string>.Pool.Return(autoRun);
         }

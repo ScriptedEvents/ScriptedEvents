@@ -32,6 +32,20 @@
 
             HandlerTypes = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
             .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
+
+            // Events
+            Exiled.Events.Handlers.Server.RestartingRound += TerminateConnections;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += BeginConnections;
+        }
+
+        public override void Kill()
+        {
+            base.Kill();
+            TerminateConnections();
+
+            // Disconnect events
+            Exiled.Events.Handlers.Server.RestartingRound -= TerminateConnections;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= BeginConnections;
         }
 
         public void BeginConnections()
@@ -141,12 +155,6 @@
             StoredDelegates.Clear();
             CurrentEventData = null;
             CurrentCustomEventData = null;
-        }
-
-        public override void Kill()
-        {
-            base.Kill();
-            TerminateConnections();
         }
     }
 }
