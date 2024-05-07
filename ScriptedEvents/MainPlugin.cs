@@ -90,6 +90,7 @@
             new ScriptModule(),
             new EventScriptModule(),
             new EventHandlingModule(),
+            new CountdownModule(),
         };
 
         public static ScriptModule ScriptModule => GetModule<ScriptModule>();

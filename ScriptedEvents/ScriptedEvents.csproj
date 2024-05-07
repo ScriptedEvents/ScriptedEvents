@@ -188,7 +188,7 @@
     <Compile Include="API\Enums\DamageRuleType.cs" />
     <Compile Include="API\Enums\ExecuteContext.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
-    <Compile Include="API\Features\CountdownHelper.cs" />
+    <Compile Include="API\Modules\CountdownModule.cs" />
     <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="API\Interfaces\ILongDescription.cs" />
     <Compile Include="API\Interfaces\IScriptComponent.cs" />

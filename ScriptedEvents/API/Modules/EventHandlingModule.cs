@@ -407,13 +407,6 @@
 
             DamageRules.Clear();
 
-            if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
-            {
-                Timing.KillCoroutines(CountdownHelper.MainHandle.Value);
-                CountdownHelper.MainHandle = null;
-                CountdownHelper.Countdowns.Clear();
-            }
-
             InfectionRules.Clear();
             SpawnRules.Clear();
             RecentlyRespawned.Clear();
@@ -423,7 +416,6 @@
 
         public void OnWaitingForPlayers()
         {
-            CountdownHelper.Start();
             List<string> autoRun = ListPool<string>.Pool.Get();
 
             foreach (Script scr in MainPlugin.ScriptModule.ListScripts())
