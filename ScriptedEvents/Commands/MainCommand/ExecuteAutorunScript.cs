@@ -6,8 +6,6 @@
 
     using Exiled.Permissions.Extensions;
 
-    using ScriptedEvents.API.Features;
-
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExecuteAutorunScript : ICommand
     {
@@ -30,13 +28,13 @@
             }
 
             string ranScripts = string.Empty;
-            foreach (string scrName in MainPlugin.AutorunScripts)
+            foreach (string scrName in MainPlugin.ScriptModule.AutoRunScripts)
             {
                 MainPlugin.ScriptModule.ReadAndRun(scrName, sender);
                 ranScripts += scrName + ", ";
             }
 
-            if (MainPlugin.AutorunScripts.Count > 0)
+            if (MainPlugin.ScriptModule.AutoRunScripts.Count > 0)
             {
                 response = $"Running scripts: {ranScripts.Remove(ranScripts.Length - 2)}";
                 return true;

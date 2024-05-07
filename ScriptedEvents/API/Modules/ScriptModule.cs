@@ -57,6 +57,8 @@ namespace ScriptedEvents.API.Modules
         /// </summary>
         public Dictionary<string, CustomAction> CustomActions { get; } = new();
 
+        public List<string> AutoRunScripts { get; set; }
+
         /// <summary>
         /// Gets RueI instance.
         /// </summary>
@@ -104,7 +106,9 @@ namespace ScriptedEvents.API.Modules
 
         public override void Init()
         {
-            ApiHelper.RegisterActions();
+            RegisterActions(MainPlugin.Singleton.Assembly);
+
+            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
         }
 
         public override void Kill()
@@ -112,6 +116,52 @@ namespace ScriptedEvents.API.Modules
             base.Kill();
             StopAllScripts();
             ActionTypes.Clear();
+
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+        }
+
+        public void OnWaitingForPlayers()
+        {
+            List<string> autoRun = ListPool<string>.Pool.Get();
+
+            foreach (Script scr in ListScripts())
+            {
+                if (scr.HasFlag("AUTORUN"))
+                {
+                    Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
+                    autoRun.Add(scr.ScriptName);
+                }
+
+                scr.Dispose();
+            }
+
+            AutoRunScripts = autoRun.ToList();
+
+            foreach (string name in autoRun)
+            {
+                try
+                {
+                    Script scr = MainPlugin.ScriptModule.ReadScript(name, null);
+
+                    if (scr.AdminEvent)
+                    {
+                        Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, name));
+                        continue;
+                    }
+
+                    MainPlugin.ScriptModule.RunScript(scr);
+                }
+                catch (DisabledScriptException)
+                {
+                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, name));
+                }
+                catch (FileNotFoundException)
+                {
+                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, name));
+                }
+            }
+
+            ListPool<string>.Pool.Return(autoRun);
         }
 
         /// <summary>

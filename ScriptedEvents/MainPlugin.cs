@@ -83,8 +83,6 @@
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
 
-        internal static List<string> AutorunScripts { get; set; }
-
         public static readonly List<SEModule> Modules = new()
         {
             new ScriptModule(),

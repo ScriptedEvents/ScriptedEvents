@@ -10,7 +10,6 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -210,7 +209,6 @@
             Scp914Handler.UpgradingPlayer += OnScp914Event;
 
             ServerHandler.RestartingRound += OnRestarting;
-            ServerHandler.WaitingForPlayers += OnWaitingForPlayers;
             ServerHandler.RoundStarted += OnRoundStarted;
             ServerHandler.RespawningTeam += OnRespawningTeam;
 
@@ -297,7 +295,6 @@
             Scp914Handler.UpgradingPlayer -= OnScp914Event;
 
             ServerHandler.RestartingRound -= OnRestarting;
-            ServerHandler.WaitingForPlayers -= OnWaitingForPlayers;
             ServerHandler.RoundStarted -= OnRoundStarted;
             ServerHandler.RespawningTeam -= OnRespawningTeam;
 
@@ -412,50 +409,6 @@
             RecentlyRespawned.Clear();
 
             MostRecentSpawn = SpawnableTeamType.None;
-        }
-
-        public void OnWaitingForPlayers()
-        {
-            List<string> autoRun = ListPool<string>.Pool.Get();
-
-            foreach (Script scr in MainPlugin.ScriptModule.ListScripts())
-            {
-                if (scr.HasFlag("AUTORUN"))
-                {
-                    Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
-                    autoRun.Add(scr.ScriptName);
-                }
-
-                scr.Dispose();
-            }
-
-            MainPlugin.AutorunScripts = autoRun.ToList();
-
-            foreach (string name in autoRun)
-            {
-                try
-                {
-                    Script scr = MainPlugin.ScriptModule.ReadScript(name, null);
-
-                    if (scr.AdminEvent)
-                    {
-                        Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, name));
-                        continue;
-                    }
-
-                    MainPlugin.ScriptModule.RunScript(scr);
-                }
-                catch (DisabledScriptException)
-                {
-                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, name));
-                }
-                catch (FileNotFoundException)
-                {
-                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, name));
-                }
-            }
-
-            ListPool<string>.Pool.Return(autoRun);
         }
 
         public void OnRoundStarted()
