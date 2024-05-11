@@ -74,7 +74,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to use.", false),
+            new Argument("mode", typeof(string), "The mode to use. CALLER is the only one. If not provided, will return script name.", false),
         };
 
         /// <inheritdoc/>
