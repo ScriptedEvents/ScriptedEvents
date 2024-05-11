@@ -321,12 +321,19 @@
 
             if (TryGetVariable(input, out IConditionVariable var, out _, source, requireBrackets))
             {
-                if (var is IFloatVariable floatVar)
-                    return (int)floatVar.Value;
-                if (var is ILongVariable longVar)
-                    return (int)longVar.Value;
-                else if (var is IStringVariable stringVar && int.TryParse(stringVar.Value, out int res))
-                    return res;
+                try
+                {
+                    if (var is IFloatVariable floatVar)
+                        return (int)floatVar.Value;
+                    if (var is ILongVariable longVar)
+                        return (int)longVar.Value;
+                    else if (var is IStringVariable stringVar && int.TryParse(stringVar.Value, out int res))
+                        return res;
+                }
+                catch (Exception e)
+                {
+                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {(source?.Debug == true ? e : e.Message)}");
+                }
             }
 
             return int.MinValue;
@@ -494,7 +501,7 @@
 
                 try
                 {
-                    input = input.Replace(variable, condition.String(reversed));
+                    input = input.Replace(variable, condition.String(source, reversed));
                 }
                 catch (InvalidCastException e)
                 {
