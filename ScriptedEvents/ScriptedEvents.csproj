@@ -99,6 +99,7 @@
     <Compile Include="Actions\Item\LoadoutAction.cs" />
     <Compile Include="Actions\Logic\CallAction.cs" />
     <Compile Include="Actions\Logic\EndIfAction.cs" />
+    <Compile Include="Actions\Logic\FastCallAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Logic\TriggerAction.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Actions\Map\GeneratorRuleAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
     <Compile Include="Actions\Misc\ErrorAction.cs" />
+    <Compile Include="Actions\Misc\FastHttpPostAction.cs" />
     <Compile Include="Actions\Misc\ServerNameAction.cs" />
     <Compile Include="Actions\Misc\PluginAction.cs" />
     <Compile Include="Actions\Misc\PrintAction.cs" />
