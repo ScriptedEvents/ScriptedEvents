@@ -92,11 +92,12 @@
                     return Timing.WaitUntilDone(RunScript(calledScript, script));
                 }
 
-                calledScript.AddVariable($"{{ARGS}}", "Variable created using the CALL action.", Arguments.JoinMessage(2));
-                string[] variables = RawArguments.JoinMessage(2).Split(' ');
+                string[] args = RawArguments.JoinMessage(2).Split(' ');
+
+                calledScript.AddVariable("{ARGS}", "Variable created using the CALL action.", VariableSystem.ReplaceVariables(RawArguments.JoinMessage(2), script));
 
                 int arg = 0;
-                foreach (string varName in variables)
+                foreach (string varName in args)
                 {
                     arg++;
                     if (VariableSystem.TryGetPlayers(varName, out PlayerCollection val, script, requireBrackets: true))
