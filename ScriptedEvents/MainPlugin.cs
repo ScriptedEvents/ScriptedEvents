@@ -263,9 +263,20 @@
             VariableSystem.Setup();
 
             // Delete help file on startup
-            string helpPath = Path.Combine(ScriptHelper.BaseFilePath, "HelpCommandResponse.txt");
+            string helpFileName = "HelpCommandResponse.txt";
+            string helpPath = Path.Combine(ScriptHelper.ScriptPath, helpFileName);
+
             if (File.Exists(helpPath))
-                File.Delete(helpPath);
+            {
+                try
+                {
+                    File.Delete(helpPath);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warn($"The removal of the '{helpFileName}' file has failed. Reason: {ex}");
+                }
+            }
         }
 
         /// <summary>
@@ -283,10 +294,12 @@
                     if (f.Arguments.Length == 0)
                     {
                         Log.Error($"Script {scr.ScriptName} has an invalid EVENT flag.");
+                        scr.Dispose();
                         continue;
                     }
 
                     string evName = f.Arguments[0];
+
                     if (CurrentEventData.ContainsKey(evName))
                     {
                         CurrentEventData[evName].Add(scr.ScriptName);
@@ -302,6 +315,7 @@
                     if (cf.Arguments.Length == 0)
                     {
                         Log.Error($"Script {scr.ScriptName} has an invalid CUSTOMEVENT flag.");
+                        scr.Dispose();
                         continue;
                     }
 
