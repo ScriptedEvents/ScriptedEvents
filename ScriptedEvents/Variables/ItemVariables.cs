@@ -20,7 +20,28 @@
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new ShowItem(),
+            new ItemOwner(),
+            new RandomItem(),
         };
+    }
+
+    public class RandomItem : IStringVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{RANDOMITEM}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets the ItemType of a random item.";
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                ItemType[] items = (ItemType[])Enum.GetValues(typeof(ItemType));
+                return items[UnityEngine.Random.Range(0, items.Length)].ToString();
+            }
+        }
     }
 
     public class ShowItem : IStringVariable, IArgumentVariable
@@ -94,7 +115,7 @@
         public float Value => Players.Count();
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => (IEnumerable<Player>)Item.Get((ushort)Arguments[1]).Owner;
+        public IEnumerable<Player> Players => (IEnumerable<Player>)Item.Get((ushort)Arguments[0]).Owner;
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }

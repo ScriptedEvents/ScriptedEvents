@@ -1,8 +1,6 @@
 ﻿namespace ScriptedEvents.Variables.Strings
 {
 #pragma warning disable SA1402 // File may only contain a single type
-    using System;
-
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
@@ -56,25 +54,6 @@
         public Script Source { get; set; }
     }
 
-    public class RandomItem : IStringVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{RANDOMITEM}";
-
-        /// <inheritdoc/>
-        public string Description => "Gets the ItemType of a random item.";
-
-        /// <inheritdoc/>
-        public string Value
-        {
-            get
-            {
-                ItemType[] items = (ItemType[])Enum.GetValues(typeof(ItemType));
-                return items[UnityEngine.Random.Range(0, items.Length)].ToString();
-            }
-        }
-    }
-
     public class Log : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
@@ -105,14 +84,7 @@
             {
                 IConditionVariable variable = (IConditionVariable)Arguments[0];
 
-                return variable switch
-                {
-                    IStringVariable strV => $"{strV.Name} = {strV.Value}",
-                    IFloatVariable floatV => $"{floatV.Name} = {floatV.Value}",
-                    ILongVariable longV => $"{longV.Name} = {longV.Value}",
-                    IBoolVariable boolV => $"{boolV.Name} = {boolV.Value}",
-                    _ => $"{variable.Name} = UNKNOWN VALUE",
-                };
+                return $"{variable.Name.Trim('{', '}')} = {variable.String()}";
             }
         }
     }
