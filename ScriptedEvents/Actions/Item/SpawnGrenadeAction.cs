@@ -1,12 +1,14 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+    using System.Linq;
 
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Interfaces;
     using UnityEngine;
 
     public class SpawnGrenadeAction : IScriptAction, IHelpInfo
@@ -37,6 +39,7 @@
             new Argument("z", typeof(float), "The Z coordinate.", true),
             new Argument("fuseTimeSeconds", typeof(float), "Fuse time for the grenade.", true),
             new Argument("scale", typeof(float), "The scale of the granade.", false),
+            new Argument("player", typeof(IPlayerVariable), "The player who will be blamed for a kill.", false),
         };
 
         /// <inheritdoc/>
@@ -56,6 +59,9 @@
                 float scale = (float)Arguments[4];
                 gren.Scale = new(scale, scale, scale);
             }
+
+            if (Arguments.Length > 5)
+                gren.PreviousOwner = ((IPlayerVariable)Arguments[5]).Players.FirstOrDefault();
 
             return new(true);
         }
