@@ -42,7 +42,8 @@
                 new("ARM", "Arms the warhead (switches lever to ON)."),
                 new("DISARM", "Disarms the warhead (switches lever to OFF)."),
                 new("OPEN", "Opens the keycard panel on the surface."),
-                new("CLOSE", "Closes the keycard panel on the surface.")),
+                new("CLOSE", "Closes the keycard panel on the surface."),
+                new("SHAKE", "Imitates an explosion, without killing anyone.")),
         };
 
         /// <inheritdoc/>
