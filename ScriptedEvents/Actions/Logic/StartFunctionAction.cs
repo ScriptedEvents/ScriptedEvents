@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class StartFunctionAction : IScriptAction, ILogicAction
+    public class StartFunctionAction : IScriptAction, IHiddenAction
     {
         /// <inheritdoc/>
         public string Name => "FUNC";
