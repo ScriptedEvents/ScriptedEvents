@@ -3,10 +3,9 @@
     using System;
 
     using Exiled.API.Enums;
-    using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using Exiled.API.Interfaces;
-    using PluginAPI.Core.Zones;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
