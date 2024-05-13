@@ -5,10 +5,8 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class SetMaxHPAction : IScriptAction, IHelpInfo
     {
@@ -34,7 +32,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to affect.", true),
-            new Argument("maxhealth", typeof(float), "The amount of max health to set the player to. Variables ARE supported.", true),
+            new Argument("maxhealth", typeof(float), "The amount of max health to set the player to.", true),
         };
 
         /// <inheritdoc/>
