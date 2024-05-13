@@ -2,8 +2,6 @@
 {
     using System;
 
-    using ScriptedEvents.Actions.Samples.Interfaces;
-    using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -26,13 +24,10 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "dev ver no inf";
+        public string Description => "Removes the action ignoring status enabled by the IF action, if one exists.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; set; }
-
-        /// <inheritdoc/>
-        public ISampleProvider Samples { get; } = new IfSamples();
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
