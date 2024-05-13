@@ -32,99 +32,72 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Moves to the provided label or executes a script.";
+        public string Description => "Executes a provided script. Will wait until called script finishes execution. Can provide arguments for the called script.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new OptionsArgument("mode", true,
-                new("LABEL", "Moves to a specific label."),
-                new("SCRIPT", "Executes a different script.")),
-            new Argument("destination", typeof(string), "The target of this action. Dictated by the mode selected.", true),
-            new Argument("vars", typeof(string), "The variables to create for a called script. Seperate variables with spaces to create multiple. Used only for the SCRIPT mode.", false),
+            new Argument("script", typeof(string), "The script to call.", true),
+            new Argument("arguments", typeof(string), "The arguments to provide for the called script. Can be empty. All arguments will be provided to the called script as {ARG1}, {ARG2} etc. and {ARGS}.", false),
         };
 
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
-            string mode = Arguments[0].ToUpper();
-            if (mode == "LABEL")
+            string scriptName = (string)Arguments[0];
+            Script calledScript;
+
+            try
             {
-                int curLine = script.CurrentLine;
-
-                if (!script.Jump((string)Arguments[1]))
-                {
-                    message = new(false, "Invalid line or label provided!");
-                    return 0;
-                }
-
-                script.CallLines.Add(curLine);
-
-                script.DebugLog(script.CallLines[0].ToString());
-                message = new(true);
+                calledScript = ScriptHelper.ReadScript(scriptName, script.Sender, false);
+                calledScript.CallerScript = script;
+            }
+            catch (DisabledScriptException)
+            {
+                message = new(false, $"Script '{scriptName}' is disabled.");
+                return 0;
+            }
+            catch (FileNotFoundException)
+            {
+                message = new(false, $"Script '{scriptName}' not found.");
                 return 0;
             }
 
-            if (mode == "SCRIPT")
+            if (Arguments.Length < 2)
             {
-                string scriptName = (string)Arguments[1];
-                Script calledScript;
-
-                try
-                {
-                    calledScript = ScriptHelper.ReadScript(scriptName, script.Sender, false);
-                    calledScript.CallerScript = script;
-                }
-                catch (DisabledScriptException)
-                {
-                    message = new(false, $"Script '{scriptName}' is disabled.");
-                    return 0;
-                }
-                catch (FileNotFoundException)
-                {
-                    message = new(false, $"Script '{scriptName}' not found.");
-                    return 0;
-                }
-
-                if (Arguments.Length < 3)
-                {
-                    message = new(true);
-                    return Timing.WaitUntilDone(RunScript(calledScript, script));
-                }
-
-                string[] args = RawArguments.JoinMessage(2).Split(' ');
-
-                calledScript.AddVariable("{ARGS}", "Variable created using the CALL action.", VariableSystem.ReplaceVariables(RawArguments.JoinMessage(2), script));
-
-                int arg = 0;
-                foreach (string varName in args)
-                {
-                    arg++;
-                    if (VariableSystem.TryGetPlayers(varName, out PlayerCollection val, script, requireBrackets: true))
-                    {
-                        calledScript.AddPlayerVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", val);
-
-                        script.DebugLog($"Added player variable {varName} (as '{{ARG{arg}}}') to the called script.");
-                        continue;
-                    }
-
-                    if (VariableSystem.TryGetVariable(varName, out IConditionVariable var, out bool _, script, requireBrackets: true))
-                    {
-                        calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String());
-
-                        script.DebugLog($"Added variable {varName} (as '{{ARG{arg}}}') to the called script.");
-                        continue;
-                    }
-
-                    calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", varName);
-                }
-
                 message = new(true);
                 return Timing.WaitUntilDone(RunScript(calledScript, script));
             }
 
-            message = new(false, "Invalid mode provided.");
-            return 0;
+            string[] args = RawArguments.JoinMessage(1).Split(' ');
+
+            calledScript.AddVariable("{ARGS}", "Variable created using the CALL action.", VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script));
+
+            int arg = 0;
+            foreach (string varName in args)
+            {
+                arg++;
+                if (VariableSystem.TryGetPlayers(varName, out PlayerCollection val, script, requireBrackets: true))
+                {
+                    calledScript.AddPlayerVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", val);
+
+                    script.DebugLog($"Added player variable {varName} (as '{{ARG{arg}}}') to the called script.");
+                    continue;
+                }
+
+                if (VariableSystem.TryGetVariable(varName, out IConditionVariable var, out bool _, script, requireBrackets: true))
+                {
+                    calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String());
+
+                    script.DebugLog($"Added variable {varName} (as '{{ARG{arg}}}') to the called script.");
+                    continue;
+                }
+
+                calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", varName);
+            }
+
+            message = new(true);
+            return Timing.WaitUntilDone(RunScript(calledScript, script));
         }
 
         private CoroutineHandle RunScript(Script scriptToCall, Script script)
