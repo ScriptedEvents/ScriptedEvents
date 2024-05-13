@@ -35,7 +35,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to show the countdown to.", true),
-            new Argument("duration", typeof(long), "The duration of the countdown.", true),
+            new Argument("durationSeconds", typeof(long), "The duration of the countdown.", true),
             new Argument("text", typeof(string), "The text to show on the broadcast.", true),
         };
 
