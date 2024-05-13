@@ -25,7 +25,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Yielding;
+        public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         /// <inheritdoc/>
         public string Description => "Works the same as HTTPPOST, but does not create variables and does not wait until the request is finished.";
