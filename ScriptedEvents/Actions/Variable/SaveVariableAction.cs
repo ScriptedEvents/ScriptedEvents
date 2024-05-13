@@ -13,7 +13,7 @@
         public string Name => "SAVE";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "SAVEVARIABLE" };
+        public string[] Aliases => new[] { "VAR" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
