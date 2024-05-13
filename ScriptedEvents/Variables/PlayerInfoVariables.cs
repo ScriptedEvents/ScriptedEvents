@@ -5,11 +5,10 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Roles;
     using Exiled.CustomItems.API.Features;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -34,7 +33,7 @@
     public class PlayerData : IStringVariable, IArgumentVariable, INeedSourceVariable, IHasAliasVariable
     {
         /// <inheritdoc/>
-        public string Name => "{PLAYERDATA}";
+        public string Name => "{PLR-DATA}";
 
         /// <inheritdoc/>
         public string Alias => "{PDATA}";
@@ -76,44 +75,10 @@
         }
     }
 
-    public class Len : IFloatVariable, IArgumentVariable, INeedSourceVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{LEN}";
-
-        /// <inheritdoc/>
-        public string Description => "[OBSOLETE] Reveals the length of a player variable.";
-
-        /// <inheritdoc/>
-        public string[] RawArguments { get; set; }
-
-        /// <inheritdoc/>
-        public object[] Arguments { get; set; }
-
-        /// <inheritdoc/>
-        public Argument[] ExpectedArguments => new[]
-        {
-            new Argument("name", typeof(IPlayerVariable), "The name of the player variable to retrieve the length of.", true),
-        };
-
-        /// <inheritdoc/>
-        public Script Source { get; set; } = null;
-
-        /// <inheritdoc/>
-        public float Value
-        {
-            get
-            {
-                IPlayerVariable variable = (IPlayerVariable)Arguments[0];
-                return variable.Players.Count();
-            }
-        }
-    }
-
     public class Command : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{C}";
+        public string Name => "{PLR-CVER}";
 
         /// <inheritdoc/>
         public string Description => "Converts a player variable into a format to use with commands.";
