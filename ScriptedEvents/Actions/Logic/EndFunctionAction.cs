@@ -8,7 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class EndFunctionAction : IScriptAction, ILogicAction
+    public class EndFunctionAction : IScriptAction, IHiddenAction
     {
         /// <inheritdoc/>
         public string Name => "ENDFUNC";
