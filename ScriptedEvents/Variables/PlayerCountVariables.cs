@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using ScriptedEvents.API.Features;
@@ -25,7 +24,6 @@
             new PlayersDead(),
             new Humans(),
             new Staff(),
-            new InRoom(),
             new NonePlayer(),
             new Scp096Targets(),
             new Scp173Observers(),
@@ -121,43 +119,6 @@
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.RemoteAdminAccess);
-    }
-
-    public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable, INeedSourceVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{INROOM}";
-
-        /// <inheritdoc/>
-        public string Description => "The amount of players in the specified room.";
-
-        /// <inheritdoc/>
-        public string[] RawArguments { get; set; }
-
-        /// <inheritdoc/>
-        public object[] Arguments { get; set; }
-
-        /// <inheritdoc/>
-        public Argument[] ExpectedArguments => new[]
-        {
-            new Argument("roomType", typeof(RoomType), "The room to filter by.", false),
-        };
-
-        /// <inheritdoc/>
-        public Script Source { get; set; }
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
-
-        /// <inheritdoc/>
-        public IEnumerable<Player> Players
-        {
-            get
-            {
-                RoomType rt = (RoomType)Arguments[0];
-                return Player.Get(plr => plr.CurrentRoom.Type == rt);
-            }
-        }
     }
 
     public class NonePlayer : IFloatVariable, IPlayerVariable
