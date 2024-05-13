@@ -39,9 +39,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(0), script);
-
-            Log.Error($"[{script.ScriptName}] {message}");
+            Log.Error($"[{script.ScriptName}] {VariableSystem.ReplaceVariables(Arguments.JoinMessage(0), script)}");
 
             return new(true);
         }
