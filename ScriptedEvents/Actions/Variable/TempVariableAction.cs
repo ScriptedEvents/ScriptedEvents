@@ -27,7 +27,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => "Saves a new variable with the name of '{^}' in the local scope. It works the same as doing 'LOCAL {^} ...'. The variable will be able to be used until its overwritten by another TEMP action.";
+        public string Description => "Saves a new variable with the name of '{@}' in the local scope. It works the same as doing 'LOCAL {@} ...'. The variable will be able to be used until its overwritten by another TEMP action.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -44,12 +44,12 @@
             try
             {
                 float value = (float)ConditionHelperV2.Math(input);
-                script.AddVariable("{^}", "User-defined variable.", value.ToString());
+                script.AddVariable("{@}", "User-defined variable.", value.ToString());
                 return new(true);
             }
             catch
             {
-                script.AddVariable("{^}", "User-defined variable.", input);
+                script.AddVariable("{@}", "User-defined variable.", input);
                 return new(true);
             }
         }
