@@ -32,7 +32,7 @@
         public ActionResponse Execute(Script script)
         {
             if (script.JumpLines.Count == 0)
-                return new(false, ErrorGen.Generate(ErrorCode.InvalidActionUsage, "Closing function syntax.", "Syntax must be used after an action was called."));
+                return new(false, ErrorGen.Generate(ErrorCode.InvalidActionUsage, "Closing function syntax.", "Closing syntax must be used after a function was called using the GOTO action."));
 
             int lineNum = script.JumpLines.Last();
             script.Jump(lineNum + 1);
