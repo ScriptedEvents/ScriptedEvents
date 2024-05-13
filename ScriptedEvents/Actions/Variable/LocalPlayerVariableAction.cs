@@ -17,7 +17,7 @@
         public string Name => "LOCALPLAYERVAR";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "LOCALPVAR" };
+        public string[] Aliases => new[] { "LPVAR" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
