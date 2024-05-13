@@ -28,7 +28,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Yielding;
 
         /// <inheritdoc/>
-        public string Description => "Works the same as HTTPPOST, but does not create variables and does not yield.";
+        public string Description => "Works the same as HTTPPOST, but does not create variables and does not wait until the request is finished.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
