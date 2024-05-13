@@ -13,7 +13,6 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
-            new Log(),
             new Index(),
             new ReplaceVariable(),
         };
@@ -52,41 +51,6 @@
         }
 
         public Script Source { get; set; }
-    }
-
-    public class Log : IStringVariable, IArgumentVariable, INeedSourceVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{LOG}";
-
-        /// <inheritdoc/>
-        public string Description => "Shows the name of the variable with its value. Useful for quick debugging.";
-
-        /// <inheritdoc/>
-        public string[] RawArguments { get; set; }
-
-        /// <inheritdoc/>
-        public object[] Arguments { get; set; }
-
-        /// <inheritdoc/>
-        public Script Source { get; set; }
-
-        /// <inheritdoc/>
-        public Argument[] ExpectedArguments => new[]
-        {
-             new Argument("variable", typeof(IConditionVariable), "The name of the variable.", true),
-        };
-
-        /// <inheritdoc/>
-        public string Value
-        {
-            get
-            {
-                IConditionVariable variable = (IConditionVariable)Arguments[0];
-
-                return $"{variable.Name.Trim('{', '}')} = {variable.String()}";
-            }
-        }
     }
 
     public class Index : IStringVariable, IArgumentVariable, INeedSourceVariable
