@@ -5,9 +5,9 @@
 
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
-    using UnityEngine;
 
     public class MiscVariables : IVariableGroup
     {
@@ -17,19 +17,19 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
-            new Round(),
             new This(),
             new Storage(),
+            new Log(),
         };
     }
 
-    public class Round : IFloatVariable, IArgumentVariable
+    public class Log : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{ROUND}";
+        public string Name => "{LOG}";
 
         /// <inheritdoc/>
-        public string Description => "Returns a rounded number.";
+        public string Description => "Shows the name of the variable with its value. Useful for quick debugging.";
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -38,27 +38,39 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("variable", typeof(float), "Thee variable to round. Requires the variable to be a number.", true),
-            new OptionsArgument("mode", false, new("UP"), new("DOWN"), new("NEAREST")),
+             new Argument("variable", typeof(IVariable), "The variable.", true),
         };
 
         /// <inheritdoc/>
-        public float Value
+        public string Value
         {
             get
             {
-                float value = (float)Arguments[0];
-                string mode = Arguments.Length < 2 ? "NEAREST" : (string)Arguments[1];
-
-                return mode.ToUpper() switch
+                try
                 {
-                    "UP" => Mathf.Ceil(value),
-                    "DOWN" => Mathf.Floor(value),
-                    "NEAREST" => Mathf.Round(value),
-                    _ => throw new ArgumentException(),
-                };
+                    IPlayerVariable plrVar = (IPlayerVariable)Arguments[0];
+
+                    return $"{plrVar.Name.Trim('{', '}')} = {plrVar.String()}";
+                }
+                catch (InvalidCastException)
+                {
+                }
+
+                try
+                {
+                    IConditionVariable variable = (IConditionVariable)Arguments[0];
+
+                    return $"{variable.Name.Trim('{', '}')} = {variable.String()}";
+                }
+                catch (InvalidCastException)
+                {
+                    throw new ScriptedEventsException(ErrorGen.Generate(API.Enums.ErrorCode.InvalidVariable, (string)Arguments[0]));
+                }
             }
         }
     }
