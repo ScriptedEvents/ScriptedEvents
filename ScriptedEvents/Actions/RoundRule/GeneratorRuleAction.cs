@@ -24,7 +24,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Map;
+        public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
 
         /// <inheritdoc/>
         public string Description => "Modifies genrator behavior.";
