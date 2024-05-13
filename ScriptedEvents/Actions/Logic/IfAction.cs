@@ -26,7 +26,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Reads the condition and stops execution of the script if the result is FALSE.";
+        public string Description => "If the condition is FALSE, all actions will be ignored until ENDIF action is encountered. If the condition is TRUE, script will continue executing normally.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
