@@ -24,7 +24,6 @@ namespace ScriptedEvents.API.Features
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Integrations;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -59,11 +58,6 @@ namespace ScriptedEvents.API.Features
         /// Gets all defined custom actions.
         /// </summary>
         public static Dictionary<string, CustomAction> CustomActions { get; } = new();
-
-        /// <summary>
-        /// Gets RueI instance.
-        /// </summary>
-        public static RueIManager Ruei { get; } = new RueIManager();
 
         /// <summary>
         /// Returns an action type, if its name or aliases match the input.
@@ -265,7 +259,7 @@ namespace ScriptedEvents.API.Features
                     }
 
                     if (!suppressWarnings)
-                        Log.Warn($"[L: {script.CurrentLine + 1}]" + ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName));
+                        Log.Warn($"[LINE: {currentline + 1}] " + ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName));
 
                     actionList.Add(new NullAction("ERROR"));
                     continue;
@@ -539,20 +533,6 @@ namespace ScriptedEvents.API.Features
 
             rooms = ListPool<Room>.Pool.ToArrayReturn(roomList);
             return rooms.Length > 0;
-        }
-
-        /// <summary>
-        /// Shows a RueI hint.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        /// <param name="duration">The duration.</param>
-        /// <param name="players">The players to show (or all).</param>
-        public static void ShowHint(string text, float duration, List<Player> players = null)
-        {
-            players ??= Player.List.ToList();
-
-            // Ruei.MakeNew();
-            players.ForEach(p => Ruei.ShowHint(p, text, TimeSpan.FromSeconds(duration)));
         }
 
         /// <summary>
