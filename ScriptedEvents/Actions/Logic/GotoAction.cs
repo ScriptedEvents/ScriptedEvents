@@ -2,6 +2,7 @@
 {
     using System;
 
+    using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -30,26 +31,26 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("label", typeof(string), "The label to move to.", true),
-            new Argument("goBackSave", typeof(bool), "If TRUE, the line in which this action is situated in will be saved to the GOBACK stack. To learn more, read GOBACK action.", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            int curLine = script.CurrentLine;
             string label = (string)Arguments[0];
 
-            if (!script.Jump(label))
+            if (script.JumpToLabel(label))
             {
-                return new(false, "Invalid label provided.");
+                return new(true);
             }
 
-            if (Arguments.Length >= 2 && (bool)Arguments[1])
+            int prevLine = script.CurrentLine;
+            if (script.JumpToFunctionLabel(label))
             {
-                script.CallLines.Add(curLine);
+                script.JumpLines.Add(prevLine);
+                return new(true);
             }
 
-            return new(true);
+            return new(false, "Invalid label provided.");
         }
     }
 }

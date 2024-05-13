@@ -192,10 +192,10 @@ namespace ScriptedEvents.API.Features
                 }
 
                 // remove regex for variable spaces bc its politely saying dumb
-                string[] collection = action.Split(' ');
+                // maybe bring it back later cuz i changed my mind
                 List<string> actionParts = ListPool<string>.Pool.Get();
 
-                foreach (string str in collection)
+                foreach (string str in action.Split(' '))
                 {
                     if (string.IsNullOrWhiteSpace(str))
                         continue;
@@ -205,7 +205,7 @@ namespace ScriptedEvents.API.Features
 
                 string keyword = actionParts[0].RemoveWhitespace();
 
-                // Labels
+                // Std labels
                 if (keyword.EndsWith(":"))
                 {
                     string labelName = action.Remove(keyword.Length - 1, 1).RemoveWhitespace();
@@ -217,6 +217,32 @@ namespace ScriptedEvents.API.Features
 
                     actionList.Add(new NullAction($"{labelName} LABEL"));
 
+                    continue;
+                }
+
+                // Function labels
+                if (keyword == "->")
+                {
+                    if (actionParts.Count < 2)
+                    {
+                        Log.Error($"[SCRIPT: {script.ScriptName}] [LINE: {currentline}] A function label syntax has been used, but no name has been provided.");
+                        continue;
+                    }
+
+                    string labelName = actionParts[1].RemoveWhitespace();
+
+                    if (!script.FunctionLabels.ContainsKey(labelName))
+                        script.FunctionLabels.Add(labelName, currentline);
+                    else if (!suppressWarnings)
+                        Log.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
+
+                    actionList.Add(new StartFunctionAction());
+                    continue;
+                }
+
+                if (keyword == "<-")
+                {
+                    actionList.Add(new EndFunctionAction());
                     continue;
                 }
 

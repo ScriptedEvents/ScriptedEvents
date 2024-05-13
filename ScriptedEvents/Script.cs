@@ -27,6 +27,7 @@
         public Script()
         {
             Labels = DictionaryPool<string, int>.Pool.Get();
+            FunctionLabels = DictionaryPool<string, int>.Pool.Get();
             Flags = ListPool<Flag>.Pool.Get();
             UniqueVariables = DictionaryPool<string, CustomVariable>.Pool.Get();
             UniquePlayerVariables = DictionaryPool<string, CustomPlayerVariable>.Pool.Get();
@@ -94,6 +95,11 @@
         public Dictionary<string, int> Labels { get; set; }
 
         /// <summary>
+        /// Gets or sets a list of function labels.
+        /// </summary>
+        public Dictionary<string, int> FunctionLabels { get; set; }
+
+        /// <summary>
         /// Gets the line the script is currently on.
         /// </summary>
         public int CurrentLine { get; private set; }
@@ -144,9 +150,9 @@
         public ICommandSender Sender { get; internal set; }
 
         /// <summary>
-        /// Gets or sets all line positions from where a CALL action was executed.
+        /// Gets or sets all line positions from where a JUMP action was executed.
         /// </summary>
-        public List<int> CallLines { get; set; } = new();
+        public List<int> JumpLines { get; set; } = new();
 
         /// <summary>
         /// Gets the original script which ran this script using the CALL action.
@@ -202,20 +208,29 @@
         /// <summary>
         /// Moves the <see cref="CurrentLine"/> to the specified location.
         /// </summary>
-        /// <param name="keyword">Keyword (NEXT, START, label, or number).</param>
+        /// <param name="keyword">Keyword (START, label, or number).</param>
         /// <returns>Whether or not the jump was successful.</returns>
-        public bool Jump(string keyword)
+        public bool JumpToLabel(string keyword)
         {
             switch (keyword.ToUpper())
             {
-                case "NEXT": // Simply return "true" as a success. It'll go to the next line automatically.
-                    return true;
                 case "START":
                     CurrentLine = -1;
                     return true;
             }
 
             if (Labels.TryGetValue(keyword, out int line))
+            {
+                CurrentLine = line;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool JumpToFunctionLabel(string keyword)
+        {
+            if (FunctionLabels.TryGetValue(keyword, out int line))
             {
                 CurrentLine = line;
                 return true;
