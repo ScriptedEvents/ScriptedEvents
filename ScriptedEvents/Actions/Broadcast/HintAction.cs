@@ -2,6 +2,8 @@
 {
     using System;
 
+    using Exiled.API.Features;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -27,22 +29,26 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
 
         /// <inheritdoc/>
-        public string Description => "Broadcasts a hint to every player.";
+        public string Description => "Broadcasts a hint to specific player(s).";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("duration", typeof(float), "The duration of the message.", true),
+            new Argument("players", typeof(Player[]), "The players to show.", true),
+            new Argument("durationSeconds", typeof(float), "The duration of the message.", true),
             new Argument("message", typeof(string), "The message.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            float duration = (float)Arguments[0];
+            PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script);
-            ScriptHelper.ShowHint(message, duration);
+            float duration = (float)Arguments[1];
+
+            string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script);
+            ScriptHelper.ShowHint(message, duration, players.GetInnerList());
+
             return new(true);
         }
     }
