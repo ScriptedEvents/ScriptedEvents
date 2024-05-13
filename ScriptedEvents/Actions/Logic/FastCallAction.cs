@@ -1,10 +1,8 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
 
-    using MEC;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -32,13 +30,13 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Calls the provided script. This action does not yield until the called script stops running.";
+        public string Description => "Executes a provided script. Will NOT wait until called script finishes execution. Can provide arguments for the called script.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("destination", typeof(string), "The target of this action. Dictated by the mode selected.", true),
-            new Argument("vars", typeof(string), "The variables to create for a called script. Seperate variables with spaces to create multiple.", false),
+            new Argument("script", typeof(string), "The script to call.", true),
+            new Argument("arguments", typeof(string), "The arguments to provide for the called script. Can be empty. All arguments will be provided to the called script as {ARG1}, {ARG2} etc. and {ARGS}.", false),
         };
 
         /// <inheritdoc/>
