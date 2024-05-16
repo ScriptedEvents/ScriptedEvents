@@ -104,7 +104,7 @@
 
                     if (VariableSystem.TryGetVariable(varName, out IConditionVariable var, out bool _, script, requireBrackets: true))
                     {
-                        calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String());
+                        calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String(script));
 
                         script.DebugLog($"Added variable {varName} (as '{{ARG{arg}}}') to the called script.");
                         continue;
