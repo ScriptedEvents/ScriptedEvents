@@ -51,8 +51,8 @@
 
         public override void Init()
         {
-            Singleton = this;
             base.Init();
+            Singleton = this;
 
             HandlerTypes = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
             .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();

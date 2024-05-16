@@ -106,6 +106,8 @@ namespace ScriptedEvents.API.Modules
 
         public override void Init()
         {
+            base.Init();
+
             RegisterActions(MainPlugin.Singleton.Assembly);
 
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
@@ -132,34 +134,27 @@ namespace ScriptedEvents.API.Modules
                     autoRun.Add(scr.ScriptName);
                 }
 
-                scr.Dispose();
-            }
-
-            AutoRunScripts = autoRun.ToList();
-
-            foreach (string name in autoRun)
-            {
                 try
                 {
-                    Script scr = MainPlugin.ScriptModule.ReadScript(name, null);
-
                     if (scr.AdminEvent)
                     {
-                        Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, name));
+                        Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, scr.ScriptName));
                         continue;
                     }
 
-                    MainPlugin.ScriptModule.RunScript(scr);
+                    RunScript(scr);
                 }
                 catch (DisabledScriptException)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, name));
+                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, scr.ScriptName));
                 }
                 catch (FileNotFoundException)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, name));
+                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, scr.ScriptName));
                 }
             }
+
+            AutoRunScripts = autoRun.ToList();
 
             ListPool<string>.Pool.Return(autoRun);
         }

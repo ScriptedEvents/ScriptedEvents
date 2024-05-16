@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Diagnostics;
-    using System.IO;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -29,9 +27,7 @@
     using PlayerRoles;
 
     using Respawning;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Features.Exceptions;
+
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
