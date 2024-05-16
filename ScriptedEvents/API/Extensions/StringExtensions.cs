@@ -64,15 +64,7 @@
 
             if (VariableSystem.TryGetVariable(input, out IConditionVariable vr, out _, source))
             {
-                if (vr is IStringVariable strVar)
-                {
-                    return IsBool(strVar.Value, out value, source);
-                }
-                else if (vr is IBoolVariable boolVar)
-                {
-                    value = boolVar.Value;
-                    return true;
-                }
+                return IsBool(vr.String(), out value, source);
             }
 
             value = false;
