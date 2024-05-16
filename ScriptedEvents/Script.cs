@@ -238,7 +238,7 @@
         /// Execute the script.
         /// </summary>
         /// <param name="dispose">Whether or not to dispose at conclusion of execution.</param>
-        public void Execute(bool dispose = true) => ScriptHelper.RunScript(this, dispose);
+        public void Execute(bool dispose = true) => MainPlugin.ScriptModule.RunScript(this, dispose);
 
         /// <summary>
         /// Adds a variable.

@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.API.Features
+﻿namespace ScriptedEvents.API.Modules
 {
     using System;
     using System.Collections.Generic;
@@ -6,35 +6,60 @@
     using Exiled.API.Features;
 
     using MEC;
-
     using ScriptedEvents.Structures;
 
     using UnityEngine;
 
     /// <summary>
-    /// Static class that controls showing countdowns to players.
+    /// Module that controls showing countdowns to players.
     /// </summary>
-    public static class CountdownHelper
+    public class CountdownModule : SEModule
     {
+        public override string Name => "CountdownModule";
+
         /// <summary>
         /// Gets or sets the main coroutine handle.
         /// </summary>
-        public static CoroutineHandle? MainHandle { get; set; }
+        public CoroutineHandle? MainHandle { get; set; }
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of active countdowns.
         /// </summary>
-        public static Dictionary<Player, Countdown> Countdowns { get; } = new();
+        public Dictionary<Player, Countdown> Countdowns { get; } = new();
 
         /// <summary>
         /// Gets the default countdown text.
         /// </summary>
-        public static string BroadcastString => MainPlugin.Singleton.Config.CountdownString ?? "Countdown";
+        public string BroadcastString => MainPlugin.Singleton.Config.CountdownString ?? "Countdown";
 
         /// <summary>
         /// Begins the countdown coroutine.
         /// </summary>
-        public static void Start()
+        public override void Init()
+        {
+            base.Init();
+            Exiled.Events.Handlers.Server.RestartingRound += OnRestarting;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += WaitingForPlayers;
+        }
+
+        public override void Kill()
+        {
+            base.Kill();
+            Exiled.Events.Handlers.Server.RestartingRound -= OnRestarting;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= WaitingForPlayers;
+        }
+
+        public void OnRestarting()
+        {
+            if (MainHandle is not null && MainHandle.Value.IsRunning)
+            {
+                Timing.KillCoroutines(MainHandle.Value);
+                MainHandle = null;
+                Countdowns.Clear();
+            }
+        }
+
+        public void WaitingForPlayers()
         {
             MainHandle = Timing.RunCoroutine(InternalCoroutine());
         }
@@ -85,7 +110,7 @@
         /// <param name="text">The text to show.</param>
         /// <param name="ts">The time on the countdown.</param>
         /// <param name="source">The script that started the countdown.</param>
-        public static void AddCountdown(Player player, string text, TimeSpan ts, Script source = null)
+        public void AddCountdown(Player player, string text, TimeSpan ts, Script source = null)
         {
             if (Countdowns.ContainsKey(player))
                 Countdowns.Remove(player);
@@ -97,7 +122,7 @@
             player.Broadcast(1, BroadcastString.Replace("{TEXT}", ct.Text).Replace("{TIME}", Display(ts)));
         }
 
-        private static IEnumerator<float> InternalCoroutine()
+        private IEnumerator<float> InternalCoroutine()
         {
             while (true)
             {

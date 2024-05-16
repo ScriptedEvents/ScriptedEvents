@@ -1,7 +1,6 @@
 ﻿namespace ScriptedEvents.Commands.MainCommand
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Text;
 
@@ -11,6 +10,7 @@
     using Exiled.Permissions.Extensions;
 
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
@@ -34,7 +34,7 @@
                 return false;
             }
 
-            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            if (!Directory.Exists(ScriptModule.BasePath))
             {
                 response = "Critical error: Missing script path. Please reload plugin.";
                 return false;
@@ -43,7 +43,7 @@
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
             int i = 0;
-            foreach (var scriptPair in ScriptHelper.RunningScripts)
+            foreach (var scriptPair in MainPlugin.ScriptModule.RunningScripts)
             {
                 if (!scriptPair.Key.IsRunning)
                     continue;

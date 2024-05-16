@@ -6,8 +6,8 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -56,7 +56,7 @@ The text of the broadcast will be formatted using the countdown_string Exiled co
                 text = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script);
 
             foreach (Player ply in players)
-                CountdownHelper.AddCountdown(ply, text, TimeSpan.FromSeconds(duration), script);
+                MainPlugin.GetModule<CountdownModule>().AddCountdown(ply, text, TimeSpan.FromSeconds(duration), script);
 
             return new(true);
         }

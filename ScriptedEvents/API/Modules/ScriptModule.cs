@@ -1,4 +1,4 @@
-namespace ScriptedEvents.API.Features
+namespace ScriptedEvents.API.Modules
 {
     using System;
     using System.Collections.Generic;
@@ -22,8 +22,10 @@ namespace ScriptedEvents.API.Features
     using ScriptedEvents.Actions;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Integrations;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -33,37 +35,129 @@ namespace ScriptedEvents.API.Features
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
     /// </summary>
-    public static class ScriptHelper
+    public class ScriptModule : SEModule
     {
-        /// <summary>
-        /// The base path to SE files.
-        /// </summary>
-        public static readonly string BaseFilePath = Path.Combine(Paths.Configs, "ScriptedEvents");
-
         /// <summary>
         /// The base path to the script folder.
         /// </summary>
-        public static readonly string ScriptPath = Path.Combine(BaseFilePath, "Scripts");
+        public static readonly string BasePath = Path.Combine(MainPlugin.BaseFilePath, "Scripts");
 
         /// <summary>
         /// Gets a dictionary of action names and their respective types.
         /// </summary>
-        public static Dictionary<ActionNameData, Type> ActionTypes { get; } = new();
+        public Dictionary<ActionNameData, Type> ActionTypes { get; } = new();
 
         /// <summary>
         /// Gets a dictionary of <see cref="Script"/> that are currently running, and the <see cref="CoroutineHandle"/> that is running them.
         /// </summary>
-        public static Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
+        public Dictionary<Script, CoroutineHandle> RunningScripts { get; } = new();
 
         /// <summary>
         /// Gets all defined custom actions.
         /// </summary>
-        public static Dictionary<string, CustomAction> CustomActions { get; } = new();
+        public Dictionary<string, CustomAction> CustomActions { get; } = new();
+
+        public List<string> AutoRunScripts { get; set; }
 
         /// <summary>
         /// Gets RueI instance.
         /// </summary>
-        public static RueIManager Ruei { get; } = new RueIManager();
+        public RueIManager Ruei { get; } = new RueIManager();
+
+        /// <inheritdoc/>
+        public override string Name { get; } = "ScriptModule";
+
+        public override bool ShouldGenerateFiles
+            => !Directory.Exists(BasePath);
+
+        public override void GenerateFiles()
+        {
+            base.GenerateFiles();
+
+            try
+            {
+                DirectoryInfo info = Directory.CreateDirectory(BasePath);
+                DirectoryInfo demoScriptFolder = Directory.CreateDirectory(Path.Combine(info.FullName, "DemoScripts"));
+                foreach (IDemoScript demo in MainPlugin.DemoScripts)
+                {
+                    File.WriteAllText(Path.Combine(demoScriptFolder.FullName, $"{demo.FileName}.txt"), demo.Contents);
+                }
+
+                File.WriteAllText(Path.Combine(MainPlugin.BaseFilePath, "README.txt"), new About().Contents);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Log.Error(ErrorGen.Get(ErrorCode.IOPermissionError) + $": {e}");
+                return;
+            }
+            catch (Exception e)
+            {
+                Log.Error(ErrorGen.Get(ErrorCode.IOError) + $": {e}");
+                return;
+            }
+
+            // Welcome message :)
+            // 3s delay to show after other console spam
+            Timing.CallDelayed(6f, () =>
+            {
+                Log.Warn($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(MainPlugin.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
+            });
+        }
+
+        public override void Init()
+        {
+            base.Init();
+
+            RegisterActions(MainPlugin.Singleton.Assembly);
+
+            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
+        }
+
+        public override void Kill()
+        {
+            base.Kill();
+            StopAllScripts();
+            ActionTypes.Clear();
+
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+        }
+
+        public void OnWaitingForPlayers()
+        {
+            List<string> autoRun = ListPool<string>.Pool.Get();
+
+            foreach (Script scr in ListScripts())
+            {
+                if (scr.HasFlag("AUTORUN"))
+                {
+                    Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
+                    autoRun.Add(scr.ScriptName);
+                }
+
+                try
+                {
+                    if (scr.AdminEvent)
+                    {
+                        Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, scr.ScriptName));
+                        continue;
+                    }
+
+                    RunScript(scr);
+                }
+                catch (DisabledScriptException)
+                {
+                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, scr.ScriptName));
+                }
+                catch (FileNotFoundException)
+                {
+                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, scr.ScriptName));
+                }
+            }
+
+            AutoRunScripts = autoRun.ToList();
+
+            ListPool<string>.Pool.Return(autoRun);
+        }
 
         /// <summary>
         /// Returns an action type, if its name or aliases match the input.
@@ -71,7 +165,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="name">The name of the action.</param>
         /// <param name="type">The action.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetActionType(string name, out Type type)
+        public bool TryGetActionType(string name, out Type type)
         {
             foreach (var actionData in ActionTypes)
             {
@@ -92,7 +186,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="scriptName">The name of the script.</param>
         /// <returns>The contents of the script, if it is found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        public static string ReadScriptText(string scriptName) => InternalRead(scriptName, out _);
+        public string ReadScriptText(string scriptName) => InternalRead(scriptName, out _);
 
         /// <summary>
         /// Returns the file path of a script.
@@ -100,7 +194,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="scriptName">The name of the script.</param>
         /// <returns>The directory of the script, if it is found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        public static string GetFilePath(string scriptName)
+        public string GetFilePath(string scriptName)
         {
             InternalRead(scriptName, out string path);
             return path;
@@ -112,10 +206,10 @@ namespace ScriptedEvents.API.Features
         /// <param name="sender">Optional sender.</param>
         /// <returns>A list of all scripts.</returns>
         /// <remarks>WARNING: Scripts created through this method are NOT DISPOSED!!! Call <see cref="Script.Dispose"/> when done with them.</remarks>
-        public static List<Script> ListScripts(ICommandSender sender = null)
+        public List<Script> ListScripts(ICommandSender sender = null)
         {
             List<Script> scripts = new();
-            string[] files = Directory.GetFiles(ScriptPath, "*.txt", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(BasePath, "*.txt", SearchOption.AllDirectories);
 
             foreach (string file in files)
             {
@@ -141,7 +235,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="suppressWarnings">Do not show warnings in the console.</param>
         /// <returns>The <see cref="Script"/> fully filled out, if the script was found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        public static Script ReadScript(string scriptName, ICommandSender executor, bool suppressWarnings = false)
+        public Script ReadScript(string scriptName, ICommandSender executor, bool suppressWarnings = false)
         {
             string allText = ReadScriptText(scriptName);
             bool inMultilineComment = false;
@@ -298,7 +392,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="scr">The script to run.</param>
         /// <param name="dispose">If <see langword="true"/>, the script will be disposed after finishing execution.</param>
         /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
-        public static void RunScript(Script scr, bool dispose = true)
+        public void RunScript(Script scr, bool dispose = true)
         {
             if (scr.Disabled)
                 throw new DisabledScriptException(scr.ScriptName);
@@ -316,7 +410,7 @@ namespace ScriptedEvents.API.Features
         /// <exception cref="FileNotFoundException">The script was not found.</exception>
         /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
         /// <returns>The script object.</returns>
-        public static Script ReadAndRun(string scriptName, ICommandSender executor, bool dispose = true)
+        public Script ReadAndRun(string scriptName, ICommandSender executor, bool dispose = true)
         {
             Script scr = ReadScript(scriptName, executor);
             if (scr is not null)
@@ -519,7 +613,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="text">The text.</param>
         /// <param name="duration">The duration.</param>
         /// <param name="players">The players to show (or all).</param>
-        public static void ShowHint(string text, float duration, List<Player> players = null)
+        public void ShowHint(string text, float duration, List<Player> players = null)
         {
             players ??= Player.List.ToList();
 
@@ -531,7 +625,7 @@ namespace ScriptedEvents.API.Features
         /// Immediately stops execution of all scripts.
         /// </summary>
         /// <returns>The amount of scripts that were stopped.</returns>
-        public static int StopAllScripts()
+        public int StopAllScripts()
         {
             int amount = 0;
             foreach (KeyValuePair<Script, CoroutineHandle> kvp in RunningScripts)
@@ -554,7 +648,7 @@ namespace ScriptedEvents.API.Features
         /// </summary>
         /// <param name="scr">The script to stop.</param>
         /// <returns>Whether or not stopping was successful.</returns>
-        public static bool StopScript(Script scr)
+        public bool StopScript(Script scr)
         {
             KeyValuePair<Script, CoroutineHandle>? found = RunningScripts.FirstOrDefault(k => k.Key == scr);
             if (found.HasValue && found.Value.Value.IsRunning)
@@ -581,7 +675,7 @@ namespace ScriptedEvents.API.Features
         /// </summary>
         /// <param name="name">The name of the script.</param>
         /// <returns>The amount of scripts stopped.</returns>
-        public static int StopScripts(string name)
+        public int StopScripts(string name)
         {
             int amount = 0;
             foreach (KeyValuePair<Script, CoroutineHandle> kvp in RunningScripts)
@@ -594,38 +688,18 @@ namespace ScriptedEvents.API.Features
         }
 
         /// <summary>
-        /// Determines if an action is obsolete.
-        /// </summary>
-        /// <param name="action">The action.</param>
-        /// <param name="message">A message regarding the obsolete.</param>
-        /// <returns>Whether or not the action is obsolete.</returns>
-        public static bool IsObsolete(this IAction action, out string message)
-        {
-            Type t = action.GetType();
-            var obsolete = t.CustomAttributes.FirstOrDefault(attr => attr.AttributeType.Name == "ObsoleteAttribute");
-            if (obsolete is not null)
-            {
-                message = obsolete.ConstructorArguments[0].Value.ToString();
-                return true;
-            }
-
-            message = string.Empty;
-            return false;
-        }
-
-        /// <summary>
         /// Reads a script.
         /// </summary>
         /// <param name="scriptName">The name of the script.</param>
         /// <param name="fileDirectory">The directory of the script, if it is found.</param>
         /// <returns>The contents of the script, if it is found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        internal static string InternalRead(string scriptName, out string fileDirectory)
+        internal string InternalRead(string scriptName, out string fileDirectory)
         {
             fileDirectory = null;
 
             string text = null;
-            string mainFolderFile = Path.Combine(ScriptPath, scriptName + ".txt");
+            string mainFolderFile = Path.Combine(BasePath, scriptName + ".txt");
             if (File.Exists(mainFolderFile))
             {
                 fileDirectory = mainFolderFile;
@@ -633,7 +707,7 @@ namespace ScriptedEvents.API.Features
             }
             else
             {
-                foreach (string directory in Directory.GetDirectories(ScriptPath))
+                foreach (string directory in Directory.GetDirectories(BasePath))
                 {
                     string fileName = Path.Combine(directory, scriptName + ".txt");
                     if (File.Exists(fileName))
@@ -654,7 +728,7 @@ namespace ScriptedEvents.API.Features
         /// Registers all the actions in the provided assembly.
         /// </summary>
         /// <param name="assembly">The assembly to register actions in.</param>
-        internal static void RegisterActions(Assembly assembly)
+        internal void RegisterActions(Assembly assembly)
         {
             int i = 0;
             foreach (Type type in assembly.GetTypes())
@@ -680,7 +754,7 @@ namespace ScriptedEvents.API.Features
         /// </summary>
         /// <param name="scr">The script to run.</param>
         /// <returns>Coroutine iterator.</returns>
-        private static IEnumerator<float> RunScriptInternal(Script scr, bool dispose = true)
+        private IEnumerator<float> RunScriptInternal(Script scr, bool dispose = true)
         {
             MainPlugin.Info($"Started running the '{scr.ScriptName}' script.");
 
