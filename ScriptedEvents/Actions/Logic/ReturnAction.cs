@@ -6,8 +6,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
     public class ReturnAction : IScriptAction, ILogicAction, IHelpInfo, IArgumentVariable
@@ -67,13 +67,16 @@
 
             foreach (string varName in RawArguments.Skip(1))
             {
-                if (VariableSystem.TryGetPlayers(varName, out PlayerCollection players, script))
+                if (VariableSystemV2.TryGetPlayers(varName, script, out PlayerCollection players))
                 {
                     script.CallerScript.AddPlayerVariable(varName, "Created using the RETURN action.", players);
                 }
-                else if (VariableSystem.TryGetVariable(varName, out IConditionVariable value, out bool _, script))
+                else if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult res))
                 {
-                    script.CallerScript.AddVariable(varName, "Created using the RETURN action.", value.String(script));
+                    if (!res.Success)
+                        return new(false, res.Message);
+
+                    script.CallerScript.AddVariable(varName, "Created using the RETURN action.", res.Variable.String(script));
                 }
                 else
                 {

@@ -7,8 +7,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class LogAction : IScriptAction, IHelpInfo
     {
@@ -39,7 +39,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Info(VariableSystem.ReplaceVariables(Arguments.JoinMessage(0), script));
+            Log.Info(VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(0), script));
             return new(true);
         }
     }

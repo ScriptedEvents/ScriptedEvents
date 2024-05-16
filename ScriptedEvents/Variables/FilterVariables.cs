@@ -14,6 +14,7 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -121,20 +122,20 @@
 
                 return Arguments[1].ToString() switch
                 {
-                    "ROLE" when VariableSystem.TryParse(input, out RoleTypeId rt, Source, false) => players.Where(plr => plr.Role.Type == rt),
-                    "TEAM" when VariableSystem.TryParse(input, out Team team, Source, false) => players.Where(plr => plr.Role.Team == team),
-                    "ZONE" when VariableSystem.TryParse(input, out ZoneType zt, Source, false) => players.Where(plr => plr.Zone.HasFlag(zt)),
-                    "ROOM" when VariableSystem.TryParse(input, out RoomType room, Source, false) => players.Where(plr => plr.CurrentRoom?.Type == room),
-                    "USERID" => players.Where(plr => plr.UserId == VariableSystem.ReplaceVariable(input, Source, false)),
-                    "PLAYERID" => players.Where(plr => plr.Id.ToString() == VariableSystem.ReplaceVariable(input, Source, false)),
-                    "INV" when VariableSystem.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
+                    "ROLE" when SEParser.TryParse(input, out RoleTypeId rt, Source, false) => players.Where(plr => plr.Role.Type == rt),
+                    "TEAM" when SEParser.TryParse(input, out Team team, Source, false) => players.Where(plr => plr.Role.Team == team),
+                    "ZONE" when SEParser.TryParse(input, out ZoneType zt, Source, false) => players.Where(plr => plr.Zone.HasFlag(zt)),
+                    "ROOM" when SEParser.TryParse(input, out RoomType room, Source, false) => players.Where(plr => plr.CurrentRoom?.Type == room),
+                    "USERID" => players.Where(plr => plr.UserId == VariableSystemV2.ReplaceVariable(input, Source, false)),
+                    "PLAYERID" => players.Where(plr => plr.Id.ToString() == VariableSystemV2.ReplaceVariable(input, Source, false)),
+                    "INV" when SEParser.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
                     "INV" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
-                    "HELDITEM" when VariableSystem.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.CurrentItem?.Type == item),
+                    "HELDITEM" when SEParser.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.CurrentItem?.Type == item),
                     "HELDITEM" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => CustomItem.TryGet(plr.CurrentItem, out CustomItem customItem2) && customItem == customItem2),
                     "GROUP" => players.Where(plr => plr.GroupName == input),
-                    "ISSTAFF" when VariableSystem.ReplaceVariable(input.ToUpper(), Source).AsBool(Source) => players.Where(plr => plr.RemoteAdminAccess),
-                    "ISSTAFF" when !VariableSystem.ReplaceVariable(input.ToUpper(), Source).AsBool(Source) => players.Where(plr => !plr.RemoteAdminAccess),
-                    "EFFECT" when VariableSystem.TryParse(input, out EffectType et, Source, false) => players.Where(plr => plr.TryGetEffect(et, out StatusEffectBase seb)),
+                    "ISSTAFF" when VariableSystemV2.ReplaceVariable(input.ToUpper(), Source).AsBool(Source) => players.Where(plr => plr.RemoteAdminAccess),
+                    "ISSTAFF" when !VariableSystemV2.ReplaceVariable(input.ToUpper(), Source).AsBool(Source) => players.Where(plr => !plr.RemoteAdminAccess),
+                    "EFFECT" when SEParser.TryParse(input, out EffectType et, Source, false) => players.Where(plr => plr.TryGetEffect(et, out StatusEffectBase seb)),
                     _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{input}' is not valid for the specified filter method."),
                 };
 

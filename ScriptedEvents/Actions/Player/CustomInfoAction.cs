@@ -7,8 +7,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class CustomInfoAction : IScriptAction, IHelpInfo
     {
@@ -50,7 +50,7 @@
             {
                 case "SET":
                     if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
-                    string text = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script)
+                    string text = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(2), script)
                         .Replace("\\n", "\n")
                         .Replace("<br>", "\n");
                     foreach (Player ply in plys)

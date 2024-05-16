@@ -9,10 +9,10 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     [Obsolete("Renamed to EFFECTRULE. Functionality is still identical.")]
     public class EffectPermanentAction : IScriptAction, IHelpInfo
@@ -69,11 +69,11 @@
             RoleTypeId rt = RoleTypeId.None;
             PlayerCollection players = null;
 
-            if (VariableSystem.TryParse((string)Arguments[1], out team, script))
+            if (SEParser.TryParse((string)Arguments[1], out team, script))
             {
                 list = 1;
             }
-            else if (VariableSystem.TryParse((string)Arguments[1], out rt, script))
+            else if (SEParser.TryParse((string)Arguments[1], out rt, script))
             {
                 list = 2;
             }

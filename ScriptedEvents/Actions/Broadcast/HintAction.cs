@@ -1,17 +1,12 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Linq;
-
-    using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Integrations;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class HintAction : IScriptAction, IHelpInfo
     {
@@ -45,7 +40,7 @@
         {
             float duration = (float)Arguments[0];
 
-            string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script);
+            string message = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(1), script);
             MainPlugin.ScriptModule.ShowHint(message, duration);
             return new(true);
         }

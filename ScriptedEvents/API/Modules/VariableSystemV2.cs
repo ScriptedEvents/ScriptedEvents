@@ -6,7 +6,7 @@
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
@@ -204,7 +204,7 @@
                     source?.DebugLog($"Variable argument processing completed. Success: {processResult.Success} | Message: {processResult.Message ?? "N/A"}");
 
                     if (!processResult.Success && !skipProcessing)
-                        return new(false, null, processResult.Message);
+                        return new(false, result.Item1, processResult.Message, result.Item2);
 
                     argSupport.Arguments = processResult.NewParameters.ToArray();
                 }
@@ -218,6 +218,141 @@
             ListPool<string>.Pool.Return(argList);
             source?.DebugLog($"Returning the variable value as {result.Item1}");
             return new(true, result.Item1, string.Empty, result.Item2);
+        }
+
+        public static bool TryGetVariable(string name, Script source, out VariableResult result, bool requireBrackets = true, bool skipProcessing = false)
+        {
+            result = GetVariable(name, source, requireBrackets, skipProcessing);
+
+            if (result.Variable is null)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to get a <see cref="IEnumerable{T}"/> of <see cref="Player"/>s based on the input variable.
+        /// </summary>
+        /// <param name="name">The variable.</param>
+        /// <param name="source">The source script.</param>
+        /// <param name="players">The players found. If the operation was not successful, this will contain the error reason.</param>
+        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
+        /// <returns>Whether or not players were found.</returns>
+        /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="ScriptModule.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
+        /// <seealso cref="ScriptModule.TryGetPlayers(string, int?, out PlayerCollection, Script)"/>
+        public static bool TryGetPlayers(string name, Script source, out PlayerCollection players, bool requireBrackets = true)
+        {
+            if (TryGetVariable(name, source, out VariableResult variable, requireBrackets) && variable.Success)
+            {
+                if (variable is IPlayerVariable plrVariable)
+                {
+                    players = new(plrVariable.Players.ToList());
+                    return true;
+                }
+            }
+
+            players = new(null, false, variable?.Message ?? "Invalid variable provided.");
+            return false;
+        }
+
+        /// <summary>
+        /// Replaces a string variable, if one is present. Otherwise, returns the same string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="source">Source script.</param>
+        /// <param name="requireBrackets">Require brackets to replace?.</param>
+        /// <returns>A string.</returns>
+        /// <remarks>This is intended for a string that is either a variable entirely or a string entirely - this will not isolate and replace all variables in a string. See <see cref="ReplaceVariables(string, Script)"/>.</remarks>
+        public static string ReplaceVariable(string input, Script source, bool requireBrackets = true)
+        {
+            if (TryGetVariable(input, source, out VariableResult var, requireBrackets))
+            {
+                if (!var.Success) return var.Message;
+                return var.Variable.String();
+            }
+
+            return input;
+        }
+
+        /// <summary>
+        /// Replaces all the occurrences of variables in a string.
+        /// </summary>
+        /// <param name="input">The string to perform the replacements on.</param>
+        /// <param name="source">The script that is currently running to replace variables. Used only for per-script variables.</param>
+        /// <returns>The modified string.</returns>
+        /// <remarks>This is intended for strings that contain both regular text and variables. Otherwise, see <see cref="ReplaceVariable(string, Script, bool)"/>.</remarks>
+        public static string ReplaceVariables(string input, Script source)
+        {
+            source.DebugLog($"Replacing variables of input '{input}'");
+            string[] variables = IsolateVariables(input, source);
+
+            foreach (string variable in variables)
+            {
+                source.DebugLog("Isolated variable: " + variable);
+
+                if (!TryGetVariable(variable, source, out VariableResult vresult))
+                {
+                    source.DebugLog("Invalid variable.");
+                    continue;
+                }
+
+                source.DebugLog("Valid variable.");
+
+                if (!vresult.Success)
+                {
+                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] Variable '{vresult.Variable.Name}' argument error: {vresult.Message}");
+                    continue;
+                }
+
+                try
+                {
+                    input = input.Replace(variable, vresult.Variable.String(source, vresult.Reversed));
+                }
+                catch (InvalidCastException e)
+                {
+                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, e.Message)}");
+                }
+                catch (Exception e)
+                {
+                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, source?.Debug == true ? e : e.Message)}");
+                }
+            }
+
+            return input;
+        }
+
+        public static string ReplaceVariables(object input, Script source)
+            => ReplaceVariables(input.ToString(), source);
+
+        /// <summary>
+        /// Isolates all variables from a string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="source">The script source.</param>
+        /// <returns>The variables used within the string.</returns>
+        public static string[] IsolateVariables(string input, Script source)
+        {
+            source?.DebugLog($"Isolating variables from: {input}");
+            List<string> result = ListPool<string>.Pool.Get();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                char c = input[i];
+                if (c is '{')
+                {
+                    int index = input.IndexOf('}', i);
+
+                    source?.DebugLog($"Detected variable opening symbol, char {i}. Closing index {index}. Substring {index - i + 1}.");
+
+                    string variable = input.Substring(i, index - i + 1);
+
+                    source?.DebugLog($"Variable: {variable}");
+
+                    result.Add(variable);
+                }
+            }
+
+            return ListPool<string>.Pool.ToArrayReturn(result);
         }
 
         public override void Init()

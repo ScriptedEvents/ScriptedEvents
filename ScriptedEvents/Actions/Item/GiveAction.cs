@@ -7,9 +7,9 @@
 
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class GiveAction : IScriptAction, IHelpInfo, ILongDescription
     {
@@ -53,7 +53,7 @@
             {
                 useCustom = true;
             }
-            else if (VariableSystem.TryParse((string)Arguments[1], out itemType, script))
+            else if (SEParser.TryParse((string)Arguments[1], out itemType, script))
             {
                 useCustom = false;
             }

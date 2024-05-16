@@ -9,9 +9,8 @@
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
-    using ScriptedEvents.Variables.Interfaces;
 
     public class CallAction : IScriptAction, IHelpInfo
     {
@@ -94,7 +93,7 @@
                 foreach (string varName in variables)
                 {
                     arg++;
-                    if (VariableSystem.TryGetPlayers(varName, out PlayerCollection val, script, requireBrackets: true))
+                    if (VariableSystemV2.TryGetPlayers(varName, script, out PlayerCollection val, requireBrackets: true))
                     {
                         calledScript.AddPlayerVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", val);
 
@@ -102,9 +101,9 @@
                         continue;
                     }
 
-                    if (VariableSystem.TryGetVariable(varName, out IConditionVariable var, out bool _, script, requireBrackets: true))
+                    if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult res, requireBrackets: true) && res.Success)
                     {
-                        calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String(script));
+                        calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", res.Variable.String(script));
 
                         script.DebugLog($"Added variable {varName} (as '{{ARG{arg}}}') to the called script.");
                         continue;

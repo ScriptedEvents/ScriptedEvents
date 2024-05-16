@@ -10,8 +10,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class SilentCassiePlayerAction : IScriptAction, IHelpInfo, ISampleAction
     {
@@ -57,12 +57,12 @@
 
             for (int i = 0; i < cassieArgs.Length; i++)
             {
-                cassieArgs[i] = VariableSystem.ReplaceVariables(cassieArgs[i], script);
+                cassieArgs[i] = VariableSystemV2.ReplaceVariables(cassieArgs[i], script);
             }
 
             if (cassieArgs.Length == 1)
             {
-                text = VariableSystem.ReplaceVariables(text, script);
+                text = VariableSystemV2.ReplaceVariables(text, script);
                 foreach (Player ply in players)
                 {
                     ply.MessageTranslated(text, text, makeNoise: false);

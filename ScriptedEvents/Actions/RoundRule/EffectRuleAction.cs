@@ -9,10 +9,10 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class EffectRuleAction : IScriptAction, IHelpInfo
     {
@@ -40,7 +40,7 @@
             new OptionsArgument("mode", true,
                 new("GIVE", "Rule to give effects."),
                 new("REMOVE", "Removes a previously-established rule.")),
-            new Argument("target", typeof(object), "The players to affect, or the RoleType/Team to give the effect.", true),
+            new Argument("target", typeof(string), "The players to affect, or the RoleType/Team to give the effect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
             new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
         };
@@ -67,11 +67,11 @@
             RoleTypeId rt = RoleTypeId.None;
             PlayerCollection players = null;
 
-            if (VariableSystem.TryParse(RawArguments[1], out team, script))
+            if (SEParser.TryParse(RawArguments[1], out team, script))
             {
                 list = 1;
             }
-            else if (VariableSystem.TryParse(RawArguments[1], out rt, script))
+            else if (SEParser.TryParse(RawArguments[1], out rt, script))
             {
                 list = 2;
             }

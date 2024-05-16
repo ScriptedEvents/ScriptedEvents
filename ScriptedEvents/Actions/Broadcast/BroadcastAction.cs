@@ -7,8 +7,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class BroadcastAction : IScriptAction, IHelpInfo
     {
@@ -42,7 +42,7 @@
         {
             float duration = (float)Arguments[0];
 
-            string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script);
+            string message = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(1), script);
             Map.Broadcast((ushort)duration, message);
             return new(true);
         }

@@ -6,8 +6,8 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class DebugMathAction : IScriptAction, IHiddenAction
     {
@@ -34,7 +34,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string formula = VariableSystem.ReplaceVariables(Arguments.JoinMessage(0), script);
+            string formula = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(0), script);
             if (!ConditionHelperV2.TryMath(formula, out MathResult result))
             {
                 return new(MessageType.NotANumberOrCondition, this, "condition", formula, result);

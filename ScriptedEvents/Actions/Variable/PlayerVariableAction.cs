@@ -56,7 +56,7 @@
 
             if (Arguments.Length > 3)
             {
-                string formula = VariableSystem.ReplaceVariables(Arguments.JoinMessage(3), script);
+                string formula = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(3), script);
 
                 if (!ConditionHelperV2.TryMath(formula, out MathResult result))
                 {
@@ -81,19 +81,19 @@
                         return new(false, players.Message);
                 }
 
-                if (!ScriptModule.TryGetPlayers(VariableSystem.ReplaceVariable(RawArguments[2], script), max, out players, script))
+                if (!ScriptModule.TryGetPlayers(VariableSystemV2.ReplaceVariable(RawArguments[2], script), max, out players, script))
                     return new(false, players.Message);
             }
 
             switch (mode)
             {
                 case "SAVE":
-                    VariableSystem.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script);
+                    VariableSystemV2.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script);
                     return new(true);
                 case "DELETE":
-                    if (VariableSystem.DefinedPlayerVariables.ContainsKey(varName))
+                    if (VariableSystemV2.DefinedPlayerVariables.ContainsKey(varName))
                     {
-                        VariableSystem.DefinedPlayerVariables.Remove(varName);
+                        VariableSystemV2.DefinedPlayerVariables.Remove(varName);
                         break;
                     }
                     else
@@ -102,7 +102,7 @@
                     }
 
                 case "ADD":
-                    if (VariableSystem.DefinedPlayerVariables.TryGetValue(varName, out CustomPlayerVariable var))
+                    if (VariableSystemV2.DefinedPlayerVariables.TryGetValue(varName, out CustomPlayerVariable var))
                     {
                         var.Add(players.GetArray());
                         break;
@@ -113,7 +113,7 @@
                     }
 
                 case "REMOVE":
-                    if (VariableSystem.DefinedPlayerVariables.TryGetValue(varName, out CustomPlayerVariable var2))
+                    if (VariableSystemV2.DefinedPlayerVariables.TryGetValue(varName, out CustomPlayerVariable var2))
                     {
                         var2.Remove(players.GetArray());
                         break;

@@ -11,8 +11,8 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class WaitUntilDebugAction : ITimingAction, IHiddenAction, IHelpInfo
     {
@@ -56,7 +56,7 @@
             while (true)
             {
                 ConditionResponse response = ConditionHelperV2.Evaluate(input, script);
-                Log.Info($"CONDITION: {VariableSystem.ReplaceVariables(input, script)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}");
+                Log.Info($"CONDITION: {VariableSystemV2.ReplaceVariables(input, script)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}");
                 if (response.Success)
                 {
                     if (response.Passed)

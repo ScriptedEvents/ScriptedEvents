@@ -13,10 +13,10 @@
     using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     using Tesla = Exiled.API.Features.TeslaGate;
 
@@ -84,7 +84,7 @@
 
                     return Reverse(mode, players, duration, script);
                 case "ROLETYPE":
-                    if (!VariableSystem.TryParse(target, out RoleTypeId roleType, script))
+                    if (!SEParser.TryParse(target, out RoleTypeId roleType, script))
                         return new(MessageType.InvalidRole, this, "target", target);
 
                     if (!Tesla.IgnoredRoles.Contains(roleType))
@@ -116,7 +116,7 @@
             if (duration is null || string.IsNullOrWhiteSpace(duration))
                 return new(true);
 
-            if (!VariableSystem.TryParse(duration, out float floatDuration, script))
+            if (!SEParser.TryParse(duration, out float floatDuration, script))
                 return new(MessageType.NotANumber, this, "duration", duration);
             if (floatDuration < 0)
                 return new(MessageType.LessThanZeroNumber, this, "duration", duration);

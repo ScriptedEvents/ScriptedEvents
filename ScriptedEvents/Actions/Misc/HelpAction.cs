@@ -18,8 +18,8 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
     public class HelpAction : IScriptAction, IHelpInfo
@@ -120,7 +120,7 @@ Thanks for using my plugin. <3";
             // List Variables
             if (Arguments[0].ToUpper() is "LISTVAR" or "VARLIST" or "VARIABLES" or "VARS")
             {
-                var conditionList = VariableSystem.Groups.OrderBy(group => group.GroupName);
+                var conditionList = VariableSystemV2.Groups.OrderBy(group => group.GroupName);
 
                 StringBuilder sbList = StringBuilderPool.Pool.Get();
                 sbList.AppendLine();
@@ -262,9 +262,11 @@ Thanks for using my plugin. <3";
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
 
-                if (VariableSystem.TryGetVariable(Arguments[0].ToUpper(), out IConditionVariable variable, out bool reversed, script, skipProcessing: true))
+                if (VariableSystemV2.TryGetVariable(Arguments[0].ToUpper(), script, out VariableResult res2, skipProcessing: true))
                 {
                     valid = true;
+                    IConditionVariable variable = res2.Variable;
+
                     sb.AppendLine("=== VARIABLE ===");
                     sb.AppendLine($"Name: {variable.Name}");
                     sb.AppendLine($"Description: {variable.Description}");

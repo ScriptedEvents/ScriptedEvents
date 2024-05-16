@@ -4,8 +4,8 @@
     using System.Text;
 
     using Exiled.API.Features.Pools;
-    using ScriptedEvents.Variables;
-    using ScriptedEvents.Variables.Interfaces;
+    using ScriptedEvents.API.Modules;
+    using ScriptedEvents.Structures;
 
     /// <summary>
     /// Contains useful extensions.
@@ -62,9 +62,9 @@
                 return true;
             }
 
-            if (VariableSystem.TryGetVariable(input, out IConditionVariable vr, out _, source))
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result) && result.Success)
             {
-                return IsBool(vr.String(), out value, source);
+                return IsBool(result.Variable.String(), out value, source);
             }
 
             value = false;
