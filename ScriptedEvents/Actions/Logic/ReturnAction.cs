@@ -49,7 +49,7 @@
                 }
                 else if (VariableSystem.TryGetVariable(varName, out IConditionVariable value, out bool _, script))
                 {
-                    script.CallerScript.AddVariable(varName, "Created using the RETURN action.", value.String());
+                    script.CallerScript.AddVariable(varName, "Created using the RETURN action.", value.String(script));
                 }
                 else
                 {
