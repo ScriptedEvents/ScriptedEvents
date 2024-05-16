@@ -36,6 +36,7 @@
             catch (Exception e)
             {
                 Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {(source?.Debug == true ? e : e.Message)}");
+                return source?.Debug == true ? e.ToString() : e.Message;
             }
 
             return "ERROR";
