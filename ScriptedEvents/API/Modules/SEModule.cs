@@ -8,11 +8,19 @@
 
         public virtual bool ShouldGenerateFiles => false;
 
-        public virtual void Init() =>
-            Log.Info($"Initializing SE module '{Name}'");
+        public bool IsActive { get; private set; }
 
-        public virtual void Kill() =>
+        public virtual void Init()
+        {
+            Log.Info($"Initializing SE module '{Name}'");
+            IsActive = true;
+        }
+
+        public virtual void Kill()
+        {
             Log.Info($"Terminating SE module '{Name}'");
+            IsActive = false;
+        }
 
         public virtual void GenerateFiles() =>
             Log.Info($"Generating files for SE module '{Name}'");

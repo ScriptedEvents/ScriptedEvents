@@ -35,6 +35,8 @@
         /// </summary>
         public const string GitHub = "https://github.com/Thundermaker300/ScriptedEvents";
 
+        private static List<SEModule> modules = new();
+
         /// <summary>
         /// Gets or sets the plugin singleton.
         /// </summary>
@@ -83,13 +85,7 @@
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
 
-        public static readonly List<SEModule> Modules = new()
-        {
-            new ScriptModule(),
-            new EventScriptModule(),
-            new EventHandlingModule(),
-            new CountdownModule(),
-        };
+        public static IEnumerable<SEModule> Modules => modules.Where(mod => mod.IsActive);
 
         public static ScriptModule ScriptModule => GetModule<ScriptModule>();
 
@@ -115,12 +111,18 @@
 
             Singleton = this;
 
-            foreach (SEModule module in Modules)
+            foreach (Type type in Assembly.GetTypes())
             {
-                if (module.ShouldGenerateFiles)
-                    module.GenerateFiles();
+                if (type.BaseType == typeof(SEModule) && type.IsClass && type.GetConstructors().Length > 0)
+                {
+                    SEModule module = (SEModule)Activator.CreateInstance(type);
 
-                module.Init();
+                    if (module.ShouldGenerateFiles)
+                        module.GenerateFiles();
+
+                    module.Init();
+                    modules.Add(module);
+                }
             }
 
             Timing.CallDelayed(6f, () =>

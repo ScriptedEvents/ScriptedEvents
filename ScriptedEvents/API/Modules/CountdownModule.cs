@@ -15,6 +15,8 @@
     /// </summary>
     public class CountdownModule : SEModule
     {
+        public override string Name => "CountdownModule";
+
         /// <summary>
         /// Gets or sets the main coroutine handle.
         /// </summary>
