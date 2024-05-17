@@ -5,7 +5,6 @@
 
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -43,7 +42,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("variable", typeof(IVariable), "The variable.", true),
+             new Argument("variable", typeof(IConditionVariable), "The variable.", true),
         };
 
         /// <inheritdoc/>
@@ -51,26 +50,9 @@
         {
             get
             {
-                try
-                {
-                    IPlayerVariable plrVar = (IPlayerVariable)Arguments[0];
+                IConditionVariable variable = (IConditionVariable)Arguments[0];
 
-                    return $"{plrVar.Name.Trim('{', '}')} = {plrVar.String()}";
-                }
-                catch (InvalidCastException)
-                {
-                }
-
-                try
-                {
-                    IConditionVariable variable = (IConditionVariable)Arguments[0];
-
-                    return $"{variable.Name.Trim('{', '}')} = {variable.String()}";
-                }
-                catch (InvalidCastException)
-                {
-                    throw new ScriptedEventsException(ErrorGen.Generate(API.Enums.ErrorCode.InvalidVariable, (string)Arguments[0]));
-                }
+                return $"{variable.Name.Trim('{', '}')} = {variable.String()}";
             }
         }
     }
