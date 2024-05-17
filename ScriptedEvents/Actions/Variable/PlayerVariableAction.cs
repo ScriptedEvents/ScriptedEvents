@@ -14,10 +14,10 @@
     public class PlayerVariableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "PLAYERVAR";
+        public string Name => "GLOBALPLAYERVAR";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "PVAR" };
+        public string[] Aliases => new[] { "GPVAR" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
