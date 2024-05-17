@@ -47,7 +47,7 @@
 
             string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script);
             MainPlugin.ScriptModule.ShowHint(message, duration);
-			
+
             return new(true);
         }
     }

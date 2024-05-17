@@ -27,7 +27,6 @@ namespace ScriptedEvents.API.Modules
     using ScriptedEvents.API.Interfaces;
 
     using ScriptedEvents.DemoScripts;
-    using ScriptedEvents.Integrations;
 
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -60,11 +59,6 @@ namespace ScriptedEvents.API.Modules
         public Dictionary<string, CustomAction> CustomActions { get; } = new();
 
         public List<string> AutoRunScripts { get; set; }
-
-        /// <summary>
-        /// Gets RueI instance.
-        /// </summary>
-        public RueIManager Ruei { get; } = new RueIManager();
 
         /// <inheritdoc/>
         public override string Name { get; } = "ScriptModule";
@@ -646,9 +640,7 @@ namespace ScriptedEvents.API.Modules
         public void ShowHint(string text, float duration, List<Player> players = null)
         {
             players ??= Player.List.ToList();
-
-            // Ruei.MakeNew();
-            players.ForEach(p => Ruei.ShowHint(p, text, TimeSpan.FromSeconds(duration)));
+            players.ForEach(p => p.ShowHint(text, duration));
         }
 
         /// <summary>

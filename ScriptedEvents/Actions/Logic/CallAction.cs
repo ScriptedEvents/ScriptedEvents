@@ -10,6 +10,7 @@
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
@@ -49,7 +50,7 @@
 
             try
             {
-                calledScript = ScriptHelper.ReadScript(scriptName, script.Sender, false);
+                calledScript = MainPlugin.ScriptModule.ReadScript(scriptName, script.Sender, false);
                 calledScript.CallerScript = script;
             }
             catch (DisabledScriptException)
@@ -111,7 +112,7 @@
 
         private IEnumerator<float> InternalWaitUntil(Script calledScript)
         {
-            while (ScriptHelper.RunningScripts.ContainsKey(calledScript))
+            while (MainPlugin.ScriptModule.RunningScripts.ContainsKey(calledScript))
             {
                 yield return Timing.WaitForSeconds(1 / MainPlugin.Configs.WaitUntilFrequency);
             }

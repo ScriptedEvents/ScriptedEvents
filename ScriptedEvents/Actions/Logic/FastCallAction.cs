@@ -5,7 +5,7 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
+
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -47,7 +47,7 @@
 
             try
             {
-                calledScript = ScriptHelper.ReadScript(scriptName, script.Sender, false);
+                calledScript = MainPlugin.ScriptModule.ReadScript(scriptName, script.Sender, false);
                 calledScript.CallerScript = script;
             }
             catch (DisabledScriptException)

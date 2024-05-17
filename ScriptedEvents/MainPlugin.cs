@@ -155,7 +155,7 @@
                 }
                 catch (Exception ex)
                 {
-                    Log.Warn($"The removal of the '{helpFileName}' file has failed. Reason: {ex}");
+                    Log.Warn($"The removal of the '{helpPath}' file has failed. Reason: {ex}");
                 }
             }
         }
