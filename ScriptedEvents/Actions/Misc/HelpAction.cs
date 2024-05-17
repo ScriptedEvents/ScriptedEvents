@@ -86,7 +86,7 @@ Thanks for using my plugin. <3";
                 sbList.AppendLine($"List of all actions. For more information on each action, run the HELP <ACTIONNAME> action (or shelp <ACTIONNAME> in the server console).");
 
                 List<IAction> temp = ListPool<IAction>.Pool.Get();
-                foreach (KeyValuePair<ActionNameData, Type> kvp in ScriptHelper.ActionTypes)
+                foreach (KeyValuePair<ActionNameData, Type> kvp in MainPlugin.ScriptModule.ActionTypes)
                 {
                     IAction lAction = Activator.CreateInstance(kvp.Value) as IAction;
                     temp.Add(lAction);
@@ -162,7 +162,7 @@ Thanks for using my plugin. <3";
             }
 
             // Action Help
-            else if (ScriptHelper.TryGetActionType(Arguments[0].ToUpper(), out Type type))
+            else if (MainPlugin.ScriptModule.TryGetActionType(Arguments[0].ToUpper(), out Type type))
             {
                 IAction action = Activator.CreateInstance(type) as IAction;
 
@@ -396,7 +396,7 @@ Thanks for using my plugin. <3";
             if (IsFile)
             {
                 string message = $"Auto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n{response.Message}";
-                string path = Path.Combine(ScriptHelper.BaseFilePath, "HelpCommandResponse.txt");
+                string path = Path.Combine(MainPlugin.BaseFilePath, "HelpCommandResponse.txt");
 
                 if (File.Exists(path))
                     File.Delete(path);

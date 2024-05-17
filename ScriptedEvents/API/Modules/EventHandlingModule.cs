@@ -3,14 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Diagnostics;
-    using System.IO;
     using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
@@ -30,17 +27,32 @@
     using PlayerRoles;
 
     using Respawning;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Features.Exceptions;
+
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
     using UnityEngine;
 
-    public class EventHandlers
+    using MapHandler = Exiled.Events.Handlers.Map;
+    using PlayerHandler = Exiled.Events.Handlers.Player;
+    using Scp0492Handler = Exiled.Events.Handlers.Scp0492;
+    using Scp049Handler = Exiled.Events.Handlers.Scp049;
+    using Scp079Handler = Exiled.Events.Handlers.Scp079;
+    using Scp096Handler = Exiled.Events.Handlers.Scp096;
+    using Scp106Handler = Exiled.Events.Handlers.Scp106;
+    using Scp173Handler = Exiled.Events.Handlers.Scp173;
+    using Scp3114Handler = Exiled.Events.Handlers.Scp3114;
+    using Scp330Handler = Exiled.Events.Handlers.Scp330;
+    using Scp914Handler = Exiled.Events.Handlers.Scp914;
+    using Scp939Handler = Exiled.Events.Handlers.Scp939;
+    using ServerHandler = Exiled.Events.Handlers.Server;
+
+    public class EventHandlingModule : SEModule
     {
         private DateTime lastRespawnWave = DateTime.MinValue;
+
+        public override string Name => "EventHandlingModule";
 
         /// <summary>
         /// Gets or sets the amount of respawn waves since the round started.
@@ -147,6 +159,177 @@
 
         public List<DamageRule> DamageRules { get; } = new();
 
+        public override void Init()
+        {
+            base.Init();
+            PlayerHandler.ChangingRole += OnChangingRole;
+            PlayerHandler.Hurting += OnHurting;
+            PlayerHandler.Died += OnDied;
+            PlayerHandler.Dying += OnDying;
+            PlayerHandler.TriggeringTesla += OnTriggeringTesla;
+            PlayerHandler.Shooting += OnShooting;
+            PlayerHandler.DroppingAmmo += OnDroppingItem;
+            PlayerHandler.DroppingItem += OnDroppingItem;
+            PlayerHandler.SearchingPickup += OnSearchingPickup;
+            PlayerHandler.InteractingDoor += OnInteractingDoor;
+            PlayerHandler.InteractingLocker += OnInteractingLocker;
+            PlayerHandler.InteractingElevator += OnInteractingElevator;
+            PlayerHandler.Escaping += OnEscaping;
+            PlayerHandler.Spawned += OnSpawned;
+
+            PlayerHandler.PickingUpItem += OnPickingUpItem;
+            PlayerHandler.ChangingRadioPreset += OnChangingRadioPreset;
+
+            PlayerHandler.ActivatingWarheadPanel += OnActivatingWarheadPanel;
+            Exiled.Events.Handlers.Warhead.Starting += OnStartingWarhead; // why is this located specially??
+
+            PlayerHandler.ActivatingGenerator += GeneratorEvent;
+            PlayerHandler.OpeningGenerator += GeneratorEvent;
+            PlayerHandler.StoppingGenerator += GeneratorEvent;
+            PlayerHandler.UnlockingGenerator += GeneratorEvent;
+
+            PlayerHandler.EnteringEnvironmentalHazard += OnHazardEvent;
+            PlayerHandler.ExitingEnvironmentalHazard += OnHazardEvent;
+
+            PlayerHandler.ActivatingWorkstation += OnWorkStationEvent;
+            PlayerHandler.DeactivatingWorkstation += OnWorkStationEvent;
+
+            MapHandler.AnnouncingNtfEntrance += OnAnnouncingNtfEntrance;
+            MapHandler.AnnouncingScpTermination += OnAnnouncingScpTermination;
+            Scp330Handler.InteractingScp330 += OnScp330Event;
+
+            Scp914Handler.Activating += OnScp914Event;
+            Scp914Handler.ChangingKnobSetting += OnScp914Event;
+            Scp914Handler.UpgradingPickup += OnScp914Event;
+            Scp914Handler.UpgradingInventoryItem += OnScp914Event;
+            Scp914Handler.UpgradingPlayer += OnScp914Event;
+
+            ServerHandler.RestartingRound += OnRestarting;
+            ServerHandler.RoundStarted += OnRoundStarted;
+            ServerHandler.RespawningTeam += OnRespawningTeam;
+
+            // SCP abilities
+            Scp049Handler.ActivatingSense += OnScpAbility;
+            Scp049Handler.Attacking += OnScpAbility;
+            Scp049Handler.StartingRecall += OnScpAbility;
+            Scp049Handler.SendingCall += OnScpAbility;
+            Scp0492Handler.ConsumingCorpse += OnScpAbility;
+            Scp0492Handler.TriggeringBloodlust += OnScpAbility;
+            Scp079Handler.ChangingCamera += OnScpAbility;
+            Scp079Handler.ChangingSpeakerStatus += OnScpAbility;
+            Scp079Handler.ElevatorTeleporting += OnScpAbility;
+            Scp079Handler.GainingExperience += OnScpAbility;
+            Scp079Handler.GainingLevel += OnScpAbility;
+            Scp079Handler.InteractingTesla += OnScpAbility;
+            Scp079Handler.LockingDown += OnScpAbility;
+            Scp079Handler.Pinging += OnScpAbility;
+            Scp079Handler.RoomBlackout += OnScpAbility;
+            Scp079Handler.TriggeringDoor += OnScpAbility;
+            Scp079Handler.ZoneBlackout += OnScpAbility;
+            Scp096Handler.AddingTarget += OnScpAbility;
+            Scp096Handler.Charging += OnScpAbility;
+            Scp096Handler.Enraging += OnScpAbility;
+            Scp096Handler.TryingNotToCry += OnScpAbility;
+            Scp106Handler.Attacking += OnScpAbility;
+            Scp106Handler.Teleporting += OnScpAbility;
+            Scp106Handler.Stalking += OnScpAbility;
+            Scp173Handler.Blinking += OnScpAbility;
+            Scp173Handler.PlacingTantrum += OnScpAbility;
+            Scp173Handler.UsingBreakneckSpeeds += OnScpAbility;
+            Scp939Handler.ChangingFocus += OnScpAbility;
+            Scp939Handler.PlacingAmnesticCloud += OnScpAbility;
+            Scp939Handler.PlayingSound += OnScpAbility;
+            Scp939Handler.PlayingVoice += OnScpAbility;
+            Scp939Handler.SavingVoice += OnScpAbility;
+            Scp3114Handler.TryUseBody += OnScpAbility;
+        }
+
+        public override void Kill()
+        {
+            base.Kill();
+            PlayerHandler.ChangingRole -= OnChangingRole;
+            PlayerHandler.Hurting -= OnHurting;
+            PlayerHandler.Died -= OnDied;
+            PlayerHandler.Dying -= OnDying;
+            PlayerHandler.TriggeringTesla -= OnTriggeringTesla;
+            PlayerHandler.Shooting -= OnShooting;
+            PlayerHandler.DroppingAmmo -= OnDroppingItem;
+            PlayerHandler.DroppingItem -= OnDroppingItem;
+            PlayerHandler.SearchingPickup -= OnSearchingPickup;
+            PlayerHandler.InteractingDoor -= OnInteractingDoor;
+            PlayerHandler.InteractingLocker -= OnInteractingLocker;
+            PlayerHandler.InteractingElevator -= OnInteractingElevator;
+            PlayerHandler.Escaping -= OnEscaping;
+            PlayerHandler.Spawned -= OnSpawned;
+
+            PlayerHandler.PickingUpItem -= OnPickingUpItem;
+            PlayerHandler.ChangingRadioPreset -= OnChangingRadioPreset;
+
+            PlayerHandler.ActivatingWarheadPanel -= OnActivatingWarheadPanel;
+            Exiled.Events.Handlers.Warhead.Starting -= OnStartingWarhead; // why is this located specially??
+
+            PlayerHandler.ActivatingGenerator -= GeneratorEvent;
+            PlayerHandler.OpeningGenerator -= GeneratorEvent;
+            PlayerHandler.StoppingGenerator -= GeneratorEvent;
+            PlayerHandler.UnlockingGenerator -= GeneratorEvent;
+
+            PlayerHandler.EnteringEnvironmentalHazard -= OnHazardEvent;
+            PlayerHandler.ExitingEnvironmentalHazard -= OnHazardEvent;
+
+            PlayerHandler.ActivatingWorkstation -= OnWorkStationEvent;
+            PlayerHandler.DeactivatingWorkstation -= OnWorkStationEvent;
+
+            MapHandler.AnnouncingNtfEntrance -= OnAnnouncingNtfEntrance;
+            MapHandler.AnnouncingScpTermination -= OnAnnouncingScpTermination;
+
+            Scp330Handler.InteractingScp330 -= OnScp330Event;
+
+            Scp914Handler.Activating -= OnScp914Event;
+            Scp914Handler.ChangingKnobSetting -= OnScp914Event;
+            Scp914Handler.UpgradingPickup -= OnScp914Event;
+            Scp914Handler.UpgradingInventoryItem -= OnScp914Event;
+            Scp914Handler.UpgradingPlayer -= OnScp914Event;
+
+            ServerHandler.RestartingRound -= OnRestarting;
+            ServerHandler.RoundStarted -= OnRoundStarted;
+            ServerHandler.RespawningTeam -= OnRespawningTeam;
+
+            // SCP abilities
+            Scp049Handler.ActivatingSense -= OnScpAbility;
+            Scp049Handler.Attacking -= OnScpAbility;
+            Scp049Handler.StartingRecall -= OnScpAbility;
+            Scp049Handler.SendingCall -= OnScpAbility;
+            Scp0492Handler.ConsumingCorpse -= OnScpAbility;
+            Scp0492Handler.TriggeringBloodlust -= OnScpAbility;
+            Scp079Handler.ChangingCamera -= OnScpAbility;
+            Scp079Handler.ChangingSpeakerStatus -= OnScpAbility;
+            Scp079Handler.ElevatorTeleporting -= OnScpAbility;
+            Scp079Handler.GainingExperience -= OnScpAbility;
+            Scp079Handler.GainingLevel -= OnScpAbility;
+            Scp079Handler.InteractingTesla -= OnScpAbility;
+            Scp079Handler.LockingDown -= OnScpAbility;
+            Scp079Handler.Pinging -= OnScpAbility;
+            Scp079Handler.RoomBlackout -= OnScpAbility;
+            Scp079Handler.TriggeringDoor -= OnScpAbility;
+            Scp079Handler.ZoneBlackout -= OnScpAbility;
+            Scp096Handler.AddingTarget -= OnScpAbility;
+            Scp096Handler.Charging -= OnScpAbility;
+            Scp096Handler.Enraging -= OnScpAbility;
+            Scp096Handler.TryingNotToCry -= OnScpAbility;
+            Scp106Handler.Attacking -= OnScpAbility;
+            Scp106Handler.Teleporting -= OnScpAbility;
+            Scp106Handler.Stalking -= OnScpAbility;
+            Scp173Handler.Blinking -= OnScpAbility;
+            Scp173Handler.PlacingTantrum -= OnScpAbility;
+            Scp173Handler.UsingBreakneckSpeeds -= OnScpAbility;
+            Scp939Handler.ChangingFocus -= OnScpAbility;
+            Scp939Handler.PlacingAmnesticCloud -= OnScpAbility;
+            Scp939Handler.PlayingSound -= OnScpAbility;
+            Scp939Handler.PlayingVoice -= OnScpAbility;
+            Scp939Handler.SavingVoice -= OnScpAbility;
+            Scp3114Handler.TryUseBody -= OnScpAbility;
+        }
+
         // Helpful method
         public PlayerDisable? GetPlayerDisableRule(string key)
         {
@@ -192,8 +375,6 @@
             SpawnsByTeam[SpawnableTeamType.NineTailedFox] = 0;
             SpawnsByTeam[SpawnableTeamType.ChaosInsurgency] = 0;
 
-            MainPlugin.Singleton.NukeOnConnections();
-
             foreach (var escapedRole in Escapes)
             {
                 escapedRole.Value.Clear();
@@ -204,7 +385,7 @@
                 cmd.ResetCooldowns();
             }
 
-            ScriptHelper.StopAllScripts();
+            MainPlugin.ScriptModule.StopAllScripts();
             VariableSystem.ClearVariables();
             Kills.Clear();
             PlayerKills.Clear();
@@ -219,64 +400,11 @@
 
             DamageRules.Clear();
 
-            if (CountdownHelper.MainHandle is not null && CountdownHelper.MainHandle.Value.IsRunning)
-            {
-                Timing.KillCoroutines(CountdownHelper.MainHandle.Value);
-                CountdownHelper.MainHandle = null;
-                CountdownHelper.Countdowns.Clear();
-            }
-
             InfectionRules.Clear();
             SpawnRules.Clear();
             RecentlyRespawned.Clear();
 
             MostRecentSpawn = SpawnableTeamType.None;
-        }
-
-        public void OnWaitingForPlayers()
-        {
-            CountdownHelper.Start();
-            List<string> autoRun = ListPool<string>.Pool.Get();
-
-            foreach (Script scr in ScriptHelper.ListScripts())
-            {
-                if (scr.HasFlag("AUTORUN"))
-                {
-                    Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
-                    autoRun.Add(scr.ScriptName);
-                }
-
-                scr.Dispose();
-            }
-
-            MainPlugin.AutorunScripts = autoRun.ToList();
-
-            foreach (string name in autoRun)
-            {
-                try
-                {
-                    Script scr = ScriptHelper.ReadScript(name, null);
-
-                    if (scr.AdminEvent)
-                    {
-                        Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, name));
-                        continue;
-                    }
-
-                    ScriptHelper.RunScript(scr);
-                }
-                catch (DisabledScriptException)
-                {
-                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, name));
-                }
-                catch (FileNotFoundException)
-                {
-                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, name));
-                }
-            }
-
-            ListPool<string>.Pool.Return(autoRun);
-            MainPlugin.Singleton.SetupEvents();
         }
 
         public void OnRoundStarted()
@@ -361,102 +489,6 @@
             {
                 effects3.ForEach(eff => ev.Player.SyncEffect(eff));
             }
-        }
-
-        // Reflection: ON config
-        public void OnAnyEvent(string eventName, IExiledEvent ev = null)
-        {
-            if (MainPlugin.CurrentEventData is null || !MainPlugin.CurrentEventData.TryGetValue(eventName, out List<string> scripts))
-            {
-                return;
-            }
-
-            foreach (string script in scripts)
-            {
-                try
-                {
-                    Script scr = ScriptHelper.ReadScript(script, null);
-
-                    // Add variables based on event.
-                    if (ev is IPlayerEvent playerEvent && playerEvent.Player is not null)
-                    {
-                        scr.AddPlayerVariable("{EVPLAYER}", "The player that is involved with this event.", new[] { playerEvent.Player });
-                    }
-
-                    if (ev is IAttackerEvent attackerEvent && attackerEvent.Attacker is not null)
-                    {
-                        scr.AddPlayerVariable("{EVATTACKER}", "The attacker that is involved with this event.", new[] { attackerEvent.Attacker });
-                    }
-
-                    if (ev is IItemEvent item && item.Item is not null)
-                    {
-                        scr.AddVariable("{EVITEM}", "The Id of the ItemType of the item involved with this event.", item.Item.Base.ItemSerial.ToString());
-                    }
-                    else if (ev is IPickupEvent pickup && pickup.Pickup is not null)
-                    {
-                        scr.AddVariable("{EVITEM}", "The Id of the ItemType of the pickup associated with this event.", pickup.Pickup.Serial.ToString());
-                    }
-
-                    if (ev is BanningEventArgs ban)
-                    {
-                        scr.AddPlayerVariable("{EVPLAYER}", "The ban issuer.", new[] { ban.Player });
-                        scr.AddVariable("{EVREASON}", "The ban reason.", ban.Reason.ToString());
-                        scr.AddVariable("{EVDURATION}", "The ban duration.", ban.Duration.ToString());
-                        scr.AddVariable("{EVTARGET}", "The ban target.", ban.Target.Nickname);
-                    }
-
-                    if (ev is LocalReportingEventArgs rep)
-                    {
-                        scr.AddPlayerVariable("{EVPLAYER}", "The report issuer.", new[] { rep.Player });
-                        scr.AddVariable("{EVREASON}", "The report reason.", rep.Reason.ToString());
-                        scr.AddPlayerVariable("{EVTARGET}", "The report target.", new[] { rep.Target });
-                    }
-
-                    if (ev is KickingEventArgs kick)
-                    {
-                        scr.AddPlayerVariable("{EVPLAYER}", "The issuer.", new[] { kick.Player });
-                        scr.AddVariable("{EVREASON}", "The reason.", kick.Reason.ToString());
-                        scr.AddPlayerVariable("{EVTARGET}", "The target.", new[] { kick.Target });
-                    }
-
-                    if (ev is HurtingEventArgs hurting)
-                    {
-                        scr.AddVariable("{EVAMMOUNT}", "The amount of damage dealt.", hurting.Amount.ToString());
-                    }
-
-                    if (ev is IDoorEvent door && door.Door is not null)
-                    {
-                        scr.AddVariable("{EVDOOR}", "The door type.", door.Door.Type.ToString());
-                    }
-
-                    ScriptHelper.RunScript(scr);
-                }
-                catch (DisabledScriptException)
-                {
-                    Log.Warn(ErrorGen.Get(ErrorCode.On_DisabledScript, eventName, script));
-                }
-                catch (FileNotFoundException)
-                {
-                    Log.Warn(ErrorGen.Get(ErrorCode.On_NotFoundScript, eventName, script));
-                }
-                catch (Exception ex)
-                {
-                    Log.Warn(ErrorGen.Get(ErrorCode.On_UnknownError, eventName) + $": {ex}");
-                }
-            }
-        }
-
-        public static void OnArgumentedEvent<T>(T ev)
-            where T : IExiledEvent
-        {
-            Type evType = typeof(T);
-            string evName = evType.Name.Replace("EventArgs", string.Empty);
-            MainPlugin.Handlers.OnAnyEvent(evName, ev);
-        }
-
-        public static void OnNonArgumentedEvent()
-        {
-            MainPlugin.Handlers.OnAnyEvent(new StackFrame(2).GetMethod().Name);
         }
 
         // Infection

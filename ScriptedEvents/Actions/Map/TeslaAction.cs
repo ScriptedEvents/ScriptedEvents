@@ -13,8 +13,8 @@
     using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
 
@@ -73,7 +73,7 @@
             switch (mode)
             {
                 case "PLAYERS":
-                    if (!ScriptHelper.TryGetPlayers(target, null, out PlayerCollection players, script))
+                    if (!ScriptModule.TryGetPlayers(target, null, out PlayerCollection players, script))
                         return new(false, players.Message);
 
                     foreach (Player player in players)

@@ -10,8 +10,8 @@
     using Exiled.Permissions.Extensions;
     using RemoteAdmin;
 
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
+    using ScriptedEvents.API.Modules;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ExecuteScript : ICommand
@@ -40,7 +40,7 @@
                 return false;
             }
 
-            if (!Directory.Exists(ScriptHelper.ScriptPath))
+            if (!Directory.Exists(ScriptModule.BasePath))
             {
                 response = "Critical error: Missing script path. Please reload plugin.";
                 return false;
@@ -51,7 +51,7 @@
 
             try
             {
-                scr = ScriptHelper.ReadScript(arg0, sender);
+                scr = MainPlugin.ScriptModule.ReadScript(arg0, sender);
 
                 if (!sender.CheckPermission(scr.ExecutePermission))
                 {
@@ -75,7 +75,7 @@
 
                 scr.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments.Skip(1)));
 
-                ScriptHelper.RunScript(scr);
+                MainPlugin.ScriptModule.RunScript(scr);
 
                 response = $"Script '{scr.ScriptName}' executed successfully.";
             }

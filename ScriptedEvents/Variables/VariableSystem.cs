@@ -196,6 +196,8 @@
 
             if (!foundVar)
                 source?.DebugLog("The variable provided is not a variable predefined by ScriptedEvents.");
+            else
+                source?.DebugLog("Variable provided is a variable defined by ScriptedEvents.");
 
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
                 result = new(customValue, false);
@@ -213,9 +215,12 @@
             {
                 if (result.Item1 is IArgumentVariable argSupport)
                 {
+                    source?.DebugLog("Variable provided has arguments.");
                     argSupport.RawArguments = argList.ToArray();
 
                     ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, out bool _, false);
+
+                    source?.DebugLog($"Variable argument processing completed. Success: {processResult.Success} | Message: {processResult.Message ?? "N/A"}");
 
                     if (!processResult.Success && !skipProcessing)
                         return new(false, null, processResult.Message);
@@ -265,8 +270,8 @@
         /// <param name="source">The source script.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>Whether or not players were found.</returns>
-        /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="ScriptHelper.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
-        /// <seealso cref="ScriptHelper.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>
+        /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="ScriptModule.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
+        /// <seealso cref="ScriptModule.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>
         public static bool TryGetPlayers(string name, out PlayerCollection players, Script source, bool requireBrackets = true)
         {
             if (TryGetVariable(name, out IConditionVariable variable, out _, source, requireBrackets))
@@ -492,12 +497,20 @@
         /// <remarks>This is intended for strings that contain both regular text and variables. Otherwise, see <see cref="ReplaceVariable(string, Script, bool)"/>.</remarks>
         public static string ReplaceVariables(string input, Script source)
         {
+            source.DebugLog($"Replacing variables of input '{input}'");
             string[] variables = IsolateVariables(input, source);
 
             foreach (var variable in variables)
             {
+                source.DebugLog("Isolated variable: " + variable);
+
                 if (!TryGetVariable(variable, out IConditionVariable condition, out bool reversed, source))
+                {
+                    source.DebugLog("Invalid variable.");
                     continue;
+                }
+
+                source.DebugLog("Valid variable.");
 
                 try
                 {

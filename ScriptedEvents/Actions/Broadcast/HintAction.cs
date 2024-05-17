@@ -46,8 +46,8 @@
             float duration = (float)Arguments[1];
 
             string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script);
-            Map.ShowHint(message, duration);
-
+            MainPlugin.ScriptModule.ShowHint(message, duration);
+			
             return new(true);
         }
     }

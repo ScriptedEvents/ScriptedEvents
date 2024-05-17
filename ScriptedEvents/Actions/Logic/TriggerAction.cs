@@ -5,6 +5,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     public class TriggerAction : IScriptAction, ILogicAction, IHelpInfo
@@ -33,14 +34,18 @@
             new Argument("event", typeof(string), "Custom event name. This does not trigger Exiled events.", true),
         };
 
+        public ScriptModule ScriptModule => MainPlugin.GetModule<ScriptModule>();
+
+        public EventScriptModule ESModule => MainPlugin.GetModule<EventScriptModule>();
+
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             string ev = (string)Arguments[0];
 
-            foreach (string scriptName in MainPlugin.CurrentCustomEventData[ev])
+            foreach (string scriptName in ESModule.CurrentCustomEventData[ev])
             {
-                ScriptHelper.ReadAndRun(scriptName, script.Sender);
+                MainPlugin.ScriptModule.ReadAndRun(scriptName, script.Sender);
             }
 
             return new(true);

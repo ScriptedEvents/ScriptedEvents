@@ -6,6 +6,7 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
@@ -76,11 +77,11 @@
                 // Math does not work inside of variables
                 if (Arguments[2] is IPlayerVariable)
                 {
-                    if (!ScriptHelper.TryGetPlayers(RawArguments[2], max, out players, script))
+                    if (!ScriptModule.TryGetPlayers(RawArguments[2], max, out players, script))
                         return new(false, players.Message);
                 }
 
-                if (!ScriptHelper.TryGetPlayers(VariableSystem.ReplaceVariable(RawArguments[2], script), max, out players, script))
+                if (!ScriptModule.TryGetPlayers(VariableSystem.ReplaceVariable(RawArguments[2], script), max, out players, script))
                     return new(false, players.Message);
             }
 

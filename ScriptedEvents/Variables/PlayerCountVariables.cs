@@ -7,6 +7,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -206,7 +207,7 @@
                 string playersAsString = VariableStorage.Read(RawArguments[0]);
                 List<Player> list = new();
 
-                if (ScriptHelper.TryGetPlayers(playersAsString, null, out PlayerCollection collection, Source))
+                if (ScriptModule.TryGetPlayers(playersAsString, null, out PlayerCollection collection, Source))
                 {
                     return list;
                 }
