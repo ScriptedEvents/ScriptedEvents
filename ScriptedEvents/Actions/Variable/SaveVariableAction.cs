@@ -1,5 +1,7 @@
 ﻿namespace ScriptedEvents.Actions
 {
+    using System;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -10,10 +12,10 @@
     public class SaveVariableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "SAVE";
+        public string Name => "GLOBAL";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "VAR" };
+        public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
