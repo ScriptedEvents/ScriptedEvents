@@ -106,6 +106,7 @@
     <Compile Include="Actions\Logic\TriggerAction.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
+    <Compile Include="Actions\Player\StaminaAction.cs" />
     <Compile Include="Actions\RoundRule\GeneratorRuleAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
     <Compile Include="Actions\Misc\ErrorAction.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Round\LobbylockAction.cs" />
+    <Compile Include="Actions\Variable\BindAction.cs" />
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
     <Compile Include="Actions\Variable\PlayerDataAction.cs" />
     <Compile Include="Actions\Variable\LocalSaveAction.cs" />
