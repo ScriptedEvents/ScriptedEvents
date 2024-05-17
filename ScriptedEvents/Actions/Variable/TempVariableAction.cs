@@ -39,7 +39,7 @@
         public ActionResponse Execute(Script script)
         {
             string input = Arguments.JoinMessage(0);
-            input = VariableSystem.ReplaceVariables(input, script);
+            input = VariableSystem.ReplaceVariables(input, script).Replace("\\n", "\n");
 
             try
             {
