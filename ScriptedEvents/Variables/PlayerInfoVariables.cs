@@ -33,10 +33,10 @@
     public class PlayerData : IStringVariable, IArgumentVariable, INeedSourceVariable, IHasAliasVariable
     {
         /// <inheritdoc/>
-        public string Name => "{PLR-DATA}";
+        public string Name => "{PDATA}";
 
         /// <inheritdoc/>
-        public string Alias => "{PDATA}";
+        public string Alias => "{PLAYERDATA}";
 
         /// <inheritdoc/>
         public string Description => "Retrieves the value of a key from a player's player data.";
@@ -78,7 +78,7 @@
     public class Command : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{PLR-CVER}";
+        public string Name => "{CMDVAR}";
 
         /// <inheritdoc/>
         public string Description => "Converts a player variable into a format to use with commands.";
@@ -121,10 +121,10 @@
     public class Show : IStringVariable, IArgumentVariable, INeedSourceVariable, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "{SHOW}";
+        public string Name => "{GET}";
 
         /// <inheritdoc/>
-        public string Description => "Reveal certain properties about the players in a player variable.";
+        public string Description => "Gets certain properties about the players in a player variable.";
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }

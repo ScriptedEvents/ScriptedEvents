@@ -37,7 +37,7 @@
     public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{PLR-INROOM}";
+        public string Name => "{INROOM}";
 
         /// <inheritdoc/>
         public string Description => "The amount of players in the specified room.";

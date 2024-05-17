@@ -33,7 +33,7 @@
     public class Max : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{PLR-LIMIT}";
+        public string Name => "{LIMIT}";
 
         /// <inheritdoc/>
         public string Description => "Creates a copy of a provided player variable, but does not copy more players than the limit provided.";
@@ -85,7 +85,7 @@
     public class Filter : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{PLR-FILTER}";
+        public string Name => "{FILTER}";
 
         /// <inheritdoc/>
         public string Description => "Filters a player variable by a certain type.";
@@ -154,7 +154,7 @@
     public class GetByIndex : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{PLR-INDEX}";
+        public string Name => "{INDEXPLR}";
 
         /// <inheritdoc/>
         public string Description => "Indexes a player variable and gets ONE player at the specified position.";
