@@ -1,5 +1,7 @@
 ﻿namespace ScriptedEvents.Actions
 {
+    using System;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -13,7 +15,7 @@
         public string Name => "LOCAL";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "LVAR" };
+        public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
