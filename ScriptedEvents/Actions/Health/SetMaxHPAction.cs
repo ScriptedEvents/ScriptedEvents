@@ -26,13 +26,13 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public string Description => "Set the Maximum HP of the targeted players.";
+        public string Description => "Modifies maximum HP of the targeted players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to affect.", true),
-            new Argument("maxhealth", typeof(float), "The amount of max health to set the player to.", true),
+            new Argument("maxhealth", typeof(float), "The amount of max health to set", true),
         };
 
         /// <inheritdoc/>
