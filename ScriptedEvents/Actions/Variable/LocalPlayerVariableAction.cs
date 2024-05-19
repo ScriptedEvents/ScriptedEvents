@@ -6,6 +6,7 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
@@ -55,7 +56,7 @@
 
             if (Arguments.Length > 3)
             {
-                string formula = VariableSystem.ReplaceVariables(Arguments.JoinMessage(3), script);
+                string formula = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(3), script);
 
                 if (!ConditionHelperV2.TryMath(formula, out MathResult result))
                 {
@@ -76,18 +77,18 @@
                 // Math does not work inside of variables
                 if (Arguments[2] is IPlayerVariable)
                 {
-                    if (!ScriptHelper.TryGetPlayers(RawArguments[2], max, out players, script))
+                    if (!ScriptModule.TryGetPlayers(RawArguments[2], max, out players, script))
                         return new(false, players.Message);
                 }
 
-                if (!ScriptHelper.TryGetPlayers(VariableSystem.ReplaceVariable(RawArguments[2], script), max, out players, script))
+                if (!ScriptModule.TryGetPlayers(VariableSystemV2.ReplaceVariable(RawArguments[2], script), max, out players, script))
                     return new(false, players.Message);
             }
 
             switch (mode)
             {
                 case "SET":
-                    VariableSystem.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script, true);
+                    VariableSystemV2.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script, true);
                     return new(true);
                 case "DEL":
                     if (script.UniquePlayerVariables.ContainsKey(varName))

@@ -5,7 +5,7 @@
     using System.Linq;
 
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -96,10 +96,10 @@
             {
                 if (Arguments.Length < 1) throw new ArgumentException("No variable provided");
 
-                if (VariableSystem.TryGetPlayers(RawArguments[0], out PlayerCollection _, Source, requireBrackets: false))
+                if (VariableSystemV2.TryGetPlayers(RawArguments[0], Source, out _, requireBrackets: false))
                     return true;
 
-                if (VariableSystem.TryGetVariable(RawArguments[0], out IConditionVariable _, out bool _, Source, requireBrackets: false))
+                if (VariableSystemV2.TryGetVariable(RawArguments[0], Source, out _, false, true))
                     return true;
 
                 return false;
@@ -136,7 +136,7 @@
             get
             {
                 string scriptName = (string)Arguments[0];
-                return ScriptHelper.RunningScripts.Any(scr => scr.Key.ScriptName == scriptName && scr.Value.IsRunning);
+                return MainPlugin.ScriptModule.RunningScripts.Any(scr => scr.Key.ScriptName == scriptName && scr.Value.IsRunning);
             }
         }
     }
