@@ -39,7 +39,7 @@
                 new("REMOVE", "Removes tickets from a team."),
                 new("SET", "Set's a team's ticket amount.")),
             new Argument("team", typeof(SpawnableTeamType), "The spawn team (ChaosInsurgency or NineTailedFox).", true),
-            new Argument("amount", typeof(int), "The amount to apply. Variables are supported.", true),
+            new Argument("amount", typeof(int), "The amount to apply.", true),
         };
 
         /// <inheritdoc/>

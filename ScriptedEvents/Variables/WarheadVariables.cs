@@ -29,7 +29,12 @@
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to use (ISDETONATED, ISOPEN, ISARMED, ISCOUNTING, DETONATIONTIME)", true),
+            new OptionsArgument("mode", true,
+                new("ISDETONATED"),
+                new("ISOPEN"),
+                new("ISARMED"),
+                new("ISCOUNTING"),
+                new("DETONATIONTIME")),
         };
 
         /// <inheritdoc/>

@@ -28,22 +28,36 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
 
         /// <inheritdoc/>
-        public string Description => "Sets all players to the given role.";
+        public string Description => "Sets all players to the given role with advanced settings.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to set the role as.", true),
             new Argument("role", typeof(RoleTypeId), "The role to set all the players as.", true),
+            new Argument("spawnpoint", typeof(bool), "Use spawnpoint? default: true", false),
+            new Argument("inventory", typeof(bool), "Use default inventory? default: true", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             RoleTypeId roleType = (RoleTypeId)Arguments[1];
+            PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            foreach (Player player in (PlayerCollection)Arguments[0])
-                player.Role.Set(roleType);
+            bool setSpawnpoint = Arguments.Length == 2 || (bool)Arguments[2];
+            bool setInventory = Arguments.Length <= 3 || (bool)Arguments[3];
+
+            RoleSpawnFlags flags = RoleSpawnFlags.None;
+
+            if (setSpawnpoint)
+                flags |= RoleSpawnFlags.UseSpawnpoint;
+
+            if (setInventory)
+                flags |= RoleSpawnFlags.AssignInventory;
+
+            foreach (Player player in players)
+                player.Role.Set(roleType, flags);
 
             return new(true);
         }

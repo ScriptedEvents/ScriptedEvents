@@ -34,12 +34,12 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("GIVE", "Gives effects to players."),
+                new("SET", "Gives effects to players."),
                 new("REMOVE", "Removes effects from players.")),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
-            new Argument("intensity", typeof(int), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
-            new Argument("duration", typeof(float), "The duration of the effect, or no duration for a permanent effect. Variables are supported.", false),
+            new Argument("intensity", typeof(int), "The intensity of the effect, between 0-255. Defaults to 1.", false),
+            new Argument("duration", typeof(float), "The duration of the effect, or no duration for a permanent effect.", false),
         };
 
         /// <inheritdoc/>
@@ -69,7 +69,7 @@
 
             switch (mode)
             {
-                case "GIVE":
+                case "SET":
                     if (intensity > 255)
                         return new(false, "Effect intensity must be between 0-255.");
 

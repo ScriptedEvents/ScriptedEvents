@@ -1,7 +1,6 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Linq;
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
@@ -28,44 +27,21 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Moves to the last CALL action executed.";
+        public string Description => "Stops the script and returns variables to the script which called it.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new OptionsArgument("mode", false,
-                new("LABEL", "Return to the called label. Default option."),
-                new("SCRIPT", "Stop the script execution.")),
-            new Argument("values", typeof(object), "The variables to return. These variables will be copied to the original caller with the same name and value. Used only with SCRIPT mode.", false),
+            new Argument("variables", typeof(object), "The variables to return. These variables will be copied to the original caller with the same name and value.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string mode = Arguments.Length > 0 ? Arguments.First().ToUpper() : null;
+            if (script.CallerScript == null)
+                return new(false, "You cannot return to a script; this script was not called by another script using the CALL action.");
 
-            if (mode == "LABEL" || mode == null)
-            {
-                if (script.CallLines.Count == 0)
-                    return new(false, "This action must be run after the CALL action.");
-
-                int lastLine = script.CallLines.Count - 1;
-
-                script.Jump(script.CallLines[lastLine] + 1);
-                script.CallLines.RemoveAt(lastLine);
-
-                return new(true);
-            }
-            else if (mode == "SCRIPT")
-            {
-                if (script.CallerScript == null) return new(false, "You cannot return to a script; this script was not called by another script using the CALL action.");
-            }
-            else
-            {
-                return new(false, $"Invalid mode '{mode}' provided.");
-            }
-
-            foreach (string varName in RawArguments.Skip(1))
+            foreach (string varName in RawArguments)
             {
                 if (VariableSystemV2.TryGetPlayers(varName, script, out PlayerCollection players))
                 {
@@ -84,7 +60,7 @@
                 }
             }
 
-            return new(true);
+            return new(true, flags: ActionFlags.StopEventExecution);
         }
     }
 }

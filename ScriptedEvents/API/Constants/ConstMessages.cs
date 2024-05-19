@@ -7,11 +7,6 @@
 
     public static class ConstMessages
     {
-        public const string GotoInput = @"The following keywords can be used in place of a label:
-- START - Moves to the start of the script.
-- STOP - Immediately stops the script.
-- NEXT - Moves to the next line.";
-
         public const string DisableKeys = @"The following keys contain functionality when used in DISABLE/ENABLE and DISABLEPLAYER/ENABLEPLAYER.
 
 - DOORS - Disables all door interactions.

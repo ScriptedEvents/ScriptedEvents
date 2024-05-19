@@ -36,7 +36,7 @@
         {
             new OptionsArgument("mode", true,
                 new("SET", "Sets players' custom info."),
-                new("CLEAR", "Clears players' custom info.")),
+                new("REMOVE", "Clears players' custom info.")),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("targets", typeof(Player[]), "The players that will see the action taking place. Only used if mode is SET.", false),
             new Argument("text", typeof(string), "The text to set custom info to. Only used if mode is SET.", false),
@@ -67,7 +67,7 @@
 
                     break;
 
-                case "CLEAR":
+                case "REMOVE":
                     foreach (Player ply in plys)
                     {
                         ply.CustomInfo = null;

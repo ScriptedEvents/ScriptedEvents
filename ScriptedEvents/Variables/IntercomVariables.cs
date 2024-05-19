@@ -52,7 +52,11 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode (READY/INUSE/TIMELEFT/COOLDOWNTIME)", true),
+            new OptionsArgument("mode", true,
+                    new("READY", "Is ready to detonate."),
+                    new("COOLDOWN", "The cooldown remaining."),
+                    new("TIMELEFT", "The time left for speaking."),
+                    new("INUSE", "Is in use already.")),
         };
 
         /// <inheritdoc/>
@@ -66,7 +70,7 @@
                 {
                     "READY" => (!Intercom.InUse && Intercom.RemainingCooldown <= 0).ToString().ToUpper(),
                     "INUSE" => Intercom.InUse.ToString().ToUpper(),
-                    "COOLDOWNTIME" => Intercom.RemainingCooldown.ToString(),
+                    "COOLDOWN" => Intercom.RemainingCooldown.ToString(),
                     "TIMELEFT" => Intercom.SpeechRemainingTime.ToString(),
                     _ => throw new ArgumentException("Invalid mode.", mode),
                 };

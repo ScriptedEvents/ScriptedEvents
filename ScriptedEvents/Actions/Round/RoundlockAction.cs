@@ -31,7 +31,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("roundlock", typeof(bool), "Whether or not to lock the round.", true),
+            new Argument("lockStatus", typeof(bool), "Whether or not to lock the round.", true),
         };
 
         /// <inheritdoc/>

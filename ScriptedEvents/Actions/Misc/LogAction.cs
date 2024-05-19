@@ -28,7 +28,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         /// <inheritdoc/>
-        public string Description => "Creates a server console log. Variables are supported.";
+        public string Description => "Creates a server console log.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]

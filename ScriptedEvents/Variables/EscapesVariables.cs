@@ -6,6 +6,8 @@ namespace ScriptedEvents.Variables.Escapes
 
     using Exiled.API.Features;
     using PlayerRoles;
+    using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
     public class EscapesVariables : IVariableGroup
@@ -17,54 +19,49 @@ namespace ScriptedEvents.Variables.Escapes
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new Escapes(),
-            new ClassDEscapes(),
-            new ScientistEscapes(),
         };
     }
 
-    public class Escapes : IFloatVariable, IPlayerVariable
+    public class Escapes : IFloatVariable, IPlayerVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{ESCAPES}";
 
         /// <inheritdoc/>
-        public string Description => "The amount of escapes. Equivalent to {CLASSDESCAPES} + {SCIENTISTESCAPES}.";
+        public string Description => "Players which have escaped the facility.";
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+                new OptionsArgument("mode", true,
+                    new("ALL", "Scientists and ClassDs which have escaped."),
+                    new("SCIENTISTS", "Scientists which have escaped."),
+                    new("CLASSD", "ClassDs which have escaped.")),
+        };
 
         /// <inheritdoc/>
         public float Value => Players.Count();
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => MainPlugin.Handlers.Escapes[RoleTypeId.ClassD]
-            .Union(MainPlugin.Handlers.Escapes[RoleTypeId.Scientist]);
-    }
-
-    public class ClassDEscapes : IFloatVariable, IPlayerVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{CLASSDESCAPES}";
-
-        /// <inheritdoc/>
-        public string Description => "The amount of Class-D escapes.";
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
-
-        /// <inheritdoc/>
-        public IEnumerable<Player> Players => MainPlugin.Handlers.Escapes[RoleTypeId.ClassD];
-    }
-
-    public class ScientistEscapes : IFloatVariable, IPlayerVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{SCIENTISTESCAPES}";
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+#pragma warning disable CS8509 // Wyrażenie switch nie obsługuje wszystkich możliwych wartości jego typu danych wejściowych (nie jest kompletne).
+                return Arguments[0].ToUpper() switch
+                {
+                    "ALL" => MainPlugin.Handlers.Escapes[RoleTypeId.ClassD].Union(MainPlugin.Handlers.Escapes[RoleTypeId.Scientist]),
+                    "SCIENTISTS" => MainPlugin.Handlers.Escapes[RoleTypeId.Scientist],
+                    "CLASSD" => MainPlugin.Handlers.Escapes[RoleTypeId.ClassD],
+                };
+#pragma warning restore CS8509 // Wyrażenie switch nie obsługuje wszystkich możliwych wartości jego typu danych wejściowych (nie jest kompletne).
+            }
+        }
 
         /// <inheritdoc/>
-        public string Description => "The amount of Scientist escapes.";
+        public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public float Value => Players.Count();
-
-        /// <inheritdoc/>
-        public IEnumerable<Player> Players => MainPlugin.Handlers.Escapes[RoleTypeId.Scientist];
+        public object[] Arguments { get; set; }
     }
 }

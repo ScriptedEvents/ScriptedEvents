@@ -126,7 +126,7 @@
 
                     for (int i = 1; i < 20; i++)
                     {
-                        if (arguments.Count <= i)
+                        if (arguments.Count < i)
                             break;
 
                         body.AddVariable($"{{ARG{i}}}", $"Argument #{i} of the command.", arguments.At(i - 1).ToString());

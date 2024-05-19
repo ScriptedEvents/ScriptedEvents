@@ -18,7 +18,7 @@
         public string Name => "LOCALPLAYERVAR";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "LOCALPVAR" };
+        public string[] Aliases => new[] { "LPVAR" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -36,8 +36,8 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SAVE", "Saves a new player variable."),
-                new("DELETE", "Deletes a previously-saved player variable."),
+                new("SET", "Saves a new player variable."),
+                new("DEL", "Deletes a previously-saved player variable."),
                 new("ADD", "Adds player(s) to an established player variable."),
                 new("REMOVE", "Removes player(s) from an established player variable.")),
             new Argument("variableName", typeof(string), "The name of the variable.", true),
@@ -56,7 +56,7 @@
 
             if (Arguments.Length > 3)
             {
-                string formula = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(3), script);
+                string formula = VariableSystem.ReplaceVariables(Arguments.JoinMessage(3), script);
 
                 if (!ConditionHelperV2.TryMath(formula, out MathResult result))
                 {
@@ -71,7 +71,7 @@
                 max = Mathf.RoundToInt(result.Result);
             }
 
-            if (mode != "DELETE")
+            if (mode != "DEL")
             {
                 // Todo: Need to find a better solution where the 'max' parameter is required
                 // Math does not work inside of variables
@@ -81,16 +81,16 @@
                         return new(false, players.Message);
                 }
 
-                if (!ScriptModule.TryGetPlayers(VariableSystemV2.ReplaceVariable(RawArguments[2], script), max, out players, script))
+                if (!ScriptModule.TryGetPlayers(VariableSystem.ReplaceVariable(RawArguments[2], script), max, out players, script))
                     return new(false, players.Message);
             }
 
             switch (mode)
             {
-                case "SAVE":
-                    VariableSystemV2.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script, true);
+                case "SET":
+                    VariableSystem.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script, true);
                     return new(true);
-                case "DELETE":
+                case "DEL":
                     if (script.UniquePlayerVariables.ContainsKey(varName))
                     {
                         script.UniquePlayerVariables.Remove(varName);

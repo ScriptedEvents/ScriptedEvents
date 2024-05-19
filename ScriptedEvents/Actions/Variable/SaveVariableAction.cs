@@ -1,5 +1,7 @@
 ﻿namespace ScriptedEvents.Actions
 {
+    using System;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -10,10 +12,10 @@
     public class SaveVariableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "SAVE";
+        public string Name => "GLOBAL";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "SAVEVARIABLE" };
+        public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -31,7 +33,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("variableName", typeof(string), "The name of the new variable. Braces will be added automatically if not provided.", true),
-            new Argument("value", typeof(object), "The value to store. Variables & Math are supported.", true),
+            new Argument("value", typeof(object), "The value to store. Math is supported.", true),
         };
 
         /// <inheritdoc/>

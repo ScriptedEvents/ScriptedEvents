@@ -26,7 +26,7 @@
                     case IStringVariable @string:
                         return @string.Value;
                     default: // Shouldn't be possible
-                        throw new InvalidCastException();
+                        throw new System.InvalidCastException($"{variable.Name} tried to cast to string, which resulted in an error.");
                 }
             }
             catch (InvalidCastException e)

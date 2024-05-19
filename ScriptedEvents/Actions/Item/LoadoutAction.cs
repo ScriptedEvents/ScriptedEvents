@@ -12,7 +12,7 @@
     public class LoadoutAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "LOADOUT";
+        public string Name => "GIVELOADOUT";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();

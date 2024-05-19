@@ -2,12 +2,11 @@
 {
     using System;
 
-    using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class GotoAction : IScriptAction, ILogicAction, IHelpInfo, ILongDescription
+    public class GotoAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "GOTO";
@@ -25,28 +24,32 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Moves to the provided label.";
+        public string Description => "Moves to the provided label. Use 'START' to go to the start of the script.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("label", typeof(string), "The label to move to. Variables are supported.", true),
+            new Argument("label", typeof(string), "The label to move to.", true),
         };
-
-        /// <inheritdoc/>
-        public string LongDescription => ConstMessages.GotoInput;
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             string label = (string)Arguments[0];
 
-            if (!script.Jump(label))
+            if (script.JumpToLabel(label))
             {
-                return new(false, "Invalid label provided.");
+                return new(true);
             }
 
-            return new(true);
+            int prevLine = script.CurrentLine;
+            if (script.JumpToFunctionLabel(label))
+            {
+                script.JumpLines.Add(prevLine);
+                return new(true);
+            }
+
+            return new(false, "Invalid label provided.");
         }
     }
 }

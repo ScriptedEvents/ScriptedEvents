@@ -5,10 +5,8 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class SetHPAction : IScriptAction, IHelpInfo
     {
@@ -34,7 +32,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to affect.", true),
-            new Argument("health", typeof(float), "The amount of health to set the player to. Variables are supported.", true),
+            new Argument("health", typeof(float), "The amount of health to set the player to.", true),
         };
 
         /// <inheritdoc/>

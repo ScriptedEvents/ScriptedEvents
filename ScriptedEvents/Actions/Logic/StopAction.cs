@@ -32,7 +32,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("scriptName", typeof(string), "The script name to be stopped. Leave empty to stop this script. Use '*' to stop all scripts except the one running the action.", false),
+            new Argument("scriptName", typeof(string), "The script name to be stopped. Leave empty to stop this script. Use '*' to stop all scripts EXCEPT the one running the action.", false),
         };
 
         /// <inheritdoc/>

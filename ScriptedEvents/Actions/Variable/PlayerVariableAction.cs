@@ -15,10 +15,10 @@
     public class PlayerVariableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "PLAYERVAR";
+        public string Name => "GLOBALPLAYERVAR";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "PVAR" };
+        public string[] Aliases => new[] { "GPVAR" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -36,8 +36,8 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SAVE", "Saves a new player variable."),
-                new("DELETE", "Deletes a previously-saved player variable."),
+                new("SET", "Saves a new player variable."),
+                new("DEL", "Deletes a previously-saved player variable."),
                 new("ADD", "Adds player(s) to an established player variable."),
                 new("REMOVE", "Removes player(s) from an established player variable.")),
             new Argument("variableName", typeof(string), "The name of the variable.", true),
@@ -87,11 +87,11 @@
 
             switch (mode)
             {
-                case "SAVE":
-                    VariableSystemV2.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script);
+                case "SET":
+                    VariableSystem.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script);
                     return new(true);
-                case "DELETE":
-                    if (VariableSystemV2.DefinedPlayerVariables.ContainsKey(varName))
+                case "DEL":
+                    if (VariableSystem.DefinedPlayerVariables.ContainsKey(varName))
                     {
                         VariableSystemV2.DefinedPlayerVariables.Remove(varName);
                         break;

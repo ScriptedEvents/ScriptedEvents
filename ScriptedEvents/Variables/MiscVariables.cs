@@ -7,7 +7,6 @@
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
-    using UnityEngine;
 
     public class MiscVariables : IVariableGroup
     {
@@ -17,19 +16,19 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
-            new Round(),
             new This(),
             new Storage(),
+            new Log(),
         };
     }
 
-    public class Round : IFloatVariable, IArgumentVariable
+    public class Log : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{ROUND}";
+        public string Name => "{LOG}";
 
         /// <inheritdoc/>
-        public string Description => "Returns a rounded number.";
+        public string Description => "Shows the name of the variable with its value. Useful for quick debugging.";
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -38,26 +37,22 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("variable", typeof(float), "The name of the variable to round. Requires the variable to be a number.", true),
-            new Argument("mode", typeof(string), "Way of rounding the variable, either UP or DOWN.", true),
+             new Argument("variable", typeof(IConditionVariable), "The variable.", true),
         };
 
         /// <inheritdoc/>
-        public float Value
+        public string Value
         {
             get
             {
-                float value = (float)Arguments[0];
-                string mode = Arguments.Length < 2 ? "UP" : (string)Arguments[1];
+                IConditionVariable variable = (IConditionVariable)Arguments[0];
 
-                return mode.ToUpper() switch
-                {
-                    "UP" => Mathf.Ceil(value),
-                    "DOWN" => Mathf.Floor(value),
-                    _ => throw new ArgumentException($"'{mode}' is not a valid mode. Valid options: UP, DOWN"),
-                };
+                return $"{variable.Name.Trim('{', '}')} = {variable.String()}";
             }
         }
     }
@@ -73,7 +68,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to use.", false),
+            new Argument("mode", typeof(string), "The mode to use. CALLER is the only one. If not provided, will return script name.", false),
         };
 
         /// <inheritdoc/>

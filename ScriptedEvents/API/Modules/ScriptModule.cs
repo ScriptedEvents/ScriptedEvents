@@ -25,8 +25,9 @@ namespace ScriptedEvents.API.Modules
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
+
     using ScriptedEvents.DemoScripts;
-    using ScriptedEvents.Integrations;
+
     using ScriptedEvents.Structures;
 
     using AirlockController = Exiled.API.Features.Doors.AirlockController;
@@ -57,11 +58,6 @@ namespace ScriptedEvents.API.Modules
         public Dictionary<string, CustomAction> CustomActions { get; } = new();
 
         public List<string> AutoRunScripts { get; set; }
-
-        /// <summary>
-        /// Gets RueI instance.
-        /// </summary>
-        public RueIManager Ruei { get; } = new RueIManager();
 
         /// <inheritdoc/>
         public override string Name { get; } = "ScriptModule";
@@ -245,6 +241,8 @@ namespace ScriptedEvents.API.Modules
             string[] array = allText.Split('\n');
             for (int currentline = 0; currentline < array.Length; currentline++)
             {
+                array[currentline] = array[currentline].TrimStart();
+
                 // NoAction
                 string action = array[currentline];
                 if (string.IsNullOrWhiteSpace(action))
@@ -283,10 +281,10 @@ namespace ScriptedEvents.API.Modules
                 }
 
                 // remove regex for variable spaces bc its politely saying dumb
-                string[] collection = action.Split(' ');
+                // maybe bring it back later cuz i changed my mind
                 List<string> actionParts = ListPool<string>.Pool.Get();
 
-                foreach (string str in collection)
+                foreach (string str in action.Split(' '))
                 {
                     if (string.IsNullOrWhiteSpace(str))
                         continue;
@@ -296,7 +294,7 @@ namespace ScriptedEvents.API.Modules
 
                 string keyword = actionParts[0].RemoveWhitespace();
 
-                // Labels
+                // Std labels
                 if (keyword.EndsWith(":"))
                 {
                     string labelName = action.Remove(keyword.Length - 1, 1).RemoveWhitespace();
@@ -308,6 +306,32 @@ namespace ScriptedEvents.API.Modules
 
                     actionList.Add(new NullAction($"{labelName} LABEL"));
 
+                    continue;
+                }
+
+                // Function labels
+                if (keyword == "->")
+                {
+                    if (actionParts.Count < 2)
+                    {
+                        Log.Error($"[SCRIPT: {script.ScriptName}] [LINE: {currentline}] A function label syntax has been used, but no name has been provided.");
+                        continue;
+                    }
+
+                    string labelName = actionParts[1].RemoveWhitespace();
+
+                    if (!script.FunctionLabels.ContainsKey(labelName))
+                        script.FunctionLabels.Add(labelName, currentline);
+                    else if (!suppressWarnings)
+                        Log.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
+
+                    actionList.Add(new StartFunctionAction());
+                    continue;
+                }
+
+                if (keyword == "<-")
+                {
+                    actionList.Add(new EndFunctionAction());
                     continue;
                 }
 
@@ -330,7 +354,7 @@ namespace ScriptedEvents.API.Modules
                     }
 
                     if (!suppressWarnings)
-                        Log.Warn($"[L: {script.CurrentLine + 1}]" + ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName));
+                        Log.Warn($"[LINE: {currentline + 1}] " + ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName));
 
                     actionList.Add(new NullAction("ERROR"));
                     continue;
@@ -615,9 +639,7 @@ namespace ScriptedEvents.API.Modules
         public void ShowHint(string text, float duration, List<Player> players = null)
         {
             players ??= Player.List.ToList();
-
-            // Ruei.MakeNew();
-            players.ForEach(p => Ruei.ShowHint(p, text, TimeSpan.FromSeconds(duration)));
+            players.ForEach(p => p.ShowHint(text, duration));
         }
 
         /// <summary>
@@ -771,6 +793,9 @@ namespace ScriptedEvents.API.Modules
                 scr.DebugLog("-----------");
                 scr.DebugLog($"Current Line: {scr.CurrentLine + 1}");
                 if (!scr.Actions.TryGet(scr.CurrentLine, out IAction action) || action == null)
+                    continue;
+
+                if (scr.SkipExecution && action is not IIgnoreSkipAction)
                     continue;
 
                 ActionResponse resp;

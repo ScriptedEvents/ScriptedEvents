@@ -53,29 +53,25 @@
             get
             {
                 if (Arguments.Length < 1)
-                {
                     return MainPlugin.Handlers.Kills.Count;
-                }
-                else
-                {
-                    if (Arguments[0] is RoleTypeId rt)
-                    {
-                        if (MainPlugin.Handlers.Kills.TryGetValue(rt, out int amt))
-                            return amt;
-                        else
-                            return 0;
-                    }
-                    else if (Arguments[0] is Team team)
-                    {
-                        int total = 0;
-                        foreach (var kills in MainPlugin.Handlers.Kills)
-                        {
-                            if (kills.Key.GetTeam() == team)
-                                total += kills.Value;
-                        }
 
-                        return total;
+                if (Arguments[0] is RoleTypeId rt)
+                {
+                    if (MainPlugin.Handlers.Kills.TryGetValue(rt, out int amt))
+                        return amt;
+                    else
+                        return 0;
+                }
+                else if (Arguments[0] is Team team)
+                {
+                    int total = 0;
+                    foreach (var kills in MainPlugin.Handlers.Kills)
+                    {
+                        if (kills.Key.GetTeam() == team)
+                            total += kills.Value;
                     }
+
+                    return total;
                 }
 
                 throw new ArgumentException(ErrorGen.Get(ErrorCode.UnknownError));

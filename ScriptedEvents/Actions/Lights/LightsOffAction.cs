@@ -2,15 +2,12 @@
 {
     using System;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class LightsOffAction : IScriptAction, IHelpInfo, ILongDescription
     {
@@ -39,7 +36,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("room", typeof(Room[]), "The room to flicker the lights off.", true),
-            new Argument("duration", typeof(float), "The duration of the lights out. Variables are supported.", true),
+            new Argument("duration", typeof(float), "The duration of the lights out.", true),
         };
 
         /// <inheritdoc/>

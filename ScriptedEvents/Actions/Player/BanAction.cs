@@ -5,8 +5,10 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class BanAction : IScriptAction, IHelpInfo
     {
@@ -41,11 +43,10 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
             int duration = (int)Arguments[1];
-            string reason = (string)Arguments[2];
 
             foreach (Player player in players)
             {
-                player.Ban(duration, reason);
+                player.Ban(duration, VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script).Replace("\\n", "\n"));
             }
 
             return new(true);

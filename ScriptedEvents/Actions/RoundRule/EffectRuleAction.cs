@@ -38,11 +38,11 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("GIVE", "Rule to give effects."),
+                new("SET", "Rule to give effects."),
                 new("REMOVE", "Removes a previously-established rule.")),
             new Argument("target", typeof(string), "The players to affect, or the RoleType/Team to give the effect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
-            new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Variables are supported. Defaults to 1.", false),
+            new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Defaults to 1.", false),
         };
 
         /// <inheritdoc/>
@@ -94,7 +94,7 @@
 
             switch (mode)
             {
-                case "GIVE":
+                case "SET":
                     if (list is 0)
                     {
                         foreach (Player ply in players)

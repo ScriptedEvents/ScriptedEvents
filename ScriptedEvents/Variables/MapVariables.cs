@@ -2,6 +2,7 @@
 {
 #pragma warning disable SA1402 // File may only contain a single type.
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -23,12 +24,97 @@
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new Decontaminated(),
-            new EngagedGenerators(),
             new Scp914Active(),
             new DoorState(),
             new Overcharged(),
             new Generators(),
+            new RandomRoom(),
+            new RandomDoor(),
+            new InRoom(),
         };
+    }
+
+    public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{INROOM}";
+
+        /// <inheritdoc/>
+        public string Description => "The amount of players in the specified room.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("roomType", typeof(RoomType), "The room to filter by.", false),
+        };
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                RoomType rt = (RoomType)Arguments[0];
+                return Player.Get(plr => plr.CurrentRoom.Type == rt);
+            }
+        }
+    }
+
+    public class RandomDoor : IStringVariable, INeedSourceVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{RANDOMDOOR}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets the DoorType of a random door. Can be filtered by zone.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("zone", typeof(ZoneType), "A zone to filter by (optional).", false),
+        };
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                ZoneType filter = ZoneType.Unspecified;
+
+                if (Arguments.Length > 0)
+                    filter = (ZoneType)Arguments[0];
+
+                IEnumerable<Door> validDoors = Door.List;
+
+                if (filter is not ZoneType.Unspecified)
+                {
+                    validDoors = validDoors.Where(door => door.Zone.HasFlag(filter));
+                }
+
+                List<Door> newList = validDoors.ToList();
+                return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
+            }
+        }
     }
 
     public class Decontaminated : IBoolVariable
@@ -44,18 +130,6 @@
 
         /// <inheritdoc/>
         public bool Value => Map.IsLczDecontaminated;
-    }
-
-    public class EngagedGenerators : IFloatVariable
-    {
-        /// <inheritdoc/>
-        public float Value => Generator.Get(GeneratorState.Engaged).Count();
-
-        /// <inheritdoc/>
-        public string Name => "{ENGAGEDGENERATORS}";
-
-        /// <inheritdoc/>
-        public string Description => "The amount of generators which are fully engaged.";
     }
 
     public class Overcharged : IBoolVariable
@@ -90,7 +164,12 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode for which to check for generators. Valid modes are ENGAGED/ACTIVATING/UNLOCKED/OPENED/CLOSED.", true),
+            new OptionsArgument("mode", true,
+                new("ENGAGED"),
+                new("ACTIVATING"),
+                new("UNLOCKED"),
+                new("OPENED"),
+                new("CLOSED")),
         };
 
         /// <inheritdoc/>
@@ -113,6 +192,50 @@
                     default:
                         throw new ScriptedEventsException($"Mode {Arguments[0]} is not ENGAGED/ACTIVATING/UNLOCKED/OPENED or CLOSED.");
                 }
+            }
+        }
+    }
+
+    public class RandomRoom : IStringVariable, IArgumentVariable, INeedSourceVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{RANDOMROOM}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets the RoomType of a random room. Can be filtered by zone.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments { get; } = new[]
+        {
+            new Argument("zone", typeof(ZoneType), "A zone to filter by (optional).", false),
+        };
+
+        /// <inheritdoc/>
+        public Script Source { get; set; }
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                ZoneType filter = ZoneType.Unspecified;
+
+                if (Arguments.Length > 0)
+                    filter = (ZoneType)Arguments[0];
+
+                IEnumerable<Room> validRooms = Room.List.Where(room => room.Type != RoomType.Pocket);
+
+                if (filter is not ZoneType.Unspecified)
+                    validRooms = validRooms.Where(room => room.Zone.HasFlag(filter));
+
+                List<Room> newList = validRooms.ToList();
+                return newList[UnityEngine.Random.Range(0, newList.Count)].Type.ToString();
             }
         }
     }

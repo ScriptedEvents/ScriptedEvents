@@ -34,8 +34,8 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to show the countdown to.", true),
-            new Argument("duration", typeof(long), "The duration of the countdown. Variables are supported.", true),
-            new Argument("text", typeof(string), "The text to show on the broadcast. Variables are supported.", true),
+            new Argument("durationSeconds", typeof(long), "The duration of the countdown.", true),
+            new Argument("text", typeof(string), "The text to show on the broadcast.", true),
         };
 
         public string LongDescription => $@"Countdowns use the broadcast system. As such, players who are given a countdown cannot see any other broadcasts until the countdown concludes or is terminated.

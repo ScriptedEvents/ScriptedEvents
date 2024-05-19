@@ -34,9 +34,7 @@
             new OptionsArgument("mode", true,
                 new("GET", "Creates a variable containing the value of the player data."),
                 new("SET", "Sets the player data."),
-                new("SAVE", "Sets the player data. Alias of SET."),
-                new("DELETE", "Deletes the player data."),
-                new("REMOVE", "Deletes the player data. Alias of DELETE.")),
+                new("DEL", "Deletes the player data.")),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("keyName", typeof(string), "The name of the key.", true),
             new Argument("value", typeof(string), "GET - The variable to create containing the value of the accessed key, SET - The new value of the key, DELETE - N/A", false),
@@ -49,7 +47,6 @@
 
             switch (((string)Arguments[0]).ToUpper())
             {
-                case "SAVE" when Arguments.Length < 4:
                 case "GET" when Arguments.Length < 4:
                 case "SET" when Arguments.Length < 4:
                     return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
@@ -68,7 +65,6 @@
                         VariableSystemV2.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", "NONE", script);
                     break;
 
-                case "SAVE":
                 case "SET":
                     keyName = (string)Arguments[2];
                     foreach (Player ply in players)
@@ -80,8 +76,7 @@
                     }
 
                     break;
-                case "REMOVE":
-                case "DELETE":
+                case "DEL":
                     keyName = (string)Arguments[2];
                     foreach (Player ply in players)
                     {

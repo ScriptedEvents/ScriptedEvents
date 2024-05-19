@@ -5,8 +5,10 @@
     using Exiled.API.Features;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
 
     public class KickAction : IScriptAction, IHelpInfo
     {
@@ -39,11 +41,10 @@
         public ActionResponse Execute(Script script)
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
-            string reason = (string)Arguments[1];
 
             foreach (Player player in players)
             {
-                player.Kick(reason);
+                player.Kick(VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script).Replace("\\n", "\n"));
             }
 
             return new(true);

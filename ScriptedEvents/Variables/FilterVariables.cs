@@ -13,8 +13,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -35,10 +33,10 @@
     public class Max : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{MAX}";
+        public string Name => "{LIMIT}";
 
         /// <inheritdoc/>
-        public string Description => "Filters a player variable and returns random players less than the provided amount.";
+        public string Description => "Creates a copy of a provided player variable, but does not copy more players than the limit provided.";
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -84,7 +82,7 @@
         }
     }
 
-    public class Filter : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable, ILongDescription
+    public class Filter : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{FILTER}";
@@ -102,7 +100,17 @@
         public Argument[] ExpectedArguments { get; } = new[]
         {
             new Argument("name", typeof(IPlayerVariable), "The name of the variable to filter.", true),
-            new Argument("type", typeof(string), "The mode to use to filter.", true),
+            new OptionsArgument("type", true,
+                    new("ROLE", "Filter by 'RoleTypeId'."),
+                    new("TEAM", "Filter by 'Team' type."),
+                    new("ROOM", "Filter by 'Room' type."),
+                    new("USERID", "Filter by user id. (steam id)"),
+                    new("PLAYERID", "Filter by player id. (id in game)"),
+                    new("ITEM", "Filter by 'ItemType' in inventory."),
+                    new("HELDITEM", "Filter by 'ItemType' in hand."),
+                    new("GROUP", "Filter by group."),
+                    new("ISSTAFF", "Filter by having RA access."),
+                    new("EFFECT", "Filter by 'EffectType'.")),
             new Argument("input", typeof(string), "What to use as the filter (ROOM, TEAM, etc.)", true),
         };
 
@@ -122,15 +130,14 @@
 
                 return Arguments[1].ToString() switch
                 {
-                    "ROLE" when SEParser.TryParse(input, out RoleTypeId rt, Source, false) => players.Where(plr => plr.Role.Type == rt),
-                    "TEAM" when SEParser.TryParse(input, out Team team, Source, false) => players.Where(plr => plr.Role.Team == team),
-                    "ZONE" when SEParser.TryParse(input, out ZoneType zt, Source, false) => players.Where(plr => plr.Zone.HasFlag(zt)),
-                    "ROOM" when SEParser.TryParse(input, out RoomType room, Source, false) => players.Where(plr => plr.CurrentRoom?.Type == room),
-                    "USERID" => players.Where(plr => plr.UserId == VariableSystemV2.ReplaceVariable(input, Source, false)),
-                    "PLAYERID" => players.Where(plr => plr.Id.ToString() == VariableSystemV2.ReplaceVariable(input, Source, false)),
-                    "INV" when SEParser.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
-                    "INV" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
-                    "HELDITEM" when SEParser.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.CurrentItem?.Type == item),
+                    "ROLE" when VariableSystem.TryParse(input, out RoleTypeId rt, Source, false) => players.Where(plr => plr.Role.Type == rt),
+                    "TEAM" when VariableSystem.TryParse(input, out Team team, Source, false) => players.Where(plr => plr.Role.Team == team),
+                    "ROOM" when VariableSystem.TryParse(input, out RoomType room, Source, false) => players.Where(plr => plr.CurrentRoom?.Type == room),
+                    "USERID" => players.Where(plr => plr.UserId == VariableSystem.ReplaceVariable(input, Source, false)),
+                    "PLAYERID" => players.Where(plr => plr.Id.ToString() == VariableSystem.ReplaceVariable(input, Source, false)),
+                    "ITEM" when VariableSystem.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
+                    "ITEM" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
+                    "HELDITEM" when VariableSystem.TryParse(input, out ItemType item, Source, false) => players.Where(plr => plr.CurrentItem?.Type == item),
                     "HELDITEM" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => CustomItem.TryGet(plr.CurrentItem, out CustomItem customItem2) && customItem == customItem2),
                     "GROUP" => players.Where(plr => plr.GroupName == input),
                     "ISSTAFF" when VariableSystemV2.ReplaceVariable(input.ToUpper(), Source).AsBool(Source) => players.Where(plr => plr.RemoteAdminAccess),
@@ -142,27 +149,12 @@
                 throw new ArgumentException(ErrorGen.Get(ErrorCode.UnknownError));
             }
         }
-
-        /// <inheritdoc/>
-        public string LongDescription => @"The following options are valid mode options:
-- USERID
-- PLAYERID
-- ROLE
-- TEAM
-- ROOM
-- ZONE
-- INV
-- HELDITEM
-- GROUP
-- ISSTAFF
-- EFFECT
-Invalid options will result in a script error.";
     }
 
     public class GetByIndex : IFloatVariable, IPlayerVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
-        public string Name => "{INDEXVAR}";
+        public string Name => "{INDEXPLR}";
 
         /// <inheritdoc/>
         public string Description => "Indexes a player variable and gets ONE player at the specified position.";

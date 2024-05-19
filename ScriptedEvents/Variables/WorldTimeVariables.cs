@@ -3,7 +3,6 @@
 #pragma warning disable SA1402 // File may only contain a single type
     using System;
 
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -19,13 +18,13 @@
         };
     }
 
-    public class Time : IFloatVariable, IArgumentVariable, ILongDescription
+    public class Time : IFloatVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{TIME}";
 
         /// <inheritdoc/>
-        public string Description => "All-in-one variable for time related information.";
+        public string Description => "All-in-one variable for time related information. All time information is based on the UTC timezone.";
 
         public string[] RawArguments { get; set; }
 
@@ -33,20 +32,19 @@
 
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "See long description for modes.", true),
+            new OptionsArgument("mode", true,
+                new("TICK", "The amount of seconds since 1.1.1970"),
+                new("SECOND", "0-59"),
+                new("MINUTE", "0-59"),
+                new("HOUR", "0-23"),
+                new("YEAR", "The amount of years since the birth of Christ"),
+                new("DAYOFWEEK", "1-7 (Warning! This follows the US system, where Saturday is the first day of the week)"),
+                new("DAYOFMONTH", "0-31"),
+                new("DAYOFYEAR", "0-366"),
+                new("ROUNDMINUTES", "The amount of elapsed round time, in minutes."),
+                new("ROUNDSECONDS", "The amount of elapsed round time, in seconds."),
+                new("ROUNDSTART", "The amount of time remaining before the round starts. -1 if round already started.")),
         };
-
-        public string LongDescription => $@"See all available modes with respective outputs below.
-All time information is based on the UTC time zone.
-
-TICK: The amount of seconds since {new DateTime(1970, 1, 1):f}.
-SECOND: 0-59.
-MINUTE: 0-59. 
-HOUR: 0-23.
-YEAR: The amount of years since the birth of Christ.
-DAYOFWEEK: 1-7 (This follows the US system, where Saturday is the first day of the week).
-DAYOFMONTH: 1-31.
-DAYOFYEAR: 1-366.";
 
         /// <inheritdoc/>
         public float Value
@@ -64,6 +62,9 @@ DAYOFYEAR: 1-366.";
                     "DAYOFWEEK" => ((int)DateTime.UtcNow.DayOfWeek) + 1,
                     "DAYOFMONTH" => DateTime.UtcNow.Day,
                     "DAYOFYEAR" => DateTime.UtcNow.DayOfYear,
+                    "ROUNDMINUTES" => (float)Exiled.API.Features.Round.ElapsedTime.TotalMinutes,
+                    "ROUNDSECONDS" => (float)Exiled.API.Features.Round.ElapsedTime.TotalSeconds,
+                    "ROUNDSTART" => Exiled.API.Features.Round.LobbyWaitingTime,
                     _ => throw new ArgumentException($"Provided mode '{mode}' is incorrect"),
                 };
             }

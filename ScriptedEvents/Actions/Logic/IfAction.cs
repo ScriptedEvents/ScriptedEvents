@@ -2,15 +2,13 @@
 {
     using System;
 
-    using ScriptedEvents.Actions.Samples.Interfaces;
-    using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class IfAction : IScriptAction, ILogicAction, IHelpInfo, ISampleAction
+    public class IfAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "IF";
@@ -28,16 +26,13 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Reads the condition and stops execution of the script if the result is FALSE.";
+        public string Description => "If the condition is FALSE, all actions will be ignored until ENDIF action is encountered. If the condition is TRUE, script will continue executing normally.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("condition", typeof(string), "The condition to check. Variables & Math are supported.", true),
+            new Argument("condition", typeof(string), "The condition to check. Math is supported.", true),
         };
-
-        /// <inheritdoc/>
-        public ISampleProvider Samples { get; } = new IfSamples();
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
@@ -46,8 +41,7 @@
             if (!outcome.Success)
                 return new(false, $"IF execution error: {outcome.Message}", ActionFlags.FatalError);
 
-            if (!outcome.Passed)
-                return new(true, flags: ActionFlags.StopEventExecution);
+            script.SkipExecution = !outcome.Passed;
 
             return new(true);
         }

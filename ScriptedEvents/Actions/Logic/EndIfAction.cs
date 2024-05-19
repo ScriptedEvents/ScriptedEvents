@@ -2,16 +2,14 @@
 {
     using System;
 
-    using Exiled.API.Features;
-
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class FakeDetonation : IScriptAction, IHelpInfo
+    public class EndIfAction : IScriptAction, ILogicAction, IHelpInfo, IIgnoreSkipAction
     {
         /// <inheritdoc/>
-        public string Name => "FAKEDETONATION";
+        public string Name => "ENDIF";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -23,18 +21,18 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
+        public ActionSubgroup Subgroup => ActionSubgroup.Logic;
+
+        /// <inheritdoc/>
+        public string Description => "Removes the action ignoring status enabled by the IF action, if one exists.";
+
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; set; }
-
-        /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Player;
-
-        /// <inheritdoc/>
-        public string Description => "Imitates the Alpha Warhead explosion, without killing anyone.";
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Warhead.Shake();
+            script.SkipExecution = false;
             return new(true);
         }
     }
