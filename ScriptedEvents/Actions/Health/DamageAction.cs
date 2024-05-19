@@ -30,14 +30,12 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Health;
 
         /// <inheritdoc/>
-        public string Description => "Damages the targeted player.";
+        public string Description => "Damages the targeted players.";
 
         /// <inheritdoc/>
         public string LongDescription => $@"A base-game DamageType may be used to provide a base-game death message. Alternatively, a custom message may be used instead of a DamageType.
 A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
-{string.Join("\n", ((DamageType[])Enum.GetValues(typeof(DamageType))).Select(r => $"- [{r:d}] {r}"))}
-
-Using the word 'VAPORIZE' instead of a DamageType or custom message will vaporize the body entirely, as though getting killed by the {nameof(ItemType.ParticleDisruptor)}.";
+{string.Join("\n", ((DamageType[])Enum.GetValues(typeof(DamageType))).Select(r => $"- [{r:d}] {r}"))}";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
