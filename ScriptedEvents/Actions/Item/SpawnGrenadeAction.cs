@@ -38,8 +38,8 @@
             new Argument("y", typeof(float), "The Y coordinate.", true),
             new Argument("z", typeof(float), "The Z coordinate.", true),
             new Argument("fuseTimeSeconds", typeof(float), "Fuse time for the grenade.", true),
-            new Argument("scale", typeof(float), "The scale of the granade.", false),
-            new Argument("player", typeof(IPlayerVariable), "The player who will be blamed for a kill.", false),
+            new Argument("scale", typeof(float), "The scale of the granade. Default: 1.", false),
+            new Argument("player", typeof(IPlayerVariable), "The player who will be blamed for a kill. Default: Dedicated server.", false),
         };
 
         /// <inheritdoc/>
