@@ -34,11 +34,11 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SET", "Gives effects to players."),
-                new("REMOVE", "Removes effects from players.")),
+                new("ADD", "Gives effect to players."),
+                new("REMOVE", "Removes effect from players.")),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
-            new Argument("intensity", typeof(int), "The intensity of the effect, between 0-255. Defaults to 1.", false),
+            new Argument("intensity", typeof(int), "The intensity of the effect, between 0-255. Default: 1.", false),
             new Argument("duration", typeof(float), "The duration of the effect, or no duration for a permanent effect.", false),
         };
 
@@ -69,7 +69,7 @@
 
             switch (mode)
             {
-                case "SET":
+                case "ADD":
                     if (intensity > 255)
                         return new(false, "Effect intensity must be between 0-255.");
 
