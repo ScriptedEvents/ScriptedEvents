@@ -26,18 +26,18 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public string Description => "Add AHP to the targeted players, with advanced settings.";
+        public string Description => "Modifies AHP of the targeted players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to affect.", true),
-            new Argument("health", typeof(float), "The amount of artificial health to add to the player.", true),
-            new Argument("limit", typeof(float), "The upper limit of AHP. Defaults to 75.", false),
-            new Argument("decay", typeof(float), "The AHP decay rate (how much AHP is lost per second). Defaults to 1.2.", false),
-            new Argument("efficacy", typeof(float), "The percent of incoming damage absorbed by AHP. Defaults to 0.7 (70%).", false),
-            new Argument("sustain", typeof(float), "The amount of time (in seconds) before the AHP begins to decay. Defaults to 0.", false),
-            new Argument("persistent", typeof(bool), "Whether or not the AHP process is removed entirely when the AHP reaches 0. Defaults to FALSE.", false),
+            new Argument("health", typeof(float), "The amount of artificial health to ADD to the player. Use a negative number to remove.", true),
+            new Argument("limit", typeof(float), "The upper limit of AHP. Default: 75.", false),
+            new Argument("decay", typeof(float), "The AHP decay rate (how much AHP is lost per second). Default: 1.2.", false),
+            new Argument("efficacy", typeof(float), "The percent of incoming damage absorbed by AHP. Default: 0.7.", false),
+            new Argument("sustain", typeof(float), "The amount of time (in seconds) before the AHP begins to decay. Default: 0.", false),
+            new Argument("persistent", typeof(bool), "Whether or not the AHP process is removed entirely when the AHP reaches 0. Default: FALSE.", false),
         };
 
         /// <inheritdoc/>

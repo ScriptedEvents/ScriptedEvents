@@ -27,7 +27,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
 
         /// <inheritdoc/>
-        public string Description => "Stops the script and returns variables to the script which called it.";
+        public string Description => "Stops the script and returns variables to the original caller of the script.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -39,7 +39,7 @@
         public ActionResponse Execute(Script script)
         {
             if (script.CallerScript == null)
-                return new(false, "You cannot return to a script; this script was not called by another script using the CALL action.");
+                return new(false, "You cannot return to a script; this script was not called by another script using the CALL action.", ActionFlags.FatalError);
 
             foreach (string varName in RawArguments)
             {

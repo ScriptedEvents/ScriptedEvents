@@ -291,7 +291,6 @@
     <Compile Include="Structures\ConditionResponse.cs" />
     <Compile Include="Structures\Countdown.cs" />
     <Compile Include="Structures\MathResult.cs" />
-    <Compile Include="Variables\BooleanVariables.cs" />
     <Compile Include="Variables\ChanceVariables.cs" />
     <Compile Include="Variables\CustomVariable.cs" />
     <Compile Include="Variables\EscapesVariables.cs" />
@@ -302,6 +301,7 @@
     <Compile Include="Variables\PlayerInfoVariables.cs" />
     <Compile Include="Variables\RoleVariables.cs" />
     <Compile Include="Variables\RoundVariables.cs" />
+    <Compile Include="Variables\ScriptInfoVariables.cs" />
     <Compile Include="Variables\ServerInfoVariables.cs" />
     <Compile Include="Variables\StringVariables.cs" />
     <Compile Include="Variables\TicketsAndRespawnsVariables.cs" />

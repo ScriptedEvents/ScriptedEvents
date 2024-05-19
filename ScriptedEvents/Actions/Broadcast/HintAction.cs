@@ -33,20 +33,22 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to show.", true),
-            new Argument("durationSeconds", typeof(float), "The duration of the message.", true),
-            new Argument("message", typeof(string), "The message.", true),
+            new Argument("players", typeof(Player[]), "The players to show the hint for.", true),
+            new Argument("durationSeconds", typeof(float), "The duration of the hint.", true),
+            new Argument("message", typeof(string), "The hint content.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
-
             float duration = (float)Arguments[1];
+            string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script);
 
-            string message = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(2), script);
-            MainPlugin.ScriptModule.ShowHint(message, duration);
+            foreach (Player plr in players)
+            {
+                plr.ShowHint(message, duration);
+            }
 
             return new(true);
         }

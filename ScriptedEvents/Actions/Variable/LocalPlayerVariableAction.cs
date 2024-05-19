@@ -6,7 +6,6 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
@@ -42,7 +41,7 @@
                 new("REMOVE", "Removes player(s) from an established player variable.")),
             new Argument("variableName", typeof(string), "The name of the variable.", true),
             new Argument("players", typeof(Player[]), "The players. Not required if mode is 'DELETE', but required otherwise.", false),
-            new Argument("max", typeof(int), "The maximum amount of players to save/add/remove. No effect if mode is 'DELETE'. Math and variables are supported. (default: unlimited).", false),
+            new Argument("max", typeof(int), "The maximum amount of players to save/add/remove. No effect if mode is 'DELETE'. Math is supported. (default: unlimited).", false),
         };
 
         /// <inheritdoc/>
@@ -56,7 +55,7 @@
 
             if (Arguments.Length > 3)
             {
-                string formula = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(3), script);
+                string formula = VariableSystem.ReplaceVariables(Arguments.JoinMessage(3), script);
 
                 if (!ConditionHelperV2.TryMath(formula, out MathResult result))
                 {
@@ -77,18 +76,18 @@
                 // Math does not work inside of variables
                 if (Arguments[2] is IPlayerVariable)
                 {
-                    if (!ScriptModule.TryGetPlayers(RawArguments[2], max, out players, script))
+                    if (!ScriptHelper.TryGetPlayers(RawArguments[2], max, out players, script))
                         return new(false, players.Message);
                 }
 
-                if (!ScriptModule.TryGetPlayers(VariableSystemV2.ReplaceVariable(RawArguments[2], script), max, out players, script))
+                if (!ScriptHelper.TryGetPlayers(VariableSystem.ReplaceVariable(RawArguments[2], script), max, out players, script))
                     return new(false, players.Message);
             }
 
             switch (mode)
             {
                 case "SET":
-                    VariableSystemV2.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script, true);
+                    VariableSystem.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script, true);
                     return new(true);
                 case "DEL":
                     if (script.UniquePlayerVariables.ContainsKey(varName))

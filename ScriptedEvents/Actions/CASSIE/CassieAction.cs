@@ -60,19 +60,18 @@
             {
                 text = VariableSystemV2.ReplaceVariables(text, script);
                 Cassie.MessageTranslated(text, text);
+                return new(true);
             }
+
+            if (string.IsNullOrWhiteSpace(cassieArgs[0]))
+                return new(MessageType.CassieCaptionNoAnnouncement, this, "message");
+
+            if (string.IsNullOrWhiteSpace(cassieArgs[1]))
+                Cassie.Message(cassieArgs[0]);
             else
-            {
-                if (string.IsNullOrWhiteSpace(cassieArgs[0]))
-                    return new(MessageType.CassieCaptionNoAnnouncement, this, "message");
+                Cassie.MessageTranslated(cassieArgs[0], cassieArgs[1]);
 
-                if (string.IsNullOrWhiteSpace(cassieArgs[1]))
-                    Cassie.Message(cassieArgs[0]);
-                else
-                    Cassie.MessageTranslated(cassieArgs[0], cassieArgs[1]);
-            }
-
-            return new(true, string.Empty);
+            return new(true);
         }
     }
 }

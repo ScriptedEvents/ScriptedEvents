@@ -41,9 +41,9 @@
             new OptionsArgument("mode", true,
                 new("ADD", "Add an item to the player's inventory."),
                 new("REMOVE", "Remove an item from the player's inventory.")),
-            new Argument("players", typeof(Player[]), "The players to give the item to.", true),
-            new Argument("item", typeof(ItemType), "The item to give.", true),
-            new Argument("amount", typeof(int), "The amount to give. Default: 1", false),
+            new Argument("players", typeof(Player[]), "The players to affect.", true),
+            new Argument("item", typeof(ItemType), "The item to add/remove.", true),
+            new Argument("amount", typeof(int), "The amount of items to add/remove.", false),
         };
 
         /// <inheritdoc/>

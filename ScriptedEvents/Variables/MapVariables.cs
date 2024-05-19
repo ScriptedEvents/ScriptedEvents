@@ -31,7 +31,23 @@
             new RandomRoom(),
             new RandomDoor(),
             new InRoom(),
+            new CassieSpeaking(),
         };
+    }
+
+    public class CassieSpeaking : IBoolVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{CASSIESPEAKING}";
+
+        /// <inheritdoc/>
+        public string ReversedName => "{!CASSIESPEAKING}";
+
+        /// <inheritdoc/>
+        public string Description => "Whether or not CASSIE is currently speaking.";
+
+        /// <inheritdoc/>
+        public bool Value => Cassie.IsSpeaking;
     }
 
     public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable, INeedSourceVariable

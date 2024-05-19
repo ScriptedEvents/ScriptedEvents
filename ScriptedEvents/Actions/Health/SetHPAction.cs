@@ -26,7 +26,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public string Description => "Set the HP of the targeted players.";
+        public string Description => "Modifies HP of the targeted players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]

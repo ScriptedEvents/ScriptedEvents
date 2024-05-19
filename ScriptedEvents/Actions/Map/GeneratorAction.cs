@@ -27,7 +27,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
-        public string Description => "Modifies genrators.";
+        public string Description => "Modifies all genrators.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]

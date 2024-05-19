@@ -27,12 +27,12 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Item;
 
         /// <inheritdoc/>
-        public string Description => "Gives players a class loadout.";
+        public string Description => "Grants a class loadout to the targeted players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to grant loadout to.", true),
+            new Argument("players", typeof(Player[]), "The players to grant the loadout to.", true),
             new Argument("class", typeof(RoleTypeId), "The class of which the loadout will be granted.", true),
         };
 
