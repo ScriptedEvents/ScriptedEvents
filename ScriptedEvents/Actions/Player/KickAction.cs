@@ -7,8 +7,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class KickAction : IScriptAction, IHelpInfo
     {
@@ -44,7 +44,7 @@
 
             foreach (Player player in players)
             {
-                player.Kick(VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script).Replace("\\n", "\n"));
+                player.Kick(VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(1), script).Replace("\\n", "\n"));
             }
 
             return new(true);

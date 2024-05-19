@@ -121,19 +121,19 @@
                     success.NewParameters.Add(result);
                     break;
                 case "Int32": // int
-                    if (!VariableSystem.TryParse(input, out int intRes, source, requireBrackets))
+                    if (!SEParser.TryParse(input, out int intRes, source, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                     success.NewParameters.Add(intRes);
                     break;
                 case "Int64": // long
-                    if (!VariableSystem.TryParse(input, out long longRes, source, requireBrackets))
+                    if (!SEParser.TryParse(input, out long longRes, source, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                     success.NewParameters.Add(longRes);
                     break;
                 case "Single": // float
-                    if (!VariableSystem.TryParse(input, out float floatRes, source, requireBrackets))
+                    if (!SEParser.TryParse(input, out float floatRes, source, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
 
                     success.NewParameters.Add(floatRes);
@@ -147,32 +147,32 @@
 
                 // Variable Interfaces
                 case "IConditionVariable":
-                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable, out _, source, requireBrackets))
+                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
 
-                    success.NewParameters.Add(variable);
+                    success.NewParameters.Add(variable.Variable);
                     break;
                 case "IStringVariable":
-                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable2, out _, source, requireBrackets))
+                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable2, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
-                    if (variable2 is not IStringVariable strVar)
+                    if (variable2.Variable is not IStringVariable strVar)
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidStringVariable, input));
 
                     success.NewParameters.Add(strVar);
                     break;
                 case "IPlayerVariable":
-                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable3, out _, source, requireBrackets))
+                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable3, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
-                    if (variable3 is not IPlayerVariable playerVar)
+                    if (variable3.Variable is not IPlayerVariable playerVar)
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
 
                     success.NewParameters.Add(playerVar);
                     break;
 
                 case "IItemVariable":
-                    if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable4, out _, source, requireBrackets))
+                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable4, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
-                    if (variable4 is not IItemVariable itemVar)
+                    if (variable4.Variable is not IItemVariable itemVar)
 
                         // TODO: ???
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
@@ -210,9 +210,9 @@
 
                 // Special
                 case "RoleTypeIdOrTeam":
-                    if (VariableSystem.TryParse(input, out RoleTypeId rtResult, source, requireBrackets))
+                    if (SEParser.TryParse(input, out RoleTypeId rtResult, source, requireBrackets))
                         success.NewParameters.Add(rtResult);
-                    else if (VariableSystem.TryParse(input, out Team teamResult, source, requireBrackets))
+                    else if (SEParser.TryParse(input, out Team teamResult, source, requireBrackets))
                         success.NewParameters.Add(teamResult);
                     else
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidRoleTypeOrTeam, input));
@@ -223,7 +223,7 @@
                     // Handle all enum types
                     if (expected.Type.BaseType == typeof(Enum))
                     {
-                        object res = VariableSystem.Parse(input, expected.Type, source);
+                        object res = SEParser.Parse(input, expected.Type, source);
                         if (res is null)
                             return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidEnumGeneric, input, expected.Type.Name));
 
@@ -232,7 +232,7 @@
                     }
 
                     // Unsupported types: Add the string input
-                    success.NewParameters.Add(VariableSystem.ReplaceVariable(input, source, requireBrackets));
+                    success.NewParameters.Add(VariableSystemV2.ReplaceVariable(input, source, requireBrackets));
                     break;
             }
 

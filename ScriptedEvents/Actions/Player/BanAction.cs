@@ -7,8 +7,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class BanAction : IScriptAction, IHelpInfo
     {
@@ -46,7 +46,7 @@
 
             foreach (Player player in players)
             {
-                player.Ban(duration, VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script).Replace("\\n", "\n"));
+                player.Ban(duration, VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(2), script).Replace("\\n", "\n"));
             }
 
             return new(true);

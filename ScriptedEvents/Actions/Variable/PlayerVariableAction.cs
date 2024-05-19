@@ -88,10 +88,10 @@
             switch (mode)
             {
                 case "SET":
-                    VariableSystem.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script);
+                    VariableSystemV2.DefineVariable(varName, "Script-defined variable", players.GetInnerList(), script);
                     return new(true);
                 case "DEL":
-                    if (VariableSystem.DefinedPlayerVariables.ContainsKey(varName))
+                    if (VariableSystemV2.DefinedPlayerVariables.ContainsKey(varName))
                     {
                         VariableSystemV2.DefinedPlayerVariables.Remove(varName);
                         break;

@@ -5,8 +5,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     using UnityEngine.Networking;
 
@@ -41,8 +41,8 @@
         public ActionResponse Execute(Script script)
         {
             string body = Arguments.JoinMessage(1);
-            body = VariableSystem.ReplaceVariables(body, script);
-            UnityWebRequest discordWWW = UnityWebRequest.Put(VariableSystem.ReplaceVariable(RawArguments[0], script), body);
+            body = VariableSystemV2.ReplaceVariables(body, script);
+            UnityWebRequest discordWWW = UnityWebRequest.Put(VariableSystemV2.ReplaceVariable(RawArguments[0], script), body);
             discordWWW.method = "POST";
             discordWWW.SetRequestHeader("Content-Type", "application/json");
             discordWWW.SendWebRequest();
