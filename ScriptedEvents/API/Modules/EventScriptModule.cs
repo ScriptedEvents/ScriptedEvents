@@ -138,7 +138,7 @@
                     }
                     else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
                     {
-                        @delegate = typeof(EventHandlingModule)
+                        @delegate = typeof(EventScriptModule)
                             .GetMethod(nameof(OnArgumentedEvent))
                             .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
                             .CreateDelegate(typeof(CustomEventHandler<>)
