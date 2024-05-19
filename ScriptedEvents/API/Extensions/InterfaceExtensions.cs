@@ -12,17 +12,20 @@
         {
             try
             {
-                case IBoolVariable @bool:
-                    bool result = reversed ? !@bool.Value : @bool.Value;
-                    return result.ToUpper();
-                case IFloatVariable @float:
-                    return @float.Value.ToString();
-                case ILongVariable @long:
-                    return @long.Value.ToString();
-                case IStringVariable @string:
-                    return @string.Value;
-                default: // Shouldn't be possible
-                    throw new System.InvalidCastException($"{variable.Name} tried to cast to string, which resulted in an error.");
+                switch (variable)
+                {
+                    case IBoolVariable @bool:
+                        bool result = reversed ? !@bool.Value : @bool.Value;
+                        return result.ToUpper();
+                    case IFloatVariable @float:
+                        return @float.Value.ToString();
+                    case ILongVariable @long:
+                        return @long.Value.ToString();
+                    case IStringVariable @string:
+                        return @string.Value;
+                    default: // Shouldn't be possible
+                        throw new System.InvalidCastException($"{variable.Name} tried to cast to string, which resulted in an error.");
+                }
             }
             catch (InvalidCastException e)
             {
