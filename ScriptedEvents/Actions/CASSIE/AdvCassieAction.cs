@@ -35,7 +35,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(Player[]), "The players to play the CASSIE announcement for.", true),
-            new Argument("isSilent", typeof(bool), "If TRUE, CASSIE will not make the jingle sound.", true),
+            new Argument("makeNoise", typeof(bool), "If FALSE, CASSIE will not make the jingle sound.", true),
             new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption.", true),
         };
 
@@ -44,7 +44,7 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            bool isSilent = (bool)Arguments[1];
+            bool makeNoise = (bool)Arguments[1];
             string text = Arguments.JoinMessage(2);
 
             string[] cassieArgs = text.Split('|');
@@ -59,31 +59,31 @@
                 text = VariableSystem.ReplaceVariables(text, script);
                 foreach (Player ply in players)
                 {
-                    ply.MessageTranslated(text, text, makeNoise: !isSilent);
+                    ply.MessageTranslated(text, text, makeNoise: makeNoise);
                 }
+
+                return new(true);
             }
-            else
+
+            if (string.IsNullOrWhiteSpace(cassieArgs[0]))
+                return new(MessageType.CassieCaptionNoAnnouncement, this, "message");
+
+            if (string.IsNullOrWhiteSpace(cassieArgs[1]))
             {
-                if (string.IsNullOrWhiteSpace(cassieArgs[0]))
-                    return new(MessageType.CassieCaptionNoAnnouncement, this, "message");
+                foreach (Player ply in players)
+                {
+                    ply.PlayCassieAnnouncement(cassieArgs[0], makeNoise: makeNoise);
+                }
 
-                if (string.IsNullOrWhiteSpace(cassieArgs[1]))
-                {
-                    foreach (Player ply in players)
-                    {
-                        ply.PlayCassieAnnouncement(cassieArgs[0], makeNoise: !isSilent);
-                    }
-                }
-                else
-                {
-                    foreach (Player ply in players)
-                    {
-                        ply.MessageTranslated(cassieArgs[0], cassieArgs[1], makeNoise: !isSilent);
-                    }
-                }
+                return new(true);
             }
 
-            return new(true, string.Empty);
+            foreach (Player ply in players)
+            {
+                ply.MessageTranslated(cassieArgs[0], cassieArgs[1], makeNoise: makeNoise);
+            }
+
+            return new(true);
         }
     }
 }
