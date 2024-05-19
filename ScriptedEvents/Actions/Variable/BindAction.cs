@@ -34,7 +34,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("newVariable", typeof(string), "The name of the new variable.", true),
-            new Argument("oldVariable", typeof(IConditionVariable), "The variable to copy or change the name of.", false),
+            new Argument("oldVariable", typeof(IConditionVariable), "The variable to copy or change the name of.", true),
         };
 
         /// <inheritdoc/>
