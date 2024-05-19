@@ -1,28 +1,27 @@
-﻿namespace ScriptedEvents.Variables
+﻿namespace ScriptedEvents.API.Modules
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
-    /// <summary>
-    /// A class used to store and retrieve all variables.
-    /// </summary>
-    public static class VariableSystem
+    public class VariableSystemV2 : SEModule
     {
         /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="IVariableGroup"/> representing all the valid condition variables.
         /// </summary>
         public static List<IVariableGroup> Groups { get; } = new();
+
+        /// <inheritdoc/>
+        public override string Name => "VariableSystemV2";
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that were defined in run-time.
@@ -33,24 +32,6 @@
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables that were defined in run-time.
         /// </summary>
         internal static Dictionary<string, CustomPlayerVariable> DefinedPlayerVariables { get; } = new();
-
-        /// <summary>
-        /// Sets up the player variable system by adding every <see cref="IVariable"/> related to conditional variables to the <see cref="Groups"/> list.
-        /// </summary>
-        public static void Setup()
-        {
-            Log.Debug("Initializing variable system");
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
-            {
-                if (typeof(IVariableGroup).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
-                {
-                    IVariableGroup temp = (IVariableGroup)Activator.CreateInstance(type);
-
-                    Log.Debug($"Adding variable group: {type.Name}");
-                    Groups.Add(temp);
-                }
-            }
-        }
 
         /// <summary>
         /// Defines a variable.
@@ -223,7 +204,7 @@
                     source?.DebugLog($"Variable argument processing completed. Success: {processResult.Success} | Message: {processResult.Message ?? "N/A"}");
 
                     if (!processResult.Success && !skipProcessing)
-                        return new(false, null, processResult.Message);
+                        return new(false, result.Item1, processResult.Message, result.Item2);
 
                     argSupport.Arguments = processResult.NewParameters.ToArray();
                 }
@@ -239,42 +220,29 @@
             return new(true, result.Item1, string.Empty, result.Item2);
         }
 
-        /// <summary>
-        /// Try-gets a variable.
-        /// </summary>
-        /// <param name="name">The input string.</param>
-        /// <param name="variable">The variable found, if successful.</param>
-        /// <param name="reversed">If the value is a reversed boolean value.</param>
-        /// <param name="source">The script source.</param>
-        /// <param name="requireBrackets">If brackets are required to parse the variable.</param>
-        /// <param name="skipProcessing">If processing is to be skipped.</param>
-        /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetVariable(string name, out IConditionVariable variable, out bool reversed, Script source, bool requireBrackets = true, bool skipProcessing = false)
+        public static bool TryGetVariable(string name, Script source, out VariableResult result, bool requireBrackets = true, bool skipProcessing = false)
         {
-            VariableResult res = GetVariable(name, source, requireBrackets, skipProcessing);
+            result = GetVariable(name, source, requireBrackets, skipProcessing);
 
-            if (!res.Success && !skipProcessing)
-                throw new VariableException(res.Message);
+            if (result.Variable is null)
+                return false;
 
-            variable = res.Variable;
-            reversed = res.Reversed;
-
-            return variable != null;
+            return true;
         }
 
         /// <summary>
         /// Attempts to get a <see cref="IEnumerable{T}"/> of <see cref="Player"/>s based on the input variable.
         /// </summary>
         /// <param name="name">The variable.</param>
-        /// <param name="players">The players found. Can be <see langword="null"/>.</param>
         /// <param name="source">The source script.</param>
+        /// <param name="players">The players found. If the operation was not successful, this will contain the error reason.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>Whether or not players were found.</returns>
         /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="ScriptModule.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
-        /// <seealso cref="ScriptModule.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>
-        public static bool TryGetPlayers(string name, out PlayerCollection players, Script source, bool requireBrackets = true)
+        /// <seealso cref="ScriptModule.TryGetPlayers(string, int?, out PlayerCollection, Script)"/>
+        public static bool TryGetPlayers(string name, Script source, out PlayerCollection players, bool requireBrackets = true)
         {
-            if (TryGetVariable(name, out IConditionVariable variable, out _, source, requireBrackets))
+            if (TryGetVariable(name, source, out VariableResult variable, requireBrackets) && variable.Success)
             {
                 if (variable is IPlayerVariable plrVariable)
                 {
@@ -283,90 +251,8 @@
                 }
             }
 
-            players = null;
+            players = new(null, false, variable?.Message ?? "Invalid variable provided.");
             return false;
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="float"/>. Functionally similar to <see cref="float.Parse(string)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>The result of the cast, or <see cref="float.NaN"/> if the cast failed.</returns>
-        public static float Parse(string input, Script source, bool requireBrackets = true)
-        {
-            if (float.TryParse(input, out float fl))
-                return fl;
-
-            if (TryGetVariable(input, out IConditionVariable var, out _, source, requireBrackets))
-            {
-                if (var is IFloatVariable floatVar)
-                    return floatVar.Value;
-                if (var is ILongVariable longVar)
-                    return longVar.Value;
-                else if (var is IStringVariable stringVar && float.TryParse(stringVar.Value, out float res))
-                    return res;
-            }
-
-            return float.NaN;
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="int"/>. Functionally similar to <see cref="float.Parse(string)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>The result of the cast, or <see cref="int.MinValue"/> if the cast failed.</returns>
-        public static int ParseInt(string input, Script source, bool requireBrackets = true)
-        {
-            if (int.TryParse(input, out int fl))
-                return fl;
-
-            if (TryGetVariable(input, out IConditionVariable var, out _, source, requireBrackets))
-            {
-                try
-                {
-                    if (var is IFloatVariable floatVar)
-                        return (int)floatVar.Value;
-                    if (var is ILongVariable longVar)
-                        return (int)longVar.Value;
-                    else if (var is IStringVariable stringVar && int.TryParse(stringVar.Value, out int res))
-                        return res;
-                }
-                catch (Exception e)
-                {
-                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {(source?.Debug == true ? e : e.Message)}");
-                }
-            }
-
-            return int.MinValue;
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="long"/>. Functionally similar to <see cref="long.Parse(string)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>The result of the cast, or <see cref="long.MinValue"/> if the cast failed.</returns>
-        public static long ParseLong(string input, Script source, bool requireBrackets = true)
-        {
-            if (long.TryParse(input, out long fl))
-                return fl;
-
-            if (TryGetVariable(input, out IConditionVariable var, out _, source, requireBrackets))
-            {
-                if (var is IFloatVariable floatVar)
-                    return (long)floatVar.Value;
-                if (var is ILongVariable longVar)
-                    return longVar.Value;
-                else if (var is IStringVariable stringVar && long.TryParse(stringVar.Value, out long res))
-                    return res;
-            }
-
-            return int.MinValue;
         }
 
         /// <summary>
@@ -379,113 +265,13 @@
         /// <remarks>This is intended for a string that is either a variable entirely or a string entirely - this will not isolate and replace all variables in a string. See <see cref="ReplaceVariables(string, Script)"/>.</remarks>
         public static string ReplaceVariable(string input, Script source, bool requireBrackets = true)
         {
-            if (TryGetVariable(input, out IConditionVariable var, out _, source, requireBrackets))
+            if (TryGetVariable(input, source, out VariableResult var, requireBrackets))
             {
-                if (var is IStringVariable str)
-                    return str.Value;
+                if (!var.Success) return var.Message;
+                return var.Variable.String();
             }
 
             return input;
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="float"/>. Functionally similar to <see cref="float.TryParse(string, out float)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="result">The result of the parse.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse(string input, out float result, Script source, bool requireBrackets = true)
-        {
-            result = Parse(input, source, requireBrackets);
-            return result != float.NaN && result.ToString() != "NaN"; // Hacky but fixes it?
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="int"/>. Functionally similar to <see cref="int.TryParse(string, out int)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="result">The result of the parse.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse(string input, out int result, Script source, bool requireBrackets = true)
-        {
-            result = ParseInt(input, source, requireBrackets);
-            return result != int.MinValue;
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="long"/>. Functionally similar to <see cref="long.TryParse(string, out int)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="result">The result of the parse.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse(string input, out long result, Script source, bool requireBrackets = true)
-        {
-            result = ParseLong(input, source, requireBrackets);
-            return result != long.MinValue;
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into <typeparamref name="T"/>, where T is an <see cref="Enum"/>. Functionally similar to <see cref="Enum.TryParse{TEnum}(string, out TEnum)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="result">The result of the parse.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <typeparam name="T">The Enum type to cast to.</typeparam>
-        /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse<T>(string input, out T result, Script source, bool requireBrackets = true)
-            where T : struct, Enum
-        {
-            input = input.Trim();
-            if (Enum.TryParse(input, true, out result))
-            {
-                return true;
-            }
-
-            if (TryGetVariable(input, out IConditionVariable vr, out _, source, requireBrackets))
-            {
-                if (vr is IStringVariable strVar && Enum.TryParse(strVar.Value, true, out result))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static object Parse(string input, Type enumType, Script source, bool requireBrackets = true)
-        {
-            try
-            {
-                object result = Enum.Parse(enumType, input, true);
-                return result;
-            }
-            catch
-            {
-            }
-
-            if (TryGetVariable(input, out IConditionVariable vr, out _, source, requireBrackets))
-            {
-                if (vr is IStringVariable strVar)
-                {
-                    try
-                    {
-                        object result = Enum.Parse(enumType, strVar.Value, true);
-                        return result;
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -500,11 +286,11 @@
             source.DebugLog($"Replacing variables of input '{input}'");
             string[] variables = IsolateVariables(input, source);
 
-            foreach (var variable in variables)
+            foreach (string variable in variables)
             {
                 source.DebugLog("Isolated variable: " + variable);
 
-                if (!TryGetVariable(variable, out IConditionVariable condition, out bool reversed, source))
+                if (!TryGetVariable(variable, source, out VariableResult vresult))
                 {
                     source.DebugLog("Invalid variable.");
                     continue;
@@ -512,17 +298,23 @@
 
                 source.DebugLog("Valid variable.");
 
+                if (!vresult.Success)
+                {
+                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] Variable '{vresult.Variable.Name}' argument error: {vresult.Message}");
+                    continue;
+                }
+
                 try
                 {
-                    input = input.Replace(variable, condition.String(source, reversed));
+                    input = input.Replace(variable, vresult.Variable.String(source, vresult.Reversed));
                 }
                 catch (InvalidCastException e)
                 {
-                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(ErrorCode.VariableReplaceError, condition.Name, e.Message)}");
+                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, e.Message)}");
                 }
                 catch (Exception e)
                 {
-                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(ErrorCode.VariableReplaceError, condition.Name, source?.Debug == true ? e : e.Message)}");
+                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, source?.Debug == true ? e : e.Message)}");
                 }
             }
 
@@ -561,6 +353,21 @@
             }
 
             return ListPool<string>.Pool.ToArrayReturn(result);
+        }
+
+        public override void Init()
+        {
+            base.Init();
+            foreach (Type type in MainPlugin.Singleton.Assembly.GetTypes())
+            {
+                if (typeof(IVariableGroup).IsAssignableFrom(type) && type.IsClass && type.GetConstructors().Length > 0)
+                {
+                    IVariableGroup temp = (IVariableGroup)Activator.CreateInstance(type);
+
+                    Log.Debug($"Adding variable group: {type.Name}");
+                    Groups.Add(temp);
+                }
+            }
         }
     }
 }

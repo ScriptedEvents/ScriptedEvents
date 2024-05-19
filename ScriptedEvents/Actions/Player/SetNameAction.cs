@@ -7,8 +7,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class SetNameAction : IScriptAction, IHelpInfo
     {
@@ -42,7 +42,7 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            string name = VariableSystem.ReplaceVariables(Arguments.JoinMessage(1), script);
+            string name = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(1), script);
 
             foreach (Player player in players)
             {

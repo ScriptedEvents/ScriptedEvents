@@ -16,7 +16,6 @@
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.DemoScripts;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class MainPlugin : Plugin<Config, Translations>
     {
@@ -141,9 +140,6 @@
                     Log.Info(Constants.ItsMyBirthday);
                 }
             });
-
-            // Setup systems
-            VariableSystem.Setup();
 
             // Delete help file on startup
             string helpPath = Path.Combine(BaseFilePath, "HelpCommandResponse.txt");

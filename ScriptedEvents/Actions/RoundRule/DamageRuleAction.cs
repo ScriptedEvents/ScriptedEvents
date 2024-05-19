@@ -5,10 +5,10 @@
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     using Rule = ScriptedEvents.Structures.DamageRule;
 
@@ -35,8 +35,8 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("attackerRule", typeof(object), "The rule for the attacker (either a role, team, or player variable)", true),
-            new Argument("receiverRule", typeof(object), "The rule for the receiver (either a role, team, or player variable)", true),
+            new Argument("attackerRule", typeof(string), "The rule for the attacker (either a role, team, or player variable)", true),
+            new Argument("receiverRule", typeof(string), "The rule for the receiver (either a role, team, or player variable)", true),
             new Argument("multiplier", typeof(float), "The multiplier to apply to the damage rule.", true),
         };
 
@@ -47,13 +47,13 @@
             Rule rule = null;
 
             // Roles
-            if (VariableSystem.TryParse((string)Arguments[0], out RoleTypeId attackerRole, script))
+            if (SEParser.TryParse((string)Arguments[0], out RoleTypeId attackerRole, script))
             {
-                if (VariableSystem.TryParse((string)Arguments[1], out RoleTypeId receiverRole, script))
+                if (SEParser.TryParse((string)Arguments[1], out RoleTypeId receiverRole, script))
                 {
                     rule = new(attackerRole, receiverRole);
                 }
-                else if (VariableSystem.TryParse((string)Arguments[1], out Team receiverTeam, script))
+                else if (SEParser.TryParse((string)Arguments[1], out Team receiverTeam, script))
                 {
                     rule = new(attackerRole, receiverTeam);
                 }
@@ -62,9 +62,9 @@
                     rule = new(attackerRole, players);
                 }
             }
-            else if (VariableSystem.TryParse((string)Arguments[1], out RoleTypeId attackerRole2, script))
+            else if (SEParser.TryParse((string)Arguments[1], out RoleTypeId attackerRole2, script))
             {
-                if (VariableSystem.TryParse((string)Arguments[0], out Team receiverTeam2, script))
+                if (SEParser.TryParse((string)Arguments[0], out Team receiverTeam2, script))
                 {
                     rule = new(receiverTeam2, attackerRole2);
                 }
@@ -75,13 +75,13 @@
             }
 
             // Teams
-            if (VariableSystem.TryParse((string)Arguments[0], out Team attackerTeam, script))
+            if (SEParser.TryParse((string)Arguments[0], out Team attackerTeam, script))
             {
-                if (VariableSystem.TryParse((string)Arguments[1], out Team receiverTeam, script))
+                if (SEParser.TryParse((string)Arguments[1], out Team receiverTeam, script))
                 {
                     rule = new(attackerTeam, receiverTeam);
                 }
-                else if (VariableSystem.TryParse((string)Arguments[1], out RoleTypeId receiverRole, script))
+                else if (SEParser.TryParse((string)Arguments[1], out RoleTypeId receiverRole, script))
                 {
                     rule = new(attackerTeam, receiverRole);
                 }
@@ -90,9 +90,9 @@
                     rule = new(attackerTeam, players);
                 }
             }
-            else if (VariableSystem.TryParse((string)Arguments[1], out Team attackerTeam2, script))
+            else if (SEParser.TryParse((string)Arguments[1], out Team attackerTeam2, script))
             {
-                if (VariableSystem.TryParse((string)Arguments[0], out RoleTypeId receiverRole2, script))
+                if (SEParser.TryParse((string)Arguments[0], out RoleTypeId receiverRole2, script))
                 {
                     rule = new(receiverRole2, attackerTeam2);
                 }

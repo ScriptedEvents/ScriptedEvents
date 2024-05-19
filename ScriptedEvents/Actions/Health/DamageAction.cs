@@ -8,9 +8,9 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class DamageAction : IScriptAction, IHelpInfo, ILongDescription
     {
@@ -61,7 +61,7 @@ Using the word 'VAPORIZE' instead of a DamageType or custom message will vaporiz
                 bool useDeathType = true;
                 string customDeath = null;
 
-                if (!VariableSystem.TryParse((string)Arguments[2], out DamageType damageType, script))
+                if (!SEParser.TryParse((string)Arguments[2], out DamageType damageType, script))
                 {
                     useDeathType = false;
                     customDeath = Arguments.JoinMessage(2);

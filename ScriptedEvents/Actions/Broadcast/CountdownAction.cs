@@ -9,7 +9,6 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class CountdownAction : IScriptAction, IHelpInfo, ILongDescription
     {
@@ -53,7 +52,7 @@ The text of the broadcast will be formatted using the countdown_string Exiled co
             string text = null;
 
             if (Arguments.Length > 2)
-                text = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script);
+                text = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(2), script);
 
             foreach (Player ply in players)
                 MainPlugin.GetModule<CountdownModule>().AddCountdown(ply, text, TimeSpan.FromSeconds(duration), script);

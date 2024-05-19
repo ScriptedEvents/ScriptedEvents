@@ -6,8 +6,8 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class SaveVariableAction : IScriptAction, IHelpInfo
     {
@@ -42,25 +42,25 @@
             string varName = RawArguments[0];
             if (Arguments.Length < 2)
             {
-                VariableSystem.DefineVariable(varName, "User-defined variable.", string.Empty, script);
+                VariableSystemV2.DefineVariable(varName, "User-defined variable.", string.Empty, script);
                 return new(true);
             }
 
             string input = Arguments.JoinMessage(1);
 
-            input = VariableSystem.ReplaceVariables(input, script);
+            input = VariableSystemV2.ReplaceVariables(input, script);
 
             try
             {
                 float value = (float)ConditionHelperV2.Math(input);
-                VariableSystem.DefineVariable(varName, "User-defined variable.", value.ToString(), script);
+                VariableSystemV2.DefineVariable(varName, "User-defined variable.", value.ToString(), script);
                 return new(true);
             }
             catch
             {
             }
 
-            VariableSystem.DefineVariable(varName, "User-defined variable.", input, script);
+            VariableSystemV2.DefineVariable(varName, "User-defined variable.", input, script);
 
             return new(true);
         }

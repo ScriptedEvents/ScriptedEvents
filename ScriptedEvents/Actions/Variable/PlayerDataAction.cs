@@ -5,8 +5,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class PlayerDataAction : IScriptAction, IHelpInfo
     {
@@ -60,9 +60,9 @@
                     Player ply1 = players[0];
 
                     if (ply1.SessionVariables.ContainsKey(keyName))
-                        VariableSystem.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", ply1.SessionVariables[keyName].ToString(), script);
+                        VariableSystemV2.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", ply1.SessionVariables[keyName].ToString(), script);
                     else
-                        VariableSystem.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", "NONE", script);
+                        VariableSystemV2.DefineVariable(varName, $"The result of a PLAYERDATA execution using 'GET' on player '{ply1.DisplayNickname}' with key '{varName}'.", "NONE", script);
                     break;
 
                 case "SET":
@@ -70,9 +70,9 @@
                     foreach (Player ply in players)
                     {
                         if (ply.SessionVariables.ContainsKey(keyName))
-                            ply.SessionVariables[keyName] = VariableSystem.ReplaceVariables(Arguments.JoinMessage(3), script);
+                            ply.SessionVariables[keyName] = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(3), script);
                         else
-                            ply.SessionVariables.Add(keyName, VariableSystem.ReplaceVariables(Arguments.JoinMessage(3), script));
+                            ply.SessionVariables.Add(keyName, VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(3), script));
                     }
 
                     break;

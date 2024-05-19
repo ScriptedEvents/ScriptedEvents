@@ -6,8 +6,8 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class TempVariableAction : IScriptAction, IHelpInfo
     {
@@ -39,7 +39,7 @@
         public ActionResponse Execute(Script script)
         {
             string input = Arguments.JoinMessage(0);
-            input = VariableSystem.ReplaceVariables(input, script).Replace("\\n", "\n");
+            input = VariableSystemV2.ReplaceVariables(input, script).Replace("\\n", "\n");
 
             try
             {

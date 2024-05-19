@@ -8,8 +8,8 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class WaitForSecondsAction : ITimingAction, IHelpInfo
     {
@@ -40,7 +40,7 @@
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
-            string formula = VariableSystem.ReplaceVariables(Arguments.JoinMessage(), script);
+            string formula = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(), script);
 
             if (!ConditionHelperV2.TryMath(formula, out MathResult result))
             {

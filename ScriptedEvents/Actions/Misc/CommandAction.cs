@@ -5,8 +5,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class CommandAction : IScriptAction, IHelpInfo, ILongDescription
     {
@@ -41,7 +41,7 @@ Note: Player variables will be converted to the amount of players when used dire
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string text = VariableSystem.ReplaceVariables(Arguments.JoinMessage(0), script);
+            string text = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(0), script);
             GameCore.Console.singleton.TypeCommand(text);
             return new(true, string.Empty);
         }

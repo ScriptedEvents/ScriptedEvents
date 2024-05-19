@@ -6,8 +6,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
     using ScriptedEvents.Variables.Interfaces;
 
     public class StorageAction : IScriptAction, IHelpInfo
@@ -46,17 +46,17 @@
 
             if (mode == "LITERAL")
             {
-                if (!VariableSystem.TryGetVariable(RawArguments[1], out IConditionVariable var, out bool _, script))
+                if (!VariableSystemV2.TryGetVariable(RawArguments[1], script, out VariableResult var))
                     return new(false, "Invalid literal variable to store has been provided.");
 
-                VariableStorage.Save(var);
+                VariableStorage.Save(var.Variable);
             }
 
             if (mode == "PLAYER")
             {
                 string varName = RawArguments[1];
 
-                if (!VariableSystem.TryGetPlayers(varName, out PlayerCollection var, script))
+                if (!VariableSystemV2.TryGetPlayers(varName, script, out PlayerCollection var))
                     return new(false, "Invalid player variable to store has been provided.");
 
                 string formattedVar = string.Join(".", var.ToList());

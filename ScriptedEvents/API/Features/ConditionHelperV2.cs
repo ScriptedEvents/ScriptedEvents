@@ -7,12 +7,11 @@
     using System.Text.RegularExpressions;
 
     using Exiled.API.Features;
-
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Conditions.Floats;
     using ScriptedEvents.Conditions.Interfaces;
     using ScriptedEvents.Conditions.Strings;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
 #pragma warning disable SA1600 // Remove this later
     public static class ConditionHelperV2
@@ -232,7 +231,7 @@
 
         private static ConditionResponse EvaluateInternal(string input, Script source = null)
         {
-            string convertedInput = VariableSystem.ReplaceVariables(input, source);
+            string convertedInput = VariableSystemV2.ReplaceVariables(input, source);
             if (bool.TryParse(convertedInput, out bool boolResult))
                 return new ConditionResponse(true, boolResult, string.Empty);
 
@@ -248,7 +247,7 @@
                     foreach (string fragOr in orSplit)
                     {
                         source?.DebugLog($"FRAG [OR]: " + fragOr);
-                        string convertedFrag = VariableSystem.ReplaceVariables(fragOr, source);
+                        string convertedFrag = VariableSystemV2.ReplaceVariables(fragOr, source);
                         ConditionResponse eval = EvaluateSingleCondition(convertedFrag, group);
                         if (!eval.Success)
                         {

@@ -8,7 +8,6 @@
     using ScriptedEvents.Actions;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     /// <summary>
     /// A set of tools for other plugins to add actions to Scripted Events.
@@ -135,7 +134,7 @@
         /// <returns>A tuple indicating success and the value.</returns>
         public static Tuple<bool, float> Math(string input, Script script)
         {
-            bool success = ConditionHelperV2.TryMath(VariableSystem.ReplaceVariables(input, script), out MathResult result);
+            bool success = ConditionHelperV2.TryMath(VariableSystemV2.ReplaceVariables(input, script), out MathResult result);
             return new(success, result.Result);
         }
     }

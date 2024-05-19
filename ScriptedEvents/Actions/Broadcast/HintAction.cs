@@ -7,8 +7,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class HintAction : IScriptAction, IHelpInfo
     {
@@ -45,7 +45,7 @@
 
             float duration = (float)Arguments[1];
 
-            string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(2), script);
+            string message = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(2), script);
             MainPlugin.ScriptModule.ShowHint(message, duration);
 
             return new(true);

@@ -6,7 +6,7 @@
 
     using Exiled.API.Features;
 
-    using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -57,10 +57,10 @@
             {
                 if (Arguments.Length < 1) throw new ArgumentException("No variable provided");
 
-                if (VariableSystem.TryGetPlayers(RawArguments[0], out PlayerCollection _, Source, requireBrackets: false))
+                if (VariableSystemV2.TryGetPlayers(RawArguments[0], Source, out PlayerCollection _, requireBrackets: false))
                     return true;
 
-                if (VariableSystem.TryGetVariable(RawArguments[0], out IConditionVariable _, out bool _, Source, requireBrackets: false))
+                if (VariableSystemV2.TryGetVariable(RawArguments[0], Source, out VariableResult _, requireBrackets: false))
                     return true;
 
                 return false;

@@ -30,7 +30,6 @@
 
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     using UnityEngine;
 
@@ -386,7 +385,7 @@
             }
 
             MainPlugin.ScriptModule.StopAllScripts();
-            VariableSystem.ClearVariables();
+            VariableSystemV2.ClearVariables();
             Kills.Clear();
             PlayerKills.Clear();
             LockedRadios.Clear();

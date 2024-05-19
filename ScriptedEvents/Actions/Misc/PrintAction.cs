@@ -7,8 +7,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     public class PrintAction : IScriptAction, IHelpInfo
     {
@@ -39,7 +39,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string message = VariableSystem.ReplaceVariables(Arguments.JoinMessage(0), script);
+            string message = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(0), script);
 
             if (script.Sender is null || script.Context is ExecuteContext.Automatic)
             {

@@ -8,8 +8,8 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
     using UnityEngine.Networking;
 
     public class HttpGetAction : IHelpInfo, ITimingAction, ILongDescription
@@ -50,7 +50,7 @@ These variables are created as per-script variables, meaning they can only be us
         public float? Execute(Script script, out ActionResponse message)
         {
             string coroutineKey = $"HTTPGET_COROUTINE_{DateTime.UtcNow.Ticks}";
-            CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, VariableSystem.ReplaceVariable(RawArguments[0], script)), coroutineKey);
+            CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, VariableSystemV2.ReplaceVariable(RawArguments[0], script)), coroutineKey);
             CoroutineHelper.AddCoroutine("HTTPGET", handle, script);
             message = new(true);
             return Timing.WaitUntilDone(handle);

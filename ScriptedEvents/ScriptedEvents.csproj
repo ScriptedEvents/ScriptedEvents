@@ -198,6 +198,7 @@
     <Compile Include="API\Interfaces\IScriptComponent.cs" />
     <Compile Include="API\Modules\EventScriptModule.cs" />
     <Compile Include="API\Modules\SEModule.cs" />
+    <Compile Include="API\Modules\VariableSystemV2.cs" />
     <Compile Include="Commands\CustomCommand.cs" />
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
@@ -307,7 +308,7 @@
     <Compile Include="Variables\WarheadVariables.cs" />
     <Compile Include="Variables\WorldTimeVariables.cs" />
     <Compile Include="Variables\ZoneVariables.cs" />
-    <Compile Include="Variables\VariableSystem.cs" />
+    <Compile Include="API\Features\SEParser.cs" />
     <Compile Include="API\Modules\EventHandlingModule.cs" />
     <Compile Include="Actions\Map\WarheadAction.cs" />
     <Compile Include="MainPlugin.cs" />

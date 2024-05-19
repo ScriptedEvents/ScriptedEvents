@@ -29,7 +29,6 @@ namespace ScriptedEvents.API.Modules
     using ScriptedEvents.DemoScripts;
 
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
 
     using AirlockController = Exiled.API.Features.Doors.AirlockController;
 
@@ -485,13 +484,13 @@ namespace ScriptedEvents.API.Modules
                 return true;
             }
 
-            string[] variables = VariableSystem.IsolateVariables(input, source);
+            string[] variables = VariableSystemV2.IsolateVariables(input, source);
             foreach (string variable in variables)
             {
                 source.DebugLog($"Checking is variable {variable} contains players");
                 try
                 {
-                    if (VariableSystem.TryGetPlayers(variable, out PlayerCollection playersFromVariable, source))
+                    if (VariableSystemV2.TryGetPlayers(variable, source, out PlayerCollection playersFromVariable))
                     {
                         source.DebugLog("Success! Variable contains players.");
                         list.AddRange(playersFromVariable);
@@ -551,15 +550,15 @@ namespace ScriptedEvents.API.Modules
             {
                 doorList = Door.List.ToList();
             }
-            else if (VariableSystem.TryParse<ZoneType>(input, out ZoneType zt, source))
+            else if (SEParser.TryParse<ZoneType>(input, out ZoneType zt, source))
             {
                 doorList = Door.List.Where(d => d.Zone.HasFlag(zt)).ToList();
             }
-            else if (VariableSystem.TryParse<DoorType>(input, out DoorType dt, source))
+            else if (SEParser.TryParse<DoorType>(input, out DoorType dt, source))
             {
                 doorList = Door.List.Where(d => d.Type == dt).ToList();
             }
-            else if (VariableSystem.TryParse<RoomType>(input, out RoomType rt, source))
+            else if (SEParser.TryParse<RoomType>(input, out RoomType rt, source))
             {
                 doorList = Door.List.Where(d => d.Room?.Type == rt).ToList();
             }
@@ -587,7 +586,7 @@ namespace ScriptedEvents.API.Modules
             {
                 liftList = Lift.List.ToList();
             }
-            else if (VariableSystem.TryParse<ElevatorType>(input, out ElevatorType et, source))
+            else if (SEParser.TryParse<ElevatorType>(input, out ElevatorType et, source))
             {
                 liftList = Lift.List.Where(l => l.Type == et).ToList();
             }
@@ -614,11 +613,11 @@ namespace ScriptedEvents.API.Modules
             {
                 roomList = Room.List.ToList();
             }
-            else if (VariableSystem.TryParse<ZoneType>(input, out ZoneType zt, source))
+            else if (SEParser.TryParse<ZoneType>(input, out ZoneType zt, source))
             {
                 roomList = Room.List.Where(room => room.Zone.HasFlag(zt)).ToList();
             }
-            else if (VariableSystem.TryParse<RoomType>(input, out RoomType rt, source))
+            else if (SEParser.TryParse<RoomType>(input, out RoomType rt, source))
             {
                 roomList = Room.List.Where(d => d.Type == rt).ToList();
             }
