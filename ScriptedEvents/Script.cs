@@ -10,7 +10,6 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -113,6 +112,11 @@
         /// Gets or sets a value indicating the time that the script began running.
         /// </summary>
         public DateTime RunDate { get; set; }
+
+        /// <summary>
+        /// Gets the amount of time the script has been running.
+        /// </summary>
+        public TimeSpan RunDuration => DateTime.UtcNow - RunDate;
 
         /// <summary>
         /// Gets a list of flags on the script.
