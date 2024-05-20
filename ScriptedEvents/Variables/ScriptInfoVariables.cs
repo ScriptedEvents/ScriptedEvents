@@ -4,6 +4,7 @@
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
 
+    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
@@ -34,7 +35,15 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The mode to use. CALLER is the only one. If not provided, will return script name.", false),
+            new OptionsArgument("mode", false,
+                new("AUTORUN", "'TRUE' or 'FALSE' depending on if the script is set to auto-run when the round restarts."),
+                new("CALLER", "The name of the script that called this script."),
+                new("CONTEXT", $"The context in which the script was executed. Valid options are: {string.Join(", ", ((ExecuteContext[])Enum.GetValues(typeof(ExecuteContext))).Where(r => r is not ExecuteContext.None))}"),
+                new("DEBUG", $"'TRUE' or 'FALSE' depending on if the script is in debug mode."),
+                new("DURATION", $"The amount of time (in seconds) the script has been running."),
+                new("NAME", "The name of the script."),
+                new("PATH", "The path to the script on the local directory.")
+                ),
         };
 
         /// <inheritdoc/>
@@ -47,7 +56,13 @@
                 string mode = Arguments[0].ToUpper();
                 return mode switch
                 {
+                    "AUTORUN" => Source.HasFlag("AUTORUN").ToUpper(),
                     "CALLER" => Source.CallerScript is not null ? Source.CallerScript.ScriptName : "NONE",
+                    "CONTEXT" => Source.Context.ToString(),
+                    "DEBUG" => Source.Debug.ToUpper(),
+                    "DURATION" => Source.RunDuration.TotalSeconds.ToString(),
+                    "NAME" => Source.ScriptName,
+                    "PATH" => Source.FilePath ?? "N/A",
                     _ => throw new ArgumentException("Invalid mode.", mode)
                 };
             }
