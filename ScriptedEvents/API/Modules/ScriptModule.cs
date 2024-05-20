@@ -119,15 +119,14 @@ namespace ScriptedEvents.API.Modules
 
         public void OnWaitingForPlayers()
         {
-            List<string> autoRun = ListPool<string>.Pool.Get();
-
             foreach (Script scr in ListScripts())
             {
-                if (scr.HasFlag("AUTORUN"))
+                if (!scr.HasFlag("AUTORUN"))
                 {
-                    Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
-                    autoRun.Add(scr.ScriptName);
+                    continue;
                 }
+
+                Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
 
                 try
                 {
@@ -148,10 +147,6 @@ namespace ScriptedEvents.API.Modules
                     Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, scr.ScriptName));
                 }
             }
-
-            AutoRunScripts = autoRun.ToList();
-
-            ListPool<string>.Pool.Return(autoRun);
         }
 
         /// <summary>
