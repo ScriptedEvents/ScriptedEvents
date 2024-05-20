@@ -107,7 +107,7 @@
                     return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Option, input, expected.ArgumentName, action.Name, string.Join(", ", options.Options.Select(x => x.Name))));
 
                 success.NewParameters.Add(input);
-                source?.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
+                source?.DebugLog($"[OPTION ARG] [C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
                 return success;
             }
 
