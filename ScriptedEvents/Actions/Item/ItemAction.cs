@@ -43,7 +43,7 @@
                 new("REMOVE", "Remove an item from the player's inventory.")),
             new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("item", typeof(ItemType), "The item to add/remove.", true),
-            new Argument("amount", typeof(int), "The amount of items to add/remove.", false),
+            new Argument("amount", typeof(int), "The amount of items to add/remove. Default: 1", false),
         };
 
         /// <inheritdoc/>
@@ -60,7 +60,7 @@
 
             switch (Arguments[0].ToUpper())
             {
-                case "ADD":
+                case "REMOVE":
                     action = (player) =>
                     {
                         Item item = player.Items.FirstOrDefault(r => r.Type == itemType);
@@ -71,7 +71,7 @@
                     };
                     break;
 
-                case "REMOVE":
+                case "ADD":
                     action = (player) =>
                     {
                         player.AddItem(itemType, amt);
