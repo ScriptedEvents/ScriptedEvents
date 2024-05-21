@@ -243,9 +243,10 @@
         /// <seealso cref="ScriptModule.TryGetPlayers(string, int?, out PlayerCollection, Script)"/>
         public static bool TryGetPlayers(string name, Script source, out PlayerCollection players, bool requireBrackets = true)
         {
-            if (TryGetVariable(name, source, out VariableResult variable, requireBrackets) && variable.Success)
+            DebugLog($"[TryGetPlayers] Trying to fetch {name} variable. [requireBrackets {requireBrackets}]", source);
+            if (TryGetVariable(name, source, out VariableResult result, requireBrackets) && result.Success)
             {
-                if (variable is IPlayerVariable plrVariable)
+                if (result.Variable is IPlayerVariable plrVariable)
                 {
                     players = new(plrVariable.Players.ToList());
                     DebugLog($"[TryGetPlayers] Fetch was successful!", source);
@@ -261,7 +262,7 @@
                 DebugLog($"[TryGetPlayers] Fetch was unsuccessful! The variable doesn't exist.", source);
             }
 
-            players = new(null, false, variable?.Message ?? "Invalid variable provided.");
+            players = new(null, false, result?.Message ?? "Invalid variable provided.");
             return false;
         }
 
