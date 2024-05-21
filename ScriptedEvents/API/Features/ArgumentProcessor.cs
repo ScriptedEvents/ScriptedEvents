@@ -161,12 +161,10 @@
                     success.NewParameters.Add(strVar);
                     break;
                 case "IPlayerVariable":
-                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable3, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
-                    if (variable3.Variable is not IPlayerVariable playerVar)
+                    if (!VariableSystemV2.TryGetPlayers(input, source, out PlayerCollection plrColl, requireBrackets))
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
 
-                    success.NewParameters.Add(playerVar);
+                    success.NewParameters.Add(plrColl);
                     break;
 
                 case "IItemVariable":
