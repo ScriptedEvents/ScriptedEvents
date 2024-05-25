@@ -187,8 +187,6 @@
         // Code to run when connected event is executed
         public void OnAnyEvent(string eventName, IExiledEvent ev = null)
         {
-            // TODO: Temporary workaround
-            // Switch to handling this entirely in the EventScriptModule
             if (CurrentEventData is null || !CurrentEventData.TryGetValue(eventName, out List<string> scripts))
             {
                 return;

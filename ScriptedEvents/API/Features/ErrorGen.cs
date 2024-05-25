@@ -33,14 +33,25 @@
             ErrorList.Errors.FirstOrDefault(err => err.Code == code);
 
         /// <summary>
+        /// Try-get a <see cref="ErrorInfo"/> from the given error ID.
+        /// </summary>
+        /// <param name="errorID">Error ID.</param>
+        /// <param name="errorInfo">The <see cref="ErrorInfo"/> object.</param>
+        /// <returns>Whether or not the process was successful.</returns>
+        public static bool TryGetError(int errorID, out ErrorInfo errorInfo)
+        {
+            errorInfo = GetError(errorID);
+            return errorInfo.Id != 0;
+        }
+
+        /// <summary>
         /// Try-get a <see cref="ErrorInfo"/> from the given code.
         /// </summary>
         /// <param name="errorCode">Error code.</param>
         /// <param name="errorInfo">The <see cref="ErrorInfo"/> object.</param>
         /// <returns>Whether or not the process was successful.</returns>
-        public static bool TryGetError(int errorCode, out ErrorInfo errorInfo)
+        public static bool TryGetError(ErrorCode errorCode, out ErrorInfo errorInfo)
         {
-            // TODO: Make method of this but with Enum
             errorInfo = GetError(errorCode);
             return errorInfo.Id != 0;
         }
