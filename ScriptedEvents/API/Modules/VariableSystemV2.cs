@@ -244,7 +244,7 @@
         {
             if (TryGetVariable(name, source, out VariableResult variable, requireBrackets) && variable.Success)
             {
-                if (variable is IPlayerVariable plrVariable)
+                if (variable.Variable is IPlayerVariable plrVariable)
                 {
                     players = new(plrVariable.Players.ToList());
                     return true;
