@@ -482,7 +482,7 @@ namespace ScriptedEvents.API.Modules
             string[] variables = VariableSystemV2.IsolateVariables(input, source);
             foreach (string variable in variables)
             {
-                source.DebugLog($"Checking is variable {variable} contains players");
+                source.DebugLog($"Checking if variable {variable} contains players");
                 try
                 {
                     if (VariableSystemV2.TryGetPlayers(variable, source, out PlayerCollection playersFromVariable))
@@ -492,13 +492,13 @@ namespace ScriptedEvents.API.Modules
                     }
                     else
                     {
-                        source.DebugLog("Failure! Variable does not contian players!");
+                        source.DebugLog(playersFromVariable.Message);
                     }
                 }
                 catch (Exception e)
                 {
-                    source.DebugLog("Failure! Variable does not contian players!");
                     collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
+                    source.DebugLog(collection.Message);
                     return false;
                 }
             }

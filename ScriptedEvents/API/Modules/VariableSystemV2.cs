@@ -249,9 +249,12 @@
                     players = new(plrVariable.Players.ToList());
                     return true;
                 }
+
+                players = new(null, false, $"Provided variable '{variable.Variable.Name}' does not contain players.");
+                return false;
             }
 
-            players = new(null, false, variable?.Message ?? "Invalid variable provided.");
+            players = new(null, false, variable?.Message ?? $"Invalid variable '{name}' provided.");
             return false;
         }
 
