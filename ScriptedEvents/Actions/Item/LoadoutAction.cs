@@ -32,7 +32,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to grant the loadout to.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to grant the loadout to.", true),
             new Argument("class", typeof(RoleTypeId), "The class of which the loadout will be granted.", true),
         };
 

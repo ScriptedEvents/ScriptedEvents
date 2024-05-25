@@ -40,7 +40,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to damage.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to damage.", true),
             new Argument("damage", typeof(float), "The amount of damage to apply.", true),
             new Argument("damageType", typeof(string), $"The type of damage to apply. If a {nameof(DamageType)} is not matched, this will act as a custom message instead. Default: Unknown", false),
         };

@@ -31,7 +31,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "Players to change bypass state.", true),
+            new Argument("players", typeof(PlayerCollection), "Players to change bypass state.", true),
             new Argument("mode", typeof(bool), "Bypass mode.", true),
         };
 

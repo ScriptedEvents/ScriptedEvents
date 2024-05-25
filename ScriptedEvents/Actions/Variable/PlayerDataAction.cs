@@ -35,7 +35,7 @@
                 new("GET", "Creates a variable containing the value of the player data."),
                 new("SET", "Sets the player data."),
                 new("DEL", "Deletes the player data.")),
-            new Argument("players", typeof(Player[]), "The players to affect.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
             new Argument("keyName", typeof(string), "The name of the key.", true),
             new Argument("value", typeof(string), "GET - The variable to create containing the value of the accessed key, SET - The new value of the key, DELETE - N/A", false),
         };

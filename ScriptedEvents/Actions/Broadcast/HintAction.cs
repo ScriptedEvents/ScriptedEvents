@@ -33,7 +33,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to show the hint for.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to show the hint for.", true),
             new Argument("durationSeconds", typeof(float), "The duration of the hint.", true),
             new Argument("message", typeof(string), "The hint content.", true),
         };

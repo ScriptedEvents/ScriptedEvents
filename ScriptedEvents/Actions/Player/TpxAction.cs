@@ -34,7 +34,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to teleport", true),
+            new Argument("players", typeof(PlayerCollection), "The players to teleport", true),
             new Argument("X", typeof(float), "The X-coordinate to teleport to.", true),
             new Argument("Y", typeof(float), "The Y-coordinate to teleport to.", true),
             new Argument("Z", typeof(float), "The Z-coordinate to teleport to.", true),

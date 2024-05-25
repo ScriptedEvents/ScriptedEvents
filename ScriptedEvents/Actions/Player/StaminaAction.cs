@@ -36,7 +36,7 @@
                 new("ADD", "Adds stamina for players."),
                 new("SET", "Sets stamina for players."),
                 new("REMOVE", "Removes stamina from players.")),
-            new Argument("players", typeof(Player[]), "Players to affect.", true),
+            new Argument("players", typeof(PlayerCollection), "Players to affect.", true),
             new Argument("amountPercent", typeof(float), "The amount of stamina percentage to add/set/remove.", true),
         };
 

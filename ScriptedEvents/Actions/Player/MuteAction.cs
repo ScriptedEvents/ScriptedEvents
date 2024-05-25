@@ -35,7 +35,7 @@
             new OptionsArgument("mode", true,
                 new("SET", "Mute player(s)."),
                 new("REMOVE", "Unmute player(s).")),
-            new Argument("players", typeof(Player[]), "Players to change mute status for.", true),
+            new Argument("players", typeof(PlayerCollection), "Players to change mute status for.", true),
             new Argument("longterm", typeof(bool), "If TRUE, player will be muted even after rejoining.", true),
         };
 

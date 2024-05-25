@@ -34,7 +34,7 @@
         {
             new Argument("input", typeof(string), string.Empty, true),
             new Argument("number", typeof(bool), string.Empty, true),
-            new Argument("players", typeof(Player[]), string.Empty, true),
+            new Argument("players", typeof(PlayerCollection), string.Empty, true),
         };
 
         /// <inheritdoc/>

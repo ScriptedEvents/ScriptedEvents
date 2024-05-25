@@ -183,12 +183,6 @@
                     break;
 
                 // Array Types:
-                case "Player[]":
-                    if (!ScriptModule.TryGetPlayers(input, null, out PlayerCollection players, source))
-                        return new(false, expected.ArgumentName, players.Message);
-
-                    success.NewParameters.Add(players);
-                    break;
                 case "Room[]":
                     if (!ScriptModule.TryGetRooms(input, out Room[] rooms, source))
                         return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
@@ -209,6 +203,12 @@
                     break;
 
                 // Special
+                case "PlayerCollection":
+                    if (!ScriptModule.TryGetPlayers(input, null, out PlayerCollection players, source))
+                        return new(false, expected.ArgumentName, players.Message);
+
+                    success.NewParameters.Add(players);
+                    break;
                 case "RoleTypeIdOrTeam":
                     if (SEParser.TryParse(input, out RoleTypeId rtResult, source, requireBrackets))
                         success.NewParameters.Add(rtResult);

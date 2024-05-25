@@ -34,7 +34,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to play the CASSIE announcement for.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to play the CASSIE announcement for.", true),
             new Argument("makeNoise", typeof(bool), "If FALSE, CASSIE will not make the jingle sound.", true),
             new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption.", true),
         };

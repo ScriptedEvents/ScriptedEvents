@@ -31,7 +31,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "Players to change godmode state for.", true),
+            new Argument("players", typeof(PlayerCollection), "Players to change godmode state for.", true),
             new Argument("mode", typeof(bool), "Godmode state to grant.", true),
         };
 

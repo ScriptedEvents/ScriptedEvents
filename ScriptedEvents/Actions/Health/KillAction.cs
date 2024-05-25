@@ -40,7 +40,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to kill.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to kill.", true),
             new Argument("damageType", typeof(string), $"The {nameof(DamageType)} to apply, 'VAPORIZE' to vaporize the body, or a custom death message. Default: Unknown", false),
         };
 

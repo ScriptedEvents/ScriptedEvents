@@ -31,7 +31,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to affect.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
             new Argument("health", typeof(float), "The amount of artificial health to ADD to the player. Use a negative number to remove.", true),
             new Argument("limit", typeof(float), "The upper limit of AHP. Default: 75.", false),
             new Argument("decay", typeof(float), "The AHP decay rate (how much AHP is lost per second). Default: 1.2.", false),

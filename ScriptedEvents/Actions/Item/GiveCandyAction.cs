@@ -38,7 +38,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to give the candy to.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to give the candy to.", true),
             new Argument("item", typeof(CandyKindID), "The candy to give.", true),
             new Argument("amount", typeof(int), "The amount to give. Default: 1", false),
         };

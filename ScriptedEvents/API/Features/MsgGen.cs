@@ -33,7 +33,7 @@
             { typeof(byte), "Byte (Whole Number, 0-255)" },
             { typeof(float), "Float (Number)" },
             { typeof(bool), "Boolean (TRUE/FALSE)" },
-            { typeof(Player[]), "Player List" },
+            { typeof(PlayerCollection), "Player List" },
             { typeof(Door[]), "Door List" },
             { typeof(Room[]), "Room List" },
             { typeof(RoleTypeId), "RoleTypeId (ID / Number)" },

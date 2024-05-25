@@ -36,7 +36,7 @@
             new OptionsArgument("mode", true,
                 new("ADD", "Gives effect to players."),
                 new("REMOVE", "Removes effect from players.")),
-            new Argument("players", typeof(Player[]), "The players to affect.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
             new Argument("intensity", typeof(int), "The intensity of the effect, between 0-255. Default: 1.", false),
             new Argument("duration", typeof(float), "The duration of the effect, or no duration for a permanent effect.", false),

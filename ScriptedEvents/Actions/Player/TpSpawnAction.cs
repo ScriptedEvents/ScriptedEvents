@@ -33,7 +33,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to teleport", true),
+            new Argument("players", typeof(PlayerCollection), "The players to teleport", true),
             new Argument("spawn", typeof(SpawnLocationType), "The spawn to teleport to.", true),
         };
 

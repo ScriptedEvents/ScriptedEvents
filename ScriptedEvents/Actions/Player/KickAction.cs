@@ -33,7 +33,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "Players to kick.", true),
+            new Argument("players", typeof(PlayerCollection), "Players to kick.", true),
             new Argument("reason", typeof(string), "Kick reason.", true),
         };
 

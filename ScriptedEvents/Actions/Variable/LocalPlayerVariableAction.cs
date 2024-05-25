@@ -41,7 +41,7 @@
                 new("ADD", "Adds player(s) to an established player variable."),
                 new("REMOVE", "Removes player(s) from an established player variable.")),
             new Argument("variableName", typeof(string), "The name of the variable.", true),
-            new Argument("players", typeof(Player[]), "The players. Not required if mode is 'DELETE', but required otherwise.", false),
+            new Argument("players", typeof(PlayerCollection), "The players. Not required if mode is 'DELETE', but required otherwise.", false),
             new Argument("max", typeof(int), "The maximum amount of players to save/add/remove. No effect if mode is 'DELETE'. Math is supported. (default: unlimited).", false),
         };
 

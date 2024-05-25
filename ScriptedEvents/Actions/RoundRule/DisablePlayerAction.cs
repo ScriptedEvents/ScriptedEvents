@@ -36,7 +36,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players to disable for.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to disable for.", true),
             new Argument("key", typeof(string), "The key of the feature to disable. See documentation for a whole list of keys.", true),
         };
 

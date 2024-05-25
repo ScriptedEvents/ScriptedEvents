@@ -36,7 +36,7 @@
             new OptionsArgument("mode", true,
                 new("SET", "Sets players' custom info."),
                 new("REMOVE", "Clears players' custom info.")),
-            new Argument("players", typeof(Player[]), "The players to affect.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
             new Argument("text", typeof(string), "The text to set custom info to. Only used if mode is SET.", false),
         };
 
