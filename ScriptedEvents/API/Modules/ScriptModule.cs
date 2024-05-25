@@ -447,7 +447,12 @@ namespace ScriptedEvents.API.Modules
         /// <returns>Whether or not the process errored.</returns>
         public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source)
         {
-            source.DebugLog($"TRYGETPLAYERS {input}");
+            void Log(string msg)
+            {
+                DebugLog($"[TryGetPlayers] {msg}", source);
+            }
+
+            Log($"Trying to get '{input}' player collection.");
 
             input = input.RemoveWhitespace();
             List<Player> list = ListPool<Player>.Pool.Get();
@@ -455,6 +460,7 @@ namespace ScriptedEvents.API.Modules
             {
                 ListPool<Player>.Pool.Return(list);
 
+                Log($"Fetch successful! Syntax referencing all players.");
                 collection = new(Player.List.ToList());
                 return true;
             }
@@ -472,6 +478,7 @@ namespace ScriptedEvents.API.Modules
                     if (!Player.TryGet(playerId, out Player player))
                         continue;
 
+                    Log($"Extracted a player object from {idInStr} string.");
                     list.Add(player);
                 }
 
@@ -482,23 +489,23 @@ namespace ScriptedEvents.API.Modules
             string[] variables = VariableSystemV2.IsolateVariables(input, source);
             foreach (string variable in variables)
             {
-                source.DebugLog($"Checking if variable {variable} contains players");
+                Log($"Checking if '{variable}' is a variable containing players");
                 try
                 {
                     if (VariableSystemV2.TryGetPlayers(variable, source, out PlayerCollection playersFromVariable))
                     {
-                        source.DebugLog("Success! Variable contains players.");
+                        Log("Success! Variable contains players.");
                         list.AddRange(playersFromVariable);
                     }
                     else
                     {
-                        source.DebugLog(playersFromVariable.Message);
+                        Log(playersFromVariable.Message);
                     }
                 }
                 catch (Exception e)
                 {
                     collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
-                    source.DebugLog(collection.Message);
+                    Log(collection.Message);
                     return false;
                 }
             }
@@ -915,6 +922,11 @@ namespace ScriptedEvents.API.Modules
 
             if (dispose)
                 scr.Dispose();
+        }
+
+        private static void DebugLog(string message, Script source)
+        {
+            source.DebugLog($"[ScriptModule] {message}");
         }
     }
 }

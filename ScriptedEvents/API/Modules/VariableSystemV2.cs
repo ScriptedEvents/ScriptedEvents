@@ -120,11 +120,7 @@
         /// <returns>A tuple containing the variable and whether or not it's a reversed boolean value.</returns>
         public static VariableResult GetVariable(string name, Script source, bool requireBrackets = true, bool skipProcessing = false)
         {
-            bool surroundedWithBothBrackets = name.StartsWith("{") && name.EndsWith("}");
-            bool missingOneOrMoreBrackets = !name.StartsWith("{") || !name.EndsWith("}");
-
-            if (!surroundedWithBothBrackets && missingOneOrMoreBrackets)
-                source.DebugLog($"Provided variable '{name}' has malformed brackets! [surroundedWithBothBrackets: {surroundedWithBothBrackets}] [missingOneOrMoreBrackets: {missingOneOrMoreBrackets}]");
+            DebugLog($"[GetVariable] Getting the '{name}' variable.", source);
 
             // Do this here so individual files dont have to do it anymore
             if (!requireBrackets)
@@ -149,11 +145,11 @@
                     string arg = argument;
                     if (arg.EndsWith("}")) arg = arg.Replace("}", string.Empty);
                     argList.Add(arg);
-                    source.DebugLog($"Formatted argument '{argument} to '{arg}'");
+                    DebugLog($"[GetVariable] Formatted argument '{argument} to '{arg}'", source);
                 }
             }
 
-            source?.DebugLog($"Attempting to retrieve variable '{variableName}' with args '{string.Join(", ", argList)}'");
+            DebugLog($"[GetVariable] Attempting to retrieve variable '{variableName}' with args '{string.Join(", ", argList)}'", source);
 
             Tuple<IConditionVariable, bool> result = new(null, false);
 
@@ -176,9 +172,9 @@
             }
 
             if (!foundVar)
-                source?.DebugLog("The variable provided is not a variable predefined by ScriptedEvents.");
+                DebugLog("[GetVariable] The variable provided is not a variable predefined by ScriptedEvents.", source);
             else
-                source?.DebugLog("Variable provided is a variable defined by ScriptedEvents.");
+                DebugLog("[GetVariable] Variable provided is a variable defined by ScriptedEvents.", source);
 
             if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
                 result = new(customValue, false);
@@ -196,12 +192,12 @@
             {
                 if (result.Item1 is IArgumentVariable argSupport)
                 {
-                    source?.DebugLog("Variable provided has arguments.");
+                    DebugLog("[GetVariable] Variable provided has arguments.", source);
                     argSupport.RawArguments = argList.ToArray();
 
                     ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, out bool _, false);
 
-                    source?.DebugLog($"Variable argument processing completed. Success: {processResult.Success} | Message: {processResult.Message ?? "N/A"}");
+                    DebugLog($"[GetVariable] Variable argument processing completed. Success: {processResult.Success} | Message: {processResult.Message ?? "N/A"}", source);
 
                     if (!processResult.Success && !skipProcessing)
                         return new(false, result.Item1, processResult.Message, result.Item2);
@@ -214,19 +210,28 @@
                     sourcePls.Source = source;
                 }
             }
+            else
+            {
+                return new(false, null, $"Unknown variable '{name}' provided.", false);
+            }
 
             ListPool<string>.Pool.Return(argList);
-            source?.DebugLog($"Returning the variable value as {result.Item1}");
+            DebugLog($"[GetVariable] Returning the variable value as {result.Item1}", source);
             return new(true, result.Item1, string.Empty, result.Item2);
         }
 
         public static bool TryGetVariable(string name, Script source, out VariableResult result, bool requireBrackets = true, bool skipProcessing = false)
         {
+            DebugLog($"[TryGetVariable] Trying to get the '{name}' variable", source);
             result = GetVariable(name, source, requireBrackets, skipProcessing);
 
             if (result.Variable is null)
+            {
+                DebugLog($"[TryGetVariable] Fail! Was unable to get the '{name}' variable.", source);
                 return false;
+            }
 
+            DebugLog($"[TryGetVariable] Success! The '{name}' variable was successfully extracted.", source);
             return true;
         }
 
@@ -242,19 +247,26 @@
         /// <seealso cref="ScriptModule.TryGetPlayers(string, int?, out PlayerCollection, Script)"/>
         public static bool TryGetPlayers(string name, Script source, out PlayerCollection players, bool requireBrackets = true)
         {
-            if (TryGetVariable(name, source, out VariableResult variable, requireBrackets) && variable.Success)
+            DebugLog($"[TryGetPlayers] Trying to fetch {name} variable. [requireBrackets {requireBrackets}]", source);
+            if (TryGetVariable(name, source, out VariableResult result, requireBrackets) && result.Success)
             {
-                if (variable.Variable is IPlayerVariable plrVariable)
+                if (result.Variable is IPlayerVariable plrVariable)
                 {
                     players = new(plrVariable.Players.ToList());
+                    DebugLog($"[TryGetPlayers] Fetch was successful!", source);
                     return true;
                 }
-
-                players = new(null, false, $"Provided variable '{variable.Variable.Name}' does not contain players.");
-                return false;
+                else
+                {
+                    DebugLog($"[TryGetPlayers] Fetch was unsuccessful! Variable fetched is not a player variable.", source);
+                }
+            }
+            else
+            {
+                DebugLog($"[TryGetPlayers] Fetch was unsuccessful! {result.Message}", source);
             }
 
-            players = new(null, false, variable?.Message ?? $"Invalid variable '{name}' provided.");
+            players = new(null, false, result?.Message ?? "Invalid variable provided.");
             return false;
         }
 
@@ -286,7 +298,6 @@
         /// <remarks>This is intended for strings that contain both regular text and variables. Otherwise, see <see cref="ReplaceVariable(string, Script, bool)"/>.</remarks>
         public static string ReplaceVariables(string input, Script source)
         {
-            source.DebugLog($"Replacing variables of input '{input}'");
             string[] variables = IsolateVariables(input, source);
 
             foreach (string variable in variables)
@@ -371,6 +382,11 @@
                     Groups.Add(temp);
                 }
             }
+        }
+
+        private static void DebugLog(string message, Script source)
+        {
+            source.DebugLog($"[VariableSystem] {message}");
         }
     }
 }
