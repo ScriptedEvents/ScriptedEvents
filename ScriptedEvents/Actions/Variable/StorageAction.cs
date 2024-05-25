@@ -47,7 +47,7 @@
             if (mode == "LITERAL")
             {
                 if (!VariableSystemV2.TryGetVariable(RawArguments[1], script, out VariableResult var))
-                    return new(false, "Invalid literal variable to store has been provided.");
+                    return new(false, $"Invalid literal variable '{RawArguments[1]}' to store has been provided.");
 
                 VariableStorage.Save(var.Variable);
             }
