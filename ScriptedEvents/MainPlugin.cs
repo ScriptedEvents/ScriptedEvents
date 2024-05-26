@@ -154,6 +154,19 @@
                     Log.Warn($"The removal of the '{helpPath}' file has failed. Reason: {ex}");
                 }
             }
+
+            // Delete leftover doc config on startup
+            if (File.Exists(API.Features.ScriptHelpGenerator.Generator.ConfigPath))
+            {
+                try
+                {
+                    File.Delete(API.Features.ScriptHelpGenerator.Generator.ConfigPath);
+                }
+                catch (Exception ex)
+                {
+                    Log.Warn($"The removal of the '{API.Features.ScriptHelpGenerator.Generator.ConfigPath}' file has failed. Reason: {ex}");
+                }
+            }
         }
 
         /// <inheritdoc/>

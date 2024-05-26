@@ -56,16 +56,53 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            IsFile = false;
+            if (Arguments.Length < 1)
+                Arguments = new[] { "USE-WELCOME-TEXT" };
+
+            if (Arguments[0] is "GENERATE")
+            {
+                if (script.Context != ExecuteContext.ServerConsole)
+                    return new(false, "The 'GENERATE' subcommand must be executed from the server console.");
+                bool generatorResult = API.Features.ScriptHelpGenerator.Generator.GenerateConfig(out string message);
+                return new(generatorResult, message);
+            }
+
+            if (Arguments[0] is "GDONE")
+            {
+                if (script.Context != ExecuteContext.ServerConsole)
+                    return new(false, "The 'GDONE' subcommand must be executed from the server console.");
+                bool generatorResult = API.Features.ScriptHelpGenerator.Generator.CreateDocumentation(out string message);
+                return new(generatorResult, message);
+            }
+
+            if (Arguments[0] is "SHOW")
+            {
+                if (script.Context != ExecuteContext.ServerConsole)
+                    return new(false, "The 'SHOW' subcommand must be executed from the server console.");
+                bool generatorResult = API.Features.ScriptHelpGenerator.Generator.PromptDocFolder(out string message);
+                return new(generatorResult, message);
+            }
 
             if (script.Sender is ServerConsoleSender) IsFile = true;
             if (Arguments.Length > 1 && Arguments[1].ToUpper() == "NOFILE" && script.Sender is ServerConsoleSender) IsFile = false;
 
-            if (Arguments.Length < 1)
+            ActionResponse text = GenerateText(Arguments[0].ToUpper(), script, IsFile);
+            return Display(text);
+        }
+
+        public static ActionResponse GenerateText(string text, Script script = null, bool nofile = false)
+        {
+            if (text is "USE-WELCOME-TEXT")
             {
-                string text = $@"
+                string newText = $@"
 Welcome to the HELP command! This command is your one-stop shop for all {MainPlugin.Singleton.Name} documentation and information.
-Please use one of the following options to continue:
+
+The most powerful feature of this command is the ability to generate all of SE's documentation directly onto your computer.
+To do so, run 'shelp GENERATE' (must be done in the server console). This will open a config file. Complete this file and then run 'shelp GDONE' to create documentation.
+From there, using 'shelp SHOW' in the future will open the documentation folder directly on your computer!
+Whenever SE updates, re-run 'shelp GENERATE' to ensure your documentation remains updated.
+
+If you don't want to generate documentation on your computer, please use one of the following options to continue instead:
 - 'LIST' - Lists all available actions.
 - 'LISTVAR' - Lists all available variables.
 - 'LISTENUM' - Lists all enums that are used in {MainPlugin.Singleton.Name}, and show more info about enums.
@@ -75,11 +112,11 @@ Every value returned from those lists can also be used in shelp to retrieve docu
 Struggling? Join our Discord server for immediate and useful assistance: {MainPlugin.DiscordUrl}
 Interested in helping others learn the plugin? Let {MainPlugin.Singleton.Author} know on Discord. We'd be happy to have you on our team of volunteer helpers!
 Thanks for using my plugin. <3";
-                return Display(new(true, text));
+                return new(true, newText);
             }
 
             // List Help
-            if (Arguments[0].ToUpper() is "LIST" or "ACTIONS" or "ACTS")
+            if (text is "LIST" or "ACTIONS" or "ACTS")
             {
                 StringBuilder sbList = StringBuilderPool.Pool.Get();
                 sbList.AppendLine();
@@ -114,11 +151,11 @@ Thanks for using my plugin. <3";
                 }
 
                 ListPool<IAction>.Pool.Return(temp);
-                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbList)));
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sbList));
             }
 
             // List Variables
-            if (Arguments[0].ToUpper() is "LISTVAR" or "VARLIST" or "VARIABLES" or "VARS")
+            if (text is "LISTVAR" or "VARLIST" or "VARIABLES" or "VARS")
             {
                 var conditionList = VariableSystemV2.Groups.OrderBy(group => group.GroupName);
 
@@ -140,11 +177,11 @@ Thanks for using my plugin. <3";
                     sbList.AppendLine();
                 }
 
-                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbList)));
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sbList));
             }
 
             // List Enums
-            else if (Arguments[0].ToUpper() is "LISTENUM" or "ENUMLIST")
+            else if (text is "LISTENUM" or "ENUMLIST")
             {
                 StringBuilder sbEnumList = StringBuilderPool.Pool.Get();
                 sbEnumList.AppendLine();
@@ -158,11 +195,11 @@ Thanks for using my plugin. <3";
                     sbEnumList.AppendLine($"{def.EnumType.Name} - {def.Description}");
                 }
 
-                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbEnumList)));
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sbEnumList));
             }
 
             // Action Help
-            else if (MainPlugin.ScriptModule.TryGetActionType(Arguments[0].ToUpper(), out Type type))
+            else if (MainPlugin.ScriptModule.TryGetActionType(text, out Type type))
             {
                 IAction action = Activator.CreateInstance(type) as IAction;
 
@@ -171,7 +208,7 @@ Thanks for using my plugin. <3";
 
                 StringBuilder sb = StringBuilderPool.Pool.Get();
 
-                if (action.ExpectedArguments.Length > 0)
+                if (action.ExpectedArguments is not null && action.ExpectedArguments.Length > 0)
                 {
                     sb.AppendLine();
                 }
@@ -181,11 +218,14 @@ Thanks for using my plugin. <3";
                 sb.AppendLine($"Action type: {MsgGen.Display(action.Subgroup)}");
 
                 // Usage
-                sb.Append($"Usage: {action.Name}");
-                foreach (Argument arg in action.ExpectedArguments)
+                if (action.ExpectedArguments is not null)
                 {
-                    string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
-                    sb.Append($" {chars[0]}{arg.ArgumentName.ToUpper()}{chars[1]}");
+                    sb.Append($"Usage: {action.Name}");
+                    foreach (Argument arg in action.ExpectedArguments)
+                    {
+                        string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
+                        sb.Append($" {chars[0]}{arg.ArgumentName.ToUpper()}{chars[1]}");
+                    }
                 }
 
                 sb.AppendLine();
@@ -201,30 +241,33 @@ Thanks for using my plugin. <3";
 
                 sb.AppendLine();
 
-                if (action.ExpectedArguments.Length > 0)
+                if (action.ExpectedArguments is not null)
                 {
-                    sb.AppendLine();
-                    sb.Append("Arguments:");
-                }
-
-                foreach (Argument arg in action.ExpectedArguments)
-                {
-                    string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
-                    sb.AppendLine();
-                    sb.AppendLine($"{chars[0]}{arg.ArgumentName}{chars[1]}");
-                    sb.AppendLine($"  Required: {(arg.Required ? "YES" : "NO")}");
-                    sb.AppendLine($"  Type: {arg.TypeString}");
-                    sb.AppendLine($"  {arg.Description}");
-
-                    if (arg is OptionsArgument options)
+                    if (action.ExpectedArguments.Length > 0)
                     {
-                        sb.AppendLine($"  Valid options for this argument:");
-                        foreach (Option option in options.Options)
+                        sb.AppendLine();
+                        sb.Append("Arguments:");
+                    }
+
+                    foreach (Argument arg in action.ExpectedArguments)
+                    {
+                        string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
+                        sb.AppendLine();
+                        sb.AppendLine($"{chars[0]}{arg.ArgumentName}{chars[1]}");
+                        sb.AppendLine($"  Required: {(arg.Required ? "YES" : "NO")}");
+                        sb.AppendLine($"  Type: {arg.TypeString}");
+                        sb.AppendLine($"  {arg.Description}");
+
+                        if (arg is OptionsArgument options)
                         {
-                            if (option.Description is null)
-                                sb.AppendLine($"    - '{option.Name}'");
-                            else
-                                sb.AppendLine($"    - '{option.Name}' - {option.Description}");
+                            sb.AppendLine($"  Valid options for this argument:");
+                            foreach (Option option in options.Options)
+                            {
+                                if (option.Description is null)
+                                    sb.AppendLine($"    - '{option.Name}'");
+                                else
+                                    sb.AppendLine($"    - '{option.Name}' - {option.Description}");
+                            }
                         }
                     }
                 }
@@ -251,18 +294,18 @@ Thanks for using my plugin. <3";
                     }
                 }
 
-                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sb)));
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
             }
 
             // Variable help
-            else if (((string)Arguments[0]).StartsWith("{") && ((string)Arguments[0]).EndsWith("}"))
+            else if (text.StartsWith("{") && text.EndsWith("}"))
             {
                 bool valid = false;
 
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
 
-                if (VariableSystemV2.TryGetVariable(Arguments[0].ToUpper(), script, out VariableResult res2, skipProcessing: true))
+                if (VariableSystemV2.TryGetVariable(text, script, out VariableResult res2, skipProcessing: true))
                 {
                     valid = true;
                     IConditionVariable variable = res2.Variable;
@@ -338,11 +381,11 @@ Thanks for using my plugin. <3";
                     return new(false, "Invalid variable provided for the HELP action.");
                 }
 
-                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sb)));
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
             }
 
             // Enum help
-            EnumDefinition match = EnumDefinitions.Definitions.FirstOrDefault(def => def.EnumType.Name.ToUpper() == Arguments[0].ToUpper());
+            EnumDefinition match = EnumDefinitions.Definitions.FirstOrDefault(def => def.EnumType.Name.ToUpper() == text);
             if (match is not null)
             {
                 StringBuilder sbEnum = StringBuilderPool.Pool.Get();
@@ -361,27 +404,27 @@ Thanks for using my plugin. <3";
                     sbEnum.AppendLine($"{n} - {item}");
                 }
 
-                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sbEnum)));
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sbEnum));
             }
 
             // Error Codes
-            if (((string)Arguments[0]).StartsWith("SE-"))
-                Arguments[0] = ((string)Arguments[0]).Replace("SE-", string.Empty);
+            if (text.StartsWith("SE-"))
+                text = text.Replace("SE-", string.Empty);
 
-            if (int.TryParse((string)Arguments[0], out int res) && ErrorGen.TryGetError(res, out ErrorInfo info))
+            if (int.TryParse(text, out int res) && ErrorGen.TryGetError(res, out ErrorInfo info))
             {
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
                 sb.AppendLine($"=== ERROR CODE ===");
                 sb.AppendLine($"ID: SE-{info.Id}");
 
-                if (script.Debug)
+                if (script is not null && script.Debug)
                     sb.AppendLine($"Internal ID: {info.Code}");
 
                 sb.AppendLine(info.Info);
                 sb.AppendLine(info.LongDescription);
 
-                return Display(new(true, StringBuilderPool.Pool.ToStringReturn(sb)));
+                return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
             }
 
             // Nope

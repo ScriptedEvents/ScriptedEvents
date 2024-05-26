@@ -164,6 +164,8 @@
     <Compile Include="API\Features\LogSystem.cs" />
     <Compile Include="API\Features\Exceptions\ScriptedEventsException.cs" />
     <Compile Include="API\Features\Exceptions\VariableException.cs" />
+    <Compile Include="API\Features\ScriptHelpGenerator\Generator.cs" />
+    <Compile Include="API\Features\ScriptHelpGenerator\GeneratorConfig.cs" />
     <Compile Include="API\Features\VariableStorage.cs" />
     <Compile Include="API\Interfaces\IIgnoreSkipAction.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />

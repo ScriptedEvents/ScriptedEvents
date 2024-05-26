@@ -27,7 +27,7 @@
         public string Description => "Removes the action ignoring status enabled by the IF action, if one exists.";
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; set; }
+        public Argument[] ExpectedArguments => Array.Empty<Argument>();
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)

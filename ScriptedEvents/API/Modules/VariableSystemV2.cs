@@ -195,14 +195,21 @@
                     DebugLog("[GetVariable] Variable provided has arguments.", source);
                     argSupport.RawArguments = argList.ToArray();
 
-                    ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, out bool _, false);
+                    if (!skipProcessing)
+                    {
+                        ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, out bool _, false);
 
-                    DebugLog($"[GetVariable] Variable argument processing completed. Success: {processResult.Success} | Message: {processResult.Message ?? "N/A"}", source);
+                        DebugLog($"[GetVariable] Variable argument processing completed. Success: {processResult.Success} | Message: {processResult.Message ?? "N/A"}", source);
 
-                    if (!processResult.Success && !skipProcessing)
-                        return new(false, result.Item1, processResult.Message, result.Item2);
+                        if (!processResult.Success)
+                            return new(false, result.Item1, processResult.Message, result.Item2);
 
-                    argSupport.Arguments = processResult.NewParameters.ToArray();
+                        argSupport.Arguments = processResult.NewParameters.ToArray();
+                    }
+                    else
+                    {
+                        DebugLog("[GetVariable] Argument processing skipped.", source);
+                    }
                 }
 
                 if (result.Item1 is INeedSourceVariable sourcePls)
@@ -386,7 +393,7 @@
 
         private static void DebugLog(string message, Script source)
         {
-            source.DebugLog($"[VariableSystem] {message}");
+            source?.DebugLog($"[VariableSystem] {message}");
         }
     }
 }
