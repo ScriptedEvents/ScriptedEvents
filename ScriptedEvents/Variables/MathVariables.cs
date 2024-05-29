@@ -16,11 +16,76 @@
         public IVariable[] Variables { get; } = new IVariable[]
         {
             new AbsoluteNumber(),
-            new Round(),
+            new MathRound(),
+            new MathPower(),
+            new MathRoot(),
         };
     }
 
-    public class Round : IFloatVariable, IArgumentVariable
+    public class MathPower : IFloatVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{MATH-POWER}";
+
+        /// <inheritdoc/>
+        public string Description => "Returns an exponentiated number.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("value", typeof(float), "Number to exponentiate.", true),
+            new Argument("exponent", typeof(float), "The exponentiating number.", true),
+        };
+
+        /// <inheritdoc/>
+        public float Value
+        {
+            get
+            {
+                return (float)Math.Pow((float)Arguments[0], (float)Arguments[1]);
+            }
+        }
+    }
+
+    public class MathRoot : IFloatVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{MATH-ROOT}";
+
+        /// <inheritdoc/>
+        public string Description => "Returns a root of a number.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("value", typeof(float), "The number to root.", true),
+            new Argument("rootLevel", typeof(float), "The root level. Default: 2", false),
+        };
+
+        /// <inheritdoc/>
+        public float Value
+        {
+            get
+            {
+                float level = Arguments.Length > 1 ? (float)Arguments[1] : 2;
+                return (float)Math.Pow((float)Arguments[0], 1 / level);
+            }
+        }
+    }
+
+    public class MathRound : IFloatVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{MATH-ROUND}";
