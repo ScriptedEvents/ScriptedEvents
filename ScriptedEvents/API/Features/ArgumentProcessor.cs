@@ -232,7 +232,7 @@
                     }
 
                     // Unsupported types: Add the string input
-                    success.NewParameters.Add(VariableSystemV2.ReplaceVariable(input, source, requireBrackets));
+                    success.NewParameters.Add(input);
                     break;
             }
 
