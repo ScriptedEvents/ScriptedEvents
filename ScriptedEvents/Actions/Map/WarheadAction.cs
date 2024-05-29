@@ -86,6 +86,9 @@
                     Warhead.Controller.InstantPrepare();
                     Warhead.Controller.StartDetonation(false, true);
                     break;
+                case "SHAKE":
+                    Warhead.Shake();
+                    break;
             }
 
             return new(true);
