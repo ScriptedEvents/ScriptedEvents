@@ -33,14 +33,14 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("newVariable", typeof(string), "The name of the new variable.", true),
-            new Argument("oldVariable", typeof(IConditionVariable), "The variable to copy or change the name of.", false),
+            new Argument("newVariableName", typeof(string), "The name of the new variable.", true),
+            new Argument("oldVariable", typeof(IConditionVariable), "The value of the variable.", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string newVarName = (string)Arguments[0];
+            string newVarName = RawArguments[0];
             IConditionVariable oldVar = (IConditionVariable)Arguments[1];
 
             if (oldVar is IPlayerVariable oldPlayerVar)
@@ -50,7 +50,7 @@
                     script.UniquePlayerVariables.Remove(oldPlayerVar.Name);
                 }
 
-                script.UniquePlayerVariables[newVarName] = new(oldPlayerVar.Name, oldPlayerVar.Description, oldPlayerVar.Players.ToList());
+                script.AddPlayerVariable(newVarName, oldPlayerVar.Description, oldPlayerVar.Players.ToList());
             }
             else
             {
@@ -59,7 +59,7 @@
                     script.UniqueVariables.Remove(oldVar.Name);
                 }
 
-                script.UniqueVariables[newVarName] = new(oldVar.Name, oldVar.Description, oldVar.String());
+                script.AddVariable(newVarName, oldVar.Description, oldVar.String());
             }
 
             return new(true);
