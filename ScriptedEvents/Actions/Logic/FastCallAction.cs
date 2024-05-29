@@ -61,6 +61,7 @@
 
             if (Arguments.Length < 2)
             {
+                calledScript.Execute();
                 return new(true);
             }
 
