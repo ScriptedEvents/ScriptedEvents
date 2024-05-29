@@ -410,7 +410,7 @@
         {
             if (SpawnRules.Count > 0)
             {
-                List<Player> players = Player.List.ToList();
+                List<Player> players = Player.List.Where(p => p.IsConnected && p.Role.Type is not RoleTypeId.Overwatch).ToList();
                 players.ShuffleList();
 
                 int iterator = 0;
