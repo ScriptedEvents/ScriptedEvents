@@ -60,7 +60,7 @@
 
             switch (Arguments[0].ToUpper())
             {
-                case "ADD":
+                case "REMOVE":
                     action = (player) =>
                     {
                         Item item = player.Items.FirstOrDefault(r => r.Type == itemType);
@@ -71,7 +71,7 @@
                     };
                     break;
 
-                case "REMOVE":
+                case "ADD":
                     action = (player) =>
                     {
                         player.AddItem(itemType, amt);
