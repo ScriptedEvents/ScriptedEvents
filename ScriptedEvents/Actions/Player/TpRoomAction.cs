@@ -45,7 +45,7 @@
             foreach (Player ply in players)
             {
                 if (ply.Role is not FpcRole || !ply.IsConnected) continue;
-                ply.Teleport(rooms[0]);
+                ply.Teleport(rooms.RandomItem());
             }
 
             return new(true);
