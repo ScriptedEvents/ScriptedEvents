@@ -1,7 +1,5 @@
 ﻿namespace ScriptedEvents.Variables.Interfaces
 {
-    using ScriptedEvents.API.Enums;
-
     /// <summary>
     /// Represents a standard grouping of variables.
     /// </summary>
