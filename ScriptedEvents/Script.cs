@@ -179,6 +179,21 @@
         /// </summary>
         public List<CoroutineData> Coroutines { get; } = new();
 
+        /// <summary>
+        /// Gets or sets a value indicating whether a script is currently executing a loop.
+        /// </summary>
+        public bool IsInsideLoopStatement { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the line at which the currently executing loop starts.
+        /// </summary>
+        public int LoopStatementStart { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the players which were not looped through.
+        /// </summary>
+        public List<Player> LoopStatementPlayersToLoopThrough { get; set; } = new();
+
         /// <inheritdoc/>
         public void Dispose()
         {
@@ -216,12 +231,14 @@
             {
                 case "START":
                     CurrentLine = -1;
+                    CheckForLoopExit(-1);
                     return true;
             }
 
             if (Labels.TryGetValue(keyword, out int line))
             {
                 CurrentLine = line;
+                CheckForLoopExit(CurrentLine);
                 return true;
             }
 
@@ -233,6 +250,7 @@
             if (FunctionLabels.TryGetValue(keyword, out int line))
             {
                 CurrentLine = line;
+                CheckForLoopExit(CurrentLine);
                 return true;
             }
 
@@ -299,5 +317,14 @@
 
         public void AddFlag(string key, IEnumerable<string> arguments = null)
             => Flags.Add(new(key, arguments));
+
+        private void CheckForLoopExit(int lineNumber)
+        {
+            if (!IsInsideLoopStatement)
+                return;
+
+            if (LoopStatementStart > lineNumber)
+                IsInsideLoopStatement = false;
+        }
     }
 }
