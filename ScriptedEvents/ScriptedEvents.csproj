@@ -98,11 +98,13 @@
     <Compile Include="Actions\Item\LoadoutAction.cs" />
     <Compile Include="Actions\Logic\CallAction.cs" />
     <Compile Include="Actions\Logic\EndIfAction.cs" />
+    <Compile Include="Actions\Logic\EndLoopAction.cs" />
     <Compile Include="Actions\Logic\FastCallAction.cs" />
     <Compile Include="Actions\Logic\EndFunctionAction.cs" />
-    <Compile Include="Actions\Logic\IfAction.cs" />
+    <Compile Include="Actions\Logic\StartIfAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Logic\StartFunctionAction.cs" />
+    <Compile Include="Actions\Logic\StartLoopAction.cs" />
     <Compile Include="Actions\Logic\TriggerAction.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
