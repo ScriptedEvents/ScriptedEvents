@@ -36,6 +36,7 @@
 - TESLAS - Disables all tesla functionality.
 - WARHEAD - Prevents player(s) from interacting with the warhead.
 - WORKSTATIONS - Disables all workstation functionality.
+- CUFFING - Disables cuffing.
 
 The following keys can ONLY be used in DISABLE and ENABLE. They cannot be tied to specific players.
 - NTFANNOUNCEMENT * - Disables NTF spawn announcements.
