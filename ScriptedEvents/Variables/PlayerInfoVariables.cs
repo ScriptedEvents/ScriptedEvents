@@ -42,7 +42,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(Player[]), "The players variable from which the players will be fetched from.", true),
+            new Argument("players", typeof(IPlayerVariable), "The players variable from which the players will be fetched from.", true),
             new Argument("key", typeof(string), "The key from which the value will be fetched and compared with the required value.", true),
             new Argument("requiredValue", typeof(string), "The value that the player key must have in order to get included.", true),
         };
@@ -52,7 +52,7 @@
         {
             get
             {
-                foreach (Player plr in (PlayerCollection)Arguments[0])
+                foreach (Player plr in ((IPlayerVariable)Arguments[0]).Players)
                 {
                     string key = (string)Arguments[1];
 
