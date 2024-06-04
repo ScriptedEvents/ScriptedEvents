@@ -37,7 +37,7 @@
 # Discord Server: {MainPlugin.DiscordUrl}
 
 # Contributors:
-{Constants.GenerateContributorList()}
+{Constants.GenerateContributorList('#')}
 
 # File Generated at: {DateTime.UtcNow:f}
 # Plugin Version (as of generation): {MainPlugin.Singleton.Version}
