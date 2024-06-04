@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class EndIfAction : IScriptAction, ILogicAction, IHelpInfo, IIgnoreSkipAction
+    public class EndIfAction : IScriptAction, ILogicAction, IHelpInfo, ITerminatesIfAction
     {
         /// <inheritdoc/>
         public string Name => "ENDIF";
@@ -32,7 +32,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            script.SkipExecution = false;
+            script.IfActionBlocksExecution = false;
             return new(true);
         }
     }
