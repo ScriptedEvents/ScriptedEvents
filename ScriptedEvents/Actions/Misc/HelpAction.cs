@@ -113,7 +113,7 @@ Struggling? Join our Discord server for immediate and useful assistance: {MainPl
 Interested in helping others learn the plugin? Let {MainPlugin.Singleton.Author} know on Discord. We'd be happy to have you on our team of volunteer helpers!
 Thanks for using our plugin. <3
 
-Contributors:
+Scripted Events Contributors:
 {Constants.GenerateContributorList('-')}";
                 return new(true, newText);
             }

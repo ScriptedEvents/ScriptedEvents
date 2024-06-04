@@ -36,7 +36,7 @@
 # GitHub: {MainPlugin.GitHub}
 # Discord Server: {MainPlugin.DiscordUrl}
 
-# Contributors:
+# Scripted Events Contributors:
 {Constants.GenerateContributorList('#')}
 
 # File Generated at: {DateTime.UtcNow:f}
