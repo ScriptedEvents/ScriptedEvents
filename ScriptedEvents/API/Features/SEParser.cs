@@ -23,7 +23,7 @@
             if (float.TryParse(input, out float fl))
                 return fl;
 
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.Success)
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
             {
                 return Parse(result.String(), source, requireBrackets);
             }
@@ -43,7 +43,7 @@
             if (int.TryParse(input, out int fl))
                 return fl;
 
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.Success)
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
             {
                 return ParseInt(result.String(), source, requireBrackets);
             }
@@ -63,7 +63,7 @@
             if (long.TryParse(input, out long fl))
                 return fl;
 
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.Success)
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
             {
                 return ParseLong(result.String(), source, requireBrackets);
             }
@@ -131,7 +131,7 @@
                 return true;
             }
 
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.Success)
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.ProcessorSuccess)
             {
                 return TryParse(vresult.String(), out result, source, requireBrackets);
             }
@@ -150,7 +150,7 @@
             {
             }
 
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.Success)
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.ProcessorSuccess)
             {
                 return Parse(vresult.String(), enumType, source, requireBrackets);
             }

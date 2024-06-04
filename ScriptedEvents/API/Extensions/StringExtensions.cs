@@ -62,7 +62,7 @@
                 return true;
             }
 
-            if (source is not null && VariableSystemV2.TryGetVariable(input, source, out VariableResult result) && result.Success)
+            if (source is not null && VariableSystemV2.TryGetVariable(input, source, out VariableResult result) && result.ProcessorSuccess)
             {
                 return IsBool(result.String(), out value, source);
             }
