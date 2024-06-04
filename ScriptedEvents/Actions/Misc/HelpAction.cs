@@ -111,7 +111,7 @@ If you don't want to generate documentation on your computer, please use one of 
 Every value returned from those lists can also be used in shelp to retrieve documentation about specific features. For example, 'TESLA' will give you more information about the TESLA action.
 Struggling? Join our Discord server for immediate and useful assistance: {MainPlugin.DiscordUrl}
 Interested in helping others learn the plugin? Let {MainPlugin.Singleton.Author} know on Discord. We'd be happy to have you on our team of volunteer helpers!
-Thanks for using my plugin. <3";
+Thanks for using our plugin. <3";
                 return new(true, newText);
             }
 

@@ -14,8 +14,8 @@
 
         /// <inheritdoc/>
         public string Contents => @$"!-- DISABLE
-# Hello, and thank you for using my plugin, Scripted Events!
-# I'm going to go over a couple of brief things in here you should know about setting up scripts. It's relatively easy!
+# Hello, and thank you for using our plugin, Scripted Events!
+# We're going to go over a couple of brief things in here you should know about setting up scripts. It's relatively easy!
 # First and foremost, all scripts must be placed inside of the 'Scripts' folder in order to be executed. Otherwise, the plugin will not recognize them as executable scripts.
 # Additionally, the Scripts folder will generate on server startup full of already-functioning scripts. You do not have to keep them, and you can delete the ScriptedEvents folder to re-generate them.
 # All scripts in the Scripts folder can be loaded and executed by running ""script ex [filename]"" in-game (without the .txt extension).
@@ -30,8 +30,8 @@
 # It can even give you information about ScriptedEvents errors by providing their error code (eg. ""shelp SE-101"").
 
 # Lastly, have fun! This is meant to be a fun plugin to mess around with, as well as a utility plugin to create what you can imagine without the need for a custom plugin.
-# If you have any questions, do not hesitate to join the Discord server and ask! I'm here to help you!
-# - Thunder
+# If you have any questions, do not hesitate to join the Discord server and ask! We're here to help you!
+# - {MainPlugin.Singleton.Author}
 
 # GitHub: {MainPlugin.GitHub}
 # Discord Server: {MainPlugin.DiscordUrl}
