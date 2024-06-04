@@ -219,7 +219,7 @@
             }
             else
             {
-                return new(false, null, $"Unknown variable '{name}' provided.", false);
+                return new(true, null, $"Unknown variable '{name}' provided.", false);
             }
 
             ListPool<string>.Pool.Return(argList);
@@ -255,7 +255,7 @@
         public static bool TryGetPlayers(string name, Script source, out PlayerCollection players, bool requireBrackets = true)
         {
             DebugLog($"[TryGetPlayers] Trying to fetch {name} variable. [requireBrackets {requireBrackets}]", source);
-            if (TryGetVariable(name, source, out VariableResult result, requireBrackets) && result.Success)
+            if (TryGetVariable(name, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
             {
                 if (result.Variable is IPlayerVariable plrVariable)
                 {
@@ -289,7 +289,7 @@
         {
             if (TryGetVariable(input, source, out VariableResult var, requireBrackets))
             {
-                if (!var.Success) return var.Message;
+                if (!var.ProcessorSuccess) return var.Message;
                 return var.String();
             }
 
@@ -319,7 +319,7 @@
 
                 source.DebugLog("Valid variable.");
 
-                if (!vresult.Success)
+                if (!vresult.ProcessorSuccess)
                 {
                     Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] Variable '{vresult.Variable.Name}' argument error: {vresult.Message}");
                     continue;

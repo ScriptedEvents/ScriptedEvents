@@ -3,7 +3,6 @@
     using System;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
@@ -49,7 +48,7 @@
                 }
                 else if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult res))
                 {
-                    if (!res.Success)
+                    if (!res.ProcessorSuccess)
                         return new(false, res.Message);
 
                     script.CallerScript.AddVariable(varName, "Created using the RETURN action.", res.String(script));
