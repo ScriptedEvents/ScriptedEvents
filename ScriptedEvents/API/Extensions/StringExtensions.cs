@@ -64,7 +64,7 @@
 
             if (source is not null && VariableSystemV2.TryGetVariable(input, source, out VariableResult result) && result.Success)
             {
-                return IsBool(result.Variable.String(), out value, source);
+                return IsBool(result.String(), out value, source);
             }
 
             value = false;

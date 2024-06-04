@@ -25,7 +25,7 @@
 
             if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.Success)
             {
-                return Parse(result.Variable.String(), source, requireBrackets);
+                return Parse(result.String(), source, requireBrackets);
             }
 
             return float.NaN;
@@ -45,7 +45,7 @@
 
             if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.Success)
             {
-                return ParseInt(result.Variable.String(), source, requireBrackets);
+                return ParseInt(result.String(), source, requireBrackets);
             }
 
             return int.MinValue;
@@ -65,7 +65,7 @@
 
             if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.Success)
             {
-                return ParseLong(result.Variable.String(), source, requireBrackets);
+                return ParseLong(result.String(), source, requireBrackets);
             }
 
             return int.MinValue;
@@ -133,7 +133,7 @@
 
             if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.Success)
             {
-                return TryParse(vresult.Variable.String(), out result, source, requireBrackets);
+                return TryParse(vresult.String(), out result, source, requireBrackets);
             }
 
             return false;
@@ -152,7 +152,7 @@
 
             if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.Success)
             {
-                return Parse(vresult.Variable.String(), enumType, source, requireBrackets);
+                return Parse(vresult.String(), enumType, source, requireBrackets);
             }
 
             return null;

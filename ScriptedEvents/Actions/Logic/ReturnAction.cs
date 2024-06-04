@@ -52,7 +52,7 @@
                     if (!res.Success)
                         return new(false, res.Message);
 
-                    script.CallerScript.AddVariable(varName, "Created using the RETURN action.", res.Variable.String(script));
+                    script.CallerScript.AddVariable(varName, "Created using the RETURN action.", res.String(script));
                 }
                 else
                 {

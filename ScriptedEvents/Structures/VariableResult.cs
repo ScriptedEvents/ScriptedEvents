@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Structures
 {
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
@@ -41,5 +42,7 @@
         /// Gets the newly retrieved variable.
         /// </summary>
         public IConditionVariable Variable { get; }
+
+        public string String(Script source = null, bool reversed = false) => Variable.String(source, reversed);
     }
 }

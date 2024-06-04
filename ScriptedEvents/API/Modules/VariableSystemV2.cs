@@ -290,7 +290,7 @@
             if (TryGetVariable(input, source, out VariableResult var, requireBrackets))
             {
                 if (!var.Success) return var.Message;
-                return var.Variable.String();
+                return var.String();
             }
 
             return input;
@@ -327,7 +327,7 @@
 
                 try
                 {
-                    input = input.Replace(variable, vresult.Variable.String(source, vresult.Reversed));
+                    input = input.Replace(variable, vresult.String(source, vresult.Reversed));
                 }
                 catch (InvalidCastException e)
                 {
