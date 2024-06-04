@@ -130,14 +130,33 @@
             string metaPath = Path.Combine(BasePath, "DocInfo.txt");
             File.WriteAllText(metaPath, $"Documentation Generator\nGenerated at: {DateTime.UtcNow:f}\nSE version: {MainPlugin.Singleton.Version}\nExperimental DLL: {(MainPlugin.IsExperimental ? "YES" : "NO")}\n\n\n-- DO NOT MODIFY BELOW THIS LINE --\n!_V{MainPlugin.Singleton.Version}");
 
+            // Delete old folders
+            if (Directory.Exists(ActionPath))
+            {
+                Log.Info("Old actions documentation exists and has been deleted.");
+                Directory.Delete(ActionPath, true);
+            }
+
+            if (Directory.Exists(VariablePath))
+            {
+                Log.Info("Old variable documentation exists and has been deleted.");
+                Directory.Delete(VariablePath, true);
+            }
+
+            if (Directory.Exists(ErrorsPath))
+            {
+                Log.Info("Old error documentation exists and has been deleted.");
+                Directory.Delete(ErrorsPath, true);
+            }
+
+            if (Directory.Exists(EnumsPath))
+            {
+                Log.Info("Old enum documentation exists and has been deleted.");
+                Directory.Delete(EnumsPath, true);
+            }
+
             if (config.generate_actions)
             {
-                if (Directory.Exists(ActionPath))
-                {
-                    Log.Info("Old actions documentation exists and has been deleted.");
-                    Directory.Delete(ActionPath, true);
-                }
-
                 Directory.CreateDirectory(ActionPath);
 
                 Stopwatch watch = Stopwatch.StartNew();
@@ -166,12 +185,6 @@
 
             if (config.generate_variables)
             {
-                if (Directory.Exists(VariablePath))
-                {
-                    Log.Info("Old variable documentation exists and has been deleted.");
-                    Directory.Delete(VariablePath, true);
-                }
-
                 Directory.CreateDirectory(VariablePath);
 
                 Stopwatch watch = Stopwatch.StartNew();
@@ -202,12 +215,6 @@
 
             if (config.generate_enums)
             {
-                if (Directory.Exists(EnumsPath))
-                {
-                    Log.Info("Old enum documentation exists and has been deleted.");
-                    Directory.Delete(EnumsPath, true);
-                }
-
                 Directory.CreateDirectory(EnumsPath);
 
                 Stopwatch watch = Stopwatch.StartNew();
@@ -231,12 +238,6 @@
 
             if (config.generate_error_codes)
             {
-                if (Directory.Exists(ErrorsPath))
-                {
-                    Log.Info("Old error documentation exists and has been deleted.");
-                    Directory.Delete(ErrorsPath, true);
-                }
-
                 Directory.CreateDirectory(ErrorsPath);
 
                 Stopwatch watch = Stopwatch.StartNew();
