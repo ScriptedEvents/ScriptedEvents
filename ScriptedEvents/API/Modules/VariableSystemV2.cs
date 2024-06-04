@@ -197,7 +197,7 @@
 
                     if (!skipProcessing)
                     {
-                        ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, out bool _, false);
+                        ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, false);
 
                         DebugLog($"[GetVariable] Variable argument processing completed. Success: {processResult.Success} | Message: {processResult.Message ?? "N/A"}", source);
 

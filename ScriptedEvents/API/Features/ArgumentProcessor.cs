@@ -133,19 +133,19 @@
                     break;
                 case "Int32": // int
                     if (!SEParser.TryParse(input, out int intRes, source, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                     success.NewParameters.Add(intRes);
                     break;
                 case "Int64": // long
                     if (!SEParser.TryParse(input, out long longRes, source, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                     success.NewParameters.Add(longRes);
                     break;
                 case "Single": // float
                     if (!SEParser.TryParse(input, out float floatRes, source, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
 
                     success.NewParameters.Add(floatRes);
                     break;
@@ -159,30 +159,30 @@
                 // Variable Interfaces
                 case "IConditionVariable":
                     if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
 
                     success.NewParameters.Add(variable.Variable);
                     break;
                 case "IStringVariable":
                     if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable2, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                     if (variable2.Variable is not IStringVariable strVar)
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidStringVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidStringVariable, input));
 
                     success.NewParameters.Add(strVar);
                     break;
                 case "IPlayerVariable":
                     if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable3, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                     if (variable3.Variable is not IPlayerVariable playerVar)
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
 
                     success.NewParameters.Add(playerVar);
                     break;
 
                 case "IItemVariable":
                     if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable4, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                     if (variable4.Variable is not IItemVariable itemVar)
 
                         // TODO: ???
@@ -196,19 +196,19 @@
                 // Array Types:
                 case "Room[]":
                     if (!ScriptModule.TryGetRooms(input, out Room[] rooms, source))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
 
                     success.NewParameters.Add(rooms);
                     break;
                 case "Door[]":
                     if (!ScriptModule.TryGetDoors(input, out Door[] doors, source))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidDoor, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidDoor, input));
 
                     success.NewParameters.Add(doors);
                     break;
                 case "Lift[]":
                     if (!ScriptModule.TryGetLifts(input, out Lift[] lifts, source))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidLift, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidLift, input));
 
                     success.NewParameters.Add(lifts);
                     break;
@@ -216,7 +216,7 @@
                 // Special
                 case "PlayerCollection":
                     if (!ScriptModule.TryGetPlayers(input, null, out PlayerCollection players, source))
-                        return new(false, expected.ArgumentName, players.Message);
+                        return new(false, true, expected.ArgumentName, players.Message);
 
                     success.NewParameters.Add(players);
                     break;
@@ -282,7 +282,7 @@
             else
             {
                 Log.Info("this is the first time");
-                if (!VariableSystem.TryGetPlayers(playerVarNameLoopingThrough, out PlayerCollection outPlayers, source))
+                if (!VariableSystemV2.TryGetPlayers(playerVarNameLoopingThrough, source, out PlayerCollection outPlayers))
                     return new(false, true, playerVarNameLoopingThrough, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, playerVarNameLoopingThrough));
                 playersToLoop = outPlayers.GetInnerList();
             }
