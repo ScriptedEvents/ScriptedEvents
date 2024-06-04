@@ -41,7 +41,7 @@
             if (!outcome.Success)
                 return new(false, $"IF execution error: {outcome.Message}", ActionFlags.FatalError);
 
-            script.SkipExecution = !outcome.Passed;
+            script.IfActionBlocksExecution = !outcome.Passed;
 
             return new(true);
         }
