@@ -27,7 +27,57 @@
             new PlayerData(),
             new Command(),
             new Show(),
+            new GetPlayersByData(),
         };
+    }
+
+    public class GetPlayersByData : IFloatVariable, IPlayerVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{GETPLAYERSBYDATA}";
+
+        /// <inheritdoc/>
+        public string Description => "Gets all players from a variable if their playerdata matches the required value.";
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("players", typeof(IPlayerVariable), "The players variable from which the players will be fetched from.", true),
+            new Argument("key", typeof(string), "The key from which the value will be fetched and compared with the required value.", true),
+            new Argument("requiredValue", typeof(string), "The value that the player key must have in order to get included.", true),
+        };
+
+        /// <inheritdoc/>
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                foreach (Player plr in ((IPlayerVariable)Arguments[0]).Players)
+                {
+                    string key = (string)Arguments[1];
+
+                    if (!plr.SessionVariables.TryGetValue(key, out object value))
+                        continue;
+
+                    if (value is not string valueString)
+                        continue;
+
+                    if (valueString != (string)Arguments[2])
+                        continue;
+
+                    yield return plr;
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public float Value => Players.Count();
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
     }
 
     public class PlayerData : IStringVariable, IArgumentVariable, INeedSourceVariable, IHasAliasVariable

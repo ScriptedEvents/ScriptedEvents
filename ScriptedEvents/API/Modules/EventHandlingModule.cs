@@ -622,6 +622,12 @@
                 ev.IsAllowed = false;
         }
 
+        public void OnHandcuffing(HandcuffingEventArgs ev)
+        {
+            if (DisabledKeys.Contains("CUFFING") || DisabledForPlayer("CUFFING", ev.Player))
+                ev.IsAllowed = false;
+        }
+
         public void OnInteractingLocker(InteractingLockerEventArgs ev)
         {
             if (ev.Locker is PedestalScpLocker && (DisabledKeys.Contains("PEDESTALS") || DisabledForPlayer("PEDESTALS", ev.Player)))

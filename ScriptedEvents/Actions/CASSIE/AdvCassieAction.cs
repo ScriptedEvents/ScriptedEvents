@@ -1,7 +1,5 @@
 ﻿namespace ScriptedEvents.Actions
 {
-    using System;
-
     using Exiled.API.Extensions;
     using Exiled.API.Features;
 
@@ -14,10 +12,10 @@
     public class AdvCassieAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "ADVCASSIE";
+        public string Name => "CASSIEPLAYER";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "CASSIEPLR" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -29,22 +27,23 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Cassie;
 
         /// <inheritdoc/>
-        public string Description => "Makes a cassie announcement with specified advanced settings.";
+        public string Description => "Makes a cassie announcement for specified players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to play the CASSIE announcement for.", true),
-            new Argument("makeNoise", typeof(bool), "If FALSE, CASSIE will not make the jingle sound.", true),
+            new OptionsArgument("mode", true,
+                new("SILENT", "Makes a silent announcement."),
+                new("LOUD", "Makes a loud announcement.")),
+            new Argument("players", typeof(Player[]), "The players to play the CASSIE announcement for.", true),
             new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-
-            bool makeNoise = (bool)Arguments[1];
+            PlayerCollection players = (PlayerCollection)Arguments[1];
+            bool isNoisy = Arguments[0].ToUpper() == "LOUD";
             string text = Arguments.JoinMessage(2);
 
             string[] cassieArgs = text.Split('|');
@@ -59,7 +58,7 @@
                 text = VariableSystemV2.ReplaceVariables(text, script);
                 foreach (Player ply in players)
                 {
-                    ply.MessageTranslated(text, text, makeNoise: makeNoise);
+                    ply.MessageTranslated(text, text, makeNoise: isNoisy);
                 }
 
                 return new(true);
@@ -72,7 +71,7 @@
             {
                 foreach (Player ply in players)
                 {
-                    ply.PlayCassieAnnouncement(cassieArgs[0], makeNoise: makeNoise);
+                    ply.PlayCassieAnnouncement(cassieArgs[0], makeNoise: isNoisy);
                 }
 
                 return new(true);
@@ -80,7 +79,7 @@
 
             foreach (Player ply in players)
             {
-                ply.MessageTranslated(cassieArgs[0], cassieArgs[1], makeNoise: makeNoise);
+                ply.MessageTranslated(cassieArgs[0], cassieArgs[1], makeNoise: isNoisy);
             }
 
             return new(true);

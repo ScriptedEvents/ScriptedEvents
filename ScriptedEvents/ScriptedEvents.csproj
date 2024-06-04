@@ -100,7 +100,7 @@
     <Compile Include="Actions\Logic\EndIfAction.cs" />
     <Compile Include="Actions\Logic\FastCallAction.cs" />
     <Compile Include="Actions\Logic\EndFunctionAction.cs" />
-    <Compile Include="Actions\Logic\IfAction.cs" />
+    <Compile Include="Actions\Logic\StartIfAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Logic\StartFunctionAction.cs" />
     <Compile Include="Actions\Logic\TriggerAction.cs" />
@@ -167,7 +167,7 @@
     <Compile Include="API\Features\ScriptHelpGenerator\Generator.cs" />
     <Compile Include="API\Features\ScriptHelpGenerator\GeneratorConfig.cs" />
     <Compile Include="API\Features\VariableStorage.cs" />
-    <Compile Include="API\Interfaces\IIgnoreSkipAction.cs" />
+    <Compile Include="API\Interfaces\ITerminatesIfAction.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
     <Compile Include="Actions\Lights\LightColorAction.cs" />
@@ -222,6 +222,7 @@
     <Compile Include="Structures\OptionsArgument.cs" />
     <Compile Include="Structures\PlayerCollection.cs" />
     <Compile Include="Structures\PlayerDisable.cs" />
+    <Compile Include="Structures\PlayerLoopInfo.cs" />
     <Compile Include="Structures\RoleTypeIdOrTeam.cs" />
     <Compile Include="Structures\VariableResult.cs" />
     <Compile Include="Translations.cs" />

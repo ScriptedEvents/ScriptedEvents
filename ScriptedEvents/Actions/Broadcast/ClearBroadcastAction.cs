@@ -2,14 +2,16 @@
 {
     using System;
 
+    using Exiled.API.Features;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class EndIfAction : IScriptAction, ILogicAction, IHelpInfo, ITerminatesIfAction
+    public class ClearBroadcastAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "ENDIF";
+        public string Name => "CLEARBROADCAST";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,18 +23,26 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Logic;
+        public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
 
         /// <inheritdoc/>
-        public string Description => "Removes the action ignoring status enabled by the IF action, if one exists.";
+        public string Description => "Clears specific players' broadcast queue.";
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments => Array.Empty<Argument>();
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("players", typeof(Player[]), "The players to affect.", true),
+        };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            script.IfActionBlocksExecution = false;
+            PlayerCollection players = (PlayerCollection)Arguments[0];
+            foreach (Player player in players)
+            {
+                player.ClearBroadcasts();
+            }
+
             return new(true);
         }
     }

@@ -166,7 +166,7 @@
         /// <summary>
         /// Gets or sets a value indicating whether an IF statement is blocking the execution of actions.
         /// </summary>
-        public bool SkipExecution { get; set; } = false;
+        public bool IfActionBlocksExecution { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
@@ -182,6 +182,11 @@
         /// Gets a <see cref="List{T}"/> of coroutines run by this script.
         /// </summary>
         public List<CoroutineData> Coroutines { get; } = new();
+
+        /// <summary>
+        /// Gets or sets the info about an ongoing player loop.
+        /// </summary>
+        public PlayerLoopInfo PlayerLoopInfo { get; set; } = null;
 
         /// <inheritdoc/>
         public void Dispose()

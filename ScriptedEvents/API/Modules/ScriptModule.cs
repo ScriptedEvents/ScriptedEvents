@@ -797,15 +797,15 @@ namespace ScriptedEvents.API.Modules
                 if (!scr.Actions.TryGet(scr.CurrentLine, out IAction action) || action == null)
                     continue;
 
-                if (scr.SkipExecution && action is not IIgnoreSkipAction)
+                if (scr.IfActionBlocksExecution && action is not ITerminatesIfAction)
                     continue;
 
                 ActionResponse resp;
                 float? delay = null;
 
                 // Process Arguments
-                ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, action.RawArguments, action, scr, out bool failedConditionBlock);
-                if (!res.Success)
+                ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, action.RawArguments, action, scr);
+                if (res.Errored)
                 {
                     // Todo: Place error better later
                     // -> [WARN] Error trying to check 'value' argument: Invalid Object provided. See all options by running 'shelp Object' in the server console.
@@ -813,11 +813,8 @@ namespace ScriptedEvents.API.Modules
                     break;
                 }
 
-                if (failedConditionBlock)
-                {
-                    scr.DebugLog($"The condition block returned FALSE, skipping execution of this action.");
+                if (!res.Success)
                     continue;
-                }
 
                 action.Arguments = res.NewParameters.ToArray();
 

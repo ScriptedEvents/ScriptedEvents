@@ -5,11 +5,12 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Interfaces;
 
     public class FastCallAction : IHelpInfo, IScriptAction
     {
@@ -46,7 +47,7 @@
 
             try
             {
-                calledScript = MainPlugin.ScriptModule.ReadScript(scriptName, script.Sender, false);
+                calledScript = ScriptHelper.ReadScript(scriptName, script.Sender, false);
                 calledScript.CallerScript = script;
             }
             catch (DisabledScriptException)
@@ -60,18 +61,19 @@
 
             if (Arguments.Length < 2)
             {
+                calledScript.Execute();
                 return new(true);
             }
 
             string[] args = RawArguments.JoinMessage(1).Split(' ');
 
-            calledScript.AddVariable("{ARGS}", "Variable created using the CALL action.", VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(1), script));
+            calledScript.AddVariable("{ARGS}", "Variable created using the CALL action.", VariableSystem.ReplaceVariables(RawArguments.JoinMessage(1), script));
 
             int arg = 0;
             foreach (string varName in args)
             {
                 arg++;
-                if (VariableSystemV2.TryGetPlayers(varName, script, out PlayerCollection val, requireBrackets: true))
+                if (VariableSystem.TryGetPlayers(varName, out PlayerCollection val, script, requireBrackets: true))
                 {
                     calledScript.AddPlayerVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", val);
 
@@ -79,9 +81,9 @@
                     continue;
                 }
 
-                if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult result, requireBrackets: true) && result.Success)
+                if (VariableSystem.TryGetVariable(varName, out IConditionVariable var, out bool _, script, requireBrackets: true))
                 {
-                    calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", result.Variable.String());
+                    calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String());
 
                     script.DebugLog($"Added variable {varName} (as '{{ARG{arg}}}') to the called script.");
                     continue;
