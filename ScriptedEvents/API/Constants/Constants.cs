@@ -13,16 +13,16 @@
 
         public static readonly Contributor[] Contributors =
         {
-            new("Thunder", "Lead Programmer"),
-            new("Elektryk_Andrzej", "Programmer, SECAS Developer, Discord Support"),
-            new("Yamato", "Programmer"),
+            new("Thunder", "Lead Developer"),
+            new("Elektryk_Andrzej", "Developer, Discord Support"),
 
             new("Saskyc", "Discord Support"),
+            new("Jraylor", "Discord Support"),
             new("YourHolinessVonGustav", "Discord Support"),
 
-            new("Rue", "RueI Developer"),
-            new("Johnodon", "EasyEvents Developer"),
-            new("PintTheDragon", "EasyEvents Developer"),
+            new("Yamato", "Former Developer"),
+            new("Johnodon", "Former EasyEvents Developer"),
+            new("PintTheDragon", "Former EasyEvents Developer"),
         };
 
         public static string GenerateContributorList()
