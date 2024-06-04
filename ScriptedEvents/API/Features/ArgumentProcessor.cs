@@ -24,21 +24,29 @@
         /// <summary>
         /// Processes arguments.
         /// </summary>
-        /// <param name="expected">The expected arguments.</param>
+        /// <param name="expectedArguments">The expected arguments.</param>
         /// <param name="args">The provided arguments.</param>
         /// <param name="action">The action or variable performing the process.</param>
         /// <param name="source">The script source.</param>
-        /// <param name="failedConditionBlock">S.</param>
         /// <param name="requireBrackets">If brackets are required to convert variables.</param>
         /// <returns>The result of the process.</returns>
-        public static ArgumentProcessResult Process(Argument[] expected, string[] args, IScriptComponent action, Script source, out bool failedConditionBlock, bool requireBrackets = true)
+        public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script source, bool requireBrackets = true)
         {
-            failedConditionBlock = false;
-
-            if (expected is null || expected.Length == 0)
+            Log.Info("called");
+            if (expectedArguments is null || expectedArguments.Length == 0)
                 return new(true);
 
-            int required = expected.Count(arg => arg.Required);
+            int required = expectedArguments.Count(arg => arg.Required);
+
+            ArgumentProcessResult processedForLoop = HandlePlayerListComprehension(args, source, out string[] strippedArgs);
+            Log.Info($"success: {processedForLoop.Success} | errored: {processedForLoop.Errored} | message: {processedForLoop.Message}");
+            if (!processedForLoop.Success)
+            {
+                Log.Warn("skipped by for loop");
+                return processedForLoop;
+            }
+
+            args = strippedArgs;
 
             int conditionSectionKeyword = args.IndexOf("$IF");
             if (conditionSectionKeyword != -1)
@@ -46,20 +54,23 @@
                 string[] conditionArgs = args.Skip(conditionSectionKeyword + 1).ToArray();
                 args = args.Take(conditionSectionKeyword).ToArray();
                 source.DebugLog($"args = {string.Join(",", args)} | conditionArgs = {string.Join(",", conditionArgs)}");
-                failedConditionBlock = !ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source).Passed;
+                if (!ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source).Passed)
+                {
+                    return new(false);
+                }
             }
 
             if (args.Length < required)
             {
-                IEnumerable<string> args2 = expected.Select(arg => $"{(arg.Required ? "<" : "[")}{arg.ArgumentName}{(arg.Required ? ">" : "]")}");
-                return new(false, string.Empty, ErrorGen.Get(ErrorCode.MissingArguments, action.Name, action is IAction ? "action" : "variable", required, string.Join(", ", args2)));
+                IEnumerable<string> args2 = expectedArguments.Select(arg => $"{(arg.Required ? "<" : "[")}{arg.ArgumentName}{(arg.Required ? ">" : "]")}");
+                return new(false, true, string.Empty, ErrorGen.Get(ErrorCode.MissingArguments, action.Name, action is IAction ? "action" : "variable", required, string.Join(", ", args2)));
             }
 
             ArgumentProcessResult success = new(true);
 
-            for (int i = 0; i < expected.Length; i++)
+            for (int i = 0; i < expectedArguments.Length; i++)
             {
-                Argument expect = expected[i];
+                Argument expect = expectedArguments[i];
                 string input = string.Empty;
 
                 if (args.Length > i)
@@ -75,9 +86,9 @@
 
             // If the raw argument list is larger than the expected list, do not process any extra arguments
             // Edge-cases with long strings being the last parameter
-            if (args.Length > expected.Length)
+            if (args.Length > expectedArguments.Length)
             {
-                success.NewParameters.AddRange(args.Skip(expected.Length));
+                success.NewParameters.AddRange(args.Skip(expectedArguments.Length));
             }
 
             success.NewParameters.RemoveAll(o => o is string st && string.IsNullOrWhiteSpace(st));
@@ -104,7 +115,7 @@
             if (expected is OptionsArgument options)
             {
                 if (!options.Options.Any(o => o.Name.ToUpper() == input.ToUpper()))
-                    return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Option, input, expected.ArgumentName, action.Name, string.Join(", ", options.Options.Select(x => x.Name))));
+                    return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Option, input, expected.ArgumentName, action.Name, string.Join(", ", options.Options.Select(x => x.Name))));
 
                 success.NewParameters.Add(input);
                 source?.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
@@ -116,31 +127,31 @@
                 // Number Types:
                 case "Boolean":
                     if (!input.IsBool(out bool result, source))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidBoolean, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidBoolean, input));
 
                     success.NewParameters.Add(result);
                     break;
                 case "Int32": // int
                     if (!VariableSystem.TryParse(input, out int intRes, source, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                     success.NewParameters.Add(intRes);
                     break;
                 case "Int64": // long
                     if (!VariableSystem.TryParse(input, out long longRes, source, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                     success.NewParameters.Add(longRes);
                     break;
                 case "Single": // float
                     if (!VariableSystem.TryParse(input, out float floatRes, source, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
 
                     success.NewParameters.Add(floatRes);
                     break;
                 case "Char":
                     if (!char.TryParse(input, out char charRes))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidCharacter, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidCharacter, input));
 
                     success.NewParameters.Add(charRes);
                     break;
@@ -148,36 +159,36 @@
                 // Variable Interfaces
                 case "IConditionVariable":
                     if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable, out _, source, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
 
                     success.NewParameters.Add(variable);
                     break;
                 case "IStringVariable":
                     if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable2, out _, source, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                     if (variable2 is not IStringVariable strVar)
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidStringVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidStringVariable, input));
 
                     success.NewParameters.Add(strVar);
                     break;
                 case "IPlayerVariable":
                     if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable3, out _, source, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                     if (variable3 is not IPlayerVariable playerVar)
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
 
                     success.NewParameters.Add(playerVar);
                     break;
 
                 case "IItemVariable":
                     if (!VariableSystem.TryGetVariable(input, out IConditionVariable variable4, out _, source, requireBrackets))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                     if (variable4 is not IItemVariable itemVar)
 
                         // TODO: ???
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                     if (Item.Get(itemVar.Value) is null)
-                        return new(false, expected.ArgumentName, "The provided item variable is not valid.");
+                        return new(false, true, expected.ArgumentName, "The provided item variable is not valid.");
 
                     success.NewParameters.Add(itemVar);
                     break;
@@ -185,25 +196,25 @@
                 // Array Types:
                 case "Player[]":
                     if (!ScriptHelper.TryGetPlayers(input, null, out PlayerCollection players, source))
-                        return new(false, expected.ArgumentName, players.Message);
+                        return new(false, true, expected.ArgumentName, players.Message);
 
                     success.NewParameters.Add(players);
                     break;
                 case "Room[]":
                     if (!ScriptHelper.TryGetRooms(input, out Room[] rooms, source))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
 
                     success.NewParameters.Add(rooms);
                     break;
                 case "Door[]":
                     if (!ScriptHelper.TryGetDoors(input, out Door[] doors, source))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidDoor, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidDoor, input));
 
                     success.NewParameters.Add(doors);
                     break;
                 case "Lift[]":
                     if (!ScriptHelper.TryGetLifts(input, out Lift[] lifts, source))
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidLift, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidLift, input));
 
                     success.NewParameters.Add(lifts);
                     break;
@@ -215,7 +226,7 @@
                     else if (VariableSystem.TryParse(input, out Team teamResult, source, requireBrackets))
                         success.NewParameters.Add(teamResult);
                     else
-                        return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidRoleTypeOrTeam, input));
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidRoleTypeOrTeam, input));
 
                     break;
 
@@ -225,7 +236,7 @@
                     {
                         object res = VariableSystem.Parse(input, expected.Type, source);
                         if (res is null)
-                            return new(false, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidEnumGeneric, input, expected.Type.Name));
+                            return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidEnumGeneric, input, expected.Type.Name));
 
                         success.NewParameters.Add(res);
                         break;
@@ -239,6 +250,65 @@
             source?.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
 
             return success;
+        }
+
+        private static ArgumentProcessResult HandlePlayerListComprehension(string[] inArgs, Script source, out string[] args)
+        {
+            args = inArgs;
+            int loopSyntaxIndex = inArgs.IndexOf("$FOR");
+
+            if (loopSyntaxIndex == -1)
+                return new(true);
+
+            string[] loopArgs = inArgs.Skip(loopSyntaxIndex + 1).ToArray();
+            args = inArgs.Take(loopSyntaxIndex).ToArray();
+
+            string newPlayerVarName = loopArgs[0];
+            string inKeyword = loopArgs[1];
+            string playerVarNameLoopingThrough = loopArgs[2];
+
+            if (inKeyword != "IN")
+                Log.Warn($"[LINE {source.CurrentLine + 1}] $FOR statement requires 'IN' keyword, provided '{inKeyword}'.");
+
+            List<Player> playersToLoop;
+
+            Log.Info($"curent line is {source.CurrentLine}, for loop is at {source.CurrentLine}");
+
+            if (source.PlayerLoopInfo is not null && source.PlayerLoopInfo.Line == source.CurrentLine)
+            {
+                Log.Info("this is not the first time");
+                playersToLoop = source.PlayerLoopInfo.PlayersToLoopThrough;
+            }
+            else
+            {
+                Log.Info("this is the first time");
+                if (!VariableSystem.TryGetPlayers(playerVarNameLoopingThrough, out PlayerCollection outPlayers, source))
+                    return new(false, true, playerVarNameLoopingThrough, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, playerVarNameLoopingThrough));
+                playersToLoop = outPlayers.GetInnerList();
+            }
+
+            Log.Info($"there are {playersToLoop.Count} players in {playerVarNameLoopingThrough}");
+
+            if (playersToLoop.Count == 0)
+            {
+                Log.Info($"there are 0 players, returning");
+                return new(false);
+            }
+
+            Player player = playersToLoop.FirstOrDefault();
+            playersToLoop.Remove(player);
+
+            Log.Info($"adding variavle {newPlayerVarName}");
+
+            source.AddPlayerVariable(newPlayerVarName, string.Empty, new[] { player });
+
+            source.PlayerLoopInfo = new(source.CurrentLine, playersToLoop);
+
+            Log.Info($"now there are {source.PlayerLoopInfo.PlayersToLoopThrough.Count} left to loop");
+            Log.Info($"jumping to line {source.CurrentLine}");
+            source.Jump(source.CurrentLine);
+
+            return new(true);
         }
     }
 }
