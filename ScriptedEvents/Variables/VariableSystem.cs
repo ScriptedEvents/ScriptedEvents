@@ -215,9 +215,9 @@
                 {
                     argSupport.RawArguments = argList.ToArray();
 
-                    ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, out bool _, false);
+                    ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, false);
 
-                    if (!processResult.Success && !skipProcessing)
+                    if (processResult.Errored && !skipProcessing)
                         return new(false, null, processResult.Message);
 
                     argSupport.Arguments = processResult.NewParameters.ToArray();

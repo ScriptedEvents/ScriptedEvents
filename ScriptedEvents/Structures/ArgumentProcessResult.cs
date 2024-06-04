@@ -10,12 +10,14 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ArgumentProcessResult"/> class.
         /// </summary>
-        /// <param name="success">Success or not.</param>
+        /// <param name="success">Is action permitted to run.</param>
+        /// <param name="errored">Did an error occur while processing.</param>
         /// <param name="argument">If unsuccessful, which argument failed.</param>
         /// <param name="message">The error message.</param>
-        public ArgumentProcessResult(bool success, string argument = "", string message = "")
+        public ArgumentProcessResult(bool success, bool errored = false, string argument = "", string message = "")
         {
             Success = success;
+            Errored = errored;
             FailedArgument = argument;
             Message = message;
 
@@ -26,6 +28,11 @@
         /// Gets a value indicating whether or not the processing was successful.
         /// </summary>
         public bool Success { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the processing was successful.
+        /// </summary>
+        public bool Errored { get; }
 
         /// <summary>
         /// Gets a value indicating the name of the failed argument, if unsuccessful.
