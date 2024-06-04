@@ -128,7 +128,7 @@
 
             // Documentation data
             string metaPath = Path.Combine(BasePath, "DocInfo.txt");
-            File.WriteAllText(metaPath, $"Documentation Generator\nGenerated at: {DateTime.UtcNow:g}\nSE version: {MainPlugin.Singleton.Version}");
+            File.WriteAllText(metaPath, $"Documentation Generator\nGenerated at: {DateTime.UtcNow:f}\nSE version: {MainPlugin.Singleton.Version}\nExperimental DLL: {(MainPlugin.IsExperimental ? "YES" : "NO")}");
 
             if (config.generate_actions)
             {
