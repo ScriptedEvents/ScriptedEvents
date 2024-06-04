@@ -139,6 +139,15 @@
                 {
                     Log.Info(Constants.ItsMyBirthday);
                 }
+
+                bool isUpdated = API.Features.ScriptHelpGenerator.Generator.CheckUpdated(out string docMessage);
+                if (docMessage != "SKIP")
+                {
+                    if (isUpdated)
+                        Log.Info("[DOCUMENTATION GENERATOR]: " + docMessage);
+                    else
+                        Log.Warn("[DOCUMENTATION GENERATOR]: " + docMessage);
+                }
             });
 
             // Delete help file on startup

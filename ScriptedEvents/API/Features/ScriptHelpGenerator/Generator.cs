@@ -128,7 +128,7 @@
 
             // Documentation data
             string metaPath = Path.Combine(BasePath, "DocInfo.txt");
-            File.WriteAllText(metaPath, $"Documentation Generator\nGenerated at: {DateTime.UtcNow:f}\nSE version: {MainPlugin.Singleton.Version}\nExperimental DLL: {(MainPlugin.IsExperimental ? "YES" : "NO")}");
+            File.WriteAllText(metaPath, $"Documentation Generator\nGenerated at: {DateTime.UtcNow:f}\nSE version: {MainPlugin.Singleton.Version}\nExperimental DLL: {(MainPlugin.IsExperimental ? "YES" : "NO")}\n\n\n-- DO NOT MODIFY BELOW THIS LINE --\n!_V{MainPlugin.Singleton.Version}");
 
             if (config.generate_actions)
             {
@@ -289,6 +289,51 @@
             catch (Exception e)
             {
                 message = $"Unknown exception while opening file: {(MainPlugin.Configs.Debug ? e : e.Message)}";
+                return false;
+            }
+        }
+
+        public static bool CheckUpdated(out string message)
+        {
+            if (!Directory.Exists(BasePath))
+            {
+                message = "SKIP";
+                return false;
+            }
+
+            string metaPath = Path.Combine(BasePath, "DocInfo.txt");
+
+            if (!File.Exists(metaPath))
+            {
+                message = "DocInfo file cannot be found in your generated documentation. Consider re-generating your local documentation using the 'shelp GENERATE' command.";
+                return false;
+            }
+
+            string contents = File.ReadAllText(metaPath);
+
+            try
+            {
+                int versionIndex = contents.IndexOf("!_V");
+                if (versionIndex == -1)
+                {
+                    message = "DocInfo file does not contain version information regarding documentation. Consider re-generating your local documentation using the 'shelp GENERATE' command.";
+                    return false;
+                }
+
+                Version version = new(contents.Substring(versionIndex + 3));
+
+                if (version < MainPlugin.Singleton.Version)
+                {
+                    message = $"Your local ScriptedEvents documentation is NOT UP TO DATE!! Consider re-generating your local documentation using the 'shelp GENERATE' command. Plugin Version: {MainPlugin.Singleton.Version} Doc Version: {version}";
+                    return false;
+                }
+
+                message = $"Your local ScriptedEvents documentation is up to date. Plugin Version: {MainPlugin.Singleton.Version} Doc Version: {version}";
+                return true;
+            }
+            catch (Exception e)
+            {
+                message = $"Error when performing documentation generation update checking. {(MainPlugin.Configs.Debug ? e : e.Message)}";
                 return false;
             }
         }
