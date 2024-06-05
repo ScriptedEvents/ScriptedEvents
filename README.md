@@ -32,19 +32,28 @@ scripted_events:
   broadcast_issues: true
   # If set to true, players with overwatch enabled will not be affected by any commands related to players.
   ignore_overwatch: true
-  # List of scripts to run as soon as the round starts.
-  auto_run_scripts: []
-  # List of scripts to automatically re-run as soon as they finish.
-  loop_scripts: []
+  # The name of the folder which will store variables long term. This can be a path, but it will start from the ScriptedEvents directory, not root.
+  storage_foldername: 'VariableStorage'
   # The string to use for countdowns.
   countdown_string: '<size=26><color=#5EB3FF><b>{TEXT}</b></color></size>\n{TIME}'
-  # The maximum amount of actions that can run in one second, before the script is force-stopped. Increasing this value allows for more actions to occur at the same time, but increases the risk of the server crashing (or restarting due to missed heartbeats). This maximum can be bypassed entirely by including the "!-- NOSAFETY" flag in a script.
-  max_actions_per_second: 25
+  # The amount of times the WAITUNTIL action will update per second. Can cause performace issues if set too high.
+  wait_until_frequency: 2
   # Define a custom set of permissions used to run a certain script. The provided permission will be added AFTER script.execute (eg. script.execute.examplepermission for the provided example).
   required_permissions:
     ExampleScriptNameHere: examplepermission
-  # [ADVANCED] Define scripts to execute when certain events occur.
-  on: {}
+  # [ADVANCED] Define a custom command to run a script when it is executed.
+  commands:
+  - name: 'example'
+    enabled: false
+    description: 'An example custom command!'
+    permission: 'example'
+    type: PlayerConsole
+    default_response: true
+    cooldown: -1
+    player_cooldown: -1
+    run:
+    - 'MyScript1'
+    - 'MyScript2'
 ```
 
 ## For developers
