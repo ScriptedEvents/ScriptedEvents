@@ -16,6 +16,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Tutorials;
     using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
@@ -28,6 +29,7 @@
         public static readonly string VariablePath = Path.Combine(BasePath, "Variables");
         public static readonly string ErrorsPath = Path.Combine(BasePath, "Errors");
         public static readonly string EnumsPath = Path.Combine(BasePath, "Enums");
+        public static readonly string TutorialsPath = Path.Combine(BasePath, "Tutorials");
         public static readonly string ConfigPath = Path.Combine(BasePath, "generator_config.txt");
         public static readonly Type ConfigType = typeof(GeneratorConfig);
 
@@ -155,6 +157,12 @@
                 Directory.Delete(EnumsPath, true);
             }
 
+            if (Directory.Exists(TutorialsPath))
+            {
+                Log.Info("Old tutorials documentation exists and has been deleted.");
+                Directory.Delete(TutorialsPath, true);
+            }
+
             if (config.generate_actions)
             {
                 Directory.CreateDirectory(ActionPath);
@@ -257,6 +265,36 @@
                 watch.Stop();
 
                 Log.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
+            }
+
+            if (config.generate_tutorials)
+            {
+                Directory.CreateDirectory(TutorialsPath);
+
+                Stopwatch watch = Stopwatch.StartNew();
+                foreach (Type type in MainPlugin.Singleton.Assembly.GetTypes())
+                {
+                    if (typeof(ITutorial).IsAssignableFrom(type) && type.IsClass)
+                    {
+                        ITutorial tutorial = (ITutorial)Activator.CreateInstance(type);
+                        string categoryPath = Path.Combine(TutorialsPath, tutorial.Category);
+
+                        if (!Directory.Exists(categoryPath))
+                        {
+                            Log.Debug($"Created directory for tutorial category '{tutorial.Category}'");
+                            Directory.CreateDirectory(categoryPath);
+                        }
+
+                        Log.Debug("Creating documentation for tutorial: " + tutorial.TutorialName);
+
+                        string path = Path.Combine(categoryPath, tutorial.FileName + ".txt");
+                        File.WriteAllText(path, $"--------------\n{tutorial.TutorialName}\nAuthor: {tutorial.Author}\nTutorial Type: {tutorial.Category}\n--------------\n\n{tutorial.Contents}");
+                    }
+                }
+
+                watch.Stop();
+
+                Log.Info($"Completed generating documentation for tutorials. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
 
             try
