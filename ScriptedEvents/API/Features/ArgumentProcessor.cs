@@ -32,19 +32,9 @@
         /// <returns>The result of the process.</returns>
         public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script source, bool requireBrackets = true)
         {
-            Log.Info("called");
-            if (expectedArguments is null || expectedArguments.Length == 0)
-                return new(true);
-
-            int required = expectedArguments.Count(arg => arg.Required);
-
             ArgumentProcessResult processedForLoop = HandlePlayerListComprehension(args, source, out string[] strippedArgs);
-            Log.Info($"success: {processedForLoop.Success} | errored: {processedForLoop.Errored} | message: {processedForLoop.Message}");
             if (!processedForLoop.Success)
-            {
-                Log.Warn("skipped by for loop");
                 return processedForLoop;
-            }
 
             args = strippedArgs;
 
@@ -55,10 +45,13 @@
                 args = args.Take(conditionSectionKeyword).ToArray();
                 source.DebugLog($"args = {string.Join(",", args)} | conditionArgs = {string.Join(",", conditionArgs)}");
                 if (!ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source).Passed)
-                {
                     return new(false);
-                }
             }
+
+            if (expectedArguments is null || expectedArguments.Length == 0)
+                return new(true);
+
+            int required = expectedArguments.Count(arg => arg.Required);
 
             if (args.Length < required)
             {
@@ -271,41 +264,29 @@
                 Log.Warn($"[LINE {source.CurrentLine + 1}] $FOR statement requires 'IN' keyword, provided '{inKeyword}'.");
 
             List<Player> playersToLoop;
-
-            Log.Info($"curent line is {source.CurrentLine}, for loop is at {source.CurrentLine}");
-
             if (source.PlayerLoopInfo is not null && source.PlayerLoopInfo.Line == source.CurrentLine)
             {
-                Log.Info("this is not the first time");
                 playersToLoop = source.PlayerLoopInfo.PlayersToLoopThrough;
             }
             else
             {
-                Log.Info("this is the first time");
                 if (!VariableSystemV2.TryGetPlayers(playerVarNameLoopingThrough, source, out PlayerCollection outPlayers))
                     return new(false, true, playerVarNameLoopingThrough, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, playerVarNameLoopingThrough));
                 playersToLoop = outPlayers.GetInnerList();
             }
 
-            Log.Info($"there are {playersToLoop.Count} players in {playerVarNameLoopingThrough}");
-
             if (playersToLoop.Count == 0)
             {
-                Log.Info($"there are 0 players, returning");
                 return new(false);
             }
 
             Player player = playersToLoop.FirstOrDefault();
             playersToLoop.Remove(player);
 
-            Log.Info($"adding variavle {newPlayerVarName}");
-
             source.AddPlayerVariable(newPlayerVarName, string.Empty, new[] { player });
 
             source.PlayerLoopInfo = new(source.CurrentLine, playersToLoop);
 
-            Log.Info($"now there are {source.PlayerLoopInfo.PlayersToLoopThrough.Count} left to loop");
-            Log.Info($"jumping to line {source.CurrentLine}");
             source.Jump(source.CurrentLine);
 
             return new(true);
