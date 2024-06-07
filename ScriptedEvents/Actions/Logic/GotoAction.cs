@@ -38,14 +38,12 @@
             string label = (string)Arguments[0];
 
             if (script.JumpToLabel(label))
-            {
                 return new(true);
-            }
 
             int prevLine = script.CurrentLine;
             if (script.JumpToFunctionLabel(label))
             {
-                script.JumpLines.Add(prevLine);
+                script.FunctionLabelHistory.Add(prevLine);
                 return new(true);
             }
 
