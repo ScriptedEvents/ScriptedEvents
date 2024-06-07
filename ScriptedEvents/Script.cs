@@ -156,7 +156,7 @@
         /// <summary>
         /// Gets or sets all line positions from where a JUMP action was executed.
         /// </summary>
-        public List<int> JumpLines { get; set; } = new();
+        public List<int> FunctionLabelHistory { get; set; } = new();
 
         /// <summary>
         /// Gets the original script which ran this script using the CALL action.

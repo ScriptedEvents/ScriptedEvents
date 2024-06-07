@@ -31,12 +31,12 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (script.JumpLines.Count == 0)
+            if (script.FunctionLabelHistory.Count == 0)
                 return new(false, ErrorGen.Generate(ErrorCode.InvalidActionUsage, "Closing function syntax.", "Closing syntax must be used after a function was called using the GOTO action."));
 
-            int lineNum = script.JumpLines.Last();
+            int lineNum = script.FunctionLabelHistory.Last();
             script.Jump(lineNum + 1);
-            script.JumpLines.Remove(lineNum);
+            script.FunctionLabelHistory.Remove(lineNum);
 
             return new(true);
         }
