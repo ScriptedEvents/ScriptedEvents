@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Contains the result of a call to <see cref="API.Features.ArgumentProcessor.Process(Argument[], string[], API.Interfaces.IScriptComponent, Script, bool)"/>.
+    /// Contains the result of a call to <see cref="API.Features.ArgumentProcessor.Process"/>.
     /// </summary>
     public class ArgumentProcessResult
     {
