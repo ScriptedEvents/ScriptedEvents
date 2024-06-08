@@ -261,7 +261,7 @@
         public void DebugLog(string input)
         {
             if (Debug)
-                Log.Send($"[{MainPlugin.Singleton.Name}] {input}", LogLevel.Debug, ConsoleColor.Gray);
+                Log.Send($"[{MainPlugin.Singleton.Name}] {input}", LogLevel.Debug, ConsoleColor.Green);
         }
 
         /// <summary>
