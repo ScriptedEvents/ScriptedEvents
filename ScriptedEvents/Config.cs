@@ -18,7 +18,7 @@
         [Description("Whether or not to enable Scripted Events informational logs.")]
         public bool EnableLogs { get; set; } = true;
 
-        [Description("Disables ALL logs from Scripted Events, including warnings and errors. Not recommended unless you know what you're doing.")]
+        [Description("Disables ALL logs from Scripted Events, including warnings and errors. Overrides other logging settings. Not recommended unless you know what you're doing.")]
         public bool DisableAllLogs { get; set; } = false;
 
         [Description("If a script encounters an error, broadcast a notice to the person who ran the command, informing of the error. The broadcast ONLY shows to the command executor.")]
