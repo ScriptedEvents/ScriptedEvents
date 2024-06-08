@@ -16,6 +16,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Tutorials;
     using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
@@ -28,6 +29,7 @@
         public static readonly string VariablePath = Path.Combine(BasePath, "Variables");
         public static readonly string ErrorsPath = Path.Combine(BasePath, "Errors");
         public static readonly string EnumsPath = Path.Combine(BasePath, "Enums");
+        public static readonly string TutorialsPath = Path.Combine(BasePath, "Tutorials");
         public static readonly string ConfigPath = Path.Combine(BasePath, "generator_config.txt");
         public static readonly Type ConfigType = typeof(GeneratorConfig);
 
@@ -121,23 +123,48 @@
 
             foreach (FieldInfo fieldInfo in ConfigType.GetFields())
             {
-                Log.Debug($"{fieldInfo.Name} = {fieldInfo.GetValue(config)}");
+                Logger.Debug($"{fieldInfo.Name} = {fieldInfo.GetValue(config)}");
             }
 
             File.Delete(ConfigPath);
 
             // Documentation data
             string metaPath = Path.Combine(BasePath, "DocInfo.txt");
-            File.WriteAllText(metaPath, $"Documentation Generator\nGenerated at: {DateTime.UtcNow:g}\nSE version: {MainPlugin.Singleton.Version}");
+            File.WriteAllText(metaPath, $"Documentation Generator\nGenerated at: {DateTime.UtcNow:f}\nSE version: {MainPlugin.Singleton.Version}\nExperimental DLL: {(MainPlugin.IsExperimental ? "YES" : "NO")}\n\n\n-- DO NOT MODIFY BELOW THIS LINE --\n!_V{MainPlugin.Singleton.Version}");
+
+            // Delete old folders
+            if (Directory.Exists(ActionPath))
+            {
+                Logger.Info("Old actions documentation exists and has been deleted.");
+                Directory.Delete(ActionPath, true);
+            }
+
+            if (Directory.Exists(VariablePath))
+            {
+                Logger.Info("Old variable documentation exists and has been deleted.");
+                Directory.Delete(VariablePath, true);
+            }
+
+            if (Directory.Exists(ErrorsPath))
+            {
+                Logger.Info("Old error documentation exists and has been deleted.");
+                Directory.Delete(ErrorsPath, true);
+            }
+
+            if (Directory.Exists(EnumsPath))
+            {
+                Logger.Info("Old enum documentation exists and has been deleted.");
+                Directory.Delete(EnumsPath, true);
+            }
+
+            if (Directory.Exists(TutorialsPath))
+            {
+                Logger.Info("Old tutorials documentation exists and has been deleted.");
+                Directory.Delete(TutorialsPath, true);
+            }
 
             if (config.generate_actions)
             {
-                if (Directory.Exists(ActionPath))
-                {
-                    Log.Info("Old actions documentation exists and has been deleted.");
-                    Directory.Delete(ActionPath, true);
-                }
-
                 Directory.CreateDirectory(ActionPath);
 
                 Stopwatch watch = Stopwatch.StartNew();
@@ -148,7 +175,7 @@
                     if ((action is IHiddenAction && !MainPlugin.Configs.Debug) || action is not IHelpInfo helpInfo || action.IsObsolete(out _))
                         continue;
 
-                    Log.Debug("Creating documentation for action: " + action.Name);
+                    Logger.Debug("Creating documentation for action: " + action.Name);
 
                     ActionResponse text = HelpAction.GenerateText(action.Name);
 
@@ -161,17 +188,11 @@
 
                 watch.Stop();
 
-                Log.Info($"Completed generating documentation for actions. Elapsed time: {watch.ElapsedMilliseconds}ms");
+                Logger.Info($"Completed generating documentation for actions. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
 
             if (config.generate_variables)
             {
-                if (Directory.Exists(VariablePath))
-                {
-                    Log.Info("Old variable documentation exists and has been deleted.");
-                    Directory.Delete(VariablePath, true);
-                }
-
                 Directory.CreateDirectory(VariablePath);
 
                 Stopwatch watch = Stopwatch.StartNew();
@@ -183,7 +204,7 @@
 
                     foreach (IVariable variable in group.Variables)
                     {
-                        Log.Debug("Creating documentation for variable: " + variable.Name);
+                        Logger.Debug("Creating documentation for variable: " + variable.Name);
 
                         ActionResponse text = HelpAction.GenerateText(variable.Name);
 
@@ -197,23 +218,17 @@
 
                 watch.Stop();
 
-                Log.Info($"Completed generating documentation for variables. Elapsed time: {watch.ElapsedMilliseconds}ms");
+                Logger.Info($"Completed generating documentation for variables. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
 
             if (config.generate_enums)
             {
-                if (Directory.Exists(EnumsPath))
-                {
-                    Log.Info("Old enum documentation exists and has been deleted.");
-                    Directory.Delete(EnumsPath, true);
-                }
-
                 Directory.CreateDirectory(EnumsPath);
 
                 Stopwatch watch = Stopwatch.StartNew();
                 foreach (EnumDefinition def in EnumDefinitions.Definitions)
                 {
-                    Log.Debug("Creating documentation for enum: " + def.EnumType.Name);
+                    Logger.Debug("Creating documentation for enum: " + def.EnumType.Name);
 
                     ActionResponse text = HelpAction.GenerateText(def.EnumType.Name.ToUpper());
 
@@ -226,23 +241,17 @@
 
                 watch.Stop();
 
-                Log.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
+                Logger.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
 
             if (config.generate_error_codes)
             {
-                if (Directory.Exists(ErrorsPath))
-                {
-                    Log.Info("Old error documentation exists and has been deleted.");
-                    Directory.Delete(ErrorsPath, true);
-                }
-
                 Directory.CreateDirectory(ErrorsPath);
 
                 Stopwatch watch = Stopwatch.StartNew();
                 foreach (ErrorInfo errorInfo in ErrorList.Errors)
                 {
-                    Log.Debug("Creating documentation for error: " + errorInfo.Id);
+                    Logger.Debug("Creating documentation for error: " + errorInfo.Id);
 
                     ActionResponse text = HelpAction.GenerateText(errorInfo.Id.ToString());
 
@@ -255,7 +264,37 @@
 
                 watch.Stop();
 
-                Log.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
+                Logger.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
+            }
+
+            if (config.generate_tutorials)
+            {
+                Directory.CreateDirectory(TutorialsPath);
+
+                Stopwatch watch = Stopwatch.StartNew();
+                foreach (Type type in MainPlugin.Singleton.Assembly.GetTypes())
+                {
+                    if (typeof(ITutorial).IsAssignableFrom(type) && type.IsClass)
+                    {
+                        ITutorial tutorial = (ITutorial)Activator.CreateInstance(type);
+                        string categoryPath = Path.Combine(TutorialsPath, tutorial.Category);
+
+                        if (!Directory.Exists(categoryPath))
+                        {
+                            Logger.Debug($"Created directory for tutorial category '{tutorial.Category}'");
+                            Directory.CreateDirectory(categoryPath);
+                        }
+
+                        Logger.Debug("Creating documentation for tutorial: " + tutorial.TutorialName);
+
+                        string path = Path.Combine(categoryPath, tutorial.FileName + ".txt");
+                        File.WriteAllText(path, $"--------------\n{tutorial.TutorialName}\nAuthor: {tutorial.Author}\nTutorial Type: {tutorial.Category}\n--------------\n\n{tutorial.Contents}");
+                    }
+                }
+
+                watch.Stop();
+
+                Logger.Info($"Completed generating documentation for tutorials. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
 
             try
@@ -289,6 +328,51 @@
             catch (Exception e)
             {
                 message = $"Unknown exception while opening file: {(MainPlugin.Configs.Debug ? e : e.Message)}";
+                return false;
+            }
+        }
+
+        public static bool CheckUpdated(out string message)
+        {
+            if (!Directory.Exists(BasePath))
+            {
+                message = "SKIP";
+                return false;
+            }
+
+            string metaPath = Path.Combine(BasePath, "DocInfo.txt");
+
+            if (!File.Exists(metaPath))
+            {
+                message = "DocInfo file cannot be found in your generated documentation. Consider re-generating your local documentation using the 'shelp GENERATE' command.";
+                return false;
+            }
+
+            string contents = File.ReadAllText(metaPath);
+
+            try
+            {
+                int versionIndex = contents.IndexOf("!_V");
+                if (versionIndex == -1)
+                {
+                    message = "DocInfo file does not contain version information regarding documentation. Consider re-generating your local documentation using the 'shelp GENERATE' command.";
+                    return false;
+                }
+
+                Version version = new(contents.Substring(versionIndex + 3));
+
+                if (version < MainPlugin.Singleton.Version)
+                {
+                    message = $"Your local ScriptedEvents documentation is NOT UP TO DATE!! Consider re-generating your local documentation using the 'shelp GENERATE' command. Plugin Version: {MainPlugin.Singleton.Version} Doc Version: {version}";
+                    return false;
+                }
+
+                message = $"Your local ScriptedEvents documentation is up to date. Plugin Version: {MainPlugin.Singleton.Version} Doc Version: {version}";
+                return true;
+            }
+            catch (Exception e)
+            {
+                message = $"Error when performing documentation generation update checking. {(MainPlugin.Configs.Debug ? e : e.Message)}";
                 return false;
             }
         }

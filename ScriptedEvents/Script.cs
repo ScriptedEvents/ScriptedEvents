@@ -10,6 +10,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -32,7 +33,7 @@
             UniquePlayerVariables = DictionaryPool<string, CustomPlayerVariable>.Pool.Get();
             UniqueId = Guid.NewGuid();
 
-            Log.Debug($"Created new script object | ID: {UniqueId}");
+            Logger.Debug($"Created new script object | ID: {UniqueId}");
         }
 
         /// <summary>
@@ -191,7 +192,7 @@
         /// <inheritdoc/>
         public void Dispose()
         {
-            Log.Debug($"Disposing script object | ID: {UniqueId}");
+            Logger.Debug($"Disposing script object | ID: {UniqueId}");
 
             Sender = null;
             Actions = null;
@@ -256,11 +257,11 @@
         /// <summary>
         /// Logs a debug message to the console.
         /// </summary>
-        /// <param name="input">The input to log.</param>
+        /// <param name="input">The input to Logger.</param>
         public void DebugLog(string input)
         {
             if (Debug)
-                Log.Send($"[{MainPlugin.Singleton.Name}] [Script: {ScriptName}] [L: {CurrentLine + 1}] {input}", LogLevel.Debug, ConsoleColor.Gray);
+                Log.Send($"[{MainPlugin.Singleton.Name}] {input}", LogLevel.Debug, ConsoleColor.Green);
         }
 
         /// <summary>

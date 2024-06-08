@@ -261,9 +261,10 @@
             string playerVarNameLoopingThrough = loopArgs[2];
 
             if (inKeyword != "IN")
-                Log.Warn($"[LINE {source.CurrentLine + 1}] $FOR statement requires 'IN' keyword, provided '{inKeyword}'.");
+                Logger.Warn($"$FOR statement requires 'IN' keyword, provided '{inKeyword}'.", source);
 
             List<Player> playersToLoop;
+
             if (source.PlayerLoopInfo is not null && source.PlayerLoopInfo.Line == source.CurrentLine)
             {
                 playersToLoop = source.PlayerLoopInfo.PlayersToLoopThrough;

@@ -82,10 +82,8 @@
 
             if (CooldownMode == CommandCooldownMode.Player && Player.TryGet(sender, out Player ply))
             {
-                Log.Info(1);
                 if (playerCooldown.ContainsKey(ply.UserId) && (DateTime.UtcNow - playerCooldown[ply.UserId]).TotalSeconds < Cooldown)
                 {
-                    Log.Info(2);
                     int cooldownLeft = (int)(Cooldown - (DateTime.UtcNow - playerCooldown[ply.UserId]).TotalSeconds);
                     response = cooldownLeft == 1
                         ? MainPlugin.Translations.CommandCooldown.Replace("{SECONDS}", cooldownLeft.ToString())

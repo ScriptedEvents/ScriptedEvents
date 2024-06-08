@@ -1,6 +1,6 @@
 ﻿namespace ScriptedEvents.API.Modules
 {
-    using Exiled.API.Features;
+    using ScriptedEvents.API.Features;
 
     public class SEModule
     {
@@ -12,17 +12,17 @@
 
         public virtual void Init()
         {
-            Log.Info($"Initializing SE module '{Name}'");
+            Logger.Info($"Initializing SE module '{Name}'");
             IsActive = true;
         }
 
         public virtual void Kill()
         {
-            Log.Info($"Terminating SE module '{Name}'");
+            Logger.Info($"Terminating SE module '{Name}'");
             IsActive = false;
         }
 
         public virtual void GenerateFiles() =>
-            Log.Info($"Generating files for SE module '{Name}'");
+            Logger.Info($"Generating files for SE module '{Name}'");
     }
 }

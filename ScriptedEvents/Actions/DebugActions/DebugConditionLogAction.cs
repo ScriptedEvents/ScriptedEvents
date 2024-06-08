@@ -35,7 +35,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Info(ConditionHelperV2.Evaluate(Arguments.JoinMessage(0), script));
+            Logger.Info(ConditionHelperV2.Evaluate(Arguments.JoinMessage(0), script).ToString(), script);
             return new(true);
         }
     }

@@ -219,7 +219,7 @@
             }
             else
             {
-                return new(false, null, $"Unknown variable '{name}' provided.", false);
+                return new(true, null, $"Unknown variable '{name}' provided.", false);
             }
 
             ListPool<string>.Pool.Return(argList);
@@ -255,7 +255,7 @@
         public static bool TryGetPlayers(string name, Script source, out PlayerCollection players, bool requireBrackets = true)
         {
             DebugLog($"[TryGetPlayers] Trying to fetch {name} variable. [requireBrackets {requireBrackets}]", source);
-            if (TryGetVariable(name, source, out VariableResult result, requireBrackets) && result.Success)
+            if (TryGetVariable(name, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
             {
                 if (result.Variable is IPlayerVariable plrVariable)
                 {
@@ -289,8 +289,8 @@
         {
             if (TryGetVariable(input, source, out VariableResult var, requireBrackets))
             {
-                if (!var.Success) return var.Message;
-                return var.Variable.String();
+                if (!var.ProcessorSuccess) return var.Message;
+                return var.String();
             }
 
             return input;
@@ -319,23 +319,23 @@
 
                 source.DebugLog("Valid variable.");
 
-                if (!vresult.Success)
+                if (!vresult.ProcessorSuccess)
                 {
-                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] Variable '{vresult.Variable.Name}' argument error: {vresult.Message}");
+                    Logger.Warn($"Variable '{vresult.Variable.Name}' argument error: {vresult.Message}", source);
                     continue;
                 }
 
                 try
                 {
-                    input = input.Replace(variable, vresult.Variable.String(source, vresult.Reversed));
+                    input = input.Replace(variable, vresult.String(source, vresult.Reversed));
                 }
                 catch (InvalidCastException e)
                 {
-                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, e.Message)}");
+                    Logger.Warn(ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, e.Message), source);
                 }
                 catch (Exception e)
                 {
-                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, source?.Debug == true ? e : e.Message)}");
+                    Logger.Warn(ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, source?.Debug == true ? e : e.Message), source);
                 }
             }
 
@@ -385,7 +385,7 @@
                 {
                     IVariableGroup temp = (IVariableGroup)Activator.CreateInstance(type);
 
-                    Log.Debug($"Adding variable group: {type.Name}");
+                    Logger.Debug($"Adding variable group: {type.Name}");
                     Groups.Add(temp);
                 }
             }
@@ -393,7 +393,7 @@
 
         private static void DebugLog(string message, Script source)
         {
-            source?.DebugLog($"[VariableSystem] {message}");
+            Logger.Debug($"[VariableSystem] {message}", source);
         }
     }
 }

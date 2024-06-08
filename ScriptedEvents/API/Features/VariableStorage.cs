@@ -53,7 +53,7 @@
             }
             catch (FileNotFoundException)
             {
-                Log.Error($"Trying to read {varName} from storage, but it hasn't been saved in the storage folder.");
+                Logger.Error($"Trying to read {varName} from storage, but it hasn't been saved in the storage folder.");
                 return "INVALID - VARIABLE DOESN'T EXIST";
             }
             catch (Exception ex)
@@ -70,7 +70,7 @@
                 if (!Directory.Exists(DirPath))
                 {
                     Directory.CreateDirectory(DirPath);
-                    Log.Warn("Storage folder was absent; a new folder has been created.");
+                    Logger.Warn("Storage folder was absent; a new folder has been created.");
                 }
 
                 string filePath = GetFilePath(varName);

@@ -155,13 +155,14 @@
     <Compile Include="API\Constants\EnumDefinitions.cs" />
     <Compile Include="API\Enums\CommandCooldownMode.cs" />
     <Compile Include="API\Enums\ErrorCode.cs" />
+    <Compile Include="API\Enums\LogType.cs" />
     <Compile Include="API\Extensions\InterfaceExtensions.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
     <Compile Include="API\Features\ArgumentProcessor.cs" />
     <Compile Include="API\Features\ConditionHelperV2.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Features\ErrorGen.cs" />
-    <Compile Include="API\Features\LogSystem.cs" />
+    <Compile Include="API\Features\Logger.cs" />
     <Compile Include="API\Features\Exceptions\ScriptedEventsException.cs" />
     <Compile Include="API\Features\Exceptions\VariableException.cs" />
     <Compile Include="API\Features\ScriptHelpGenerator\Generator.cs" />
@@ -226,6 +227,8 @@
     <Compile Include="Structures\RoleTypeIdOrTeam.cs" />
     <Compile Include="Structures\VariableResult.cs" />
     <Compile Include="Translations.cs" />
+    <Compile Include="Tutorials\Actions\KillActionTutorial.cs" />
+    <Compile Include="Tutorials\ITutorial.cs" />
     <Compile Include="Variables\Interfaces\IItemVariable.cs" />
     <Compile Include="Variables\Interfaces\IHasAliasVariable.cs" />
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
@@ -343,6 +346,9 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tutorials\Installation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

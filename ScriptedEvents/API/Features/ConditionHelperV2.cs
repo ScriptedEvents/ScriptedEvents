@@ -161,21 +161,21 @@
             {
                 int index = input.IndexOf(floatCondition.Symbol);
 
-                Log.Debug($"CND: {floatCondition.GetType().FullName}");
+                Logger.Debug($"CND: {floatCondition.GetType().FullName}");
                 if (index != -1)
                 {
-                    Log.Debug($"INDEX: " + index);
-                    Log.Debug("SYM BEF: " + input[index - 1]);
-                    Log.Debug("SYM AFT: " + input[index + floatCondition.Symbol.Length]);
+                    Logger.Debug($"INDEX: " + index);
+                    Logger.Debug("SYM BEF: " + input[index - 1]);
+                    Logger.Debug("SYM AFT: " + input[index + floatCondition.Symbol.Length]);
                     if (!IgnoreChars.Contains(input[index - 1]) && !IgnoreChars.Contains(input[index + floatCondition.Symbol.Length]))
                     {
-                        Log.Debug("MATCH: TRUE");
+                        Logger.Debug("MATCH: TRUE");
                         match = floatCondition;
                         break;
                     }
                 }
 
-                Log.Debug("MATCH: FALSE");
+                Logger.Debug("MATCH: FALSE");
             }
 
             if (match is not null)
@@ -198,21 +198,21 @@
             {
                 int index = input.IndexOf(stringCondition.Symbol);
 
-                Log.Debug($"CND: {stringCondition.GetType().FullName}");
+                Logger.Debug($"CND: {stringCondition.GetType().FullName}");
                 if (index != -1)
                 {
-                    Log.Debug($"INDEX: " + index);
-                    Log.Debug("SYM BEF: " + input[index - 1]);
-                    Log.Debug("SYM AFT: " + input[index + stringCondition.Symbol.Length]);
+                    Logger.Debug($"INDEX: " + index);
+                    Logger.Debug("SYM BEF: " + input[index - 1]);
+                    Logger.Debug("SYM AFT: " + input[index + stringCondition.Symbol.Length]);
                     if (!IgnoreChars.Contains(input[index - 1]) && !IgnoreChars.Contains(input[index + stringCondition.Symbol.Length]))
                     {
-                        Log.Debug("MATCH: TRUE");
+                        Logger.Debug("MATCH: TRUE");
                         match2 = stringCondition;
                         break;
                     }
                 }
 
-                Log.Debug("MATCH: FALSE");
+                Logger.Debug("MATCH: FALSE");
             }
 
             if (match2 is not null)

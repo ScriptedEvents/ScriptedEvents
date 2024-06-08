@@ -61,7 +61,7 @@
 
                 if (scr.Disabled)
                 {
-                    Log.Warn($"Note: The {scr.ScriptName} script is disabled, and cannot be executed until the DISABLE flag is removed. Script contents still shown below.");
+                    Logger.Warn($"Note: The {scr.ScriptName} script is disabled, and cannot be executed until the DISABLE flag is removed. Script contents still shown below.");
                 }
 
                 StringBuilder sb = StringBuilderPool.Pool.Get();

@@ -81,7 +81,7 @@
 
                 if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult var, requireBrackets: true))
                 {
-                    calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.Variable.String());
+                    calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String());
 
                     script.DebugLog($"Added variable {varName} (as '{{ARG{arg}}}') to the called script.");
                     continue;

@@ -25,12 +25,12 @@
             new("PintTheDragon", "Former EasyEvents Developer"),
         };
 
-        public static string GenerateContributorList()
+        public static string GenerateContributorList(char? prefixCharacter)
         {
             StringBuilder sb = StringBuilderPool.Pool.Get();
             foreach (Contributor c in Contributors)
             {
-                sb.AppendLine("# " + c.ToString());
+                sb.AppendLine((prefixCharacter.HasValue ? $"{prefixCharacter} " : string.Empty) + c.ToString());
             }
 
             return StringBuilderPool.Pool.ToStringReturn(sb);

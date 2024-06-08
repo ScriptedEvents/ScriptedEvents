@@ -3,8 +3,7 @@
     using System;
     using System.Linq;
 
-    using Exiled.API.Features;
-
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Variables.Interfaces;
 
@@ -31,11 +30,11 @@
             }
             catch (InvalidCastException e)
             {
-                Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {(source?.Debug == true ? e : e.Message)}");
+                Logger.Warn(source?.Debug == true ? e.ToString() : e.Message, source);
             }
             catch (Exception e)
             {
-                Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {(source?.Debug == true ? e : e.Message)}");
+                Logger.Warn(source?.Debug == true ? e.ToString() : e.Message, source);
                 return source?.Debug == true ? e.ToString() : e.Message;
             }
 

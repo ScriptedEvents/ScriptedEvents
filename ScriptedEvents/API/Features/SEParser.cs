@@ -23,9 +23,9 @@
             if (float.TryParse(input, out float fl))
                 return fl;
 
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.Success)
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
             {
-                return Parse(result.Variable.String(), source, requireBrackets);
+                return Parse(result.String(), source, requireBrackets);
             }
 
             return float.NaN;
@@ -43,9 +43,9 @@
             if (int.TryParse(input, out int fl))
                 return fl;
 
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.Success)
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
             {
-                return ParseInt(result.Variable.String(), source, requireBrackets);
+                return ParseInt(result.String(), source, requireBrackets);
             }
 
             return int.MinValue;
@@ -63,9 +63,9 @@
             if (long.TryParse(input, out long fl))
                 return fl;
 
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.Success)
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
             {
-                return ParseLong(result.Variable.String(), source, requireBrackets);
+                return ParseLong(result.String(), source, requireBrackets);
             }
 
             return int.MinValue;
@@ -131,9 +131,9 @@
                 return true;
             }
 
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.Success)
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.ProcessorSuccess)
             {
-                return TryParse(vresult.Variable.String(), out result, source, requireBrackets);
+                return TryParse(vresult.String(), out result, source, requireBrackets);
             }
 
             return false;
@@ -150,9 +150,9 @@
             {
             }
 
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.Success)
+            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.ProcessorSuccess)
             {
-                return Parse(vresult.Variable.String(), enumType, source, requireBrackets);
+                return Parse(vresult.String(), enumType, source, requireBrackets);
             }
 
             return null;

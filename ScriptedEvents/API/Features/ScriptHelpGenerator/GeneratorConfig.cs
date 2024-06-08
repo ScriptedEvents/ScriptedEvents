@@ -4,6 +4,9 @@
 
     public class GeneratorConfig
     {
+        [Description("Whether or not to generate pre-written SE tutorials.")]
+        public bool generate_tutorials;
+
         [Description("Whether or not to generate documentation for actions.")]
         public bool generate_actions;
 
