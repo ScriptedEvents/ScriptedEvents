@@ -32,17 +32,15 @@
         /// <returns>The result of the process.</returns>
         public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script source, bool requireBrackets = true)
         {
-            Log.Info("called");
             if (expectedArguments is null || expectedArguments.Length == 0)
                 return new(true);
 
             int required = expectedArguments.Count(arg => arg.Required);
 
             ArgumentProcessResult processedForLoop = HandlePlayerListComprehension(args, source, out string[] strippedArgs);
-            Log.Info($"success: {processedForLoop.Success} | errored: {processedForLoop.Errored} | message: {processedForLoop.Message}");
+            source.DebugLog($"success: {processedForLoop.Success} | errored: {processedForLoop.Errored} | message: {processedForLoop.Message}");
             if (!processedForLoop.Success)
             {
-                Log.Warn("skipped by for loop");
                 return processedForLoop;
             }
 
