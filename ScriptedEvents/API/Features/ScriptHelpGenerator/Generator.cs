@@ -123,7 +123,7 @@
 
             foreach (FieldInfo fieldInfo in ConfigType.GetFields())
             {
-                Log.Debug($"{fieldInfo.Name} = {fieldInfo.GetValue(config)}");
+                Logger.Debug($"{fieldInfo.Name} = {fieldInfo.GetValue(config)}");
             }
 
             File.Delete(ConfigPath);
@@ -135,31 +135,31 @@
             // Delete old folders
             if (Directory.Exists(ActionPath))
             {
-                Log.Info("Old actions documentation exists and has been deleted.");
+                Logger.Info("Old actions documentation exists and has been deleted.");
                 Directory.Delete(ActionPath, true);
             }
 
             if (Directory.Exists(VariablePath))
             {
-                Log.Info("Old variable documentation exists and has been deleted.");
+                Logger.Info("Old variable documentation exists and has been deleted.");
                 Directory.Delete(VariablePath, true);
             }
 
             if (Directory.Exists(ErrorsPath))
             {
-                Log.Info("Old error documentation exists and has been deleted.");
+                Logger.Info("Old error documentation exists and has been deleted.");
                 Directory.Delete(ErrorsPath, true);
             }
 
             if (Directory.Exists(EnumsPath))
             {
-                Log.Info("Old enum documentation exists and has been deleted.");
+                Logger.Info("Old enum documentation exists and has been deleted.");
                 Directory.Delete(EnumsPath, true);
             }
 
             if (Directory.Exists(TutorialsPath))
             {
-                Log.Info("Old tutorials documentation exists and has been deleted.");
+                Logger.Info("Old tutorials documentation exists and has been deleted.");
                 Directory.Delete(TutorialsPath, true);
             }
 
@@ -175,7 +175,7 @@
                     if ((action is IHiddenAction && !MainPlugin.Configs.Debug) || action is not IHelpInfo helpInfo || action.IsObsolete(out _))
                         continue;
 
-                    Log.Debug("Creating documentation for action: " + action.Name);
+                    Logger.Debug("Creating documentation for action: " + action.Name);
 
                     ActionResponse text = HelpAction.GenerateText(action.Name);
 
@@ -188,7 +188,7 @@
 
                 watch.Stop();
 
-                Log.Info($"Completed generating documentation for actions. Elapsed time: {watch.ElapsedMilliseconds}ms");
+                Logger.Info($"Completed generating documentation for actions. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
 
             if (config.generate_variables)
@@ -204,7 +204,7 @@
 
                     foreach (IVariable variable in group.Variables)
                     {
-                        Log.Debug("Creating documentation for variable: " + variable.Name);
+                        Logger.Debug("Creating documentation for variable: " + variable.Name);
 
                         ActionResponse text = HelpAction.GenerateText(variable.Name);
 
@@ -218,7 +218,7 @@
 
                 watch.Stop();
 
-                Log.Info($"Completed generating documentation for variables. Elapsed time: {watch.ElapsedMilliseconds}ms");
+                Logger.Info($"Completed generating documentation for variables. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
 
             if (config.generate_enums)
@@ -228,7 +228,7 @@
                 Stopwatch watch = Stopwatch.StartNew();
                 foreach (EnumDefinition def in EnumDefinitions.Definitions)
                 {
-                    Log.Debug("Creating documentation for enum: " + def.EnumType.Name);
+                    Logger.Debug("Creating documentation for enum: " + def.EnumType.Name);
 
                     ActionResponse text = HelpAction.GenerateText(def.EnumType.Name.ToUpper());
 
@@ -241,7 +241,7 @@
 
                 watch.Stop();
 
-                Log.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
+                Logger.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
 
             if (config.generate_error_codes)
@@ -251,7 +251,7 @@
                 Stopwatch watch = Stopwatch.StartNew();
                 foreach (ErrorInfo errorInfo in ErrorList.Errors)
                 {
-                    Log.Debug("Creating documentation for error: " + errorInfo.Id);
+                    Logger.Debug("Creating documentation for error: " + errorInfo.Id);
 
                     ActionResponse text = HelpAction.GenerateText(errorInfo.Id.ToString());
 
@@ -264,7 +264,7 @@
 
                 watch.Stop();
 
-                Log.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
+                Logger.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
 
             if (config.generate_tutorials)
@@ -281,11 +281,11 @@
 
                         if (!Directory.Exists(categoryPath))
                         {
-                            Log.Debug($"Created directory for tutorial category '{tutorial.Category}'");
+                            Logger.Debug($"Created directory for tutorial category '{tutorial.Category}'");
                             Directory.CreateDirectory(categoryPath);
                         }
 
-                        Log.Debug("Creating documentation for tutorial: " + tutorial.TutorialName);
+                        Logger.Debug("Creating documentation for tutorial: " + tutorial.TutorialName);
 
                         string path = Path.Combine(categoryPath, tutorial.FileName + ".txt");
                         File.WriteAllText(path, $"--------------\n{tutorial.TutorialName}\nAuthor: {tutorial.Author}\nTutorial Type: {tutorial.Category}\n--------------\n\n{tutorial.Contents}");
@@ -294,7 +294,7 @@
 
                 watch.Stop();
 
-                Log.Info($"Completed generating documentation for tutorials. Elapsed time: {watch.ElapsedMilliseconds}ms");
+                Logger.Info($"Completed generating documentation for tutorials. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
 
             try

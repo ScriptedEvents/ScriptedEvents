@@ -56,7 +56,7 @@
             while (true)
             {
                 ConditionResponse response = ConditionHelperV2.Evaluate(input, script);
-                Log.Info($"CONDITION: {VariableSystemV2.ReplaceVariables(input, script)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}");
+                Logger.Info($"CONDITION: {VariableSystemV2.ReplaceVariables(input, script)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}", script);
                 if (response.Success)
                 {
                     if (response.Passed)
@@ -64,7 +64,7 @@
                 }
                 else
                 {
-                    Log.Warn($"[Script: {script.ScriptName}] [WAITUNTILDEBUG] [L: {script.CurrentLine + 1}] WaitUntilDebug condition error: {response.Message}");
+                    Logger.Warn($"WaitUntilDebug condition error: {response.Message}", script);
                     break;
                 }
 

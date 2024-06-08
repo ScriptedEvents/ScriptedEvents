@@ -91,13 +91,13 @@
         public static EventHandlingModule Handlers => GetModule<EventHandlingModule>();
 
         /// <summary>
-        /// Equivalent to <see cref="Log.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
+        /// Equivalent to <see cref="Logger.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
         /// </summary>
-        /// <param name="message">The message to log.</param>
+        /// <param name="message">The message to Logger.</param>
         public static void Info(string message)
         {
             if (Singleton.Config.EnableLogs)
-                Log.Info(message);
+                Logger.Info(message);
         }
 
         public static T GetModule<T>()
@@ -129,24 +129,24 @@
                 if (IsExperimental)
                 {
 #if ADEBUG
-                    Log.Warn($"You are using a pre-release version of {Name} by Elektryk_Andrzej. Please report any issues encountered, thank you.");
+                    Logger.Warn($"You are using a pre-release version of {Name} by Elektryk_Andrzej. Please report any issues encountered, thank you.");
 #else
-                    Log.Warn($"You are using a pre-release version of {Name}. Please report any issues encountered, thank you.");
+                    Logger.Warn($"You are using a pre-release version of {Name}. Please report any issues encountered, thank you.");
 #endif
                 }
 
                 if (DateTime.Now.Month == 1 && DateTime.Now.Day == 25)
                 {
-                    Log.Info(Constants.ItsMyBirthday);
+                    Logger.Info(Constants.ItsMyBirthday);
                 }
 
                 bool isUpdated = API.Features.ScriptHelpGenerator.Generator.CheckUpdated(out string docMessage);
                 if (docMessage != "SKIP")
                 {
                     if (isUpdated)
-                        Log.Info("[DOCUMENTATION GENERATOR]: " + docMessage);
+                        Logger.Info("[DOCUMENTATION GENERATOR]: " + docMessage);
                     else
-                        Log.Warn("[DOCUMENTATION GENERATOR]: " + docMessage);
+                        Logger.Warn("[DOCUMENTATION GENERATOR]: " + docMessage);
                 }
             });
 
@@ -160,7 +160,7 @@
                 }
                 catch (Exception ex)
                 {
-                    Log.Warn($"The removal of the '{helpPath}' file has failed. Reason: {ex}");
+                    Logger.Warn($"The removal of the '{helpPath}' file has failed. Reason: {ex}");
                 }
             }
 
@@ -173,7 +173,7 @@
                 }
                 catch (Exception ex)
                 {
-                    Log.Warn($"The removal of the '{API.Features.ScriptHelpGenerator.Generator.ConfigPath}' file has failed. Reason: {ex}");
+                    Logger.Warn($"The removal of the '{API.Features.ScriptHelpGenerator.Generator.ConfigPath}' file has failed. Reason: {ex}");
                 }
             }
         }
@@ -200,19 +200,19 @@
 
                 if (custom.Name == string.Empty)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.CustomCommand_NoName));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.CustomCommand_NoName));
                     continue;
                 }
 
                 if (custom.Run is null || custom.Run.Count == 0)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.CustomCommand_NoScripts, custom.Name, custom.Type));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.CustomCommand_NoScripts, custom.Name, custom.Type));
                     continue;
                 }
 
                 if (custom.Cooldown != -1 && custom.PlayerCooldown != -1)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.CustomCommand_MultCooldowns, custom.Name, custom.Type));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.CustomCommand_MultCooldowns, custom.Name, custom.Type));
                     continue;
                 }
 

@@ -266,44 +266,44 @@
             string playerVarNameLoopingThrough = loopArgs[2];
 
             if (inKeyword != "IN")
-                Log.Warn($"[LINE {source.CurrentLine + 1}] $FOR statement requires 'IN' keyword, provided '{inKeyword}'.");
+                Logger.Warn($"$FOR statement requires 'IN' keyword, provided '{inKeyword}'.", source);
 
             List<Player> playersToLoop;
 
-            Log.Info($"curent line is {source.CurrentLine}, for loop is at {source.CurrentLine}");
+            Logger.Info($"curent line is {source.CurrentLine}, for loop is at {source.CurrentLine}");
 
             if (source.PlayerLoopInfo is not null && source.PlayerLoopInfo.Line == source.CurrentLine)
             {
-                Log.Info("this is not the first time");
+                Logger.Info("this is not the first time");
                 playersToLoop = source.PlayerLoopInfo.PlayersToLoopThrough;
             }
             else
             {
-                Log.Info("this is the first time");
+                Logger.Info("this is the first time");
                 if (!VariableSystemV2.TryGetPlayers(playerVarNameLoopingThrough, source, out PlayerCollection outPlayers))
                     return new(false, true, playerVarNameLoopingThrough, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, playerVarNameLoopingThrough));
                 playersToLoop = outPlayers.GetInnerList();
             }
 
-            Log.Info($"there are {playersToLoop.Count} players in {playerVarNameLoopingThrough}");
+            Logger.Info($"there are {playersToLoop.Count} players in {playerVarNameLoopingThrough}");
 
             if (playersToLoop.Count == 0)
             {
-                Log.Info($"there are 0 players, returning");
+                Logger.Info($"there are 0 players, returning");
                 return new(false);
             }
 
             Player player = playersToLoop.FirstOrDefault();
             playersToLoop.Remove(player);
 
-            Log.Info($"adding variavle {newPlayerVarName}");
+            Logger.Info($"adding variavle {newPlayerVarName}");
 
             source.AddPlayerVariable(newPlayerVarName, string.Empty, new[] { player });
 
             source.PlayerLoopInfo = new(source.CurrentLine, playersToLoop);
 
-            Log.Info($"now there are {source.PlayerLoopInfo.PlayersToLoopThrough.Count} left to loop");
-            Log.Info($"jumping to line {source.CurrentLine}");
+            Logger.Info($"now there are {source.PlayerLoopInfo.PlayersToLoopThrough.Count} left to loop");
+            Logger.Info($"jumping to line {source.CurrentLine}");
             source.Jump(source.CurrentLine);
 
             return new(true);

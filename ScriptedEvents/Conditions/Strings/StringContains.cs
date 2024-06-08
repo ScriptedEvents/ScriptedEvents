@@ -1,6 +1,5 @@
 ﻿namespace ScriptedEvents.Conditions.Strings
 {
-    using Exiled.API.Features;
     using ScriptedEvents.Conditions.Interfaces;
 
     /// <summary>
@@ -14,8 +13,6 @@
         /// <inheritdoc/>
         public bool Execute(string left, string right)
         {
-            Log.Debug($"left '{left}' - right '{right}'");
-            Log.Debug($"IN returns {right.Contains(left)}");
             return right.Contains(left);
         }
     }

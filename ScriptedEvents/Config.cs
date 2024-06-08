@@ -12,10 +12,14 @@
         [Description("Whether or not to enable the Scripted Events plugin.")]
         public bool IsEnabled { get; set; } = true;
 
+        [Description("Whether or not to enable Scripted Events debug logs.")]
         public bool Debug { get; set; } = false;
 
-        [Description("Enable logs for starting/stopping scripts.")]
+        [Description("Whether or not to enable Scripted Events informational logs.")]
         public bool EnableLogs { get; set; } = true;
+
+        [Description("Disables ALL logs from Scripted Events, including warnings and errors. Not recommended unless you know what you're doing.")]
+        public bool DisableAllLogs { get; set; } = false;
 
         [Description("If a script encounters an error, broadcast a notice to the person who ran the command, informing of the error. The broadcast ONLY shows to the command executor.")]
         public bool BroadcastIssues { get; set; } = true;

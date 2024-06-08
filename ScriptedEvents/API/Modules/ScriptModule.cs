@@ -82,12 +82,12 @@ namespace ScriptedEvents.API.Modules
             }
             catch (UnauthorizedAccessException e)
             {
-                Log.Error(ErrorGen.Get(ErrorCode.IOPermissionError) + $": {e}");
+                Logger.Error(ErrorGen.Get(ErrorCode.IOPermissionError) + $": {e}");
                 return;
             }
             catch (Exception e)
             {
-                Log.Error(ErrorGen.Get(ErrorCode.IOError) + $": {e}");
+                Logger.Error(ErrorGen.Get(ErrorCode.IOError) + $": {e}");
                 return;
             }
 
@@ -95,7 +95,7 @@ namespace ScriptedEvents.API.Modules
             // 3s delay to show after other console spam
             Timing.CallDelayed(6f, () =>
             {
-                Log.Warn($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(MainPlugin.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
+                Logger.Warn($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(MainPlugin.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
             });
         }
 
@@ -126,13 +126,13 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                Log.Debug($"Script '{scr.ScriptName}' set to run automatically.");
+                Logger.Debug($"Script '{scr.ScriptName}' set to run automatically.");
 
                 try
                 {
                     if (scr.AdminEvent)
                     {
-                        Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, scr.ScriptName));
+                        Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, scr.ScriptName));
                         continue;
                     }
 
@@ -140,11 +140,11 @@ namespace ScriptedEvents.API.Modules
                 }
                 catch (DisabledScriptException)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, scr.ScriptName));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, scr.ScriptName));
                 }
                 catch (FileNotFoundException)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, scr.ScriptName));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, scr.ScriptName));
                 }
             }
         }
@@ -210,7 +210,7 @@ namespace ScriptedEvents.API.Modules
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e);
+                    Logger.Error(e.ToString());
                 }
             }
 
@@ -268,7 +268,7 @@ namespace ScriptedEvents.API.Modules
                     }
                     else if (!suppressWarnings)
                     {
-                        Log.Warn(ErrorGen.Get(ErrorCode.MultipleFlagDefs, flag, scriptName));
+                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleFlagDefs, flag, scriptName));
                     }
 
                     actionList.Add(new NullAction("FLAG DEFINE"));
@@ -297,7 +297,7 @@ namespace ScriptedEvents.API.Modules
                     if (!script.Labels.ContainsKey(labelName))
                         script.Labels.Add(labelName, currentline);
                     else if (!suppressWarnings)
-                        Log.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
+                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
 
                     actionList.Add(new NullAction($"{labelName} LABEL"));
 
@@ -309,7 +309,7 @@ namespace ScriptedEvents.API.Modules
                 {
                     if (actionParts.Count < 2)
                     {
-                        Log.Error($"[SCRIPT: {script.ScriptName}] [LINE: {currentline}] A function label syntax has been used, but no name has been provided.");
+                        Logger.Error($"A function label syntax has been used, but no name has been provided.", script);
                         continue;
                     }
 
@@ -318,7 +318,7 @@ namespace ScriptedEvents.API.Modules
                     if (!script.FunctionLabels.ContainsKey(labelName))
                         script.FunctionLabels.Add(labelName, currentline);
                     else if (!suppressWarnings)
-                        Log.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
+                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
 
                     actionList.Add(new StartFunctionAction());
                     continue;
@@ -331,7 +331,7 @@ namespace ScriptedEvents.API.Modules
                 }
 
 #if DEBUG
-                Log.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}");
+                Logger.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}", script);
 #endif
 
                 if (!TryGetActionType(keyword, out Type actionType))
@@ -349,7 +349,7 @@ namespace ScriptedEvents.API.Modules
                     }
 
                     if (!suppressWarnings)
-                        Log.Warn($"[LINE: {currentline + 1}] " + ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName));
+                        Logger.Warn(ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName), script);
 
                     actionList.Add(new NullAction("ERROR"));
                     continue;
@@ -361,7 +361,7 @@ namespace ScriptedEvents.API.Modules
                 // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
                 {
-                    Log.Warn($"[L: {script.CurrentLine + 1}] [{scriptName}] Action {newAction.Name} is obsolete; {obsoleteReason}");
+                    Logger.Warn($"Action {newAction.Name} is obsolete; {obsoleteReason}", script);
                 }
 
                 actionList.Add(newAction);
@@ -763,7 +763,7 @@ namespace ScriptedEvents.API.Modules
 
                     IAction temp = (IAction)Activator.CreateInstance(type);
 
-                    Log.Debug($"Adding Action: {temp.Name} | From Assembly: {assembly.GetName().Name}");
+                    Logger.Debug($"Adding Action: {temp.Name} | From Assembly: {assembly.GetName().Name}");
                     ActionTypes.Add(new(temp.Name, temp.Aliases), type);
                     i++;
                 }
@@ -809,7 +809,7 @@ namespace ScriptedEvents.API.Modules
                 {
                     // Todo: Place error better later
                     // -> [WARN] Error trying to check 'value' argument: Invalid Object provided. See all options by running 'shelp Object' in the server console.
-                    Log.Error($"[Script {scr.ScriptName}] [Line {scr.CurrentLine + 1}] Error! {res.Message}");
+                    Logger.Error($"Error! {res.Message}", scr);
                     break;
                 }
 
@@ -823,29 +823,29 @@ namespace ScriptedEvents.API.Modules
                     switch (action)
                     {
                         case ITimingAction timed:
-                            scr.DebugLog($"Running {action.Name} action (timed) on line {scr.CurrentLine + 1}...");
+                            Logger.Debug($"Running {action.Name} action (timed)...", scr);
                             delay = timed.Execute(scr, out resp);
                             break;
                         case IScriptAction scriptAction:
-                            scr.DebugLog($"Running {action.Name} action on line {scr.CurrentLine + 1}...");
+                            Logger.Debug($"Running {action.Name} action...", scr);
                             resp = scriptAction.Execute(scr);
                             break;
                         default:
-                            scr.DebugLog($"Skipping line {scr.CurrentLine + 1} (no runnable action on line)");
+                            Logger.Debug($"Skipping line (no runnable action on line)", scr);
                             continue;
                     }
                 }
                 catch (ScriptedEventsException seException)
                 {
                     string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {seException.Message}";
-                    LogSystem.ScriptError(message, scr, scr.Context, scr.Sender);
+                    Logger.ScriptError(message, scr, scr.Context, scr.Sender);
 
                     continue;
                 }
                 catch (Exception e)
                 {
                     string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(ErrorCode.UnknownActionError, action.Name)}:\n{e}";
-                    LogSystem.ScriptError(message, scr, scr.Context, scr.Sender);
+                    Logger.ScriptError(message, scr, scr.Context, scr.Sender);
 
                     continue;
                 }
@@ -856,14 +856,14 @@ namespace ScriptedEvents.API.Modules
                     if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                     {
                         string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Fatal action error! {resp.Message}";
-                        LogSystem.ScriptError(message, scr, scr.Context, scr.Sender, fatal: true);
+                        Logger.ScriptError(message, scr, scr.Context, scr.Sender, fatal: true);
 
                         break;
                     }
                     else if (!scr.SuppressWarnings)
                     {
                         string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Action error! {resp.Message}";
-                        LogSystem.ScriptError(message, scr, scr.Context, scr.Sender);
+                        Logger.ScriptError(message, scr, scr.Context, scr.Sender);
                     }
                 }
                 else
@@ -879,7 +879,7 @@ namespace ScriptedEvents.API.Modules
                                 Player.Get(scr.Sender)?.RemoteAdminMessage(message, true, MainPlugin.Singleton.Name);
                                 break;
                             default:
-                                Log.Info(message);
+                                Logger.Info(message);
                                 break;
                         }
                     }

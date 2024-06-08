@@ -455,12 +455,12 @@ Scripted Events Contributors:
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.IOHelpPermissionError));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.IOHelpPermissionError));
                     return new(false, "HELP action error shown in server logs.");
                 }
                 catch (Exception e)
                 {
-                    Log.Warn($"{ErrorGen.Get(ErrorCode.IOHelpError)}: {e}");
+                    Logger.Warn($"{ErrorGen.Get(ErrorCode.IOHelpError)}: {e}");
                     return new(false, "HELP action error shown in server logs.");
                 }
 
@@ -469,7 +469,7 @@ Scripted Events Contributors:
                 {
                     if (File.Exists(path) && File.ReadAllText(path) == message)
                     {
-                        Log.Debug("Deleting auto-generated help file.");
+                        Logger.Debug("Deleting auto-generated help file.");
                         File.Delete(path);
                     }
                 });

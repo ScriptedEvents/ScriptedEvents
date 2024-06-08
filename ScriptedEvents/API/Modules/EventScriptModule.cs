@@ -116,9 +116,9 @@
 
             foreach (KeyValuePair<string, List<string>> ev in CurrentEventData)
             {
-                Log.Debug("Setting up new 'on' event");
-                Log.Debug($"Event: {ev.Key}");
-                Log.Debug($"Scripts: {string.Join(", ", ev.Value)}");
+                Logger.Debug("Setting up new 'on' event");
+                Logger.Debug($"Event: {ev.Key}");
+                Logger.Debug($"Scripts: {string.Join(", ", ev.Value)}");
                 bool made = false;
                 foreach (Type handler in HandlerTypes)
                 {
@@ -146,7 +146,7 @@
                     }
                     else
                     {
-                        Log.Warn(propertyInfo.Name);
+                        Logger.Warn(propertyInfo.Name);
                         continue;
                     }
 
@@ -157,9 +157,9 @@
                 }
 
                 if (made)
-                    Log.Debug($"Dynamic event {ev.Key} connected successfully");
+                    Logger.Debug($"Dynamic event {ev.Key} connected successfully");
                 else
-                    Log.Debug($"Dynamic event {ev.Key} failed to be connected");
+                    Logger.Debug($"Dynamic event {ev.Key} failed to be connected");
             }
         }
 
@@ -170,13 +170,13 @@
                 PropertyInfo propertyInfo = tuple.Item1;
                 Delegate handler = tuple.Item2;
 
-                Log.Debug($"Removing dynamic connection for event '{propertyInfo.Name}'");
+                Logger.Debug($"Removing dynamic connection for event '{propertyInfo.Name}'");
 
                 EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
                 MethodInfo unSubscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Unsubscribe");
 
                 unSubscribe.Invoke(propertyInfo.GetValue(MainPlugin.Handlers), new[] { handler });
-                Log.Debug($"Removed dynamic connection for event '{propertyInfo.Name}'");
+                Logger.Debug($"Removed dynamic connection for event '{propertyInfo.Name}'");
             }
 
             StoredDelegates.Clear();
@@ -254,15 +254,15 @@
                 }
                 catch (DisabledScriptException)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.On_DisabledScript, eventName, script));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.On_DisabledScript, eventName, script));
                 }
                 catch (FileNotFoundException)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.On_NotFoundScript, eventName, script));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.On_NotFoundScript, eventName, script));
                 }
                 catch (Exception ex)
                 {
-                    Log.Warn(ErrorGen.Get(ErrorCode.On_UnknownError, eventName) + $": {ex}");
+                    Logger.Warn(ErrorGen.Get(ErrorCode.On_UnknownError, eventName) + $": {ex}");
                 }
             }
         }

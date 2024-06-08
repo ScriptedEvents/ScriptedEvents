@@ -321,7 +321,7 @@
 
                 if (!vresult.ProcessorSuccess)
                 {
-                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] Variable '{vresult.Variable.Name}' argument error: {vresult.Message}");
+                    Logger.Warn($"Variable '{vresult.Variable.Name}' argument error: {vresult.Message}", source);
                     continue;
                 }
 
@@ -331,11 +331,11 @@
                 }
                 catch (InvalidCastException e)
                 {
-                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, e.Message)}");
+                    Logger.Warn(ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, e.Message), source);
                 }
                 catch (Exception e)
                 {
-                    Log.Warn($"[Script: {source?.ScriptName ?? "N/A"}] [L: {source?.CurrentLine.ToString() ?? "N/A"}] {ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, source?.Debug == true ? e : e.Message)}");
+                    Logger.Warn(ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, source?.Debug == true ? e : e.Message), source);
                 }
             }
 
@@ -385,7 +385,7 @@
                 {
                     IVariableGroup temp = (IVariableGroup)Activator.CreateInstance(type);
 
-                    Log.Debug($"Adding variable group: {type.Name}");
+                    Logger.Debug($"Adding variable group: {type.Name}");
                     Groups.Add(temp);
                 }
             }
@@ -393,7 +393,7 @@
 
         private static void DebugLog(string message, Script source)
         {
-            source?.DebugLog($"[VariableSystem] {message}");
+            Logger.Debug($"[VariableSystem] {message}", source);
         }
     }
 }

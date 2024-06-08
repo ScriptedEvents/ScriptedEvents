@@ -62,7 +62,7 @@
 
             CustomAction custom = new(name, action);
             MainPlugin.ScriptModule.CustomActions.Add(name, custom);
-            Log.Info($"Assembly '{Assembly.GetCallingAssembly().GetName().Name}' has registered custom action: '{name}'.");
+            Logger.Info($"Assembly '{Assembly.GetCallingAssembly().GetName().Name}' has registered custom action: '{name}'.");
             return "Success";
         }
 
