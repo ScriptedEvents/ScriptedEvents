@@ -32,24 +32,42 @@
         /// <returns>The result of the process.</returns>
         public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script source, bool requireBrackets = true)
         {
-            ArgumentProcessResult processedForLoop = HandlePlayerListComprehension(args, source, out string[] strippedArgs);
-            if (!processedForLoop.Success)
-                return processedForLoop;
-
-            args = strippedArgs;
-
-            int conditionSectionKeyword = args.IndexOf("$IF");
-            if (conditionSectionKeyword != -1)
+            if (args is null)
             {
-                string[] conditionArgs = args.Skip(conditionSectionKeyword + 1).ToArray();
-                args = args.Take(conditionSectionKeyword).ToArray();
-                source.DebugLog($"args = {string.Join(",", args)} | conditionArgs = {string.Join(",", conditionArgs)}");
-                if (!ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source).Passed)
-                    return new(false);
+                Logger.Debug("[ARGPROC] There are no arguments provided for this action. Skipping...", source);
+                return new(true);
+            }
+
+            if (args.Length != 0)
+            {
+                ArgumentProcessResult processedForLoop = HandlePlayerListComprehension(args, source, out string[] strippedArgs);
+                if (!processedForLoop.Success)
+                {
+                    Logger.Debug("[ARGPROC] $FOR returned success as false, returning...", source);
+                    return processedForLoop;
+                }
+
+                args = strippedArgs;
+
+                int conditionSectionKeyword = args.IndexOf("$IF");
+                if (conditionSectionKeyword != -1)
+                {
+                    string[] conditionArgs = args.Skip(conditionSectionKeyword + 1).ToArray();
+                    args = args.Take(conditionSectionKeyword).ToArray();
+                    Logger.Debug($"args = {string.Join(",", args)} | conditionArgs = {string.Join(",", conditionArgs)}", source);
+                    if (!ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source).Passed)
+                    {
+                        Logger.Debug("[ARGPROC] $IF returned passed as false, returning...", source);
+                        return new(false);
+                    }
+                }
             }
 
             if (expectedArguments is null || expectedArguments.Length == 0)
+            {
+                Logger.Debug("[ARGPROC] There are no arguments for this action. Skipping...", source);
                 return new(true);
+            }
 
             int required = expectedArguments.Count(arg => arg.Required);
 
@@ -235,8 +253,8 @@
                         break;
                     }
 
-                    // Unsupported types: Add the string input
-                    success.NewParameters.Add(input);
+                    // Unsupported types: Parse variables in string and use that as a param (RawArguments are used for getting the raw string)
+                    success.NewParameters.Add(VariableSystemV2.ReplaceVariables(input, source));
                     break;
             }
 
@@ -251,7 +269,10 @@
             int loopSyntaxIndex = inArgs.IndexOf("$FOR");
 
             if (loopSyntaxIndex == -1)
+            {
+                Logger.Debug("$FOR: no syntax found, will not try to loop because its stupid and we dont want that i think??", source);
                 return new(true);
+            }
 
             string[] loopArgs = inArgs.Skip(loopSyntaxIndex + 1).ToArray();
             args = inArgs.Take(loopSyntaxIndex).ToArray();
@@ -261,23 +282,31 @@
             string playerVarNameLoopingThrough = loopArgs[2];
 
             if (inKeyword != "IN")
-                Logger.Warn($"$FOR statement requires 'IN' keyword, provided '{inKeyword}'.", source);
+                Logger.Warn($"$FOR: statement requires 'IN' keyword, provided '{inKeyword}'.", source);
 
             List<Player> playersToLoop;
 
             if (source.PlayerLoopInfo is not null && source.PlayerLoopInfo.Line == source.CurrentLine)
             {
                 playersToLoop = source.PlayerLoopInfo.PlayersToLoopThrough;
+                Logger.Debug("$FOR: first time init loop - copy player var", source);
             }
             else
             {
                 if (!VariableSystemV2.TryGetPlayers(playerVarNameLoopingThrough, source, out PlayerCollection outPlayers))
+                {
+                    Logger.Debug("$FOR: provided player variable to loop through is invalid", source);
                     return new(false, true, playerVarNameLoopingThrough, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, playerVarNameLoopingThrough));
+                }
+
                 playersToLoop = outPlayers.GetInnerList();
+                Logger.Debug("$FOR: not first time init loop - use existing player var", source);
             }
 
             if (playersToLoop.Count == 0)
             {
+                Logger.Debug("$FOR: players to loop through are 0, going to next action", source);
+                source.PlayerLoopInfo = null;
                 return new(false);
             }
 
