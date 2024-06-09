@@ -3,6 +3,7 @@
     using System;
 
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 #pragma warning disable SA1402 // File may only contain a single type
@@ -40,8 +41,8 @@
                 new OptionsArgument("type", true,
                     new("INT", "Will return an integer."),
                     new("FLOAT", "Will return a decimal (floating point) number.")),
-                new Argument("startNumber", typeof(object), "A starting number of the random range.", true),
-                new Argument("endNumber", typeof(object), "An ending number of the random range.", true),
+                new Argument("startNumber", typeof(string), "A starting number of the random range.", true),
+                new Argument("endNumber", typeof(string), "An ending number of the random range.", true),
         };
 
         public string LongDescription => $@"The return value will be a random number from the provided range, depending on the numbers and the type.
@@ -59,13 +60,64 @@ If 'type' is set to 'FLOAT':
         {
             get
             {
+                float result;
                 string mode = Arguments[0].ToUpper();
-                return mode switch
+                switch (mode)
                 {
-                    "INT" => UnityEngine.Random.Range(Convert.ToInt32(Arguments[1]), Convert.ToInt32(Arguments[2]) + 1),
-                    "FLOAT" => UnityEngine.Random.Range(Convert.ToSingle(Arguments[1]), Convert.ToSingle(Arguments[2])),
-                    _ => throw new ArgumentException("Invalid type.", mode)
-                };
+                    case "INT":
+                        int r1i;
+                        int r2i;
+                        try
+                        {
+                            r1i = Convert.ToInt32(Arguments[1]);
+                        }
+                        catch
+                        {
+                            throw new InvalidCastException(ErrorGen.Get(API.Enums.ErrorCode.InvalidNumber, Arguments[1]));
+                        }
+
+                        try
+                        {
+                            r2i = Convert.ToInt32(Arguments[2]) + 1;
+                        }
+                        catch
+                        {
+                            throw new InvalidCastException(ErrorGen.Get(API.Enums.ErrorCode.InvalidNumber, Arguments[2]));
+                        }
+
+                        result = UnityEngine.Random.Range(r1i, r2i);
+                        break;
+
+                    case "FLOAT":
+                        float r1f;
+                        float r2f;
+
+                        try
+                        {
+                            r1f = Convert.ToSingle(Arguments[1]);
+                        }
+                        catch
+                        {
+                            throw new InvalidCastException(ErrorGen.Get(API.Enums.ErrorCode.InvalidNumber, Arguments[1]));
+                        }
+
+                        try
+                        {
+                            r2f = Convert.ToSingle(Arguments[2]);
+                        }
+                        catch
+                        {
+                            throw new InvalidCastException(ErrorGen.Get(API.Enums.ErrorCode.InvalidNumber, Arguments[2]));
+                        }
+
+                        result = UnityEngine.Random.Range(r1f, r2f);
+                        break;
+
+                    default:
+                        throw new Exception("[4562] error - you shouldnt ever see this error");
+                }
+
+                return result;
             }
         }
     }
