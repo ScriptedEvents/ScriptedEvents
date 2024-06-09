@@ -7,7 +7,6 @@
     using System.Linq;
     using System.Reflection;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Features;
@@ -238,6 +237,15 @@
                         scr.AddPlayerVariable("{EVPLAYER}", "The issuer.", new[] { kick.Player });
                         scr.AddVariable("{EVREASON}", "The reason.", kick.Reason.ToString());
                         scr.AddPlayerVariable("{EVTARGET}", "The target.", new[] { kick.Target });
+                    }
+
+                    if (ev is ChangingSpectatedPlayerEventArgs changing)
+                    {
+                        if (changing.OldTarget is not null)
+                            scr.AddPlayerVariable("{EVOLDTARGET}", string.Empty, new[] { changing.OldTarget });
+
+                        if (changing.NewTarget is not null)
+                            scr.AddPlayerVariable("{EVNEWTARGET}", string.Empty, new[] { changing.NewTarget });
                     }
 
                     if (ev is HurtingEventArgs hurting)
