@@ -792,13 +792,23 @@ namespace ScriptedEvents.API.Modules
 
             for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
-                scr.DebugLog("-----------");
-                scr.DebugLog($"Current Line: {scr.CurrentLine + 1}");
+                Logger.Debug("-----------", scr);
+                Logger.Debug($"Current Line: {scr.CurrentLine + 1}", scr);
                 if (!scr.Actions.TryGet(scr.CurrentLine, out IAction action) || action == null)
+                {
+                    Logger.Debug("There is no runnable action on this line. Skipping...", scr);
                     continue;
+                }
+
+                Logger.Debug($"Fetched action '{action.Name}'", scr);
 
                 if (scr.IfActionBlocksExecution && action is not ITerminatesIfAction)
+                {
+                    Logger.Debug("Action was skipped; the IF statement resulted in FALSE and action is not 'ITerminatesIfAction'", scr);
                     continue;
+                }
+
+                Logger.Debug("Action was not skipped by an IF statement.", scr);
 
                 ActionResponse resp;
                 float? delay = null;
@@ -812,9 +822,20 @@ namespace ScriptedEvents.API.Modules
                     Logger.Error($"Error! {res.Message}", scr);
                     break;
                 }
+                else
+                {
+                    Logger.Debug("Action did not error while processing arguments. Continuing.", scr);
+                }
 
                 if (!res.Success)
+                {
+                    Logger.Debug("Action was skipped; the argument processor did not return 'success' as true.", scr);
                     continue;
+                }
+                else
+                {
+                    Logger.Debug("Action was not skipped; the argument processor returned 'success' as true.", scr);
+                }
 
                 action.Arguments = res.NewParameters.ToArray();
 
@@ -852,7 +873,7 @@ namespace ScriptedEvents.API.Modules
 
                 if (!resp.Success)
                 {
-                    scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine + 1}]: FAIL");
+                    Logger.Debug($"{action.Name} [Line: {scr.CurrentLine + 1}]: FAIL");
                     if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                     {
                         string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Fatal action error! {resp.Message}";
@@ -868,7 +889,7 @@ namespace ScriptedEvents.API.Modules
                 }
                 else
                 {
-                    scr.DebugLog($"{action.Name} [Line: {scr.CurrentLine + 1}]: SUCCESS");
+                    Logger.Debug($"{action.Name} [Line: {scr.CurrentLine + 1}]: SUCCESS", scr);
                     successfulLines++;
                     if (!string.IsNullOrEmpty(resp.Message))
                     {
@@ -886,7 +907,7 @@ namespace ScriptedEvents.API.Modules
 
                     if (delay.HasValue)
                     {
-                        scr.DebugLog($"Action '{action.Name}' on line {scr.CurrentLine + 1} delaying script. Length of delay: {delay.Value}");
+                        Logger.Debug($"Action '{action.Name}' on line {scr.CurrentLine + 1} delaying script. Length of delay: {delay.Value}", scr);
                         yield return delay.Value;
                     }
                 }
