@@ -41,7 +41,6 @@
         public ActionResponse Execute(Script script)
         {
             string body = Arguments.JoinMessage(1);
-            body = VariableSystemV2.ReplaceVariables(body, script);
             UnityWebRequest discordWWW = UnityWebRequest.Put(VariableSystemV2.ReplaceVariable(RawArguments[0], script), body);
             discordWWW.method = "POST";
             discordWWW.SetRequestHeader("Content-Type", "application/json");

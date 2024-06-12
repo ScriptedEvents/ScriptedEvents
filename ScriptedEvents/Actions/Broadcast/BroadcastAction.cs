@@ -7,7 +7,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     public class BroadcastAction : IScriptAction, IHelpInfo
@@ -44,7 +43,7 @@
             PlayerCollection players = (PlayerCollection)Arguments[0];
             float duration = (float)Arguments[1];
 
-            string message = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(2), script);
+            string message = Arguments.JoinMessage(2);
             foreach (Player player in players)
             {
                 player.Broadcast((ushort)duration, message);

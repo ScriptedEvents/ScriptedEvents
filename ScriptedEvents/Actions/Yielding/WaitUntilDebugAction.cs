@@ -56,7 +56,7 @@
             while (true)
             {
                 ConditionResponse response = ConditionHelperV2.Evaluate(input, script);
-                Logger.Info($"CONDITION: {VariableSystemV2.ReplaceVariables(input, script)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}", script);
+                Logger.Info($"CONDITION: {input} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}", script);
                 if (response.Success)
                 {
                     if (response.Passed)

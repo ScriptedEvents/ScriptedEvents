@@ -54,7 +54,7 @@
 
             if (Arguments.Length > 3)
             {
-                string formula = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(3), script);
+                string formula = Arguments.JoinMessage(3);
 
                 if (!ConditionHelperV2.TryMath(formula, out MathResult result))
                 {

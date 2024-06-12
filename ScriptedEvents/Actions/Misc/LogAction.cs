@@ -39,7 +39,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Info(VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(0), script));
+            Log.Info(Arguments.JoinMessage(0));
             return new(true);
         }
     }
