@@ -27,7 +27,7 @@
                     LogInternal.Warn(message);
                     break;
                 case LogType.Info:
-                    if (MainPlugin.Configs.EnableLogs)
+                    if (MainPlugin.Configs.EnableLogs) // this should be handled better
                         LogInternal.Info(message);
                     break;
                 case LogType.Debug:
