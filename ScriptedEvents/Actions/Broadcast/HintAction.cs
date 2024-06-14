@@ -43,7 +43,7 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
             float duration = (float)Arguments[1];
-            string message = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(2), script);
+            string message = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(2), script);
 
             foreach (Player plr in players)
             {

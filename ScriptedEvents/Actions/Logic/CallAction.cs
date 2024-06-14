@@ -70,7 +70,7 @@
 
             string[] args = RawArguments.JoinMessage(1).Split(' ');
 
-            calledScript.AddVariable("{ARGS}", "Variable created using the CALL action.", VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(1), script));
+            calledScript.AddVariable("{ARGS}", "Variable created using the CALL action.", VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(1), script));
 
             int arg = 0;
             foreach (string varName in args)
