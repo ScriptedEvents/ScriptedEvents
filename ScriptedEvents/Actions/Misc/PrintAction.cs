@@ -39,7 +39,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string message = VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(0), script);
+            string message = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(0), script);
 
             if (script.Sender is null || script.Context is ExecuteContext.Automatic)
             {

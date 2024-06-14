@@ -46,7 +46,7 @@
 
             foreach (Player player in players)
             {
-                player.Ban(duration, VariableSystemV2.ReplaceVariables(Arguments.JoinMessage(2), script).Replace("\\n", "\n"));
+                player.Ban(duration, VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(2), script).Replace("\\n", "\n"));
             }
 
             return new(true);

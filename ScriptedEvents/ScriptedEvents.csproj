@@ -148,7 +148,7 @@
     <Compile Include="Actions\Yielding\HttpPostAction.cs" />
     <Compile Include="Actions\Yielding\HttpGetAction.cs" />
     <Compile Include="Actions\Round\EndRoundAction.cs" />
-    <Compile Include="Actions\Variable\PlayerVariableAction.cs" />
+    <Compile Include="Actions\Variable\GlobalPlayerVariableAction.cs" />
     <Compile Include="Actions\Item\RadioRangeAction.cs" />
     <Compile Include="API\Constants\Constants.cs" />
     <Compile Include="API\Constants\ConstMessages.cs" />
@@ -282,7 +282,7 @@
     <Compile Include="Actions\Misc\LogAction.cs" />
     <Compile Include="Actions\Round\RoundlockAction.cs" />
     <Compile Include="Actions\Logic\StopAction.cs" />
-    <Compile Include="Actions\Variable\SaveVariableAction.cs" />
+    <Compile Include="Actions\Variable\GlobalSaveAction.cs" />
     <Compile Include="Actions\Map\TeslaAction.cs" />
     <Compile Include="Actions\Yielding\WaitForSecondsAction.cs" />
     <Compile Include="Actions\Yielding\WaitUntilDebugAction.cs" />
