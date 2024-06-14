@@ -494,12 +494,12 @@ namespace ScriptedEvents.API.Modules
                 {
                     if (VariableSystemV2.TryGetPlayers(variable, source, out PlayerCollection playersFromVariable))
                     {
-                        Log("Success! Variable contains players.");
+                        Log($"Success! Variable contains players. Amount of players fetched: {playersFromVariable.Length}");
                         list.AddRange(playersFromVariable);
                     }
                     else
                     {
-                        Log(playersFromVariable.Message);
+                        Log($"Failure getting player variable: {playersFromVariable.Message}");
                     }
                 }
                 catch (Exception e)
