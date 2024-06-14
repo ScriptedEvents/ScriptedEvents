@@ -254,7 +254,7 @@
                     }
 
                     // Unsupported types: Parse variables in string and use that as a param (RawArguments are used for getting the raw string)
-                    success.NewParameters.Add(VariableSystemV2.ReplaceVariables(input, source));
+                    success.NewParameters.Add(VariableSystemV2.ReplaceVariable(input, source, requireBrackets));
                     break;
             }
 
