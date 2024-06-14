@@ -43,7 +43,7 @@
         public float? Execute(Script script, out ActionResponse message)
         {
             string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
-            CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, Arguments.JoinMessage(0)), coroutineKey);
+            CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, RawArguments.JoinMessage(0)), coroutineKey);
             CoroutineHelper.AddCoroutine("WAITUNTIL", handle, script);
 
             message = new(true);
