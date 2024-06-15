@@ -1,5 +1,6 @@
 ﻿namespace ScriptedEvents.Actions
 {
+    using System.Collections.Generic;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
 
@@ -35,7 +36,7 @@
             new OptionsArgument("mode", true,
                 new("SILENT", "Makes a silent announcement."),
                 new("LOUD", "Makes a loud announcement.")),
-            new Argument("players", typeof(Player[]), "The players to play the CASSIE announcement for.", true),
+            new Argument("players", typeof(PlayerCollection), "The players to play the CASSIE announcement for.", true),
             new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption.", true),
         };
 
@@ -44,7 +45,7 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[1];
             bool isNoisy = Arguments[0].ToUpper() == "LOUD";
-            string text = Arguments.JoinMessage(2);
+            string text = RawArguments.JoinMessage(2);
 
             string[] cassieArgs = text.Split('|');
 
