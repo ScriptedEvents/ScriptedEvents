@@ -27,29 +27,35 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => "Saves a new variable with the name of '{@}' in the local scope. It works the same as doing 'LOCAL {@} ...'. The variable will be able to be used until its overwritten by another TEMP action.";
+        public string Description => "Saves a new variable with a name of '{@}'. If a provided argument is ONLY a player variable, then it will be copied. Else it will saved as a literal variable and math operations will be performed.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("value", typeof(object), "The value to store. Math is supported.", true),
+            new Argument("value", typeof(object), "The value to store. Can be a player variable. Math is supported (when applicable).", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string input = Arguments.JoinMessage(0);
+            if (Arguments.Length == 0 && Arguments[0] is PlayerCollection players)
+            {
+                script.AddPlayerVariable("{@}", string.Empty, players.GetInnerList());
+                return new(true);
+            }
+
+            string input = RawArguments.JoinMessage(0);
             input = VariableSystemV2.ReplaceVariables(input, script).Replace("\\n", "\n");
 
             try
             {
                 float value = (float)ConditionHelperV2.Math(input);
-                script.AddVariable("{@}", "User-defined variable.", value.ToString());
+                script.AddVariable("{@}", string.Empty, value.ToString());
                 return new(true);
             }
             catch
             {
-                script.AddVariable("{@}", "User-defined variable.", input);
+                script.AddVariable("{@}", string.Empty, input);
                 return new(true);
             }
         }
