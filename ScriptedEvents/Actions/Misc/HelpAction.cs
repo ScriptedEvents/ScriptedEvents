@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Text;
 
-    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
 
     using MEC;
