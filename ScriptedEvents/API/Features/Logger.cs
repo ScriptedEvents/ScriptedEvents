@@ -27,8 +27,7 @@
                     LogInternal.Warn(message);
                     break;
                 case LogType.Info:
-                    if (MainPlugin.Configs.EnableLogs) // this should be handled better
-                        LogInternal.Info(message);
+                    LogInternal.Info(message);
                     break;
                 case LogType.Debug:
                     if (script is not null)
