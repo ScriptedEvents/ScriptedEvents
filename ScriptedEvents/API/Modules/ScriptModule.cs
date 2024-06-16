@@ -330,9 +330,7 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-#if DEBUG
                 Logger.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}", script);
-#endif
 
                 if (!TryGetActionType(keyword, out Type actionType))
                 {
@@ -444,8 +442,9 @@ namespace ScriptedEvents.API.Modules
         /// <param name="amount">The maximum amount of players to give back, or <see langword="null"/> for unlimited.</param>
         /// <param name="collection">A <see cref="PlayerCollection"/> representing the players.</param>
         /// <param name="source">The script using the API. Used for per-script variables.</param>
+        /// <param name="brecketsRequired">Are brackets required.</param>
         /// <returns>Whether or not the process errored.</returns>
-        public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source)
+        public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source, bool brecketsRequired = true)
         {
             void Log(string msg)
             {
@@ -456,6 +455,7 @@ namespace ScriptedEvents.API.Modules
 
             input = input.RemoveWhitespace();
             List<Player> list = ListPool<Player>.Pool.Get();
+
             if (input.ToUpper() is "*" or "ALL")
             {
                 ListPool<Player>.Pool.Return(list);
@@ -486,27 +486,37 @@ namespace ScriptedEvents.API.Modules
                 return true;
             }
 
-            string[] variables = VariableSystemV2.IsolateVariables(input, source);
-            foreach (string variable in variables)
+            if (brecketsRequired)
             {
-                Log($"Checking if '{variable}' is a variable containing players");
-                try
+                string[] variables = VariableSystemV2.IsolateVariables(input, source);
+                foreach (string variable in variables)
                 {
-                    if (VariableSystemV2.TryGetPlayers(variable, source, out PlayerCollection playersFromVariable))
+                    Log($"Checking if '{variable}' is a variable containing players");
+                    try
                     {
-                        Log($"Success! Variable contains players. Amount of players fetched: {playersFromVariable.Length}");
-                        list.AddRange(playersFromVariable);
+                        if (VariableSystemV2.TryGetPlayers(variable, source, out PlayerCollection playersFromVariable))
+                        {
+                            Log($"Success! Variable contains players. Amount of players fetched: {playersFromVariable.Length}");
+                            list.AddRange(playersFromVariable);
+                        }
+                        else
+                        {
+                            Log($"Failure getting player variable: {playersFromVariable.Message}");
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        Log($"Failure getting player variable: {playersFromVariable.Message}");
+                        collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
+                        Log(collection.Message);
+                        return false;
                     }
                 }
-                catch (Exception e)
+            }
+            else
+            {
+                if (VariableSystemV2.TryGetPlayers(input, source, out PlayerCollection playersFromVariable, false))
                 {
-                    collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
-                    Log(collection.Message);
-                    return false;
+                    list = playersFromVariable.GetInnerList();
                 }
             }
 
