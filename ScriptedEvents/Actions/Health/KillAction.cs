@@ -57,7 +57,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
                 if (!SEParser.TryParse((string)Arguments[1], out DamageType damageType, script))
                 {
                     useDeathType = false;
-                    customDeath = Arguments.JoinMessage(1);
+                    customDeath = RawArguments.JoinMessage(1);
                 }
 
                 foreach (Player player in plys)

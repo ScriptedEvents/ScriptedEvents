@@ -37,7 +37,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            ConditionResponse outcome = ConditionHelperV2.Evaluate(Arguments.JoinMessage(0), script);
+            ConditionResponse outcome = ConditionHelperV2.Evaluate(RawArguments.JoinMessage(0), script);
             if (!outcome.Success)
                 return new(false, $"IF execution error: {outcome.Message}", ActionFlags.FatalError);
 

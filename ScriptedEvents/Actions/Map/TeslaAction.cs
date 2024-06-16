@@ -68,7 +68,7 @@
 
             string mode = Arguments[0].ToUpper();
             string target = mode == "DISABLE" ? null : RawArguments[1];
-            string duration = Arguments.Length > 2 ? Arguments.JoinMessage(2, string.Empty) : null;
+            string duration = Arguments.Length > 2 ? RawArguments.JoinMessage(2, string.Empty) : null;
 
             switch (mode)
             {
@@ -91,11 +91,11 @@
                         Tesla.IgnoredRoles.Add(roleType);
                     return Reverse(mode, roleType, duration, script);
                 case "DISABLE":
-                    duration = Arguments.Length > 1 ? Arguments.JoinMessage(1, string.Empty) : null;
+                    duration = Arguments.Length > 1 ? RawArguments.JoinMessage(1, string.Empty) : null;
                     MainPlugin.Handlers.TeslasDisabled = true;
                     return Reverse(mode, null, duration, script);
                 case "ENABLE":
-                    duration = Arguments.Length > 1 ? Arguments.JoinMessage(1, string.Empty) : null;
+                    duration = Arguments.Length > 1 ? RawArguments.JoinMessage(1, string.Empty) : null;
                     MainPlugin.Handlers.TeslasDisabled = false;
                     return Reverse(mode, null, duration, script);
             }

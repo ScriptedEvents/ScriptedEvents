@@ -38,7 +38,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Server.Name = Arguments.JoinMessage(0);
+            Server.Name = RawArguments.JoinMessage(0);
             return new(true);
         }
     }
