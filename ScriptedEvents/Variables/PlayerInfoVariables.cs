@@ -42,7 +42,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(IPlayerVariable), "The players variable from which the players will be fetched from.", true),
+            new Argument("players", typeof(PlayerCollection), "The players variable from which the players will be fetched from.", true),
             new Argument("key", typeof(string), "The key from which the value will be fetched and compared with the required value.", true),
             new Argument("requiredValue", typeof(string), "The value that the player key must have in order to get included.", true),
         };
@@ -52,7 +52,7 @@
         {
             get
             {
-                foreach (Player plr in ((IPlayerVariable)Arguments[0]).Players)
+                foreach (Player plr in ((PlayerCollection)Arguments[0]).GetInnerList())
                 {
                     string key = (string)Arguments[1];
 
@@ -100,7 +100,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("player", typeof(IPlayerVariable), "The player to get the key from. MUST BE ONLY ONE PLAYER", true),
+            new Argument("player", typeof(PlayerCollection), "The player to get the key from. MUST BE ONLY ONE PLAYER", true),
             new Argument("keyName", typeof(string), "The name of the key.", true),
         };
 
@@ -112,7 +112,7 @@
         {
             get
             {
-                List<Player> players = ((IPlayerVariable)Arguments[0]).Players.ToList();
+                List<Player> players = ((PlayerCollection)Arguments[0]).GetInnerList();
                 string key = (string)Arguments[1];
 
                 if (players.Count > 1)
@@ -142,7 +142,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments { get; } = new[]
         {
-            new Argument("name", typeof(IPlayerVariable), "The name of the player variable.", true),
+            new Argument("name", typeof(PlayerCollection), "The name of the player variable.", true),
         };
 
         /// <inheritdoc/>
@@ -153,17 +153,17 @@
         {
             get
             {
-                IPlayerVariable variable = (IPlayerVariable)Arguments[0];
+                PlayerCollection variable = (PlayerCollection)Arguments[0];
 
                 if (variable is IArgumentVariable)
                 {
                     throw new ArgumentException(ErrorGen.Get(ErrorCode.UnsupportedArgumentVariables, Name));
                 }
 
-                if (variable.Players.Count() == 0)
+                if (variable.Length == 0)
                     return string.Empty;
 
-                return string.Join(".", variable.Players.Select(plr => plr.Id.ToString()));
+                return string.Join(".", variable.GetInnerList().Select(plr => plr.Id.ToString()));
             }
         }
     }
@@ -185,7 +185,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("name", typeof(IPlayerVariable), "The name of the player variable to show.", true),
+            new Argument("name", typeof(PlayerCollection), "The name of the player variable to show.", true),
             new OptionsArgument("selector", false,
                 new("NAME", "Player's name"),
                 new("DPNAME", "Player's display name"),
@@ -230,7 +230,8 @@
                 if (Arguments.Length > 1)
                     selector = Arguments[1].ToUpper();
 
-                IEnumerable<Player> players = ((IPlayerVariable)Arguments[0]).Players;
+                IEnumerable<Player> players = ((PlayerCollection)Arguments[0]).GetInnerList();
+
                 IOrderedEnumerable<string> display = players.Select(ply =>
                 {
                     return selector switch
