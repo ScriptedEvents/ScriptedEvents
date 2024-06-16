@@ -34,7 +34,7 @@
         {
             if (args is null)
             {
-                Logger.Debug("[ARGPROC] There are no arguments provided for this action. Skipping...", source);
+                Logger.Debug("[ARGPROC] There are no raw arguments provided for this action. Skipping...", source);
                 return new(true);
             }
 
@@ -226,7 +226,7 @@
 
                 // Special
                 case "PlayerCollection":
-                    if (!ScriptModule.TryGetPlayers(input, null, out PlayerCollection players, source))
+                    if (!ScriptModule.TryGetPlayers(input, null, out PlayerCollection players, source, requireBrackets))
                         return new(false, true, expected.ArgumentName, players.Message);
 
                     success.NewParameters.Add(players);
