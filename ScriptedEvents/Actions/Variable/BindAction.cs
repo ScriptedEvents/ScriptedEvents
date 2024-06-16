@@ -46,18 +46,14 @@
             if (oldVar is IPlayerVariable oldPlayerVar)
             {
                 if (script.UniquePlayerVariables.ContainsKey(oldPlayerVar.Name))
-                {
                     script.UniquePlayerVariables.Remove(oldPlayerVar.Name);
-                }
 
                 script.AddPlayerVariable(newVarName, oldPlayerVar.Description, oldPlayerVar.Players.ToList());
             }
             else
             {
                 if (script.UniqueVariables.ContainsKey(oldVar.Name))
-                {
                     script.UniqueVariables.Remove(oldVar.Name);
-                }
 
                 script.AddVariable(newVarName, oldVar.Description, oldVar.String());
             }
