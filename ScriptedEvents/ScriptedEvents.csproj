@@ -91,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\Broadcast\ClearBroadcastsAction.cs" />
     <Compile Include="Actions\CASSIE\CassiePlayerAction.cs" />
     <Compile Include="Actions\CASSIE\ClearCassieAction.cs" />
     <Compile Include="Actions\DebugActions\DebugProcessorAction.cs" />
