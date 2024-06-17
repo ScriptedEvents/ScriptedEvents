@@ -74,5 +74,10 @@
         /// Yielding action.
         /// </summary>
         Yielding,
+
+        /// <summary>
+        /// Server action.
+        /// </summary>
+        Server,
     }
 }
