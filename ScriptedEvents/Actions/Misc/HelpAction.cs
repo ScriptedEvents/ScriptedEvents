@@ -102,9 +102,9 @@ From there, using 'shelp SHOW' in the future will open the documentation folder 
 Whenever SE updates, re-run 'shelp GENERATE' to ensure your documentation remains updated.
 
 If you don't want to generate documentation on your computer, please use one of the following options to continue instead:
-- 'LIST' - Lists all available actions.
-- 'LISTVAR' - Lists all available variables.
-- 'LISTENUM' - Lists all enums that are used in {MainPlugin.Singleton.Name}, and show more info about enums.
+- 'ACTIONS' - Lists all available actions.
+- 'VARIABLES' - Lists all available variables.
+- 'ENUMS' - Lists all enums that are used in {MainPlugin.Singleton.Name}, and show more info about enums.
 - An error code returned from an error message (example: 'SE-101').
 
 Every value returned from those lists can also be used in shelp to retrieve documentation about specific features. For example, 'TESLA' will give you more information about the TESLA action.
@@ -163,7 +163,6 @@ Scripted Events Contributors:
 
                 StringBuilder sbList = StringBuilderPool.Pool.Get();
                 sbList.AppendLine();
-                sbList.AppendLine("=== VARIABLES ===");
                 sbList.AppendLine("The following variables can all be used in conditions, such as IF, GOTOIF, WAITUNTIL, etc. Additionally, each RoleType has its own variable (eg. {NTFCAPTAIN}).");
                 sbList.AppendLine("An asterisk [*] before the name of a variable indicates it also stores players, which can be used in numerous actions such as SETROLE.");
                 sbList.AppendLine();
@@ -183,7 +182,7 @@ Scripted Events Contributors:
             }
 
             // List Enums
-            else if (text is "LISTENUM" or "ENUMLIST")
+            else if (text is "LISTENUM" or "ENUMLIST" or "ENUMS")
             {
                 StringBuilder sbEnumList = StringBuilderPool.Pool.Get();
                 sbEnumList.AppendLine();
@@ -265,7 +264,7 @@ Scripted Events Contributors:
                             sb.AppendLine($"  Valid options for this argument:");
                             foreach (Option option in options.Options)
                             {
-                                if (option.Description is null)
+                                if (option.Description is null || option.Description.RemoveWhitespace() == string.Empty)
                                     sb.AppendLine($"    - '{option.Name}'");
                                 else
                                     sb.AppendLine($"    - '{option.Name}' - {option.Description}");
@@ -361,7 +360,7 @@ Scripted Events Contributors:
                                 sb.AppendLine($"  Valid options for this argument:");
                                 foreach (Option option in options.Options)
                                 {
-                                    if (option.Description is null)
+                                    if (option.Description is null || option.Description.RemoveWhitespace() == string.Empty)
                                         sb.AppendLine($"    - '{option.Name}'");
                                     else
                                         sb.AppendLine($"    - '{option.Name}' - {option.Description}");
