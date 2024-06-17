@@ -6,7 +6,6 @@
     using System.Data;
     using System.Text.RegularExpressions;
 
-    using Exiled.API.Features;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Conditions.Floats;
     using ScriptedEvents.Conditions.Interfaces;
