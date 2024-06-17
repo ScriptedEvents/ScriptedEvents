@@ -62,7 +62,7 @@
                 }
                 else
                 {
-                    Logger.Warn($"WaitUntil condition error: {response.Message}", script);
+                    Logger.Error($"WaitUntil condition error: {response.Message}", script);
                     break;
                 }
 
