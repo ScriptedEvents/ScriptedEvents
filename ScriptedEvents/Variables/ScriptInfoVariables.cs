@@ -42,8 +42,7 @@
                 new("DEBUG", $"'TRUE' or 'FALSE' depending on if the script is in debug mode."),
                 new("DURATION", $"The amount of time (in seconds) the script has been running."),
                 new("NAME", "The name of the script."),
-                new("PATH", "The path to the script on the local directory.")
-                ),
+                new("PATH", "The path to the script on the local directory.")),
         };
 
         /// <inheritdoc/>
