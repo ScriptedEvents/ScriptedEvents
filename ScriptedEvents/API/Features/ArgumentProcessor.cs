@@ -270,7 +270,7 @@
 
             if (loopSyntaxIndex == -1)
             {
-                Logger.Debug("$FOR: no syntax found, will not try to loop because its stupid and we dont want that i think??", source);
+                Logger.Debug("$FOR: no syntax found.", source);
                 return new(true);
             }
 
@@ -293,7 +293,7 @@
             }
             else
             {
-                if (!VariableSystemV2.TryGetPlayers(playerVarNameLoopingThrough, source, out PlayerCollection outPlayers))
+                if (!ScriptModule.TryGetPlayers(playerVarNameLoopingThrough, null, out PlayerCollection outPlayers, source))
                 {
                     Logger.Debug("$FOR: provided player variable to loop through is invalid", source);
                     return new(false, true, playerVarNameLoopingThrough, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, playerVarNameLoopingThrough));
