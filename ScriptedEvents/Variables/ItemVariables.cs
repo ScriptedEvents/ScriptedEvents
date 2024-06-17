@@ -28,7 +28,7 @@
     public class RandomItem : IStringVariable
     {
         /// <inheritdoc/>
-        public string Name => "{RANDOMITEM}";
+        public string Name => "{ITEM-RANDOM}";
 
         /// <inheritdoc/>
         public string Description => "Gets the ItemType of a random item.";
@@ -47,7 +47,7 @@
     public class ShowItem : IStringVariable, IArgumentVariable
     {
         /// <inheritdoc/>
-        public string Name => "{ITEMINFO}";
+        public string Name => "{ITEM-INFO}";
 
         /// <inheritdoc/>
         public string Description => "Returns more information about the item using the item id.";
@@ -100,7 +100,7 @@
     public class ItemOwner : IFloatVariable, IArgumentVariable, IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "{ITEMOWNER}";
+        public string Name => "{ITEM-OWNER}";
 
         /// <inheritdoc/>
         public string Description => "Returns the player which is the owner of the item.";
