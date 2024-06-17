@@ -49,7 +49,7 @@
 
             try
             {
-                float value = (float)ConditionHelperV2.Math(input);
+                float value = ConditionHelperV2.Math(input);
                 script.AddVariable("{@}", string.Empty, value.ToString());
                 return new(true);
             }
