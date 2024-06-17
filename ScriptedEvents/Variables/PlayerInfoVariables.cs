@@ -12,6 +12,7 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
@@ -24,7 +25,6 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
-            new PlayerData(),
             new Command(),
             new Show(),
             new GetPlayersByData(),
@@ -78,51 +78,6 @@
 
         /// <inheritdoc/>
         public object[] Arguments { get; set; }
-    }
-
-    public class PlayerData : IStringVariable, IArgumentVariable, INeedSourceVariable, IHasAliasVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{PDATA}";
-
-        /// <inheritdoc/>
-        public string Alias => "{PLAYERDATA}";
-
-        /// <inheritdoc/>
-        public string Description => "Retrieves the value of a key from a player's player data.";
-
-        /// <inheritdoc/>
-        public string[] RawArguments { get; set; }
-
-        /// <inheritdoc/>
-        public object[] Arguments { get; set; }
-
-        /// <inheritdoc/>
-        public Argument[] ExpectedArguments => new[]
-        {
-            new Argument("player", typeof(PlayerCollection), "The player to get the key from. MUST BE ONLY ONE PLAYER", true),
-            new Argument("keyName", typeof(string), "The name of the key.", true),
-        };
-
-        /// <inheritdoc/>
-        public Script Source { get; set; } = null;
-
-        /// <inheritdoc/>
-        public string Value
-        {
-            get
-            {
-                List<Player> players = ((PlayerCollection)Arguments[0]).GetInnerList();
-                string key = (string)Arguments[1];
-
-                if (players.Count > 1)
-                    throw new ArgumentException("The 'PLAYERDATA' variable only works with one player!");
-                if (players[0].SessionVariables.ContainsKey(key))
-                    return players[0].SessionVariables[key].ToString();
-
-                return "NONE";
-            }
-        }
     }
 
     public class Command : IStringVariable, IArgumentVariable, INeedSourceVariable
@@ -230,53 +185,67 @@
                 if (Arguments.Length > 1)
                     selector = Arguments[1].ToUpper();
 
-                IEnumerable<Player> players = ((PlayerCollection)Arguments[0]).GetInnerList();
+                PlayerCollection players = (PlayerCollection)Arguments[0];
 
-                IOrderedEnumerable<string> display = players.Select(ply =>
+                if (players.Length > 1)
                 {
-                    return selector switch
-                    {
-                        "NAME" => ply.Nickname,
-                        "DISPLAYNAME" or "DPNAME" => ply.DisplayNickname,
-                        "USERID" or "UID" => ply.UserId,
-                        "PLAYERID" or "PID" => ply.Id.ToString(),
-                        "ROLE" => ply.Role.Type.ToString(),
-                        "TEAM" => ply.Role.Team.ToString(),
-                        "ROOM" => ply.CurrentRoom.Type.ToString(),
-                        "ZONE" => ply.Zone.ToString(),
-                        "HP" or "HEALTH" => ply.Health.ToString(),
-                        "INVCOUNT" => ply.Items.Count.ToString(),
-                        "INV" => string.Join("|", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())),
-                        "HELDITEM" => (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci) ? ci.Name : ply.CurrentItem?.Type.ToString()) ?? ItemType.None.ToString(),
-                        "GOD" => ply.IsGodModeEnabled.ToString().ToUpper(),
-                        "POS" => $"{ply.Position.x} {ply.Position.y} {ply.Position.z}",
-                        "POSX" => ply.Position.x.ToString(),
-                        "POSY" => ply.Position.y.ToString(),
-                        "POSZ" => ply.Position.z.ToString(),
-                        "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
-                        "TIER" => "-1",
-                        "GROUP" => ply.GroupName,
-                        "CUFFED" => ply.IsCuffed.ToString().ToUpper(),
-                        "CUSTOMINFO" or "CINFO" or "CUSTOMI" => ply.CustomInfo.ToString(),
-                        "XSIZE" => ply.Scale.x.ToString(),
-                        "YSIZE" => ply.Scale.y.ToString(),
-                        "ZSIZE" => ply.Scale.z.ToString(),
-                        "KILLS" => MainPlugin.Handlers.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "0",
-                        "EFFECTS" when ply.ActiveEffects.Count() != 0 => string.Join("|", ply.ActiveEffects.Select(eff => eff.name)),
-                        "EFFECTS" => "None",
-                        "USINGNOCLIP" => ply.Role is FpcRole role ? role.IsNoclipEnabled.ToUpper() : "FALSE",
-                        "CANNOCLIP" => ply.IsNoclipPermitted.ToUpper(),
-                        "STAMINA" => ply.Stamina.ToString(),
-                        _ => ply.Nickname,
-                    };
-                }).OrderBy(s => s);
-                return string.Join(", ", display).Trim();
+                    throw new ScriptedEventsException(ErrorGen.Generate(ErrorCode.ParameterError_TooManyPlayers, Name));
+                }
+                else if (players.Length == 0)
+                {
+                    throw new ScriptedEventsException(ErrorGen.Generate(ErrorCode.InvalidPlayerVariable, Name));
+                }
+
+                Player ply = players.FirstOrDefault();
+
+                return selector switch
+                {
+                    "NAME" => ply.Nickname,
+                    "DISPLAYNAME" or "DPNAME" => ply.DisplayNickname,
+                    "USERID" or "UID" => ply.UserId,
+                    "PLAYERID" or "PID" => ply.Id.ToString(),
+                    "ROLE" => ply.Role.Type.ToString(),
+                    "TEAM" => ply.Role.Team.ToString(),
+                    "ROOM" => ply.CurrentRoom.Type.ToString(),
+                    "ZONE" => ply.Zone.ToString(),
+                    "HP" or "HEALTH" => ply.Health.ToString(),
+                    "INVCOUNT" => ply.Items.Count.ToString(),
+                    "INV" => string.Join("|", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())),
+                    "HELDITEM" => (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci) ? ci.Name : ply.CurrentItem?.Type.ToString()) ?? ItemType.None.ToString(),
+                    "GOD" => ply.IsGodModeEnabled.ToUpper(),
+                    "POS" => $"{ply.Position.x} {ply.Position.y} {ply.Position.z}",
+                    "POSX" => ply.Position.x.ToString(),
+                    "POSY" => ply.Position.y.ToString(),
+                    "POSZ" => ply.Position.z.ToString(),
+                    "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
+                    "TIER" => "-1",
+                    "GROUP" => ply.GroupName,
+                    "CUFFED" => ply.IsCuffed.ToUpper(),
+                    "CUSTOMINFO" or "CINFO" or "CUSTOMI" => ply.CustomInfo.ToString(),
+                    "XSIZE" => ply.Scale.x.ToString(),
+                    "YSIZE" => ply.Scale.y.ToString(),
+                    "ZSIZE" => ply.Scale.z.ToString(),
+                    "KILLS" => MainPlugin.Handlers.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "0",
+                    "EFFECTS" when ply.ActiveEffects.Count() != 0 => string.Join(", ", ply.ActiveEffects.Select(eff => eff.name)),
+                    "EFFECTS" => "NONE",
+                    "USINGNOCLIP" => ply.Role is FpcRole role ? role.IsNoclipEnabled.ToUpper() : "FALSE",
+                    "CANNOCLIP" => ply.IsNoclipPermitted.ToUpper(),
+                    "STAMINA" => ply.Stamina.ToString(),
+                    "ISSTAFF" => ply.RemoteAdminAccess.ToUpper(),
+                    _ => GetByPlayerData(ply, selector),
+                };
             }
         }
 
         /// <inheritdoc/>
-        public string LongDescription => @"This variable is designed to only be used with a player variable containing one player. 
-However, it CAN be used with multiple players, and will list the display in the form of a comma-separated list.
-Do not use this variable for using player variables in commands. Use the 'C' variable for this.";
+        public string LongDescription => @"This variable is designed to only be used with a player variable containing one player.";
+
+        private string GetByPlayerData(Player player, string selector)
+        {
+            if (player.SessionVariables.ContainsKey(selector))
+                return player.SessionVariables[selector].ToString();
+
+            return "NONE";
+        }
     }
 }
