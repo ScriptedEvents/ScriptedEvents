@@ -34,7 +34,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string formula = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(0), script);
+            string formula = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(), script);
             if (!ConditionHelperV2.TryMath(formula, out MathResult result))
             {
                 return new(MessageType.NotANumberOrCondition, this, "condition", formula, result);

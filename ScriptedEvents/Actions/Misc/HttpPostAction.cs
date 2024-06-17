@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions
 {
     using System;
     using System.Collections.Generic;

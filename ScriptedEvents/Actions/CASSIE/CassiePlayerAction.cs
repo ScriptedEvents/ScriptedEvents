@@ -48,14 +48,8 @@
 
             string[] cassieArgs = text.Split('|');
 
-            for (int i = 0; i < cassieArgs.Length; i++)
-            {
-                cassieArgs[i] = VariableSystemV2.ReplaceVariables(cassieArgs[i], script);
-            }
-
             if (cassieArgs.Length == 1)
             {
-                text = VariableSystemV2.ReplaceVariables(text, script);
                 foreach (Player ply in players)
                 {
                     ply.MessageTranslated(text, text, makeNoise: isNoisy);

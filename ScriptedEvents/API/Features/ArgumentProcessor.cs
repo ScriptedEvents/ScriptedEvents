@@ -7,6 +7,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pools;
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
@@ -99,7 +100,15 @@
             // Edge-cases with long strings being the last parameter
             if (args.Length > expectedArguments.Length)
             {
-                success.NewParameters.AddRange(args.Skip(expectedArguments.Length));
+                // TODO: Figure out a method where ReplaceVariables isn't called for each extra argument.
+                // While also allowing variables + strings to be combined
+                // Eg. Using 'ReplaceVariable' instead won't turn '{PLAYERS}test' into '0test' like expected.
+                // This works for now, we need version 3.0 :|
+                IEnumerable<string> extraArgs = args.Skip(expectedArguments.Length);
+                foreach (string arg in extraArgs)
+                {
+                    success.NewParameters.Add(VariableSystemV2.ReplaceVariables(arg, source));
+                }
             }
 
             success.NewParameters.RemoveAll(o => o is string st && string.IsNullOrWhiteSpace(st));
