@@ -52,7 +52,7 @@
 
             try
             {
-                float value = (float)ConditionHelperV2.Math(input);
+                float value = ConditionHelperV2.Math(input);
                 VariableSystemV2.DefineVariable(varName, "User-defined variable.", value.ToString(), script);
                 return new(true);
             }
