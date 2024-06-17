@@ -11,7 +11,7 @@
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
-    public class WaitForMillisecondsAction : ITimingAction, IHelpInfo
+    public class WaitAction : ITimingAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "WAITMIL";

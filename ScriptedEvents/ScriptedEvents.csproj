@@ -190,7 +190,7 @@
     <Compile Include="Actions\Player\TpSpawnAction.cs" />
     <Compile Include="Actions\Player\TpRoomAction.cs" />
     <Compile Include="Actions\Player\TpxAction.cs" />
-    <Compile Include="Actions\Yielding\WaitForMillisecondsAction.cs" />
+    <Compile Include="Actions\Yielding\WaitAction.cs" />
     <Compile Include="API\Enums\ActionSubgroup.cs" />
     <Compile Include="API\Enums\CommandType.cs" />
     <Compile Include="API\Enums\DamageRuleType.cs" />
