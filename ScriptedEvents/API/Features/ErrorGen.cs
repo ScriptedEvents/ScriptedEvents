@@ -407,6 +407,12 @@
                 ErrorCode.InvalidBoolean,
                 "Provided value '{0}' is not a valid boolean input.",
                 "This error occurs when a single boolean input was expected, but the input is not a valid boolean. This error can be resolved by providing a valid boolean input. Valid inputs are as follows: 'TRUE', 'T', 'FALSE', 'F', 'YES', 'Y', 'NO', 'N'."),
+
+            new ErrorInfo(
+                149,
+                ErrorCode.ParameterError_TooManyPlayers,
+                "Provided player variable '{0}' contains too many players for propper execution.",
+                "This error occurs when an action or a variable has a strict limit on how many players can be provided in order for propper execution. Read the action or variable documentation to learn more about the specifications."),
         }.AsReadOnly();
     }
 }

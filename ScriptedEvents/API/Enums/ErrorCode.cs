@@ -38,6 +38,7 @@
         ParameterError_Players,
         ParameterError_Rooms,
         ParameterError_CassieNoAnnc,
+        ParameterError_TooManyPlayers,
 
         UnknownError,
 
