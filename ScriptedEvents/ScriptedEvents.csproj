@@ -312,7 +312,7 @@
     <Compile Include="Variables\StringVariables.cs" />
     <Compile Include="Variables\TicketsAndRespawnsVariables.cs" />
     <Compile Include="Variables\WarheadVariables.cs" />
-    <Compile Include="Variables\WorldTimeVariables.cs" />
+    <Compile Include="Variables\TimeVariables.cs" />
     <Compile Include="Variables\ZoneVariables.cs" />
     <Compile Include="API\Features\SEParser.cs" />
     <Compile Include="API\Modules\EventHandlingModule.cs" />
