@@ -275,8 +275,6 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                // remove regex for variable spaces bc its politely saying dumb
-                // maybe bring it back later cuz i changed my mind
                 List<string> actionParts = ListPool<string>.Pool.Get();
 
                 foreach (string str in action.Split(' '))
@@ -321,12 +319,6 @@ namespace ScriptedEvents.API.Modules
                         Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
 
                     actionList.Add(new StartFunctionAction());
-                    continue;
-                }
-
-                if (keyword == "<-")
-                {
-                    actionList.Add(new EndFunctionAction());
                     continue;
                 }
 

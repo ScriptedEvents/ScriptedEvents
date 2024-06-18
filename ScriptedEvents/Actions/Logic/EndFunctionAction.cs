@@ -14,7 +14,7 @@
         public string Name => "ENDFUNC";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "<-" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
