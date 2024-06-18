@@ -44,7 +44,7 @@
         public ActionResponse Execute(Script script)
         {
             PlayerCollection players = (PlayerCollection)Arguments[1];
-            float amount = (float)Arguments[2] / 100;
+            float amount = (float)Arguments[2];
             Action<Player, float> action = null;
 
             switch (Arguments[0].ToUpper())
