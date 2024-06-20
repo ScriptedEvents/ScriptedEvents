@@ -45,7 +45,7 @@
         {
             string mode = ((string)Arguments[0]).ToUpper();
             string varName = RawArguments[1];
-            PlayerCollection players = Arguments.Length > 2 ? (PlayerCollection)Arguments[2] : new(new List<Player>());
+            PlayerCollection players = Arguments.Length > 2 ? (PlayerCollection)Arguments[2] : new();
 
             switch (mode)
             {

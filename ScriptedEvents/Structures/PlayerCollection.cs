@@ -27,6 +27,14 @@
             Message = message;
         }
 
+        public PlayerCollection()
+        {
+            players = new();
+
+            Success = true;
+            Message = string.Empty;
+        }
+
         /// <summary>
         /// Gets the length of the collection.
         /// </summary>
