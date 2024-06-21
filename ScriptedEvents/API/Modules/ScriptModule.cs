@@ -249,12 +249,6 @@ namespace ScriptedEvents.API.Modules
                     actionParts.Add(str);
                 }
 
-                if (actionParts.Count == 0)
-                {
-                    actionList.Add(new NullAction("BLANK LINE"));
-                    continue;
-                }
-
                 if (actionParts[0] == null)
                     throw new ArgumentOutOfRangeException("Action parts array is empty or null.");
 
