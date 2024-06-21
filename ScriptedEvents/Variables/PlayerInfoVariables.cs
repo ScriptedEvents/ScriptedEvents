@@ -25,13 +25,13 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
-            new Command(),
-            new Show(),
-            new GetPlayersByData(),
+            new CommandVariable(),
+            new GetVariable(),
+            new GetPlayersByDataVariable(),
         };
     }
 
-    public class GetPlayersByData : IFloatVariable, IPlayerVariable, IArgumentVariable
+    public class GetPlayersByDataVariable : IFloatVariable, IPlayerVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{GETPLAYERSBYDATA}";
@@ -80,7 +80,52 @@
         public object[] Arguments { get; set; }
     }
 
-    public class Command : IStringVariable, IArgumentVariable, INeedSourceVariable
+    public class DisplayVariable : IStringVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{DISPLAY}";
+
+        /// <inheritdoc/>
+        public string Description => "Displays players in a player variable.";
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("players", typeof(PlayerCollection), "The players to display.", true),
+            new OptionsArgument("mode", false,
+                new("NAME", "Display players' names. The default option"),
+                new("DPNAME", "Display players' display names.")),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                PlayerCollection players = (PlayerCollection)Arguments[0];
+                if (players.Length == 0)
+                {
+                    return "NONE";
+                }
+
+                Func<Player, string> action = (Arguments.Length > 1 ? Arguments[1].ToUpper() : "NAME") switch
+                {
+                    "NAME" => p => { return p.Nickname; },
+                    "DPNAME" => p => { return p.DisplayNickname; },
+                    _ => throw new ArgumentException(),
+                };
+                return string.Join(", ", players.Select(action));
+            }
+        }
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+    }
+
+    public class CommandVariable : IStringVariable, IArgumentVariable, INeedSourceVariable
     {
         /// <inheritdoc/>
         public string Name => "{CMDVAR}";
@@ -123,7 +168,7 @@
         }
     }
 
-    public class Show : IStringVariable, IArgumentVariable, INeedSourceVariable, ILongDescription
+    public class GetVariable : IStringVariable, IArgumentVariable, INeedSourceVariable, ILongDescription
     {
         /// <inheritdoc/>
         public string Name => "{GET}";
@@ -140,8 +185,8 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("name", typeof(PlayerCollection), "The name of the player variable to show.", true),
-            new OptionsArgument("selector", false,
+            new Argument("name", typeof(PlayerCollection), "The player to get the info of.", true),
+            new SuggestedOptionsArgument("selector", false,
                 new("NAME", "Player's name"),
                 new("DPNAME", "Player's display name"),
                 new("UID", "Player's user id"),
@@ -169,7 +214,7 @@
                 new("EFFECTS", "Player's current effects"),
                 new("USINGNOCLIP", "Is player using noclip"),
                 new("CANNOCLIP", "Is player permitted to use noclip"),
-                new("STAMINA", "Is player permitted to use noclip")),
+                new("STAMINA", "How full is players stamina")),
         };
 
         /// <inheritdoc/>
@@ -181,19 +226,20 @@
             get
             {
                 string selector = "NAME";
+                string varName = RawArguments[0];
 
                 if (Arguments.Length > 1)
-                    selector = Arguments[1].ToUpper();
+                    selector = (string)Arguments[1];
 
                 PlayerCollection players = (PlayerCollection)Arguments[0];
 
                 if (players.Length > 1)
                 {
-                    throw new ScriptedEventsException(ErrorGen.Generate(ErrorCode.ParameterError_TooManyPlayers, Name));
+                    throw new ScriptedEventsException(ErrorGen.Generate(ErrorCode.ParameterError_TooManyPlayers, varName));
                 }
                 else if (players.Length == 0)
                 {
-                    throw new ScriptedEventsException(ErrorGen.Generate(ErrorCode.InvalidPlayerVariable, Name));
+                    throw new ScriptedEventsException(ErrorGen.Generate(ErrorCode.InvalidPlayerVariable, varName));
                 }
 
                 Player ply = players.FirstOrDefault();
