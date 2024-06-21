@@ -35,7 +35,7 @@
         public string Description { get; }
 
         /// <inheritdoc/>
-        public float Value => Players.Count();
+        public float Value => Players.Where(p => p.IsConnected).Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => PlayerList;
