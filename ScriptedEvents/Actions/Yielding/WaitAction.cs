@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+    using System.Collections.Generic;
 
     using MEC;
 
@@ -29,21 +30,32 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Yielding;
 
         /// <inheritdoc/>
-        public string Description => "Yields execution of the script for the given number of time.";
+        public string Description => "Yields execution of the script.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SEC", "Delay will be using seconds."),
-                new("MIL", "Delay will be using miliseconds.")),
-            new Argument("delay", typeof(float), "The amount of delay. Math is supported.", true),
+                new("SEC", "'value' argument will expect amout of seconds to wait for."),
+                new("MIL", "'value' argument will expect amout of miliseconds to wait for. "),
+                new("UNTIL", "'value argument will expect a condition. Will yield until said condition evaluates to TRUE.")),
+            new Argument("value", typeof(float), "The value. Math is supported.", true),
         };
 
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
             string formula = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(1), script);
+
+            if (Arguments[1].ToUpper() == "UNTIL")
+            {
+                string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
+                CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, RawArguments.JoinMessage(0)), coroutineKey);
+                CoroutineHelper.AddCoroutine("WAITUNTIL", handle, script);
+
+                message = new(true);
+                return Timing.WaitUntilDone(handle);
+            }
 
             if (!ConditionHelperV2.TryMath(formula, out MathResult result))
             {
@@ -58,7 +70,27 @@
             }
 
             message = new(true);
-            return Timing.WaitForSeconds(Arguments.ToUpper() == "MIL" ? result.Result / 1000 : result.Result);
+            return Timing.WaitForSeconds(Arguments[1].ToUpper() == "MIL" ? result.Result / 1000 : result.Result);
+        }
+
+        private IEnumerator<float> InternalWaitUntil(Script script, string input)
+        {
+            while (true)
+            {
+                ConditionResponse response = ConditionHelperV2.Evaluate(input, script);
+                if (response.Success)
+                {
+                    if (response.Passed)
+                        break;
+                }
+                else
+                {
+                    Logger.Error($"WaitUntil condition error: {response.Message}", script);
+                    break;
+                }
+
+                yield return Timing.WaitForSeconds(1 / MainPlugin.Configs.WaitUntilFrequency);
+            }
         }
     }
 }
