@@ -134,11 +134,11 @@
             // Extra magic for options
             if (expected is OptionsArgument options)
             {
-                if (!options.Options.Any(o => o.Name.ToUpper() == input.ToUpper()))
+                if (!options.Options.Any(o => o.Name.ToUpper() == input.ToUpper()) && options is not SuggestedOptionsArgument)
                     return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Option, input, expected.ArgumentName, action.Name, string.Join(", ", options.Options.Select(x => x.Name))));
 
                 success.NewParameters.Add(input);
-                source?.DebugLog($"[OPTION ARG] [C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
+                source?.DebugLog($"[OPTION ARG] [C: {action.Name}] Param {expected.ArgumentName} now has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
                 return success;
             }
 
