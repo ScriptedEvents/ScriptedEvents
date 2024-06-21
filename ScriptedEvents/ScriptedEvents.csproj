@@ -287,7 +287,6 @@
     <Compile Include="Actions\Variable\GlobalSaveAction.cs" />
     <Compile Include="Actions\Map\TeslaAction.cs" />
     <Compile Include="Actions\DebugActions\WaitUntilDebugAction.cs" />
-    <Compile Include="Actions\Yielding\WaitUntilAction.cs" />
     <Compile Include="API\Features\ApiHelper.cs" />
     <Compile Include="Commands\MainCommand\ExecuteScript.cs" />
     <Compile Include="Conditions\Floats\Equal.cs" />
