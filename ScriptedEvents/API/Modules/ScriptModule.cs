@@ -236,6 +236,9 @@ namespace ScriptedEvents.API.Modules
             string[] array = allText.Split('\n');
             for (int currentline = 0; currentline < array.Length; currentline++)
             {
+                if (currentline >= array.Length)
+                    throw new ArgumentOutOfRangeException(nameof(currentline), "Current line index is out of range.");
+
                 array[currentline] = array[currentline].TrimStart();
                 List<string> actionParts = ListPool<string>.Pool.Get();
 
@@ -243,11 +246,19 @@ namespace ScriptedEvents.API.Modules
                 {
                     if (string.IsNullOrWhiteSpace(str))
                         continue;
-
                     actionParts.Add(str);
                 }
 
-                string keyword = actionParts[0].RemoveWhitespace().ToUpper();
+                if (actionParts.Count == 0)
+                {
+                    actionList.Add(new NullAction("BLANK LINE"));
+                    continue;
+                }
+
+                if (actionParts[0] == null)
+                    throw new ArgumentOutOfRangeException("Action parts array is empty or null.");
+
+                string keyword = actionParts[0].ToUpper();
 
                 if (string.IsNullOrWhiteSpace(keyword))
                 {
@@ -267,8 +278,13 @@ namespace ScriptedEvents.API.Modules
                 }
                 else if (keyword == "!--")
                 {
-                    string flagName = actionParts[1];
+                    if (actionParts.Count < 2)
+                    {
+                        Logger.Warn("Flag definition syntax was used, but no flag name was provided.", script);
+                        continue;
+                    }
 
+                    string flagName = actionParts[1].ToUpper();
                     if (!script.HasFlag(flagName))
                     {
                         string[] arguments = actionParts.Skip(2).ToArray();
@@ -284,22 +300,20 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                // Std labels
                 if (keyword.EndsWith(":"))
                 {
-                    string labelName = keyword.Remove(keyword.Length - 1, 1).RemoveWhitespace();
+                    if (keyword.Length == 0)
+                        throw new ArgumentOutOfRangeException("Keyword is empty.");
 
+                    string labelName = keyword.Remove(keyword.Length - 1, 1).RemoveWhitespace();
                     if (!script.Labels.ContainsKey(labelName))
                         script.Labels.Add(labelName, currentline);
                     else if (!suppressWarnings)
                         Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
-
                     actionList.Add(new NullAction($"{labelName} LABEL"));
-
                     continue;
                 }
 
-                // Function labels
                 if (keyword == "->")
                 {
                     if (actionParts.Count < 2)
@@ -319,17 +333,17 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                Logger.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}", script);
+                Logger.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}", script);
 
                 if (!TryGetActionType(keyword, out Type actionType))
                 {
-                    // Check for custom actions
                     if (CustomActions.TryGetValue(keyword.ToUpper(), out CustomAction customAction))
                     {
                         CustomAction customAction1 = new(customAction.Name, customAction.Action)
                         {
                             Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray(),
                         };
+
                         actionList.Add(customAction1);
                         ListPool<string>.Pool.Return(actionParts);
                         continue;
@@ -337,7 +351,6 @@ namespace ScriptedEvents.API.Modules
 
                     if (!suppressWarnings)
                         Logger.Warn(ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName), script);
-
                     actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
@@ -345,7 +358,6 @@ namespace ScriptedEvents.API.Modules
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
                 newAction.RawArguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
-                // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
                 {
                     Logger.Warn($"Action {newAction.Name} is obsolete; {obsoleteReason}", script);
