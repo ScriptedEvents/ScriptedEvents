@@ -149,6 +149,8 @@
                 }
             }
 
+            variableName.ToUpper();
+
             DebugLog($"[GetVariable] Attempting to retrieve variable '{variableName}' with args '{string.Join(", ", argList)}'", source);
 
             Tuple<IConditionVariable, bool> result = new(null, false);
@@ -158,12 +160,12 @@
             {
                 foreach (IVariable variable in group.Variables)
                 {
-                    if (variable.Name == variableName && variable is IConditionVariable condition)
+                    if (variable.Name.ToUpper() == variableName && variable is IConditionVariable condition)
                     {
                         result = new(condition, false);
                         foundVar = true;
                     }
-                    else if (variable is IBoolVariable boolVariable && boolVariable.ReversedName == variableName)
+                    else if (variable is IBoolVariable boolVariable && boolVariable.ReversedName.ToUpper() == variableName)
                     {
                         result = new(boolVariable, true);
                         foundVar = true;
@@ -176,16 +178,16 @@
             else
                 DebugLog("[GetVariable] Variable provided is a variable defined by ScriptedEvents.", source);
 
-            if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
+            if (DefinedVariables.TryGetValue(variableName, out CustomVariable customValue))
                 result = new(customValue, false);
 
-            if (DefinedPlayerVariables.TryGetValue(name, out CustomPlayerVariable customPlayerValue))
+            if (DefinedPlayerVariables.TryGetValue(variableName, out CustomPlayerVariable customPlayerValue))
                 result = new(customPlayerValue, false);
 
-            if (source is not null && source.UniqueVariables.TryGetValue(name, out CustomVariable uniqueValue))
+            if (source is not null && source.UniqueVariables.TryGetValue(variableName, out CustomVariable uniqueValue))
                 result = new(uniqueValue, false);
 
-            if (source is not null && source.UniquePlayerVariables.TryGetValue(name, out CustomPlayerVariable uniquePlayerValue))
+            if (source is not null && source.UniquePlayerVariables.TryGetValue(variableName, out CustomPlayerVariable uniquePlayerValue))
                 result = new(uniquePlayerValue, false);
 
             if (result.Item1 is not null)
@@ -219,7 +221,7 @@
             }
             else
             {
-                return new(true, null, $"Unknown variable '{name}' provided.", false);
+                return new(true, null, $"Unknown variable '{variableName}' provided.", false);
             }
 
             ListPool<string>.Pool.Return(argList);
