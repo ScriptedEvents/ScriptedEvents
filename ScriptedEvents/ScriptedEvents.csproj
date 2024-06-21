@@ -221,6 +221,7 @@
     <Compile Include="Structures\ErrorInfo.cs" />
     <Compile Include="Structures\Flag.cs" />
     <Compile Include="Structures\Option.cs" />
+    <Compile Include="Structures\SuggestedOptionsArgument.cs" />
     <Compile Include="Structures\OptionsArgument.cs" />
     <Compile Include="Structures\PlayerCollection.cs" />
     <Compile Include="Structures\PlayerDisable.cs" />
