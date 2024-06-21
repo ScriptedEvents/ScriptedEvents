@@ -253,6 +253,7 @@ namespace ScriptedEvents.API.Modules
                     throw new ArgumentOutOfRangeException("Action parts array is empty or null.");
 
                 string keyword = actionParts[0].ToUpper();
+                Logger.Warn(string.Join(" ", actionParts));
 
                 if (string.IsNullOrWhiteSpace(keyword))
                 {
