@@ -351,6 +351,7 @@ namespace ScriptedEvents.API.Modules
 
                     if (!suppressWarnings)
                         Logger.Warn(ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName), script);
+
                     actionList.Add(new NullAction("ERROR"));
                     continue;
                 }
