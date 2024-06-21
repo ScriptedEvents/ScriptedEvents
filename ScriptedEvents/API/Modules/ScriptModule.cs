@@ -237,47 +237,9 @@ namespace ScriptedEvents.API.Modules
             for (int currentline = 0; currentline < array.Length; currentline++)
             {
                 array[currentline] = array[currentline].TrimStart();
-
-                // NoAction
-                string action = array[currentline];
-                if (string.IsNullOrWhiteSpace(action))
-                {
-                    actionList.Add(new NullAction("BLANK LINE"));
-                    continue;
-                }
-                else if (action.StartsWith("##"))
-                {
-                    inMultilineComment = !inMultilineComment;
-                    actionList.Add(new NullAction("COMMENT"));
-                    continue;
-                }
-                else if (action.StartsWith("#") || inMultilineComment)
-                {
-                    actionList.Add(new NullAction("COMMENT"));
-                    continue;
-                }
-                else if (action.StartsWith("!--"))
-                {
-                    string flag = action.Replace("!--", string.Empty).Trim();
-
-                    if (!script.HasFlag(flag))
-                    {
-                        string[] arguments = flag.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        Flag fl = new(arguments[0], arguments.Skip(1));
-                        script.Flags.Add(fl);
-                    }
-                    else if (!suppressWarnings)
-                    {
-                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleFlagDefs, flag, scriptName));
-                    }
-
-                    actionList.Add(new NullAction("FLAG DEFINE"));
-                    continue;
-                }
-
                 List<string> actionParts = ListPool<string>.Pool.Get();
 
-                foreach (string str in action.Split(' '))
+                foreach (string str in array[currentline].Split(' '))
                 {
                     if (string.IsNullOrWhiteSpace(str))
                         continue;
@@ -285,12 +247,47 @@ namespace ScriptedEvents.API.Modules
                     actionParts.Add(str);
                 }
 
-                string keyword = actionParts[0].RemoveWhitespace();
+                string keyword = actionParts[0].RemoveWhitespace().ToUpper();
+
+                if (string.IsNullOrWhiteSpace(keyword))
+                {
+                    actionList.Add(new NullAction("BLANK LINE"));
+                    continue;
+                }
+                else if (keyword.StartsWith("##"))
+                {
+                    inMultilineComment = !inMultilineComment;
+                    actionList.Add(new NullAction("COMMENT"));
+                    continue;
+                }
+                else if (keyword.StartsWith("#") || inMultilineComment)
+                {
+                    actionList.Add(new NullAction("COMMENT"));
+                    continue;
+                }
+                else if (keyword == "!--")
+                {
+                    string flagName = actionParts[1];
+
+                    if (!script.HasFlag(flagName))
+                    {
+                        string[] arguments = actionParts.Skip(2).ToArray();
+                        Flag flag = new(flagName, arguments);
+                        script.Flags.Add(flag);
+                    }
+                    else if (!suppressWarnings)
+                    {
+                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleFlagDefs, flagName, scriptName));
+                    }
+
+                    actionList.Add(new NullAction("FLAG DEFINE"));
+                    continue;
+                }
 
                 // Std labels
                 if (keyword.EndsWith(":"))
                 {
-                    string labelName = action.Remove(keyword.Length - 1, 1).RemoveWhitespace();
+                    string labelName = keyword.Remove(keyword.Length - 1, 1).RemoveWhitespace();
 
                     if (!script.Labels.ContainsKey(labelName))
                         script.Labels.Add(labelName, currentline);
@@ -327,7 +324,7 @@ namespace ScriptedEvents.API.Modules
                 if (!TryGetActionType(keyword, out Type actionType))
                 {
                     // Check for custom actions
-                    if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
+                    if (CustomActions.TryGetValue(keyword.ToUpper(), out CustomAction customAction))
                     {
                         CustomAction customAction1 = new(customAction.Name, customAction.Action)
                         {
