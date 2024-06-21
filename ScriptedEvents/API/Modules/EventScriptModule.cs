@@ -16,7 +16,6 @@
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.PlayerCount;
 
     public class EventScriptModule : SEModule
     {
