@@ -16,6 +16,7 @@
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.PlayerCount;
 
     public class EventScriptModule : SEModule
     {
@@ -198,14 +199,57 @@
                     Script scr = MainPlugin.ScriptModule.ReadScript(script, null);
 
                     // Add variables based on event.
-                    if (ev is IPlayerEvent playerEvent && playerEvent.Player is not null)
+                    if (ev is IPlayerEvent playerEvent)
                     {
+                        if (playerEvent.Player is null)
+                        {
+                            scr.Dispose();
+                            continue;
+                        }
+
                         scr.AddPlayerVariable("{EVPLAYER}", "The player that is involved with this event.", new[] { playerEvent.Player });
+
+                        if (ev is IAttackerEvent attackerEvent && attackerEvent.Attacker is not null)
+                        {
+                            scr.AddPlayerVariable("{EVATTACKER}", "The attacker that is involved with this event.", new[] { attackerEvent.Attacker });
+                        }
+
+                        if (ev is BanningEventArgs ban)
+                        {
+                            scr.AddVariable("{EVREASON}", "The ban reason.", ban.Reason.ToString());
+                            scr.AddVariable("{EVDURATION}", "The ban duration.", ban.Duration.ToString());
+                            scr.AddVariable("{EVTARGET}", "The ban target.", ban.Target.Nickname);
+                        }
+
+                        if (ev is LocalReportingEventArgs rep)
+                        {
+                            scr.AddVariable("{EVREASON}", "The report reason.", rep.Reason.ToString());
+                            scr.AddPlayerVariable("{EVTARGET}", "The report target.", new[] { rep.Target });
+                        }
+
+                        if (ev is KickingEventArgs kick)
+                        {
+                            scr.AddVariable("{EVREASON}", "The reason.", kick.Reason.ToString());
+                            scr.AddPlayerVariable("{EVTARGET}", "The target.", new[] { kick.Target });
+                        }
+
+                        if (ev is ChangingSpectatedPlayerEventArgs changing)
+                        {
+                            if (changing.OldTarget is not null)
+                                scr.AddPlayerVariable("{EVOLDTARGET}", string.Empty, new[] { changing.OldTarget });
+
+                            if (changing.NewTarget is not null)
+                                scr.AddPlayerVariable("{EVNEWTARGET}", string.Empty, new[] { changing.NewTarget });
+                        }
+
+                        if (ev is HurtingEventArgs hurting)
+                        {
+                            scr.AddVariable("{EVAMMOUNT}", "The amount of damage dealt.", hurting.Amount.ToString());
+                        }
                     }
 
-                    if (ev is IAttackerEvent attackerEvent && attackerEvent.Attacker is not null)
+                    if (ev is IGeneratorEvent gen)
                     {
-                        scr.AddPlayerVariable("{EVATTACKER}", "The attacker that is involved with this event.", new[] { attackerEvent.Attacker });
                     }
 
                     if (ev is IItemEvent item && item.Item is not null)
@@ -215,42 +259,6 @@
                     else if (ev is IPickupEvent pickup && pickup.Pickup is not null)
                     {
                         scr.AddVariable("{EVITEM}", "The Id of the ItemType of the pickup associated with this event.", pickup.Pickup.Serial.ToString());
-                    }
-
-                    if (ev is BanningEventArgs ban)
-                    {
-                        scr.AddPlayerVariable("{EVPLAYER}", "The ban issuer.", new[] { ban.Player });
-                        scr.AddVariable("{EVREASON}", "The ban reason.", ban.Reason.ToString());
-                        scr.AddVariable("{EVDURATION}", "The ban duration.", ban.Duration.ToString());
-                        scr.AddVariable("{EVTARGET}", "The ban target.", ban.Target.Nickname);
-                    }
-
-                    if (ev is LocalReportingEventArgs rep)
-                    {
-                        scr.AddPlayerVariable("{EVPLAYER}", "The report issuer.", new[] { rep.Player });
-                        scr.AddVariable("{EVREASON}", "The report reason.", rep.Reason.ToString());
-                        scr.AddPlayerVariable("{EVTARGET}", "The report target.", new[] { rep.Target });
-                    }
-
-                    if (ev is KickingEventArgs kick)
-                    {
-                        scr.AddPlayerVariable("{EVPLAYER}", "The issuer.", new[] { kick.Player });
-                        scr.AddVariable("{EVREASON}", "The reason.", kick.Reason.ToString());
-                        scr.AddPlayerVariable("{EVTARGET}", "The target.", new[] { kick.Target });
-                    }
-
-                    if (ev is ChangingSpectatedPlayerEventArgs changing)
-                    {
-                        if (changing.OldTarget is not null)
-                            scr.AddPlayerVariable("{EVOLDTARGET}", string.Empty, new[] { changing.OldTarget });
-
-                        if (changing.NewTarget is not null)
-                            scr.AddPlayerVariable("{EVNEWTARGET}", string.Empty, new[] { changing.NewTarget });
-                    }
-
-                    if (ev is HurtingEventArgs hurting)
-                    {
-                        scr.AddVariable("{EVAMMOUNT}", "The amount of damage dealt.", hurting.Amount.ToString());
                     }
 
                     if (ev is IDoorEvent door && door.Door is not null)
