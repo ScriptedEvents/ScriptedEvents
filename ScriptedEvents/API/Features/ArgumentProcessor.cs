@@ -7,7 +7,6 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pools;
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
