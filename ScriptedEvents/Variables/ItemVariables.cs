@@ -7,6 +7,8 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
+    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
 #pragma warning disable SA1402 // File may only contain a single type
     using ScriptedEvents.Variables.Interfaces;
@@ -61,7 +63,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-                new Argument("itemId", typeof(string), "The item id to use.", true),
+                new Argument("itemId", typeof(object), "The item id to use.", true),
                 new OptionsArgument("mode", true,
                     new("ISVALID", "Is provided item id a valid item."),
                     new("CARRIED", "Is item is in owner's inventory."),
@@ -76,12 +78,19 @@
             get
             {
                 string mode = Arguments[1].ToUpper();
+                string id = Arguments[0].ToString();
 
-                Item item = Item.Get((ushort)Arguments[0]);
+                if (!ushort.TryParse(id, out ushort val))
+                {
+                    throw new ScriptedEventsException($"Provided value '{val}' is not a valid item id.");
+                }
+
+                Item item = Item.Get(val);
+
                 if (item is null)
                 {
                     if (mode == "ISVALID") return "FALSE";
-                    throw new ArgumentException($"Invalid item id.", Arguments[1].ToString());
+                    throw new ScriptedEventsException($"Provided value '{val}' is not a valid item id.");
                 }
 
                 return mode switch
@@ -108,14 +117,27 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-                new Argument("itemId", typeof(string), "The item id.", true),
+                new Argument("itemId", typeof(object), "The item id.", true),
         };
 
         /// <inheritdoc/>
         public float Value => Players.Count();
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => (IEnumerable<Player>)Item.Get((ushort)Arguments[0]).Owner;
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                string id = Arguments[0].ToString();
+
+                if (!ushort.TryParse(id, out ushort val))
+                {
+                    throw new ScriptedEventsException($"Provided value '{val}' is not a valid item id.");
+                }
+
+                return new Player[] { Item.Get(val).Owner };
+            }
+        }
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
