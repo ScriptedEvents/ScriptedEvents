@@ -27,6 +27,7 @@
         {
             new CommandVariable(),
             new GetVariable(),
+            new DisplayVariable(),
             new GetPlayersByDataVariable(),
         };
     }
