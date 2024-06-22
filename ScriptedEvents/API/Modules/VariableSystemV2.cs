@@ -307,10 +307,15 @@
         /// </summary>
         /// <param name="input">The string to perform the replacements on.</param>
         /// <param name="source">The script that is currently running to replace variables. Used only for per-script variables.</param>
+        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>The modified string.</returns>
         /// <remarks>This is intended for strings that contain both regular text and variables. Otherwise, see <see cref="ReplaceVariable(string, Script, bool)"/>.</remarks>
-        public static string ReplaceVariables(string input, Script source)
+        public static string ReplaceVariables(string input, Script source, bool requireBrackets = true)
         {
+            // TODO: make better :trollface:
+            if (!requireBrackets)
+                return ReplaceVariable(input, source, false);
+
             string[] variables = IsolateVariables(input, source);
 
             foreach (string variable in variables)
