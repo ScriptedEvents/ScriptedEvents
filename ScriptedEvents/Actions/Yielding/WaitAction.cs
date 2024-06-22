@@ -39,7 +39,7 @@
                 new("SEC", "'value' argument will expect amout of seconds to wait for."),
                 new("MIL", "'value' argument will expect amout of miliseconds to wait for. "),
                 new("UNTIL", "'value argument will expect a condition. Will yield until said condition evaluates to TRUE.")),
-            new Argument("value", typeof(float), "The value. Math is supported.", true),
+            new Argument("value", typeof(object), "The value. Math is supported.", true),
         };
 
         /// <inheritdoc/>
@@ -50,7 +50,7 @@
             if (Arguments[1].ToUpper() == "UNTIL")
             {
                 string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
-                CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, RawArguments.JoinMessage(0)), coroutineKey);
+                CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, RawArguments.JoinMessage(1)), coroutineKey);
                 CoroutineHelper.AddCoroutine("WAITUNTIL", handle, script);
 
                 message = new(true);
