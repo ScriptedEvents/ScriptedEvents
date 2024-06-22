@@ -308,6 +308,7 @@ namespace ScriptedEvents.API.Modules
                         Logger.Error($"A function label syntax has been used, but no name has been provided.", script);
                         continue;
                     }
+
                     string labelName = actionParts[1].RemoveWhitespace();
                     if (!script.FunctionLabels.ContainsKey(labelName))
                         script.FunctionLabels.Add(labelName, currentline);
@@ -316,6 +317,8 @@ namespace ScriptedEvents.API.Modules
                     actionList.Add(new StartFunctionAction());
                     continue;
                 }
+
+                keyword = keyword.ToUpper();
 
                 Logger.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}", script);
                 if (!TryGetActionType(keyword, out Type actionType))
@@ -471,38 +474,9 @@ namespace ScriptedEvents.API.Modules
                 return true;
             }
 
-            if (brecketsRequired)
+            if (VariableSystemV2.TryGetPlayers(input, source, out PlayerCollection playersFromVariable, brecketsRequired))
             {
-                string[] variables = VariableSystemV2.IsolateVariables(input, source);
-                foreach (string variable in variables)
-                {
-                    Log($"Checking if '{variable}' is a variable containing players");
-                    try
-                    {
-                        if (VariableSystemV2.TryGetPlayers(variable, source, out PlayerCollection playersFromVariable))
-                        {
-                            Log($"Success! Variable contains players. Amount of players fetched: {playersFromVariable.Length}");
-                            list.AddRange(playersFromVariable);
-                        }
-                        else
-                        {
-                            Log($"Failure getting player variable: {playersFromVariable.Message}");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        collection = new(null, false, $"Error when processing the {variable} variable: {e.Message}");
-                        Log(collection.Message);
-                        return false;
-                    }
-                }
-            }
-            else
-            {
-                if (VariableSystemV2.TryGetPlayers(input, source, out PlayerCollection playersFromVariable, false))
-                {
-                    list = playersFromVariable.GetInnerList();
-                }
+                list = playersFromVariable.GetInnerList();
             }
 
             // If list is still empty, match directly
@@ -515,7 +489,8 @@ namespace ScriptedEvents.API.Modules
 
             // Shuffle, Remove unconnected/overwatch, limit
             list.ShuffleList();
-            list.RemoveAll(p => !p.IsConnected);
+
+            /* list.RemoveAll(p => !p.IsConnected); */
 
             if (MainPlugin.Configs.IgnoreOverwatch)
                 list.RemoveAll(p => p.Role.Type is RoleTypeId.Overwatch);
@@ -797,7 +772,7 @@ namespace ScriptedEvents.API.Modules
 
                 Logger.Debug($"Fetched action '{action.Name}'", scr);
 
-                if (scr.IfActionBlocksExecution && action is not ITerminatesIfAction)
+                if (scr.IfActionBlocksExecution && action is not IIgnoresIfActionBlock)
                 {
                     Logger.Debug("Action was skipped; the IF statement resulted in FALSE and action is not 'ITerminatesIfAction'", scr);
                     continue;
