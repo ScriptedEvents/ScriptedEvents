@@ -101,12 +101,14 @@
     <Compile Include="Actions\Logic\EndIfAction.cs" />
     <Compile Include="Actions\Logic\FastCallAction.cs" />
     <Compile Include="Actions\Logic\EndFunctionAction.cs" />
+    <Compile Include="Actions\Logic\FlipIfAction.cs" />
     <Compile Include="Actions\Logic\StartIfAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Logic\StartFunctionAction.cs" />
     <Compile Include="Actions\Logic\TriggerAction.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
+    <Compile Include="Actions\Player\PrintPlayersAction.cs" />
     <Compile Include="Actions\Player\StaminaAction.cs" />
     <Compile Include="Actions\RoundRule\GeneratorRuleAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
@@ -169,7 +171,7 @@
     <Compile Include="API\Features\ScriptHelpGenerator\Generator.cs" />
     <Compile Include="API\Features\ScriptHelpGenerator\GeneratorConfig.cs" />
     <Compile Include="API\Features\VariableStorage.cs" />
-    <Compile Include="API\Interfaces\ITerminatesIfAction.cs" />
+    <Compile Include="API\Interfaces\IIgnoresIfActionBlock.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
     <Compile Include="Actions\Lights\LightColorAction.cs" />
