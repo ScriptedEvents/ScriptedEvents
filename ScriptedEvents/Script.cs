@@ -278,6 +278,7 @@
         /// <param name="value">The value of the variable.</param>
         public void AddVariable(string name, string desc, string value)
         {
+            name = name.ToUpper();
             if (UniqueVariables.ContainsKey(name))
                 UniqueVariables.Remove(name);
 
@@ -292,6 +293,7 @@
         /// <param name="value">The <see cref="IEnumerable{T}"/> of Players for this variable.</param>
         public void AddPlayerVariable(string name, string desc, IEnumerable<Player> value)
         {
+            name = name.ToUpper();
             if (UniquePlayerVariables.ContainsKey(name))
                 UniquePlayerVariables.Remove(name);
 
