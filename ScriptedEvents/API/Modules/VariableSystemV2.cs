@@ -51,6 +51,8 @@
             if (!name.EndsWith("}"))
                 name += "}";
 
+            name = name.ToUpper();
+
             if (!local)
             {
                 DefinedVariables[name] = new(name, desc, input);
@@ -84,6 +86,8 @@
                 name = "{" + name;
             if (!name.EndsWith("}"))
                 name += "}";
+
+            name = name.ToUpper();
 
             if (!local)
             {
@@ -149,7 +153,7 @@
                 }
             }
 
-            variableName.ToUpper();
+            variableName = variableName.ToUpper();
 
             DebugLog($"[GetVariable] Attempting to retrieve variable '{variableName}' with args '{string.Join(", ", argList)}'", source);
 
@@ -343,9 +347,6 @@
 
             return input;
         }
-
-        public static string ReplaceVariables(object input, Script source)
-            => ReplaceVariables(input.ToString(), source);
 
         /// <summary>
         /// Isolates all variables from a string.
