@@ -38,7 +38,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            if (Arguments.Length == 0 && Arguments[0] is PlayerCollection players)
+            if (ScriptModule.TryGetPlayers(RawArguments[0], null, out PlayerCollection players, script, true))
             {
                 script.AddPlayerVariable("{@}", string.Empty, players.GetInnerList());
                 return new(true);
