@@ -154,6 +154,14 @@
             if (bool.TryParse(input, out bool r))
                 return new(true, r, string.Empty);
 
+            switch (input)
+            {
+                case "0":
+                    return new(true, false, string.Empty);
+                case "1":
+                    return new(true, true, string.Empty);
+            }
+
             // Attempt to run math first
             IFloatCondition match = null;
             foreach (var floatCondition in FloatConditions)
@@ -230,7 +238,7 @@
 
         private static ConditionResponse EvaluateInternal(string input, Script source = null)
         {
-            string convertedInput = VariableSystemV2.ReplaceVariables(input, source);
+            string convertedInput = input;
             if (bool.TryParse(convertedInput, out bool boolResult))
                 return new ConditionResponse(true, boolResult, string.Empty);
 
