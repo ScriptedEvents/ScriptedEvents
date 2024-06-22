@@ -6,7 +6,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class EndIfAction : IScriptAction, ILogicAction, IHelpInfo, ITerminatesIfAction
+    public class EndIfAction : IScriptAction, ILogicAction, IHelpInfo, IIgnoresIfActionBlock
     {
         /// <inheritdoc/>
         public string Name => "ENDIF";
