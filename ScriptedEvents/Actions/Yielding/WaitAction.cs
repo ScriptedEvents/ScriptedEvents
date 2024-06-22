@@ -47,7 +47,7 @@
         {
             string formula = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(1), script);
 
-            if (Arguments[1].ToUpper() == "UNTIL")
+            if (Arguments[0].ToUpper() == "UNTIL")
             {
                 string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
                 CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, RawArguments.JoinMessage(1)), coroutineKey);
@@ -70,7 +70,7 @@
             }
 
             message = new(true);
-            return Timing.WaitForSeconds(Arguments[1].ToUpper() == "MIL" ? result.Result / 1000 : result.Result);
+            return Timing.WaitForSeconds(Arguments[0].ToUpper() == "MIL" ? result.Result / 1000 : result.Result);
         }
 
         private IEnumerator<float> InternalWaitUntil(Script script, string input)
