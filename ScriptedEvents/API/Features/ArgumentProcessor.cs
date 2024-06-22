@@ -262,7 +262,9 @@
                     }
 
                     // Unsupported types: Parse variables in string and use that as a param (RawArguments are used for getting the raw string)
-                    success.NewParameters.Add(VariableSystemV2.ReplaceVariable(input, source, requireBrackets));
+                    // TODO: ReplaceVariable works only when a "clean" variable is provided, meaning it doesnt work when provided things like ({PLAYERSALIVE})
+                    // so we need to fix that instead of calling ReplaceVariables all the time
+                    success.NewParameters.Add(VariableSystemV2.ReplaceVariables(input, source, requireBrackets));
                     break;
             }
 
