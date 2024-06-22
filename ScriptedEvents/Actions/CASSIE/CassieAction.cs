@@ -48,7 +48,7 @@
         public ActionResponse Execute(Script script)
         {
             bool isNoisy = Arguments[0].ToUpper() == "LOUD";
-            string text = RawArguments.JoinMessage(1);
+            string text = Arguments.JoinMessage(1);
 
             if (string.IsNullOrWhiteSpace(text))
                 return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
