@@ -34,17 +34,23 @@
         {
             if (args is null)
             {
-                Logger.Debug("[ARGPROC] There are no raw arguments provided for this action. Skipping...", source);
+                Logger.Debug("[ARGPROC] There are no raw arguments provided for this action. Ending processing.", source);
                 return new(true);
             }
 
             if (args.Length != 0)
             {
+                Logger.Debug($"[ARGPROC] Arguments to process: {string.Join(", ", args)}", source);
+
                 ArgumentProcessResult processedForLoop = HandlePlayerListComprehension(args, source, out string[] strippedArgs);
                 if (!processedForLoop.Success)
                 {
-                    Logger.Debug("[ARGPROC] $FOR returned success as false, returning...", source);
+                    Logger.Debug("[$FOR @ ARGPROC] '$FOR' action decorator parsing failed. Ending processing.", source);
                     return processedForLoop;
+                }
+                else
+                {
+                    Logger.Debug("[$FOR @ ARGPROC] '$FOR' action decorator parsing success. Continuing processing.", source);
                 }
 
                 args = strippedArgs;
@@ -54,18 +60,34 @@
                 {
                     string[] conditionArgs = args.Skip(conditionSectionKeyword + 1).ToArray();
                     args = args.Take(conditionSectionKeyword).ToArray();
-                    Logger.Debug($"args = {string.Join(",", args)} | conditionArgs = {string.Join(",", conditionArgs)}", source);
-                    if (!ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source).Passed)
+                    Logger.Debug($"[$IF @ ARGPROC] Evaluating condition: {string.Join(",", conditionArgs)}", source);
+                    ConditionResponse resp = ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source);
+
+                    if (!resp.Success)
                     {
-                        Logger.Debug("[ARGPROC] $IF returned passed as false, returning...", source);
+                        Logger.Debug("[$IF @ ARGPROC] Evaluation resulted in an error. Ending processing.", source);
+                        return new(false, true, string.Empty, resp.Message);
+                    }
+
+                    if (!resp.Passed)
+                    {
+                        Logger.Debug("[$IF @ ARGPROC] Evaluation resulted in FALSE. Action shall not execute. Ending processing.", source);
                         return new(false);
                     }
+                    else
+                    {
+                        Logger.Debug($"[$IF @ ARGPROC] Evaluation resulted in TRUE. Action shall execute like normal. Continuing parsing.", source);
+                    }
+                }
+                else
+                {
+                    Logger.Debug($"[$IF @ ARGPROC] No '$IF' syntax was found. Continuing parsing.", source);
                 }
             }
 
             if (expectedArguments is null || expectedArguments.Length == 0)
             {
-                Logger.Debug("[ARGPROC] There are no arguments for this action. Skipping...", source);
+                Logger.Debug("[ARGPROC] There are no arguments for this action. Ending parsing.", source);
                 return new(true);
             }
 
@@ -78,6 +100,7 @@
             }
 
             ArgumentProcessResult success = new(true);
+            success.StrippedRawParameters = args;
 
             for (int i = 0; i < expectedArguments.Length; i++)
             {
