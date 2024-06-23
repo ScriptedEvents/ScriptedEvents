@@ -189,6 +189,11 @@
         /// </summary>
         public PlayerLoopInfo PlayerLoopInfo { get; set; } = null;
 
+        /// <summary>
+        /// Gets or sets the original action arguments from when the script was read for the first time.
+        /// </summary>
+        public Dictionary<IAction, string[]> OriginalActionArgs { get; set; } = new();
+
         /// <inheritdoc/>
         public void Dispose()
         {
