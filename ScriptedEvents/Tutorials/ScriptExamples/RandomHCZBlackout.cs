@@ -1,6 +1,6 @@
 ﻿namespace ScriptedEvents.Tutorials.Actions
 {
-    public class RandomHCZBlackout : ITutorial
+    public class RandomHCZBlackout : IScriptExample
     {
         public string FileName => "RandomHCZBlackout";
 
@@ -12,19 +12,19 @@
 
         public string Contents => @"##
 SCRIPT PURPOSE: 
-Flicker lights in random rooms in HeavyContainment if an Scp079 is alive
+
 
 INSTALATION: 
 Move this script to your 'Scripts' folder and restart the round
 
 DIFFICULTY:
-3/10
+
 
 RATED FOR VERSION:  
-v3.0.0
+
 
 ORIGINAL CREATOR:
-@thunder300 <@189495219383697409>
+
 ##
 
 # start this script as soon as the server starts
@@ -46,5 +46,17 @@ Loop:
 
 # continue executing from the Loop label and repeat the process
 GOTO Loop";
+
+        public string Purpose => "Flicker lights in random rooms in HeavyContainment if an Scp079 is alive";
+
+        public string Difficulty => "3/10";
+
+        public string OriginalAuthor => "@thunder300 <@189495219383697409>";
+
+        public string Note => string.Empty;
+
+        public string LastModification => "23.06.2024";
+
+        public string RatedVersion => "v3.0.0";
     }
 }
