@@ -214,7 +214,7 @@
                     }
                     else
                     {
-                        DebugLog("[GetVariable] Argument processing skipped.", source);
+                        DebugLog("[GetVariable] Argument processing skipped. Arguments and RawArguments will not be processed", source);
                     }
                 }
 
