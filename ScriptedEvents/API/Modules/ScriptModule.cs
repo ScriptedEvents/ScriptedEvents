@@ -233,6 +233,12 @@ namespace ScriptedEvents.API.Modules
 
             List<IAction> actionList = ListPool<IAction>.Pool.Get();
 
+            Action<IAction> addActionNoArgs = (action) =>
+            {
+                script.OriginalActionArgs[action] = Array.Empty<string>();
+                actionList.Add(action);
+            };
+
             string[] array = allText.Split('\n');
             for (int currentline = 0; currentline < array.Length; currentline++)
             {
@@ -242,18 +248,18 @@ namespace ScriptedEvents.API.Modules
                 string action = array[currentline];
                 if (string.IsNullOrWhiteSpace(action))
                 {
-                    actionList.Add(new NullAction("BLANK LINE"));
+                    addActionNoArgs(new NullAction("BLANK LINE"));
                     continue;
                 }
                 else if (action.StartsWith("##"))
                 {
                     inMultilineComment = !inMultilineComment;
-                    actionList.Add(new NullAction("COMMENT"));
+                    addActionNoArgs(new NullAction("COMMENT"));
                     continue;
                 }
                 else if (action.StartsWith("#") || inMultilineComment)
                 {
-                    actionList.Add(new NullAction("COMMENT"));
+                    addActionNoArgs(new NullAction("COMMENT"));
                     continue;
                 }
                 else if (action.StartsWith("!--"))
@@ -271,7 +277,7 @@ namespace ScriptedEvents.API.Modules
                         Logger.Warn(ErrorGen.Get(ErrorCode.MultipleFlagDefs, flag, scriptName));
                     }
 
-                    actionList.Add(new NullAction("FLAG DEFINE"));
+                    addActionNoArgs(new NullAction("FLAG DEFINE"));
                     continue;
                 }
 
@@ -296,7 +302,8 @@ namespace ScriptedEvents.API.Modules
                         script.Labels.Add(labelName, currentline);
                     else if (!suppressWarnings)
                         Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
-                    actionList.Add(new NullAction($"{labelName} LABEL"));
+
+                    addActionNoArgs(new NullAction($"{labelName} LABEL"));
                     continue;
                 }
 
@@ -310,17 +317,18 @@ namespace ScriptedEvents.API.Modules
                     }
 
                     string labelName = actionParts[1].RemoveWhitespace();
+
                     if (!script.FunctionLabels.ContainsKey(labelName))
                         script.FunctionLabels.Add(labelName, currentline);
                     else if (!suppressWarnings)
                         Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
-                    actionList.Add(new StartFunctionAction());
+
+                    addActionNoArgs(new StartFunctionAction());
                     continue;
                 }
 
                 keyword = keyword.ToUpper();
 
-                Logger.Debug($"Queuing action {keyword} {string.Join(", ", actionParts.Skip(1))}", script);
                 if (!TryGetActionType(keyword, out Type actionType))
                 {
                     // Check for custom actions
@@ -337,12 +345,15 @@ namespace ScriptedEvents.API.Modules
 
                     if (!suppressWarnings)
                         Logger.Warn(ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName), script);
-                    actionList.Add(new NullAction("ERROR"));
+
+                    addActionNoArgs(new NullAction("ERROR"));
                     continue;
                 }
 
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
-                newAction.RawArguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                script.OriginalActionArgs[newAction] = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+
+                Logger.Debug($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}", script);
 
                 // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
@@ -784,30 +795,34 @@ namespace ScriptedEvents.API.Modules
                 float? delay = null;
 
                 // Process Arguments
-                ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, action.RawArguments, action, scr);
-                if (res.Errored)
+                if (scr.OriginalActionArgs.TryGetValue(action, out string[] originalArgs))
                 {
-                    // Todo: Place error better later
-                    // -> [WARN] Error trying to check 'value' argument: Invalid Object provided. See all options by running 'shelp Object' in the server console.
-                    Logger.Error($"Error! {res.Message}", scr);
-                    break;
-                }
-                else
-                {
-                    Logger.Debug("Action did not error while processing arguments. Continuing.", scr);
-                }
+                    ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalArgs, action, scr);
+                    if (res.Errored)
+                    {
+                        // Todo: Place error better later
+                        // -> [WARN] Error trying to check 'value' argument: Invalid Object provided. See all options by running 'shelp Object' in the server console.
+                        Logger.Error($"Error! {res.Message}", scr);
+                        break;
+                    }
+                    else
+                    {
+                        Logger.Debug("Action did not error while processing arguments. Continuing.", scr);
+                    }
 
-                if (!res.Success)
-                {
-                    Logger.Debug("Action was skipped; the argument processor did not return 'success' as true.", scr);
-                    continue;
-                }
-                else
-                {
-                    Logger.Debug("Action was not skipped; the argument processor returned 'success' as true.", scr);
-                }
+                    if (!res.Success)
+                    {
+                        Logger.Debug("Action was skipped; the argument processor did not return 'success' as true.", scr);
+                        continue;
+                    }
+                    else
+                    {
+                        Logger.Debug("Action was not skipped; the argument processor returned 'success' as true.", scr);
+                    }
 
-                action.Arguments = res.NewParameters.ToArray();
+                    action.Arguments = res.NewParameters.ToArray();
+                    action.RawArguments = res.StrippedRawParameters;
+                }
 
                 try
                 {
