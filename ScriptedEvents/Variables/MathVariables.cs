@@ -103,7 +103,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("variable", typeof(float), "The variable to round. Requires the variable to be a number.", true),
-            new OptionsArgument("mode", false, new("UP"), new("DOWN"), new("NEAREST")),
+            new OptionsArgument("mode", false, new("UP"), new("DOWN"), new("NEAREST", "Default option")),
         };
 
         /// <inheritdoc/>
