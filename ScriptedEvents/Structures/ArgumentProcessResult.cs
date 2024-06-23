@@ -48,5 +48,10 @@
         /// Gets an <see cref="object"/> list of new parameters if the processing was successful.
         /// </summary>
         public List<object> NewParameters { get; }
+
+        /// <summary>
+        /// Gets or sets the raw arguments of the action, with filtered out action decorators.
+        /// </summary>
+        public string[] StrippedRawParameters { get; set; }
     }
 }
