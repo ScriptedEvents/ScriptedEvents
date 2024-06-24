@@ -251,6 +251,10 @@
                     {
                     }
 
+                    if (ev is IFirearmEvent gun)
+                    {
+                    }
+
                     if (ev is IItemEvent item && item.Item is not null)
                     {
                         scr.AddVariable("{EVITEM}", "The Id of the ItemType of the item involved with this event.", item.Item.Base.ItemSerial.ToString());

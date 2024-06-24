@@ -4,8 +4,9 @@
     using System.Linq;
 
     using CommandSystem;
-
+    using Exiled.API.Features;
     using Exiled.Permissions.Extensions;
+    using RemoteAdmin;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
@@ -71,6 +72,7 @@
             }
 
             scriptAction.RawArguments = arguments.Skip(1).ToArray();
+            scriptAction.Arguments = arguments.Skip(1).ToArray();
 
             // Fill out mock script info
             Script mockScript = new()
@@ -81,6 +83,12 @@
                 ScriptName = "ACTION COMMAND EXECUTION",
                 Actions = new[] { scriptAction },
             };
+
+            mockScript.OriginalActionArgs[action] = scriptAction.RawArguments;
+            if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
+            {
+                mockScript.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
+            }
 
             if (MainPlugin.Configs.Debug)
                 mockScript.AddFlag("DEBUG");
