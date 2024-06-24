@@ -245,7 +245,7 @@
 
                 Player ply = players.FirstOrDefault();
 
-                return selector switch
+                return selector.ToUpper() switch
                 {
                     "NAME" => ply.Nickname,
                     "DISPLAYNAME" or "DPNAME" => ply.DisplayNickname,
