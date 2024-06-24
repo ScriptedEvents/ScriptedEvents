@@ -10,23 +10,7 @@
 
         public string Category => "Scripts";
 
-        public string Contents => @"##
-SCRIPT PURPOSE: 
-
-
-INSTALATION: 
-Move this script to your 'Scripts' folder and restart the round
-
-DIFFICULTY:
-
-
-RATED FOR VERSION:  
-
-
-ORIGINAL CREATOR:
-
-##
-
+        public string Contents => @"
 # start this script as soon as the server starts
 !-- AUTORUN
 
