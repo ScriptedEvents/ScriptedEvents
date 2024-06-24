@@ -64,12 +64,12 @@
         public Argument[] ExpectedArguments => new[]
         {
                 new Argument("itemId", typeof(object), "The item id to use.", true),
-                new OptionsArgument("mode", true,
+                new OptionsArgument("mode", false,
                     new("ISVALID", "Is provided item id a valid item."),
                     new("CARRIED", "Is item is in owner's inventory."),
                     new("SCALE", "Item's scale."),
                     new("WEIGHT", "Item's weight."),
-                    new("TYPE", "Item's type.")),
+                    new("TYPE", "Item's type. Default option.")),
         };
 
         /// <inheritdoc/>
@@ -77,7 +77,7 @@
         {
             get
             {
-                string mode = Arguments[1].ToUpper();
+                string mode = Arguments.Length > 1 ? Arguments[1].ToUpper() : "TYPE";
                 string id = Arguments[0].ToString();
 
                 if (!ushort.TryParse(id, out ushort val))
