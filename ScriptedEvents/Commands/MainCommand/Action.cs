@@ -59,18 +59,6 @@
                 return false;
             }
 
-            if (action is ILogicAction)
-            {
-                response = "Logic actions cannot be used in the action command.";
-                return false;
-            }
-
-            if (action is Actions.CommandAction)
-            {
-                response = "This action cannot be used in the action command.";
-                return false;
-            }
-
             scriptAction.RawArguments = arguments.Skip(1).ToArray();
             scriptAction.Arguments = arguments.Skip(1).ToArray();
 
