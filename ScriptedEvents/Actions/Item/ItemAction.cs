@@ -49,6 +49,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            PlayerCollection plys = (PlayerCollection)Arguments[1];
             ItemType itemType = (ItemType)Arguments[2];
             Action<Player> action = null;
             int amt = 1;
@@ -74,12 +75,10 @@
                 case "ADD":
                     action = (player) =>
                     {
-                        player.AddItem(itemType, amt);
+                        player.AddItem(itemType);
                     };
                     break;
             }
-
-            PlayerCollection plys = (PlayerCollection)Arguments[1];
 
             foreach (Player player in plys)
             {
