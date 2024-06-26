@@ -464,6 +464,9 @@ namespace ScriptedEvents.API.Modules
                 return true;
             }
 
+            // TODO: When a variable with a player id is provided, it wont work since the raw variable name cant match to the regex
+            // but if we convert a valid variable to int, a e.g. player variable with 1 player will then say that "yeah actually im the server"
+            // which is just a tiny bit stupid
             string patternForPlayerIdUsage = @"^\d+(\.\d+)*\.?$";
             if (Regex.IsMatch(input, patternForPlayerIdUsage))
             {
