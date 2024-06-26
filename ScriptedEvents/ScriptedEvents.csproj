@@ -233,9 +233,7 @@
     <Compile Include="Structures\VariableResult.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="Tutorials\Actions\KillActionTutorial.cs" />
-    <Compile Include="Tutorials\IScriptExample.cs" />
     <Compile Include="Tutorials\ITutorial.cs" />
-    <Compile Include="Tutorials\ScriptExamples\RandomHCZBlackout.cs" />
     <Compile Include="Variables\Interfaces\IItemVariable.cs" />
     <Compile Include="Variables\Interfaces\IHasAliasVariable.cs" />
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
