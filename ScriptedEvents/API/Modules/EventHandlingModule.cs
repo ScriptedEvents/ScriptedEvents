@@ -172,6 +172,7 @@
             PlayerHandler.SearchingPickup += OnSearchingPickup;
             PlayerHandler.InteractingDoor += OnInteractingDoor;
             PlayerHandler.InteractingLocker += OnInteractingLocker;
+            PlayerHandler.Handcuffing += OnHandcuffing;
             PlayerHandler.InteractingElevator += OnInteractingElevator;
             PlayerHandler.Escaping += OnEscaping;
             PlayerHandler.Spawned += OnSpawned;
@@ -256,6 +257,7 @@
             PlayerHandler.DroppingItem -= OnDroppingItem;
             PlayerHandler.SearchingPickup -= OnSearchingPickup;
             PlayerHandler.InteractingDoor -= OnInteractingDoor;
+            PlayerHandler.Handcuffing -= OnHandcuffing;
             PlayerHandler.InteractingLocker -= OnInteractingLocker;
             PlayerHandler.InteractingElevator -= OnInteractingElevator;
             PlayerHandler.Escaping -= OnEscaping;
