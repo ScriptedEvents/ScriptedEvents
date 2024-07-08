@@ -9,7 +9,6 @@ namespace ScriptedEvents.Actions
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     using UnityEngine.Networking;
@@ -53,10 +52,9 @@ These variables are created as per-script variables, meaning they can only be us
         public float? Execute(Script script, out ActionResponse message)
         {
             string body = Arguments.JoinMessage(1);
-            body = VariableSystemV2.ReplaceVariables(body, script);
 
             string coroutineKey = $"HTTPPOST_COROUTINE_{DateTime.UtcNow.Ticks}";
-            CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, VariableSystemV2.ReplaceVariable(RawArguments[0], script), body), coroutineKey);
+            CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, (string)Arguments[0], body), coroutineKey);
             CoroutineHelper.AddCoroutine("HTTPPOST", handle, script);
             message = new(true);
             return Timing.WaitUntilDone(handle);
