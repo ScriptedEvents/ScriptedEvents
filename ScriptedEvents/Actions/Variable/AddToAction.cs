@@ -13,7 +13,7 @@
     public class AddToAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "ADDTO";
+        public string Name => "APPEND";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
