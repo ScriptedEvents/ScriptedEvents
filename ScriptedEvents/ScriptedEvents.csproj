@@ -112,6 +112,8 @@
     <Compile Include="Actions\Player\StaminaAction.cs" />
     <Compile Include="Actions\RoundRule\GeneratorRuleAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
+    <Compile Include="Actions\Round\LobbyAction.cs" />
+    <Compile Include="Actions\Round\RoundAction.cs" />
     <Compile Include="Actions\Server\ErrorAction.cs" />
     <Compile Include="Actions\Misc\FastHttpPostAction.cs" />
     <Compile Include="Actions\Server\ServerNameAction.cs" />
@@ -141,7 +143,6 @@
     <Compile Include="Actions\RoundRule\DisablePlayerAction.cs" />
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
-    <Compile Include="Actions\Round\LobbylockAction.cs" />
     <Compile Include="Actions\Variable\AddToAction.cs" />
     <Compile Include="Actions\Variable\BindAction.cs" />
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
@@ -273,7 +274,6 @@
     <Compile Include="Actions\Player\SizeAction.cs" />
     <Compile Include="Actions\Misc\NullAction.cs" />
     <Compile Include="Actions\RoundRule\SpawnRuleAction.cs" />
-    <Compile Include="Actions\Round\StartRoundAction.cs" />
     <Compile Include="Actions\CASSIE\CassieAction.cs" />
     <Compile Include="Actions\Server\CommandAction.cs" />
     <Compile Include="API\Interfaces\IAction.cs" />
