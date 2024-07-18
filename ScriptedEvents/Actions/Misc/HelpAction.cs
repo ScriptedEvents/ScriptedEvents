@@ -58,7 +58,7 @@
             if (Arguments.Length < 1)
                 Arguments = new[] { "USE-WELCOME-TEXT" };
 
-            if (Arguments[0] is "GENERATE")
+            if (Arguments[0].ToUpper() is "GENERATE")
             {
                 if (script.Context != ExecuteContext.ServerConsole)
                     return new(false, "The 'GENERATE' subcommand must be executed from the server console.");
@@ -66,7 +66,7 @@
                 return new(generatorResult, message);
             }
 
-            if (Arguments[0] is "GDONE")
+            if (Arguments[0].ToUpper() is "GDONE")
             {
                 if (script.Context != ExecuteContext.ServerConsole)
                     return new(false, "The 'GDONE' subcommand must be executed from the server console.");
@@ -74,7 +74,7 @@
                 return new(generatorResult, message);
             }
 
-            if (Arguments[0] is "SHOW")
+            if (Arguments[0].ToUpper() is "SHOW")
             {
                 if (script.Context != ExecuteContext.ServerConsole)
                     return new(false, "The 'SHOW' subcommand must be executed from the server console.");
