@@ -247,8 +247,9 @@
                         }
                     }
 
-                    if (ev is IGeneratorEvent gen)
+                    if (ev is IGeneratorEvent gen && gen.Generator is not null)
                     {
+                        scr.AddVariable("{EVGENERATOR}", string.Empty, gen.Generator.Base.GetInstanceID().ToString());
                     }
 
                     if (ev is IFirearmEvent gun)
