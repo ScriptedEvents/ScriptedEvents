@@ -8,10 +8,10 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class LobbylockAction : IScriptAction, IHelpInfo
+    public class LobbyAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "LOBBYLOCK";
+        public string Name => "LOBBY";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -31,13 +31,22 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(bool), "Whether or not to lock the lobby.", true),
+            new OptionsArgument("mode", true,
+                new("LOCK"),
+                new("UNLOCK")),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Round.IsLobbyLocked = (bool)Arguments[0];
+            switch ((string)Arguments[0])
+            {
+                case "LOCK":
+                    Round.IsLobbyLocked = true; break;
+                case "UNLOCK":
+                    Round.IsLobbyLocked = false; break;
+            }
+
             return new(true);
         }
     }
