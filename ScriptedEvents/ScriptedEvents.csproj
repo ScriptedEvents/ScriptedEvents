@@ -136,7 +136,7 @@
     <Compile Include="Actions\Broadcast\HintAction.cs" />
     <Compile Include="Actions\Item\ClearInventoryAction.cs" />
     <Compile Include="Actions\Broadcast\CountdownAction.cs" />
-    <Compile Include="Actions\Misc\CustomAction.cs" />
+    <Compile Include="Actions\DebugActions\CustomAction.cs" />
     <Compile Include="Actions\Health\DamageAction.cs" />
     <Compile Include="Actions\RoundRule\EffectRuleAction.cs" />
     <Compile Include="Actions\RoundRule\EnablePlayerAction.cs" />
@@ -152,7 +152,6 @@
     <Compile Include="Actions\Variable\TempVariableAction.cs" />
     <Compile Include="Actions\Misc\HttpPostAction.cs" />
     <Compile Include="Actions\Misc\HttpGetAction.cs" />
-    <Compile Include="Actions\Round\EndRoundAction.cs" />
     <Compile Include="Actions\Variable\GlobalPlayerVariableAction.cs" />
     <Compile Include="Actions\Item\RadioRangeAction.cs" />
     <Compile Include="API\Constants\Constants.cs" />
@@ -272,7 +271,7 @@
     <Compile Include="Actions\Misc\HelpAction.cs" />
     <Compile Include="Actions\RoundRule\InfectRuleAction.cs" />
     <Compile Include="Actions\Player\SizeAction.cs" />
-    <Compile Include="Actions\Misc\NullAction.cs" />
+    <Compile Include="Actions\DebugActions\NullAction.cs" />
     <Compile Include="Actions\RoundRule\SpawnRuleAction.cs" />
     <Compile Include="Actions\CASSIE\CassieAction.cs" />
     <Compile Include="Actions\Server\CommandAction.cs" />
@@ -285,7 +284,6 @@
     <Compile Include="Actions\Player\EffectAction.cs" />
     <Compile Include="Actions\Lights\LightsOffAction.cs" />
     <Compile Include="Actions\Server\LogAction.cs" />
-    <Compile Include="Actions\Round\RoundlockAction.cs" />
     <Compile Include="Actions\Logic\StopAction.cs" />
     <Compile Include="Actions\Variable\GlobalSaveAction.cs" />
     <Compile Include="Actions\Map\TeslaAction.cs" />
