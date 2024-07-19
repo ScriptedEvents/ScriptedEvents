@@ -1,8 +1,5 @@
 ﻿namespace ScriptedEvents.Actions
 {
-    using System.Collections.Generic;
-
-    using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
 
