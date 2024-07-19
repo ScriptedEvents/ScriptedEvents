@@ -145,6 +145,7 @@
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Variable\AddToAction.cs" />
     <Compile Include="Actions\Variable\BindAction.cs" />
+    <Compile Include="Actions\Variable\GlobalDictAction.cs" />
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
     <Compile Include="Actions\Variable\PlayerDataAction.cs" />
     <Compile Include="Actions\Variable\LocalSaveAction.cs" />
@@ -337,7 +338,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">
-      <Version>8.7.0</Version>
+      <Version>8.9.8</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>
