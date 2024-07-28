@@ -6,7 +6,6 @@
 
     using CommandSystem;
 
-    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.Permissions.Extensions;
     using ScriptedEvents.API.Enums;
@@ -25,6 +24,9 @@
 
         /// <inheritdoc/>
         public string Description => "Start a script.";
+
+        /// <inheritdoc/>
+        public bool SanitizeResponse => true;
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

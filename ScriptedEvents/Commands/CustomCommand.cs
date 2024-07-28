@@ -23,6 +23,9 @@
         public string Command { get; set; }
 
         /// <inheritdoc/>
+        public bool SanitizeResponse => true;
+
+        /// <inheritdoc/>
         public string[] Aliases { get; set; }
 
         /// <inheritdoc/>

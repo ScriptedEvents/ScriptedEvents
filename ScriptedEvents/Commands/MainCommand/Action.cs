@@ -24,6 +24,9 @@
         public string Description => "Runs a specific action with specific arguments.";
 
         /// <inheritdoc/>
+        public bool SanitizeResponse => true;
+
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("script.action"))

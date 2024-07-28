@@ -22,6 +22,9 @@
         public string Description => "Get documentation for everything in Scripted Events.";
 
         /// <inheritdoc/>
+        public bool SanitizeResponse => true;
+
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             HelpAction help = new HelpAction();

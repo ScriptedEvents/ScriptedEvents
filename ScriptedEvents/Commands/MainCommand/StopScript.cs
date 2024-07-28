@@ -23,6 +23,9 @@
         public string Description => "Stops a script.";
 
         /// <inheritdoc/>
+        public bool SanitizeResponse => true;
+
+        /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("script.stop"))
