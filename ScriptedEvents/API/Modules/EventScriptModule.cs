@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Features;
@@ -33,6 +34,8 @@
         public Dictionary<string, List<string>> CurrentEventData { get; set; }
 
         public Dictionary<string, List<string>> CurrentCustomEventData { get; set; }
+
+        public List<string> DynamicallyConnectedEvents { get; set; } = new();
 
         // Connection methods
         public static void OnArgumentedEvent<T>(T ev)
@@ -87,6 +90,7 @@
                 if (scr.HasFlag("EVENT", out Flag f))
                 {
                     string evName = f.Arguments[0];
+
                     if (CurrentEventData.ContainsKey(evName))
                     {
                         CurrentEventData[evName].Add(scr.ScriptName);
@@ -118,48 +122,59 @@
                 Logger.Debug("Setting up new 'on' event");
                 Logger.Debug($"Event: {ev.Key}");
                 Logger.Debug($"Scripts: {string.Join(", ", ev.Value)}");
-                bool made = false;
-                foreach (Type handler in HandlerTypes)
+
+                ConnectDynamicExiledEvent(ev.Key);
+            }
+        }
+
+        public void ConnectDynamicExiledEvent(string key)
+        {
+            Logger.Error("connectiong event " + key);
+            if (DynamicallyConnectedEvents.Contains(key)) return;
+
+            DynamicallyConnectedEvents.Add(key);
+
+            bool made = false;
+            foreach (Type handler in HandlerTypes)
+            {
+                // Credit to DevTools & Yamato for below code.
+                Delegate @delegate = null;
+                PropertyInfo propertyInfo = handler.GetProperty(key);
+
+                if (propertyInfo is null)
+                    continue;
+
+                EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
+                MethodInfo subscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Subscribe");
+
+                if (propertyInfo.PropertyType == typeof(Event))
                 {
-                    // Credit to DevTools & Yamato for below code.
-                    Delegate @delegate = null;
-                    PropertyInfo propertyInfo = handler.GetProperty(ev.Key);
-
-                    if (propertyInfo is null)
-                        continue;
-
-                    EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
-                    MethodInfo subscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Subscribe");
-
-                    if (propertyInfo.PropertyType == typeof(Event))
-                    {
-                        @delegate = new CustomEventHandler(OnNonArgumentedEvent);
-                    }
-                    else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
-                    {
-                        @delegate = typeof(EventScriptModule)
-                            .GetMethod(nameof(OnArgumentedEvent))
-                            .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
-                            .CreateDelegate(typeof(CustomEventHandler<>)
-                            .MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments));
-                    }
-                    else
-                    {
-                        Logger.Warn(propertyInfo.Name);
-                        continue;
-                    }
-
-                    subscribe.Invoke(propertyInfo.GetValue(MainPlugin.Handlers), new object[] { @delegate });
-                    StoredDelegates.Add(new Tuple<PropertyInfo, Delegate>(propertyInfo, @delegate));
-
-                    made = true;
+                    @delegate = new CustomEventHandler(OnNonArgumentedEvent);
+                }
+                else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
+                {
+                    @delegate = typeof(EventScriptModule)
+                        .GetMethod(nameof(OnArgumentedEvent))
+                        .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
+                        .CreateDelegate(typeof(CustomEventHandler<>)
+                        .MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments));
+                }
+                else
+                {
+                    Logger.Warn(propertyInfo.Name);
+                    continue;
                 }
 
-                if (made)
-                    Logger.Debug($"Dynamic event {ev.Key} connected successfully");
-                else
-                    Logger.Debug($"Dynamic event {ev.Key} failed to be connected");
+                subscribe.Invoke(propertyInfo.GetValue(MainPlugin.Handlers), new object[] { @delegate });
+                StoredDelegates.Add(new Tuple<PropertyInfo, Delegate>(propertyInfo, @delegate));
+
+                made = true;
             }
+
+            if (made)
+                Logger.Debug($"Dynamic event {key} connected successfully");
+            else
+                Logger.Debug($"Dynamic event {key} failed to be connected");
         }
 
         public void TerminateConnections()
@@ -186,10 +201,35 @@
         // Code to run when connected event is executed
         public void OnAnyEvent(string eventName, IExiledEvent ev = null)
         {
+            string name = ev.GetType().Name;
+            name = name.Substring(0, name.Length - 9);
+
+            if (ev is IDeniableEvent deniable && deniable is IPlayerEvent plrEv)
+            {
+                bool playerIsNotNone = plrEv.Player is not null;
+
+                bool isRegisteredRule = MainPlugin.Handlers.GetPlayerDisableEvent(name, plrEv.Player).HasValue;
+
+                if (playerIsNotNone && isRegisteredRule)
+                {
+                    deniable.IsAllowed = false;
+                    return;
+                }
+            }
+
             if (CurrentEventData is null || !CurrentEventData.TryGetValue(eventName, out List<string> scripts))
             {
                 return;
             }
+
+            /*
+            PropertyInfo[] properties = ev.GetType().GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                var value = property.GetValue(ev);
+                Log.Error("Property: " + property.Name + ", Type: " + property.PropertyType + ", Value: " + value);
+            }
+            */
 
             foreach (string script in scripts)
             {
