@@ -117,6 +117,11 @@
         public List<PlayerDisable> DisabledPlayerKeys { get; set; } = new();
 
         /// <summary>
+        /// Gets or sets a list of strings indicating round-disabled events for players.
+        /// </summary>
+        public List<PlayerDisable> DisabledPlayerEvents { get; set; } = new();
+
+        /// <summary>
         /// Gets a List of infection rules.
         /// </summary>
         public List<InfectRule> InfectionRules { get; } = new();
@@ -353,6 +358,34 @@
             foreach (PlayerDisable playerDisable in DisabledPlayerKeys)
             {
                 if (key.Equals(playerDisable.Key) && playerDisable.Players.Contains(player))
+                {
+                    return playerDisable;
+                }
+            }
+
+            return null;
+        }
+
+        public PlayerDisable? GetPlayerDisableEvent(string key)
+        {
+            foreach (PlayerDisable playerDisable in DisabledPlayerEvents)
+            {
+                if (key == playerDisable.Key)
+                {
+                    return playerDisable;
+                }
+            }
+
+            return null;
+        }
+
+        public PlayerDisable? GetPlayerDisableEvent(string key, Player player)
+        {
+            if (player is null) return null;
+
+            foreach (PlayerDisable playerDisable in DisabledPlayerEvents)
+            {
+                if (key == playerDisable.Key && playerDisable.Players.Contains(player))
                 {
                     return playerDisable;
                 }
