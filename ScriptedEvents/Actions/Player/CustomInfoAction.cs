@@ -63,7 +63,7 @@
                 case "REMOVE":
                     foreach (Player ply in plys)
                     {
-                        ply.CustomInfo = null;
+                        ply.CustomInfo = string.Empty;
                     }
 
                     break;
