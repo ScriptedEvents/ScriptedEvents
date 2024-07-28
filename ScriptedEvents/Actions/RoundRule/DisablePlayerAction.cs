@@ -2,8 +2,6 @@
 {
     using System;
 
-    using Exiled.API.Features;
-
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
