@@ -110,6 +110,7 @@
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Player\PrintPlayersAction.cs" />
     <Compile Include="Actions\Player\StaminaAction.cs" />
+    <Compile Include="Actions\RoundRule\EventAction.cs" />
     <Compile Include="Actions\RoundRule\GeneratorRuleAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
     <Compile Include="Actions\Round\LobbyAction.cs" />
@@ -145,7 +146,6 @@
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Variable\AddToAction.cs" />
     <Compile Include="Actions\Variable\BindAction.cs" />
-    <Compile Include="Actions\Variable\GlobalDictAction.cs" />
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
     <Compile Include="Actions\Variable\PlayerDataAction.cs" />
     <Compile Include="Actions\Variable\LocalSaveAction.cs" />
