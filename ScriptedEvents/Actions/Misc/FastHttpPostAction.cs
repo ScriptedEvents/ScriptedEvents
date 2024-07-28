@@ -28,7 +28,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         /// <inheritdoc/>
-        public string Description => "Works the same as HTTPPOST, but does not create variables and does not wait until the request is finished.";
+        public string Description => "Works the same as HTTPPOST, but does not create variables and does not yield the script execution until the request is finished.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -40,10 +40,9 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string body = RawArguments.JoinMessage(1);
-            body = VariableSystemV2.ReplaceVariables(body, script);
+            string body = Arguments.JoinMessage(1);
 
-            UnityWebRequest discordWWW = UnityWebRequest.Put(VariableSystemV2.ReplaceVariable(RawArguments[0], script), body);
+            UnityWebRequest discordWWW = UnityWebRequest.Put((string)Arguments[0], body);
             discordWWW.method = "POST";
             discordWWW.SetRequestHeader("Content-Type", "application/json");
             discordWWW.SendWebRequest();
