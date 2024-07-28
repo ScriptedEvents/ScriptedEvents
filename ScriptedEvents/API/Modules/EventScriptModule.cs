@@ -129,7 +129,6 @@
 
         public void ConnectDynamicExiledEvent(string key)
         {
-            Logger.Error("connectiong event " + key);
             if (DynamicallyConnectedEvents.Contains(key)) return;
 
             DynamicallyConnectedEvents.Add(key);
