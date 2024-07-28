@@ -58,7 +58,7 @@ BUT! There is a caveat; not every event can be disabled. How can I check if 'Fli
 
 You see that 'IDeniableEvent' there? It means that you can enable and disable it. If it is not present then you can't enable and disable it.
 
-I'ts completely fine if this is too much for you, you can always join our discord server for support: discord.gg/3j54zBnbbD
+It's completely fine if this is too much for you, you can always join our discord server for support: discord.gg/3j54zBnbbD
 ";
 
         public ActionResponse Execute(Script script)
