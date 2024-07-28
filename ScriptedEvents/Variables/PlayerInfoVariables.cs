@@ -256,19 +256,19 @@
                     "ROOM" => ply.CurrentRoom.Type.ToString(),
                     "ZONE" => ply.Zone.ToString(),
                     "HP" or "HEALTH" => ply.Health.ToString(),
-                    "INVCOUNT" => ply.Items.Count.ToString(),
-                    "INV" => string.Join("|", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())),
-                    "HELDITEM" => (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci) ? ci.Name : ply.CurrentItem?.Type.ToString()) ?? ItemType.None.ToString(),
+                    "ITEMCOUNT" => ply.Items.Count.ToString(),
+                    "ITEMS" => ply.Items.Count > 0 ? string.Join("|", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())) : "NONE",
+                    "HELDITEM" => (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci) ? ci.Name : ply.CurrentItem?.Type.ToString()) ?? "NONE",
                     "GOD" => ply.IsGodModeEnabled.ToUpper(),
                     "POS" => $"{ply.Position.x} {ply.Position.y} {ply.Position.z}",
                     "POSX" => ply.Position.x.ToString(),
                     "POSY" => ply.Position.y.ToString(),
                     "POSZ" => ply.Position.z.ToString(),
                     "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
-                    "TIER" => "-1",
+                    "TIER" => "NONE",
                     "GROUP" => ply.GroupName,
                     "CUFFED" => ply.IsCuffed.ToUpper(),
-                    "CUSTOMINFO" or "CINFO" or "CUSTOMI" => ply.CustomInfo.ToString(),
+                    "CUSTOMINFO" or "CINFO" or "CUSTOMI" => ply.CustomInfo != string.Empty && ply.CustomInfo != null ? ply.CustomInfo : "NONE",
                     "XSIZE" => ply.Scale.x.ToString(),
                     "YSIZE" => ply.Scale.y.ToString(),
                     "ZSIZE" => ply.Scale.z.ToString(),
@@ -279,20 +279,12 @@
                     "CANNOCLIP" => ply.IsNoclipPermitted.ToUpper(),
                     "STAMINA" => ply.Stamina.ToString(),
                     "ISSTAFF" => ply.RemoteAdminAccess.ToUpper(),
-                    _ => GetByPlayerData(ply, selector),
+                    _ => ply.SessionVariables.ContainsKey(selector) ? ply.SessionVariables[selector].ToString() : "UNDEFINED"
                 };
             }
         }
 
         /// <inheritdoc/>
         public string LongDescription => @"This variable is designed to only be used with a player variable containing one player.";
-
-        private string GetByPlayerData(Player player, string selector)
-        {
-            if (player.SessionVariables.ContainsKey(selector))
-                return player.SessionVariables[selector].ToString();
-
-            return "NONE";
-        }
     }
 }
