@@ -42,7 +42,8 @@
                 new("DEBUG", $"'TRUE' or 'FALSE' depending on if the script is in debug mode."),
                 new("DURATION", $"The amount of time (in seconds) the script has been running."),
                 new("NAME", "The name of the script."),
-                new("PATH", "The path to the script on the local directory.")),
+                new("PATH", "The path to the script on the local directory."),
+                new("VARIABLES", "Lists variable names available to this script only.")),
         };
 
         /// <inheritdoc/>
@@ -62,6 +63,7 @@
                     "DURATION" => Source.RunDuration.TotalSeconds.ToString(),
                     "NAME" => Source.ScriptName,
                     "PATH" => Source.FilePath ?? "N/A",
+                    "VARIABLES" => Source.UniqueVariables.Keys.Concat(Source.UniquePlayerVariables.Keys).ToArray().Length != 0 ? string.Join(", ", Source.UniqueVariables.Keys.Concat(Source.UniquePlayerVariables.Keys)) : "NONE",
                     _ => throw new ArgumentException("Invalid mode.", mode)
                 };
             }
