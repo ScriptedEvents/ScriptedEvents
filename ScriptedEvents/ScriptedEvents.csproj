@@ -95,7 +95,7 @@
     <Compile Include="Actions\CASSIE\CassiePlayerAction.cs" />
     <Compile Include="Actions\CASSIE\ClearCassieAction.cs" />
     <Compile Include="Actions\DebugActions\DebugProcessorAction.cs" />
-    <Compile Include="Actions\Item\SpawnGrenadeAction.cs" />
+    <Compile Include="Actions\Map\SpawnGrenadeAction.cs" />
     <Compile Include="Actions\Item\LoadoutAction.cs" />
     <Compile Include="Actions\Logic\CallAction.cs" />
     <Compile Include="Actions\Logic\EndIfAction.cs" />
@@ -108,6 +108,7 @@
     <Compile Include="Actions\Logic\TriggerAction.cs" />
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
+    <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
     <Compile Include="Actions\Player\PrintPlayersAction.cs" />
     <Compile Include="Actions\Player\StaminaAction.cs" />
     <Compile Include="Actions\RoundRule\EventAction.cs" />
