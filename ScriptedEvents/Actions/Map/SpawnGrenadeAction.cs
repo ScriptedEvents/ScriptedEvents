@@ -1,6 +1,5 @@
 ﻿namespace ScriptedEvents.Actions
 {
-    using System;
     using System.Linq;
 
     using Exiled.API.Features.Items;
@@ -14,10 +13,10 @@
     public class SpawnGrenadeAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "SPAWNGRENADE";
+        public string Name => "GRENADE";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "SPAWNGRENADE" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
@@ -26,10 +25,10 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Item;
+        public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
-        public string Description => "Spawns a fused grenade in the provided XYZ coordinates.";
+        public string Description => "Spawns a fused grenade at the provided XYZ coordinates.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
