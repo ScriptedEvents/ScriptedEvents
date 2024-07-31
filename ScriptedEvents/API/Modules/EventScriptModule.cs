@@ -9,11 +9,11 @@
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
-    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Features;
     using Exiled.Loader;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.Structures;
@@ -200,130 +200,106 @@
         // Code to run when connected event is executed
         public void OnAnyEvent(string eventName, IExiledEvent ev = null)
         {
-            string name = ev.GetType().Name;
-            name = name.Substring(0, name.Length - 9);
+            Stopwatch stopwatch = new();
 
-            if (ev is IDeniableEvent deniable && deniable is IPlayerEvent plrEv)
+            stopwatch.Start();
+
+            Type eventType = ev.GetType();
+
+            // remove EventArgs from the end
+            string name = eventType.Name.Substring(0, eventType.Name.Length - 9);
+            Log.Debug($"Event '{name}' is now running.");
+
+            if (ev is IDeniableEvent deniable && ev is IPlayerEvent plr)
             {
-                bool playerIsNotNone = plrEv.Player is not null;
+                bool playerIsNotNone = plr.Player is not null;
 
-                bool isRegisteredRule = MainPlugin.Handlers.GetPlayerDisableEvent(name, plrEv.Player).HasValue;
+                bool isRegisteredRule = MainPlugin.Handlers.GetPlayerDisableEvent(name, plr.Player).HasValue;
 
                 if (playerIsNotNone && isRegisteredRule)
                 {
+                    Log.Debug("Event is disabled.");
                     deniable.IsAllowed = false;
                     return;
                 }
             }
 
-            if (CurrentEventData is null || !CurrentEventData.TryGetValue(eventName, out List<string> scripts))
+            if (CurrentEventData is null || !CurrentEventData.TryGetValue(eventName, out List<string> scriptNames))
             {
                 return;
             }
 
-            /*
-            PropertyInfo[] properties = ev.GetType().GetProperties();
-            foreach (PropertyInfo property in properties)
-            {
-                var value = property.GetValue(ev);
-                Log.Error("Property: " + property.Name + ", Type: " + property.PropertyType + ", Value: " + value);
-            }
-            */
+            Log.Debug("Scripts connected to this event:");
+            List<Script> scripts = new();
 
-            foreach (string script in scripts)
+            foreach (string scrName in scriptNames)
             {
                 try
                 {
-                    Script scr = MainPlugin.ScriptModule.ReadScript(script, null);
-
-                    // Add variables based on event.
-                    if (ev is IPlayerEvent playerEvent)
-                    {
-                        if (playerEvent.Player is null)
-                        {
-                            scr.Dispose();
-                            continue;
-                        }
-
-                        scr.AddPlayerVariable("{EVPLAYER}", "The player that is involved with this event.", new[] { playerEvent.Player });
-
-                        if (ev is IAttackerEvent attackerEvent && attackerEvent.Attacker is not null)
-                        {
-                            scr.AddPlayerVariable("{EVATTACKER}", "The attacker that is involved with this event.", new[] { attackerEvent.Attacker });
-                        }
-
-                        if (ev is BanningEventArgs ban)
-                        {
-                            scr.AddVariable("{EVREASON}", "The ban reason.", ban.Reason.ToString());
-                            scr.AddVariable("{EVDURATION}", "The ban duration.", ban.Duration.ToString());
-                            scr.AddVariable("{EVTARGET}", "The ban target.", ban.Target.Nickname);
-                        }
-
-                        if (ev is LocalReportingEventArgs rep)
-                        {
-                            scr.AddVariable("{EVREASON}", "The report reason.", rep.Reason.ToString());
-                            scr.AddPlayerVariable("{EVTARGET}", "The report target.", new[] { rep.Target });
-                        }
-
-                        if (ev is KickingEventArgs kick)
-                        {
-                            scr.AddVariable("{EVREASON}", "The reason.", kick.Reason.ToString());
-                            scr.AddPlayerVariable("{EVTARGET}", "The target.", new[] { kick.Target });
-                        }
-
-                        if (ev is ChangingSpectatedPlayerEventArgs changing)
-                        {
-                            if (changing.OldTarget is not null)
-                                scr.AddPlayerVariable("{EVOLDTARGET}", string.Empty, new[] { changing.OldTarget });
-
-                            if (changing.NewTarget is not null)
-                                scr.AddPlayerVariable("{EVNEWTARGET}", string.Empty, new[] { changing.NewTarget });
-                        }
-
-                        if (ev is HurtingEventArgs hurting)
-                        {
-                            scr.AddVariable("{EVAMMOUNT}", "The amount of damage dealt.", hurting.Amount.ToString());
-                        }
-                    }
-
-                    if (ev is IGeneratorEvent gen && gen.Generator is not null)
-                    {
-                        scr.AddVariable("{EVGENERATOR}", string.Empty, gen.Generator.Base.GetInstanceID().ToString());
-                    }
-
-                    if (ev is IFirearmEvent gun)
-                    {
-                    }
-
-                    if (ev is IItemEvent item && item.Item is not null)
-                    {
-                        scr.AddVariable("{EVITEM}", "The Id of the ItemType of the item involved with this event.", item.Item.Base.ItemSerial.ToString());
-                    }
-                    else if (ev is IPickupEvent pickup && pickup.Pickup is not null)
-                    {
-                        scr.AddVariable("{EVITEM}", "The Id of the ItemType of the pickup associated with this event.", pickup.Pickup.Serial.ToString());
-                    }
-
-                    if (ev is IDoorEvent door && door.Door is not null)
-                    {
-                        scr.AddVariable("{EVDOOR}", "The door type.", door.Door.Type.ToString());
-                    }
-
-                    MainPlugin.ScriptModule.RunScript(scr);
+                    scripts.Add(MainPlugin.ScriptModule.ReadScript(scrName, null));
+                    Log.Debug($"- {scrName}.txt");
                 }
                 catch (DisabledScriptException)
                 {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.On_DisabledScript, eventName, script));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.On_DisabledScript, eventName, scrName));
                 }
                 catch (FileNotFoundException)
                 {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.On_NotFoundScript, eventName, script));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.On_NotFoundScript, eventName, scrName));
                 }
                 catch (Exception ex)
                 {
                     Logger.Warn(ErrorGen.Get(ErrorCode.On_UnknownError, eventName) + $": {ex}");
                 }
             }
+
+            PropertyInfo[] properties = ev.GetType().GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                void AddVariable(string value)
+                {
+                    foreach (Script script in scripts)
+                    {
+                        script.AddVariable("{EV" + property.Name.ToUpper() + "}", string.Empty, value);
+                        Log.Debug($"Adding variable {{EV{property.Name.ToUpper()}}} to all scripts above.");
+                    }
+                }
+
+                var value = property.GetValue(ev);
+                switch (value)
+                {
+                    case Player player when player is not null:
+                        foreach (Script script in scripts) script.AddPlayerVariable($"{{EV{property.Name.ToUpper()}}}", string.Empty, new[] { player });
+                        Log.Debug($"Adding variable {{EV{property.Name.ToUpper()}}} to all scripts above.");
+                        break;
+
+                    case Exiled.API.Features.Items.Item item when item is not null:
+                        AddVariable(item.Base.ItemSerial.ToString());
+                        break;
+
+                    case Exiled.API.Features.Doors.Door door when door is not null:
+                        AddVariable(door.Type.ToString());
+                        break;
+
+                    case MapGeneration.Distributors.Scp079Generator gen when gen is not null:
+                        AddVariable(gen.GetInstanceID().ToString());
+                        break;
+
+                    case bool @bool:
+                        AddVariable(@bool.ToUpper());
+                        break;
+
+                    default:
+                        AddVariable(value.ToString());
+                        break;
+                }
+            }
+
+            foreach (Script script in scripts)
+                script.Execute();
+
+            stopwatch.Stop();
+            Log.Debug($"Handling event '{name}' cost {stopwatch.ElapsedMilliseconds} ms");
         }
     }
 }
