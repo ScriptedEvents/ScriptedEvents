@@ -27,17 +27,21 @@
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            HelpAction help = new HelpAction();
-            help.Arguments = arguments.ToArray();
+            HelpAction help = new()
+            {
+                Arguments = arguments.ToArray(),
+            };
 
             // Fill out mock script info
-            Script mockScript = new Script();
-            mockScript.Context = ExecuteContext.ServerConsole;
-            mockScript.Sender = sender;
-            mockScript.RawText = $"HELP {string.Join(" ", arguments)}";
-            mockScript.ScriptName = "HELP COMMAND EXECUTION";
-            mockScript.AddFlag("HELPCOMMANDEXECUTION");
+            Script mockScript = new()
+            {
+                Context = ExecuteContext.ServerConsole,
+                Sender = sender,
+                RawText = $"HELP {string.Join(" ", arguments)}",
+                ScriptName = "HELP COMMAND EXECUTION",
+            };
 
+            mockScript.AddFlag("HELPCOMMANDEXECUTION");
             ActionResponse actionResponse = help.Execute(mockScript);
 
             response = string.IsNullOrWhiteSpace(actionResponse.Message) ? "Done" : actionResponse.Message;
