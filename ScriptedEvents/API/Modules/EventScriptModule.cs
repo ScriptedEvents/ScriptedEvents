@@ -200,6 +200,8 @@
         // Code to run when connected event is executed
         public void OnAnyEvent(string eventName, IExiledEvent ev = null)
         {
+            if (ev == null) return;
+
             Stopwatch stopwatch = new();
 
             stopwatch.Start();
@@ -256,6 +258,7 @@
             PropertyInfo[] properties = ev.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
             {
+                Log.Debug($"Managing property {property.Name}");
                 void AddVariable(string value)
                 {
                     foreach (Script script in scripts)
@@ -266,6 +269,8 @@
                 }
 
                 var value = property.GetValue(ev);
+                if (value is null) continue;
+
                 switch (value)
                 {
                     case Player player when player is not null:
