@@ -102,7 +102,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("zone", typeof(ZoneType), "A zone to filter by (optional).", false),
         };
@@ -227,7 +227,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("zone", typeof(ZoneType), "A zone to filter by (optional).", false),
         };

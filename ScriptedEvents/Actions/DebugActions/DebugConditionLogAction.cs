@@ -27,7 +27,7 @@
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Debug;
 
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("condition", typeof(string), "Condition to debug", true),
         };

@@ -97,7 +97,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("variableName", typeof(string), "The name of the variable.", true),
         };
@@ -141,7 +141,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("scriptName", typeof(string), "The name of the script.", true),
         };

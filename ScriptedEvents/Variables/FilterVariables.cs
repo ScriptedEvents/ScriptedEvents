@@ -46,7 +46,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(IPlayerVariable), "The name of the variable to select from.", true),
             new Argument("amount", typeof(int), "The amount of players to select (default: 1)", false),
@@ -98,7 +98,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(IPlayerVariable), "The name of the variable to filter.", true),
             new OptionsArgument("type", true,
@@ -167,7 +167,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(IPlayerVariable), "The name of the variable to index.", true),
             new Argument("type", typeof(int), "The index. Number variables can be used (if they are decimal, the decimal portion will be removed)", true),

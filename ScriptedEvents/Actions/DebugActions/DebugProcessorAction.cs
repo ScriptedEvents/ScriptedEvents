@@ -30,7 +30,7 @@
         public string Description => string.Empty;
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("input", typeof(string), string.Empty, true),
             new Argument("number", typeof(bool), string.Empty, true),

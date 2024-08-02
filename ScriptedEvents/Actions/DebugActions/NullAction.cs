@@ -47,7 +47,7 @@
         public string Type { get; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = Array.Empty<Argument>();
+        public Argument[] ExpectedArguments => Array.Empty<Argument>();
 
         /// <inheritdoc/>
         public bool Read(out string display)

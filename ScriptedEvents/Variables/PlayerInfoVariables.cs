@@ -141,7 +141,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("name", typeof(PlayerCollection), "The name of the player variable.", true),
         };

@@ -40,7 +40,7 @@
         public Func<string[], Tuple<bool, string>> Action { get; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = Array.Empty<Argument>();
+        public Argument[] ExpectedArguments => Array.Empty<Argument>();
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)

@@ -31,7 +31,7 @@
         public string Description => "Sets/clears the custom info of the targeted player(s).";
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
                 new("SET", "Sets players' custom info."),

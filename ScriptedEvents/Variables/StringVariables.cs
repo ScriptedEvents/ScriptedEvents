@@ -34,7 +34,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("variable", typeof(IStringVariable), "The variable on which the operation will be performed.", true),
             new Argument("sequence", typeof(string), "The sequence which will be counted in the given string.", true),
@@ -82,7 +82,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Argument[] ExpectedArguments { get; } = new[]
+        public Argument[] ExpectedArguments => new[]
         {
             new Argument("variableName", typeof(IStringVariable), "The variable on which the operation will be performed.", true),
             new Argument("targetSequence", typeof(string), "The sequence which will be replaced.", true),
