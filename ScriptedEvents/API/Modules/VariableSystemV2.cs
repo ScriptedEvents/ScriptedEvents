@@ -370,6 +370,10 @@
                 if (c is '{')
                 {
                     int index = input.IndexOf('}', i);
+                    if (index == -1)
+                    {
+                        continue;
+                    }
 
                     source?.DebugLog($"Detected variable opening symbol, char {i}. Closing index {index}. Substring {index - i + 1}.");
 
