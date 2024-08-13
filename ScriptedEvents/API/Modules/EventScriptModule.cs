@@ -195,6 +195,7 @@
             StoredDelegates.Clear();
             CurrentEventData = null;
             CurrentCustomEventData = null;
+            DynamicallyConnectedEvents = new();
         }
 
         // Code to run when connected event is executed
