@@ -145,6 +145,7 @@
     <Compile Include="Actions\RoundRule\DisablePlayerAction.cs" />
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
+    <Compile Include="Actions\Teleportation\TpPlayerAction.cs" />
     <Compile Include="Actions\Variable\AddToAction.cs" />
     <Compile Include="Actions\Variable\BindAction.cs" />
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
@@ -191,10 +192,10 @@
     <Compile Include="Actions\Player\ReskinAction.cs" />
     <Compile Include="Actions\Player\SetRoleAction.cs" />
     <Compile Include="Actions\Round\TicketAction.cs" />
-    <Compile Include="Actions\Player\TpDoorAction.cs" />
-    <Compile Include="Actions\Player\TpSpawnAction.cs" />
-    <Compile Include="Actions\Player\TpRoomAction.cs" />
-    <Compile Include="Actions\Player\TpxAction.cs" />
+    <Compile Include="Actions\Teleportation\TpDoorAction.cs" />
+    <Compile Include="Actions\Teleportation\TpSpawnAction.cs" />
+    <Compile Include="Actions\Teleportation\TpRoomAction.cs" />
+    <Compile Include="Actions\Teleportation\TpxAction.cs" />
     <Compile Include="Actions\Yielding\WaitAction.cs" />
     <Compile Include="API\Enums\ActionSubgroup.cs" />
     <Compile Include="API\Enums\CommandType.cs" />
