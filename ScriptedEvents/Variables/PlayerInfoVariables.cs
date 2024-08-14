@@ -215,7 +215,8 @@
                 new("EFFECTS", "Player's current effects"),
                 new("USINGNOCLIP", "Is player using noclip"),
                 new("CANNOCLIP", "Is player permitted to use noclip"),
-                new("STAMINA", "How full is players stamina")),
+                new("STAMINA", "How full is players stamina"),
+                new("AHP", "Player's artificial hp")),
         };
 
         /// <inheritdoc/>
@@ -279,6 +280,7 @@
                     "CANNOCLIP" => ply.IsNoclipPermitted.ToUpper(),
                     "STAMINA" => ply.Stamina.ToString(),
                     "ISSTAFF" => ply.RemoteAdminAccess.ToUpper(),
+                    "AHP" => ply.ArtificialHealth.ToString(),
                     _ => ply.SessionVariables.ContainsKey(selector) ? ply.SessionVariables[selector].ToString() : "UNDEFINED"
                 };
             }
