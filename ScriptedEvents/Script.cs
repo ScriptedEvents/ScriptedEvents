@@ -194,6 +194,11 @@
         /// </summary>
         public Dictionary<IAction, string[]> OriginalActionArgs { get; set; } = new();
 
+        /// <summary>
+        /// Gets or sets the smart arguments for specified action.
+        /// </summary>
+        public Dictionary<IAction, string[]> SmartArguments { get; set; } = new();
+
         /// <inheritdoc/>
         public void Dispose()
         {
