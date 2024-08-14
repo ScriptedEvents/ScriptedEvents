@@ -43,7 +43,7 @@
 
             foreach (Player player in players)
             {
-                player.SendConsoleMessage(message, "green");
+                player.SendConsoleMessage(message.Replace("\\n", "\n"), "green");
             }
 
             return new(true);
