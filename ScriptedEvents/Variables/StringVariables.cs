@@ -18,6 +18,7 @@
             new StringCountVariable(),
             new StringToUpper(),
             new StringToLower(),
+            new StringRemove(),
         };
     }
 
