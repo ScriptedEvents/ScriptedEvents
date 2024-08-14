@@ -312,7 +312,7 @@ namespace ScriptedEvents.API.Modules
                 {
                     if (actionParts.Count < 2)
                     {
-                        Logger.Error($"A function label syntax has been used, but no name has been provided.", script);
+                        Logger.ScriptError($"A function label syntax has been used, but no name has been provided.", script, printableLine: currentline + 1);
                         continue;
                     }
 
@@ -803,14 +803,8 @@ namespace ScriptedEvents.API.Modules
                     ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalArgs, action, scr);
                     if (res.Errored)
                     {
-                        // Todo: Place error better later
-                        // -> [WARN] Error trying to check 'value' argument: Invalid Object provided. See all options by running 'shelp Object' in the server console.
-                        Logger.Error($"Error! {res.Message}", scr);
+                        Logger.ScriptError(res.FailedArgument != string.Empty ? $"[Argument: {res.FailedArgument}]" : string.Empty + res.Message, scr);
                         break;
-                    }
-                    else
-                    {
-                        Logger.Debug("Action did not error while processing arguments. Continuing.", scr);
                     }
 
                     if (!res.Success)
@@ -847,14 +841,14 @@ namespace ScriptedEvents.API.Modules
                 catch (ScriptedEventsException seException)
                 {
                     string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {seException.Message}";
-                    Logger.ScriptError(message, scr, scr.Context, scr.Sender);
+                    Logger.ScriptError(message, scr);
 
                     continue;
                 }
                 catch (Exception e)
                 {
                     string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(ErrorCode.UnknownActionError, action.Name)}:\n{e}";
-                    Logger.ScriptError(message, scr, scr.Context, scr.Sender);
+                    Logger.ScriptError(message, scr);
 
                     continue;
                 }
@@ -865,14 +859,14 @@ namespace ScriptedEvents.API.Modules
                     if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                     {
                         string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Fatal action error! {resp.Message}";
-                        Logger.ScriptError(message, scr, scr.Context, scr.Sender, fatal: true);
+                        Logger.ScriptError(message, scr, fatal: true);
 
                         break;
                     }
                     else if (!scr.SuppressWarnings)
                     {
                         string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Action error! {resp.Message}";
-                        Logger.ScriptError(message, scr, scr.Context, scr.Sender);
+                        Logger.ScriptError(message, scr);
                     }
                 }
                 else

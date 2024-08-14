@@ -46,24 +46,28 @@
 
         public static void Debug(string message, Script source = null) => Log(message, LogType.Debug, source);
 
-        public static void ScriptError(string message, Script source, ExecuteContext executeContext, ICommandSender sender = null, bool fatal = false)
+        public static void ScriptError(string message, Script source, bool fatal = false, int? printableLine = null)
         {
-            switch (executeContext)
+            string formattedMessage = $"[Script: {source.ScriptName}] [L: {(printableLine == null ? source.CurrentLine + 1 : printableLine)}]\n" + message;
+            string broadcastMessage = $"<b><size=40>{(fatal ? "Fatal e" : "E")}rror when running the '{source.ScriptName}' script.\n<size=30>See the console for more details.";
+            ICommandSender sender = source.Sender;
+
+            switch (source.Context)
             {
                 case ExecuteContext.RemoteAdmin:
                     Player ply = Player.Get(sender);
-                    ply?.RemoteAdminMessage(message, false, MainPlugin.Singleton.Name);
+                    ply?.RemoteAdminMessage(formattedMessage, false, MainPlugin.Singleton.Name);
 
                     if (MainPlugin.Configs.BroadcastIssues)
-                        ply?.Broadcast(5, $"{(fatal ? "Fatal e" : "E")}rror when running the <b>{source.ScriptName}</b> script. See text RemoteAdmin for details.");
+                        ply?.Broadcast(5, broadcastMessage);
 
                     break;
                 case ExecuteContext.PlayerConsole:
                     Player ply2 = Player.Get(sender);
-                    ply2?.SendConsoleMessage(message, "red");
+                    ply2?.SendConsoleMessage(formattedMessage, "red");
 
                     if (MainPlugin.Configs.BroadcastIssues)
-                        ply2?.Broadcast(5, $"{(fatal ? "Fatal e" : "E")}rror when running the <b>{source.ScriptName}</b> script. See text console for details.");
+                        ply2?.Broadcast(5, broadcastMessage);
 
                     break;
                 default:

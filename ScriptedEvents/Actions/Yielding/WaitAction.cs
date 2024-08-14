@@ -85,7 +85,7 @@
                 }
                 else
                 {
-                    Logger.Error($"WaitUntil condition error: {response.Message}", script);
+                    Logger.ScriptError($"WaitUntil condition error: {response.Message}", script);
                     break;
                 }
 
