@@ -16,6 +16,8 @@
             new Index(),
             new ReplaceVariable(),
             new StringCountVariable(),
+            new StringToUpper(),
+            new StringToLower(),
         };
     }
 
@@ -65,6 +67,79 @@
                 return CountOccurrences(processedVar, (string)Arguments[1]);
             }
         }
+    }
+
+    public class StringToLower : IStringVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{STR-LOWER}";
+
+        /// <inheritdoc/>
+        public string Description => "Returns the provided string where all UPPERCASE letters are replaced with lowercase ones.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("string", typeof(string), "The string to lowercase.", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value => Arguments[0].ToString().ToLower();
+    }
+
+    public class StringToUpper : IStringVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{STR-UPPER}";
+
+        /// <inheritdoc/>
+        public string Description => "Returns the provided string where all lowercase letters are replaced with UPPERCASE ones.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("string", typeof(string), "The string to UPPERCASE.", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value => Arguments[0].ToString().ToUpper();
+    }
+
+    public class StringRemove : IStringVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{STR-REMOVE}";
+
+        /// <inheritdoc/>
+        public string Description => "Returns the provided string where all the occurences of the specified string to remove are removed.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("mainString", typeof(string), "The string to perform the operation on.", true),
+            new Argument("stringToRemove", typeof(string), "The string to remove.", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value => Arguments[0].ToString().Replace(Arguments[1].ToString(), string.Empty);
     }
 
     public class ReplaceVariable : IStringVariable, IArgumentVariable
