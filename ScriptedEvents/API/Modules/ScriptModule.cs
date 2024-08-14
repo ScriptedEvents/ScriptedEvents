@@ -240,6 +240,7 @@ namespace ScriptedEvents.API.Modules
             };
 
             string[] array = allText.Split('\n');
+            IAction lastAction = null;
             for (int currentline = 0; currentline < array.Length; currentline++)
             {
                 array[currentline] = array[currentline].TrimStart();
@@ -281,17 +282,17 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                List<string> actionParts = ListPool<string>.Pool.Get();
+                List<string> structureParts = ListPool<string>.Pool.Get();
 
                 foreach (string str in action.Split(' '))
                 {
                     if (string.IsNullOrWhiteSpace(str))
                         continue;
 
-                    actionParts.Add(str);
+                    structureParts.Add(str);
                 }
 
-                string keyword = actionParts[0].RemoveWhitespace();
+                string keyword = structureParts[0].RemoveWhitespace();
 
                 // Std labels
                 if (keyword.EndsWith(":"))
@@ -310,13 +311,13 @@ namespace ScriptedEvents.API.Modules
                 // Function labels
                 if (keyword == "->")
                 {
-                    if (actionParts.Count < 2)
+                    if (structureParts.Count < 2)
                     {
                         Logger.ScriptError($"A function label syntax has been used, but no name has been provided.", script, printableLine: currentline + 1);
                         continue;
                     }
 
-                    string labelName = actionParts[1].RemoveWhitespace();
+                    string labelName = structureParts[1].RemoveWhitespace();
 
                     if (!script.FunctionLabels.ContainsKey(labelName))
                         script.FunctionLabels.Add(labelName, currentline);
@@ -324,6 +325,29 @@ namespace ScriptedEvents.API.Modules
                         Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
 
                     addActionNoArgs(new StartFunctionAction());
+                    continue;
+                }
+
+                if (keyword == "//")
+                {
+                    if (actionList.Count == 0)
+                    {
+                        Logger.Log("'//' (smart argument) syntax can't be used if there isn't any action above it.", LogType.Warning, script, currentline + 1);
+                        continue;
+                    }
+
+                    string value = string.Join(" ", structureParts.Skip(1)).TrimEnd('\n', '\r');
+
+                    if (script.SmartArguments.ContainsKey(lastAction))
+                    {
+                        script.SmartArguments[lastAction] = script.SmartArguments[lastAction].Append(value).ToArray();
+                    }
+                    else
+                    {
+                        script.SmartArguments[lastAction] = new[] { value };
+                    }
+
+                    addActionNoArgs(new NullAction($"SMART ARG"));
                     continue;
                 }
 
@@ -336,10 +360,10 @@ namespace ScriptedEvents.API.Modules
                     {
                         CustomAction customAction1 = new(customAction.Name, customAction.Action)
                         {
-                            Arguments = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray(),
+                            Arguments = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray(),
                         };
                         actionList.Add(customAction1);
-                        ListPool<string>.Pool.Return(actionParts);
+                        ListPool<string>.Pool.Return(structureParts);
                         continue;
                     }
 
@@ -351,7 +375,8 @@ namespace ScriptedEvents.API.Modules
                 }
 
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
-                script.OriginalActionArgs[newAction] = actionParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                lastAction = newAction;
+                script.OriginalActionArgs[newAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
 
                 Logger.Debug($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}", script);
 
@@ -362,7 +387,7 @@ namespace ScriptedEvents.API.Modules
                 }
 
                 actionList.Add(newAction);
-                ListPool<string>.Pool.Return(actionParts);
+                ListPool<string>.Pool.Return(structureParts);
             }
 
             string scriptPath = GetFilePath(scriptName);
