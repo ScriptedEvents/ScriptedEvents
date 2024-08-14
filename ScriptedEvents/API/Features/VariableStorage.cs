@@ -3,7 +3,6 @@
     using System;
     using System.IO;
 
-    using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features.Exceptions;
