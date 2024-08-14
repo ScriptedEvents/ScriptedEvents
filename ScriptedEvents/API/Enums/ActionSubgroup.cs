@@ -79,5 +79,10 @@
         /// Server action.
         /// </summary>
         Server,
+
+        /// <summary>
+        /// Teleportation action.
+        /// </summary>
+        Teleportation,
     }
 }
