@@ -7,6 +7,7 @@
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Items;
+    using Mirror;
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
@@ -100,7 +101,22 @@
             }
 
             ArgumentProcessResult success = new(true);
-            success.StrippedRawParameters = args;
+
+            // raw args? aww hell nah :trollface:
+            List<string> rawProcessedArgs = Exiled.API.Features.Pools.ListPool<string>.Pool.Get();
+            foreach (string arg in args)
+            {
+                if (TryProcessSmartArgument(arg, action, source, out string res, false))
+                {
+                    rawProcessedArgs.Add(res);
+                }
+                else
+                {
+                    rawProcessedArgs.Add(arg);
+                }
+            }
+
+            success.StrippedRawParameters = rawProcessedArgs.ToArray();
 
             for (int i = 0; i < expectedArguments.Length; i++)
             {
@@ -125,17 +141,118 @@
                 // TODO: Figure out a method where ReplaceVariables isn't called for each extra argument.
                 // While also allowing variables + strings to be combined
                 // Eg. Using 'ReplaceVariable' instead won't turn '{PLAYERS}test' into '0test' like expected.
-                // This works for now, we need version 3.0 :|
+                // This works for now, we need version 3 :|
                 IEnumerable<string> extraArgs = args.Skip(expectedArguments.Length);
                 foreach (string arg in extraArgs)
                 {
-                    success.NewParameters.Add(VariableSystemV2.ReplaceVariables(arg, source));
+                    if (TryProcessSmartArgument(arg, action, source, out string saResult, true))
+                    {
+                        success.NewParameters.Add(saResult);
+                    }
+                    else
+                    {
+                        success.NewParameters.Add(VariableSystemV2.ReplaceVariables(arg, source));
+                    }
+
+                    Logger.Debug("New parameters: " + string.Join(", ", success.NewParameters, source));
                 }
             }
 
             success.NewParameters.RemoveAll(o => o is string st && string.IsNullOrWhiteSpace(st));
 
             return success;
+        }
+
+        /// <summary>
+        /// Tries to process the argument for a quick argument.
+        /// </summary>
+        /// <param name="input">The provided input.</param>
+        /// <param name="action">The action or variable performing the process.</param>
+        /// <param name="source">The script source.</param>
+        /// <param name="result">The resulting string. Empty if method returns false.</param>
+        /// <param name="processForVariables">TShould fetched values from smart params be processed.</param>
+        /// <returns>The output of the process.</returns>
+        public static bool TryProcessSmartArgument(string input, IScriptComponent action, Script source, out string result, bool processForVariables)
+        {
+            result = string.Empty;
+            bool didSomething = false;
+
+            if (action is not IAction actualAction)
+            {
+                return false;
+            }
+
+            bool skipAddingTrailingNumber = false;
+            for (int i = 0; i < input.Length; i++)
+            {
+                char c = input[i];
+                if (skipAddingTrailingNumber)
+                {
+                    skipAddingTrailingNumber = false;
+                    continue;
+                }
+
+                result += c;
+
+                if (c != '#')
+                {
+                    continue;
+                }
+
+                Logger.Debug($"[SMART ARG PROC] Found '#' syntax at index {i}", source);
+
+                int lastNum;
+                try
+                {
+                    lastNum = (int)char.GetNumericValue(input[i + 1]);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    continue;
+                }
+
+                if (lastNum == -1)
+                {
+                    continue;
+                }
+
+                Logger.Debug($"[SMART ARG PROC] Found a index '{lastNum}' behind the '#'", source);
+
+                string argument;
+                try
+                {
+                    argument = source.SmartArguments[actualAction][lastNum - 1];
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    continue;
+                }
+                catch (KeyNotFoundException)
+                {
+                    continue;
+                }
+
+                Logger.Debug($"[SMART ARG PROC] Index '{lastNum}' is valid", source);
+
+                if (processForVariables)
+                {
+                    argument = VariableSystemV2.ReplaceVariables(argument, source);
+
+                    if (ConditionHelperV2.TryMath(argument, out MathResult mathRes))
+                    {
+                        argument = mathRes.Result.ToString();
+                    }
+                }
+
+                result = result.Substring(0, result.Length - 1);
+
+                result += argument;
+                didSomething = true;
+                skipAddingTrailingNumber = true;
+                Logger.Debug($"[SMART ARG PROC] Success! Smart arg used correctly. Result: {result}", source);
+            }
+
+            return didSomething;
         }
 
         /// <summary>
@@ -162,6 +279,12 @@
                 success.NewParameters.Add(input);
                 source?.DebugLog($"[OPTION ARG] [C: {action.Name}] Param {expected.ArgumentName} now has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
                 return success;
+            }
+
+            // smart action arguments
+            if (TryProcessSmartArgument(input, action, source, out string saResult, true))
+            {
+                input = saResult;
             }
 
             switch (expected.Type.Name)
