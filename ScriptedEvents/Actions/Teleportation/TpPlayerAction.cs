@@ -9,8 +9,6 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    using UnityEngine;
-
     public class TpPlayerAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
