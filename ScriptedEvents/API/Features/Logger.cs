@@ -10,13 +10,13 @@
 
     public static class Logger
     {
-        public static void Log(string message, LogType logType, Script script = null)
+        public static void Log(string message, LogType logType, Script script = null, int? printableLine = null)
         {
             if (MainPlugin.Configs.DisableAllLogs)
                 return;
 
             if (script is not null)
-                message = $"[Script: {script.ScriptName}] [L: {script.CurrentLine + 1}] {message}";
+                message = $"[Script: {script.ScriptName}] [L: {(printableLine == null ? script.CurrentLine + 1 : printableLine)}] {message}";
 
             switch (logType)
             {
