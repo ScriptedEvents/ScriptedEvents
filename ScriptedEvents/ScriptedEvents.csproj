@@ -95,6 +95,7 @@
     <Compile Include="Actions\CASSIE\CassiePlayerAction.cs" />
     <Compile Include="Actions\CASSIE\ClearCassieAction.cs" />
     <Compile Include="Actions\DebugActions\DebugProcessorAction.cs" />
+    <Compile Include="Actions\Item\DropItemAction.cs" />
     <Compile Include="Actions\Map\SpawnGrenadeAction.cs" />
     <Compile Include="Actions\Item\LoadoutAction.cs" />
     <Compile Include="Actions\Logic\CallAction.cs" />
