@@ -262,6 +262,23 @@
 
                     success.NewParameters.Add(players);
                     break;
+
+                case "Player":
+                    if (!ScriptModule.TryGetPlayers(input, null, out PlayerCollection players1, source, requireBrackets))
+                        return new(false, true, expected.ArgumentName, players1.Message);
+
+                    if (players1.Length == 0)
+                    {
+                        return new(false, true, expected.ArgumentName, $"One player is required, but value '{input}' holds no players.");
+                    }
+                    else if (players1.Length > 1)
+                    {
+                        return new(false, true, expected.ArgumentName, $"One player is required, but value '{input}' holds more than one player ({players1.Length} players).");
+                    }
+
+                    success.NewParameters.Add(players1.FirstOrDefault());
+                    break;
+
                 case "RoleTypeIdOrTeam":
                     if (SEParser.TryParse(input, out RoleTypeId rtResult, source, requireBrackets))
                         success.NewParameters.Add(rtResult);
