@@ -41,7 +41,7 @@ Note: Player variables will be converted to the amount of players when used dire
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string text = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(0), script);
+            string text = Arguments.JoinMessage(0);
             GameCore.Console.singleton.TypeCommand(text);
             return new(true, string.Empty);
         }

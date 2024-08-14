@@ -39,11 +39,11 @@
         public ActionResponse Execute(Script script)
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
-            string message = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(1), script);
+            string message = Arguments.JoinMessage(1).Replace("\\n", "\n");
 
             foreach (Player player in players)
             {
-                player.SendConsoleMessage(message.Replace("\\n", "\n"), "green");
+                player.SendConsoleMessage(message, "green");
             }
 
             return new(true);

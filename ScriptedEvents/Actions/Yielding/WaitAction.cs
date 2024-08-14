@@ -45,7 +45,7 @@
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
-            string formula = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(1), script);
+            string formula = Arguments.JoinMessage(1);
 
             if (Arguments[0].ToUpper() == "UNTIL")
             {

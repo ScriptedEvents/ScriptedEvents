@@ -42,7 +42,7 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
 
-            string name = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(1), script);
+            string name = Arguments.JoinMessage(1);
 
             foreach (Player player in players)
             {
