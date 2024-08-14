@@ -42,7 +42,7 @@
             float hp = (float)Arguments[1];
 
             if (hp < 0)
-                return new(MessageType.LessThanZeroNumber, this, "maxhealth", hp);
+                return new(MessageType.LessThanZeroNumber, this, "maxhealth", null, hp);
 
             foreach (Player ply in plys)
                 ply.MaxHealth = hp;

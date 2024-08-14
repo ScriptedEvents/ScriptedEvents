@@ -52,7 +52,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
             float damage = (float)Arguments[1];
 
             if (damage < 0)
-                return new(MessageType.LessThanZeroNumber, this, "damage", damage);
+                return new(MessageType.LessThanZeroNumber, this, "damage", null, damage);
 
             if (Arguments.Length > 2)
             {

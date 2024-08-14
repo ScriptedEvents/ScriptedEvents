@@ -51,7 +51,7 @@
             {
                 limit = (float)Arguments[2];
                 if (limit < 0)
-                    return new(MessageType.LessThanZeroNumber, this, "limit", limit);
+                    return new(MessageType.LessThanZeroNumber, this, "limit", null, limit);
             }
 
             float decay = 1.2f;
@@ -59,7 +59,7 @@
             {
                 decay = (float)Arguments[3];
                 if (decay < 0)
-                    return new(MessageType.LessThanZeroNumber, this, "decay", limit);
+                    return new(MessageType.LessThanZeroNumber, this, "decay", null, limit);
             }
 
             float efficacy = 0.7f;
@@ -67,7 +67,7 @@
             {
                 efficacy = (float)Arguments[4];
                 if (efficacy < 0)
-                    return new(MessageType.LessThanZeroNumber, this, "efficacy", limit);
+                    return new(MessageType.LessThanZeroNumber, this, "efficacy", null, limit);
             }
 
             float sustain = 0f;
@@ -75,7 +75,7 @@
             {
                 sustain = (float)Arguments[5];
                 if (sustain < 0)
-                    return new(MessageType.LessThanZeroNumber, this, "sustain", limit);
+                    return new(MessageType.LessThanZeroNumber, this, "sustain", null, limit);
             }
 
             bool persistent = Arguments.Length > 6 && (bool)Arguments[6];

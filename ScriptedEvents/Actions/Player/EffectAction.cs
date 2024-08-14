@@ -55,7 +55,7 @@
             {
                 intensity = (int)Arguments[3];
                 if (intensity < 0)
-                    return new(MessageType.LessThanZeroNumber, this, "intensity", Arguments[3]);
+                    return new(MessageType.LessThanZeroNumber, this, "intensity", null, Arguments[3]);
             }
 
             float duration = 0;
@@ -64,7 +64,7 @@
             {
                 duration = (float)Arguments[4];
                 if (duration < 0)
-                    return new(MessageType.LessThanZeroNumber, this, "duration", Arguments[4]);
+                    return new(MessageType.LessThanZeroNumber, this, "duration", null, Arguments[4]);
             }
 
             switch (mode)

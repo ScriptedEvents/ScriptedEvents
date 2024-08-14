@@ -47,7 +47,7 @@
             switch (((string)Arguments[0]).ToUpper())
             {
                 case "SET" when Arguments.Length < 4:
-                    return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+                    return new(MessageType.InvalidUsage, this, null, null, (object)ExpectedArguments);
 
                 case "SET":
                     string keyName = (string)Arguments[2];

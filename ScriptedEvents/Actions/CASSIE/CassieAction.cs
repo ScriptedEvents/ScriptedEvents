@@ -9,7 +9,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     public class CassieAction : IScriptAction, IHelpInfo, ISampleAction
@@ -51,7 +50,7 @@
             string text = Arguments.JoinMessage(1);
 
             if (string.IsNullOrWhiteSpace(text))
-                return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+                return new(MessageType.InvalidUsage, this, null, null, (object)ExpectedArguments);
 
             string[] cassieArgs = text.Split('|');
 

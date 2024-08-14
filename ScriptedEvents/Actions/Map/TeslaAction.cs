@@ -62,7 +62,7 @@
             {
                 if (Arguments.Length < 1 || (string)Arguments[0] != "DISABLE")
                 {
-                    return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+                    return new(MessageType.InvalidUsage, this, null, null, (object)ExpectedArguments);
                 }
             }
 
@@ -85,7 +85,7 @@
                     return Reverse(mode, players, duration, script);
                 case "ROLETYPE":
                     if (!SEParser.TryParse(target, out RoleTypeId roleType, script))
-                        return new(MessageType.InvalidRole, this, "target", target);
+                        return new(MessageType.InvalidRole, this, "target", null, target);
 
                     if (!Tesla.IgnoredRoles.Contains(roleType))
                         Tesla.IgnoredRoles.Add(roleType);
@@ -117,9 +117,9 @@
                 return new(true);
 
             if (!SEParser.TryParse(duration, out float floatDuration, script))
-                return new(MessageType.NotANumber, this, "duration", duration);
+                return new(MessageType.NotANumber, this, "duration", null, duration);
             if (floatDuration < 0)
-                return new(MessageType.LessThanZeroNumber, this, "duration", duration);
+                return new(MessageType.LessThanZeroNumber, this, "duration", null, duration);
 
             Timing.CallDelayed(floatDuration, () =>
             {

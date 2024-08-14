@@ -37,7 +37,7 @@
             string formula = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(), script);
             if (!ConditionHelperV2.TryMath(formula, out MathResult result))
             {
-                return new(MessageType.NotANumberOrCondition, this, "condition", formula, result);
+                return new(MessageType.NotANumberOrCondition, this, "condition", null, formula, result);
             }
 
             return new(true, result.Result.ToString());

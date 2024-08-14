@@ -50,7 +50,7 @@
             switch (Arguments[0].ToUpper())
             {
                 case "SET":
-                    if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, (object)ExpectedArguments);
+                    if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, null, (object)ExpectedArguments);
 
                     string text = VariableSystemV2.ReplaceVariables(RawArguments.JoinMessage(3), script)
                         .Replace("\\n", "\n")

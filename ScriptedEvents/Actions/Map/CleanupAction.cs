@@ -67,7 +67,7 @@
                     if (Arguments.Length > 1)
                     {
                         if (!SEParser.TryParse((string)Arguments[1], out rType, script))
-                            return new(MessageType.InvalidRole, this, "filter", Arguments[1]);
+                            return new(MessageType.InvalidRole, this, "filter, null", null, Arguments[1]);
                     }
 
                     foreach (var item in Ragdoll.List.Where(p => rType == RoleTypeId.None || p.Role == rType))
