@@ -17,6 +17,8 @@
         // e.g.
         // OnEnabled: GetType().RegisterActions();
 
+        public static bool IsModuleLoaded => MainPlugin.ScriptModule is not null;
+
         /// <summary>
         /// Registers all actions defined in the provided <see cref="Assembly"/>.
         /// </summary>
@@ -48,6 +50,11 @@
         /// <returns>A string message representing whether or not the unregister process was successful.</returns>
         public static string RegisterCustomAction(string name, Func<string[], Tuple<bool, string>> action)
         {
+            if (!IsModuleLoaded)
+            {
+                return "Error! Registering action before ScriptModule is initialized.";
+            }
+
             if (name is null || action is null)
             {
                 return "Missing arguments: name and action.";
@@ -117,13 +124,11 @@
         /// Gets a list of players using the input string.
         /// </summary>
         /// <param name="input">Input string.</param>
-        /// /// <param name="script">Script object.</param>
+        /// <param name="script">Script object.</param>
         /// <param name="max">Maximum amount of players to get. Leave below zero for unlimited.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of players.</returns>
-        public static Player[] GetPlayers(string input, Script script, int max = -1)
         {
             ScriptModule.TryGetPlayers(input, max, out PlayerCollection list, script);
-            return list.GetInnerList().ToArray();
         }
 
         /// <summary>
