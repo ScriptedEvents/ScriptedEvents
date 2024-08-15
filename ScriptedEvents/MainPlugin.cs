@@ -82,7 +82,7 @@
         public override Version RequiredExiledVersion => new(8, 7, 0);
 
         /// <inheritdoc/>
-        public override PluginPriority Priority => PluginPriority.Highest;
+        public override PluginPriority Priority => PluginPriority.High;
 
         public static IEnumerable<SEModule> Modules => modules.Where(mod => mod.IsActive);
 
