@@ -127,8 +127,10 @@
         /// <param name="script">Script object.</param>
         /// <param name="max">Maximum amount of players to get. Leave below zero for unlimited.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of players.</returns>
+        public static IEnumerable<Player> GetPlayers(string input, Script script, int max = -1)
         {
             ScriptModule.TryGetPlayers(input, max, out PlayerCollection list, script);
+            return list.GetInnerList();
         }
 
         /// <summary>
