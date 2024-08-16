@@ -51,7 +51,7 @@ These variables are created as per-script variables, meaning they can only be us
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
-            string body = RawArguments.JoinMessage(1);
+            string body = Arguments.JoinMessage(1);
 
             string coroutineKey = $"HTTPPOST_COROUTINE_{DateTime.UtcNow.Ticks}";
             CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, (string)Arguments[0], body), coroutineKey);
