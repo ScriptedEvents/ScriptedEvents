@@ -6,20 +6,18 @@
 
     using Exiled.API.Features;
     using ScriptedEvents.Actions;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
     /// A set of tools for other plugins to add actions to Scripted Events.
     /// </summary>
     public static class ApiHelper
     {
-        // e.g.
-        // OnEnabled: GetType().RegisterActions();
-
-        public static bool IsModuleLoaded => MainPlugin.ScriptModule is not null;
+        public static bool IsModuleLoaded()
+        {
+            return MainPlugin.ScriptModule is not null;
+        }
 
         /// <summary>
         /// Registers all actions defined in the provided <see cref="Assembly"/>.
@@ -50,9 +48,9 @@
         /// <param name="name">The name of the action.</param>
         /// <param name="action">The function to execute when the action is used. An array string of parameters is provided, and the action must return a tuple with a bool (successful?) and a string message (optional, can be set to string.Empty).</param>
         /// <returns>A string message representing whether or not the unregister process was successful.</returns>
-        public static string RegisterCustomAction(string name, Func<string[], Tuple<bool, string, IActionResponseValue[]>> action)
+        public static string RegisterCustomAction(string name, Func<Tuple<string[], object>, Tuple<bool, string, object[]>> action)
         {
-            if (!IsModuleLoaded)
+            if (!IsModuleLoaded())
             {
                 return "Error! Registering action before ScriptModule is initialized.";
             }
@@ -129,10 +127,16 @@
         /// <param name="script">Script object.</param>
         /// <param name="max">Maximum amount of players to get. Leave below zero for unlimited.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of players.</returns>
-        public static IEnumerable<Player> GetPlayers(string input, Script script, int max = -1)
+        public static Player[] GetPlayers(string input, object script, int max = -1)
         {
-            ScriptModule.TryGetPlayers(input, max, out PlayerCollection list, script);
-            return list.GetInnerList();
+            if (script is Script actualScript == false)
+            {
+                return Array.Empty<Player>();
+            }
+            Log.Error(input);
+            ScriptModule.TryGetPlayers(input, max, out PlayerCollection list, actualScript);
+            Log.Error(string.Join(", ", list));
+            return list.GetInnerList().ToArray();
         }
 
         /// <summary>
