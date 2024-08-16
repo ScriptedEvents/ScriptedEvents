@@ -94,6 +94,7 @@
     <Compile Include="Actions\Broadcast\ClearBroadcastsAction.cs" />
     <Compile Include="Actions\CASSIE\CassiePlayerAction.cs" />
     <Compile Include="Actions\CASSIE\ClearCassieAction.cs" />
+    <Compile Include="Actions\DebugActions\DebugExtractAction.cs" />
     <Compile Include="Actions\DebugActions\DebugProcessorAction.cs" />
     <Compile Include="Actions\Item\DropItemAction.cs" />
     <Compile Include="Actions\Map\SpawnGrenadeAction.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="API\Enums\DamageRuleType.cs" />
     <Compile Include="API\Enums\ExecuteContext.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
+    <Compile Include="API\Interfaces\IActionResponseValue.cs" />
     <Compile Include="API\Modules\CountdownModule.cs" />
     <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="API\Interfaces\ILongDescription.cs" />
