@@ -75,7 +75,7 @@
         /// <remarks>
         /// Action implementation is Func<string[], Tuple<bool, string, object[]>>, where:
         ///
-        ///   <Tuple<string[], object> - the action input, where:
+        ///   Tuple<string[], object> - the action input, where:
         ///     string[]   - The input to the action. Usually represented by single word strings, BUT can also include multiple words in one string.
         ///     object     - The script in which the action was ran.
         ///
