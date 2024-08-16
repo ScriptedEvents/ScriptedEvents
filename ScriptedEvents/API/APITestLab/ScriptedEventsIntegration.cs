@@ -54,18 +54,6 @@
         /// </summary>
         internal static List<string> CustomActions { get; } = new();
 
-        /// <summary>
-        /// Gets the MethodInfo for getting the players from a variable.
-        /// </summary>
-        /// <param name="input">The input to process.</param>
-        /// <param name="script">The script as object.</param>
-        /// <param name="max">The number of players to return (-1 for unlimited).</param>
-        /// <returns>The list of players.</returns>
-        internal static Player[] GetPlayers(string input, object script, int max = -1)
-        {
-            return (Player[])APIGetPlayersMethod.Invoke(null, new[] { input, script, max });
-        }
-
 #pragma warning disable SA1629 // Documentation text should end with a period
         /// <summary>
         /// Registers a custom action.
@@ -163,6 +151,18 @@
 
             foreach (string name in CustomActions)
                 RemoveAction.Invoke(null, new object[] { name });
+        }
+
+        /// <summary>
+        /// Gets the MethodInfo for getting the players from a variable.
+        /// </summary>
+        /// <param name="input">The input to process.</param>
+        /// <param name="script">The script as object.</param>
+        /// <param name="max">The number of players to return (-1 for unlimited).</param>
+        /// <returns>The list of players.</returns>
+        internal static Player[] GetPlayers(string input, object script, int max = -1)
+        {
+            return (Player[])APIGetPlayersMethod.Invoke(null, new[] { input, script, max });
         }
     }
 }
