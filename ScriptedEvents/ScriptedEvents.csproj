@@ -159,6 +159,7 @@
     <Compile Include="Actions\Misc\HttpGetAction.cs" />
     <Compile Include="Actions\Variable\GlobalPlayerVariableAction.cs" />
     <Compile Include="Actions\Item\RadioRangeAction.cs" />
+    <Compile Include="API\APITestLab\ScriptedEventsIntegration.cs" />
     <Compile Include="API\Constants\Constants.cs" />
     <Compile Include="API\Constants\ConstMessages.cs" />
     <Compile Include="API\Constants\EnumDefinitions.cs" />
@@ -204,7 +205,6 @@
     <Compile Include="API\Enums\DamageRuleType.cs" />
     <Compile Include="API\Enums\ExecuteContext.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
-    <Compile Include="API\Interfaces\IActionResponseValue.cs" />
     <Compile Include="API\Modules\CountdownModule.cs" />
     <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="API\Interfaces\ILongDescription.cs" />
