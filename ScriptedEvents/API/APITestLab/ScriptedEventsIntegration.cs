@@ -129,28 +129,22 @@
 
             RegisterCustomAction("EXPLODE_RANDOM_PLAYER", (Tuple<string[], object> input) =>
             {
-                Log.Error("1");
                 string[] args = input.Item1;
-                Log.Error("2");
                 object script = input.Item2;
-                Log.Error("3");
+
                 if (args.Length < 1)
                 {
-                    Log.Error("4");
                     return new(false, "Players to explode were not provided.", null);
                 }
-                Log.Error("5");
-                string plrVar = args[0];
-                Log.Error("6");
-                Player toExplode = GetPlayers(plrVar, script, 1).FirstOrDefault();
-                Log.Error("7");
+
+                Player toExplode = GetPlayers(args[0], script, 1).FirstOrDefault();
+
                 if (toExplode is not null)
                 {
                     toExplode.Explode();
                     return new(true, string.Empty, new[] { new[] { toExplode } });
                 }
 
-                Log.Error("8");
                 return new(true, string.Empty, null);
             });
         }
