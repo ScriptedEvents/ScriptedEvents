@@ -107,7 +107,7 @@
         {
             if (!CanInvoke)
             {
-                Log.Info("ScriptedEvents not found: Custom actions are not going to be added.");
+                Log.Warn("SE integration: Scripted Events is either not present or outdated. Ignore this message if you're not using Scripted Events.");
                 return;
             }
 
@@ -116,7 +116,7 @@
             {
                 tries++;
                 Log.Debug("ScriptedEvents is not yet loaded: Retrying in 1s");
-                Task.Delay(1000);
+                Task.Run(async () => await Task.Delay(1000)).Wait();
 
                 if (tries > 10)
                 {
