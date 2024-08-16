@@ -243,48 +243,30 @@ namespace ScriptedEvents.API.Modules
             IAction lastAction = null;
             for (int currentline = 0; currentline < array.Length; currentline++)
             {
-                array[currentline] = array[currentline].TrimStart();
+                array[currentline] = array[currentline].TrimStart().Replace("\n", string.Empty);
 
-                // NoAction
-                string action = array[currentline];
-                if (string.IsNullOrWhiteSpace(action))
+                // no action
+                string line = array[currentline];
+                if (string.IsNullOrWhiteSpace(line))
                 {
                     addActionNoArgs(new NullAction("BLANK LINE"));
                     continue;
                 }
-                else if (action.StartsWith("##"))
+                else if (line.StartsWith("##"))
                 {
                     inMultilineComment = !inMultilineComment;
                     addActionNoArgs(new NullAction("COMMENT"));
                     continue;
                 }
-                else if (action.StartsWith("#") || inMultilineComment)
+                else if (line.StartsWith("#") || inMultilineComment)
                 {
                     addActionNoArgs(new NullAction("COMMENT"));
-                    continue;
-                }
-                else if (action.StartsWith("!--"))
-                {
-                    string flag = action.Replace("!--", string.Empty).Trim();
-
-                    if (!script.HasFlag(flag))
-                    {
-                        string[] arguments = flag.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                        Flag fl = new(arguments[0], arguments.Skip(1));
-                        script.Flags.Add(fl);
-                    }
-                    else if (!suppressWarnings)
-                    {
-                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleFlagDefs, flag, scriptName));
-                    }
-
-                    addActionNoArgs(new NullAction("FLAG DEFINE"));
                     continue;
                 }
 
                 List<string> structureParts = ListPool<string>.Pool.Get();
 
-                foreach (string str in action.Split(' '))
+                foreach (string str in line.Split(' '))
                 {
                     if (string.IsNullOrWhiteSpace(str))
                         continue;
@@ -294,10 +276,10 @@ namespace ScriptedEvents.API.Modules
 
                 string keyword = structureParts[0].RemoveWhitespace();
 
-                // Std labels
+                // labels
                 if (keyword.EndsWith(":"))
                 {
-                    string labelName = action.Remove(keyword.Length - 1, 1).RemoveWhitespace();
+                    string labelName = line.Remove(keyword.Length - 1, 1).RemoveWhitespace();
 
                     if (!script.Labels.ContainsKey(labelName))
                         script.Labels.Add(labelName, currentline);
@@ -308,7 +290,7 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                // Function labels
+                // function labels
                 if (keyword == "->")
                 {
                     if (structureParts.Count < 2)
@@ -328,6 +310,7 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
+                // smart args
                 if (keyword == "//")
                 {
                     if (actionList.Count == 0)
@@ -336,7 +319,7 @@ namespace ScriptedEvents.API.Modules
                         continue;
                     }
 
-                    string value = string.Join(" ", structureParts.Skip(1)).TrimEnd('\n', '\r');
+                    string value = string.Join(" ", structureParts.Skip(1)).Trim();
 
                     if (script.SmartArguments.ContainsKey(lastAction))
                     {
@@ -351,6 +334,50 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
+                // flags
+                if (keyword == "!--")
+                {
+                    string flag = structureParts[1].Trim();
+
+                    if (!script.HasFlag(flag))
+                    {
+                        Flag fl = new(flag, structureParts.Skip(2));
+                        script.Flags.Add(fl);
+                    }
+                    else if (!suppressWarnings)
+                    {
+                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleFlagDefs, flag, scriptName));
+                    }
+
+                    addActionNoArgs(new NullAction("FLAG DEFINE"));
+                    continue;
+                }
+
+                // extractor
+                int indexOfExtractor = line.IndexOf("::");
+                string[] resultVariableNames = Array.Empty<string>();
+
+                if (indexOfExtractor != -1)
+                {
+                    string variablesSection = line.Substring(0, indexOfExtractor);
+                    string actionSection = line.Substring(indexOfExtractor + 2).TrimStart();
+                    DebugLog($"[ExtractorSyntax] Variables section: {variablesSection}", script);
+                    DebugLog($"[ExtractorSyntax] Action section: {actionSection}", script);
+
+                    resultVariableNames = VariableSystemV2.IsolateVariables(variablesSection, script);
+                    if (resultVariableNames.Length == 0)
+                    {
+                        goto leave_extractor_parsing;
+                    }
+
+                    DebugLog($"[ExtractorSyntax] Variables found before the syntax: {string.Join(", ", resultVariableNames)}", script);
+
+                    structureParts = actionSection.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(part => part.Trim()).ToList();
+                    keyword = structureParts[0];
+                }
+
+                leave_extractor_parsing:
+
                 keyword = keyword.ToUpper();
 
                 if (!TryGetActionType(keyword, out Type actionType))
@@ -358,11 +385,26 @@ namespace ScriptedEvents.API.Modules
                     // Check for custom actions
                     if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
                     {
-                        CustomAction customAction1 = new(customAction.Name, customAction.Action)
+                        List<string> customActArgs = ListPool<string>.Pool.Get();
+                        CustomAction customAction1 = new(customAction.Name, customAction.Action);
+
+                        foreach (string part in structureParts.Skip(1))
                         {
-                            Arguments = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray(),
-                        };
+                            if (ArgumentProcessor.TryProcessSmartArgument(part, customAction1, script, out string result, false))
+                            {
+                                customActArgs.Add(result);
+                            }
+                            else
+                            {
+                                customActArgs.Add(part);
+                            }
+                        }
+
+                        customAction1.RawArguments = customActArgs.ToArray();
                         actionList.Add(customAction1);
+                        script.ResultVariableNames[customAction1] = resultVariableNames;
+
+                        ListPool<string>.Pool.Return(customActArgs);
                         ListPool<string>.Pool.Return(structureParts);
                         continue;
                     }
@@ -377,6 +419,7 @@ namespace ScriptedEvents.API.Modules
                 IAction newAction = Activator.CreateInstance(actionType) as IAction;
                 lastAction = newAction;
                 script.OriginalActionArgs[newAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                script.ResultVariableNames[newAction] = resultVariableNames;
 
                 Logger.Debug($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}", script);
 
@@ -472,29 +515,27 @@ namespace ScriptedEvents.API.Modules
         {
             void Log(string msg)
             {
-                DebugLog($"[TryGetPlayers] {msg}", source);
+                Logger.Info($"[TryGetPlayers] {msg}", source);
             }
 
             Log($"Trying to get '{input}' player collection.");
 
             input = input.RemoveWhitespace();
-            List<Player> list = ListPool<Player>.Pool.Get();
-
-            if (input.ToUpper() is "*" or "ALL")
-            {
-                ListPool<Player>.Pool.Return(list);
-
-                Log($"Fetch successful! Syntax referencing all players.");
-                collection = new(Player.List.ToList());
-                return true;
-            }
+            List<Player> list = new();
 
             // TODO: When a variable with a player id is provided, it wont work since the raw variable name cant match to the regex
             // but if we convert a valid variable to int, a e.g. player variable with 1 player will then say that "yeah actually im the server"
             // which is just a tiny bit stupid
             string patternForPlayerIdUsage = @"^\d+(\.\d+)*\.?$";
-            if (Regex.IsMatch(input, patternForPlayerIdUsage))
+
+            if (input.ToUpper() is "*" or "ALL")
             {
+                Log("Getting all players");
+                list = Player.List.ToList();
+            }
+            else if (Regex.IsMatch(input, patternForPlayerIdUsage))
+            {
+                Log("Doing regex");
                 string[] splitInput = input.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (string idInStr in splitInput)
@@ -508,19 +549,15 @@ namespace ScriptedEvents.API.Modules
                     Log($"Extracted a player object from {idInStr} string.");
                     list.Add(player);
                 }
-
-                collection = new(list);
-                return true;
             }
-
-            if (VariableSystemV2.TryGetPlayers(input, source, out PlayerCollection playersFromVariable, brecketsRequired))
+            else if (VariableSystemV2.TryGetPlayers(input, source, out PlayerCollection playersFromVariable, brecketsRequired))
             {
                 list = playersFromVariable.GetInnerList();
+                Log($"Doing by variable: got {list.Count} players");
             }
-
-            // If list is still empty, match directly
-            if (list.Count == 0)
+            else
             {
+                Log("Matching directly");
                 Player match = Player.Get(input);
                 if (match is not null)
                     list.Add(match);
@@ -536,6 +573,7 @@ namespace ScriptedEvents.API.Modules
 
             if (amount.HasValue && amount.Value > 0 && list.Count > 0)
             {
+                Log("Removing players");
                 while (list.Count > amount.Value)
                 {
                     list.PullRandomItem();
@@ -543,7 +581,9 @@ namespace ScriptedEvents.API.Modules
             }
 
             // Return
+            Log($"Complete! Returning {list.Count} players");
             collection = new(list);
+            Log("this is " + collection.GetInnerList().Count.ToString());
             return true;
         }
 
@@ -810,6 +850,10 @@ namespace ScriptedEvents.API.Modules
                 }
 
                 Logger.Debug($"Fetched action '{action.Name}'", scr);
+                if (action is NullAction nullAction)
+                {
+                    Logger.Debug($"Null action type: {nullAction.Type}", scr);
+                }
 
                 if (scr.IfActionBlocksExecution && action is not IIgnoresIfActionBlock)
                 {
@@ -880,7 +924,7 @@ namespace ScriptedEvents.API.Modules
 
                 if (!resp.Success)
                 {
-                    Logger.Debug($"{action.Name} [Line: {scr.CurrentLine + 1}]: FAIL");
+                    Logger.Debug($"{action.Name} [Line: {scr.CurrentLine + 1}]: FAIL", scr);
                     if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                     {
                         string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Fatal action error! {resp.Message}";
@@ -898,6 +942,30 @@ namespace ScriptedEvents.API.Modules
                 {
                     Logger.Debug($"{action.Name} [Line: {scr.CurrentLine + 1}]: SUCCESS", scr);
                     successfulLines++;
+
+                    if (resp.ResponseVariables != null && scr.ResultVariableNames.TryGetValue(action, out string[] variableNames))
+                    {
+                        foreach (var zipped in resp.ResponseVariables.Zip(variableNames, (variable, name) => (variable, name)))
+                        {
+                            switch (zipped.variable)
+                            {
+                                case Player[] plrVar:
+                                    Logger.Debug($"Action {action.Name} is adding a player variable as '{zipped.name}'.", scr);
+                                    scr.UniquePlayerVariables.Add(zipped.name, new(zipped.name, string.Empty, plrVar.ToList()));
+                                    break;
+
+                                case string strVar:
+                                    Logger.Debug($"Action {action.Name} is adding a variable as '{zipped.name}'.", scr);
+                                    scr.UniqueVariables.Add(zipped.name, new(zipped.name, string.Empty, strVar));
+                                    break;
+
+                                default:
+                                    Logger.Error($"Action {action.Name} wants to add a variable with an illegal type.", scr);
+                                    break;
+                            }
+                        }
+                    }
+
                     if (!string.IsNullOrEmpty(resp.Message))
                     {
                         string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Response: {resp.Message}";
@@ -926,7 +994,7 @@ namespace ScriptedEvents.API.Modules
 
                 if (!scr.HasFlag("NOSAFETY"))
                 {
-                    yield return Timing.WaitForSeconds(0.01f);
+                    yield return Timing.WaitForOneFrame;
                 }
             }
 
@@ -951,7 +1019,7 @@ namespace ScriptedEvents.API.Modules
 
         private static void DebugLog(string message, Script source)
         {
-            source.DebugLog($"[ScriptModule] {message}");
+            Logger.Debug($"[ScriptModule] {message}", source);
         }
     }
 }
