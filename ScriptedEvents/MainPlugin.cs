@@ -194,6 +194,10 @@
             }
 
             Singleton = null;
+
+#if ADEBUG
+            API.ScriptedEventsIntegration.UnregisterCustomActions();
+#endif
         }
 
         public override void OnRegisteringCommands()
