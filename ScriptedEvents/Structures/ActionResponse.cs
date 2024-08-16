@@ -3,7 +3,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
     /// Represents a response to an action execution.
@@ -17,7 +16,7 @@
         /// <param name="message">Message to show (or an error message if <see cref="Success"/> is <see langword="false"/>).</param>
         /// <param name="flags">Flags that control what happens after the execution is complete.</param>
         /// <param name="variablesToRet">Variables to assign after successful action usage.</param>
-        public ActionResponse(bool success, string message = "", ActionFlags flags = ActionFlags.None, IVariable[] variablesToRet = null)
+        public ActionResponse(bool success, string message = "", ActionFlags flags = ActionFlags.None, object[] variablesToRet = null)
         {
             Success = success;
             Message = message;
@@ -47,7 +46,7 @@
         /// <see cref="MessageType.CassieCaptionNoAnnouncement"/> - Expects only parameter name. <br />
         /// <see cref="MessageType.Custom"/> - Doesn't need anything. Doesn't need parameter name. <br />
         /// </remarks>
-        public ActionResponse(MessageType responseType, IAction action, string paramName, IVariable[] variablesToRet = null, params object[] arguments)
+        public ActionResponse(MessageType responseType, IAction action, string paramName, object[] variablesToRet = null, params object[] arguments)
         {
             Success = responseType is MessageType.OK;
             MessageType = responseType;
@@ -78,6 +77,6 @@
         /// <summary>
         /// Gets variables that were returned as result of the action.
         /// </summary>
-        public IVariable[] ResponseVariables { get; }
+        public object[] ResponseVariables { get; }
     }
 }
