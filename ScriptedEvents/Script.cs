@@ -199,6 +199,11 @@
         /// </summary>
         public Dictionary<IAction, string[]> SmartArguments { get; set; } = new();
 
+        /// <summary>
+        /// Gets or sets the names under which to create variables as result of an successful action.
+        /// </summary>
+        public Dictionary<IAction, string[]> ResultVariableNames { get; set; } = new();
+
         /// <inheritdoc/>
         public void Dispose()
         {
