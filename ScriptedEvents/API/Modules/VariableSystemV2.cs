@@ -322,7 +322,7 @@
             {
                 source.DebugLog("Isolated variable: " + variable);
 
-                if (!TryGetVariable(variable, source, out VariableResult vresult))
+                if (!TryGetVariable(variable, source, out VariableResult vresult, requireBrackets))
                 {
                     source.DebugLog("Invalid variable.");
                     continue;
@@ -366,23 +366,28 @@
 
             for (int i = 0; i < input.Length; i++)
             {
-                char c = input[i];
-                if (c is '{')
+                if (input[i] is not '{')
                 {
-                    int index = input.IndexOf('}', i);
-                    if (index == -1)
-                    {
-                        continue;
-                    }
-
-                    source?.DebugLog($"Detected variable opening symbol, char {i}. Closing index {index}. Substring {index - i + 1}.");
-
-                    string variable = input.Substring(i, index - i + 1);
-
-                    source?.DebugLog($"Variable: {variable}");
-
-                    result.Add(variable);
+                    continue;
                 }
+
+                int index = input.IndexOf('}', i);
+                if (index == -1)
+                {
+                    continue;
+                }
+
+                source.DebugLog($"[IsolateVariables] Detected variable opening symbol, char {i}. Closing index {index}. Substring {index - i + 1}.");
+
+                string variable = input.Substring(i, index - i + 1);
+                if (variable.Contains(" "))
+                {
+                    continue;
+                }
+
+                source.DebugLog($"[IsolateVariables] Extracted a variable: '{variable}'");
+
+                result.Add(variable);
             }
 
             return ListPool<string>.Pool.ToArrayReturn(result);
