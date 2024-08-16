@@ -176,6 +176,10 @@
                     Logger.Warn($"The removal of the '{API.Features.ScriptHelpGenerator.Generator.ConfigPath}' file has failed. Reason: {ex}");
                 }
             }
+
+#if ADEBUG
+            API.ScriptedEventsIntegration.RegisterCustomActions();
+#endif
         }
 
         /// <inheritdoc/>
