@@ -22,7 +22,7 @@
         /// <summary>
         /// Gets a value indicating whether the Scripted Evetns API is available to be used.
         /// </summary>
-        internal static bool CanInvoke => API is not null;
+        internal static bool CanInvoke => API is not null && AddAction is not null && RemoveAction is not null && APIGetPlayersMethod is not null;
 
         /// <summary>
         /// Gets the MethodInfo for checking if the ScriptModule was loaded.
