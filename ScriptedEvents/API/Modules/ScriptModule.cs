@@ -515,7 +515,7 @@ namespace ScriptedEvents.API.Modules
         {
             void Log(string msg)
             {
-                Logger.Info($"[TryGetPlayers] {msg}", source);
+                Logger.Debug($"[TryGetPlayers] {msg}", source);
             }
 
             Log($"Trying to get '{input}' player collection.");
@@ -583,7 +583,6 @@ namespace ScriptedEvents.API.Modules
             // Return
             Log($"Complete! Returning {list.Count} players");
             collection = new(list);
-            Log("this is " + collection.GetInnerList().Count.ToString());
             return true;
         }
 
