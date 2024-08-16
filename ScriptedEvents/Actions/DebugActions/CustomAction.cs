@@ -13,7 +13,7 @@
         /// </summary>
         /// <param name="name">The name of the custom action.</param>
         /// <param name="action">The function to execute when the action is invoked.</param>
-        public CustomAction(string name, Func<string[], Tuple<bool, string, IActionResponseValue[]>> action)
+        public CustomAction(string name, Func<Tuple<string[], object>, Tuple<bool, string, object[]>> action)
         {
             Name = name;
             Action = action;
@@ -37,7 +37,7 @@
         /// <summary>
         /// Gets the <see cref="Func{T, TResult}"/> to execute when this action is executed.
         /// </summary>
-        public Func<string[], Tuple<bool, string, IActionResponseValue[]>> Action { get; }
+        public Func<Tuple<string[], object>, Tuple<bool, string, object[]>> Action { get; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => Array.Empty<Argument>();
@@ -45,7 +45,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var result = Action(RawArguments);
+            var result = Action(new(RawArguments, script));
             return new(result.Item1, result.Item2, variablesToRet: result.Item3);
         }
     }
