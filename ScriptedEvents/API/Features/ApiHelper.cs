@@ -6,8 +6,10 @@
 
     using Exiled.API.Features;
     using ScriptedEvents.Actions;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
     /// A set of tools for other plugins to add actions to Scripted Events.
@@ -48,7 +50,7 @@
         /// <param name="name">The name of the action.</param>
         /// <param name="action">The function to execute when the action is used. An array string of parameters is provided, and the action must return a tuple with a bool (successful?) and a string message (optional, can be set to string.Empty).</param>
         /// <returns>A string message representing whether or not the unregister process was successful.</returns>
-        public static string RegisterCustomAction(string name, Func<string[], Tuple<bool, string>> action)
+        public static string RegisterCustomAction(string name, Func<string[], Tuple<bool, string, IActionResponseValue[]>> action)
         {
             if (!IsModuleLoaded)
             {
