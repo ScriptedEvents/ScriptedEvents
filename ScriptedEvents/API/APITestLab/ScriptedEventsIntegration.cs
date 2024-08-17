@@ -8,6 +8,7 @@
 
     using Exiled.API.Features;
     using Exiled.Loader;
+    using UnityEngine;
 
     /// <summary>
     /// The class for Scripted Events custom action integration.
@@ -91,11 +92,11 @@
         /// Registers custom actions defined in the method.
         /// Used when plugin is enabled.
         /// </summary>
-        public static void RegisterCustomActions()
+        public static async void RegisterCustomActions()
         {
             if (!CanInvoke)
             {
-                Log.Warn("SE integration: Scripted Events is either not present or outdated. Ignore this message if you're not using Scripted Events.");
+                Log.Warn("[Scripted Events integration] Scripted Events is either not present or outdated. Ignore this message if you're not using Scripted Events.");
                 return;
             }
 
@@ -103,12 +104,12 @@
             while (!IsModuleLoaded)
             {
                 tries++;
-                Log.Debug("ScriptedEvents is not yet loaded: Retrying in 1s");
-                Task.Run(async () => await Task.Delay(1000)).Wait();
+                Log.Debug("[Scripted Events integration] Scripted Events is present, but ScriptModule is not yet loaded; retrying in 1s");
+                await Task.Delay(1000);
 
                 if (tries > 10)
                 {
-                    Log.Error("ScriptedEvents integration error: ScriptedEvents' ScriptModule has not initialized.");
+                    Log.Error("[Scripted Events integration] ScriptModule has not initialized in time; custom actions will not be added.");
                     return;
                 }
             }
@@ -116,6 +117,11 @@
             // actions are defined here
             RegisterCustomAction("GET_ALL_PLAYERS", (Tuple<string[], object> input) =>
             {
+                /*
+                * true - action executed successfully
+                * string.Empty - error response (no error so empty)
+                * new[] { Player.List.ToArray() } - object[] containing Player[] containing all players
+                */
                 return new(true, string.Empty, new[] { Player.List.ToArray() });
             });
 
@@ -126,18 +132,45 @@
 
                 if (args.Length < 1)
                 {
+                    /*
+                    * false - action failed
+                    * "Players to explode were not provided." - error response
+                    * null - no return values
+                    */
                     return new(false, "Players to explode were not provided.", null);
                 }
 
                 Player toExplode = GetPlayers(args[0], script, 1).FirstOrDefault();
 
-                if (toExplode is not null)
+                if (toExplode is null)
                 {
-                    toExplode.Explode();
-                    return new(true, string.Empty, new[] { new[] { toExplode } });
+                    /*
+                    * false - action failed
+                    * "Invalid player variable provided." - error response
+                    * null - no return values
+                    */
+                    return new(false, "Invalid player variable provided.", null);
                 }
 
-                return new(true, string.Empty, null);
+                toExplode.Explode();
+
+                /*
+                * true - action executed successfully
+                * string.Empty - error response (no error so empty)
+                * new[] { new[] { toExplode } } - object[] containing Player[] containing the player who got exploded
+                */
+                return new(true, string.Empty, new[] { new[] { toExplode } });
+            });
+
+            RegisterCustomAction("FLIP_A_COIN", (Tuple<string[], object> input) =>
+            {
+                string value = UnityEngine.Random.Range(1, 3) == 1 ? "HEADS" : "TAILS";
+                /*
+                * true - action executed successfully
+                * string.Empty - error response (no error so empty)
+                * new[] { new[] { toExplode } } - object[] containing string containing the coinflip result
+                */
+                return new(true, string.Empty, new[] { value });
             });
         }
 
