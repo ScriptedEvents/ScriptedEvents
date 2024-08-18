@@ -961,7 +961,7 @@ namespace ScriptedEvents.API.Modules
                                 default:
                                     try
                                     {
-                                        scr.UniqueVariables.Add(zipped.name, new(zipped.name, string.Empty, (string)zipped.variable));
+                                        scr.UniqueVariables.Add(zipped.name, new(zipped.name, string.Empty, zipped.variable.ToString()));
                                     }
                                     catch (InvalidCastException)
                                     {
