@@ -70,7 +70,7 @@
         ///
         ///   Tuple<bool, string, object[]> - the action result, where:
         ///     bool       - Did action execute without any errors.
-        ///     string     - The action response to the console when there was an error (can also be used when there was no error).
+        ///     string     - The action response to the console when there was an error..
         ///     object[]   - optional values to return from an action, either strings or Player[]s, anything different will result in an error.
         /// </remarks>
 #pragma warning restore SA1629 // Documentation text should end with a period
@@ -168,7 +168,7 @@
                 /*
                 * true - action executed successfully
                 * string.Empty - error response (no error so empty)
-                * new[] { new[] { toExplode } } - object[] containing string containing the coinflip result
+                * new[] { value } - object[] containing string containing the coinflip result
                 */
                 return new(true, string.Empty, new[] { value });
             });
