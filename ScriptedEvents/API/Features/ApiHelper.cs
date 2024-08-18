@@ -131,11 +131,10 @@
         {
             if (script is Script actualScript == false)
             {
-                return Array.Empty<Player>();
+                return null;
             }
-            Log.Error(input);
+
             ScriptModule.TryGetPlayers(input, max, out PlayerCollection list, actualScript);
-            Log.Error(string.Join(", ", list));
             return list.GetInnerList().ToArray();
         }
 
