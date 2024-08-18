@@ -926,14 +926,14 @@ namespace ScriptedEvents.API.Modules
                     Logger.Debug($"{action.Name} [Line: {scr.CurrentLine + 1}]: FAIL", scr);
                     if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
                     {
-                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Fatal action error! {resp.Message}";
+                        string message = $"[{action.Name}] Fatal action error! {resp.Message}";
                         Logger.ScriptError(message, scr, fatal: true);
 
                         break;
                     }
                     else if (!scr.SuppressWarnings)
                     {
-                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Action error! {resp.Message}";
+                        string message = $"[{action.Name}] Action error! {resp.Message}";
                         Logger.ScriptError(message, scr);
                     }
                 }
@@ -959,7 +959,15 @@ namespace ScriptedEvents.API.Modules
                                     break;
 
                                 default:
-                                    Logger.Error($"Action {action.Name} wants to add a variable with an illegal type.", scr);
+                                    try
+                                    {
+                                        scr.UniqueVariables.Add(zipped.name, new(zipped.name, string.Empty, (string)zipped.variable));
+                                    }
+                                    catch (InvalidCastException)
+                                    {
+                                        Logger.ScriptError($"Action {action.Name} returned a value of an illegal type '{zipped.variable.GetType()}', which cannot be casted back to string. Please report this to the developer.", scr);
+                                    }
+
                                     break;
                             }
                         }
