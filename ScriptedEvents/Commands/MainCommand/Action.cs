@@ -7,6 +7,7 @@
     using Exiled.API.Features;
     using Exiled.Permissions.Extensions;
     using RemoteAdmin;
+    using ScriptedEvents.Actions;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
@@ -48,17 +49,25 @@
                 return false;
             }
 
-            if (!MainPlugin.ScriptModule.TryGetActionType(actionName.ToUpper(), out Type argType))
+            IAction action;
+            if (MainPlugin.ScriptModule.TryGetActionType(actionName.ToUpper(), out Type actType))
+            {
+                action = Activator.CreateInstance(actType) as IAction;
+            }
+            else if (MainPlugin.ScriptModule.CustomActions.TryGetValue(actionName.ToUpper(), out CustomAction customAction))
+            {
+                response = "This action cannot be executed using the command.";
+                return false;
+            }
+            else
             {
                 response = "Invalid argument name provided.";
                 return false;
             }
 
-            IAction action = Activator.CreateInstance(argType) as IAction;
-
             if (action is not IScriptAction scriptAction)
             {
-                response = "This action cannot be executed.";
+                response = "This action cannot be executed using the command.";
                 return false;
             }
 
@@ -71,11 +80,13 @@
                 Context = sender is ServerConsoleSender ? ExecuteContext.ServerConsole : ExecuteContext.RemoteAdmin,
                 Sender = sender,
                 RawText = string.Join(" ", arguments),
-                ScriptName = "ACTION COMMAND EXECUTION",
+                ScriptName = "ACTION COMMAND",
                 Actions = new[] { scriptAction },
             };
 
-            mockScript.OriginalActionArgs[action] = scriptAction.RawArguments;
+            mockScript.OriginalActionArgs[scriptAction] = scriptAction.RawArguments;
+            mockScript.ResultVariableNames[scriptAction] = Array.Empty<string>();
+
             if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
             {
                 mockScript.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
