@@ -6,6 +6,7 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
@@ -39,7 +40,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Error($"[{script.ScriptName}] {Arguments.JoinMessage(0)}");
+            Logger.ScriptError($"[{Arguments.JoinMessage(0)}", script);
 
             return new(true);
         }
