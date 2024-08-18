@@ -46,7 +46,7 @@
         public ActionResponse Execute(Script script)
         {
             var result = Action(new(RawArguments, script));
-            return new(result.Item1, result.Item2, variablesToRet: result.Item3);
+            return new(result.Item1, result.Item1 is false ? result.Item2 : string.Empty, variablesToRet: result.Item3);
         }
     }
 }
