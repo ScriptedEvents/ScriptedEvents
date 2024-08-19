@@ -50,7 +50,7 @@
         public bool Value => Cassie.IsSpeaking;
     }
 
-    public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable, INeedSourceVariable
+    public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable
     {
         /// <inheritdoc/>
         public string Name => "{INROOM}";
@@ -71,9 +71,6 @@
         };
 
         /// <inheritdoc/>
-        public Script Source { get; set; }
-
-        /// <inheritdoc/>
         public float Value => Players.Count();
 
         /// <inheritdoc/>
@@ -87,7 +84,7 @@
         }
     }
 
-    public class RandomDoor : IStringVariable, INeedSourceVariable, IArgumentVariable
+    public class RandomDoor : IStringVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{RANDOMDOOR}";
@@ -106,9 +103,6 @@
         {
             new Argument("zone", typeof(ZoneType), "A zone to filter by (optional).", false),
         };
-
-        /// <inheritdoc/>
-        public Script Source { get; set; }
 
         /// <inheritdoc/>
         public string Value
@@ -212,7 +206,7 @@
         }
     }
 
-    public class RandomRoom : IStringVariable, IArgumentVariable, INeedSourceVariable
+    public class RandomRoom : IStringVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{RANDOMROOM}";
@@ -231,9 +225,6 @@
         {
             new Argument("zone", typeof(ZoneType), "A zone to filter by (optional).", false),
         };
-
-        /// <inheritdoc/>
-        public Script Source { get; set; }
 
         /// <inheritdoc/>
         public string Value
@@ -271,7 +262,7 @@
         public bool Value => Scp914.IsWorking;
     }
 
-    public class DoorState : IStringVariable, IArgumentVariable, INeedSourceVariable
+    public class DoorState : IStringVariable, IArgumentVariable
     {
         /// <inheritdoc/>
         public string Name => "{DOORSTATE}";
@@ -284,9 +275,6 @@
 
         /// <inheritdoc/>
         public object[] Arguments { get; set; }
-
-        /// <inheritdoc/>
-        public Script Source { get; set; }
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
