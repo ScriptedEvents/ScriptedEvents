@@ -6,6 +6,7 @@
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
@@ -161,6 +162,11 @@
         /// </summary>
         public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; } = new();
 
+        /// <summary>
+        /// Gets a dictionary of effect immunity for specific players.
+        /// </summary>
+        public Dictionary<Player, List<EffectType>> PlayerEffectImmunity { get; } = new();
+
         public List<DamageRule> DamageRules { get; } = new();
 
         public override void Init()
@@ -181,12 +187,13 @@
             PlayerHandler.InteractingElevator += OnInteractingElevator;
             PlayerHandler.Escaping += OnEscaping;
             PlayerHandler.Spawned += OnSpawned;
+            PlayerHandler.ReceivingEffect += OnReceivingEffect;
 
             PlayerHandler.PickingUpItem += OnPickingUpItem;
             PlayerHandler.ChangingRadioPreset += OnChangingRadioPreset;
 
             PlayerHandler.ActivatingWarheadPanel += OnActivatingWarheadPanel;
-            Exiled.Events.Handlers.Warhead.Starting += OnStartingWarhead; // why is this located specially??
+            Exiled.Events.Handlers.Warhead.Starting += OnStartingWarhead;
 
             PlayerHandler.ActivatingGenerator += GeneratorEvent;
             PlayerHandler.OpeningGenerator += GeneratorEvent;
@@ -267,6 +274,7 @@
             PlayerHandler.InteractingElevator -= OnInteractingElevator;
             PlayerHandler.Escaping -= OnEscaping;
             PlayerHandler.Spawned -= OnSpawned;
+            PlayerHandler.ReceivingEffect -= OnReceivingEffect;
 
             PlayerHandler.PickingUpItem -= OnPickingUpItem;
             PlayerHandler.ChangingRadioPreset -= OnChangingRadioPreset;
@@ -439,6 +447,8 @@
             RecentlyRespawned.Clear();
 
             MostRecentSpawn = SpawnableTeamType.None;
+
+            PlayerEffectImmunity.Clear();
         }
 
         public void OnRoundStarted()
@@ -488,6 +498,24 @@
                     }
                 }
             }
+        }
+
+        public void OnReceivingEffect(ReceivingEffectEventArgs ev)
+        {
+            if (ev.Player == null) return;
+
+            if (!PlayerEffectImmunity.TryGetValue(ev.Player, out List<EffectType> effects))
+            {
+                return;
+            }
+
+            if (!effects.Contains(ev.Effect.GetEffectType()))
+            {
+                return;
+            }
+
+            ev.IsAllowed = false;
+            return;
         }
 
         public void OnRespawningTeam(RespawningTeamEventArgs ev)
