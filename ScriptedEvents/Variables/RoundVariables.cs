@@ -78,9 +78,7 @@
         {
             get
             {
-                string mode = (string)Arguments[0];
-
-                return mode.ToUpper() switch
+                return ((string)Arguments[0]).ToUpper() switch
                 {
                     "LOCKED" => Round.IsLocked,
                     "STARTED" => Round.IsStarted,
