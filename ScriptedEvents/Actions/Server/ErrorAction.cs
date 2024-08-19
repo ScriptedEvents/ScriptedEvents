@@ -2,13 +2,10 @@
 {
     using System;
 
-    using Exiled.API.Features;
-
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     public class ErrorAction : IScriptAction, IHelpInfo
