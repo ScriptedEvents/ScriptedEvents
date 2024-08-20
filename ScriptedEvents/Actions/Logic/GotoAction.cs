@@ -47,7 +47,7 @@
                 return new(true);
             }
 
-            return new(false, "Invalid label provided.");
+            return new(false, $"Invalid label '{label}' provided.");
         }
     }
 }
