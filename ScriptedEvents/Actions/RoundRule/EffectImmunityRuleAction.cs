@@ -62,23 +62,23 @@
 
                 switch (mode)
                 {
-                    case "SET":
-                        if (list.Contains(effectType))
-                        {
-                            continue;
-                        }
+                case "SET":
+                    if (list.Contains(effectType))
+                    {
+                        continue;
+                    }
 
-                        dict[plr].Add(effectType);
-                        break;
+                    dict[plr].Add(effectType);
+                    break;
 
-                    case "REMOVE":
-                        if (!list.Contains(effectType))
-                        {
-                            continue;
-                        }
+                case "REMOVE":
+                    if (!list.Contains(effectType))
+                    {
+                        continue;
+                    }
 
-                        dict[plr].Remove(effectType);
-                        break;
+                    dict[plr].Remove(effectType);
+                    break;
                 }
             }
 
