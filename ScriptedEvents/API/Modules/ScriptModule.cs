@@ -871,7 +871,7 @@ namespace ScriptedEvents.API.Modules
                     ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalArgs, action, scr);
                     if (res.Errored)
                     {
-                        Logger.ScriptError(res.FailedArgument != string.Empty ? $"[Argument: {res.FailedArgument}]" : string.Empty + res.Message, scr);
+                        Logger.ScriptError((res.FailedArgument != string.Empty ? $"[Argument: {res.FailedArgument}] " : string.Empty) + res.Message, scr);
                         break;
                     }
 
