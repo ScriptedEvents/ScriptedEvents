@@ -41,7 +41,6 @@ DOOR DESTROY *
 LIGHTSOFF * 10
 
 # Run a command. It needs / before it if it's a RA command, or . before it if its a console command.
-COMMAND /cleanup ragdolls
-";
+COMMAND /cleanup ragdolls";
     }
 }
