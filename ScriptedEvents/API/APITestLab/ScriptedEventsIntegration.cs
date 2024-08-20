@@ -157,7 +157,7 @@
                 /*
                 * true - action executed successfully
                 * string.Empty - error response (no error so empty)
-                * new[] { new[] { toExplode } } - object[] containing Player[] containing the player who got exploded
+                * new[] { new[] { toExplode } } - object[] containing Player[] containing one player who got exploded
                 */
                 return new(true, string.Empty, new[] { new[] { toExplode } });
             });
