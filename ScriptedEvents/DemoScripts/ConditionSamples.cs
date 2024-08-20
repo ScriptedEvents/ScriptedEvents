@@ -11,18 +11,17 @@
         /// <inheritdoc/>
         public string Contents => @"!-- DISABLE
 #Wait until 10 seconds after the round started.
-WAITUNTIL {ROUNDSECONDS} > 10
+WAIT UNTIL {TIME:ROUNDSECONDS} > 10
 
 #End the script immediately if there are more than 5 players alive.
-STOPIF {PLAYERSALIVE} > 5
+STOP $IF {PLAYERSALIVE} > 5
 
 #Wait anywhere from 100 to 500 seconds (CHANCE always generates a random value from 0-1).
-WAITSEC 100 + (400 * {CHANCE})
+WAIT SEC {RANDOM:INT:100:500}
 
 # Lights off for anywhere from 10 to 20 seconds, plus 1 second for each player.
-# The ""SAVE"" action creates a new variable using the input formula, and supports basic math operations.
-SAVE {LIGHTS_DURATION} (1 * {PLAYERS}) + 10 + (10 * {CHANCE})
-LIGHTSOFF * {LIGHTS_DURATION}
+LIGHTSOFF * #1
+// {PLAYERS} + {RANDOM:INT:10:20}
 ";
     }
 }
