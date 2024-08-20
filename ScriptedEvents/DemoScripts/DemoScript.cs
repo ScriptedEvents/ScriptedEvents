@@ -13,7 +13,7 @@
 # This is an example of a script that you can create to automate random events and/or admin events in your server.
 
 # Wait until the round starts.
-WAIT UNTIL {ROUND:STARTED}
+WAIT UNTIL {ROUND:STARTED} = TRUE
 
 # Wait 5 seconds.
 WAIT SEC 5
@@ -26,7 +26,7 @@ DOOR LOCK *
 CASSIE LOUD All doors have been locked opened
 
 # Wait for announcement to finish before making new one
-WAIT UNTIL {!CASSIESPEAKING}
+WAIT UNTIL {CASSIESPEAKING} = FALSE
 
 # CASSIE Announcement (cassie can support subtitles, if you add the | seperator to seperate from announcement and subtitle).
 CASSIE LOUD MtfUnit Epsilon 11 Designated Alpha 1 HasEntered|Mobile Task Force Unit Epsilon 11 Designated Alpha-01 has entered the facility.
