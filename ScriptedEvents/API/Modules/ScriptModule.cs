@@ -284,7 +284,7 @@ namespace ScriptedEvents.API.Modules
                     if (!script.Labels.ContainsKey(labelName))
                         script.Labels.Add(labelName, currentline);
                     else if (!suppressWarnings)
-                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
+                        Logger.ScriptError(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName), script, printableLine: currentline + 1);
 
                     addActionNoArgs(new NullAction($"{labelName} LABEL"));
                     continue;
@@ -304,7 +304,7 @@ namespace ScriptedEvents.API.Modules
                     if (!script.FunctionLabels.ContainsKey(labelName))
                         script.FunctionLabels.Add(labelName, currentline);
                     else if (!suppressWarnings)
-                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
+                        Logger.ScriptError(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName), script, printableLine: currentline + 1);
 
                     addActionNoArgs(new StartFunctionAction());
                     continue;
@@ -871,7 +871,7 @@ namespace ScriptedEvents.API.Modules
                     ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalArgs, action, scr);
                     if (res.Errored)
                     {
-                        Logger.ScriptError(res.FailedArgument != string.Empty ? $"[Argument: {res.FailedArgument}]" : string.Empty + res.Message, scr);
+                        Logger.ScriptError((res.FailedArgument != string.Empty ? $"[Argument: {res.FailedArgument}] " : string.Empty) + res.Message, scr);
                         break;
                     }
 
