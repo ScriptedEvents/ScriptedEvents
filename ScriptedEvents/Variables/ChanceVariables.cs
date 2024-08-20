@@ -45,14 +45,14 @@
                 new Argument("endNumber", typeof(string), "An ending number of the random range.", true),
         };
 
-        public string LongDescription => $@"The return value will be a random number from the provided range, depending on the numbers and the type.
+        public string LongDescription => @"The return value will be a random number from the provided range, depending on the numbers and the type.
 
 If 'type' is set to 'INT':
-> act PRINT My integer is {{RANDOM:INT:1:100}}
+> act PRINT My integer is {RANDOM:INT:1:100}
 > My integer is 60
 
 If 'type' is set to 'FLOAT':
-> act PRINT My float is {{RANDOM:FLOAT:0:1}}
+> act PRINT My float is {RANDOM:FLOAT:0:1}
 > My float is 0.35227";
 
         /// <inheritdoc/>
