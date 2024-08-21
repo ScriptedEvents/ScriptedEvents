@@ -22,7 +22,11 @@
         /// <summary>
         /// Whether or not this build of the plugin is experimental.
         /// </summary>
+#if ADEBUG
         public const bool IsExperimental = true;
+#else
+        public const bool IsExperimental = false;
+#endif
 
         /// <summary>
         /// Gets a link to the Scripted Events Discord server.
