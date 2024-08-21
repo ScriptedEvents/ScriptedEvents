@@ -771,22 +771,19 @@ namespace ScriptedEvents.API.Modules
 
             string text = null;
             string mainFolderFile = Path.Combine(BasePath, scriptName + ".txt");
+            string[] fileNames = Directory.GetFiles(BasePath, $"{scriptName}.txt", SearchOption.AllDirectories);
+
             if (File.Exists(mainFolderFile))
             {
                 fileDirectory = mainFolderFile;
                 text = File.ReadAllText(mainFolderFile);
             }
-            else
+            else if (fileNames.Length == 1)
             {
-                foreach (string directory in Directory.GetDirectories(BasePath))
-                {
-                    string fileName = Path.Combine(directory, scriptName + ".txt");
-                    if (File.Exists(fileName))
-                    {
-                        fileDirectory = fileName;
-                        text = File.ReadAllText(fileName);
-                    }
-                }
+                string fullFilePath = fileNames.FirstOrDefault();
+
+                fileDirectory = fullFilePath;
+                text = File.ReadAllText(fullFilePath);
             }
 
             if (text is not null && fileDirectory is not null)
