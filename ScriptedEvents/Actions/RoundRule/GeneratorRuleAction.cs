@@ -27,7 +27,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
 
         /// <inheritdoc/>
-        public string Description => "Modifies genrator behavior.";
+        public string Description => "Modifies generator behavior.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
