@@ -50,35 +50,36 @@
 
             foreach (Player plr in players)
             {
-                List<EffectType> list;
-                if (dict.ContainsKey(plr))
-                {
-                    list = dict[plr];
-                }
-                else
-                {
-                    list = new();
-                }
-
                 switch (mode)
                 {
-                case "SET":
-                    if (list.Contains(effectType))
-                    {
+                    case "SET":
+                        if (!dict.ContainsKey(plr))
+                        {
+                            dict[plr] = new List<EffectType>(new[] { effectType });
+                            continue;
+                        }
+
+                        if (dict[plr].Contains(effectType))
+                        {
+                            continue;
+                        }
+
+                        dict[plr].Add(effectType);
                         continue;
-                    }
 
-                    dict[plr].Add(effectType);
-                    break;
+                    case "REMOVE":
+                        if (!dict.ContainsKey(plr))
+                        {
+                            continue;
+                        }
 
-                case "REMOVE":
-                    if (!list.Contains(effectType))
-                    {
+                        if (!dict[plr].Contains(effectType))
+                        {
+                            continue;
+                        }
+
+                        dict[plr].Remove(effectType);
                         continue;
-                    }
-
-                    dict[plr].Remove(effectType);
-                    break;
                 }
             }
 
