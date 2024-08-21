@@ -38,7 +38,6 @@
                 new("LOCK", "Locks all generators, requiring a keycard to use."),
                 new("UNLOCK", "Unlocks all generators, no longer requiring a keycard to use."),
                 new("OVERCHARGE", "Engages all generators, causing an overcharge."),
-                new("DISENGAGE", "Disengages all generators."),
                 new("ACTIVATE", "Begins activating all generators."),
                 new("DEACTIVATE", "Deactivates all generators.")),
         };
@@ -71,8 +70,6 @@
                     case "DEACTIVATE":
                         generator.IsActivating = false;
                         break;
-                    case "DISENGAGE":
-                        generator.IsEngaged = false; break;
                 }
             }
 
