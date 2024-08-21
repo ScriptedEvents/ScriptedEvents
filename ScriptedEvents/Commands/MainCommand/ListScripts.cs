@@ -25,7 +25,6 @@
         /// <inheritdoc/>
         public string Description => "Lists all event scripts.";
 
-        /// <inheritdoc/>
         public bool SanitizeResponse => true;
 
         /// <inheritdoc/>
