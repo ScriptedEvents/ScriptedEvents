@@ -33,7 +33,7 @@
         {
             new Argument("oldRole", typeof(RoleTypeId), "The role a player must die as to be infected.", true),
             new Argument("newRole", typeof(RoleTypeId), "The role a player will become.", true),
-            new Argument("movePlayer", typeof(bool), "TRUE if the player should be moved to their death position, FALSE (or leave empty) to leave at spawn.", false),
+            new Argument("movePlayer", typeof(bool), "TRUE if the player should be moved to the attacker on death, FALSE (or leave empty) to leave at spawn.", false),
         };
 
         /// <inheritdoc/>
