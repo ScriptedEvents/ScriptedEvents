@@ -500,6 +500,7 @@
             }
         }
 
+        // effect immunity action
         public void OnReceivingEffect(ReceivingEffectEventArgs ev)
         {
             if (ev.Player == null) return;
@@ -569,7 +570,7 @@
 
             Timing.CallDelayed(0.5f, () =>
             {
-                ev.Player.Role.Set(rule.NewRole);
+                ev.Player.Role.Set(rule.NewRole, SpawnReason.ForceClass, RoleSpawnFlags.None);
 
                 if (rule.MovePlayer)
                     ev.Player.Teleport(pos);
