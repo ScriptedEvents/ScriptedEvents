@@ -39,7 +39,7 @@
     public class Seed : IStringVariable
     {
         /// <inheritdoc/>
-        public string Name => "{MAPSALT}";
+        public string Name => "{MAPSEED}";
 
         /// <inheritdoc/>
         public string Description => "All-in-one variable for map related information.";
