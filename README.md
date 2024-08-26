@@ -7,6 +7,9 @@
 # ScriptedEvents
 SE is an SCP:SL Exiled plugin to create event "scripts". These scripts allow for automation of simple tasks. They can be set up to run once per round, multiple times per round, or by command only.
 
+
+# [Wiki](https://github.com/ScriptedEvents/ScriptedEvents/wiki)
+
 ## Getting Started
 Fair warning: This plugin is very complex and has a lot of features. However, once you understand it, the capabilities are close to endless. My best suggestion is to play around with the plugin, as that's the easiest way to learn it. Tips to get started include:
 * Read the documents that are generated when you first install the plugin and restart the server. Your console will tell you where they are located the first time (typically directly inside the Configs folder).
