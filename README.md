@@ -5,7 +5,7 @@
 
 
 # ScriptedEvents
-SCP:SL Exiled plugin to create event "scripts". These scripts can be set up to run once per round, multiple times per round, or by command only.
+SE is an SCP:SL Exiled plugin to create event "scripts". These scripts allow for automation of simple tasks. They can be set up to run once per round, multiple times per round, or by command only.
 
 ## Getting Started
 Fair warning: This plugin is very complex and has a lot of features. However, once you understand it, the capabilities are close to endless. My best suggestion is to play around with the plugin, as that's the easiest way to learn it. Tips to get started include:
