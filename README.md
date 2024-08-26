@@ -13,8 +13,7 @@ SE is an SCP:SL Exiled plugin to create event "scripts". These scripts allow for
 ## Getting Started
 Fair warning: This plugin is very complex and has a lot of features. However, once you understand it, the capabilities are close to endless. My best suggestion is to play around with the plugin, as that's the easiest way to learn it. Tips to get started include:
 * Read the documents that are generated when you first install the plugin and restart the server. Your console will tell you where they are located the first time (typically directly inside the Configs folder).
-* The `shelp` server console command is going to help you out a ton! This command will generate documentation and open it in a `.txt` file. Type `shelp LIST` in your server console to generate a list of actions.
-  * Note to Pterodactyl users: Pterodactyl does not like opening files on demand and will generally throw a permission error. It will still generate the file inside your `Configs/ScriptedEvents` folder, it will just not open it. As such, it is encouraged to use a local server for using this command.
+
 * The parent remote-admin command for this plugin is `scriptedevents` (aliases: `script`, `scr`). Running this command will show examples on how to use it.
 
 ### Permissions
