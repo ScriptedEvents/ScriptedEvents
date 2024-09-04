@@ -8,7 +8,6 @@
 
     using Exiled.API.Features;
     using Exiled.Loader;
-    using UnityEngine;
 
     /// <summary>
     /// The class for Scripted Events custom action integration.
@@ -46,7 +45,7 @@
         internal static MethodInfo RemoveAction => API?.GetMethod("UnregisterCustomAction");
 
         /// <summary>
-        /// Gets the MethodInfo for removing a custom action.
+        /// Gets the MethodInfo for getting the players from a variable.
         /// </summary>
         internal static MethodInfo APIGetPlayersMethod => API?.GetMethod("GetPlayers");
 
@@ -65,13 +64,13 @@
         /// Action implementation is Func<string[], Tuple<bool, string, object[]>>, where:
         ///
         ///   Tuple<string[], object> - the action input, where:
-        ///     string[]   - The input to the action. Usually represented by single word strings, BUT can also include multiple words in one string.
-        ///     object     - The script in which the action was ran.
+        ///     string[]   - the input to the action. Usually represented by single word strings, BUT can also include multiple words in one string.
+        ///     object     - the script in which the action was ran.
         ///
         ///   Tuple<bool, string, object[]> - the action result, where:
-        ///     bool       - Did action execute without any errors.
-        ///     string     - The action response to the console when there was an error..
-        ///     object[]   - optional values to return from an action, either strings or Player[]s, anything different will result in an error.
+        ///     bool       - did action execute without any errors.
+        ///     string     - action response to the console when there was an error.
+        ///     object[]   - optional values to return from an action, only STRINGS or PLAYER ARRAYS, anything different will result in an ERROR.
         /// </remarks>
 #pragma warning restore SA1629 // Documentation text should end with a period
 
@@ -187,12 +186,12 @@
         }
 
         /// <summary>
-        /// Gets the MethodInfo for getting the players from a variable.
+        /// Gets the player objects from a SE variable.
         /// </summary>
         /// <param name="input">The input to process.</param>
         /// <param name="script">The script as object.</param>
         /// <param name="max">The number of players to return (-1 for unlimited).</param>
-        /// <returns>The list of players.</returns>
+        /// <returns>Player objects inhabiting the variable.</returns>
         internal static Player[] GetPlayers(string input, object script, int max = -1)
         {
             return (Player[])APIGetPlayersMethod.Invoke(null, new[] { input, script, max });
