@@ -364,29 +364,51 @@
             source?.DebugLog($"Isolating variables from: {input}");
             List<string> result = ListPool<string>.Pool.Get();
 
-            for (int i = 0; i < input.Length; i++)
+            int inputLength = input.Length;
+            for (int i = 0; i < inputLength; i++)
             {
-                if (input[i] is not '{')
+                char openingSymbol = input[i];
+                char closingSymbol = '\0';
+
+                switch (openingSymbol)
                 {
-                    continue;
+                    case '{':
+                        closingSymbol = '}'; break;
+                    case '<':
+                        closingSymbol = '>'; break;
+                    default:
+                        continue;
                 }
 
-                int index = input.IndexOf('}', i);
+                int index = input.IndexOf(closingSymbol, i + 1);
                 if (index == -1)
                 {
-                    continue;
+                    break;
                 }
 
-                source.DebugLog($"[IsolateVariables] Detected variable opening symbol, char {i}. Closing index {index}. Substring {index - i + 1}.");
+                bool hasSpace = false;
+                for (int j = i + 1; j < index; j++)
+                {
+                    if (input[j] == ' ')
+                    {
+                        hasSpace = true;
+                        break;
+                    }
+                }
 
-                string variable = input.Substring(i, index - i + 1);
-                if (variable.Contains(" "))
+                if (hasSpace)
                 {
                     continue;
                 }
 
-                source.DebugLog($"[IsolateVariables] Extracted a variable: '{variable}'");
+                string variable = input.Substring(i, index - i + 1);
 
+                if (openingSymbol is '<' && !variable.Contains(':'))
+                {
+                    continue;
+                }
+
+                source?.DebugLog($"[IsolateVariables] Extracted a variable: '{variable}'");
                 result.Add(variable);
             }
 
