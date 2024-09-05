@@ -125,5 +125,17 @@
             string str = StringBuilderPool.Pool.ToStringReturn(sb);
             return str.Substring(0, str.Length - sep.Length);
         }
+
+        public static int CountOccurrences(this string text, char character)
+        {
+            int count = 0;
+
+            foreach (char c in text)
+            {
+                if (c == character) count++;
+            }
+
+            return count;
+        }
     }
 }

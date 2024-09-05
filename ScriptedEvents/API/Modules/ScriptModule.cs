@@ -6,17 +6,13 @@ namespace ScriptedEvents.API.Modules
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Text.RegularExpressions;
 
     using CommandSystem;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
 
     using MEC;
-    using PlayerRoles;
     using RemoteAdmin;
 
     using ScriptedEvents.Actions;
@@ -29,8 +25,6 @@ namespace ScriptedEvents.API.Modules
     using ScriptedEvents.DemoScripts;
 
     using ScriptedEvents.Structures;
-
-    using AirlockController = Exiled.API.Features.Doors.AirlockController;
 
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
@@ -364,7 +358,7 @@ namespace ScriptedEvents.API.Modules
                     DebugLog($"[ExtractorSyntax] Variables section: {variablesSection}", script);
                     DebugLog($"[ExtractorSyntax] Action section: {actionSection}", script);
 
-                    resultVariableNames = VariableSystemV2.IsolateVariables(variablesSection, script);
+                    resultVariableNames = SEParser.IsolateValueSyntax(variablesSection, script, false);
                     if (resultVariableNames.Length == 0)
                     {
                         goto leave_extractor_parsing;
@@ -500,184 +494,6 @@ namespace ScriptedEvents.API.Modules
                 RunScript(scr, dispose);
 
             return scr;
-        }
-
-        /// <summary>
-        /// Converts an input into a list of players.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <param name="amount">The maximum amount of players to give back, or <see langword="null"/> for unlimited.</param>
-        /// <param name="collection">A <see cref="PlayerCollection"/> representing the players.</param>
-        /// <param name="source">The script using the API. Used for per-script variables.</param>
-        /// <param name="brecketsRequired">Are brackets required.</param>
-        /// <returns>Whether or not the process errored.</returns>
-        public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source, bool brecketsRequired = true)
-        {
-            void Log(string msg)
-            {
-                Logger.Debug($"[TryGetPlayers] {msg}", source);
-            }
-
-            Log($"Trying to get '{input}' player collection.");
-
-            input = input.RemoveWhitespace();
-            List<Player> list = new();
-
-            // TODO: When a variable with a player id is provided, it wont work since the raw variable name cant match to the regex
-            // but if we convert a valid variable to int, a e.g. player variable with 1 player will then say that "yeah actually im the server"
-            // which is just a tiny bit stupid
-            string patternForPlayerIdUsage = @"^\d+(\.\d+)*\.?$";
-
-            if (input.ToUpper() is "*" or "ALL")
-            {
-                Log("Getting all players");
-                list = Player.List.ToList();
-            }
-            else if (Regex.IsMatch(input, patternForPlayerIdUsage))
-            {
-                Log("Doing regex");
-                string[] splitInput = input.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (string idInStr in splitInput)
-                {
-                    if (!int.TryParse(idInStr, out int playerId))
-                        continue;
-
-                    if (!Player.TryGet(playerId, out Player player))
-                        continue;
-
-                    Log($"Extracted a player object from {idInStr} string.");
-                    list.Add(player);
-                }
-            }
-            else if (VariableSystemV2.TryGetPlayers(input, source, out PlayerCollection playersFromVariable, brecketsRequired))
-            {
-                list = playersFromVariable.GetInnerList();
-                Log($"Doing by variable: got {list.Count} players");
-            }
-            else
-            {
-                Log("Matching directly");
-                Player match = Player.Get(input);
-                if (match is not null)
-                    list.Add(match);
-            }
-
-            // Shuffle, Remove unconnected/overwatch, limit
-            list.ShuffleList();
-
-            /* list.RemoveAll(p => !p.IsConnected); */
-
-            if (MainPlugin.Configs.IgnoreOverwatch)
-                list.RemoveAll(p => p.Role.Type is RoleTypeId.Overwatch);
-
-            if (amount.HasValue && amount.Value > 0 && list.Count > 0)
-            {
-                Log("Removing players");
-                while (list.Count > amount.Value)
-                {
-                    list.PullRandomItem();
-                }
-            }
-
-            // Return
-            Log($"Complete! Returning {list.Count} players");
-            collection = new(list);
-            return true;
-        }
-
-        /// <summary>
-        /// Try-get a <see cref="Door"/> array given an input.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <param name="doors">The doors.</param>
-        /// <param name="source">The script source.</param>
-        /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetDoors(string input, out Door[] doors, Script source)
-        {
-            List<Door> doorList = ListPool<Door>.Pool.Get();
-            if (input is "*" or "ALL")
-            {
-                doorList = Door.List.ToList();
-            }
-            else if (SEParser.TryParse<ZoneType>(input, out ZoneType zt, source))
-            {
-                doorList = Door.List.Where(d => d.Zone.HasFlag(zt)).ToList();
-            }
-            else if (SEParser.TryParse<DoorType>(input, out DoorType dt, source))
-            {
-                doorList = Door.List.Where(d => d.Type == dt).ToList();
-            }
-            else if (SEParser.TryParse<RoomType>(input, out RoomType rt, source))
-            {
-                doorList = Door.List.Where(d => d.Room?.Type == rt).ToList();
-            }
-            else
-            {
-                doorList = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
-            }
-
-            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp914Door && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second && AirlockController.Get(d) is null).ToList();
-            doors = ListPool<Door>.Pool.ToArrayReturn(doorList);
-            return doors.Length > 0;
-        }
-
-        /// <summary>
-        /// Try-get a <see cref="Lift"/> array given an input.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <param name="lifts">The lift objects.</param>
-        /// <param name="source">The script source.</param>
-        /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetLifts(string input, out Lift[] lifts, Script source)
-        {
-            List<Lift> liftList = ListPool<Lift>.Pool.Get();
-            if (input is "*" or "ALL")
-            {
-                liftList = Lift.List.ToList();
-            }
-            else if (SEParser.TryParse<ElevatorType>(input, out ElevatorType et, source))
-            {
-                liftList = Lift.List.Where(l => l.Type == et).ToList();
-            }
-            else
-            {
-                liftList = Lift.List.Where(l => l.Name.ToLower() == input.ToLower()).ToList();
-            }
-
-            lifts = ListPool<Lift>.Pool.ToArrayReturn(liftList);
-            return lifts.Length > 0;
-        }
-
-        /// <summary>
-        /// Try-get a <see cref="Room"/> array given an input.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <param name="rooms">The rooms.</param>
-        /// <param name="source">The script source.</param>
-        /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetRooms(string input, out Room[] rooms, Script source)
-        {
-            List<Room> roomList = ListPool<Room>.Pool.Get();
-            if (input is "*" or "ALL")
-            {
-                roomList = Room.List.ToList();
-            }
-            else if (SEParser.TryParse<ZoneType>(input, out ZoneType zt, source))
-            {
-                roomList = Room.List.Where(room => room.Zone.HasFlag(zt)).ToList();
-            }
-            else if (SEParser.TryParse<RoomType>(input, out RoomType rt, source))
-            {
-                roomList = Room.List.Where(d => d.Type == rt).ToList();
-            }
-            else
-            {
-                roomList = Room.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
-            }
-
-            rooms = ListPool<Room>.Pool.ToArrayReturn(roomList);
-            return rooms.Length > 0;
         }
 
         /// <summary>

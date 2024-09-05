@@ -6,7 +6,6 @@
     using System.Data;
     using System.Text.RegularExpressions;
 
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Conditions.Floats;
     using ScriptedEvents.Conditions.Interfaces;
     using ScriptedEvents.Conditions.Strings;
@@ -254,7 +253,7 @@
                     foreach (string fragOr in orSplit)
                     {
                         source?.DebugLog($"FRAG [OR]: " + fragOr);
-                        string convertedFrag = VariableSystemV2.ReplaceVariables(fragOr, source);
+                        string convertedFrag = SEParser.ReplaceContaminatedValueSyntax(fragOr, source);
                         ConditionResponse eval = EvaluateSingleCondition(convertedFrag, group);
                         if (!eval.Success)
                         {

@@ -6,7 +6,6 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     public class LocalSaveAction : IScriptAction, IHelpInfo
@@ -47,8 +46,6 @@
             }
 
             string input = Arguments.JoinMessage(1);
-
-            input = VariableSystemV2.ReplaceVariables(input, script);
 
             try
             {

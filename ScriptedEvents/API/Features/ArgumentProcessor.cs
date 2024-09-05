@@ -102,7 +102,7 @@
             ArgumentProcessResult success = new(true);
 
             // raw args? aww hell nah :trollface:
-            List<string> rawProcessedArgs = Exiled.API.Features.Pools.ListPool<string>.Pool.Get();
+            List<string> rawProcessedArgs = new();
             foreach (string arg in args)
             {
                 if (TryProcessSmartArgument(arg, action, source, out string res, false))
@@ -133,14 +133,8 @@
                 success.NewParameters.AddRange(res.NewParameters);
             }
 
-            // If the raw argument list is larger than the expected list, do not process any extra arguments
-            // Edge-cases with long strings being the last parameter
             if (args.Length > expectedArguments.Length)
             {
-                // TODO: Figure out a method where ReplaceVariables isn't called for each extra argument.
-                // While also allowing variables + strings to be combined
-                // Eg. Using 'ReplaceVariable' instead won't turn '{PLAYERS}test' into '0test' like expected.
-                // This works for now, we need version 3 :|
                 IEnumerable<string> extraArgs = args.Skip(expectedArguments.Length);
                 foreach (string arg in extraArgs)
                 {
@@ -150,7 +144,7 @@
                     }
                     else
                     {
-                        success.NewParameters.Add(VariableSystemV2.ReplaceVariables(arg, source));
+                        success.NewParameters.Add(SEParser.ReplaceContaminatedValueSyntax(arg, source));
                     }
 
                     Logger.Debug("New parameters: " + string.Join(", ", success.NewParameters, source));
@@ -235,7 +229,7 @@
 
                 if (processForVariables)
                 {
-                    argument = VariableSystemV2.ReplaceVariables(argument, source);
+                    argument = SEParser.ReplaceContaminatedValueSyntax(argument, source);
 
                     if (ConditionHelperV2.TryMath(argument, out MathResult mathRes))
                     {
@@ -261,7 +255,6 @@
         /// <param name="input">The provided input.</param>
         /// <param name="action">The action or variable performing the process.</param>
         /// <param name="source">The script source.</param>
-        /// <param name="requireBrackets">If brackets are required to convert variables.</param>
         /// <returns>The output of the process.</returns>
         public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input, IScriptComponent action, Script source, bool requireBrackets = true)
         {
@@ -273,7 +266,21 @@
             if (expected is OptionsArgument options)
             {
                 if (!options.Options.Any(o => o.Name.ToUpper() == input.ToUpper()) && options is not SuggestedOptionsArgument)
-                    return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Option, input, expected.ArgumentName, action.Name, string.Join(", ", options.Options.Select(x => x.Name))));
+                {
+                    return new(
+                        false,
+                        true,
+                        expected.ArgumentName,
+                        ErrorGen.Get(
+                            ErrorCode.ParameterError_Option,
+                            input,
+                            expected.ArgumentName,
+                            action.Name,
+                            string.Join(
+                                ", ",
+                                options.Options.Select(
+                                    x => x.Name))));
+                }
 
                 success.NewParameters.Add(input);
                 source?.DebugLog($"[OPTION ARG] [C: {action.Name}] Param {expected.ArgumentName} now has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
@@ -359,19 +366,19 @@
 
                 // Array Types:
                 case "Room[]":
-                    if (!ScriptModule.TryGetRooms(input, out Room[] rooms, source))
+                    if (!SEParser.TryGetRooms(input, out Room[] rooms, source))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
 
                     success.NewParameters.Add(rooms);
                     break;
                 case "Door[]":
-                    if (!ScriptModule.TryGetDoors(input, out Door[] doors, source))
+                    if (!SEParser.TryGetDoors(input, out Door[] doors, source))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidDoor, input));
 
                     success.NewParameters.Add(doors);
                     break;
                 case "Lift[]":
-                    if (!ScriptModule.TryGetLifts(input, out Lift[] lifts, source))
+                    if (!SEParser.TryGetLifts(input, out Lift[] lifts, source))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidLift, input));
 
                     success.NewParameters.Add(lifts);
@@ -379,14 +386,14 @@
 
                 // Special
                 case "PlayerCollection":
-                    if (!ScriptModule.TryGetPlayers(input, null, out PlayerCollection players, source, requireBrackets))
+                    if (!SEParser.TryGetPlayers(input, null, out PlayerCollection players, source, requireBrackets))
                         return new(false, true, expected.ArgumentName, players.Message);
 
                     success.NewParameters.Add(players);
                     break;
 
                 case "Player":
-                    if (!ScriptModule.TryGetPlayers(input, null, out PlayerCollection players1, source, requireBrackets))
+                    if (!SEParser.TryGetPlayers(input, null, out PlayerCollection players1, source, requireBrackets))
                         return new(false, true, expected.ArgumentName, players1.Message);
 
                     if (players1.Length == 0)
@@ -426,7 +433,7 @@
                     // Unsupported types: Parse variables in string and use that as a param (RawArguments are used for getting the raw string)
                     // TODO: ReplaceVariable works only when a "clean" variable is provided, meaning it doesnt work when provided things like ({PLAYERSALIVE})
                     // so we need to fix that instead of calling ReplaceVariables all the time
-                    success.NewParameters.Add(VariableSystemV2.ReplaceVariables(input, source, requireBrackets));
+                    success.NewParameters.Add(SEParser.ReplaceContaminatedValueSyntax(input, source));
                     break;
             }
 
@@ -465,7 +472,7 @@
             }
             else
             {
-                if (!ScriptModule.TryGetPlayers(playerVarNameLoopingThrough, null, out PlayerCollection outPlayers, source))
+                if (!SEParser.TryGetPlayers(playerVarNameLoopingThrough, null, out PlayerCollection outPlayers, source))
                 {
                     Logger.Debug("$FOR: provided player variable to loop through is invalid", source);
                     return new(false, true, playerVarNameLoopingThrough, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, playerVarNameLoopingThrough));

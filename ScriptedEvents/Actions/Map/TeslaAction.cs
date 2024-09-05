@@ -15,7 +15,6 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     using Tesla = Exiled.API.Features.TeslaGate;
@@ -73,7 +72,7 @@
             switch (mode)
             {
                 case "PLAYERS":
-                    if (!ScriptModule.TryGetPlayers(target, null, out PlayerCollection players, script))
+                    if (!SEParser.TryGetPlayers(target, null, out PlayerCollection players, script))
                         return new(false, players.Message);
 
                     foreach (Player player in players)

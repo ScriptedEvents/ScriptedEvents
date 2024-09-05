@@ -7,7 +7,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     using Rule = ScriptedEvents.Structures.DamageRule;
@@ -57,7 +56,7 @@
                 {
                     rule = new(attackerRole, receiverTeam);
                 }
-                else if (ScriptModule.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
+                else if (SEParser.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
                 {
                     rule = new(attackerRole, players);
                 }
@@ -68,7 +67,7 @@
                 {
                     rule = new(receiverTeam2, attackerRole2);
                 }
-                else if (ScriptModule.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
+                else if (SEParser.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
                 {
                     rule = new(players2, attackerRole2);
                 }
@@ -85,7 +84,7 @@
                 {
                     rule = new(attackerTeam, receiverRole);
                 }
-                else if (ScriptModule.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
+                else if (SEParser.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
                 {
                     rule = new(attackerTeam, players);
                 }
@@ -96,12 +95,12 @@
                 {
                     rule = new(receiverRole2, attackerTeam2);
                 }
-                else if (ScriptModule.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
+                else if (SEParser.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
                 {
                     rule = new(players2, attackerTeam2);
                 }
             }
-            else if (ScriptModule.TryGetPlayers(RawArguments[0], null, out PlayerCollection attackers, script) && ScriptModule.TryGetPlayers(RawArguments[1], null, out PlayerCollection receivers, script))
+            else if (SEParser.TryGetPlayers(RawArguments[0], null, out PlayerCollection attackers, script) && SEParser.TryGetPlayers(RawArguments[1], null, out PlayerCollection receivers, script))
             {
                 rule = new(attackers, receivers);
             }

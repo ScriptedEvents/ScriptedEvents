@@ -3,15 +3,12 @@ namespace ScriptedEvents.Actions
     using System;
     using System.Collections.Generic;
 
-    using Exiled.API.Features;
-
     using MEC;
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     public class WaitUntilDebugAction : ITimingAction, IHiddenAction, IHelpInfo
@@ -56,7 +53,7 @@ namespace ScriptedEvents.Actions
             while (true)
             {
                 ConditionResponse response = ConditionHelperV2.Evaluate(input, script);
-                Logger.Info($"CONDITION: {VariableSystemV2.ReplaceVariables(input, script)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}", script);
+                Logger.Info($"CONDITION: {SEParser.ReplaceContaminatedValueSyntax(input, script)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}", script);
                 if (response.Success)
                 {
                     if (response.Passed)

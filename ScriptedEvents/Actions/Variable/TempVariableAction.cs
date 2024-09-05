@@ -44,8 +44,7 @@
                 return new(true);
             }
 
-            string input = RawArguments.JoinMessage(0);
-            input = VariableSystemV2.ReplaceVariables(input, script).Replace("\\n", "\n");
+            string input = Arguments.JoinMessage().Replace("\\n", "\n");
 
             try
             {

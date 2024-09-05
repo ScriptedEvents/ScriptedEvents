@@ -48,8 +48,6 @@
 
             string input = Arguments.JoinMessage(1);
 
-            input = VariableSystemV2.ReplaceVariables(input, script);
-
             try
             {
                 float value = ConditionHelperV2.Math(input);

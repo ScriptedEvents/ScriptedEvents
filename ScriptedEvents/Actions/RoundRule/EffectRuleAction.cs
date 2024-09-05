@@ -11,7 +11,6 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
     public class EffectRuleAction : IScriptAction, IHelpInfo
@@ -75,7 +74,7 @@
             {
                 list = 2;
             }
-            else if (ScriptModule.TryGetPlayers(RawArguments[1], null, out players, script))
+            else if (SEParser.TryGetPlayers(RawArguments[1], null, out players, script))
             {
                 if (!players.Success)
                 {

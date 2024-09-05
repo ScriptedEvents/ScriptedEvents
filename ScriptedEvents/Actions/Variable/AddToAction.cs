@@ -43,7 +43,6 @@
             IStringVariable var = (IStringVariable)Arguments[0];
             string input = Arguments.JoinMessage(1);
 
-            input = VariableSystemV2.ReplaceVariables(input, script);
             input = $"{var.Value} {input}";
 
             try
