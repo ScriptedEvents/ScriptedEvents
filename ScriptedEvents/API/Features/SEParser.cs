@@ -383,21 +383,28 @@
 
         public static bool TryGetAccessor(string input, Script source, out string result)
         {
+            void Log(string msg)
+            {
+                Logger.Debug($"[SEParser] [TryGetAccessor] {msg}", source);
+            }
+
             // <PLR:ROLE>
             // <PLR>
             result = null;
 
             if (!input.StartsWith("<") || !input.EndsWith(">"))
             {
+                Log("Fail. Accessor definers not present.");
                 return false;
             }
 
             // PLR:ROLE
             // PLR
-            input = input.Substring(1, input.Length - 1);
+            input = input.Substring(1, input.Length - 2);
 
-            if (input.Contains(' ') || input.Contains("<") || input.Contains(">"))
+            if (input.Contains(' ') || input.Contains('<') || input.Contains('>'))
             {
+                Log("Fail. After processing, accessor contains whitespace or definers.");
                 return false;
             }
 
@@ -407,6 +414,7 @@
 
             if (parts.Length > 2)
             {
+                Log("Fail. After splitting, more than 2 parts defined.");
                 return false;
             }
             else if (parts.Length == 1)
@@ -417,11 +425,13 @@
 
             if (!VariableSystemV2.TryGetPlayers(parts[0], source, out PlayerCollection players, false))
             {
+                Log("Fail. Player variable invalid.");
                 return false;
             }
 
             if (players.Length != 1)
             {
+                Log("Fail. Player amount not equal 1.");
                 return false;
             }
 
@@ -576,6 +586,7 @@
                     break;
             }
 
+            Log("Success! Returning " + result);
             return true;
         }
 
@@ -626,7 +637,7 @@
 
                 if (TryGetAccessor(value, source, out string aresult))
                 {
-                    input.Replace(value, aresult);
+                    input = input.Replace(value, aresult);
                     Log("Value syntax was successfully replaced.");
                     continue;
                 }
