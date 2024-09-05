@@ -80,7 +80,7 @@
         public override string Author => "Thunder and Elektryk_Andrzej";
 
         /// <inheritdoc/>
-        public override Version Version => new(3, 2, 0);
+        public override Version Version => new(4, 0, 0);
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion => new(8, 7, 0);
