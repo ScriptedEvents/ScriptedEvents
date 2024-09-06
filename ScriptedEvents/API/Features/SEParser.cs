@@ -388,8 +388,8 @@
                 Logger.Debug($"[SEParser] [TryGetAccessor] {msg}", source);
             }
 
-            // <PLR:ROLE>
-            // <PLR>
+            // "<PLR:ROLE>"
+            // "<PLR>"
             result = null;
 
             if (!input.StartsWith("<") || !input.EndsWith(">"))
@@ -398,8 +398,8 @@
                 return false;
             }
 
-            // PLR:ROLE
-            // PLR
+            // "PLR:ROLE"
+            // "PLR"
             input = input.Substring(1, input.Length - 2);
 
             if (input.Contains(' ') || input.Contains('<') || input.Contains('>'))
@@ -408,8 +408,8 @@
                 return false;
             }
 
-            // [PLR, ROLE]
-            // [PLR]
+            // ["PLR", "ROLE"]
+            // ["PLR"]
             string[] parts = input.Split(':');
 
             if (parts.Length > 2)
@@ -419,7 +419,7 @@
             }
             else if (parts.Length == 1)
             {
-                // [PLR, NAME]
+                // ["PLR"] -> ["PLR", "NAME"]
                 parts.Append("NAME");
             }
 
