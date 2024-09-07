@@ -225,6 +225,11 @@ namespace ScriptedEvents.API.Modules
             bool inMultilineComment = false;
             Script script = new();
 
+            void DebugLog(string message)
+            {
+                Logger.Debug($"[ScriptModule] [ReadScript] {message}", script);
+            }
+
             List<IAction> actionList = ListPool<IAction>.Pool.Get();
 
             Action<IAction> addActionNoArgs = (action) =>
@@ -355,22 +360,18 @@ namespace ScriptedEvents.API.Modules
                 {
                     string variablesSection = line.Substring(0, indexOfExtractor);
                     string actionSection = line.Substring(indexOfExtractor + 2).TrimStart();
-                    DebugLog($"[ExtractorSyntax] Variables section: {variablesSection}", script);
-                    DebugLog($"[ExtractorSyntax] Action section: {actionSection}", script);
+                    DebugLog($"[ExtractorSyntax] Variables section: {variablesSection}");
+                    DebugLog($"[ExtractorSyntax] Action section: {actionSection}");
 
                     resultVariableNames = SEParser.IsolateValueSyntax(variablesSection, script, false);
-                    if (resultVariableNames.Length == 0)
+                    if (resultVariableNames.Length != 0)
                     {
-                        goto leave_extractor_parsing;
+                        DebugLog($"[ExtractorSyntax] Variables found before the syntax: {string.Join(", ", resultVariableNames)}");
+
+                        structureParts = actionSection.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(part => part.Trim()).ToList();
+                        keyword = structureParts[0];
                     }
-
-                    DebugLog($"[ExtractorSyntax] Variables found before the syntax: {string.Join(", ", resultVariableNames)}", script);
-
-                    structureParts = actionSection.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(part => part.Trim()).ToList();
-                    keyword = structureParts[0];
                 }
-
-                leave_extractor_parsing:
 
                 keyword = keyword.ToUpper();
 
@@ -415,7 +416,7 @@ namespace ScriptedEvents.API.Modules
                 script.OriginalActionArgs[newAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
                 script.ResultVariableNames[newAction] = resultVariableNames;
 
-                Logger.Debug($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}", script);
+                DebugLog($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}");
 
                 // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
@@ -458,7 +459,7 @@ namespace ScriptedEvents.API.Modules
 
             script.Sender = executor;
 
-            script.DebugLog($"Debug script read successfully. Name: {script.ScriptName} | Actions: {script.Actions.Count(act => act is not NullAction)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Count(action => action is NullAction @null && @null.Type is "COMMENT")}");
+            DebugLog($"Debug script read successfully. Name: {script.ScriptName} | Actions: {script.Actions.Count(act => act is not NullAction)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Count(action => action is NullAction @null && @null.Type is "COMMENT")}");
 
             return script;
         }
