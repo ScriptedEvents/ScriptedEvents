@@ -84,5 +84,15 @@
         /// Teleportation action.
         /// </summary>
         Teleportation,
+
+        /// <summary>
+        /// Math action.
+        /// </summary>
+        Math,
+
+        /// <summary>
+        /// Math action.
+        /// </summary>
+        MapInfo,
     }
 }
