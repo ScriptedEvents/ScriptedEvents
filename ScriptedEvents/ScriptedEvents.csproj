@@ -111,6 +111,13 @@
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
+    <Compile Include="Actions\VariableMimics\Info\TimeAction.cs" />
+    <Compile Include="Actions\VariableMimics\Info\WarheadInfoAction.cs" />
+    <Compile Include="Actions\VariableMimics\Math\Math_AbsAction.cs" />
+    <Compile Include="Actions\VariableMimics\Math\Math_PowerAction.cs" />
+    <Compile Include="Actions\VariableMimics\Math\Math_RandomAction.cs" />
+    <Compile Include="Actions\VariableMimics\Math\Math_RootAction.cs" />
+    <Compile Include="Actions\VariableMimics\Math\Math_RoundAction.cs" />
     <Compile Include="Actions\Player\PrintPlayersAction.cs" />
     <Compile Include="Actions\Player\StaminaAction.cs" />
     <Compile Include="Actions\RoundRule\EffectImmunityRuleAction.cs" />
@@ -149,6 +156,7 @@
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Teleportation\TpPlayerAction.cs" />
+    <Compile Include="Actions\VariableMimics\PlayerFetch\ZonePlayersAction.cs" />
     <Compile Include="Actions\Variable\AddToAction.cs" />
     <Compile Include="Actions\Variable\BindAction.cs" />
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
@@ -206,6 +214,8 @@
     <Compile Include="API\Enums\DamageRuleType.cs" />
     <Compile Include="API\Enums\ExecuteContext.cs" />
     <Compile Include="API\Enums\MessageType.cs" />
+    <Compile Include="API\Interfaces\IMimicsVariableAction.cs" />
+    <Compile Include="API\Interfaces\IReturnValueAction.cs" />
     <Compile Include="API\Modules\CountdownModule.cs" />
     <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="API\Interfaces\ILongDescription.cs" />
@@ -309,7 +319,6 @@
     <Compile Include="Variables\CustomVariable.cs" />
     <Compile Include="Variables\EscapesVariables.cs" />
     <Compile Include="Variables\KillsAndDeathsVariables.cs" />
-    <Compile Include="Variables\MathVariables.cs" />
     <Compile Include="Variables\MiscVariables.cs" />
     <Compile Include="Variables\PlayerCountVariables.cs" />
     <Compile Include="Variables\PlayerInfoVariables.cs" />
@@ -319,9 +328,7 @@
     <Compile Include="Variables\ServerInfoVariables.cs" />
     <Compile Include="Variables\StringVariables.cs" />
     <Compile Include="Variables\TicketsAndRespawnsVariables.cs" />
-    <Compile Include="Variables\WarheadVariables.cs" />
     <Compile Include="Variables\TimeVariables.cs" />
-    <Compile Include="Variables\ZoneVariables.cs" />
     <Compile Include="API\Features\SEParser.cs" />
     <Compile Include="API\Modules\EventHandlingModule.cs" />
     <Compile Include="Actions\Map\WarheadAction.cs" />
