@@ -102,7 +102,7 @@
         private CoroutineHandle RunScript(Script scriptToCall, Script script)
         {
             scriptToCall.Execute();
-            string coroutineKey = $"CALL_WAIT_FOR_FINISH_COROUTINE_{DateTime.UtcNow.Ticks}";
+            string coroutineKey = $"CALL_WAIT_FOR_FINISH_COROUTINE_{DateTime.Now.Ticks}";
             CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(scriptToCall), coroutineKey);
             CoroutineHelper.AddCoroutine("CALL", handle, script);
             return handle;
