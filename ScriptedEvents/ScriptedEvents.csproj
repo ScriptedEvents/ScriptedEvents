@@ -111,8 +111,9 @@
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
-    <Compile Include="Actions\VariableMimics\Info\TimeAction.cs" />
-    <Compile Include="Actions\VariableMimics\Info\WarheadInfoAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\TimeAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\WarheadInfoAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\WaveInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\Math\Math_AbsAction.cs" />
     <Compile Include="Actions\VariableMimics\Math\Math_PowerAction.cs" />
     <Compile Include="Actions\VariableMimics\Math\Math_RandomAction.cs" />
@@ -327,8 +328,6 @@
     <Compile Include="Variables\ScriptInfoVariables.cs" />
     <Compile Include="Variables\ServerInfoVariables.cs" />
     <Compile Include="Variables\StringVariables.cs" />
-    <Compile Include="Variables\TicketsAndRespawnsVariables.cs" />
-    <Compile Include="Variables\TimeVariables.cs" />
     <Compile Include="API\Features\SEParser.cs" />
     <Compile Include="API\Modules\EventHandlingModule.cs" />
     <Compile Include="Actions\Map\WarheadAction.cs" />
