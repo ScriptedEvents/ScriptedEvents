@@ -160,6 +160,7 @@
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Teleportation\TpPlayerAction.cs" />
+    <Compile Include="Actions\VariableMimics\PlayerFetch\RolePlayersAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\ZonePlayersAction.cs" />
     <Compile Include="Actions\VariableMimics\ScriptInfo\IsRunningAction.cs" />
     <Compile Include="Actions\VariableMimics\ScriptInfo\ThisAction.cs" />
@@ -335,7 +336,6 @@
     <Compile Include="Variables\PlayerCountVariables.cs" />
     <Compile Include="Variables\PlayerInfoVariables.cs" />
     <Compile Include="Variables\RoleVariables.cs" />
-    <Compile Include="Variables\RoundVariables.cs" />
     <Compile Include="API\Features\SEParser.cs" />
     <Compile Include="API\Modules\EventHandlingModule.cs" />
     <Compile Include="Actions\Map\WarheadAction.cs" />
