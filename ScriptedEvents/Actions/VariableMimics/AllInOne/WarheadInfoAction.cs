@@ -19,11 +19,11 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("ISDETONATED"),
-                new("ISOPEN"),
-                new("ISARMED"),
-                new("ISCOUNTING"),
-                new("DETONATIONTIME")),
+                new("ISDETONATED", "Returns a TRUE/FALSE value saying if the warhead is detonated."),
+                new("ISOPEN", "Returns a TRUE/FALSE value saying if the warhead is open."),
+                new("ISARMED", "Returns a TRUE/FALSE value saying if the warhead is armed."),
+                new("ISCOUNTING", "Returns a TRUE/FALSE value saying if the warhead is detonating."),
+                new("DETONATIONTIME", "Returns the amount of seconds remaining to the explosion.")),
         };
 
         public string[] RawArguments { get; set; }
