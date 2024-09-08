@@ -51,7 +51,7 @@
         Misc,
 
         /// <summary>
-        /// Player related action.
+        /// Player management related action.
         /// </summary>
         Player,
 
@@ -99,6 +99,11 @@
         /// "All In One" info related action.
         /// </summary>
         AllInOneInfo,
+
+        /// <summary>
+        /// Player fetching action.
+        /// </summary>
+        PlayerFetch,
 
         /// <summary>
         /// String modification related action.
