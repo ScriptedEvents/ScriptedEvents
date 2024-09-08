@@ -111,6 +111,8 @@
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\LobbyInfoAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\RoundInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\ServerInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\TimeAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\WarheadInfoAction.cs" />
@@ -334,7 +336,6 @@
     <Compile Include="Variables\PlayerInfoVariables.cs" />
     <Compile Include="Variables\RoleVariables.cs" />
     <Compile Include="Variables\RoundVariables.cs" />
-    <Compile Include="Variables\ScriptInfoVariables.cs" />
     <Compile Include="API\Features\SEParser.cs" />
     <Compile Include="API\Modules\EventHandlingModule.cs" />
     <Compile Include="Actions\Map\WarheadAction.cs" />
