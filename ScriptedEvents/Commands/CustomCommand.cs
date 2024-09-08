@@ -71,30 +71,30 @@
 
             if (CooldownMode == CommandCooldownMode.Global)
             {
-                if ((DateTime.UtcNow - globalCooldown).TotalSeconds < Cooldown)
+                if ((DateTime.Now - globalCooldown).TotalSeconds < Cooldown)
                 {
-                    int cooldownLeft = (int)(Cooldown - (DateTime.UtcNow - globalCooldown).TotalSeconds);
+                    int cooldownLeft = (int)(Cooldown - (DateTime.Now - globalCooldown).TotalSeconds);
                     response = cooldownLeft == 1
                         ? MainPlugin.Translations.CommandCooldown.Replace("{SECONDS}", cooldownLeft.ToString())
                         : MainPlugin.Translations.CommandCooldownSingular.Replace("{SECONDS}", cooldownLeft.ToString());
                     return false;
                 }
 
-                globalCooldown = DateTime.UtcNow;
+                globalCooldown = DateTime.Now;
             }
 
             if (CooldownMode == CommandCooldownMode.Player && Player.TryGet(sender, out Player ply))
             {
-                if (playerCooldown.ContainsKey(ply.UserId) && (DateTime.UtcNow - playerCooldown[ply.UserId]).TotalSeconds < Cooldown)
+                if (playerCooldown.ContainsKey(ply.UserId) && (DateTime.Now - playerCooldown[ply.UserId]).TotalSeconds < Cooldown)
                 {
-                    int cooldownLeft = (int)(Cooldown - (DateTime.UtcNow - playerCooldown[ply.UserId]).TotalSeconds);
+                    int cooldownLeft = (int)(Cooldown - (DateTime.Now - playerCooldown[ply.UserId]).TotalSeconds);
                     response = cooldownLeft == 1
                         ? MainPlugin.Translations.CommandCooldown.Replace("{SECONDS}", cooldownLeft.ToString())
                         : MainPlugin.Translations.CommandCooldownSingular.Replace("{SECONDS}", cooldownLeft.ToString());
                     return false;
                 }
 
-                playerCooldown[ply.UserId] = DateTime.UtcNow;
+                playerCooldown[ply.UserId] = DateTime.Now;
             }
 
             Dictionary<string, string> failed = new();

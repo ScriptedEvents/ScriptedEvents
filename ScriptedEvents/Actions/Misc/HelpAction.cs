@@ -441,7 +441,7 @@ Scripted Events Contributors:
         {
             if (IsFile)
             {
-                string message = $"Auto Generated At: {DateTime.UtcNow:f}\nExpires: {DateTime.UtcNow.AddMinutes(5):f}\n{response.Message}";
+                string message = $"Auto Generated At: {DateTime.Now:f}\nExpires: {DateTime.Now.AddMinutes(5):f}\n{response.Message}";
                 string path = Path.Combine(MainPlugin.BaseFilePath, "HelpCommandResponse.txt");
 
                 if (File.Exists(path))

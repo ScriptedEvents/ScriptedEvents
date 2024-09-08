@@ -130,7 +130,7 @@
 
             // Documentation data
             string metaPath = Path.Combine(BasePath, "DocInfo.txt");
-            File.WriteAllText(metaPath, $"Documentation Generator\nGenerated at: {DateTime.UtcNow:f}\nSE version: {MainPlugin.Singleton.Version}\nExperimental DLL: {(MainPlugin.IsExperimental ? "YES" : "NO")}\n\n\n-- DO NOT MODIFY BELOW THIS LINE --\n!_V{MainPlugin.Singleton.Version}");
+            File.WriteAllText(metaPath, $"Documentation Generator\nGenerated at: {DateTime.Now:f}\nSE version: {MainPlugin.Singleton.Version}\nExperimental DLL: {(MainPlugin.IsExperimental ? "YES" : "NO")}\n\n\n-- DO NOT MODIFY BELOW THIS LINE --\n!_V{MainPlugin.Singleton.Version}");
 
             // Delete old folders
             if (Directory.Exists(ActionPath))

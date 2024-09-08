@@ -62,7 +62,7 @@
         /// <summary>
         /// Gets the amount of time since the last wave.
         /// </summary>
-        public TimeSpan TimeSinceWave => DateTime.UtcNow - lastRespawnWave;
+        public TimeSpan TimeSinceWave => DateTime.Now - lastRespawnWave;
 
         /// <summary>
         /// Gets a value indicating whether or not a wave just spawned.
@@ -526,7 +526,7 @@
             if (!ev.IsAllowed) return;
 
             RespawnWaves++;
-            lastRespawnWave = DateTime.UtcNow;
+            lastRespawnWave = DateTime.Now;
 
             MostRecentSpawn = ev.NextKnownTeam;
             SpawnsByTeam[ev.NextKnownTeam]++;

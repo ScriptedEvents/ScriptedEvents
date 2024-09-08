@@ -40,7 +40,7 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
-            string coroutineKey = $"WAITUNTIL_DEBUG_COROUTINE_{DateTime.UtcNow.Ticks}";
+            string coroutineKey = $"WAITUNTIL_DEBUG_COROUTINE_{DateTime.Now.Ticks}";
             CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, Arguments.JoinMessage(0)), coroutineKey);
             CoroutineHelper.AddCoroutine("WAITUNTIL_DEBUG", handle, script);
 

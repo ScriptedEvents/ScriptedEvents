@@ -646,7 +646,7 @@ namespace ScriptedEvents.API.Modules
             yield return Timing.WaitForOneFrame;
 
             scr.IsRunning = true;
-            scr.RunDate = DateTime.UtcNow;
+            scr.RunDate = DateTime.Now;
 
             Stopwatch runTime = Stopwatch.StartNew();
             int lines = 0;

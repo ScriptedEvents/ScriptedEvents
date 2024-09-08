@@ -1,7 +1,6 @@
 ﻿namespace ScriptedEvents.API.Features
 {
     using System;
-    using System.Collections.Generic;
     using System.Reflection;
 
     using Exiled.API.Features;
@@ -125,7 +124,7 @@
         /// <param name="input">Input string.</param>
         /// <param name="script">Script object.</param>
         /// <param name="max">Maximum amount of players to get. Leave below zero for unlimited.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of players.</returns>
+        /// <returns>An array of players.</returns>
         public static Player[] GetPlayers(string input, object script, int max = -1)
         {
             if (script is Script actualScript == false)
@@ -138,7 +137,7 @@
         }
 
         /// <summary>
-        /// Evaluates a string math equation, replacing all variables in the string.
+        /// Replaces all variables and tries to perform math.
         /// </summary>
         /// <param name="input">The input string.</param>
         /// <param name="script">Script object.</param>

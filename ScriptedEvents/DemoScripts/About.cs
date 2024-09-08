@@ -39,7 +39,7 @@
 # Scripted Events Contributors:
 {Constants.GenerateContributorList('#')}
 
-# File Generated at: {DateTime.UtcNow:f}
+# File Generated at: {DateTime.Now:f}
 # Plugin Version (as of generation): {MainPlugin.Singleton.Version}
 # Experimental DLL: {(MainPlugin.IsExperimental ? "YES" : "NO")}";
     }

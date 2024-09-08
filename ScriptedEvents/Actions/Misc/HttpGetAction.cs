@@ -49,7 +49,7 @@ These variables are created as per-script variables, meaning they can only be us
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
-            string coroutineKey = $"HTTPGET_COROUTINE_{DateTime.UtcNow.Ticks}";
+            string coroutineKey = $"HTTPGET_COROUTINE_{DateTime.Now.Ticks}";
             CoroutineHandle handle = Timing.RunCoroutine(InternalSendHTTP(script, VariableSystemV2.ReplaceVariable(RawArguments[0], script)), coroutineKey);
             CoroutineHelper.AddCoroutine("HTTPGET", handle, script);
             message = new(true);

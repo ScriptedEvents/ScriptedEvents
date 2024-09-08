@@ -20,7 +20,7 @@
         {
             Target = target;
             Text = string.IsNullOrWhiteSpace(text) ? "Countdown" : text;
-            StartTime = DateTime.UtcNow;
+            StartTime = DateTime.Now;
             EndTime = StartTime.AddSeconds(time);
             Source = source;
         }
@@ -48,12 +48,12 @@
         /// <summary>
         /// Gets a value indicating whether or not the countdown has ended.
         /// </summary>
-        public bool Expired => DateTime.UtcNow > EndTime;
+        public bool Expired => DateTime.Now > EndTime;
 
         /// <summary>
         /// Gets a <see cref="TimeSpan"/> representing the amount of time left on the countdown.
         /// </summary>
-        public TimeSpan TimeLeft => EndTime - DateTime.UtcNow;
+        public TimeSpan TimeLeft => EndTime - DateTime.Now;
 
         /// <summary>
         /// Gets the source script that executed the countdown timer.

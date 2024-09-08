@@ -49,7 +49,7 @@
 
             if (Arguments[0].ToUpper() == "UNTIL")
             {
-                string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.UtcNow.Ticks}";
+                string coroutineKey = $"WAITUNTIL_COROUTINE_{DateTime.Now.Ticks}";
                 CoroutineHandle handle = Timing.RunCoroutine(InternalWaitUntil(script, RawArguments.JoinMessage(1)), coroutineKey);
                 CoroutineHelper.AddCoroutine("WAITUNTIL", handle, script);
 

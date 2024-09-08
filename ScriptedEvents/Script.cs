@@ -117,7 +117,7 @@
         /// <summary>
         /// Gets the amount of time the script has been running.
         /// </summary>
-        public TimeSpan RunDuration => DateTime.UtcNow - RunDate;
+        public TimeSpan RunDuration => DateTime.Now - RunDate;
 
         /// <summary>
         /// Gets a list of flags on the script.
