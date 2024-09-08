@@ -6,27 +6,27 @@
     public enum ActionSubgroup
     {
         /// <summary>
-        /// Broadcast-related action.
+        /// Broadcast related action.
         /// </summary>
         Broadcast,
 
         /// <summary>
-        /// Cassie-related action.
+        /// Cassie related action.
         /// </summary>
         Cassie,
 
         /// <summary>
-        /// Debugging-related action.
+        /// Debugging related action.
         /// </summary>
         Debug,
 
         /// <summary>
-        /// Health-related action.
+        /// Health related action.
         /// </summary>
         Health,
 
         /// <summary>
-        /// Item-related action.
+        /// Item related action.
         /// </summary>
         Item,
 
@@ -36,12 +36,12 @@
         Lights,
 
         /// <summary>
-        /// Logic action, such as IFs and STOPs.
+        /// Logic related action, such as IFs and STOPs.
         /// </summary>
         Logic,
 
         /// <summary>
-        /// Map-related action.
+        /// Map related action.
         /// </summary>
         Map,
 
@@ -51,12 +51,12 @@
         Misc,
 
         /// <summary>
-        /// Player-related action.
+        /// Player related action.
         /// </summary>
         Player,
 
         /// <summary>
-        /// Round-related action.
+        /// Round related action.
         /// </summary>
         Round,
 
@@ -66,33 +66,38 @@
         RoundRule,
 
         /// <summary>
-        /// Variable-related action.
+        /// Variable related action.
         /// </summary>
         Variable,
 
         /// <summary>
-        /// Yielding action.
+        /// Yielding related action.
         /// </summary>
         Yielding,
 
         /// <summary>
-        /// Server action.
+        /// Server related action.
         /// </summary>
         Server,
 
         /// <summary>
-        /// Teleportation action.
+        /// Teleportation related action.
         /// </summary>
         Teleportation,
 
         /// <summary>
-        /// Math action.
+        /// Math related action.
         /// </summary>
         Math,
 
         /// <summary>
-        /// Math action.
+        /// Map info related action.
         /// </summary>
         MapInfo,
+
+        /// <summary>
+        /// "All In One" info related action.
+        /// </summary>
+        AllInOneInfo,
     }
 }
