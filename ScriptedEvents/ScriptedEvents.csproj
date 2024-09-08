@@ -332,7 +332,6 @@
     <Compile Include="Variables\RoleVariables.cs" />
     <Compile Include="Variables\RoundVariables.cs" />
     <Compile Include="Variables\ScriptInfoVariables.cs" />
-    <Compile Include="Variables\ServerInfoVariables.cs" />
     <Compile Include="API\Features\SEParser.cs" />
     <Compile Include="API\Modules\EventHandlingModule.cs" />
     <Compile Include="Actions\Map\WarheadAction.cs" />
