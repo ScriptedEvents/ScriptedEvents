@@ -111,6 +111,7 @@
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\ServerInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\TimeAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\WarheadInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\WaveInfoAction.cs" />
