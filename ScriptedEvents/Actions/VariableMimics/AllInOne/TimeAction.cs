@@ -18,18 +18,18 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("TICK", "The amount of seconds since 1970."),
-                new("SECOND", "In range 0-59"),
-                new("MINUTE", "In range 0-59"),
-                new("HOUR", "In range 0-23"),
-                new("MONTH", "In range 1-12"),
-                new("YEAR", "The amount of years since the birth of Christ"),
-                new("DAYOFWEEK", "1-7 (Warning! This follows the US system, where Sunday is the first day of the week)"),
-                new("DAYOFMONTH", "0-31"),
-                new("DAYOFYEAR", "0-366"),
-                new("ROUNDMINUTES", "The amount of elapsed round time, in minutes."),
-                new("ROUNDSECONDS", "The amount of elapsed round time, in seconds."),
-                new("ROUNDSTART", "The amount of time remaining before the round starts. -1 if round already started.")),
+                new("TICK", "Returns the amount of seconds since 1970."),
+                new("SECOND", "Returns a number in range 0-59"),
+                new("MINUTE", "Returns a number in range 0-59"),
+                new("HOUR", "Returns a number in range 0-23"),
+                new("MONTH", "Returns a number in range 1-12"),
+                new("YEAR", "Returns the amount of years since the birth of Christ"),
+                new("DAYOFWEEK", "Returns a number in range 1-7 (Warning! This follows the US system, where Sunday is the first day of the week)"),
+                new("DAYOFMONTH", "Returns a number in range 0-31"),
+                new("DAYOFYEAR", "Returns a number in range 0-366"),
+                new("ROUNDMINUTES", "Returns the amount of elapsed round time, in minutes."),
+                new("ROUNDSECONDS", "Returns the amount of elapsed round time, in seconds."),
+                new("ROUNDSTART", "Returns the amount of time remaining before the round starts. -1 if round already started.")),
         };
 
         public string[] RawArguments { get; set; }
@@ -45,12 +45,20 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            static string Format(object input)
+            {
+                string str = input.ToString();
+                return str.Length < 2
+                    ? "0" + str
+                    : str;
+            }
+
             string ret = Arguments[0].ToString().ToUpper() switch
             {
                 "TICK" => ((long)(DateTime.Now - MainPlugin.Epoch).TotalSeconds).ToString(),
-                "SECOND" => DateTime.Now.Second.ToString(),
-                "MINUTE" => DateTime.Now.Minute.ToString(),
-                "HOUR" => DateTime.Now.Hour.ToString(),
+                "SECOND" => Format(DateTime.Now.Second),
+                "MINUTE" => Format(DateTime.Now.Minute),
+                "HOUR" => Format(DateTime.Now.Hour),
                 "MONTH" => DateTime.Now.Month.ToString(),
                 "YEAR" => DateTime.Now.Year.ToString(),
                 "DAYOFWEEK" => (((int)DateTime.Now.DayOfWeek) + 1).ToString(),
