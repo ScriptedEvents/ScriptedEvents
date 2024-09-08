@@ -40,7 +40,7 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.MapInfo;
+        public ActionSubgroup Subgroup => ActionSubgroup.AllInOneInfo;
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
