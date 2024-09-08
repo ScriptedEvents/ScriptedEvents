@@ -24,7 +24,7 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Math;
+        public ActionSubgroup Subgroup => ActionSubgroup.Debug;
 
         /// <inheritdoc/>
         public string Description => "Returns the players in the specified zone.";
