@@ -159,6 +159,7 @@
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Teleportation\TpPlayerAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\ZonePlayersAction.cs" />
+    <Compile Include="Actions\VariableMimics\ScriptInfo\ThisAction.cs" />
     <Compile Include="Actions\VariableMimics\Strings\StrCountAction.cs" />
     <Compile Include="Actions\VariableMimics\Strings\StrLowerAction.cs" />
     <Compile Include="Actions\VariableMimics\Strings\StrRemoveAction.cs" />

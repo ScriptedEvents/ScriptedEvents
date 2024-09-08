@@ -109,5 +109,10 @@
         /// String modification related action.
         /// </summary>
         String,
+
+        /// <summary>
+        /// Script info related action.
+        /// </summary>
+        ScriptInfo,
     }
 }
