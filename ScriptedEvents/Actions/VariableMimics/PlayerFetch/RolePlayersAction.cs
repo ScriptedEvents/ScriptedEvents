@@ -32,7 +32,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("zone", typeof(RoleTypeId), "The role which the players should be fetched by.", true),
+             new Argument("role", typeof(RoleTypeId), "The role which the players should be fetched by.", true),
         };
 
         /// <inheritdoc/>
