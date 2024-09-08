@@ -99,5 +99,10 @@
         /// "All In One" info related action.
         /// </summary>
         AllInOneInfo,
+
+        /// <summary>
+        /// String modification related action.
+        /// </summary>
+        String,
     }
 }

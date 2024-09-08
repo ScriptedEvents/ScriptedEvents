@@ -24,7 +24,7 @@
         public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.MapInfo;
+        public ActionSubgroup Subgroup => ActionSubgroup.String;
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
