@@ -158,6 +158,11 @@
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Teleportation\TpPlayerAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\ZonePlayersAction.cs" />
+    <Compile Include="Actions\VariableMimics\Strings\StrCountAction.cs" />
+    <Compile Include="Actions\VariableMimics\Strings\StrLowerAction.cs" />
+    <Compile Include="Actions\VariableMimics\Strings\StrRemoveAction.cs" />
+    <Compile Include="Actions\VariableMimics\Strings\StrReplaceAction.cs" />
+    <Compile Include="Actions\VariableMimics\Strings\StrUpperAction.cs" />
     <Compile Include="Actions\Variable\AddToAction.cs" />
     <Compile Include="Actions\Variable\BindAction.cs" />
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
@@ -327,7 +332,6 @@
     <Compile Include="Variables\RoundVariables.cs" />
     <Compile Include="Variables\ScriptInfoVariables.cs" />
     <Compile Include="Variables\ServerInfoVariables.cs" />
-    <Compile Include="Variables\StringVariables.cs" />
     <Compile Include="API\Features\SEParser.cs" />
     <Compile Include="API\Modules\EventHandlingModule.cs" />
     <Compile Include="Actions\Map\WarheadAction.cs" />
