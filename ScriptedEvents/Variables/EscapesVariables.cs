@@ -1,6 +1,7 @@
 ﻿#pragma warning disable SA1402 // File may only contain a single type
 namespace ScriptedEvents.Variables.Escapes
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -47,14 +48,13 @@ namespace ScriptedEvents.Variables.Escapes
         {
             get
             {
-#pragma warning disable CS8509 // Wyrażenie switch nie obsługuje wszystkich możliwych wartości jego typu danych wejściowych (nie jest kompletne).
                 return Arguments[0].ToUpper() switch
                 {
                     "ALL" => MainPlugin.Handlers.Escapes[RoleTypeId.ClassD].Union(MainPlugin.Handlers.Escapes[RoleTypeId.Scientist]),
                     "SCIENTISTS" => MainPlugin.Handlers.Escapes[RoleTypeId.Scientist],
                     "CLASSD" => MainPlugin.Handlers.Escapes[RoleTypeId.ClassD],
+                    _ => throw new ArgumentException()
                 };
-#pragma warning restore CS8509 // Wyrażenie switch nie obsługuje wszystkich możliwych wartości jego typu danych wejściowych (nie jest kompletne).
             }
         }
 
