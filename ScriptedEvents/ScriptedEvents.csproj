@@ -161,6 +161,7 @@
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Teleportation\TpPlayerAction.cs" />
+    <Compile Include="Actions\VariableMimics\Misc\KillsAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\EscapesAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\RolePlayersAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\TeamPlayersAction.cs" />
@@ -331,7 +332,6 @@
     <Compile Include="Structures\Countdown.cs" />
     <Compile Include="Structures\MathResult.cs" />
     <Compile Include="Variables\CustomVariable.cs" />
-    <Compile Include="Variables\KillsAndDeathsVariables.cs" />
     <Compile Include="Variables\MiscVariables.cs" />
     <Compile Include="Variables\PlayerCountVariables.cs" />
     <Compile Include="Variables\PlayerInfoVariables.cs" />
