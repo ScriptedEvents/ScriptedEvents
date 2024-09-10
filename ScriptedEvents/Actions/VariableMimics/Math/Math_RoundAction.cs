@@ -8,6 +8,7 @@
     using ScriptedEvents.Structures;
     using UnityEngine;
 
+    /// <inheritdoc/>
     public class Math_RoundAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>

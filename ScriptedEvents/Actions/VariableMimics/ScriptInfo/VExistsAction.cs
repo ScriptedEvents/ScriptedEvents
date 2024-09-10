@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
+    /// <inheritdoc/>
     public class VExistsAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>

@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    /// <inheritdoc/>
     public class Math_RandomAction : IScriptAction, IHelpInfo, ILongDescription, IMimicsVariableAction
     {
         /// <inheritdoc/>
@@ -38,6 +39,7 @@
                 new Argument("endNumber", typeof(string), "An ending number of the random range.", true),
         };
 
+        /// <inheritdoc/>
         public string LongDescription => $@"The return value will be a random number from the provided range, depending on the numbers and the type.
 
 If 'type' is set to 'INT':
@@ -47,8 +49,6 @@ If 'type' is set to 'INT':
 If 'type' is set to 'FLOAT':
 > act PRINT My float is {{RANDOM:FLOAT:0:1}}
 > My float is 0.35227";
-
-        public string WhatDoesActionReturn => "The random number generated.";
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)

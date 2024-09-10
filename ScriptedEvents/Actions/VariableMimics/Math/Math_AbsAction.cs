@@ -7,6 +7,7 @@
     using ScriptedEvents.Structures;
     using UnityEngine;
 
+    /// <inheritdoc/>
     public class Math_AbsAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>

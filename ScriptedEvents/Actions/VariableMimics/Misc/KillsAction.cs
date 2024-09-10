@@ -1,15 +1,14 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
-    using System.Linq;
 
-    using Exiled.API.Features;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
+
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    /// <inheritdoc/>
     public class KillsAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
