@@ -268,7 +268,7 @@
                     "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
                     "TIER" => "NONE",
                     "GROUP" => ply.GroupName,
-                    "CUFFED" => ply.IsCuffed.ToUpper(),
+                    "ISCUFFED" => ply.IsCuffed.ToUpper(),
                     "CUSTOMINFO" or "CINFO" or "CUSTOMI" => ply.CustomInfo != string.Empty && ply.CustomInfo != null ? ply.CustomInfo : "NONE",
                     "XSIZE" => ply.Scale.x.ToString(),
                     "YSIZE" => ply.Scale.y.ToString(),
