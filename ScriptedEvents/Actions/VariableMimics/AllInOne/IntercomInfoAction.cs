@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    /// <inheritdoc/>
     public class IntercomInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
@@ -26,8 +27,10 @@
                     new("INUSE", "Returns a TRUE/FALSE value saying if intercom is in use already.")),
         };
 
+        /// <inheritdoc/>
         public string[] RawArguments { get; set; }
 
+        /// <inheritdoc/>
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>

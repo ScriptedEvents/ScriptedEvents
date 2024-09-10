@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    /// <inheritdoc/>
     public class LobbyInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
@@ -16,6 +17,7 @@
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting lobby related information.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
@@ -24,8 +26,10 @@
                 new("ISLOCKED", "Returns a TRUE/FALSE value saying if the lobby is locked.")),
         };
 
+        /// <inheritdoc/>
         public string[] RawArguments { get; set; }
 
+        /// <inheritdoc/>
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>

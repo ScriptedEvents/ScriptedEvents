@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    /// <inheritdoc/>
     public class ServerInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
@@ -16,6 +17,7 @@
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting server related information.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
@@ -26,8 +28,10 @@
                 new("TPS", "Returns the amount of ticks per second the server is running on.")),
         };
 
+        /// <inheritdoc/>
         public string[] RawArguments { get; set; }
 
+        /// <inheritdoc/>
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>

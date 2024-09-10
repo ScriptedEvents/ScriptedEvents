@@ -8,6 +8,7 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    /// <inheritdoc/>
     public class WaveInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
@@ -16,6 +17,7 @@
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting wave related information.";
 
+        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
@@ -30,8 +32,10 @@
                 new("RESPAWNEDPLAYERS", "Returns the players which have spawned with the last spawn wave.")),
         };
 
+        /// <inheritdoc/>
         public string[] RawArguments { get; set; }
 
+        /// <inheritdoc/>
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
