@@ -111,6 +111,7 @@
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\IntercomInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\LobbyInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\RoundInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\ServerInfoAction.cs" />
@@ -271,7 +272,6 @@
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
     <Compile Include="Variables\ItemVariables.cs" />
     <Compile Include="Variables\FilterVariables.cs" />
-    <Compile Include="Variables\IntercomVariables.cs" />
     <Compile Include="Variables\Interfaces\ILongVariable.cs" />
     <Compile Include="Variables\MapVariables.cs" />
     <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
@@ -331,7 +331,6 @@
     <Compile Include="Structures\Countdown.cs" />
     <Compile Include="Structures\MathResult.cs" />
     <Compile Include="Variables\CustomVariable.cs" />
-    <Compile Include="Variables\EscapesVariables.cs" />
     <Compile Include="Variables\KillsAndDeathsVariables.cs" />
     <Compile Include="Variables\MiscVariables.cs" />
     <Compile Include="Variables\PlayerCountVariables.cs" />
