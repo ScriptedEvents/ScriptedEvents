@@ -113,6 +113,7 @@
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\IntercomInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\LobbyInfoAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\MapInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\RoundInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\ServerInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\TimeAction.cs" />
