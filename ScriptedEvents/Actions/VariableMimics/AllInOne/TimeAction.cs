@@ -28,10 +28,7 @@
                 new("YEAR", "Returns the amount of years since the birth of Christ"),
                 new("DAYOFWEEK", "Returns a number in range 1-7 (Warning! This follows the US system, where Sunday is the first day of the week)"),
                 new("DAYOFMONTH", "Returns a number in range 0-31"),
-                new("DAYOFYEAR", "Returns a number in range 0-366"),
-                new("ROUNDMINUTES", "Returns the amount of elapsed round time, in minutes."),
-                new("ROUNDSECONDS", "Returns the amount of elapsed round time, in seconds."),
-                new("ROUNDSTART", "Returns the amount of time remaining before the round starts. -1 if round already started.")),
+                new("DAYOFYEAR", "Returns a number in range 0-366")),
         };
 
         /// <inheritdoc/>
@@ -68,9 +65,6 @@
                 "DAYOFWEEK" => (((int)DateTime.Now.DayOfWeek) + 1).ToString(),
                 "DAYOFMONTH" => DateTime.Now.Day.ToString(),
                 "DAYOFYEAR" => DateTime.Now.DayOfYear.ToString(),
-                "ROUNDMINUTES" => ((float)Round.ElapsedTime.TotalMinutes).ToString(),
-                "ROUNDSECONDS" => ((float)Round.ElapsedTime.TotalSeconds).ToString(),
-                "ROUNDSTART" => Round.LobbyWaitingTime.ToString(),
                 _ => throw new ArgumentException(),
             };
 
