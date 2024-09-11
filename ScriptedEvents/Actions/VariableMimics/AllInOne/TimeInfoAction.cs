@@ -8,7 +8,7 @@
     using ScriptedEvents.Structures;
 
     /// <inheritdoc/>
-    public class TimeAction : IScriptAction, IHelpInfo, IMimicsVariableAction
+    public class TimeInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
         public string Name => "TIMEINFO";
