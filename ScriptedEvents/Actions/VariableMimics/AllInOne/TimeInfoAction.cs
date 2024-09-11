@@ -11,7 +11,7 @@
     public class TimeAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "TIME";
+        public string Name => "TIMEINFO";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting time related information.";
@@ -20,7 +20,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("TICK", "Returns the amount of seconds since 1970."),
+                new("TICKS", "Returns the amount of seconds since 1970."),
                 new("SECOND", "Returns a number in range 0-59"),
                 new("MINUTE", "Returns a number in range 0-59"),
                 new("HOUR", "Returns a number in range 0-23"),
