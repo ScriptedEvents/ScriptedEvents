@@ -64,7 +64,7 @@
             new ConditionSamples(),
         };
 
-        public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        public static DateTime Epoch => new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
         public static List<Commands.CustomCommand> CustomCommands { get; } = new();
 
