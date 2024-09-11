@@ -163,6 +163,7 @@
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Teleportation\TpPlayerAction.cs" />
+    <Compile Include="Actions\VariableMimics\Misc\DoorStateAction.cs" />
     <Compile Include="Actions\VariableMimics\Misc\KillsAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\EscapesAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\RolePlayersAction.cs" />
