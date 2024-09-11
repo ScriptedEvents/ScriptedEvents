@@ -22,10 +22,11 @@
         {
             new OptionsArgument("mode", true,
                 new("ISLOCKED", "Returns a TRUE/FALSE value being the roundlock status."),
-                new("ISSTARTED", "Returns a TRUE/FALSE value saying if the round has started."),
+                new("HASSTARTED", "Returns a TRUE/FALSE value saying if the round has started."),
                 new("ISINPROGRESS", "Returns a TRUE/FALSE value saying if the round is in progress."),
-                new("ISENDED", "Returns a TRUE/FALSE value saying if the round has ended."),
-                new("UPTIMEROUNDS", "Returns the amount of rounds that have progressed since the server has started.")),
+                new("HASENDED", "Returns a TRUE/FALSE value saying if the round has ended."),
+                new("UPTIMEROUNDS", "Returns the amount of rounds that have progressed since the server has started."),
+                new("DURATION", "Returns the amount of seconds since the round started.")),
         };
 
         /// <inheritdoc/>
@@ -45,11 +46,12 @@
         {
             string ret = Arguments[0].ToUpper() switch
             {
-                "LOCKED" => Round.IsLocked.ToUpper(),
-                "STARTED" => Round.IsStarted.ToUpper(),
-                "INPROGRESS" => Round.InProgress.ToUpper(),
-                "ENDED" => Round.IsEnded.ToUpper(),
+                "ISLOCKED" => Round.IsLocked.ToUpper(),
+                "HASSTARTED" => Round.IsStarted.ToUpper(),
+                "ISINPROGRESS" => Round.InProgress.ToUpper(),
+                "HASENDED" => Round.IsEnded.ToUpper(),
                 "UPTIMEROUNDS" => Round.UptimeRounds.ToString(),
+                "DURATION" => Round.ElapsedTime.TotalSeconds.ToString(),
                 _ => throw new ArgumentException()
             };
 
