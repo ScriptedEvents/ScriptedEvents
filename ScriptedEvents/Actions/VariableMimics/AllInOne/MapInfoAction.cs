@@ -46,6 +46,10 @@
             string ret = Arguments[0].ToUpper() switch
             {
                 "SEED" => Map.Seed.ToString(),
+                "ISOVERCHARGED" => Recontainer.IsContainmentSequenceDone.ToUpper(),
+                "ISDECONTAMINATED" => Map.IsLczDecontaminated.ToUpper(),
+                "IS914ACTIVE" => Scp914.IsWorking.ToUpper(),
+                "ISCASSIESPEAKING" => Cassie.IsSpeaking.ToUpper(),
                 _ => throw new ArgumentException()
             };
 
