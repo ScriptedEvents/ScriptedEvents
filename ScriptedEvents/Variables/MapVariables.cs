@@ -36,67 +36,6 @@
         };
     }
 
-    public class Seed : IStringVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{MAPSEED}";
-
-        /// <inheritdoc/>
-        public string Description => "All-in-one variable for map related information.";
-
-        /// <inheritdoc/>
-        public string Value => Map.Seed.ToString();
-    }
-
-    public class CassieSpeaking : IBoolVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{CASSIESPEAKING}";
-
-        /// <inheritdoc/>
-        public string ReversedName => "{!CASSIESPEAKING}";
-
-        /// <inheritdoc/>
-        public string Description => "Whether or not CASSIE is currently speaking.";
-
-        /// <inheritdoc/>
-        public bool Value => Cassie.IsSpeaking;
-    }
-
-    public class InRoom : IFloatVariable, IArgumentVariable, IPlayerVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{INROOM}";
-
-        /// <inheritdoc/>
-        public string Description => "The amount of players in the specified room.";
-
-        /// <inheritdoc/>
-        public string[] RawArguments { get; set; }
-
-        /// <inheritdoc/>
-        public object[] Arguments { get; set; }
-
-        /// <inheritdoc/>
-        public Argument[] ExpectedArguments => new[]
-        {
-            new Argument("roomType", typeof(RoomType), "The room to filter by.", false),
-        };
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
-
-        /// <inheritdoc/>
-        public IEnumerable<Player> Players
-        {
-            get
-            {
-                RoomType rt = (RoomType)Arguments[0];
-                return Player.Get(plr => plr.CurrentRoom.Type == rt);
-            }
-        }
-    }
-
     public class RandomDoor : IStringVariable, IArgumentVariable
     {
         /// <inheritdoc/>
@@ -140,36 +79,6 @@
         }
     }
 
-    public class Decontaminated : IBoolVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{DECONTAMINATED}";
-
-        /// <inheritdoc/>
-        public string ReversedName => "{!DECONTAMINATED}";
-
-        /// <inheritdoc/>
-        public string Description => "Whether or not Light Containment Zone has been decontaminated.";
-
-        /// <inheritdoc/>
-        public bool Value => Map.IsLczDecontaminated;
-    }
-
-    public class Overcharged : IBoolVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{OVERCHARGED}";
-
-        /// <inheritdoc/>
-        public string ReversedName => "{!OVERCHARGED}";
-
-        /// <inheritdoc/>
-        public string Description => "Indicates whether or not SCP-079 was successfully contained via overcharge sequence.";
-
-        /// <inheritdoc/>
-        public bool Value => Recontainer.IsContainmentSequenceDone;
-    }
-
     public class Generators : IFloatVariable, IArgumentVariable
     {
         /// <inheritdoc/>
@@ -200,21 +109,11 @@
         {
             get
             {
-                switch (Arguments[0].ToUpper())
+                return Arguments[0].ToUpper() switch
                 {
-                    case "ENGAGED":
-                        return Generator.Get(GeneratorState.Engaged).Count();
-                    case "ACTIVATING":
-                        return Generator.Get(GeneratorState.Activating).Count();
-                    case "UNLOCKED":
-                        return Generator.Get(GeneratorState.Unlocked).Count();
-                    case "OPENED":
-                        return Generator.Get(GeneratorState.Open).Count();
-                    case "CLOSED":
-                        return Generator.Get(gen => gen.IsOpen is false).Count();
-                    default:
-                        throw new ScriptedEventsException($"Mode {Arguments[0]} is not ENGAGED/ACTIVATING/UNLOCKED/OPENED or CLOSED.");
-                }
+                    
+                    _ => throw new ScriptedEventsException($"Mode {Arguments[0]} is not ENGAGED/ACTIVATING/UNLOCKED/OPENED or CLOSED."),
+                };
             }
         }
     }
