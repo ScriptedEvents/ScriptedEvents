@@ -1,9 +1,10 @@
 ﻿namespace ScriptedEvents.Actions
 {
     using System;
+
     using Exiled.API.Enums;
     using Exiled.API.Features.Doors;
-    using PlayerRoles;
+
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
