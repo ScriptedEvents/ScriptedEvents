@@ -167,7 +167,7 @@
         public string Description => "Indicates whether or not SCP-079 was successfully contained via overcharge sequence.";
 
         /// <inheritdoc/>
-        public bool Value => Recontainer.IsContainmentSequenceSuccessful;
+        public bool Value => Recontainer.IsContainmentSequenceDone;
     }
 
     public class Generators : IFloatVariable, IArgumentVariable
