@@ -111,12 +111,13 @@
     <Compile Include="Actions\Map\CleanupAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\GeneratorInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\IntercomInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\LobbyInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\MapInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\RoundInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\ServerInfoAction.cs" />
-    <Compile Include="Actions\VariableMimics\AllInOne\TimeAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\TimeInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\WarheadInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\WaveInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\Math\Math_AbsAction.cs" />
