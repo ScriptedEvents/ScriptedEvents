@@ -114,5 +114,10 @@
         /// Script info related action.
         /// </summary>
         ScriptInfo,
+
+        /// <summary>
+        /// Action related to manipulating player variables.
+        /// </summary>
+        PlayerVariableManipualtion,
     }
 }
