@@ -77,7 +77,7 @@
                 _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{input}' is not valid for the specified filter method."),
             };
 
-            return new(true, variablesToRet: new[] { ret });
+            return new(true, variablesToRet: new[] { ret.ToArray() });
         }
     }
 }
