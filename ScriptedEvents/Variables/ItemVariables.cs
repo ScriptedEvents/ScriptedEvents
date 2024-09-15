@@ -63,7 +63,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-                new Argument("itemId", typeof(object), "The item id to use.", true),
+                new Argument("itemId", typeof(string), "The item id to use.", true),
                 new OptionsArgument("mode", false,
                     new("ISVALID", "Is provided item id a valid item."),
                     new("CARRIED", "Is item is in owner's inventory."),
