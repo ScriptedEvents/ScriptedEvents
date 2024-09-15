@@ -15,7 +15,7 @@
         public string Name => "TPPLAYER";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "TPPLR" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }

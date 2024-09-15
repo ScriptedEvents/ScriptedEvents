@@ -13,7 +13,7 @@
     public class TeamPlayersAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "TEAMPLAYERS";
+        public string Name => "TEAMPLR";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();

@@ -14,7 +14,7 @@
         public string Name => "DISABLEPLAYER";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "DISABLEPLR" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }

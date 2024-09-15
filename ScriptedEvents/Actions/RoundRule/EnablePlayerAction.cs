@@ -17,7 +17,7 @@
         public string Name => "ENABLEPLAYER";
 
         /// <inheritdoc/>
-        public string[] Aliases => Array.Empty<string>();
+        public string[] Aliases => new[] { "ENABLEPLR" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }

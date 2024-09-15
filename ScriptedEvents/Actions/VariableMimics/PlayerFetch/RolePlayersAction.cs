@@ -13,7 +13,7 @@
     public class RolePlayersAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "ROLEPLAYERS";
+        public string Name => "ROLEPLR";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();

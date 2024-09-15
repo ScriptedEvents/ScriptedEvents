@@ -13,7 +13,7 @@
     public class ZonePlayersAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "ZONEPLAYERS";
+        public string Name => "ZONEPLR";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
