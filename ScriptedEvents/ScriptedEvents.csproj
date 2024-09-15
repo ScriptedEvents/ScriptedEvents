@@ -279,7 +279,6 @@
     <Compile Include="Variables\Interfaces\IHasAliasVariable.cs" />
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
     <Compile Include="Variables\ItemVariables.cs" />
-    <Compile Include="Variables\FilterVariables.cs" />
     <Compile Include="Variables\Interfaces\ILongVariable.cs" />
     <Compile Include="Variables\MapVariables.cs" />
     <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
