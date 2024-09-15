@@ -32,29 +32,27 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("variable", typeof(float), "The variable to round. Requires the variable to be a number.", true),
-             new OptionsArgument("mode", false, new("UP"), new("DOWN"), new("NEAREST", "Default option")),
+            new OptionsArgument("mode", true,
+                new("UP"),
+                new("DOWN"),
+                new("NEAR")),
+            new Argument("value", typeof(float), "The number to round.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            float value = (float)Arguments[0];
-            string result = "big fucky wucky";
+            float value = (float)Arguments[1];
 
-            switch (Arguments.Length < 2 ? "NEAREST" : Arguments[1].ToUpper())
+            string res = Arguments[0].ToUpper() switch
             {
-                case "UP":
-                    result = Mathf.Ceil(value).ToString(); break;
+                "UP" => Mathf.Ceil(value).ToString(),
+                "DOWN" => Mathf.Floor(value).ToString(),
+                "NEAR" => Mathf.Round(value).ToString(),
+                _ => throw new ArgumentException(),
+            };
 
-                case "DOWN":
-                    result = Mathf.Floor(value).ToString(); break;
-
-                case "NEAREST":
-                    result = Mathf.Round(value).ToString(); break;
-            }
-
-            return new(true, variablesToRet: new[] { (object)result });
+            return new(true, variablesToRet: new[] { res });
         }
     }
 }
