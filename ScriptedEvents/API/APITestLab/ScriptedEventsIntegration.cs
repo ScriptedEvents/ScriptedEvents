@@ -54,14 +54,13 @@
         /// </summary>
         internal static List<string> CustomActions { get; } = new();
 
-#pragma warning disable SA1629 // Documentation text should end with a period
         /// <summary>
         /// Registers a custom action.
         /// </summary>
         /// <param name="name">The name of the action.</param>
         /// <param name="action">The action implementation.</param>
         /// <remarks>
-        /// Action implementation is Func<string[], Tuple<bool, string, object[]>>, where:
+        /// Action implementation is Func.<string[], Tuple<bool, string, object[]>>, where:
         ///
         ///   Tuple<string[], object> - the action input, where:
         ///     string[]   - the input to the action. Usually represented by single word strings, BUT can also include multiple words in one string.
@@ -70,10 +69,8 @@
         ///   Tuple<bool, string, object[]> - the action result, where:
         ///     bool       - did action execute without any errors.
         ///     string     - action response to the console when there was an error.
-        ///     object[]   - optional values to return from an action, only STRINGS or PLAYER ARRAYS, anything different will result in an ERROR.
+        ///     object[]   - optional values to return from an action, only STRINGS or PLAYER ARRAYS, anything different will result in an ERROR!!!!!!!!!!!!
         /// </remarks>
-#pragma warning restore SA1629 // Documentation text should end with a period
-
         public static void RegisterCustomAction(string name, Func<Tuple<string[], object>, Tuple<bool, string, object[]>> action)
         {
             try
