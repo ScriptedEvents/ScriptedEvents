@@ -113,6 +113,7 @@
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\GeneratorInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\IntercomInfoAction.cs" />
+    <Compile Include="Actions\VariableMimics\AllInOne\ItemInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\LobbyInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\MapInfoAction.cs" />
     <Compile Include="Actions\VariableMimics\AllInOne\RoundInfoAction.cs" />
@@ -169,6 +170,8 @@
     <Compile Include="Actions\VariableMimics\PlayerFetch\RolePlayersAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\TeamPlayersAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\ZonePlayersAction.cs" />
+    <Compile Include="Actions\VariableMimics\PlayerVariableManipulation\FilterAction.cs" />
+    <Compile Include="Actions\VariableMimics\PlayerVariableManipulation\LimitAction.cs" />
     <Compile Include="Actions\VariableMimics\ScriptInfo\IsRunningAction.cs" />
     <Compile Include="Actions\VariableMimics\ScriptInfo\ThisAction.cs" />
     <Compile Include="Actions\VariableMimics\ScriptInfo\VExistsAction.cs" />
