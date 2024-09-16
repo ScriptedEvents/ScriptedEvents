@@ -282,7 +282,6 @@
     <Compile Include="Variables\Interfaces\IHasAliasVariable.cs" />
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
     <Compile Include="Variables\Interfaces\ILongVariable.cs" />
-    <Compile Include="Variables\MapVariables.cs" />
     <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
     <Compile Include="API\Interfaces\ICustomReadDisplay.cs" />
