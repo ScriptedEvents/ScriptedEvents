@@ -30,7 +30,7 @@
         public ActionSubgroup Subgroup => ActionSubgroup.RandomEnums;
 
         /// <inheritdoc/>
-        public string Description => "Returns a random 'RoomType'.";
+        public string Description => "Returns a random 'RoomType'. Can be filtered by zone.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -51,7 +51,7 @@
             if (filter is not ZoneType.Unspecified)
                 validRooms = validRooms.Where(room => room.Zone.HasFlag(filter));
 
-            return new(true, variablesToRet: new[] { validRooms.GetRandomValue().ToString() });
+            return new(true, variablesToRet: new[] { validRooms.GetRandomValue().Type.ToString() });
         }
     }
 }
