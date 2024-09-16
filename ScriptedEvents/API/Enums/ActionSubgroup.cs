@@ -119,5 +119,10 @@
         /// Action related to manipulating player variables.
         /// </summary>
         PlayerVariableManipualtion,
+
+        /// <summary>
+        /// Action related to retuning random Enum values.
+        /// </summary>
+        RandomEnums,
     }
 }
