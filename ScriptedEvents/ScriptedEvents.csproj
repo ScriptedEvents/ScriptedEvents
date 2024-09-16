@@ -173,6 +173,7 @@
     <Compile Include="Actions\VariableMimics\PlayerVariableManipulation\FilterAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerVariableManipulation\IndexPlayerAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerVariableManipulation\LimitAction.cs" />
+    <Compile Include="Actions\VariableMimics\RandomEnums\RandomItemAction.cs" />
     <Compile Include="Actions\VariableMimics\ScriptInfo\IsRunningAction.cs" />
     <Compile Include="Actions\VariableMimics\ScriptInfo\ThisAction.cs" />
     <Compile Include="Actions\VariableMimics\ScriptInfo\VExistsAction.cs" />
@@ -278,7 +279,6 @@
     <Compile Include="Variables\Interfaces\IItemVariable.cs" />
     <Compile Include="Variables\Interfaces\IHasAliasVariable.cs" />
     <Compile Include="Variables\Interfaces\IStringVariable.cs" />
-    <Compile Include="Variables\ItemVariables.cs" />
     <Compile Include="Variables\Interfaces\ILongVariable.cs" />
     <Compile Include="Variables\MapVariables.cs" />
     <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
