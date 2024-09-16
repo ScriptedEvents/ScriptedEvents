@@ -173,6 +173,7 @@
     <Compile Include="Actions\VariableMimics\PlayerVariableManipulation\FilterAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerVariableManipulation\IndexPlayerAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerVariableManipulation\LimitAction.cs" />
+    <Compile Include="Actions\VariableMimics\RandomEnums\RandomDoorAction.cs" />
     <Compile Include="Actions\VariableMimics\RandomEnums\RandomItemAction.cs" />
     <Compile Include="Actions\VariableMimics\RandomEnums\RandomRoomAction.cs" />
     <Compile Include="Actions\VariableMimics\ScriptInfo\IsRunningAction.cs" />
