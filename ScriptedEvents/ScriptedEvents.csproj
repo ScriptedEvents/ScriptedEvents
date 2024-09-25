@@ -164,6 +164,7 @@
     <Compile Include="Actions\RoundRule\EnableAction.cs" />
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Teleportation\TpPlayerAction.cs" />
+    <Compile Include="Actions\VariableMimics\Misc\DisplayPlayerAction.cs" />
     <Compile Include="Actions\VariableMimics\Misc\DoorStateAction.cs" />
     <Compile Include="Actions\VariableMimics\Misc\KillsAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\EscapesAction.cs" />
@@ -189,7 +190,6 @@
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
     <Compile Include="Actions\Variable\PlayerDataAction.cs" />
     <Compile Include="Actions\Variable\LocalSaveAction.cs" />
-    <Compile Include="Actions\Variable\StorageAction.cs" />
     <Compile Include="Actions\Variable\TempVariableAction.cs" />
     <Compile Include="Actions\Misc\HttpPostAction.cs" />
     <Compile Include="Actions\Misc\HttpGetAction.cs" />
@@ -213,7 +213,6 @@
     <Compile Include="API\Features\Exceptions\VariableException.cs" />
     <Compile Include="API\Features\ScriptHelpGenerator\Generator.cs" />
     <Compile Include="API\Features\ScriptHelpGenerator\GeneratorConfig.cs" />
-    <Compile Include="API\Features\VariableStorage.cs" />
     <Compile Include="API\Interfaces\IIgnoresIfActionBlock.cs" />
     <Compile Include="API\Interfaces\ILogicAction.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
@@ -339,9 +338,7 @@
     <Compile Include="Structures\Countdown.cs" />
     <Compile Include="Structures\MathResult.cs" />
     <Compile Include="Variables\CustomVariable.cs" />
-    <Compile Include="Variables\MiscVariables.cs" />
     <Compile Include="Variables\PlayerCountVariables.cs" />
-    <Compile Include="Variables\PlayerInfoVariables.cs" />
     <Compile Include="Variables\RoleVariables.cs" />
     <Compile Include="API\Features\SEParser.cs" />
     <Compile Include="API\Modules\EventHandlingModule.cs" />
