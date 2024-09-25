@@ -19,7 +19,7 @@
     public class FilterAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "LIMIT";
+        public string Name => "FILTER";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -40,16 +40,16 @@
         public Argument[] ExpectedArguments => new[]
         {
              new OptionsArgument("type", true,
-                    new("ROLE", "Filters by role. Use a 'RoleTypeId' type as the 'input' argument."),
-                    new("TEAM", "Filters by team. Use a 'TeamType' type as the 'input' argument."),
-                    new("ROOM", "Filters by room. Use a 'RoomType' type as the 'input' argument."),
+                    new("ROLE", "Filters by role. Use a 'RoleTypeId' as the 'input' argument."),
+                    new("TEAM", "Filters by team. Use a 'TeamType' as the 'input' argument."),
+                    new("ROOM", "Filters by room. Use a 'RoomType' as the 'input' argument."),
                     new("USERID", "Filters by user id (like steam id). Use a specific user id as the 'input' argument."),
                     new("PLAYERID", "Filters by player id (id assigned in game). Use a specific player id as the 'input' argument."),
-                    new("ITEM", "Filters by item in inventory. Use a 'ItemType' type as the 'input' argument."),
-                    new("HELDITEM", "Filters by 'ItemType' in hand. Use a 'ItemType' type as the 'input' argument."),
+                    new("ITEM", "Filters by item in inventory. Use a 'ItemType' as the 'input' argument."),
+                    new("HELDITEM", "Filters by 'ItemType' in hand. Use a 'ItemType' as the 'input' argument."),
                     new("GROUP", "Filters by group. Use a group name as the 'input' argument."),
                     new("ISSTAFF", "Filters by having RA access. Use a TRUE/FALSE value as the 'input' argument."),
-                    new("EFFECT", "Filters by 'EffectType' the player has. Use a 'EffectType' type as the 'input' argument.")),
+                    new("EFFECT", "Filters by 'EffectType' the player has. Use a 'EffectType' as the 'input' argument.")),
              new Argument("players", typeof(PlayerCollection), "The players to filter.", true),
              new Argument("input", typeof(string), "What to use as the filter (look at 'type' argument for guidance)", true),
         };
