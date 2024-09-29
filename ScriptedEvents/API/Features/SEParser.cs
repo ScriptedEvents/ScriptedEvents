@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -11,7 +13,6 @@
     using Exiled.API.Features.Roles;
     using Exiled.CustomItems.API.Features;
     using PlayerRoles;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
@@ -324,61 +325,41 @@
         /// <param name="input">The input string.</param>
         /// <param name="source">The script source.</param>
         /// <returns>The variables used within the string.</returns>
-        public static string[] IsolateValueSyntax(string input, Script source, bool includeAccessors = true)
+        public static (Match[] variables, Match[] dynamicActions, Match[] accessors) IsolateValueSyntax(string input, Script source, bool captureVariables = true, bool captureDynActs = true, bool captureAccessors = true)
         {
             void Log(string msg)
             {
                 Logger.Debug($"[SEParser] [IsolateValueSyntax] {msg}", source);
             }
 
-            Log($"Isolating values from '{input}'");
-            List<string> result = ListPool<string>.Pool.Get();
+            Match[] variables = null;
+            Match[] dynamicActions = null;
+            Match[] accessors = null;
 
-            int inputLength = input.Length;
-            for (int i = 0; i < inputLength; i++)
+            Log($"Isolating value syntaxes from: '{input}'");
+
+            // Add @words pattern if enabled
+            if (captureVariables)
             {
-                char openingSymbol = input[i];
-                char closingSymbol;
-
-                switch (openingSymbol)
-                {
-                    case '{':
-                        closingSymbol = '}'; break;
-                    case '<':
-                        if (!includeAccessors) continue;
-                        closingSymbol = '>'; break;
-                    default:
-                        continue;
-                }
-
-                int index = input.IndexOf(closingSymbol, i + 1);
-                if (index == -1)
-                {
-                    break;
-                }
-
-                bool hasSpace = false;
-                for (int j = i + 1; j < index; j++)
-                {
-                    if (input[j] == ' ')
-                    {
-                        hasSpace = true;
-                        break;
-                    }
-                }
-
-                if (hasSpace)
-                {
-                    continue;
-                }
-
-                string variable = input.Substring(i, index - i + 1);
-
-                Log($"Extracted a value '{variable}'");
-                result.Add(variable);
+                variables = Regex.Matches(input, @"@\S+").Cast<Match>().ToArray();
+                Log($"Retreived {variables.Length} variables.");
             }
 
-            return ListPool<string>.Pool.ToArrayReturn(result);
+            // Add {multiple words} pattern if enabled
+            if (captureDynActs)
+            {
+                dynamicActions = Regex.Matches(input, @"\{[^{}\s]*\}").Cast<Match>().ToArray();
+                Log($"Retreived {dynamicActions.Length} dynamic actions.");
+            }
+
+            // Add <singleWord> pattern if enabled
+            if (captureAccessors)
+            {
+                accessors = Regex.Matches(input, @"<[^<>\s]*>").Cast<Match>().ToArray();
+                Log($"Retreived {accessors.Length} accessors.");
+            }
+
+            return (variables, dynamicActions, accessors);
         }
 
         public static bool TryGetAccessor(string input, Script source, out string result)
@@ -579,6 +560,32 @@
                     result = ply.ArtificialHealth.ToString();
                     break;
 
+                case "IS096TARGET":
+                    result = "FALSE";
+                    foreach (Player p in Player.Get(RoleTypeId.Scp096))
+                    {
+                        if ((p.Role as Scp096Role).Targets.Contains(ply))
+                        {
+                            result = "TRUE";
+                            break;
+                        }
+                    }
+
+                    break;
+
+                case "ISWATCHING173":
+                    result = "FALSE";
+                    foreach (Player p in Player.Get(RoleTypeId.Scp173))
+                    {
+                        if ((p.Role as Scp173Role).ObservingPlayers.Contains(ply))
+                        {
+                            result = "TRUE";
+                            break;
+                        }
+                    }
+
+                    break;
+
                 default:
                     result = ply.SessionVariables.ContainsKey(parts[1])
                         ? ply.SessionVariables[parts[1]].ToString()
@@ -604,45 +611,22 @@
                 Logger.Debug($"[SEParser] [RCVS] {msg}", source);
             }
 
-            string[] values = IsolateValueSyntax(input, source);
+            var values = IsolateValueSyntax(input, source);
+            StringBuilder output = new(input);
 
-            foreach (string value in values)
+            foreach (Match accssr in values.accessors)
             {
-                Log("Isolated value syntax: " + value);
+                output.Replace(accssr.Value, "PLACEHOLDER", accssr.Index, accssr.Length);
+            }
 
-                if (VariableSystemV2.TryGetVariable(value, source, out VariableResult vresult))
-                {
-                    if (!vresult.ProcessorSuccess)
-                    {
-                        Logger.Warn($"Variable '{vresult.Variable.Name}' argument error: {vresult.Message}", source);
-                        continue;
-                    }
+            foreach (Match dynact in values.dynamicActions)
+            {
+                output.Replace(dynact.Value, "PLACEHOLDER", dynact.Index, dynact.Length);
+            }
 
-                    try
-                    {
-                        input = input.Replace(value, vresult.String(source, vresult.Reversed));
-                    }
-                    catch (InvalidCastException e)
-                    {
-                        Logger.Warn(ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, e.Message), source);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Warn(ErrorGen.Get(ErrorCode.VariableReplaceError, vresult.Variable.Name, source?.Debug == true ? e : e.Message), source);
-                    }
-
-                    Log("Value syntax was successfully replaced.");
-                    continue;
-                }
-
-                if (TryGetAccessor(value, source, out string aresult))
-                {
-                    input = input.Replace(value, aresult);
-                    Log("Value syntax was successfully replaced.");
-                    continue;
-                }
-
-                Log($"Value syntax {value} cannot be replaced (perhaps a formatting issue?)");
+            foreach (Match varbl in values.variables)
+            {
+                output.Replace(varbl.Value, "PLACEHOLDER", varbl.Index, varbl.Length);
             }
 
             return input;

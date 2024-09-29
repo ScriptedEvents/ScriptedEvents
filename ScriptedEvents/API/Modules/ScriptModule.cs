@@ -2,7 +2,6 @@ namespace ScriptedEvents.API.Modules
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -25,6 +24,9 @@ namespace ScriptedEvents.API.Modules
     using ScriptedEvents.DemoScripts;
 
     using ScriptedEvents.Structures;
+
+    using Logger = Features.Logger;
+    using LogType = Enums.LogType;
 
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
@@ -74,23 +76,11 @@ namespace ScriptedEvents.API.Modules
 
                 File.WriteAllText(Path.Combine(MainPlugin.BaseFilePath, "README.txt"), new About().Contents);
             }
-            catch (UnauthorizedAccessException e)
-            {
-                Logger.Error(ErrorGen.Get(ErrorCode.IOPermissionError) + $": {e}");
-                return;
-            }
             catch (Exception e)
             {
-                Logger.Error(ErrorGen.Get(ErrorCode.IOError) + $": {e}");
+                Logger.Error(ErrorGenV2.IOError() + $": {e}");
                 return;
             }
-
-            // Welcome message :)
-            // 3s delay to show after other console spam
-            Timing.CallDelayed(6f, () =>
-            {
-                Logger.Warn($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(MainPlugin.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
-            });
         }
 
         public override void Init()
@@ -140,6 +130,11 @@ namespace ScriptedEvents.API.Modules
                 {
                     Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, scr.ScriptName));
                 }
+            }
+
+            if (ShouldGenerateFiles)
+            {
+                Logger.Info($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(MainPlugin.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
             }
         }
 
@@ -225,7 +220,7 @@ namespace ScriptedEvents.API.Modules
             bool inMultilineComment = false;
             Script script = new();
 
-            void DebugLog(string message)
+            void Log(string message)
             {
                 Logger.Debug($"[ScriptModule] [ReadScript] {message}", script);
             }
@@ -275,20 +270,6 @@ namespace ScriptedEvents.API.Modules
 
                 string keyword = structureParts[0].RemoveWhitespace();
 
-                // labels
-                if (keyword.EndsWith(":"))
-                {
-                    string labelName = line.Remove(keyword.Length - 1, 1).RemoveWhitespace();
-
-                    if (!script.Labels.ContainsKey(labelName))
-                        script.Labels.Add(labelName, currentline);
-                    else if (!suppressWarnings)
-                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
-
-                    addActionNoArgs(new NullAction($"{labelName} LABEL"));
-                    continue;
-                }
-
                 // function labels
                 if (keyword == "->")
                 {
@@ -322,14 +303,79 @@ namespace ScriptedEvents.API.Modules
 
                     if (script.SmartArguments.ContainsKey(lastAction))
                     {
-                        script.SmartArguments[lastAction] = script.SmartArguments[lastAction].Append(value).ToArray();
+                        script.SmartArguments[lastAction] = script.SmartArguments[lastAction].Append(() => new(true, value)).ToArray();
                     }
                     else
                     {
-                        script.SmartArguments[lastAction] = new[] { value };
+                        script.SmartArguments[lastAction] = new Func<Tuple<bool, string>>[] { () => new(true, value) };
                     }
 
                     addActionNoArgs(new NullAction($"SMART ARG"));
+                    continue;
+                }
+
+                if (keyword == "//::")
+                {
+                    if (actionList.Count == 0)
+                    {
+                        Logger.Log("'//::' (smart extractor) syntax can't be used if there isn't any action above it.", LogType.Warning, script, currentline + 1);
+                        continue;
+                    }
+
+                    string actionName = structureParts[1];
+                    string[] actionArgs = structureParts.Skip(2).ToArray();
+
+                    // TODO: implement for external actions
+                    if (!TryGetActionType(actionName, out Type actionType1))
+                    {
+                        Logger.Warn(ErrorGen.Get(ErrorCode.InvalidAction, actionName, scriptName), script);
+                        continue;
+                    }
+
+                    IAction actionToExtract = Activator.CreateInstance(actionType1) as IAction;
+
+                    Tuple<bool, string> ActionWrapper()
+                    {
+                        if (actionToExtract is ITimingAction)
+                        {
+                            return new(false, "Action is a timing action, which cannot be used with smart extractors.");
+                        }
+
+                        if (!TryRunAction(script, actionToExtract, out ActionResponse resp, out float? delay, actionArgs))
+                        {
+                            return new(false, resp.Message);
+                        }
+
+                        if (resp == null || resp.ResponseVariables.Length == 0)
+                        {
+                            return new(false, "Action did not return any values to use.");
+                        }
+
+                        if (resp.ResponseVariables.Length > 1)
+                        {
+                            Log("Action returned more than 1 value. Using the first one as default.");
+                        }
+
+                        object value = resp.ResponseVariables[0];
+
+                        if (value is not string)
+                        {
+                            return new(false, "Action returned a value that is not a string.");
+                        }
+
+                        return new(true, value as string);
+                    }
+
+                    if (script.SmartArguments.ContainsKey(lastAction))
+                    {
+                        script.SmartArguments[lastAction] = script.SmartArguments[lastAction].Append(ActionWrapper).ToArray();
+                    }
+                    else
+                    {
+                        script.SmartArguments[lastAction] = new Func<Tuple<bool, string>>[] { ActionWrapper };
+                    }
+
+                    addActionNoArgs(new NullAction($"SMART EXTR"));
                     continue;
                 }
 
@@ -352,6 +398,20 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
+                // labels
+                if (keyword.EndsWith(":"))
+                {
+                    string labelName = line.Remove(keyword.Length - 1, 1).RemoveWhitespace();
+
+                    if (!script.Labels.ContainsKey(labelName))
+                        script.Labels.Add(labelName, currentline);
+                    else if (!suppressWarnings)
+                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
+
+                    addActionNoArgs(new NullAction($"{labelName} LABEL"));
+                    continue;
+                }
+
                 // extractor
                 int indexOfExtractor = line.IndexOf("::");
                 string[] resultVariableNames = Array.Empty<string>();
@@ -360,16 +420,20 @@ namespace ScriptedEvents.API.Modules
                 {
                     string variablesSection = line.Substring(0, indexOfExtractor);
                     string actionSection = line.Substring(indexOfExtractor + 2).TrimStart();
-                    DebugLog($"[ExtractorSyntax] Variables section: {variablesSection}");
-                    DebugLog($"[ExtractorSyntax] Action section: {actionSection}");
+                    Log($"[ExtractorSyntax] Variables section: {variablesSection}");
+                    Log($"[ExtractorSyntax] Action section: {actionSection}");
 
-                    resultVariableNames = SEParser.IsolateValueSyntax(variablesSection, script, false);
+                    resultVariableNames = SEParser.IsolateValueSyntax(variablesSection, script, true, false, false).variables.Select(arg => arg.Value).ToArray();
                     if (resultVariableNames.Length != 0)
                     {
-                        DebugLog($"[ExtractorSyntax] Variables found before the syntax: {string.Join(", ", resultVariableNames)}");
+                        Log($"[ExtractorSyntax] Variables found before the syntax: {string.Join(", ", resultVariableNames)}");
 
                         structureParts = actionSection.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(part => part.Trim()).ToList();
                         keyword = structureParts[0];
+                    }
+                    else
+                    {
+                        Logger.Warn("The extraction operator `::` has been used, but no variable names were specified to contain extracted values.", script);
                     }
                 }
 
@@ -416,7 +480,7 @@ namespace ScriptedEvents.API.Modules
                 script.OriginalActionArgs[newAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
                 script.ResultVariableNames[newAction] = resultVariableNames;
 
-                DebugLog($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}");
+                Log($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}");
 
                 // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
@@ -459,7 +523,7 @@ namespace ScriptedEvents.API.Modules
 
             script.Sender = executor;
 
-            DebugLog($"Debug script read successfully. Name: {script.ScriptName} | Actions: {script.Actions.Count(act => act is not NullAction)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Count(action => action is NullAction @null && @null.Type is "COMMENT")}");
+            Log($"Debug script read successfully. Name: {script.ScriptName} | Actions: {script.Actions.Count(act => act is not NullAction)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Count(action => action is NullAction @null && @null.Type is "COMMENT")}");
 
             return script;
         }
@@ -475,8 +539,36 @@ namespace ScriptedEvents.API.Modules
             if (scr.Disabled)
                 throw new DisabledScriptException(scr.ScriptName);
 
-            CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr, dispose), $"SCRIPT_{scr.UniqueId}");
+            CoroutineHandle handle = Timing.RunCoroutine(SafeRunCoroutine(RunScriptInternal(scr, dispose)), $"SCRIPT_{scr.UniqueId}");
             RunningScripts.Add(scr, handle);
+        }
+
+        // chatgpt made this amazing thing
+        public IEnumerator<float> SafeRunCoroutine(IEnumerator<float> coroutine)
+        {
+            while (true)
+            {
+                object current;
+                try
+                {
+                    // Continue running the original coroutine
+                    if (coroutine.MoveNext())
+                    {
+                        current = coroutine.Current;
+                    }
+                    else
+                    {
+                        yield break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Error($"A coroutine error has been caught!\n{e.Message}\n{e.StackTrace}");
+                    yield break;
+                }
+
+                yield return (float)current;
+            }
         }
 
         /// <summary>
@@ -634,13 +726,99 @@ namespace ScriptedEvents.API.Modules
             MainPlugin.Info($"Assembly '{assembly.GetName().Name}' has registered {i} actions.");
         }
 
+        public static bool TryRunAction(Script scr, IAction action, out ActionResponse actResp, out float? delay, string[] originalActionArgs = null)
+        {
+            actResp = null;
+            delay = null;
+
+            void Log(string message)
+            {
+                Logger.Debug("[ScriptModule] [TryRunAction] " + message, scr);
+            }
+
+            if (action is NullAction nullAction)
+            {
+                Log($"Null action type: {nullAction.Type}");
+                return true;
+            }
+
+            if (scr.IfActionBlocksExecution && action is not IIgnoresIfActionBlock)
+            {
+                Log("Action was skipped; the IF block resulted in FALSE and action does not terminate IF blocks.");
+                return true;
+            }
+
+            if (originalActionArgs == null)
+            {
+                // Process Arguments
+                if (scr.OriginalActionArgs.TryGetValue(action, out string[] xxx))
+                {
+                    originalActionArgs = xxx;
+                }
+                else
+                {
+                    Log("Action does not have any arguments provided.");
+                }
+            }
+
+            ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalActionArgs, action, scr);
+            if (res.Errored)
+            {
+                string message = (res.FailedArgument != string.Empty ? $"[Argument: {res.FailedArgument}] " : string.Empty) + res.Message;
+                actResp = new(false, message);
+                return false;
+            }
+
+            if (!res.Success)
+            {
+                Log("Action will not be ran. " + actResp.Message != null ? actResp.Message : string.Empty);
+                return true;
+            }
+
+            action.Arguments = res.NewParameters.ToArray();
+            action.RawArguments = res.StrippedRawParameters;
+
+            switch (action)
+            {
+                case ITimingAction timed:
+                    Log($"Running {action.Name} action (timed)...");
+                    delay = timed.Execute(scr, out actResp);
+                    break;
+                case IScriptAction scriptAction:
+                    Log($"Running {action.Name} action...");
+                    actResp = scriptAction.Execute(scr);
+                    break;
+                default:
+                    Log($"Action is not runnable.");
+                    return true;
+            }
+
+            if (delay.HasValue)
+            {
+                Log($"Action '{action.Name}' is delaying the script. Length of delay: {delay.Value}");
+            }
+
+            if (!actResp.Success)
+            {
+                return false;
+            }
+
+            Log($"{action.Name} has successfully executed.");
+            return true;
+        }
+
         /// <summary>
         /// Internal coroutine to run the script.
         /// </summary>
         /// <param name="scr">The script to run.</param>
         /// <returns>Coroutine iterator.</returns>
-        private IEnumerator<float> RunScriptInternal(Script scr, bool dispose = true)
+        public IEnumerator<float> RunScriptInternal(Script scr, bool dispose = true)
         {
+            void Log(string message)
+            {
+                Logger.Debug("[ScriptModule] [RunScriptInternal] " + message, scr);
+            }
+
             MainPlugin.Info($"Started running the '{scr.ScriptName}' script.");
 
             yield return Timing.WaitForOneFrame;
@@ -648,190 +826,102 @@ namespace ScriptedEvents.API.Modules
             scr.IsRunning = true;
             scr.RunDate = DateTime.Now;
 
-            Stopwatch runTime = Stopwatch.StartNew();
             int lines = 0;
             int successfulLines = 0;
 
             for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
-                Logger.Debug("-----------", scr);
-                Logger.Debug($"Current Line: {scr.CurrentLine + 1}", scr);
-                if (!scr.Actions.TryGet(scr.CurrentLine, out IAction action) || action == null)
-                {
-                    Logger.Debug("There is no runnable action on this line. Skipping...", scr);
-                    continue;
-                }
-
-                Logger.Debug($"Fetched action '{action.Name}'", scr);
-                if (action is NullAction nullAction)
-                {
-                    Logger.Debug($"Null action type: {nullAction.Type}", scr);
-                }
-
-                if (scr.IfActionBlocksExecution && action is not IIgnoresIfActionBlock)
-                {
-                    Logger.Debug("Action was skipped; the IF statement resulted in FALSE and action is not 'ITerminatesIfAction'", scr);
-                    continue;
-                }
-
-                Logger.Debug("Action was not skipped by an IF statement.", scr);
-
-                ActionResponse resp;
-                float? delay = null;
-
-                // Process Arguments
-                if (scr.OriginalActionArgs.TryGetValue(action, out string[] originalArgs))
-                {
-                    ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalArgs, action, scr);
-                    if (res.Errored)
-                    {
-                        Logger.ScriptError((res.FailedArgument != string.Empty ? $"[Argument: {res.FailedArgument}] " : string.Empty) + res.Message, scr);
-                        break;
-                    }
-
-                    if (!res.Success)
-                    {
-                        Logger.Debug("Action was skipped; the argument processor did not return 'success' as true.", scr);
-                        continue;
-                    }
-                    else
-                    {
-                        Logger.Debug("Action was not skipped; the argument processor returned 'success' as true.", scr);
-                    }
-
-                    action.Arguments = res.NewParameters.ToArray();
-                    action.RawArguments = res.StrippedRawParameters;
-                }
-
-                try
-                {
-                    switch (action)
-                    {
-                        case ITimingAction timed:
-                            Logger.Debug($"Running {action.Name} action (timed)...", scr);
-                            delay = timed.Execute(scr, out resp);
-                            break;
-                        case IScriptAction scriptAction:
-                            Logger.Debug($"Running {action.Name} action...", scr);
-                            resp = scriptAction.Execute(scr);
-                            break;
-                        default:
-                            Logger.Debug($"Skipping line (no runnable action on line)", scr);
-                            continue;
-                    }
-                }
-                catch (ScriptedEventsException seException)
-                {
-                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {seException.Message}";
-                    Logger.ScriptError(message, scr);
-
-                    continue;
-                }
-                catch (Exception e)
-                {
-                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(ErrorCode.UnknownActionError, action.Name)}:\n{e}";
-                    Logger.ScriptError(message, scr);
-
-                    continue;
-                }
-
-                if (!resp.Success)
-                {
-                    Logger.Debug($"{action.Name} [Line: {scr.CurrentLine + 1}]: FAIL", scr);
-                    if (resp.ResponseFlags.HasFlag(ActionFlags.FatalError))
-                    {
-                        string message = $"[{action.Name}] Fatal action error! {resp.Message}";
-                        Logger.ScriptError(message, scr, fatal: true);
-
-                        break;
-                    }
-                    else if (!scr.SuppressWarnings)
-                    {
-                        string message = $"[{action.Name}] Action error! {resp.Message}";
-                        Logger.ScriptError(message, scr);
-                    }
-                }
-                else
-                {
-                    Logger.Debug($"{action.Name} [Line: {scr.CurrentLine + 1}]: SUCCESS", scr);
-                    successfulLines++;
-
-                    if (resp.ResponseVariables != null && scr.ResultVariableNames.TryGetValue(action, out string[] variableNames))
-                    {
-                        foreach (var zipped in resp.ResponseVariables.Zip(variableNames, (variable, name) => (variable, name)))
-                        {
-                            switch (zipped.variable)
-                            {
-                                case Player[] plrVar:
-                                    Logger.Debug($"Action {action.Name} is adding a player variable as '{zipped.name}'.", scr);
-                                    scr.UniquePlayerVariables.Add(zipped.name, new(zipped.name, string.Empty, plrVar.ToList()));
-                                    break;
-
-                                case string strVar:
-                                    Logger.Debug($"Action {action.Name} is adding a variable as '{zipped.name}'.", scr);
-                                    scr.UniqueVariables.Add(zipped.name, new(zipped.name, string.Empty, strVar));
-                                    break;
-
-                                default:
-                                    try
-                                    {
-                                        scr.UniqueVariables.Add(zipped.name, new(zipped.name, string.Empty, zipped.variable.ToString()));
-                                    }
-                                    catch (InvalidCastException)
-                                    {
-                                        Logger.ScriptError($"Action {action.Name} returned a value of an illegal type '{zipped.variable.GetType()}', which cannot be casted back to string. Please report this to the developer.", scr);
-                                    }
-
-                                    break;
-                            }
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(resp.Message))
-                    {
-                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Response: {resp.Message}";
-                        switch (scr.Context)
-                        {
-                            case ExecuteContext.RemoteAdmin:
-                                Player.Get(scr.Sender)?.RemoteAdminMessage(message, true, MainPlugin.Singleton.Name);
-                                break;
-                            default:
-                                Logger.Info(message);
-                                break;
-                        }
-                    }
-
-                    if (delay.HasValue)
-                    {
-                        Logger.Debug($"Action '{action.Name}' on line {scr.CurrentLine + 1} delaying script. Length of delay: {delay.Value}", scr);
-                        yield return delay.Value;
-                    }
-                }
-
-                lines++;
-
-                if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
-                    break;
-
                 if (!scr.HasFlag("NOSAFETY"))
                 {
                     yield return Timing.WaitForOneFrame;
                 }
+
+                if (!scr.Actions.TryGet(scr.CurrentLine, out IAction action) || action == null)
+                {
+                    Log("There is no runnable action on this line. Skipping...");
+                    continue;
+                }
+
+                lines++;
+                Log("-> Running action " + action.Name);
+                ActionResponse resp;
+
+                if (!TryRunAction(scr, action, out resp, out float? delay))
+                {
+                    Log("Action failed.");
+                    if (resp != null && resp.Message.Length > 0)
+                    {
+                        Logger.ScriptError(resp.Message, scr, true);
+                    }
+
+                    continue;
+                }
+
+                if (resp == null)
+                {
+                    continue;
+                }
+
+                Log("Action success.");
+
+                if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
+                    break;
+
+                successfulLines++;
+
+                if (!string.IsNullOrEmpty(resp.Message))
+                {
+                    string message = $"[Script: {scr.ScriptName}] [Line: {scr.CurrentLine + 1}] [Action: {action.Name}] {resp.Message}";
+                    switch (scr.Context)
+                    {
+                        case ExecuteContext.RemoteAdmin:
+                            Player.Get(scr.Sender)?.RemoteAdminMessage(message, true, MainPlugin.Singleton.Name);
+                            break;
+                        default:
+                            Logger.Info(message);
+                            break;
+                    }
+                }
+
+                if (resp.ResponseVariables == null)
+                {
+                    continue;
+                }
+
+                if (!scr.ResultVariableNames.TryGetValue(action, out string[] variableNames))
+                {
+                    continue;
+                }
+
+                foreach (var zipped in resp.ResponseVariables.Zip(variableNames, (variable, name) => (variable, name)))
+                {
+                    switch (zipped.variable)
+                    {
+                        case Player[] plrVar:
+                            Log($"Action {action.Name} is adding a player variable as '{zipped.name}'.");
+                            scr.UniquePlayerVariables.Add(zipped.name, new(zipped.name, string.Empty, plrVar.ToList()));
+                            break;
+
+                        case string strVar:
+                            Log($"Action {action.Name} is adding a variable as '{zipped.name}'.");
+                            scr.UniqueVariables.Add(zipped.name, new(zipped.name, string.Empty, strVar));
+                            break;
+
+                        default:
+                            Logger.ScriptError($"Action '{action.Name}' returned a value of an illegal type '{zipped.variable.GetType()}', which is not supported. Report this error to the developers.", scr);
+                            scr.UniqueVariables.Add(zipped.name, new(zipped.name, string.Empty, zipped.variable.ToString()));
+                            break;
+                    }
+                }
             }
 
-            scr.DebugLog("-----------");
-            scr.DebugLog($"Script {scr.ScriptName} concluded. Total time '{runTime.Elapsed:mm':'ss':'fff}', Executed '{successfulLines}/{lines}' ({Math.Round((float)successfulLines / lines * 100)}%) actions successfully");
+            Log("-----------");
+            Log($"Script concluded!");
             MainPlugin.Info($"Finished running script {scr.ScriptName}.");
-            scr.DebugLog("-----------");
+            Log("-----------");
             scr.IsRunning = false;
 
-            if (scr.HasFlag("LOOP"))
-            {
-                scr.DebugLog("Re-running looped script.");
-                ReadAndRun(scr.ScriptName, scr.Sender); // so that it re-reads the content of the text file.
-            }
-
-            scr.DebugLog("Removing script from running scripts.");
+            Log("Removing script from running scripts.");
             RunningScripts.Remove(scr);
 
             if (dispose)

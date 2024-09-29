@@ -208,6 +208,7 @@
     <Compile Include="API\Features\ConditionHelperV2.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Features\ErrorGen.cs" />
+    <Compile Include="API\Features\ErrorGenV2.cs" />
     <Compile Include="API\Features\Logger.cs" />
     <Compile Include="API\Features\Exceptions\ScriptedEventsException.cs" />
     <Compile Include="API\Features\Exceptions\VariableException.cs" />
@@ -277,11 +278,7 @@
     <Compile Include="Translations.cs" />
     <Compile Include="Tutorials\Actions\KillActionTutorial.cs" />
     <Compile Include="Tutorials\ITutorial.cs" />
-    <Compile Include="Variables\Interfaces\IItemVariable.cs" />
-    <Compile Include="Variables\Interfaces\IHasAliasVariable.cs" />
-    <Compile Include="Variables\Interfaces\IStringVariable.cs" />
-    <Compile Include="Variables\Interfaces\ILongVariable.cs" />
-    <Compile Include="Variables\Interfaces\IArgumentVariable.cs" />
+    <Compile Include="Variables\Interfaces\ILiteralVariable.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
     <Compile Include="API\Interfaces\ICustomReadDisplay.cs" />
     <Compile Include="API\Interfaces\IHelpInfo.cs" />
@@ -348,10 +345,6 @@
     <Compile Include="Script.cs" />
     <Compile Include="API\Modules\ScriptModule.cs" />
     <Compile Include="Structures\InfectRule.cs" />
-    <Compile Include="Variables\Interfaces\IBoolVariable.cs" />
-    <Compile Include="Variables\Interfaces\IConditionVariable.cs" />
-    <Compile Include="Variables\Interfaces\IFloatVariable.cs" />
-    <Compile Include="Variables\Interfaces\INeedSourceVariable.cs" />
     <Compile Include="Variables\Interfaces\IPlayerVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariable.cs" />
     <Compile Include="Variables\Interfaces\IVariableGroup.cs" />

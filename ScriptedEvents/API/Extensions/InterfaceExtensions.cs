@@ -9,20 +9,15 @@
 
     public static class InterfaceExtensions
     {
-        public static string String(this IVariable variable, Script source = null, bool reversed = false)
+        public static string String(this IVariable variable, Script source = null)
         {
             try
             {
                 switch (variable)
                 {
-                    case IBoolVariable @bool:
-                        bool result = reversed ? !@bool.Value : @bool.Value;
-                        return result.ToUpper();
-                    case IFloatVariable @float:
-                        return @float.Value.ToString();
-                    case ILongVariable @long:
-                        return @long.Value.ToString();
-                    case IStringVariable @string:
+                    case IPlayerVariable player:
+                        return variable.Name;
+                    case ILiteralVariable @string:
                         return @string.Value;
                     default: // Shouldn't be possible
                         throw new InvalidCastException($"{variable.Name} tried to cast to string, which resulted in an error.");

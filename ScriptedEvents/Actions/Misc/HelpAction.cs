@@ -309,64 +309,23 @@ Scripted Events Contributors:
                 if (VariableSystemV2.TryGetVariable(text, script, out VariableResult res2, skipProcessing: true))
                 {
                     valid = true;
-                    IConditionVariable variable = res2.Variable;
+                    IVariable variable = res2.Variable;
 
                     sb.AppendLine("=== VARIABLE ===");
                     sb.AppendLine($"Name: {variable.Name}");
                     sb.AppendLine($"Description: {variable.Description}");
-                    sb.AppendLine($"Stores Players: {(variable is IPlayerVariable ? "YES" : "NO")}");
-
-                    if (variable is IArgumentVariable argSupport1)
-                    {
-                        sb.AppendLine($"Usage: {variable.Name.Substring(0, variable.Name.Length - 1)}:{string.Join(":", argSupport1.ExpectedArguments.Select(arg => arg.ArgumentName.ToUpper()))}}}");
-                    }
-                    else
-                    {
-                        sb.AppendLine($"Usage: {variable.Name}");
-                    }
+                    sb.AppendLine($"Usage: {variable.Name}");
 
                     sb.Append("Variable Type: ");
 
                     switch (variable)
                     {
-                        case IBoolVariable @bool:
-                            sb.AppendLine("Boolean (true/false)");
+                        case IPlayerVariable @float:
+                            sb.AppendLine("Player variable (stores player objects)");
                             break;
-                        case ILongVariable @long:
-                        case IFloatVariable @float:
-                            sb.AppendLine("Numerical");
+                        case ILiteralVariable @string:
+                            sb.AppendLine("Literal variable (stores raw text)");
                             break;
-                        case IStringVariable @string:
-                            sb.AppendLine("String (Text)");
-                            break;
-                    }
-
-                    if (variable is IArgumentVariable argSupport)
-                    {
-                        sb.AppendLine();
-                        sb.AppendLine("Arguments:");
-
-                        foreach (Argument arg in argSupport.ExpectedArguments)
-                        {
-                            string[] chars = arg.Required ? new[] { "<", ">" } : new[] { "[", "]" };
-                            sb.AppendLine();
-                            sb.AppendLine($"{chars[0]}{arg.ArgumentName}{chars[1]}");
-                            sb.AppendLine($"  Required: {(arg.Required ? "YES" : "NO")}");
-                            sb.AppendLine($"  Type: {arg.TypeString}");
-                            sb.AppendLine($"  {arg.Description}");
-
-                            if (arg is OptionsArgument options)
-                            {
-                                sb.AppendLine($"  Valid options for this argument:");
-                                foreach (Option option in options.Options)
-                                {
-                                    if (option.Description is null || option.Description.RemoveWhitespace() == string.Empty)
-                                        sb.AppendLine($"    - '{option.Name}'");
-                                    else
-                                        sb.AppendLine($"    - '{option.Name}' - {option.Description}");
-                                }
-                            }
-                        }
                     }
 
                     sb.AppendLine();

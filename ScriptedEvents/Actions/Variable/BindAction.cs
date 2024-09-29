@@ -34,14 +34,14 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("newVariableName", typeof(string), "The name of the new variable.", true),
-            new Argument("oldVariable", typeof(IConditionVariable), "The value of the variable.", false),
+            new Argument("oldVariable", typeof(IVariable), "The value of the variable.", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             string newVarName = RawArguments[0];
-            IConditionVariable oldVar = (IConditionVariable)Arguments[1];
+            IVariable oldVar = (IVariable)Arguments[1];
 
             if (oldVar is IPlayerVariable oldPlayerVar)
             {

@@ -71,7 +71,7 @@
 
                     break;
                 default:
-                    Warn(message);
+                    Error(message);
                     break;
             }
         }

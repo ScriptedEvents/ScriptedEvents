@@ -6,7 +6,6 @@
 
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
-    using Exiled.API.Features.Items;
     using PlayerRoles;
 
     using ScriptedEvents.API.Enums;
@@ -30,128 +29,83 @@
         /// <param name="source">The script source.</param>
         /// <param name="requireBrackets">If brackets are required to convert variables.</param>
         /// <returns>The result of the process.</returns>
-        public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script source, bool requireBrackets = true)
+        public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script source)
         {
-            if (args is null)
+            void Log(string message)
             {
-                Logger.Debug("[ARGPROC] There are no raw arguments provided for this action. Ending processing.", source);
-                return new(true);
+                Logger.Debug($"[ArgumentProcessor] [Process] [{action.Name}] {message}", source);
             }
 
-            if (args.Length != 0)
+            if (args != null && args.Length > 0)
             {
-                Logger.Debug($"[ARGPROC] Arguments to process: {string.Join(", ", args)}", source);
+                Log($"Arguments to process: '{string.Join(", ", args)}'");
 
-                ArgumentProcessResult processedForLoop = HandlePlayerListComprehension(args, source, out string[] strippedArgs);
-                if (!processedForLoop.Success)
+                ArgumentProcessResult handledFORResult = HandleFORDecorator(args, source, out string[] strippedArgs);
+                if (!handledFORResult.Success)
                 {
-                    Logger.Debug("[$FOR @ ARGPROC] '$FOR' action decorator parsing failed. Ending processing.", source);
-                    return processedForLoop;
-                }
-                else
-                {
-                    Logger.Debug("[$FOR @ ARGPROC] '$FOR' action decorator parsing success. Continuing processing.", source);
+                    return handledFORResult;
                 }
 
                 args = strippedArgs;
 
-                int conditionSectionKeyword = args.IndexOf("$IF");
-                if (conditionSectionKeyword != -1)
+                ArgumentProcessResult handledIFResult = HandleIFDecorator(args, source, out string[] strippedArgs2);
+                if (!handledIFResult.Success)
                 {
-                    string[] conditionArgs = args.Skip(conditionSectionKeyword + 1).ToArray();
-                    args = args.Take(conditionSectionKeyword).ToArray();
-                    Logger.Debug($"[$IF @ ARGPROC] Evaluating condition: {string.Join(",", conditionArgs)}", source);
-                    ConditionResponse resp = ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source);
-
-                    if (!resp.Success)
-                    {
-                        Logger.Debug("[$IF @ ARGPROC] Evaluation resulted in an error. Ending processing.", source);
-                        return new(false, true, string.Empty, resp.Message);
-                    }
-
-                    if (!resp.Passed)
-                    {
-                        Logger.Debug("[$IF @ ARGPROC] Evaluation resulted in FALSE. Action shall not execute. Ending processing.", source);
-                        return new(false);
-                    }
-                    else
-                    {
-                        Logger.Debug($"[$IF @ ARGPROC] Evaluation resulted in TRUE. Action shall execute like normal. Continuing parsing.", source);
-                    }
+                    return handledIFResult;
                 }
-                else
-                {
-                    Logger.Debug($"[$IF @ ARGPROC] No '$IF' syntax was found. Continuing parsing.", source);
-                }
+
+                args = strippedArgs2;
+            }
+            else
+            {
+                Log("No arguments were provided.");
             }
 
             if (expectedArguments is null || expectedArguments.Length == 0)
             {
-                Logger.Debug("[ARGPROC] There are no arguments for this action. Ending parsing.", source);
+                Log("This action doesnt use arguments. Ending processing.");
                 return new(true);
             }
 
-            int required = expectedArguments.Count(arg => arg.Required);
-
-            if (args.Length < required)
+            int requiredArguments = expectedArguments.Count(arg => arg.Required);
+            if (args.Length < requiredArguments)
             {
                 IEnumerable<string> args2 = expectedArguments.Select(arg => $"{(arg.Required ? "<" : "[")}{arg.ArgumentName}{(arg.Required ? ">" : "]")}");
-                return new(false, true, string.Empty, ErrorGen.Get(ErrorCode.MissingArguments, action.Name, action is IAction ? "action" : "variable", required, string.Join(", ", args2)));
+                return new(false, true, string.Empty, ErrorGen.Get(ErrorCode.MissingArguments, action.Name, action is IAction ? "action" : "variable", requiredArguments, string.Join(", ", args2)));
             }
 
-            ArgumentProcessResult success = new(true);
-
-            // raw args? aww hell nah :trollface:
-            List<string> rawProcessedArgs = new();
-            foreach (string arg in args)
+            ArgumentProcessResult success = new(true)
             {
-                if (TryProcessSmartArgument(arg, action, source, out string res, false))
-                {
-                    rawProcessedArgs.Add(res);
-                }
-                else
-                {
-                    rawProcessedArgs.Add(arg);
-                }
-            }
-
-            success.StrippedRawParameters = rawProcessedArgs.ToArray();
+                StrippedRawParameters = args.ToArray(),
+            };
 
             for (int i = 0; i < expectedArguments.Length; i++)
             {
-                Argument expect = expectedArguments[i];
-                string input = string.Empty;
+                // break when we run out of args
+                if (args.Length <= i) break;
 
-                if (args.Length > i)
-                    input = args[i];
-                else
-                    continue;
+                Argument argument = expectedArguments[i];
+                string input = args[i];
 
-                ArgumentProcessResult res = ProcessIndividualParameter(expect, input, action, source, requireBrackets);
+                ArgumentProcessResult res = ProcessIndividualParameter(argument, input, action, source);
                 if (!res.Success) return res; // Throw issue to end-user
 
                 success.NewParameters.AddRange(res.NewParameters);
             }
 
-            if (args.Length > expectedArguments.Length)
-            {
-                IEnumerable<string> extraArgs = args.Skip(expectedArguments.Length);
-                foreach (string arg in extraArgs)
-                {
-                    if (TryProcessSmartArgument(arg, action, source, out string saResult, true))
-                    {
-                        success.NewParameters.Add(saResult);
-                    }
-                    else
-                    {
-                        success.NewParameters.Add(SEParser.ReplaceContaminatedValueSyntax(arg, source));
-                    }
+            success.NewParameters.AddRange(args
+                .Skip(expectedArguments.Length)
+                .Select(
+                    arg => TryProcessSmartArgument(
+                        arg.ToString(),
+                        action,
+                        source,
+                        out string result,
+                        true)
+                            ? result
+                            : arg));
 
-                    Logger.Debug("New parameters: " + string.Join(", ", success.NewParameters, source));
-                }
-            }
-
-            success.NewParameters.RemoveAll(o => o is string st && string.IsNullOrWhiteSpace(st));
+            Log($"Processed action parameters: '{string.Join(", ", success.NewParameters.Select(x => x.ToString()))}'");
 
             return success;
         }
@@ -214,7 +168,13 @@
                 string argument;
                 try
                 {
-                    argument = source.SmartArguments[actualAction][lastNum - 1];
+                    var res = source.SmartArguments[actualAction][lastNum - 1]();
+                    if (!res.Item1)
+                    {
+                        continue;
+                    }
+
+                    argument = res.Item2;
                 }
                 catch (IndexOutOfRangeException)
                 {
@@ -256,11 +216,16 @@
         /// <param name="action">The action or variable performing the process.</param>
         /// <param name="source">The script source.</param>
         /// <returns>The output of the process.</returns>
-        public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input, IScriptComponent action, Script source, bool requireBrackets = true)
+        public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input, IScriptComponent action, Script source)
         {
+            void Log(string message)
+            {
+                Logger.Debug("[ArgumentProcessor] [PIP] " + message, source);
+            }
+
             ArgumentProcessResult success = new(true);
 
-            source.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} needs a {expected.Type.Name}");
+            Log($"Parameter '{expected.ArgumentName}' from '{action.Name}' needs a '{expected.Type.Name}'");
 
             // Extra magic for options
             if (expected is OptionsArgument options)
@@ -283,7 +248,7 @@
                 }
 
                 success.NewParameters.Add(input);
-                source?.DebugLog($"[OPTION ARG] [C: {action.Name}] Param {expected.ArgumentName} now has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
+                Log($"[OPTION ARG] Parameter '{expected.ArgumentName}' now has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
                 return success;
             }
 
@@ -303,19 +268,19 @@
                     success.NewParameters.Add(result);
                     break;
                 case "Int32": // int
-                    if (!SEParser.TryParse(input, out int intRes, source, requireBrackets))
+                    if (!SEParser.TryParse(input, out int intRes, source))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                     success.NewParameters.Add(intRes);
                     break;
                 case "Int64": // long
-                    if (!SEParser.TryParse(input, out long longRes, source, requireBrackets))
+                    if (!SEParser.TryParse(input, out long longRes, source))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                     success.NewParameters.Add(longRes);
                     break;
                 case "Single": // float
-                    if (!SEParser.TryParse(input, out float floatRes, source, requireBrackets))
+                    if (!SEParser.TryParse(input, out float floatRes, source))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
 
                     success.NewParameters.Add(floatRes);
@@ -327,41 +292,21 @@
                     success.NewParameters.Add(charRes);
                     break;
 
-                // Variable Interfaces
-                case "IConditionVariable":
-                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable, requireBrackets))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
-
-                    success.NewParameters.Add(variable.Variable);
-                    break;
                 case "IStringVariable":
-                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable2, requireBrackets))
+                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable2))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
-                    if (variable2.Variable is not IStringVariable strVar)
+                    if (variable2.Variable is not ILiteralVariable strVar)
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidStringVariable, input));
 
                     success.NewParameters.Add(strVar);
                     break;
                 case "IPlayerVariable":
-                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable3, requireBrackets))
+                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable3))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
                     if (variable3.Variable is not IPlayerVariable playerVar)
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
 
                     success.NewParameters.Add(playerVar);
-                    break;
-
-                case "IItemVariable":
-                    if (!VariableSystemV2.TryGetVariable(input, source, out VariableResult variable4, requireBrackets))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
-                    if (variable4.Variable is not IItemVariable itemVar)
-
-                        // TODO: ???
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
-                    if (Item.Get(itemVar.Value) is null)
-                        return new(false, true, expected.ArgumentName, "The provided item variable is not valid.");
-
-                    success.NewParameters.Add(itemVar);
                     break;
 
                 // Array Types:
@@ -386,14 +331,14 @@
 
                 // Special
                 case "PlayerCollection":
-                    if (!SEParser.TryGetPlayers(input, null, out PlayerCollection players, source, requireBrackets))
+                    if (!SEParser.TryGetPlayers(input, null, out PlayerCollection players, source))
                         return new(false, true, expected.ArgumentName, players.Message);
 
                     success.NewParameters.Add(players);
                     break;
 
                 case "Player":
-                    if (!SEParser.TryGetPlayers(input, null, out PlayerCollection players1, source, requireBrackets))
+                    if (!SEParser.TryGetPlayers(input, null, out PlayerCollection players1, source))
                         return new(false, true, expected.ArgumentName, players1.Message);
 
                     if (players1.Length == 0)
@@ -409,9 +354,9 @@
                     break;
 
                 case "RoleTypeIdOrTeam":
-                    if (SEParser.TryParse(input, out RoleTypeId rtResult, source, requireBrackets))
+                    if (SEParser.TryParse(input, out RoleTypeId rtResult, source))
                         success.NewParameters.Add(rtResult);
-                    else if (SEParser.TryParse(input, out Team teamResult, source, requireBrackets))
+                    else if (SEParser.TryParse(input, out Team teamResult, source))
                         success.NewParameters.Add(teamResult);
                     else
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidRoleTypeOrTeam, input));
@@ -430,28 +375,31 @@
                         break;
                     }
 
-                    // Unsupported types: Parse variables in string and use that as a param (RawArguments are used for getting the raw string)
-                    // TODO: ReplaceVariable works only when a "clean" variable is provided, meaning it doesnt work when provided things like ({PLAYERSALIVE})
-                    // so we need to fix that instead of calling ReplaceVariables all the time
                     success.NewParameters.Add(SEParser.ReplaceContaminatedValueSyntax(input, source));
                     break;
             }
 
-            source?.DebugLog($"[C: {action.Name}] Param {expected.ArgumentName} has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
+            Log($"Param '{expected.ArgumentName}' processed! STD value: '{success.NewParameters.Last()}' RAW value: '{input}'");
 
             return success;
         }
 
-        private static ArgumentProcessResult HandlePlayerListComprehension(string[] inArgs, Script source, out string[] args)
+        private static ArgumentProcessResult HandleFORDecorator(string[] inArgs, Script source, out string[] args)
         {
+            void Log(string message)
+            {
+                Logger.Debug("[ArgumentProcessor] [$FOR] " + message, source);
+            }
+
             args = inArgs;
             int loopSyntaxIndex = inArgs.IndexOf("$FOR");
 
             if (loopSyntaxIndex == -1)
             {
-                Logger.Debug("$FOR: no syntax found.", source);
                 return new(true);
             }
+
+            Log("Syntax found, continuing.");
 
             string[] loopArgs = inArgs.Skip(loopSyntaxIndex + 1).ToArray();
             args = inArgs.Take(loopSyntaxIndex).ToArray();
@@ -461,30 +409,29 @@
             string playerVarNameLoopingThrough = loopArgs[2];
 
             if (inKeyword != "IN")
-                Logger.Warn($"$FOR: statement requires 'IN' keyword, provided '{inKeyword}'.", source);
+                Logger.Warn($"[$FOR DECORATOR] $FOR statement requires the 'IN' keyword (e.g. $FOR {{PLR}} IN {{PLAYERS}}). Instead of IN, '{inKeyword}' was provided.", source);
 
             List<Player> playersToLoop;
 
             if (source.PlayerLoopInfo is not null && source.PlayerLoopInfo.Line == source.CurrentLine)
             {
                 playersToLoop = source.PlayerLoopInfo.PlayersToLoopThrough;
-                Logger.Debug("$FOR: first time init loop - copy player var", source);
+                Log("A loop for this action has already been initialized.");
             }
             else
             {
                 if (!SEParser.TryGetPlayers(playerVarNameLoopingThrough, null, out PlayerCollection outPlayers, source))
                 {
-                    Logger.Debug("$FOR: provided player variable to loop through is invalid", source);
-                    return new(false, true, playerVarNameLoopingThrough, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, playerVarNameLoopingThrough));
+                    return new(false, true, ErrorGenV2.InvalidPlayerVariable(playerVarNameLoopingThrough));
                 }
 
                 playersToLoop = outPlayers.GetInnerList();
-                Logger.Debug("$FOR: not first time init loop - use existing player var", source);
+                Log($"A loop for this action has not yet been initalized. Saved '{playerVarNameLoopingThrough}' as the players to loop through.");
             }
 
             if (playersToLoop.Count == 0)
             {
-                Logger.Debug("$FOR: players to loop through are 0, going to next action", source);
+                Log("No more players to loop through. Action will be skipped.");
                 source.PlayerLoopInfo = null;
                 return new(false);
             }
@@ -498,6 +445,44 @@
 
             source.Jump(source.CurrentLine);
 
+            return new(true);
+        }
+
+        private static ArgumentProcessResult HandleIFDecorator(string[] inArgs, Script source, out string[] outArgs)
+        {
+            void Log(string message)
+            {
+                Logger.Debug("[ArgumentProcessor] [$IF] " + message, source);
+            }
+
+            outArgs = inArgs;
+
+            int conditionSectionKeyword = inArgs.IndexOf("$IF");
+            if (conditionSectionKeyword == -1)
+            {
+                return new(true);
+            }
+
+            Log($"Decorator was detected, continuing...");
+
+            string[] conditionArgs = inArgs.Skip(conditionSectionKeyword + 1).ToArray();
+            outArgs = outArgs.Take(conditionSectionKeyword).ToArray();
+
+            ConditionResponse resp = ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source);
+
+            if (!resp.Success)
+            {
+                Log("Evaluation resulted in an error.");
+                return new(false, true, string.Empty, resp.Message);
+            }
+
+            if (!resp.Passed)
+            {
+                Log("Evaluation resulted in FALSE. Action will be skipped.");
+                return new(false);
+            }
+
+            Log($"Evaluation resulted in TRUE. Continuing...");
             return new(true);
         }
     }

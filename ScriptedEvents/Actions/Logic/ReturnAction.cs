@@ -6,9 +6,8 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
 
-    public class ReturnAction : IScriptAction, ILogicAction, IHelpInfo, IArgumentVariable
+    public class ReturnAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "RETURN";

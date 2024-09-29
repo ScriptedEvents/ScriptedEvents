@@ -41,10 +41,7 @@
             { typeof(RoomType), "RoomType (ID / Number)" },
             { typeof(IVariable), "Variable" },
             { typeof(IPlayerVariable), "Player Variable" },
-            { typeof(IConditionVariable), "Condition Variable" },
-            { typeof(IStringVariable), "String (Message/Text) Variable" },
-            { typeof(IFloatVariable), "Numerical Variable" },
-            { typeof(ILongVariable), "Numerical Variable" },
+            { typeof(ILiteralVariable), "Literal (Raw Text) Variable" },
             { typeof(RoleTypeIdOrTeam), "RoleTypeId (ID / Number) OR Team (ID / Number)" },
             { typeof(object), "Any Type" },
         };

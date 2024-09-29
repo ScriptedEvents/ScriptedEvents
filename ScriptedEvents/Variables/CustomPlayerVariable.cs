@@ -1,12 +1,11 @@
 ﻿namespace ScriptedEvents.Variables
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using Exiled.API.Features;
     using ScriptedEvents.Variables.Interfaces;
 
-    public class CustomPlayerVariable : IFloatVariable, IPlayerVariable
+    public class CustomPlayerVariable : IPlayerVariable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomPlayerVariable"/> class.
@@ -33,9 +32,6 @@
 
         /// <inheritdoc/>
         public string Description { get; }
-
-        /// <inheritdoc/>
-        public float Value => Players.Where(p => p.IsConnected).Count();
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => PlayerList;

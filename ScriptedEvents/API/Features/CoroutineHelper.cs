@@ -2,10 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Features;
-
     using MEC;
-
     using ScriptedEvents.Structures;
 
     public static class CoroutineHelper

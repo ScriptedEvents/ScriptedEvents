@@ -37,7 +37,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Logger.ScriptError(Arguments.JoinMessage(0), script);
+            Logger.ScriptError(Arguments.JoinMessage(0), script, true);
             return new(true);
         }
     }

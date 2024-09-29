@@ -197,7 +197,7 @@
         /// <summary>
         /// Gets or sets the smart arguments for specified action.
         /// </summary>
-        public Dictionary<IAction, string[]> SmartArguments { get; set; } = new();
+        public Dictionary<IAction, Func<Tuple<bool, string>>[]> SmartArguments { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the names under which to create variables as result of an successful action.

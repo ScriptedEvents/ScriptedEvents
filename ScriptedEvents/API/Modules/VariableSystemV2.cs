@@ -5,7 +5,6 @@
     using System.Linq;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Pools;
 
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -114,137 +113,115 @@
             DefinedPlayerVariables.Clear();
         }
 
+        public static VariableResult InternalGetVariable(string initName, Script source)
+        {
+            void Log(string message)
+            {
+                DebugLog("[VariableSystem] [InternalGetVariable] " + message, source);
+            }
+
+            string name = initName.ToUpper();
+
+            foreach (IVariableGroup group in Groups)
+            {
+                foreach (IVariable variable in group.Variables)
+                {
+                    if (variable.Name.ToUpper() != name)
+                    {
+                        continue;
+                    }
+
+                    Log($"Variable {initName} is a predefined SE variable.");
+                    return new(true, variable);
+                }
+            }
+
+            if (DefinedVariables.TryGetValue(name, out CustomVariable customValue))
+            {
+                Log($"Variable {initName} is a global literal variable.");
+                return new(true, customValue);
+            }
+
+            if (DefinedPlayerVariables.TryGetValue(name, out CustomPlayerVariable customPlayerValue))
+            {
+                Log($"Variable {initName} is a global player variable.");
+                return new(true, customPlayerValue);
+            }
+
+            if (source.UniqueVariables.TryGetValue(name, out CustomVariable uniqueValue))
+            {
+                Log($"Variable {initName} is a local literal variable.");
+                return new(true, uniqueValue);
+            }
+
+            if (source.UniquePlayerVariables.TryGetValue(name, out CustomPlayerVariable uniquePlayerValue))
+            {
+                Log($"Variable {initName} is a local player variable.");
+                return new(true, uniquePlayerValue);
+            }
+
+            Log($"No variable matches the provided name '{initName}'.");
+            return new(false, null, $"The variable name '{initName}' (checked by '{name}') does not match any SE predefined, global or local variable.");
+        }
+
+        public static VariableResult InternalGetDynamicVariable(string initName, Script source)
+        {
+            return new(true, null);
+        }
+
         /// <summary>
         /// Gets a variable.
         /// </summary>
         /// <param name="name">The input string.</param>
         /// <param name="source">The script source.</param>
-        /// <param name="requireBrackets">If brackets are required to parse the variable.</param>
-        /// <param name="skipProcessing">If processing is to be skipped.</param>
         /// <returns>A tuple containing the variable and whether or not it's a reversed boolean value.</returns>
-        public static VariableResult GetVariable(string name, Script source, bool requireBrackets = true, bool skipProcessing = false)
+        public static VariableResult GetVariable(string name, Script source)
         {
-            DebugLog($"[GetVariable] Getting the '{name}' variable.", source);
-
-            // Do this here so individual files dont have to do it anymore
-            if (!requireBrackets)
+            void Log(string message)
             {
-                name = name.Replace("{", string.Empty).Replace("}", string.Empty);
-                name = $"{{{name}}}";
+                DebugLog("[GetVariable] " + message, source);
             }
 
-            string variableName;
-            List<string> argList = ListPool<string>.Pool.Get();
+            Log($"Getting the '{name}' variable.");
 
-            string[] arguments = name.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-            if (arguments.Length == 1)
+            if (name.StartsWith("@"))
             {
-                variableName = arguments[0];
+                Log($"'{name}' is a standard variable since '@' is the first token.");
+                return InternalGetVariable(name, source);
             }
-            else
+            else if (name.CountOccurrences('{') + name.CountOccurrences('}') == 0)
             {
-                variableName = arguments[0] + "}";
-                foreach (string argument in arguments.Skip(1))
-                {
-                    string arg = argument;
-                    if (arg.EndsWith("}")) arg = arg.Replace("}", string.Empty);
-                    argList.Add(arg);
-                    DebugLog($"[GetVariable] Formatted argument '{argument} to '{arg}'", source);
-                }
+                return new(false, null,
+                        $"'{name}' is not a variable. No start token '@' or brackets '{{}}' detected.");
             }
 
-            variableName = variableName.ToUpper();
+            return new(false, null);
 
-            DebugLog($"[GetVariable] Attempting to retrieve variable '{variableName}' with args '{string.Join(", ", argList)}'", source);
-
-            Tuple<IConditionVariable, bool> result = new(null, false);
-
-            bool foundVar = false;
-            foreach (IVariableGroup group in Groups)
+            /*
+             * add support for dynacts later
+            if (name.CountOccurrences('{') != 1 || name.CountOccurrences('}') != 1)
             {
-                foreach (IVariable variable in group.Variables)
-                {
-                    if (variable.Name.ToUpper() == variableName && variable is IConditionVariable condition)
-                    {
-                        result = new(condition, false);
-                        foundVar = true;
-                    }
-                    else if (variable is IBoolVariable boolVariable && boolVariable.ReversedName.ToUpper() == variableName)
-                    {
-                        result = new(boolVariable, true);
-                        foundVar = true;
-                    }
-                }
+                return new(false, null,
+                    $"The amount of opening ({{) and closing (}}) brackets in the variable '{name}' should be 1 each, but there are '{name.CountOccurrences('{')}' opening and '{name.CountOccurrences('}')}' closing brackets.");
             }
 
-            if (!foundVar)
-                DebugLog("[GetVariable] The variable provided is not a variable predefined by ScriptedEvents.", source);
-            else
-                DebugLog("[GetVariable] Variable provided is a variable defined by ScriptedEvents.", source);
-
-            if (DefinedVariables.TryGetValue(variableName, out CustomVariable customValue))
-                result = new(customValue, false);
-
-            if (DefinedPlayerVariables.TryGetValue(variableName, out CustomPlayerVariable customPlayerValue))
-                result = new(customPlayerValue, false);
-
-            if (source is not null && source.UniqueVariables.TryGetValue(variableName, out CustomVariable uniqueValue))
-                result = new(uniqueValue, false);
-
-            if (source is not null && source.UniquePlayerVariables.TryGetValue(variableName, out CustomPlayerVariable uniquePlayerValue))
-                result = new(uniquePlayerValue, false);
-
-            if (result.Item1 is not null)
+            if (name.First() != '{' || name.Last() != '}')
             {
-                if (result.Item1 is IArgumentVariable argSupport)
-                {
-                    DebugLog("[GetVariable] Variable provided has arguments.", source);
-                    argSupport.RawArguments = argList.ToArray();
-
-                    if (!skipProcessing)
-                    {
-                        ArgumentProcessResult processResult = ArgumentProcessor.Process(argSupport.ExpectedArguments, argSupport.RawArguments, result.Item1, source, false);
-
-                        DebugLog($"[GetVariable] Variable argument processing completed. Success: {processResult.Success} | Message: {processResult.Message ?? "N/A"}", source);
-
-                        if (!processResult.Success)
-                            return new(false, result.Item1, processResult.Message, result.Item2);
-
-                        argSupport.Arguments = processResult.NewParameters.ToArray();
-                    }
-                    else
-                    {
-                        DebugLog("[GetVariable] Argument processing skipped. Arguments and RawArguments will not be processed", source);
-                    }
-                }
-
-                if (result.Item1 is INeedSourceVariable sourcePls)
-                {
-                    sourcePls.Source = source;
-                }
+                return new(false, null,
+                    $"The opening ({{) and closing (}}) brackets in the variable '{name}' should be first and last accordingly, but theyre not.");
             }
-            else
-            {
-                return new(true, null, $"Unknown variable '{variableName}' provided.", false);
-            }
-
-            ListPool<string>.Pool.Return(argList);
-            DebugLog($"[GetVariable] Returning the variable value as {result.Item1}", source);
-            return new(true, result.Item1, string.Empty, result.Item2);
+            */
         }
 
-        public static bool TryGetVariable(string name, Script source, out VariableResult result, bool requireBrackets = true, bool skipProcessing = false)
+        public static bool TryGetVariable(string name, Script source, out VariableResult result, bool skipProcessing = false)
         {
-            DebugLog($"[TryGetVariable] Trying to get the '{name}' variable", source);
-            result = GetVariable(name, source, requireBrackets, skipProcessing);
+            result = GetVariable(name, source);
 
             if (result.Variable is null)
             {
-                DebugLog($"[TryGetVariable] Fail! Was unable to get the '{name}' variable.", source);
                 return false;
             }
 
-            DebugLog($"[TryGetVariable] Success! The '{name}' variable was successfully extracted.", source);
             return true;
         }
 

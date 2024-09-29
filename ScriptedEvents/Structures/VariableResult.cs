@@ -14,11 +14,9 @@
         /// <param name="success">Whether or not the argument processing was successful.</param>
         /// <param name="variable">The newly retrieved variable.</param>
         /// <param name="message">The error message, if <paramref name="success"/> is <see langword="false"/>.</param>
-        /// <param name="reversed">Whether or not the boolean variable was reversed.</param>
-        public VariableResult(bool success, IConditionVariable variable, string message = "", bool reversed = false)
+        public VariableResult(bool success, IVariable variable, string message = "")
         {
             ProcessorSuccess = success;
-            Reversed = reversed;
             Message = message;
             Variable = variable;
         }
@@ -29,11 +27,6 @@
         public bool ProcessorSuccess { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the boolean variable is reversed.
-        /// </summary>
-        public bool Reversed { get; }
-
-        /// <summary>
         /// Gets the error message, if <see cref="Success"/> is <see langword="false"/>.
         /// </summary>
         public string Message { get; }
@@ -41,8 +34,8 @@
         /// <summary>
         /// Gets the variable. Will be null if variable was not found.
         /// </summary>
-        public IConditionVariable Variable { get; }
+        public IVariable Variable { get; }
 
-        public string String(Script source = null, bool reversed = false) => Variable.String(source, reversed);
+        public string String(Script source = null) => Variable.String(source);
     }
 }

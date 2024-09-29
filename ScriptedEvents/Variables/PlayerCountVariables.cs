@@ -5,7 +5,6 @@
     using System.Linq;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Roles;
     using ScriptedEvents.Variables.Interfaces;
 
     public class PlayerCountVariables : IVariableGroup
@@ -19,171 +18,81 @@
             new AllPlayers(),
             new AllNpcs(),
             new PlayersAlive(),
-            new PlayersDead(),
             new Humans(),
             new Staff(),
             new NonePlayer(),
-            new Scp096Targets(),
-            new Scp173Observers(),
         };
     }
 
-    public class AllPlayers : IFloatVariable, IPlayerVariable
+    public class AllPlayers : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "{PLAYERS}";
+        public string Name => "@PLAYERS";
 
         /// <inheritdoc/>
-        public string Description => "The amount of players in the server.";
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
+        public string Description => "Returns all players on the server.";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.List;
     }
 
-    public class AllNpcs : IFloatVariable, IPlayerVariable
+    public class AllNpcs : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "{NPCS}";
+        public string Name => "@NPCS";
 
         /// <inheritdoc/>
-        public string Description => "The amount of NPCs in the server.";
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
+        public string Description => "Returns all NPCs on the server.";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Npc.List;
     }
 
-    public class PlayersAlive : IFloatVariable, IPlayerVariable
+    public class PlayersAlive : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "{PLAYERSALIVE}";
+        public string Name => "@PLAYERSALIVE";
 
         /// <inheritdoc/>
-        public string Description => "The amount of alive players in the server.";
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
+        public string Description => "Returns all alive players on the server.";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.List.Where(p => p.IsAlive);
     }
 
-    public class PlayersDead : IFloatVariable, IPlayerVariable
+    public class Humans : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "{PLAYERSDEAD}";
+        public string Name => "@HUMANS";
 
         /// <inheritdoc/>
-        public string Description => "The amount of dead players in the server.";
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
-
-        /// <inheritdoc/>
-        public IEnumerable<Player> Players => Player.List.Where(p => p.IsDead);
-    }
-
-    public class Humans : IFloatVariable, IPlayerVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{HUMANS}";
-
-        /// <inheritdoc/>
-        public string Description => "The amount of humans that are currently alive.";
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
+        public string Description => "Returns all humans that are currently alive (humans as in a human role, not not NPCs).";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.List.Where(p => p.IsHuman);
     }
 
-    public class Staff : IFloatVariable, IPlayerVariable
+    public class Staff : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "{SERVERSTAFF}";
+        public string Name => "@STAFF";
 
         /// <inheritdoc/>
-        public string Description => "The amount of staff on the server (RA access)";
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
+        public string Description => "Returns all staff on the server (RA access)";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Player.Get(player => player.RemoteAdminAccess);
     }
 
-    public class NonePlayer : IFloatVariable, IPlayerVariable
+    public class NonePlayer : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "{NONE}";
+        public string Name => "@NONE";
 
         /// <inheritdoc/>
-        public string Description => "Will always be an empty variable with no players.";
-
-        /// <inheritdoc/>
-        public float Value => 0;
+        public string Description => "Returns an empty player variable.";
 
         /// <inheritdoc/>
         public IEnumerable<Player> Players => Enumerable.Empty<Player>();
-    }
-
-    public class Scp096Targets : IFloatVariable, IPlayerVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{SCP096TARGETS}";
-
-        /// <inheritdoc/>
-        public string Description => "The amount of players that are being targeted by an SCP-096.";
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
-
-        /// <inheritdoc/>
-        public IEnumerable<Player> Players
-        {
-             get
-             {
-                List<Player> list = new();
-                foreach (Player ply in Player.Get(PlayerRoles.RoleTypeId.Scp096))
-                {
-                    list.AddRange((ply.Role as Scp096Role).Targets);
-                }
-
-                return list;
-             }
-        }
-    }
-
-    public class Scp173Observers : IFloatVariable, IPlayerVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "{SCP173OBSERVERS}";
-
-        /// <inheritdoc/>
-        public string Description => "The amount of players that are looking at SCP-173.";
-
-        /// <inheritdoc/>
-        public float Value => Players.Count();
-
-        /// <inheritdoc/>
-        public IEnumerable<Player> Players
-        {
-            get
-            {
-                List<Player> list = new();
-                foreach (Player ply in Player.Get(PlayerRoles.RoleTypeId.Scp173))
-                {
-                    list.AddRange((ply.Role as Scp173Role).ObservingPlayers);
-                }
-
-                return list;
-            }
-        }
     }
 }

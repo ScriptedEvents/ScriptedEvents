@@ -33,14 +33,14 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("variableName", typeof(IStringVariable), "The string variable.", true),
+            new Argument("variableName", typeof(ILiteralVariable), "The string variable.", true),
             new Argument("value", typeof(string), "The value to add. Math is supported.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            IStringVariable var = (IStringVariable)Arguments[0];
+            ILiteralVariable var = (ILiteralVariable)Arguments[0];
             string input = Arguments.JoinMessage(1);
 
             input = $"{var.Value} {input}";

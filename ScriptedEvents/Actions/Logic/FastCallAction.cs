@@ -79,7 +79,7 @@
                     continue;
                 }
 
-                if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult var, requireBrackets: true))
+                if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult var))
                 {
                     calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String());
 

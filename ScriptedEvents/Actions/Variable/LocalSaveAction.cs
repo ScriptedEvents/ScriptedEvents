@@ -32,7 +32,7 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("variableName", typeof(string), "The name of the new variable. Braces will be added automatically if not provided.", true),
-            new Argument("value", typeof(object), "The value to store. Math is supported.", false),
+            new Argument("value", typeof(object), "The value to store. Math is supported.", true),
         };
 
         /// <inheritdoc/>

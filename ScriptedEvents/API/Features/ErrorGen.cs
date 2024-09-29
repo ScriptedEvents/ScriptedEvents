@@ -57,22 +57,6 @@
         }
 
         /// <summary>
-        /// Generates an error string given an error ID.
-        /// </summary>
-        /// <param name="errorID">Error ID.</param>
-        /// <param name="arguments">Arguments for the error.</param>
-        /// <returns>An error string.</returns>
-        public static string Generate(int errorID, params object[] arguments)
-        {
-            ErrorInfo err = GetError(errorID);
-
-            if (err.Id == 0)
-                err = GetError(126);
-
-            return string.Format(err.ToString(), arguments);
-        }
-
-        /// <summary>
         /// Generates an error string given an error code.
         /// </summary>
         /// <param name="errorCode">Error code.</param>
@@ -87,15 +71,6 @@
 
             return string.Format(err.ToString(), arguments);
         }
-
-        /// <summary>
-        /// Generates an error string given an error ID.
-        /// </summary>
-        /// <param name="errorID">Error ID.</param>
-        /// <param name="arguments">Arguments for the error.</param>
-        /// <returns>An error string.</returns>
-        [Obsolete("Use overload with enum.")]
-        public static string Get(int errorID, params object[] arguments) => Generate(errorID, arguments);
 
         /// <summary>
         /// Generates an error string given an error code.
@@ -116,7 +91,7 @@
         /// </summary>
         public static ReadOnlyCollection<ErrorInfo> Errors { get; } = new List<ErrorInfo>()
         {
-            new ErrorInfo(
+            new(
                 100,
                 ErrorCode.AutoRun_Disabled,
                 "The '{0}' script is set to run each round, but the script is disabled!",

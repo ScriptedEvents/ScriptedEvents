@@ -2,7 +2,7 @@
 {
     using ScriptedEvents.Variables.Interfaces;
 
-    public class CustomVariable : IStringVariable
+    public class CustomVariable : ILiteralVariable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomVariable"/> class.
