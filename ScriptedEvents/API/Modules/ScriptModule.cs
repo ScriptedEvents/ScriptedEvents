@@ -904,7 +904,7 @@ namespace ScriptedEvents.API.Modules
 
                         case string strVar:
                             Log($"Action {action.Name} is adding a variable as '{zipped.name}'.");
-                            scr.UniqueVariables.Add(zipped.name, new(zipped.name, string.Empty, strVar));
+                            scr.AddVariable(zipped.name, string.Empty, strVar);
                             break;
 
                         default:
