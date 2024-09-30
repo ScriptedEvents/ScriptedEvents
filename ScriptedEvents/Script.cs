@@ -170,14 +170,14 @@
         public bool IfActionBlocksExecution { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
         /// </summary>
-        public Dictionary<string, CustomVariable> UniqueVariables { get; set; }
+        public Dictionary<string, CustomVariable> UniqueVariables { get; private set; }
 
         /// <summary>
-        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> of player variables that are unique to this script.
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables that are unique to this script.
         /// </summary>
-        public Dictionary<string, CustomPlayerVariable> UniquePlayerVariables { get; set; }
+        public Dictionary<string, CustomPlayerVariable> UniquePlayerVariables { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> of coroutines run by this script.
