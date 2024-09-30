@@ -539,7 +539,7 @@ namespace ScriptedEvents.API.Modules
             if (scr.IsDisabled)
                 throw new DisabledScriptException(scr.ScriptName);
 
-            CoroutineHandle handle = Timing.RunCoroutine((RunScriptInternal(scr, dispose)), $"SCRIPT_{scr.UniqueId}");
+            CoroutineHandle handle = Timing.RunCoroutine(SafeRunCoroutine(RunScriptInternal(scr, dispose)), $"SCRIPT_{scr.UniqueId}");
             RunningScripts.Add(scr, handle);
         }
 
