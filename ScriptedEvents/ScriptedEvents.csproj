@@ -187,6 +187,7 @@
     <Compile Include="Actions\VariableMimics\Strings\StrUpperAction.cs" />
     <Compile Include="Actions\Variable\AddToAction.cs" />
     <Compile Include="Actions\Variable\BindAction.cs" />
+    <Compile Include="Actions\Variable\EvalAction.cs" />
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
     <Compile Include="Actions\Variable\PlayerDataAction.cs" />
     <Compile Include="Actions\Variable\SaveAction.cs" />
