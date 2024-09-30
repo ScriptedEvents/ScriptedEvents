@@ -4,14 +4,13 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class LocalAction : IScriptAction, IHelpInfo
+    public class SaveAction : IScriptAction, IHelpInfo, IReturnValueAction
     {
         /// <inheritdoc/>
-        public string Name => "LOCAL";
+        public string Name => "SAVE";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -26,24 +25,20 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => "Saves a new variable. Saved variables can be used in THIS script only, and are reset when the round ends.";
+        public string Description => "Returns the value that was provided, but in a variable form.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("variableName", typeof(string), "The name of the new variable. The name must have the '@' prefix.", true),
-            new Argument("value", typeof(object), "The value to store. Math is supported.", true),
+            new Argument("value", typeof(object), "The value to store.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string varName = RawArguments[0];
-            string input = Arguments.JoinMessage(1);
-            input = SEParser.ReplaceContaminatedValueSyntax(input, script);
+            string input = Arguments.JoinMessage();
 
-            script.AddVariable(varName, string.Empty, input);
-            return new(true);
+            return new(true, variablesToRet: new[] { input });
         }
     }
 }
