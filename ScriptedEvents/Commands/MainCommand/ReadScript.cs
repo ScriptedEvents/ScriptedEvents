@@ -61,7 +61,7 @@
                     return false;
                 }
 
-                if (scr.Disabled)
+                if (scr.IsDisabled)
                 {
                     Logger.Warn($"Note: The {scr.ScriptName} script is disabled, and cannot be executed until the DISABLE flag is removed. Script contents still shown below.");
                 }

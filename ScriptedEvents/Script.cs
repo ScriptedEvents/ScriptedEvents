@@ -127,12 +127,12 @@
         /// <summary>
         /// Gets a value indicating whether or not the script is enabled.
         /// </summary>
-        public bool Disabled => HasFlag("DISABLE");
+        public bool IsDisabled => HasFlag("DISABLE");
 
         /// <summary>
         /// Gets a value indicating whether or not the script is running in debug mode.
         /// </summary>
-        public bool Debug => HasFlag("DEBUG") || MainPlugin.Configs.Debug;
+        public bool IsDebug => HasFlag("DEBUG") || MainPlugin.Configs.Debug;
 
         /// <summary>
         /// Gets a value indicating whether or not the script is marked as an admin-event (CedMod compatibility).
@@ -275,7 +275,7 @@
         /// <param name="input">The input to Logger.</param>
         public void DebugLog(string input)
         {
-            if (Debug)
+            if (IsDebug)
                 Log.Send($"[{MainPlugin.Singleton.Name}] {input}", LogLevel.Debug, ConsoleColor.Green);
         }
 

@@ -533,10 +533,10 @@ namespace ScriptedEvents.API.Modules
         /// </summary>
         /// <param name="scr">The script to run.</param>
         /// <param name="dispose">If <see langword="true"/>, the script will be disposed after finishing execution.</param>
-        /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
+        /// <exception cref="DisabledScriptException">If <see cref="Script.IsDisabled"/> is <see langword="true"/>.</exception>
         public void RunScript(Script scr, bool dispose = true)
         {
-            if (scr.Disabled)
+            if (scr.IsDisabled)
                 throw new DisabledScriptException(scr.ScriptName);
 
             CoroutineHandle handle = Timing.RunCoroutine(SafeRunCoroutine(RunScriptInternal(scr, dispose)), $"SCRIPT_{scr.UniqueId}");
@@ -578,7 +578,7 @@ namespace ScriptedEvents.API.Modules
         /// <param name="executor">The executor that is running the script. Can be null.</param>
         /// <param name="dispose">Whether to dispose of the script as soon as execution is finished.</param>
         /// <exception cref="FileNotFoundException">The script was not found.</exception>
-        /// <exception cref="DisabledScriptException">If <see cref="Script.Disabled"/> is <see langword="true"/>.</exception>
+        /// <exception cref="DisabledScriptException">If <see cref="Script.IsDisabled"/> is <see langword="true"/>.</exception>
         /// <returns>The script object.</returns>
         public Script ReadAndRun(string scriptName, ICommandSender executor, bool dispose = true)
         {

@@ -51,7 +51,7 @@
                 "AUTORUN" => script.HasFlag("AUTORUN").ToUpper(),
                 "CALLER" => script.CallerScript is not null ? script.CallerScript.ScriptName : "NONE",
                 "CONTEXT" => script.Context.ToString(),
-                "DEBUG" => script.Debug.ToUpper(),
+                "DEBUG" => script.IsDebug.ToUpper(),
                 "DURATION" => script.RunDuration.TotalSeconds.ToString(),
                 "NAME" => script.ScriptName,
                 "PATH" => script.FilePath ?? "N/A",

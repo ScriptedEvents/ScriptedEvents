@@ -25,12 +25,12 @@
             }
             catch (InvalidCastException e)
             {
-                Logger.Warn(source?.Debug == true ? e.ToString() : e.Message, source);
+                Logger.Warn(source?.IsDebug == true ? e.ToString() : e.Message, source);
             }
             catch (Exception e)
             {
-                Logger.Warn(source?.Debug == true ? e.ToString() : e.Message, source);
-                return source?.Debug == true ? e.ToString() : e.Message;
+                Logger.Warn(source?.IsDebug == true ? e.ToString() : e.Message, source);
+                return source?.IsDebug == true ? e.ToString() : e.Message;
             }
 
             return "ERROR";

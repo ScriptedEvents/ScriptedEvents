@@ -30,7 +30,7 @@
                     LogInternal.Info(message);
                     break;
                 case LogType.Debug:
-                    if (script is not null && script.Debug)
+                    if (script is not null && script.IsDebug)
                         script.DebugLog(message);
                     else
                         LogInternal.Debug(message);

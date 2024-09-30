@@ -378,7 +378,7 @@ Scripted Events Contributors:
                 sb.AppendLine($"=== ERROR CODE ===");
                 sb.AppendLine($"ID: SE-{info.Id}");
 
-                if (script is not null && script.Debug)
+                if (script is not null && script.IsDebug)
                     sb.AppendLine($"Internal ID: {info.Code}");
 
                 sb.AppendLine(info.Info);
