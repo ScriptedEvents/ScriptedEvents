@@ -539,7 +539,7 @@ namespace ScriptedEvents.API.Modules
             if (scr.IsDisabled)
                 throw new DisabledScriptException(scr.ScriptName);
 
-            CoroutineHandle handle = Timing.RunCoroutine(SafeRunCoroutine(RunScriptInternal(scr, dispose)), $"SCRIPT_{scr.UniqueId}");
+            CoroutineHandle handle = Timing.RunCoroutine((RunScriptInternal(scr, dispose)), $"SCRIPT_{scr.UniqueId}");
             RunningScripts.Add(scr, handle);
         }
 
@@ -771,7 +771,7 @@ namespace ScriptedEvents.API.Modules
 
             if (!res.Success)
             {
-                Log("Action will not be ran. " + actResp.Message != null ? actResp.Message : string.Empty);
+                Log("Action will not be ran. " + res.Message != null ? res.Message : string.Empty);
                 return true;
             }
 
@@ -855,6 +855,11 @@ namespace ScriptedEvents.API.Modules
                     }
 
                     continue;
+                }
+
+                if (delay.HasValue)
+                {
+                    yield return delay.Value;
                 }
 
                 if (resp == null)
