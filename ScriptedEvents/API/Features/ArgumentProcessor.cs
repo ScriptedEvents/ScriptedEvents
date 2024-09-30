@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
@@ -93,17 +94,17 @@
                 success.NewParameters.AddRange(res.NewParameters);
             }
 
-            success.NewParameters.AddRange(args
-                .Skip(expectedArguments.Length)
-                .Select(
-                    arg => TryProcessSmartArgument(
-                        arg.ToString(),
-                        action,
-                        source,
-                        out string result,
-                        true)
-                            ? result
-                            : arg));
+            success.NewParameters.AddRange(args.Skip(expectedArguments.Length).Select(arg =>
+            {
+                if (TryProcessSmartArgument(arg, action, source, out string saRes, true))
+                {
+                    return saRes;
+                }
+                else
+                {
+                    return SEParser.ReplaceContaminatedValueSyntax(arg, source);
+                }
+            }).ToArray());
 
             Log($"Processed action parameters: '{string.Join(", ", success.NewParameters.Select(x => x.ToString()))}'");
 
@@ -129,45 +130,28 @@
                 return false;
             }
 
-            bool skipAddingTrailingNumber = false;
-            for (int i = 0; i < input.Length; i++)
+            // Regex pattern to match '#' followed by a digit
+            Regex regex = new(@"#(\d)");
+            result = input; // Start with input as the base result
+
+            var matches = regex.Matches(input);
+
+            foreach (Match match in matches)
             {
-                char c = input[i];
-                if (skipAddingTrailingNumber)
-                {
-                    skipAddingTrailingNumber = false;
-                    continue;
-                }
+                int index = match.Index;
 
-                result += c;
-
-                if (c != '#')
+                // Try to parse the number after '#'
+                if (!int.TryParse(match.Groups[1].Value, out int lastNum) || lastNum < 1)
                 {
                     continue;
                 }
 
-                Logger.Debug($"[SMART ARG PROC] Found '#' syntax at index {i}", source);
-
-                int lastNum;
-                try
-                {
-                    lastNum = (int)char.GetNumericValue(input[i + 1]);
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    continue;
-                }
-
-                if (lastNum == -1)
-                {
-                    continue;
-                }
-
-                Logger.Debug($"[SMART ARG PROC] Found a index '{lastNum}' behind the '#'", source);
+                Logger.Debug($"[SMART ARG PROC] Found '#' syntax with index '{lastNum}' at position {index}", source);
 
                 string argument;
                 try
                 {
+                    // Fetch smart argument based on index
                     var res = source.SmartArguments[actualAction][lastNum - 1]();
                     if (!res.Item1)
                     {
@@ -189,6 +173,7 @@
 
                 if (processForVariables)
                 {
+                    // Process variables if necessary
                     argument = SEParser.ReplaceContaminatedValueSyntax(argument, source);
 
                     if (ConditionHelperV2.TryMath(argument, out MathResult mathRes))
@@ -197,11 +182,10 @@
                     }
                 }
 
-                result = result.Substring(0, result.Length - 1);
-
-                result += argument;
+                // Replace the '#<number>' with the processed argument
+                result = result.Replace(match.Value, argument);
                 didSomething = true;
-                skipAddingTrailingNumber = true;
+
                 Logger.Debug($"[SMART ARG PROC] Success! Smart arg used correctly. Result: {result}", source);
             }
 
@@ -220,12 +204,13 @@
         {
             void Log(string message)
             {
-                Logger.Debug("[ArgumentProcessor] [PIP] " + message, source);
+                if (!source.Debug) return;
+                Logger.Debug($"[ArgumentProcessor] [PIP] [{action.Name}] " + message, source);
             }
 
             ArgumentProcessResult success = new(true);
 
-            Log($"Parameter '{expected.ArgumentName}' from '{action.Name}' needs a '{expected.Type.Name}'");
+            Log($"Parameter '{expected.ArgumentName}' needs a '{expected.Type.Name}' type.");
 
             // Extra magic for options
             if (expected is OptionsArgument options)
@@ -409,7 +394,7 @@
             string playerVarNameLoopingThrough = loopArgs[2];
 
             if (inKeyword != "IN")
-                Logger.Warn($"[$FOR DECORATOR] $FOR statement requires the 'IN' keyword (e.g. $FOR {{PLR}} IN {{PLAYERS}}). Instead of IN, '{inKeyword}' was provided.", source);
+                Logger.Warn($"[$FOR DECORATOR] $FOR statement requires the 'IN' keyword (e.g. $FOR {{PLR}} IN {{PLAYERS}}). Instead of 'IN', '{inKeyword}' was provided.", source);
 
             List<Player> playersToLoop;
 
