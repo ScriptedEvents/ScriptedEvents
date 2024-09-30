@@ -189,7 +189,7 @@
     <Compile Include="Actions\Variable\BindAction.cs" />
     <Compile Include="Actions\Variable\LocalPlayerVariableAction.cs" />
     <Compile Include="Actions\Variable\PlayerDataAction.cs" />
-    <Compile Include="Actions\Variable\LocalSaveAction.cs" />
+    <Compile Include="Actions\Variable\LocalAction.cs" />
     <Compile Include="Actions\Variable\TempVariableAction.cs" />
     <Compile Include="Actions\Misc\HttpPostAction.cs" />
     <Compile Include="Actions\Misc\HttpGetAction.cs" />
