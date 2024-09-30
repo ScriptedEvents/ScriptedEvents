@@ -113,11 +113,12 @@
             DefinedPlayerVariables.Clear();
         }
 
-        public static VariableResult InternalGetVariable(string initName, Script source)
+        public static VariableResult InternalGetVariable(string initName, Script script)
         {
             void Log(string message)
             {
-                DebugLog("[VariableSystem] [InternalGetVariable] " + message, source);
+                if (!script.IsDebug) return;
+                DebugLog("[InternalGetVariable] " + message, script);
             }
 
             string name = initName.ToUpper();
@@ -148,13 +149,13 @@
                 return new(true, customPlayerValue);
             }
 
-            if (source.UniqueVariables.TryGetValue(name, out CustomVariable uniqueValue))
+            if (script.UniqueVariables.TryGetValue(name, out CustomVariable uniqueValue))
             {
                 Log($"Variable {initName} is a local literal variable.");
                 return new(true, uniqueValue);
             }
 
-            if (source.UniquePlayerVariables.TryGetValue(name, out CustomPlayerVariable uniquePlayerValue))
+            if (script.UniquePlayerVariables.TryGetValue(name, out CustomPlayerVariable uniquePlayerValue))
             {
                 Log($"Variable {initName} is a local player variable.");
                 return new(true, uniquePlayerValue);
@@ -173,13 +174,14 @@
         /// Gets a variable.
         /// </summary>
         /// <param name="name">The input string.</param>
-        /// <param name="source">The script source.</param>
+        /// <param name="script">The script source.</param>
         /// <returns>A tuple containing the variable and whether or not it's a reversed boolean value.</returns>
-        public static VariableResult GetVariable(string name, Script source)
+        public static VariableResult GetVariable(string name, Script script)
         {
             void Log(string message)
             {
-                DebugLog("[GetVariable] " + message, source);
+                if (!script.IsDebug) return;
+                DebugLog("[GetVariable] " + message, script);
             }
 
             Log($"Getting the '{name}' variable.");
@@ -187,7 +189,7 @@
             if (name.StartsWith("@"))
             {
                 Log($"'{name}' is a standard variable since '@' is the first token.");
-                return InternalGetVariable(name, source);
+                return InternalGetVariable(name, script);
             }
             else if (name.CountOccurrences('{') + name.CountOccurrences('}') == 0)
             {
@@ -229,31 +231,38 @@
         /// Attempts to get a <see cref="IEnumerable{T}"/> of <see cref="Player"/>s based on the input variable.
         /// </summary>
         /// <param name="name">The variable.</param>
-        /// <param name="source">The source script.</param>
+        /// <param name="script">The source script.</param>
         /// <param name="players">The players found. If the operation was not successful, this will contain the error reason.</param>
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <returns>Whether or not players were found.</returns>
         /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="SEParser.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
         /// <seealso cref="SEParser.TryGetPlayers(string, int?, out PlayerCollection, Script)"/>
-        public static bool TryGetPlayers(string name, Script source, out PlayerCollection players, bool requireBrackets = true)
+        public static bool TryGetPlayers(string name, Script script, out PlayerCollection players, bool requireBrackets = true)
         {
-            DebugLog($"[TryGetPlayers] Trying to fetch {name} variable. [requireBrackets {requireBrackets}]", source);
-            if (TryGetVariable(name, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
+            void Log(string msg)
+            {
+                if (!script.IsDebug) return;
+                DebugLog("[TryGetPlayers] " + msg, script);
+            }
+
+            Log($"Trying to fetch {name} variable. [requireBrackets {requireBrackets}]");
+
+            if (TryGetVariable(name, script, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
             {
                 if (result.Variable is IPlayerVariable plrVariable)
                 {
                     players = new(plrVariable.Players.ToList());
-                    DebugLog($"[TryGetPlayers] Fetch was successful!", source);
+                    Log($"Fetch was successful!");
                     return true;
                 }
                 else
                 {
-                    DebugLog($"[TryGetPlayers] Fetch was unsuccessful! Variable fetched is not a player variable.", source);
+                    Log($"Fetch was unsuccessful! Variable fetched is not a player variable.");
                 }
             }
             else
             {
-                DebugLog($"[TryGetPlayers] Fetch was unsuccessful! {result.Message}", source);
+                Log($"Fetch was unsuccessful! {result.Message}");
             }
 
             players = new(null, false, result?.Message ?? "Invalid variable provided.");
