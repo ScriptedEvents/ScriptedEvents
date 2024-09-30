@@ -27,21 +27,22 @@
         /// <param name="expectedArguments">The expected arguments.</param>
         /// <param name="args">The provided arguments.</param>
         /// <param name="action">The action or variable performing the process.</param>
-        /// <param name="source">The script source.</param>
+        /// <param name="script">The script source.</param>
         /// <param name="requireBrackets">If brackets are required to convert variables.</param>
         /// <returns>The result of the process.</returns>
-        public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script source)
+        public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script script)
         {
             void Log(string message)
             {
-                Logger.Debug($"[ArgumentProcessor] [Process] [{action.Name}] {message}", source);
+                if (!script.IsDebug) return;
+                Logger.Debug($"[ArgumentProcessor] [Process] [{action.Name}] {message}", script);
             }
 
             if (args != null && args.Length > 0)
             {
                 Log($"Arguments to process: '{string.Join(", ", args)}'");
 
-                ArgumentProcessResult handledFORResult = HandleFORDecorator(args, source, out string[] strippedArgs);
+                ArgumentProcessResult handledFORResult = HandleFORDecorator(args, script, out string[] strippedArgs);
                 if (!handledFORResult.Success)
                 {
                     return handledFORResult;
@@ -49,7 +50,7 @@
 
                 args = strippedArgs;
 
-                ArgumentProcessResult handledIFResult = HandleIFDecorator(args, source, out string[] strippedArgs2);
+                ArgumentProcessResult handledIFResult = HandleIFDecorator(args, script, out string[] strippedArgs2);
                 if (!handledIFResult.Success)
                 {
                     return handledIFResult;
@@ -88,7 +89,7 @@
                 Argument argument = expectedArguments[i];
                 string input = args[i];
 
-                ArgumentProcessResult res = ProcessIndividualParameter(argument, input, action, source);
+                ArgumentProcessResult res = ProcessIndividualParameter(argument, input, action, script);
                 if (!res.Success) return res; // Throw issue to end-user
 
                 success.NewParameters.AddRange(res.NewParameters);
@@ -96,13 +97,13 @@
 
             success.NewParameters.AddRange(args.Skip(expectedArguments.Length).Select(arg =>
             {
-                if (TryProcessSmartArgument(arg, action, source, out string saRes, true))
+                if (TryProcessSmartArgument(arg, action, script, out string saRes, true))
                 {
                     return saRes;
                 }
                 else
                 {
-                    return SEParser.ReplaceContaminatedValueSyntax(arg, source);
+                    return SEParser.ReplaceContaminatedValueSyntax(arg, script);
                 }
             }).ToArray());
 
@@ -204,7 +205,7 @@
         {
             void Log(string message)
             {
-                if (!source.Debug) return;
+                if (!source.IsDebug) return;
                 Logger.Debug($"[ArgumentProcessor] [PIP] [{action.Name}] " + message, source);
             }
 
@@ -369,11 +370,12 @@
             return success;
         }
 
-        private static ArgumentProcessResult HandleFORDecorator(string[] inArgs, Script source, out string[] args)
+        private static ArgumentProcessResult HandleFORDecorator(string[] inArgs, Script script, out string[] args)
         {
             void Log(string message)
             {
-                Logger.Debug("[ArgumentProcessor] [$FOR] " + message, source);
+                if (!script.IsDebug) return;
+                Logger.Debug("[ArgumentProcessor] [$FOR] " + message, script);
             }
 
             args = inArgs;
@@ -394,18 +396,18 @@
             string playerVarNameLoopingThrough = loopArgs[2];
 
             if (inKeyword != "IN")
-                Logger.Warn($"[$FOR DECORATOR] $FOR statement requires the 'IN' keyword (e.g. $FOR {{PLR}} IN {{PLAYERS}}). Instead of 'IN', '{inKeyword}' was provided.", source);
+                Logger.Warn($"[$FOR DECORATOR] $FOR statement requires the 'IN' keyword (e.g. $FOR {{PLR}} IN {{PLAYERS}}). Instead of 'IN', '{inKeyword}' was provided.", script);
 
             List<Player> playersToLoop;
 
-            if (source.PlayerLoopInfo is not null && source.PlayerLoopInfo.Line == source.CurrentLine)
+            if (script.PlayerLoopInfo is not null && script.PlayerLoopInfo.Line == script.CurrentLine)
             {
-                playersToLoop = source.PlayerLoopInfo.PlayersToLoopThrough;
+                playersToLoop = script.PlayerLoopInfo.PlayersToLoopThrough;
                 Log("A loop for this action has already been initialized.");
             }
             else
             {
-                if (!SEParser.TryGetPlayers(playerVarNameLoopingThrough, null, out PlayerCollection outPlayers, source))
+                if (!SEParser.TryGetPlayers(playerVarNameLoopingThrough, null, out PlayerCollection outPlayers, script))
                 {
                     return new(false, true, ErrorGenV2.InvalidPlayerVariable(playerVarNameLoopingThrough));
                 }
@@ -417,27 +419,28 @@
             if (playersToLoop.Count == 0)
             {
                 Log("No more players to loop through. Action will be skipped.");
-                source.PlayerLoopInfo = null;
+                script.PlayerLoopInfo = null;
                 return new(false);
             }
 
             Player player = playersToLoop.FirstOrDefault();
             playersToLoop.Remove(player);
 
-            source.AddPlayerVariable(newPlayerVarName, string.Empty, new[] { player });
+            script.AddPlayerVariable(newPlayerVarName, string.Empty, new[] { player });
 
-            source.PlayerLoopInfo = new(source.CurrentLine, playersToLoop);
+            script.PlayerLoopInfo = new(script.CurrentLine, playersToLoop);
 
-            source.Jump(source.CurrentLine);
+            script.Jump(script.CurrentLine);
 
             return new(true);
         }
 
-        private static ArgumentProcessResult HandleIFDecorator(string[] inArgs, Script source, out string[] outArgs)
+        private static ArgumentProcessResult HandleIFDecorator(string[] inArgs, Script script, out string[] outArgs)
         {
             void Log(string message)
             {
-                Logger.Debug("[ArgumentProcessor] [$IF] " + message, source);
+                if (!script.IsDebug) return;
+                Logger.Debug("[ArgumentProcessor] [$IF] " + message, script);
             }
 
             outArgs = inArgs;
@@ -453,7 +456,7 @@
             string[] conditionArgs = inArgs.Skip(conditionSectionKeyword + 1).ToArray();
             outArgs = outArgs.Take(conditionSectionKeyword).ToArray();
 
-            ConditionResponse resp = ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), source);
+            ConditionResponse resp = ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), script);
 
             if (!resp.Success)
             {
