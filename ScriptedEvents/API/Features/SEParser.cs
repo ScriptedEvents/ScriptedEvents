@@ -327,38 +327,27 @@
         /// <returns>The variables used within the string.</returns>
         public static (Match[] variables, Match[] dynamicActions, Match[] accessors) IsolateValueSyntax(string input, Script source, bool captureVariables = true, bool captureDynActs = true, bool captureAccessors = true)
         {
-            void Log(string msg)
-            {
-                Logger.Debug($"[SEParser] [IsolateValueSyntax] {msg}", source);
-            }
+            var empty = Array.Empty<Match>();
+            Match[] variables = empty;
+            Match[] dynamicActions = empty;
+            Match[] accessors = empty;
 
-            Match[] variables = null;
-            Match[] dynamicActions = null;
-            Match[] accessors = null;
-
-            Log($"Isolating value syntaxes from: '{input}'");
-
-            // Add @words pattern if enabled
-            if (captureVariables)
+            if (captureVariables && input.Length >= 2)
             {
                 variables = Regex.Matches(input, @"@\S+").Cast<Match>().ToArray();
-                Log($"Retreived {variables.Length} variables.");
             }
 
-            // Add {multiple words} pattern if enabled
-            if (captureDynActs)
+            if (captureDynActs && input.Length >= 3)
             {
                 dynamicActions = Regex.Matches(input, @"\{[^{}\s]*\}").Cast<Match>().ToArray();
-                Log($"Retreived {dynamicActions.Length} dynamic actions.");
             }
 
-            // Add <singleWord> pattern if enabled
-            if (captureAccessors)
+            if (captureAccessors && input.Length >= 3)
             {
                 accessors = Regex.Matches(input, @"<[^<>\s]*>").Cast<Match>().ToArray();
-                Log($"Retreived {accessors.Length} accessors.");
             }
 
+            Logger.Debug($"[SEParser] [IsolateValueSyntax] From '{input}' retreived: {variables.Length} VARS >< {dynamicActions.Length} DNCTS >< {accessors.Length} ACSRS", source);
             return (variables, dynamicActions, accessors);
         }
 
@@ -601,35 +590,40 @@
         /// Replaces all the occurrences of a value syntax in a string with regular text.
         /// </summary>
         /// <param name="input">The string to perform the replacements on.</param>
-        /// <param name="source">The script that is currently running to replace values.</param>
+        /// <param name="script">The script that is currently running to replace values.</param>
         /// <returns>The modified string.</returns>
         /// <remarks>This is intended for strings that contain both regular text and value syntax. Otherwise, see <see cref="ReplaceVariable(string, Script, bool)"/>.</remarks>
-        public static string ReplaceContaminatedValueSyntax(string input, Script source)
+        public static string ReplaceContaminatedValueSyntax(string input, Script script)
         {
             void Log(string msg)
             {
-                Logger.Debug($"[SEParser] [RCVS] {msg}", source);
+                Logger.Debug($"[SEParser] [RCVS] {msg}", script);
             }
 
-            var values = IsolateValueSyntax(input, source);
+            var values = IsolateValueSyntax(input, script);
             StringBuilder output = new(input);
 
             foreach (Match accssr in values.accessors)
             {
-                output.Replace(accssr.Value, "PLACEHOLDER", accssr.Index, accssr.Length);
+                output.Replace(accssr.Value, "<ACCESSOR>", accssr.Index, accssr.Length);
             }
 
             foreach (Match dynact in values.dynamicActions)
             {
-                output.Replace(dynact.Value, "PLACEHOLDER", dynact.Index, dynact.Length);
+                output.Replace(dynact.Value, "{DYNACT}", dynact.Index, dynact.Length);
             }
 
             foreach (Match varbl in values.variables)
             {
-                output.Replace(varbl.Value, "PLACEHOLDER", varbl.Index, varbl.Length);
+                if (!VariableSystemV2.TryGetVariable(varbl.Value, script, out VariableResult res) || res.Variable is null)
+                {
+                    continue;
+                }
+
+                output.Replace(varbl.Value, res.Variable.String(), varbl.Index, varbl.Length);
             }
 
-            return input;
+            return output.ToString();
         }
     }
 }
