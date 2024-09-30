@@ -467,7 +467,7 @@
             if (!resp.Passed)
             {
                 Log("Evaluation resulted in FALSE. Action will be skipped.");
-                return new(false);
+                return new(false, false);
             }
 
             Log($"Evaluation resulted in TRUE. Continuing...");
