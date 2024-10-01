@@ -30,7 +30,7 @@
         /// <param name="script">The script source.</param>
         /// <param name="requireBrackets">If brackets are required to convert variables.</param>
         /// <returns>The result of the process.</returns>
-        public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script script)
+        public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script script, bool processForDecorators = true)
         {
             void Log(string message)
             {
@@ -38,7 +38,7 @@
                 Logger.Debug($"[ArgumentProcessor] [Process] [{action.Name}] {message}", script);
             }
 
-            if (args != null && args.Length > 0)
+            if (args != null && args.Length > 0 && processForDecorators)
             {
                 Log($"Arguments to process: '{string.Join(", ", args)}'");
 
@@ -57,6 +57,10 @@
                 }
 
                 args = strippedArgs2;
+            }
+            else if (!processForDecorators)
+            {
+                Log("Action is not supposed to have decorators.");
             }
             else
             {
@@ -97,7 +101,7 @@
 
             success.NewParameters.AddRange(args.Skip(expectedArguments.Length).Select(arg =>
             {
-                if (TryProcessSmartArgument(arg, action, script, out string saRes, true))
+                if (TryProcessSmartArgument(arg, action, script, out string saRes))
                 {
                     return saRes;
                 }
@@ -119,9 +123,8 @@
         /// <param name="action">The action or variable performing the process.</param>
         /// <param name="source">The script source.</param>
         /// <param name="result">The resulting string. Empty if method returns false.</param>
-        /// <param name="processForVariables">TShould fetched values from smart params be processed.</param>
         /// <returns>The output of the process.</returns>
-        public static bool TryProcessSmartArgument(string input, IScriptComponent action, Script source, out string result, bool processForVariables)
+        public static bool TryProcessSmartArgument(string input, IScriptComponent action, Script source, out string result)
         {
             result = string.Empty;
             bool didSomething = false;
@@ -171,17 +174,6 @@
                 }
 
                 Logger.Debug($"[SMART ARG PROC] Index '{lastNum}' is valid", source);
-
-                if (processForVariables)
-                {
-                    // Process variables if necessary
-                    argument = SEParser.ReplaceContaminatedValueSyntax(argument, source);
-
-                    if (ConditionHelperV2.TryMath(argument, out MathResult mathRes))
-                    {
-                        argument = mathRes.Result.ToString();
-                    }
-                }
 
                 // Replace the '#<number>' with the processed argument
                 result = result.Replace(match.Value, argument);
@@ -239,7 +231,7 @@
             }
 
             // smart action arguments
-            if (TryProcessSmartArgument(input, action, source, out string saResult, true))
+            if (TryProcessSmartArgument(input, action, source, out string saResult))
             {
                 input = saResult;
             }
