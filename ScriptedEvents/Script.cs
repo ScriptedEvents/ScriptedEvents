@@ -100,9 +100,9 @@
         public Dictionary<string, int> FunctionLabels { get; set; }
 
         /// <summary>
-        /// Gets the line the script is currently on.
+        /// Gets or sets the line the script is currently on.
         /// </summary>
-        public int CurrentLine { get; private set; }
+        public int CurrentLine { get; set; } = 0;
 
         /// <summary>
         /// Gets a value indicating whether or not the script is currently executing.
