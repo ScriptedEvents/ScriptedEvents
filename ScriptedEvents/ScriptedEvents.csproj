@@ -167,6 +167,7 @@
     <Compile Include="Actions\VariableMimics\Misc\DisplayPlayerAction.cs" />
     <Compile Include="Actions\VariableMimics\Misc\DoorStateAction.cs" />
     <Compile Include="Actions\VariableMimics\Misc\KillsAction.cs" />
+    <Compile Include="Actions\VariableMimics\Misc\PlayerLenAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\EscapesAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\RolePlayersAction.cs" />
     <Compile Include="Actions\VariableMimics\PlayerFetch\TeamPlayersAction.cs" />
