@@ -11,7 +11,7 @@
     public class DisplayPlayerAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "DISPLAYPLR";
+        public string Name => "DISPLAY";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
