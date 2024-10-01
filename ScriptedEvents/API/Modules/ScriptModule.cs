@@ -88,8 +88,6 @@ namespace ScriptedEvents.API.Modules
             base.Init();
 
             RegisterActions(MainPlugin.Singleton.Assembly);
-
-            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
         }
 
         public override void Kill()
@@ -97,13 +95,11 @@ namespace ScriptedEvents.API.Modules
             base.Kill();
             StopAllScripts();
             ActionTypes.Clear();
-
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
         }
 
-        public void OnWaitingForPlayers()
+        public void RegisterAutorunScripts(IEnumerable<Script> allScripts)
         {
-            foreach (Script scr in ListScripts())
+            foreach (Script scr in allScripts)
             {
                 if (!scr.HasFlag("AUTORUN"))
                 {
@@ -225,36 +221,66 @@ namespace ScriptedEvents.API.Modules
                 Logger.Debug($"[ScriptModule] [ReadScript] {message}", script);
             }
 
+            string scriptPath = GetFilePath(scriptName);
+
+            // Fill out script data
+            if (MainPlugin.Singleton.Config.RequiredPermissions is not null && MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2) == true)
+            {
+                script.ReadPermission += $".{perm2}";
+                script.ExecutePermission += $".{perm2}";
+            }
+
+            script.ScriptName = scriptName;
+            script.RawText = allText;
+            script.FilePath = scriptPath;
+            script.LastRead = File.GetLastAccessTimeUtc(scriptPath);
+            script.LastEdited = File.GetLastWriteTimeUtc(scriptPath);
+
+            if (executor is null)
+            {
+                script.Context = ExecuteContext.Automatic;
+            }
+            else if (executor is ServerConsoleSender console)
+            {
+                script.Context = ExecuteContext.ServerConsole;
+            }
+            else if (executor is PlayerCommandSender player)
+            {
+                script.Context = ExecuteContext.RemoteAdmin;
+            }
+
+            script.Sender = executor;
+
             List<IAction> actionList = ListPool<IAction>.Pool.Get();
 
-            Action<IAction> addActionNoArgs = (action) =>
+            void AddActionNoArgs(IAction action)
             {
                 script.OriginalActionArgs[action] = Array.Empty<string>();
                 actionList.Add(action);
-            };
+            }
 
             string[] array = allText.Split('\n');
             IAction lastAction = null;
             for (int currentline = 0; currentline < array.Length; currentline++)
             {
-                array[currentline] = array[currentline].TrimStart().Replace("\n", string.Empty);
+                array[currentline] = array[currentline].Trim().Replace("\n", string.Empty).Replace("\r", string.Empty);
 
                 // no action
                 string line = array[currentline];
                 if (string.IsNullOrWhiteSpace(line))
                 {
-                    addActionNoArgs(new NullAction("BLANK LINE"));
+                    AddActionNoArgs(new NullAction("BLANK LINE"));
                     continue;
                 }
                 else if (line.StartsWith("##"))
                 {
                     inMultilineComment = !inMultilineComment;
-                    addActionNoArgs(new NullAction("COMMENT"));
+                    AddActionNoArgs(new NullAction("MULTI COMMENT"));
                     continue;
                 }
                 else if (line.StartsWith("#") || inMultilineComment)
                 {
-                    addActionNoArgs(new NullAction("COMMENT"));
+                    AddActionNoArgs(new NullAction("COMMENT"));
                     continue;
                 }
 
@@ -286,7 +312,7 @@ namespace ScriptedEvents.API.Modules
                     else if (!suppressWarnings)
                         Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
 
-                    addActionNoArgs(new StartFunctionAction());
+                    AddActionNoArgs(new StartFunctionAction());
                     continue;
                 }
 
@@ -301,16 +327,21 @@ namespace ScriptedEvents.API.Modules
 
                     string value = string.Join(" ", structureParts.Skip(1)).Trim();
 
+                    Tuple<bool, string> Lambda()
+                    {
+                        return new(true, SEParser.ReplaceContaminatedValueSyntax(value, script));
+                    }
+
                     if (script.SmartArguments.ContainsKey(lastAction))
                     {
-                        script.SmartArguments[lastAction] = script.SmartArguments[lastAction].Append(() => new(true, value)).ToArray();
+                        script.SmartArguments[lastAction] = script.SmartArguments[lastAction].Append(Lambda).ToArray();
                     }
                     else
                     {
-                        script.SmartArguments[lastAction] = new Func<Tuple<bool, string>>[] { () => new(true, value) };
+                        script.SmartArguments[lastAction] = new Func<Tuple<bool, string>>[] { Lambda };
                     }
 
-                    addActionNoArgs(new NullAction($"SMART ARG"));
+                    AddActionNoArgs(new NullAction($"SMART ARG"));
                     continue;
                 }
 
@@ -334,14 +365,21 @@ namespace ScriptedEvents.API.Modules
 
                     IAction actionToExtract = Activator.CreateInstance(actionType1) as IAction;
 
+                    if (actionToExtract is ITimingAction)
+                    {
+                        Logger.Log($"{actionToExtract.Name} is a timing action, which cannot be used with smart extractors.", LogType.Warning, script, currentline + 1);
+                        continue;
+                    }
+
+                    if (actionToExtract is not IReturnValueAction)
+                    {
+                        Logger.Log($"{actionToExtract.Name} action does not return any values, therefore can't be used with smart accessors.", LogType.Warning, script, currentline + 1);
+                        continue;
+                    }
+
                     Tuple<bool, string> ActionWrapper()
                     {
-                        if (actionToExtract is ITimingAction)
-                        {
-                            return new(false, "Action is a timing action, which cannot be used with smart extractors.");
-                        }
-
-                        if (!TryRunAction(script, actionToExtract, out ActionResponse resp, out float? delay, actionArgs))
+                        if (!TryRunAction(script, actionToExtract, out ActionResponse resp, out float? _, actionArgs))
                         {
                             return new(false, resp.Message);
                         }
@@ -375,7 +413,7 @@ namespace ScriptedEvents.API.Modules
                         script.SmartArguments[lastAction] = new Func<Tuple<bool, string>>[] { ActionWrapper };
                     }
 
-                    addActionNoArgs(new NullAction($"SMART EXTR"));
+                    AddActionNoArgs(new NullAction($"SMART EXTR"));
                     continue;
                 }
 
@@ -394,7 +432,7 @@ namespace ScriptedEvents.API.Modules
                         Logger.Warn(ErrorGen.Get(ErrorCode.MultipleFlagDefs, flag, scriptName));
                     }
 
-                    addActionNoArgs(new NullAction("FLAG DEFINE"));
+                    AddActionNoArgs(new NullAction("FLAG DEFINE"));
                     continue;
                 }
 
@@ -408,7 +446,7 @@ namespace ScriptedEvents.API.Modules
                     else if (!suppressWarnings)
                         Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
 
-                    addActionNoArgs(new NullAction($"{labelName} LABEL"));
+                    AddActionNoArgs(new NullAction($"{labelName} LABEL"));
                     continue;
                 }
 
@@ -441,7 +479,7 @@ namespace ScriptedEvents.API.Modules
 
                 if (!TryGetActionType(keyword, out Type actionType))
                 {
-                    // Check for custom actions
+                    /*
                     if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
                     {
                         List<string> customActArgs = ListPool<string>.Pool.Get();
@@ -471,7 +509,8 @@ namespace ScriptedEvents.API.Modules
                     if (!suppressWarnings)
                         Logger.Warn(ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName), script);
 
-                    addActionNoArgs(new NullAction("ERROR"));
+                    */
+                    AddActionNoArgs(new NullAction("ERROR"));
                     continue;
                 }
 
@@ -492,36 +531,7 @@ namespace ScriptedEvents.API.Modules
                 ListPool<string>.Pool.Return(structureParts);
             }
 
-            string scriptPath = GetFilePath(scriptName);
-
-            // Fill out script data
-            if (MainPlugin.Singleton.Config.RequiredPermissions is not null && MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2) == true)
-            {
-                script.ReadPermission += $".{perm2}";
-                script.ExecutePermission += $".{perm2}";
-            }
-
-            script.ScriptName = scriptName;
-            script.RawText = allText;
-            script.FilePath = scriptPath;
-            script.LastRead = File.GetLastAccessTimeUtc(scriptPath);
-            script.LastEdited = File.GetLastWriteTimeUtc(scriptPath);
             script.Actions = ListPool<IAction>.Pool.ToArrayReturn(actionList);
-
-            if (executor is null)
-            {
-                script.Context = ExecuteContext.Automatic;
-            }
-            else if (executor is ServerConsoleSender console)
-            {
-                script.Context = ExecuteContext.ServerConsole;
-            }
-            else if (executor is PlayerCommandSender player)
-            {
-                script.Context = ExecuteContext.RemoteAdmin;
-            }
-
-            script.Sender = executor;
 
             Log($"Debug script read successfully. Name: {script.ScriptName} | Actions: {script.Actions.Count(act => act is not NullAction)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Count(action => action is NullAction @null && @null.Type is "COMMENT")}");
 
@@ -726,7 +736,7 @@ namespace ScriptedEvents.API.Modules
             MainPlugin.Info($"Assembly '{assembly.GetName().Name}' has registered {i} actions.");
         }
 
-        public static bool TryRunAction(Script scr, IAction action, out ActionResponse actResp, out float? delay, string[] originalActionArgs = null)
+        public static bool TryRunAction(Script scr, IAction action, out ActionResponse actResp, out float? delay, string[] originalActionArgs = null, bool processForDecorators = true)
         {
             actResp = null;
             delay = null;
@@ -761,7 +771,7 @@ namespace ScriptedEvents.API.Modules
                 }
             }
 
-            ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalActionArgs, action, scr);
+            ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalActionArgs, action, scr, processForDecorators);
             if (res.Errored)
             {
                 string message = (res.FailedArgument != string.Empty ? $"[Argument: {res.FailedArgument}] " : string.Empty) + res.Message;
