@@ -40,9 +40,9 @@
             string input = Arguments.JoinMessage();
             input = SEParser.ReplaceContaminatedValueSyntax(input, script);
 
-            if (ConditionHelperV2.TryMath(input, out var condition))
+            if (ConditionHelperV2.TryMath(input, out var res))
             {
-                return new(true, variablesToRet: new[] { condition.Result.ToUpper() });
+                return new(true, variablesToRet: new[] { res.Result == 1f ? "TRUE" : "FALSE" });
             }
 
             return new(true, variablesToRet: new[] { input });
