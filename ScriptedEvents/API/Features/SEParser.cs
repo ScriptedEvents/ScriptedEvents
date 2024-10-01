@@ -14,6 +14,7 @@
     using Exiled.CustomItems.API.Features;
     using PlayerRoles;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
@@ -351,6 +352,85 @@
             return (variables, dynamicActions, accessors);
         }
 
+        public static bool TryGetDynamicAction<T>(string input, Script script, out T output)
+        {
+            if (typeof(T) != typeof(string) && typeof(T) != typeof(Player[]))
+            {
+                throw new ArgumentException(typeof(T).FullName);
+            }
+
+            // "{LIMIT:@PLAYERS:2}"
+            input = input.Trim();
+            output = default;
+
+            if (!input.StartsWith("{") || !input.EndsWith("}"))
+            {
+                return false;
+            }
+
+            // "LIMIT:@PLAYERS:2
+            input = input.Substring(1, input.Length - 1);
+
+            // ["LIMIT", "@PLAYERS", "2"]
+            string[] parts = input.Split(new[] { ':' });
+
+            // "LIMIT"
+            string actionName = parts[0];
+
+            // ["@PLAYERS", "2"]
+            string[] arguments = parts.Skip(1).ToArray();
+
+            if (!MainPlugin.ScriptModule.TryGetActionType(actionName, out Type actionType1))
+            {
+                return false;
+            }
+
+            IAction actionToExtract = Activator.CreateInstance(actionType1) as IAction;
+
+            if (actionToExtract is ITimingAction)
+            {
+                // Logger.Log($"{actionToExtract.Name} is a timing action, which cannot be used with smart extractors.", LogType.Warning, script, currentline + 1);
+                return false;
+            }
+
+            if (actionToExtract is not IReturnValueAction)
+            {
+                // Logger.Log($"{actionToExtract.Name} action does not return any values, therefore can't be used with smart accessors.", LogType.Warning, script, currentline + 1);
+                return false;
+            }
+
+            if (!ScriptModule.TryRunAction(script, actionToExtract, out ActionResponse resp, out float? _, arguments))
+            {
+                return false;
+            }
+
+            if (resp == null || resp.ResponseVariables.Length == 0)
+            {
+                return false;
+            }
+
+            if (resp.ResponseVariables.Length > 1)
+            {
+                // Log("Action returned more than 1 value. Using the first one as default.");
+            }
+
+            object value = resp.ResponseVariables[0];
+
+            if (value is not string)
+            {
+                return false;
+            }
+
+            output = value switch
+            {
+                string s => (T)(object)s,
+                Player[] players => (T)(object)players,
+                _ => throw new InvalidOperationException("Unsupported type")
+            };
+
+            return true;
+        }
+
         public static bool TryGetAccessor(string input, Script source, out string result)
         {
             void Log(string msg)
@@ -605,12 +685,22 @@
 
             foreach (Match accssr in values.accessors)
             {
-                output.Replace(accssr.Value, "<ACCESSOR>", accssr.Index, accssr.Length);
+                if (!TryGetAccessor(accssr.Value, script, out string res))
+                {
+                    continue;
+                }
+
+                output.Replace(accssr.Value, res, accssr.Index, accssr.Length);
             }
 
             foreach (Match dynact in values.dynamicActions)
             {
-                output.Replace(dynact.Value, "{DYNACT}", dynact.Index, dynact.Length);
+                if (!TryGetDynamicAction(dynact.Value, script, out string res))
+                {
+                    continue;
+                }
+
+                output.Replace(dynact.Value, res, dynact.Index, dynact.Length);
             }
 
             foreach (Match varbl in values.variables)
