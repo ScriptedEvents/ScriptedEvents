@@ -85,7 +85,15 @@
             CurrentEventData = new();
             CurrentCustomEventData = new();
 
-            foreach (Script scr in MainPlugin.ScriptModule.ListScripts())
+            var scripts = MainPlugin.ScriptModule.ListScripts();
+            RegisterEventScripts(scripts);
+            MainPlugin.ScriptModule.RegisterAutorunScripts(scripts);
+            foreach (var script in scripts) script.Dispose();
+        }
+
+        public void RegisterEventScripts(List<Script> allScripts)
+        {
+            foreach (Script scr in allScripts)
             {
                 if (scr.HasFlag("EVENT", out Flag f))
                 {
@@ -113,17 +121,17 @@
                         CurrentCustomEventData.Add(cEvName, new List<string>() { scr.ScriptName });
                     }
                 }
-
-                scr.Dispose();
             }
 
-            foreach (KeyValuePair<string, List<string>> ev in CurrentEventData)
+            if (CurrentEventData is not null)
             {
-                Logger.Debug("Setting up new 'on' event");
-                Logger.Debug($"Event: {ev.Key}");
-                Logger.Debug($"Scripts: {string.Join(", ", ev.Value)}");
-
-                ConnectDynamicExiledEvent(ev.Key);
+                foreach (KeyValuePair<string, List<string>> ev in CurrentEventData)
+                {
+                    Logger.Debug("Setting up new 'on' event");
+                    Logger.Debug($"Event: {ev.Key}");
+                    Logger.Debug($"Scripts: {string.Join(", ", ev.Value)}");
+                    ConnectDynamicExiledEvent(ev.Key);
+                }
             }
         }
 
