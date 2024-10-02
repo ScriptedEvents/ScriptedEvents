@@ -21,11 +21,11 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("ISDETONATED", "Returns a TRUE/FALSE value saying if the warhead is detonated."),
-                new("ISOPEN", "Returns a TRUE/FALSE value saying if the warhead is open."),
-                new("ISARMED", "Returns a TRUE/FALSE value saying if the warhead is armed."),
-                new("ISCOUNTING", "Returns a TRUE/FALSE value saying if the warhead is detonating."),
-                new("DETONATIONTIME", "Returns the amount of seconds remaining to the explosion.")),
+                new("IsDetonated", "Returns a TRUE/FALSE value saying if the warhead is detonated."),
+                new("IsOpen", "Returns a TRUE/FALSE value saying if the warhead is open."),
+                new("IsArmed", "Returns a TRUE/FALSE value saying if the warhead is armed."),
+                new("IsCounting", "Returns a TRUE/FALSE value saying if the warhead is detonating."),
+                new("TimeLeft", "Returns the amount of seconds remaining to the explosion.")),
         };
 
         /// <inheritdoc/>
@@ -49,7 +49,7 @@
                 "ISOPEN" => Warhead.IsKeycardActivated.ToUpper(),
                 "ISARMED" => Warhead.LeverStatus.ToUpper(),
                 "ISCOUNTING" => Warhead.IsInProgress.ToUpper(),
-                "DETONATIONTIME" => Warhead.DetonationTimer.ToUpper(),
+                "TIMELEFT" => Warhead.DetonationTimer.ToUpper(),
                 _ => throw new ArgumentException("Invalid mode."),
             };
 

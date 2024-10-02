@@ -14,21 +14,21 @@
         public string Name => "TIMEINFO";
 
         /// <inheritdoc/>
-        public string Description => "All-in-one action for getting time related information.";
+        public string Description => "All-in-one action for getting current time related information.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("TICKS", "Returns the amount of seconds since 1970."),
-                new("SECOND", "Returns a number in range 0-59"),
-                new("MINUTE", "Returns a number in range 0-59"),
-                new("HOUR", "Returns a number in range 0-23"),
-                new("MONTH", "Returns a number in range 1-12"),
-                new("YEAR", "Returns the amount of years since the birth of Christ"),
-                new("DAYOFWEEK", "Returns a number in range 1-7 (Warning! This follows the US system, where Sunday is the first day of the week)"),
-                new("DAYOFMONTH", "Returns a number in range 0-31"),
-                new("DAYOFYEAR", "Returns a number in range 0-366")),
+                new("Ticks", "Returns the amount of seconds since 1970."),
+                new("Second", "Returns a number in range 0-59"),
+                new("Minute", "Returns a number in range 0-59"),
+                new("Hour", "Returns a number in range 0-23"),
+                new("Month", "Returns a number in range 1-12"),
+                new("Year", "Returns the amount of years since the birth of Christ"),
+                new("DayOfWeek", "Returns a number in range 1-7 (Warning! This follows the US system, where Sunday is the first day of the week)"),
+                new("DayOfMonth", "Returns a number in range 0-31"),
+                new("DayOfYear", "Returns a number in range 0-366")),
         };
 
         /// <inheritdoc/>

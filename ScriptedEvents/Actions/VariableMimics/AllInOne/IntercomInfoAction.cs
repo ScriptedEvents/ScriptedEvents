@@ -20,11 +20,11 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                    new("SPEAKER", "Returns the player who is speaking on the intercom."),
-                    new("ISREADY", "Returns a TRUE/FALSE value saying if intercom ready to detonate."),
-                    new("COOLDOWNLEFT", "Returns the amount of seconds of the cooldown remaining."),
-                    new("TIMELEFT", "Returns the amount of seconds left for speaking."),
-                    new("INUSE", "Returns a TRUE/FALSE value saying if intercom is in use already.")),
+                    new("Speaker", "Returns the player who is speaking on the intercom."),
+                    new("IsReady", "Returns a TRUE/FALSE value saying if intercom ready to detonate."),
+                    new("CooldownLeft", "Returns the amount of seconds of the cooldown remaining."),
+                    new("TimeLeft", "Returns the amount of seconds left for speaking."),
+                    new("InUse", "Returns a TRUE/FALSE value saying if intercom is in use already.")),
         };
 
         /// <inheritdoc/>

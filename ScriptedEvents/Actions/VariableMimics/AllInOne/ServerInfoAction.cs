@@ -22,9 +22,9 @@
         {
             new OptionsArgument("mode", true,
                 new("IP", "Returns the IP of the server."),
-                new("PORT", "Returns the port of the server."),
-                new("NAME", "Returns the name of the server."),
-                new("MAXPLAYERS", "Returns the maximum amount of players the server is set to."),
+                new("Port", "Returns the port of the server."),
+                new("Name", "Returns the name of the server."),
+                new("MaxPlayers", "Returns the maximum amount of players the server is set to."),
                 new("TPS", "Returns the amount of ticks per second the server is running on.")),
         };
 

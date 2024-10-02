@@ -21,11 +21,11 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SEED", "Returns the map seed."),
-                new("ISOVERCHARGED", "Returns a TRUE/FALSE value saying if the overcharge happened."),
-                new("ISDECONTAMINATED", "Returns a TRUE/FALSE value saying if the LightContainment is decontaminated."),
-                new("IS914ACTIVE", "Returns a TRUE/FALSE value saying if SCP-914 is currently active."),
-                new("ISCASSIESPEAKING", "Returns a TRUE/FALSE value saying if the cassie is currently speaking.")),
+                new("Seed", "Returns the map seed."),
+                new("IsOvercharged", "Returns a TRUE/FALSE value saying if the overcharge happened."),
+                new("IsDecontaminated", "Returns a TRUE/FALSE value saying if the LightContainment is decontaminated."),
+                new("Is914Active", "Returns a TRUE/FALSE value saying if SCP-914 is currently active."),
+                new("IsCassieSpeaking", "Returns a TRUE/FALSE value saying if the cassie is currently speaking.")),
         };
 
         /// <inheritdoc/>

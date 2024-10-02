@@ -21,9 +21,9 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("WAITINGTIME", "Returns the timer for waiting for players in lobby."),
-                new("ISACTIVE", "Returns a TRUE/FALSE value saying if the lobby is active."),
-                new("ISLOCKED", "Returns a TRUE/FALSE value saying if the lobby is locked.")),
+                new("WaitTime", "Returns a number saying how many seconds are left until the round start."),
+                new("IsActive", "Returns a TRUE/FALSE value saying if the lobby is active."),
+                new("IsLocked", "Returns a TRUE/FALSE value saying if the lobby is locked.")),
         };
 
         /// <inheritdoc/>
@@ -43,7 +43,7 @@
         {
             string ret = Arguments[0].ToUpper() switch
             {
-                "WAITINGTIME" => Round.LobbyWaitingTime.ToString(),
+                "WAITTIME" => Round.LobbyWaitingTime.ToString(),
                 "ISACTIVE" => Round.IsLobby.ToUpper(),
                 "ISLOCKED" => Round.IsLobbyLocked.ToUpper(),
                 _ => throw new ArgumentException()

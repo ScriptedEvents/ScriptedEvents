@@ -21,15 +21,15 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("NEXTTEAM", "Returns the next SpawnableTeamType to spawn."),
-                new("LASTTEAM", "Returns the last spawned SpawnableTeamType."),
-                new("LASTUNIT", "Returns the last spawned SpawnableTeamType UNIT."),
-                new("TOTALWAVES", "Returns the amount of spawn waves which have occured."),
-                new("NTFTICKETS", "Returns the current NTF tickets."),
-                new("CHAOSTICKETS", "Returns the current CI tickets."),
-                new("TIMEUNTILNEW", "Returns the amount of seconds remaining until the new spawn wave."),
-                new("TIMESINCELAST", "Returns the amount of seconds since the last spawn wave."),
-                new("RESPAWNEDPLAYERS", "Returns the players which have spawned with the last spawn wave.")),
+                new("NextTeam", "Returns the next SpawnableTeamType to spawn."),
+                new("LastTeam", "Returns the last spawned SpawnableTeamType."),
+                new("LastUnit", "Returns the last spawned SpawnableTeamType UNIT."),
+                new("TotalWaves", "Returns the amount of spawn waves which have occured."),
+                new("NtfTickets", "Returns the current NTF tickets."),
+                new("ChaosTickets", "Returns the current CI tickets."),
+                new("TimeUntilNew", "Returns the amount of seconds remaining until the new spawn wave."),
+                new("TimeSinceLast", "Returns the amount of seconds since the last spawn wave."),
+                new("RespawnedPlayers", "Returns the players which have spawned with the last spawn wave.")),
         };
 
         /// <inheritdoc/>

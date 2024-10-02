@@ -22,12 +22,12 @@
         public Argument[] ExpectedArguments => new[]
         {
              new OptionsArgument("mode", true,
-                    new("ISVALID", "Is provided item id a valid item."),
-                    new("ISCARRIED", "Is item is in owner's inventory."),
-                    new("SCALE", "Item's scale."),
-                    new("WEIGHT", "Item's weight."),
-                    new("OWNER", "Item's owner."),
-                    new("TYPE", "Item's type.")),
+                    new("IsValid", "Is provided item id a valid item."),
+                    new("IsCarried", "Is item is in owner's inventory."),
+                    new("Scale", "Item's scale."),
+                    new("Weight", "Item's weight."),
+                    new("Owner", "Item's owner."),
+                    new("Type", "Item's type.")),
              new Argument("itemId", typeof(ushort), "The item id to use.", true),
         };
 

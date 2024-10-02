@@ -23,11 +23,11 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("ENGAGED", "Returns the amount of engaged generators."),
-                new("ACTIVATING", "Returns the amount of activating generators."),
-                new("UNLOCKED", "Returns the amount of unlocked generators."),
-                new("OPENED", "Returns the amount of open generators."),
-                new("CLOSED", "Returns the amount of closed generators.")),
+                new("Engaged", "Returns the amount of engaged generators."),
+                new("Activating", "Returns the amount of activating generators."),
+                new("Unlocked", "Returns the amount of unlocked generators."),
+                new("Opened", "Returns the amount of open generators."),
+                new("Closed", "Returns the amount of closed generators.")),
         };
 
         /// <inheritdoc/>

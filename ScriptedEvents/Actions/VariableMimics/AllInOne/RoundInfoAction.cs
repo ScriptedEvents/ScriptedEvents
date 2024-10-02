@@ -21,12 +21,12 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("ISLOCKED", "Returns a TRUE/FALSE value being the roundlock status."),
-                new("HASSTARTED", "Returns a TRUE/FALSE value saying if the round has started."),
-                new("ISINPROGRESS", "Returns a TRUE/FALSE value saying if the round is in progress."),
-                new("HASENDED", "Returns a TRUE/FALSE value saying if the round has ended."),
-                new("UPTIMEROUNDS", "Returns the amount of rounds that have progressed since the server has started."),
-                new("DURATION", "Returns the amount of seconds since the round started.")),
+                new("IsLocked", "Returns the TRUE/FALSE value of the roundlock status."),
+                new("HasStarted", "Returns the TRUE/FALSE value saying if the round has started."),
+                new("IsInProgress", "Returns a TRUE/FALSE value saying if the round is in progress."),
+                new("HasEnded", "Returns a TRUE/FALSE value saying if the round has ended."),
+                new("ElapsedRounds", "Returns the amount of rounds that have progressed since the server has started."),
+                new("Duration", "Returns the amount of seconds since the round started.")),
         };
 
         /// <inheritdoc/>
@@ -50,7 +50,7 @@
                 "HASSTARTED" => Round.IsStarted.ToUpper(),
                 "ISINPROGRESS" => Round.InProgress.ToUpper(),
                 "HASENDED" => Round.IsEnded.ToUpper(),
-                "UPTIMEROUNDS" => Round.UptimeRounds.ToString(),
+                "ELAPSEDROUNDS" => Round.UptimeRounds.ToString(),
                 "DURATION" => Round.ElapsedTime.TotalSeconds.ToString(),
                 _ => throw new ArgumentException()
             };
