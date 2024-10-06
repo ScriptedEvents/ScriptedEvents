@@ -48,7 +48,7 @@
 
         public static void ScriptError(string message, Script source, bool fatal = false, int? printableLine = null)
         {
-            string formattedMessage = $"[Script: {source.ScriptName}] [L: {(printableLine == null ? source.CurrentLine + 1 : printableLine)}]\n" + message;
+            string formattedMessage = $"[Script: {source.ScriptName}] [Line: {printableLine ?? source.CurrentLine + 1}] " + message;
             string broadcastMessage = $"<b><size=40>{(fatal ? "Fatal e" : "E")}rror when running the '{source.ScriptName}' script.\n<size=30>See the console for more details.";
             ICommandSender sender = source.Sender;
 
@@ -70,8 +70,9 @@
                         ply2?.Broadcast(5, broadcastMessage);
 
                     break;
+
                 default:
-                    Warn(message);
+                    Warn(formattedMessage);
                     break;
             }
         }
