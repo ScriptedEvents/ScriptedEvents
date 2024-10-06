@@ -244,7 +244,7 @@
                     throw new ScriptedEventsException(ErrorGen.Generate(ErrorCode.InvalidPlayerVariable, varName));
                 }
 
-                Player ply = players.FirstOrDefault();
+                Player ply = players.First();
 
                 return selector.ToUpper() switch
                 {
@@ -267,9 +267,9 @@
                     "POSZ" => ply.Position.z.ToString(),
                     "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
                     "TIER" => "NONE",
-                    "GROUP" => ply.GroupName,
+                    "GROUP" => ply.GroupName ?? "NONE",
                     "CUFFED" => ply.IsCuffed.ToUpper(),
-                    "CUSTOMINFO" or "CINFO" or "CUSTOMI" => ply.CustomInfo != string.Empty && ply.CustomInfo != null ? ply.CustomInfo : "NONE",
+                    "CUSTOMINFO" or "CINFO" or "CUSTOMI" => !string.IsNullOrEmpty(ply.CustomInfo) ? ply.CustomInfo : "NONE",
                     "XSIZE" => ply.Scale.x.ToString(),
                     "YSIZE" => ply.Scale.y.ToString(),
                     "ZSIZE" => ply.Scale.z.ToString(),
@@ -281,7 +281,7 @@
                     "STAMINA" => ply.Stamina.ToString(),
                     "ISSTAFF" => ply.RemoteAdminAccess.ToUpper(),
                     "AHP" => ply.ArtificialHealth.ToString(),
-                    _ => ply.SessionVariables.ContainsKey(selector) ? ply.SessionVariables[selector].ToString() : "UNDEFINED"
+                    _ => ply.SessionVariables.TryGetValue(selector, out var variable) ? variable.ToString() : "UNDEFINED"
                 };
             }
         }
