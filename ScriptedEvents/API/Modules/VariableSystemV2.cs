@@ -69,6 +69,29 @@
         }
 
         /// <summary>
+        /// Defines a variable.
+        /// </summary>
+        /// <param name="variable">The variable.</param>
+        /// <returns>If successful.</returns>
+        public static bool TryDefineVariable(IVariable variable)
+        {
+            if (variable is CustomPlayerVariable pvar)
+            {
+                DefinedPlayerVariables[pvar.Name] = pvar;
+                return true;
+            }
+            else if (variable is CustomVariable lvar)
+            {
+                DefinedVariables[lvar.Name] = lvar;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Defines a player variable.
         /// </summary>
         /// <param name="name">The name of the variable.</param>
@@ -113,7 +136,7 @@
             DefinedPlayerVariables.Clear();
         }
 
-        public static VariableResult InternalGetVariable(string initName, Script script)
+        public static VariableResult InternalGetVariable(string initName, Script script, bool requirePrefix = true)
         {
             void Log(string message)
             {
@@ -123,14 +146,16 @@
 
             string name = initName.ToUpper();
 
+            if (!name.StartsWith("@") && !requirePrefix)
+            {
+                name = "@" + name;
+            }
+
             foreach (IVariableGroup group in Groups)
             {
                 foreach (IVariable variable in group.Variables)
                 {
-                    if (variable.Name.ToUpper() != name)
-                    {
-                        continue;
-                    }
+                    if (variable.Name.ToUpper() != name) continue;
 
                     Log($"Variable {initName} is a predefined SE variable.");
                     return new(true, variable);
@@ -176,7 +201,7 @@
         /// <param name="name">The input string.</param>
         /// <param name="script">The script source.</param>
         /// <returns>A tuple containing the variable and whether or not it's a reversed boolean value.</returns>
-        public static VariableResult GetVariable(string name, Script script)
+        public static VariableResult GetVariable(string name, Script script, bool requirePrefix = true)
         {
             void Log(string message)
             {
@@ -186,10 +211,10 @@
 
             Log($"Getting the '{name}' variable.");
 
-            if (name.StartsWith("@"))
+            if (name.StartsWith("@") || !requirePrefix)
             {
                 Log($"'{name}' is a standard variable since '@' is the first token.");
-                return InternalGetVariable(name, script);
+                return InternalGetVariable(name, script, requirePrefix);
             }
             else if (name.CountOccurrences('{') + name.CountOccurrences('}') == 0)
             {
@@ -215,9 +240,9 @@
             */
         }
 
-        public static bool TryGetVariable(string name, Script source, out VariableResult result, bool skipProcessing = false)
+        public static bool TryGetVariable(string name, Script source, out VariableResult result, bool requirePrefix = true)
         {
-            result = GetVariable(name, source);
+            result = GetVariable(name, source, requirePrefix);
 
             if (result.Variable is null)
             {
@@ -233,11 +258,11 @@
         /// <param name="name">The variable.</param>
         /// <param name="script">The source script.</param>
         /// <param name="players">The players found. If the operation was not successful, this will contain the error reason.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
+        /// <param name="requirePrefix">If brackets are required to parse variables.</param>
         /// <returns>Whether or not players were found.</returns>
         /// <remarks>This should be used for variables where <paramref name="requireBrackets"/> is <see langword="false"/>. Otherwise, use <see cref="SEParser.TryGetPlayers(string, int?, out Structures.PlayerCollection, Script)"/>.</remarks>
         /// <seealso cref="SEParser.TryGetPlayers(string, int?, out PlayerCollection, Script)"/>
-        public static bool TryGetPlayers(string name, Script script, out PlayerCollection players, bool requireBrackets = true)
+        public static bool TryGetPlayers(string name, Script script, out PlayerCollection players, bool requirePrefix = true)
         {
             void Log(string msg)
             {
@@ -245,9 +270,9 @@
                 DebugLog("[TryGetPlayers] " + msg, script);
             }
 
-            Log($"Trying to fetch {name} variable. [requireBrackets {requireBrackets}]");
+            Log($"Trying to fetch {name} variable. [requirePrefix {requirePrefix}]");
 
-            if (TryGetVariable(name, script, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
+            if (TryGetVariable(name, script, out VariableResult result, requirePrefix) && result.ProcessorSuccess)
             {
                 if (result.Variable is IPlayerVariable plrVariable)
                 {

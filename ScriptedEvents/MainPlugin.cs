@@ -20,7 +20,7 @@
     public class MainPlugin : Plugin<Config, Translations>
     {
         /// <summary>
-        /// Whether or not this build of the plugin is experimental.
+        /// Whether this build of the plugin is experimental.
         /// </summary>
 #if ADEBUG || DEBUG
         public const bool IsExperimental = true;
@@ -41,9 +41,9 @@
         private static List<SEModule> modules = new();
 
         /// <summary>
-        /// Gets or sets the plugin singleton.
+        /// Gets the plugin singleton.
         /// </summary>
-        public static MainPlugin Singleton { get; set; }
+        public static MainPlugin Singleton { get; private set; }
 
         /// <summary>
         /// Gets the plugin Config singleton.
@@ -144,14 +144,13 @@
                     Logger.Info(Constants.ItsMyBirthday);
                 }
 
-                bool isUpdated = API.Features.ScriptHelpGenerator.Generator.CheckUpdated(out string docMessage);
-                if (docMessage != "SKIP")
-                {
-                    if (isUpdated)
-                        Logger.Info("[DOCUMENTATION GENERATOR]: " + docMessage);
-                    else
-                        Logger.Warn("[DOCUMENTATION GENERATOR]: " + docMessage);
-                }
+                var isUpdated = API.Features.ScriptHelpGenerator.Generator.CheckUpdated(out var docMessage);
+                if (docMessage == "SKIP") return;
+
+                if (isUpdated)
+                    Logger.Info("[DOCUMENTATION GENERATOR]: " + docMessage);
+                else
+                    Logger.Warn("[DOCUMENTATION GENERATOR]: " + docMessage);
             });
 
             // Delete help file on startup

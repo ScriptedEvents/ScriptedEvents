@@ -24,7 +24,6 @@
         /// <inheritdoc/>
         public string Description => "Runs a specific action with specific arguments.";
 
-        /// <inheritdoc/>
         public bool SanitizeResponse => true;
 
         /// <inheritdoc/>
@@ -42,7 +41,7 @@
                 return false;
             }
 
-            string actionName = arguments.ElementAt(0);
+            var actionName = arguments.ElementAt(0);
             if (string.IsNullOrWhiteSpace(actionName))
             {
                 response = "Missing the name of the action to execute.";
@@ -50,11 +49,13 @@
             }
 
             IAction action;
-            if (MainPlugin.ScriptModule.TryGetActionType(actionName.ToUpper(), out Type actType))
+            var actType = MainPlugin.ScriptModule.TryGetActionType(actionName);
+
+            if (actType != null && Activator.CreateInstance(actType) is IAction resAct)
             {
-                action = Activator.CreateInstance(actType) as IAction;
+                action = resAct;
             }
-            else if (MainPlugin.ScriptModule.CustomActions.TryGetValue(actionName.ToUpper(), out CustomAction customAction))
+            else if (MainPlugin.ScriptModule.CustomActions.TryGetValue(actionName.ToUpper(), out var customAction))
             {
                 response = "This action cannot be executed using the command.";
                 return false;
@@ -72,7 +73,7 @@
             }
 
             scriptAction.RawArguments = arguments.Skip(1).ToArray();
-            scriptAction.Arguments = arguments.Skip(1).ToArray();
+            scriptAction.Arguments = arguments.Skip(1).ToArray<object>();
 
             // Fill out mock script info
             Script mockScript = new()
@@ -81,7 +82,7 @@
                 Sender = sender,
                 RawText = string.Join(" ", arguments),
                 ScriptName = "ACTION COMMAND",
-                Actions = new[] { scriptAction },
+                Actions = new IAction[] { scriptAction },
             };
 
             mockScript.OriginalActionArgs[scriptAction] = scriptAction.RawArguments;

@@ -31,9 +31,9 @@
 
         public List<Tuple<PropertyInfo, Delegate>> StoredDelegates { get; } = new();
 
-        public Dictionary<string, List<string>> CurrentEventData { get; set; }
+        public Dictionary<string, List<string>>? CurrentEventData { get; set; } = new();
 
-        public Dictionary<string, List<string>> CurrentCustomEventData { get; set; }
+        public Dictionary<string, List<string>>? CurrentCustomEventData { get; set; }
 
         public List<string> DynamicallyConnectedEvents { get; set; } = new();
 
@@ -79,9 +79,6 @@
         // Methods to make and destroy connections
         public void BeginConnections()
         {
-            if (CurrentEventData is not null)
-                return;
-
             CurrentEventData = new();
             CurrentCustomEventData = new();
 
@@ -123,15 +120,12 @@
                 }
             }
 
-            if (CurrentEventData is not null)
+            foreach (KeyValuePair<string, List<string>> ev in CurrentEventData)
             {
-                foreach (KeyValuePair<string, List<string>> ev in CurrentEventData)
-                {
-                    Logger.Debug("Setting up new 'on' event");
-                    Logger.Debug($"Event: {ev.Key}");
-                    Logger.Debug($"Scripts: {string.Join(", ", ev.Value)}");
-                    ConnectDynamicExiledEvent(ev.Key);
-                }
+                Logger.Debug("Setting up new 'on' event");
+                Logger.Debug($"Event: {ev.Key}");
+                Logger.Debug($"Scripts: {string.Join(", ", ev.Value)}");
+                ConnectDynamicExiledEvent(ev.Key);
             }
         }
 
@@ -207,7 +201,7 @@
         }
 
         // Code to run when connected event is executed
-        public void OnAnyEvent(string eventName, IExiledEvent ev = null)
+        public void OnAnyEvent(string eventName, IExiledEvent? ev = null)
         {
             if (ev == null) return;
 
@@ -221,11 +215,10 @@
             string name = eventType.Name.Substring(0, eventType.Name.Length - 9);
             Log.Debug($"Event '{name}' is now running.");
 
-            if (ev is IDeniableEvent deniable && ev is IPlayerEvent plr)
+            if (ev is IDeniableEvent deniable and IPlayerEvent plr)
             {
-                bool playerIsNotNone = plr.Player is not null;
-
-                bool isRegisteredRule = MainPlugin.Handlers.GetPlayerDisableEvent(name, plr.Player).HasValue;
+                var playerIsNotNone = plr.Player is not null;
+                var isRegisteredRule = MainPlugin.Handlers.GetPlayerDisableEvent(name, plr.Player).HasValue;
 
                 if (playerIsNotNone && isRegisteredRule)
                 {
@@ -272,8 +265,8 @@
                 {
                     foreach (Script script in scripts)
                     {
-                        script.AddVariable("{EV" + property.Name.ToUpper() + "}", string.Empty, value);
-                        Log.Debug($"Adding variable {{EV{property.Name.ToUpper()}}} to all scripts above.");
+                        script.AddVariable("@EV" + property.Name.ToUpper(), string.Empty, value);
+                        Log.Debug($"Adding variable @EV{property.Name.ToUpper()} to all scripts above.");
                     }
                 }
 
@@ -282,20 +275,20 @@
 
                 switch (value)
                 {
-                    case Player player when player is not null:
-                        foreach (Script script in scripts) script.AddPlayerVariable($"{{EV{property.Name.ToUpper()}}}", string.Empty, new[] { player });
-                        Log.Debug($"Adding variable {{EV{property.Name.ToUpper()}}} to all scripts above.");
+                    case Player player:
+                        foreach (Script script in scripts) script.AddPlayerVariable($"@EV{property.Name.ToUpper()}", string.Empty, new[] { player });
+                        Log.Debug($"Adding player variable @EV{property.Name.ToUpper()} to all scripts above.");
                         break;
 
-                    case Exiled.API.Features.Items.Item item when item is not null:
+                    case Exiled.API.Features.Items.Item item:
                         AddVariable(item.Base.ItemSerial.ToString());
                         break;
 
-                    case Exiled.API.Features.Doors.Door door when door is not null:
+                    case Exiled.API.Features.Doors.Door door:
                         AddVariable(door.Type.ToString());
                         break;
 
-                    case MapGeneration.Distributors.Scp079Generator gen when gen is not null:
+                    case MapGeneration.Distributors.Scp079Generator gen:
                         AddVariable(gen.GetInstanceID().ToString());
                         break;
 

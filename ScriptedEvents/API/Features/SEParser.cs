@@ -23,106 +23,11 @@
     /// </summary>
     public static class SEParser
     {
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="float"/>. Functionally similar to <see cref="float.Parse(string)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>The result of the cast, or <see cref="float.NaN"/> if the cast failed.</returns>
-        public static float Parse(string input, Script source, bool requireBrackets = true)
+        public delegate bool TryParseDelegate<T>(string input, out T result);
+
+        public static bool Cast<T>(TryParseDelegate<T> tryParseFunc, string input, Script source, out T result)
         {
-            if (float.TryParse(input, out float fl))
-                return fl;
-
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
-            {
-                return Parse(result.String(), source, requireBrackets);
-            }
-
-            return float.NaN;
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="int"/>. Functionally similar to <see cref="float.Parse(string)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>The result of the cast, or <see cref="int.MinValue"/> if the cast failed.</returns>
-        public static int ParseInt(string input, Script source, bool requireBrackets = true)
-        {
-            if (int.TryParse(input, out int fl))
-                return fl;
-
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
-            {
-                return ParseInt(result.String(), source, requireBrackets);
-            }
-
-            return int.MinValue;
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="long"/>. Functionally similar to <see cref="long.Parse(string)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>The result of the cast, or <see cref="long.MinValue"/> if the cast failed.</returns>
-        public static long ParseLong(string input, Script source, bool requireBrackets = true)
-        {
-            if (long.TryParse(input, out long fl))
-                return fl;
-
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult result, requireBrackets) && result.ProcessorSuccess)
-            {
-                return ParseLong(result.String(), source, requireBrackets);
-            }
-
-            return int.MinValue;
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="float"/>. Functionally similar to <see cref="float.TryParse(string, out float)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="result">The result of the parse.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse(string input, out float result, Script source, bool requireBrackets = true)
-        {
-            result = Parse(input, source, requireBrackets);
-            return result != float.NaN && result.ToString() != "NaN"; // Hacky but fixes it?
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="int"/>. Functionally similar to <see cref="int.TryParse(string, out int)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="result">The result of the parse.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse(string input, out int result, Script source, bool requireBrackets = true)
-        {
-            result = ParseInt(input, source, requireBrackets);
-            return result != int.MinValue;
-        }
-
-        /// <summary>
-        /// Attempts to parse a string input into a <see cref="long"/>. Functionally similar to <see cref="long.TryParse(string, out int)"/>, but also supports SE variables.
-        /// </summary>
-        /// <param name="input">The input string.</param>
-        /// <param name="result">The result of the parse.</param>
-        /// <param name="source">The source script.</param>
-        /// <param name="requireBrackets">If brackets are required to parse variables.</param>
-        /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse(string input, out long result, Script source, bool requireBrackets = true)
-        {
-            result = ParseLong(input, source, requireBrackets);
-            return result != long.MinValue;
+            return tryParseFunc(ReplaceContaminatedValueSyntax(input, source), out result);
         }
 
         /// <summary>
@@ -134,7 +39,7 @@
         /// <param name="requireBrackets">If brackets are required to parse variables.</param>
         /// <typeparam name="T">The Enum type to cast to.</typeparam>
         /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParse<T>(string input, out T result, Script source, bool requireBrackets = true)
+        public static bool TryParseEnum<T>(string input, out T result, Script source, bool requireBrackets = true)
             where T : struct, Enum
         {
             input = input.Trim();
@@ -145,29 +50,17 @@
 
             if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.ProcessorSuccess)
             {
-                return TryParse(vresult.String(), out result, source, requireBrackets);
+                return TryParseEnum(vresult.String(), out result, source, requireBrackets);
             }
 
             return false;
         }
 
-        public static object Parse(string input, Type enumType, Script source, bool requireBrackets = true)
+        public static object? ParseEnum(string input, Type enumType, Script source, bool requireBrackets = true)
         {
-            try
-            {
-                object result = Enum.Parse(enumType, input, true);
-                return result;
-            }
-            catch
-            {
-            }
-
-            if (VariableSystemV2.TryGetVariable(input, source, out VariableResult vresult, requireBrackets) && vresult.ProcessorSuccess)
-            {
-                return Parse(vresult.String(), enumType, source, requireBrackets);
-            }
-
-            return null;
+            input = ReplaceContaminatedValueSyntax(input, source);
+            var result = Enum.Parse(enumType, input, true);
+            return result;
         }
 
         /// <summary>
@@ -179,31 +72,30 @@
         /// <returns>Whether or not the try-get was successful.</returns>
         public static bool TryGetDoors(string input, out Door[] doors, Script source)
         {
-            List<Door> doorList = ListPool<Door>.Pool.Get();
+            List<Door> doorList;
             if (input is "*" or "ALL")
             {
                 doorList = Door.List.ToList();
             }
-            else if (TryParse(input, out ZoneType zt, source))
+            else if (TryParseEnum(input, out ZoneType zt, source))
             {
                 doorList = Door.List.Where(d => d.Zone.HasFlag(zt)).ToList();
             }
-            else if (TryParse(input, out DoorType dt, source))
+            else if (TryParseEnum(input, out DoorType dt, source))
             {
                 doorList = Door.List.Where(d => d.Type == dt).ToList();
             }
-            else if (TryParse(input, out RoomType rt, source))
+            else if (TryParseEnum(input, out RoomType rt, source))
             {
                 doorList = Door.List.Where(d => d.Room?.Type == rt).ToList();
             }
             else
             {
-                doorList = Door.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
+                doorList = Door.List.Where(d => string.Equals(d.Name, input, StringComparison.CurrentCultureIgnoreCase)).ToList();
             }
 
-            doorList = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp914Door && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second && AirlockController.Get(d) is null).ToList();
-            doors = ListPool<Door>.Pool.ToArrayReturn(doorList);
-            return doors.Length > 0;
+            doors = doorList.Where(d => d.IsElevator is false && d.Type is not DoorType.Scp914Door && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second && AirlockController.Get(d) is null).ToArray();
+            return doorList.Count > 0;
         }
 
         /// <summary>
@@ -220,7 +112,7 @@
             {
                 liftList = Lift.List.ToList();
             }
-            else if (TryParse(input, out ElevatorType et, source))
+            else if (TryParseEnum(input, out ElevatorType et, source))
             {
                 liftList = Lift.List.Where(l => l.Type == et).ToList();
             }
@@ -247,11 +139,11 @@
             {
                 roomList = Room.List.ToList();
             }
-            else if (TryParse(input, out ZoneType zt, source))
+            else if (TryParseEnum(input, out ZoneType zt, source))
             {
                 roomList = Room.List.Where(room => room.Zone.HasFlag(zt)).ToList();
             }
-            else if (TryParse(input, out RoomType rt, source))
+            else if (TryParseEnum(input, out RoomType rt, source))
             {
                 roomList = Room.List.Where(d => d.Type == rt).ToList();
             }
@@ -329,13 +221,13 @@
         public static (Match[] variables, Match[] dynamicActions, Match[] accessors) IsolateValueSyntax(string input, Script source, bool captureVariables = true, bool captureDynActs = true, bool captureAccessors = true)
         {
             var empty = Array.Empty<Match>();
-            Match[] variables = empty;
-            Match[] dynamicActions = empty;
-            Match[] accessors = empty;
+            var variables = empty;
+            var dynamicActions = empty;
+            var accessors = empty;
 
             if (captureVariables && input.Length >= 2)
             {
-                variables = Regex.Matches(input, @"@\S+").Cast<Match>().ToArray();
+                variables = Regex.Matches(input, @"@\w+").Cast<Match>().ToArray();
             }
 
             if (captureDynActs && input.Length >= 3)
@@ -348,87 +240,8 @@
                 accessors = Regex.Matches(input, @"<[^<>\s]*>").Cast<Match>().ToArray();
             }
 
-            Logger.Debug($"[SEParser] [IsolateValueSyntax] From '{input}' retreived: {variables.Length} VARS >< {dynamicActions.Length} DNCTS >< {accessors.Length} ACSRS", source);
+            Logger.Debug($"[SEParser] [IsolateValueSyntax] From '{input}' retreived: {variables.Length} VARS, {dynamicActions.Length} DNCTS, {accessors.Length} ACSRS", source);
             return (variables, dynamicActions, accessors);
-        }
-
-        public static bool TryGetDynamicAction<T>(string input, Script script, out T output)
-        {
-            if (typeof(T) != typeof(string) && typeof(T) != typeof(Player[]))
-            {
-                throw new ArgumentException(typeof(T).FullName);
-            }
-
-            // "{LIMIT:@PLAYERS:2}"
-            input = input.Trim();
-            output = default;
-
-            if (!input.StartsWith("{") || !input.EndsWith("}"))
-            {
-                return false;
-            }
-
-            // "LIMIT:@PLAYERS:2
-            input = input.Substring(1, input.Length - 1);
-
-            // ["LIMIT", "@PLAYERS", "2"]
-            string[] parts = input.Split(new[] { ':' });
-
-            // "LIMIT"
-            string actionName = parts[0];
-
-            // ["@PLAYERS", "2"]
-            string[] arguments = parts.Skip(1).ToArray();
-
-            if (!MainPlugin.ScriptModule.TryGetActionType(actionName, out Type actionType1))
-            {
-                return false;
-            }
-
-            IAction actionToExtract = Activator.CreateInstance(actionType1) as IAction;
-
-            if (actionToExtract is ITimingAction)
-            {
-                // Logger.Log($"{actionToExtract.Name} is a timing action, which cannot be used with smart extractors.", LogType.Warning, script, currentline + 1);
-                return false;
-            }
-
-            if (actionToExtract is not IReturnValueAction)
-            {
-                // Logger.Log($"{actionToExtract.Name} action does not return any values, therefore can't be used with smart accessors.", LogType.Warning, script, currentline + 1);
-                return false;
-            }
-
-            if (!ScriptModule.TryRunAction(script, actionToExtract, out ActionResponse resp, out float? _, arguments))
-            {
-                return false;
-            }
-
-            if (resp == null || resp.ResponseVariables.Length == 0)
-            {
-                return false;
-            }
-
-            if (resp.ResponseVariables.Length > 1)
-            {
-                // Log("Action returned more than 1 value. Using the first one as default.");
-            }
-
-            object value = resp.ResponseVariables[0];
-
-            if (value is not string)
-            {
-                return false;
-            }
-
-            output = value switch
-            {
-                string s => (T)(object)s,
-                Player[] players => (T)(object)players,
-                _ => throw new InvalidOperationException("Unsupported type")
-            };
-
-            return true;
         }
 
         public static bool TryGetAccessor(string input, Script source, out string result)
@@ -440,7 +253,7 @@
 
             // "<PLR:ROLE>"
             // "<PLR>"
-            result = null;
+            result = string.Empty;
 
             if (!input.StartsWith("<") || !input.EndsWith(">"))
             {
@@ -460,17 +273,17 @@
 
             // ["PLR", "ROLE"]
             // ["PLR"]
-            string[] parts = input.Split(':');
+            var parts = input.Split(':');
 
-            if (parts.Length > 2)
+            switch (parts.Length)
             {
-                Log("Fail. After splitting, more than 2 parts defined.");
-                return false;
-            }
-            else if (parts.Length == 1)
-            {
-                // ["PLR"] -> ["PLR", "NAME"]
-                parts.Append("NAME");
+                case > 2:
+                    Log("Fail. After splitting, more than 2 parts defined.");
+                    return false;
+                case 1:
+                    // ["PLR"] -> ["PLR", "NAME"]
+                    parts = parts.Append("NAME").ToArray();
+                    break;
             }
 
             if (!VariableSystemV2.TryGetPlayers(parts[0], source, out PlayerCollection players, false))
@@ -485,7 +298,7 @@
                 return false;
             }
 
-            Player ply = players[0];
+            var ply = players[0];
 
             switch (parts[1])
             {
@@ -531,13 +344,13 @@
 
                 case "ITEMS":
                     result = ply.Items.Count > 0
-                        ? string.Join("|", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString()))
+                        ? string.Join("|", ply.Items.Select(item => CustomItem.TryGet(item, out var ci1) ? ci1?.Name : item.Type.ToString()))
                         : "NONE";
                     break;
 
                 case "HELDITEM":
-                    result = (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci)
-                        ? ci.Name
+                    result = (CustomItem.TryGet(ply.CurrentItem, out var ci)
+                        ? ci?.Name ?? "NONE"
                         : ply.CurrentItem?.Type.ToString()) ?? "NONE";
                     break;
 
@@ -561,8 +374,8 @@
                     result = ply.Position.z.ToString();
                     break;
 
-                case "TIER" when ply.Role is Scp079Role scp079role:
-                    result = scp079role.Level.ToString();
+                case "TIER" when ply.Role is Scp079Role scp079Role:
+                    result = scp079Role.Level.ToString();
                     break;
 
                 case "TIER":
@@ -570,7 +383,7 @@
                     break;
 
                 case "GROUP":
-                    result = ply.GroupName;
+                    result = ply.GroupName ?? "NONE";
                     break;
 
                 case "CUFFED":
@@ -714,6 +527,86 @@
             }
 
             return output.ToString();
+        }
+
+        private static bool TryGetDynamicAction<T>(string input, Script script, out T? output)
+        {
+            if (typeof(T) != typeof(string) && typeof(T) != typeof(Player[]))
+            {
+                throw new ArgumentException(typeof(T).FullName);
+            }
+
+            // "{LIMIT:@PLAYERS:2}"
+            input = input.Trim();
+            output = default;
+
+            if (!input.StartsWith("{") || !input.EndsWith("}"))
+            {
+                return false;
+            }
+
+            // "LIMIT:@PLAYERS:2
+            input = input.Substring(1, input.Length - 2);
+
+            // ["LIMIT", "@PLAYERS", "2"]
+            var parts = input.Split(':');
+
+            // "LIMIT"
+            var actionName = parts[0];
+
+            // ["@PLAYERS", "2"]
+            var arguments = parts.Skip(1).ToArray();
+
+            var act = MainPlugin.ScriptModule.TryGetActionType(actionName);
+            if (act == null)
+            {
+                return false;
+            }
+
+            var actionToExtract = Activator.CreateInstance(act) as IAction;
+
+            if (actionToExtract is ITimingAction)
+            {
+                // Logger.Log($"{actionToExtract.Name} is a timing action, which cannot be used with smart extractors.", LogType.Warning, script, currentline + 1);
+                return false;
+            }
+
+            if (actionToExtract is not IReturnValueAction)
+            {
+                // Logger.Log($"{actionToExtract.Name} action does not return any values, therefore can't be used with smart accessors.", LogType.Warning, script, currentline + 1);
+                return false;
+            }
+
+            if (!ScriptModule.TryRunAction(script, actionToExtract, out var resp, out var _, arguments))
+            {
+                return false;
+            }
+
+            if (resp == null || resp.ResponseVariables.Length == 0)
+            {
+                return false;
+            }
+
+            if (resp.ResponseVariables.Length > 1)
+            {
+                // Log("Action returned more than 1 value. Using the first one as default.");
+            }
+
+            var value = resp.ResponseVariables[0];
+
+            if (value is not string)
+            {
+                return false;
+            }
+
+            output = value switch
+            {
+                string s => (T)(object)s,
+                Player[] players => (T)(object)players,
+                _ => throw new InvalidOperationException("Unsupported type")
+            };
+
+            return true;
         }
     }
 }

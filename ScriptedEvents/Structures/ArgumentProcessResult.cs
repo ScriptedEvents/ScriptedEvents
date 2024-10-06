@@ -42,7 +42,7 @@
         /// <summary>
         /// Gets a value indicating the message, if unsuccessful.
         /// </summary>
-        public string Message { get; }
+        public string? Message { get; }
 
         /// <summary>
         /// Gets an <see cref="object"/> list of new parameters if the processing was successful.

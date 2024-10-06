@@ -152,7 +152,7 @@
         /// <summary>
         /// Gets the sender of the user who executed the script.
         /// </summary>
-        public ICommandSender Sender { get; internal set; }
+        public ICommandSender? Sender { get; internal set; }
 
         /// <summary>
         /// Gets or sets all line positions from where a JUMP action was executed.

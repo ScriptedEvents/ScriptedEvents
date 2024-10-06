@@ -9,7 +9,7 @@
 
     public static class InterfaceExtensions
     {
-        public static string String(this IVariable variable, Script source = null)
+        public static string String(this IVariable variable, Script? source = null)
         {
             try
             {

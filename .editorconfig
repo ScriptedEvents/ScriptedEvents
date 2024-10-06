@@ -42,3 +42,6 @@ dotnet_diagnostic.SA1507.severity = error
 # SE1516: Using directives should be separated by blank line.
 dotnet_diagnostic.SA1516.severity = error
 
+# CS8618: Non nullable field _name is not initialized. Consider declare the field as nullable type
+dotnet_diagnostic.CS8618.severity = none
+

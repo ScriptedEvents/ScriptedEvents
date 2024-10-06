@@ -387,7 +387,7 @@
             return null;
         }
 
-        public PlayerDisable? GetPlayerDisableEvent(string key, Player player)
+        public PlayerDisable? GetPlayerDisableEvent(string key, Player? player)
         {
             if (player is null) return null;
 
