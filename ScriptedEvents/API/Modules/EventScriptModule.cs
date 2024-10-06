@@ -8,10 +8,12 @@
     using System.Reflection;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Doors;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.Features;
     using Exiled.Loader;
-
+    using MapGeneration.Distributors;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -256,38 +258,34 @@
                 }
             }
 
-            PropertyInfo[] properties = ev.GetType().GetProperties();
-            foreach (PropertyInfo property in properties)
+            var properties = ev.GetType().GetProperties();
+            foreach (var property in properties)
             {
                 Log.Debug($"Managing property {property.Name}");
-                void AddVariable(string value)
-                {
-                    foreach (Script script in scripts)
-                    {
-                        script.AddVariable("{EV" + property.Name.ToUpper() + "}", string.Empty, value);
-                        Log.Debug($"Adding variable {{EV{property.Name.ToUpper()}}} to all scripts above.");
-                    }
-                }
 
                 var value = property.GetValue(ev);
                 if (value is null) continue;
 
                 switch (value)
                 {
-                    case Player player when player is not null:
-                        foreach (Script script in scripts) script.AddPlayerVariable($"{{EV{property.Name.ToUpper()}}}", string.Empty, new[] { player });
+                    case Player player:
+                        if (player is Npc) continue;
+
+                        foreach (var script in scripts)
+                            script.AddPlayerVariable($"{{EV{property.Name.ToUpper()}}}", string.Empty, new[] { player });
+
                         Log.Debug($"Adding variable {{EV{property.Name.ToUpper()}}} to all scripts above.");
                         break;
 
-                    case Exiled.API.Features.Items.Item item when item is not null:
+                    case Item item:
                         AddVariable(item.Base.ItemSerial.ToString());
                         break;
 
-                    case Exiled.API.Features.Doors.Door door when door is not null:
+                    case Door door:
                         AddVariable(door.Type.ToString());
                         break;
 
-                    case MapGeneration.Distributors.Scp079Generator gen when gen is not null:
+                    case Scp079Generator gen:
                         AddVariable(gen.GetInstanceID().ToString());
                         break;
 
@@ -298,6 +296,17 @@
                     default:
                         AddVariable(value.ToString());
                         break;
+                }
+
+                continue;
+
+                void AddVariable(string value)
+                {
+                    foreach (Script script in scripts)
+                    {
+                        script.AddVariable("{EV" + property.Name.ToUpper() + "}", string.Empty, value);
+                        Log.Debug($"Adding variable {{EV{property.Name.ToUpper()}}} to all scripts above.");
+                    }
                 }
             }
 
