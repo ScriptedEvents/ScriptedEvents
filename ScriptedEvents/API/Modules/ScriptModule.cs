@@ -421,7 +421,7 @@ namespace ScriptedEvents.API.Modules
                 script.OriginalActionArgs[newAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
                 script.ResultVariableNames[newAction] = resultVariableNames;
 
-                Logger.Debug($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}", script);
+                Logger.Debug($"Queuing action {keyword},ï¿½{string.Join(", ", script.OriginalActionArgs[newAction])}", script);
 
                 // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
