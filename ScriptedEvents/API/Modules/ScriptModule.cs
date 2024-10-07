@@ -171,26 +171,6 @@ namespace ScriptedEvents.API.Modules
         }
 
         /// <summary>
-        /// Reads and returns the text of a script.
-        /// </summary>
-        /// <param name="scriptName">The name of the script.</param>
-        /// <returns>The contents of the script, if it is found.</returns>
-        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        public string ReadScriptText(string scriptName) => InternalRead(scriptName, out _);
-
-        /// <summary>
-        /// Returns the file path of a script.
-        /// </summary>
-        /// <param name="scriptName">The name of the script.</param>
-        /// <returns>The directory of the script, if it is found.</returns>
-        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        public string GetFilePath(string scriptName)
-        {
-            InternalRead(scriptName, out string path);
-            return path;
-        }
-
-        /// <summary>
         /// Retrieves a list of all scripts in the server.
         /// </summary>
         /// <param name="sender">Optional sender.</param>
@@ -227,7 +207,7 @@ namespace ScriptedEvents.API.Modules
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
         public Script ReadScript(string scriptName, ICommandSender executor, bool suppressWarnings = false)
         {
-            string allText = ReadScriptText(scriptName);
+            string allText = GetScriptValue(scriptName, out var scriptDirectory);
             bool inMultilineComment = false;
             Script script = new();
 
@@ -421,7 +401,7 @@ namespace ScriptedEvents.API.Modules
                 script.OriginalActionArgs[newAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
                 script.ResultVariableNames[newAction] = resultVariableNames;
 
-                Logger.Debug($"Queuing action {keyword},�{string.Join(", ", script.OriginalActionArgs[newAction])}", script);
+                Logger.Debug($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}", script);
 
                 // Obsolete check
                 if (newAction.IsObsolete(out string obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
@@ -433,10 +413,8 @@ namespace ScriptedEvents.API.Modules
                 ListPool<string>.Pool.Return(structureParts);
             }
 
-            string scriptPath = GetFilePath(scriptName);
-
             // Fill out script data
-            if (MainPlugin.Singleton.Config.RequiredPermissions is not null && MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2) == true)
+            if (MainPlugin.Singleton.Config.RequiredPermissions is not null && MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out string perm2))
             {
                 script.ReadPermission += $".{perm2}";
                 script.ExecutePermission += $".{perm2}";
@@ -444,9 +422,9 @@ namespace ScriptedEvents.API.Modules
 
             script.ScriptName = scriptName;
             script.RawText = allText;
-            script.FilePath = scriptPath;
-            script.LastRead = File.GetLastAccessTimeUtc(scriptPath);
-            script.LastEdited = File.GetLastWriteTimeUtc(scriptPath);
+            script.FilePath = scriptDirectory;
+            script.LastRead = File.GetLastAccessTimeUtc(scriptDirectory);
+            script.LastEdited = File.GetLastWriteTimeUtc(scriptDirectory);
             script.Actions = ListPool<IAction>.Pool.ToArrayReturn(actionList);
 
             if (executor is null)
@@ -765,34 +743,40 @@ namespace ScriptedEvents.API.Modules
         /// <param name="fileDirectory">The directory of the script, if it is found.</param>
         /// <returns>The contents of the script, if it is found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        internal string InternalRead(string scriptName, out string fileDirectory)
+        internal string GetScriptValue(string scriptName, out string filePath)
         {
-            fileDirectory = null;
+            filePath = string.Empty;
 
-            string text = null;
-            string mainFolderFile = Path.Combine(BasePath, scriptName + ".txt");
-            if (File.Exists(mainFolderFile))
+            if (TryFindInFolder(scriptName, BasePath, out var result, out var fileDirectory))
             {
-                fileDirectory = mainFolderFile;
-                text = File.ReadAllText(mainFolderFile);
+                filePath = Path.Combine(fileDirectory, scriptName + ".txt");
+                return result;
             }
-            else
-            {
-                foreach (string directory in Directory.GetDirectories(BasePath))
-                {
-                    string fileName = Path.Combine(directory, scriptName + ".txt");
-                    if (File.Exists(fileName))
-                    {
-                        fileDirectory = fileName;
-                        text = File.ReadAllText(fileName);
-                    }
-                }
-            }
-
-            if (text is not null && fileDirectory is not null)
-                return text;
 
             throw new FileNotFoundException($"Script {scriptName} does not exist.");
+
+            bool TryFindInFolder(string scriptName, string folder, out string result, out string fileDirectory)
+            {
+                fileDirectory = folder;
+                result = string.Empty;
+                var pathToScript = Path.Combine(folder, scriptName + ".txt");
+
+                if (File.Exists(pathToScript))
+                {
+                    result = File.ReadAllText(pathToScript);
+                    return true;
+                }
+
+                foreach (var newFolder in Directory.GetDirectories(folder))
+                {
+                    if (TryFindInFolder(scriptName, Path.Combine(folder, newFolder), out result, out fileDirectory))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
 
         /// <summary>
