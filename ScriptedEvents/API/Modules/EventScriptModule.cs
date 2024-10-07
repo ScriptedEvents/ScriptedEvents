@@ -14,6 +14,7 @@
     using Exiled.Events.Features;
     using Exiled.Loader;
     using MapGeneration.Distributors;
+    using Respawning;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -215,7 +216,7 @@
             string name = eventType.Name.Substring(0, eventType.Name.Length - 9);
             Log.Debug($"Event '{name}' is now running.");
 
-            if (ev is IDeniableEvent deniable && ev is IPlayerEvent plr)
+            if (ev is IDeniableEvent deniable and IPlayerEvent plr)
             {
                 bool playerIsNotNone = plr.Player is not null;
 
@@ -291,6 +292,10 @@
 
                     case bool @bool:
                         AddVariable(@bool.ToUpper());
+                        break;
+
+                    case SpawnableTeamType spawnableTeam:
+                        AddVariable(spawnableTeam.ToString());
                         break;
 
                     default:
