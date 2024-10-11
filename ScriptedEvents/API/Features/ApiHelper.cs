@@ -132,7 +132,7 @@
                 return null;
             }
 
-            SEParser.TryGetPlayers(input, max, out PlayerCollection list, actualScript);
+            Parser.TryGetPlayers(input, max, out PlayerCollection list, actualScript);
             return list.GetInnerList().ToArray();
         }
 
@@ -144,7 +144,7 @@
         /// <returns>A tuple indicating success and the value.</returns>
         public static Tuple<bool, float> Math(string input, Script script)
         {
-            bool success = ConditionHelperV2.TryMath(SEParser.ReplaceContaminatedValueSyntax(input, script), out MathResult result);
+            bool success = ConditionHelperV2.TryMath(Parser.ReplaceContaminatedValueSyntax(input, script), out MathResult result);
             return new(success, result.Result);
         }
     }

@@ -59,7 +59,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
                 bool useDeathType = true;
                 string customDeath = null;
 
-                if (!SEParser.TryParseEnum((string)Arguments[2], out DamageType damageType, script))
+                if (!Parser.TryParseEnum((string)Arguments[2], out DamageType damageType, script))
                 {
                     useDeathType = false;
                     customDeath = RawArguments.JoinMessage(2);

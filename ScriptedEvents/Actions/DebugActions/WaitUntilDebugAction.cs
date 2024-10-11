@@ -53,7 +53,7 @@ namespace ScriptedEvents.Actions
             while (true)
             {
                 ConditionResponse response = ConditionHelperV2.Evaluate(input, script);
-                Logger.Info($"CONDITION: {SEParser.ReplaceContaminatedValueSyntax(input, script)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}", script);
+                Logger.Info($"CONDITION: {Parser.ReplaceContaminatedValueSyntax(input, script)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}", script);
                 if (response.Success)
                 {
                     if (response.Passed)

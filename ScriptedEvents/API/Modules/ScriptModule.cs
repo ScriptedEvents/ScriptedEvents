@@ -119,7 +119,7 @@ namespace ScriptedEvents.API.Modules
 
             if (!res.Success)
             {
-                Log("Action will not be ran. " + res.Message != null ? res.Message : string.Empty);
+                Log("Action will not be ran. " + (res.Message ?? string.Empty));
                 return true;
             }
 
@@ -148,6 +148,7 @@ namespace ScriptedEvents.API.Modules
 
             if (!actResp.Success)
             {
+                actResp = new(false, actResp.Message);
                 return false;
             }
 
@@ -197,8 +198,9 @@ namespace ScriptedEvents.API.Modules
         /// Registers and runs all autorun defined scripts and saves their names.
         /// </summary>
         /// <param name="allScripts">All NOT DISPOSED scripts available on startup.</param>
-        public void RegisterAutorunScripts(IEnumerable<Script> allScripts)
+        public void RegisterAutorunScripts(IEnumerable<Script> allScripts, out List<Script> autoRunScripts)
         {
+            autoRunScripts = new List<Script>();
             foreach (var scr in allScripts)
             {
                 if (scr is null) continue;
@@ -219,6 +221,7 @@ namespace ScriptedEvents.API.Modules
                     }
 
                     RunScript(scr);
+                    autoRunScripts.Add(scr);
                     AutoRunScripts.Add(scr.ScriptName);
                 }
                 catch (DisabledScriptException)
@@ -397,7 +400,7 @@ namespace ScriptedEvents.API.Modules
 
                         Tuple<bool, string> Lambda()
                         {
-                            return new(true, SEParser.ReplaceContaminatedValueSyntax(value, script));
+                            return new(true, Parser.ReplaceContaminatedValueSyntax(value, script));
                         }
                     }
 
@@ -445,14 +448,14 @@ namespace ScriptedEvents.API.Modules
                             script.SmartArguments[lastAction] = new Func<Tuple<bool, string>>[] { ActionWrapper };
                         }
 
-                        AddActionNoArgs(new NullAction($"SMART EXTR"));
+                        AddActionNoArgs(new NullAction("SMART EXTR"));
                         continue;
 
                         Tuple<bool, string> ActionWrapper()
                         {
-                            if (!TryRunAction(script, actionToExtract, out var resp, out var _, actionArgs))
+                            if (!TryRunAction(script, actionToExtract, out var resp, out _, actionArgs))
                             {
-                                return new(false, resp is not null ? resp.Message : string.Empty);
+                                return new(false, "[Smart extractor]" + (resp?.Message is null ? string.Empty : " " + resp.Message));
                             }
 
                             if (resp == null || resp.ResponseVariables.Length == 0)
@@ -526,7 +529,7 @@ namespace ScriptedEvents.API.Modules
                     Log($"[ExtractorSyntax] Variables section: {variablesSection}");
                     Log($"[ExtractorSyntax] Action section: {actionSection}");
 
-                    resultVariableNames = SEParser.IsolateValueSyntax(variablesSection, script, true, false, false).variables.Select(arg => arg.Value).ToArray();
+                    resultVariableNames = Parser.IsolateValueSyntax(variablesSection, script, true, false, false).variables.Select(arg => arg.Value).ToArray();
                     if (resultVariableNames.Length != 0)
                     {
                         Log($"[ExtractorSyntax] Variables found before the syntax: {string.Join(", ", resultVariableNames)}");
@@ -801,9 +804,6 @@ namespace ScriptedEvents.API.Modules
             scr.IsRunning = true;
             scr.RunDate = DateTime.Now;
 
-            int lines = 0;
-            int successfulLines = 0;
-
             for (; scr.CurrentLine < scr.Actions.Length; scr.NextLine())
             {
                 if (!scr.HasFlag("NOSAFETY"))
@@ -817,14 +817,12 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                lines++;
                 Log("-> Running action " + action.Name);
-                ActionResponse resp;
 
-                if (!TryRunAction(scr, action, out resp, out float? delay))
+                if (!TryRunAction(scr, action, out var resp, out var delay))
                 {
                     Log("Action failed.");
-                    if (resp != null && resp.Message.Length > 0)
+                    if (resp is { Message: { Length: > 0 } })
                     {
                         Logger.ScriptError(resp.Message, scr, true);
                     }
@@ -847,28 +845,7 @@ namespace ScriptedEvents.API.Modules
                 if (resp.ResponseFlags.HasFlag(ActionFlags.StopEventExecution))
                     break;
 
-                successfulLines++;
-
-                if (!string.IsNullOrEmpty(resp.Message))
-                {
-                    string message = $"[Script: {scr.ScriptName}] [Line: {scr.CurrentLine + 1}] [Action: {action.Name}] {resp.Message}";
-                    switch (scr.Context)
-                    {
-                        case ExecuteContext.RemoteAdmin:
-                            Player.Get(scr.Sender)?.RemoteAdminMessage(message, true, MainPlugin.Singleton.Name);
-                            break;
-                        default:
-                            Logger.Info(message);
-                            break;
-                    }
-                }
-
-                if (resp.ResponseVariables == null)
-                {
-                    continue;
-                }
-
-                if (!scr.ResultVariableNames.TryGetValue(action, out string[] variableNames))
+                if (!scr.ResultVariableNames.TryGetValue(action, out var variableNames) || variableNames is null)
                 {
                     continue;
                 }
@@ -879,17 +856,17 @@ namespace ScriptedEvents.API.Modules
                     {
                         case Player[] plrVar:
                             Log($"Action {action.Name} is adding a player variable as '{zipped.name}'.");
-                            scr.UniquePlayerVariables.Add(zipped.name, new(zipped.name, string.Empty, plrVar.ToList()));
+                            scr.AddPlayerVariable(zipped.name, plrVar, false);
                             break;
 
                         case string strVar:
                             Log($"Action {action.Name} is adding a variable as '{zipped.name}'.");
-                            scr.AddVariable(zipped.name, string.Empty, strVar);
+                            scr.AddLiteralVariable(zipped.name, strVar, false);
                             break;
 
                         default:
                             Logger.ScriptError($"Action '{action.Name}' returned a value of an illegal type '{zipped.variable.GetType()}', which is not supported. Report this error to the developers.", scr);
-                            scr.UniqueVariables.Add(zipped.name, new(zipped.name, string.Empty, zipped.variable.ToString()));
+                            scr.UniqueLiteralVariables.Add(zipped.name, new(zipped.name, string.Empty, zipped.variable.ToString()));
                             break;
                     }
                 }

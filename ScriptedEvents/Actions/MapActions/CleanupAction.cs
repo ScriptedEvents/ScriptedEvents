@@ -52,7 +52,7 @@
                     ItemType type = ItemType.None;
                     if (Arguments.Length > 1)
                     {
-                        if (!SEParser.TryParseEnum((string)Arguments[1], out type, script))
+                        if (!Parser.TryParseEnum((string)Arguments[1], out type, script))
                             return new(false, "Invalid ItemType provided."); // Todo: Use error code
                     }
 
@@ -66,7 +66,7 @@
                     RoleTypeId rType = RoleTypeId.None;
                     if (Arguments.Length > 1)
                     {
-                        if (!SEParser.TryParseEnum((string)Arguments[1], out rType, script))
+                        if (!Parser.TryParseEnum((string)Arguments[1], out rType, script))
                             return new(MessageType.InvalidRole, this, "filter, null", null, Arguments[1]);
                     }
 

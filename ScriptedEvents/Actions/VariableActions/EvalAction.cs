@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace ScriptedEvents.Actions.Variable
+﻿namespace ScriptedEvents.Actions.VariableActions
 {
     using System;
 
@@ -40,7 +38,7 @@ namespace ScriptedEvents.Actions.Variable
         public ActionResponse Execute(Script script)
         {
             var input = Arguments.JoinMessage();
-            input = SEParser.ReplaceContaminatedValueSyntax(input, script);
+            input = Parser.ReplaceContaminatedValueSyntax(input, script);
 
             var response = ConditionHelperV2.Evaluate(input, script);
             if (response.Success)
@@ -50,7 +48,7 @@ namespace ScriptedEvents.Actions.Variable
 
             return ConditionHelperV2.TryMath(input, out var res)
                 ? new ActionResponse(true, variablesToRet: new object[] { res.Result.ToUpper() })
-                : new(true, variablesToRet: new object[] { SEParser.ReplaceContaminatedValueSyntax(input, script) });
+                : new(true, variablesToRet: new object[] { Parser.ReplaceContaminatedValueSyntax(input, script) });
         }
     }
 }

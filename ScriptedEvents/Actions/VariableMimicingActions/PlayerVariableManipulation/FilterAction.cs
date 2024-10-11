@@ -41,7 +41,7 @@
         {
              new OptionsArgument("type", true,
                     new("ROLE", "Filters by role. Use a 'RoleTypeId' as the 'input' argument."),
-                    new("TEAM", "Filters by team. Use a 'TeamType' as the 'input' argument."),
+                    new("TEAM", "Filters by team. Use a 'Team' type as the 'input' argument."),
                     new("ROOM", "Filters by room. Use a 'RoomType' as the 'input' argument."),
                     new("USERID", "Filters by user id (like steam id). Use a specific user id as the 'input' argument."),
                     new("PLAYERID", "Filters by player id (id assigned in game). Use a specific player id as the 'input' argument."),
@@ -57,27 +57,27 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Player[] players = ((PlayerCollection)Arguments[0]).GetArray();
-            string input = (string)Arguments[2];
+            var players = ((PlayerCollection)Arguments[0]).GetArray();
+            var input = (string)Arguments[2];
 
-            IEnumerable<Player> ret = Arguments[0].ToUpper() switch
+            var ret = Arguments[0].ToUpper() switch
             {
-                "ROLE" when SEParser.TryParseEnum(input, out RoleTypeId rt, script, false) => players.Where(plr => plr.Role.Type == rt),
-                "TEAM" when SEParser.TryParseEnum(input, out Team team, script, false) => players.Where(plr => plr.Role.Team == team),
-                "ROOM" when SEParser.TryParseEnum(input, out RoomType room, script, false) => players.Where(plr => plr.CurrentRoom?.Type == room),
+                "ROLE" when Parser.TryParseEnum(input, out RoleTypeId rt, script) => players.Where(plr => plr.Role.Type == rt),
+                "TEAM" when Parser.TryParseEnum(input, out Team team, script) => players.Where(plr => plr.Role.Team == team),
+                "ROOM" when Parser.TryParseEnum(input, out RoomType room, script) => players.Where(plr => plr.CurrentRoom?.Type == room),
                 "USERID" => players.Where(plr => plr.UserId == input),
                 "PLAYERID" => players.Where(plr => plr.Id.ToString() == input),
-                "ITEM" when SEParser.TryParseEnum(input, out ItemType item, script, false) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
-                "ITEM" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem customItem2) && customItem == customItem2)),
-                "HELDITEM" when SEParser.TryParseEnum(input, out ItemType item, script, false) => players.Where(plr => plr.CurrentItem?.Type == item),
-                "HELDITEM" when CustomItem.TryGet(input, out CustomItem customItem) => players.Where(plr => CustomItem.TryGet(plr.CurrentItem, out CustomItem customItem2) && customItem == customItem2),
+                "ITEM" when Parser.TryParseEnum(input, out ItemType item, script) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
+                "ITEM" when CustomItem.TryGet(input, out CustomItem? customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem? customItem2) && customItem == customItem2)),
+                "HELDITEM" when Parser.TryParseEnum(input, out ItemType item, script) => players.Where(plr => plr.CurrentItem?.Type == item),
+                "HELDITEM" when CustomItem.TryGet(input, out CustomItem? customItem) => players.Where(plr => CustomItem.TryGet(plr.CurrentItem, out CustomItem? customItem2) && customItem == customItem2),
                 "GROUP" => players.Where(plr => plr.GroupName == input),
                 "ISSTAFF" => players.Where(plr => plr.RemoteAdminAccess == input.AsBool()),
-                "EFFECT" when SEParser.TryParseEnum(input, out EffectType et, script, false) => players.Where(plr => plr.TryGetEffect(et, out StatusEffectBase seb)),
+                "EFFECT" when Parser.TryParseEnum(input, out EffectType et, script) => players.Where(plr => plr.TryGetEffect(et, out StatusEffectBase seb)),
                 _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{input}' is not valid for the specified filter method."),
             };
 
-            return new(true, variablesToRet: new[] { ret.ToArray() });
+            return new(true, variablesToRet: new object[] { ret.ToArray() });
         }
     }
 }

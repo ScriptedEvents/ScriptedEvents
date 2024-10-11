@@ -253,7 +253,7 @@
                     foreach (string fragOr in orSplit)
                     {
                         source?.DebugLog($"FRAG [OR]: " + fragOr);
-                        string convertedFrag = SEParser.ReplaceContaminatedValueSyntax(fragOr, source);
+                        string convertedFrag = Parser.ReplaceContaminatedValueSyntax(fragOr, source);
                         ConditionResponse eval = EvaluateSingleCondition(convertedFrag, group);
                         if (!eval.Success)
                         {

@@ -46,61 +46,61 @@
             Rule rule = null;
 
             // Roles
-            if (SEParser.TryParseEnum((string)Arguments[0], out RoleTypeId attackerRole, script))
+            if (Parser.TryParseEnum((string)Arguments[0], out RoleTypeId attackerRole, script))
             {
-                if (SEParser.TryParseEnum((string)Arguments[1], out RoleTypeId receiverRole, script))
+                if (Parser.TryParseEnum((string)Arguments[1], out RoleTypeId receiverRole, script))
                 {
                     rule = new(attackerRole, receiverRole);
                 }
-                else if (SEParser.TryParseEnum((string)Arguments[1], out Team receiverTeam, script))
+                else if (Parser.TryParseEnum((string)Arguments[1], out Team receiverTeam, script))
                 {
                     rule = new(attackerRole, receiverTeam);
                 }
-                else if (SEParser.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
+                else if (Parser.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
                 {
                     rule = new(attackerRole, players);
                 }
             }
-            else if (SEParser.TryParseEnum((string)Arguments[1], out RoleTypeId attackerRole2, script))
+            else if (Parser.TryParseEnum((string)Arguments[1], out RoleTypeId attackerRole2, script))
             {
-                if (SEParser.TryParseEnum((string)Arguments[0], out Team receiverTeam2, script))
+                if (Parser.TryParseEnum((string)Arguments[0], out Team receiverTeam2, script))
                 {
                     rule = new(receiverTeam2, attackerRole2);
                 }
-                else if (SEParser.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
+                else if (Parser.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
                 {
                     rule = new(players2, attackerRole2);
                 }
             }
 
             // Teams
-            if (SEParser.TryParseEnum((string)Arguments[0], out Team attackerTeam, script))
+            if (Parser.TryParseEnum((string)Arguments[0], out Team attackerTeam, script))
             {
-                if (SEParser.TryParseEnum((string)Arguments[1], out Team receiverTeam, script))
+                if (Parser.TryParseEnum((string)Arguments[1], out Team receiverTeam, script))
                 {
                     rule = new(attackerTeam, receiverTeam);
                 }
-                else if (SEParser.TryParseEnum((string)Arguments[1], out RoleTypeId receiverRole, script))
+                else if (Parser.TryParseEnum((string)Arguments[1], out RoleTypeId receiverRole, script))
                 {
                     rule = new(attackerTeam, receiverRole);
                 }
-                else if (SEParser.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
+                else if (Parser.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
                 {
                     rule = new(attackerTeam, players);
                 }
             }
-            else if (SEParser.TryParseEnum((string)Arguments[1], out Team attackerTeam2, script))
+            else if (Parser.TryParseEnum((string)Arguments[1], out Team attackerTeam2, script))
             {
-                if (SEParser.TryParseEnum((string)Arguments[0], out RoleTypeId receiverRole2, script))
+                if (Parser.TryParseEnum((string)Arguments[0], out RoleTypeId receiverRole2, script))
                 {
                     rule = new(receiverRole2, attackerTeam2);
                 }
-                else if (SEParser.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
+                else if (Parser.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
                 {
                     rule = new(players2, attackerTeam2);
                 }
             }
-            else if (SEParser.TryGetPlayers(RawArguments[0], null, out PlayerCollection attackers, script) && SEParser.TryGetPlayers(RawArguments[1], null, out PlayerCollection receivers, script))
+            else if (Parser.TryGetPlayers(RawArguments[0], null, out PlayerCollection attackers, script) && Parser.TryGetPlayers(RawArguments[1], null, out PlayerCollection receivers, script))
             {
                 rule = new(attackers, receivers);
             }
