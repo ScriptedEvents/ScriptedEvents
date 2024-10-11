@@ -43,6 +43,7 @@
         /// <inheritdoc/>
         public float? Execute(Script script, out ActionResponse message)
         {
+            /*
             string scriptName = (string)Arguments[0];
             Script calledScript;
 
@@ -70,7 +71,7 @@
 
             string[] args = RawArguments.JoinMessage(1).Split(' ');
 
-            calledScript.AddVariable("{ARGS}", "Variable created using the CALL action.", Arguments.JoinMessage(1));
+            calledScript.AddLiteralVariable("{ARGS}", "Variable created using the CALL action.", Arguments.JoinMessage(1));
 
             int arg = 0;
             foreach (string varName in args)
@@ -86,17 +87,20 @@
 
                 if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult result) && result.ProcessorSuccess)
                 {
-                    calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", result.String());
+                    calledScript.AddLiteralVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", result.String());
 
                     script.DebugLog($"Added variable {varName} (as '{{ARG{arg}}}') to the called script.");
                     continue;
                 }
 
-                calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", varName);
+                calledScript.AddLiteralVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", varName);
             }
 
             message = new(true);
             return Timing.WaitUntilDone(RunScript(calledScript, script));
+            */
+            message = new(false, "Action not implemented.");
+            return 0;
         }
 
         private CoroutineHandle RunScript(Script scriptToCall, Script script)

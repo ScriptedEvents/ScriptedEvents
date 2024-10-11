@@ -40,6 +40,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            /*
             string scriptName = (string)Arguments[0];
             Script calledScript;
 
@@ -65,7 +66,7 @@
 
             string[] args = RawArguments.JoinMessage(1).Split(' ');
 
-            calledScript.AddVariable("{ARGS}", "Variable created using the CALL action.", Arguments.JoinMessage(1));
+            calledScript.AddLiteralVariable("{ARGS}", "Variable created using the CALL action.", Arguments.JoinMessage(1));
 
             int arg = 0;
             foreach (string varName in args)
@@ -81,17 +82,18 @@
 
                 if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult var))
                 {
-                    calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String());
+                    calledScript.AddLiteralVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", var.String());
 
                     script.DebugLog($"Added variable {varName} (as '{{ARG{arg}}}') to the called script.");
                     continue;
                 }
 
-                calledScript.AddVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", varName);
+                calledScript.AddLiteralVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", varName);
             }
 
             calledScript.Execute();
-            return new(true);
+            */
+            return new(false, "Action not implemented.");
         }
     }
 }

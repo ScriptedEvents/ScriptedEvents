@@ -36,6 +36,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            /*
             if (script.CallerScript == null)
                 return new(false, "You cannot return to a script; this script was not called by another script using the CALL action.", ActionFlags.FatalError);
 
@@ -50,7 +51,7 @@
                     if (!res.ProcessorSuccess)
                         return new(false, res.Message);
 
-                    script.CallerScript.AddVariable(varName, "Created using the RETURN action.", res.String(script));
+                    script.CallerScript.AddLiteralVariable(varName, "Created using the RETURN action.", res.String(script));
                 }
                 else
                 {
@@ -59,6 +60,8 @@
             }
 
             return new(true, flags: ActionFlags.StopEventExecution);
+            */
+            return new(false, "Action not implemented.");
         }
     }
 }
