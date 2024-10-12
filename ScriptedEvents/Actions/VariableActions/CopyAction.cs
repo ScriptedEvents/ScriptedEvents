@@ -1,12 +1,9 @@
-﻿using Exiled.API.Features;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.VariableActions
 {
     using System;
     using System.Linq;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
 
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
@@ -41,19 +38,12 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            object toRet;
-
-            switch ((IVariable)Arguments[0])
+            object toRet = (IVariable)Arguments[0] switch
             {
-                case IPlayerVariable plrVar:
-                    toRet = plrVar.Players.ToArray();
-                    break;
-                case ILiteralVariable lvVar:
-                    toRet = lvVar.Value;
-                    break;
-                default:
-                    throw new ArgumentException("Variable is not a valid variable type");
-            }
+                IPlayerVariable plrVar => plrVar.Players.ToArray(),
+                ILiteralVariable lvVar => lvVar.Value,
+                _ => throw new ArgumentException("Variable is not a valid variable type")
+            };
 
             return new(true, variablesToRet: new[] { toRet });
         }
