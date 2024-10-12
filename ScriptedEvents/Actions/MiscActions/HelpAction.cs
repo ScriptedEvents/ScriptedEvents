@@ -299,6 +299,7 @@ Scripted Events Contributors:
                 return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
             }
 
+            /*
             // Variable help
             else if (text.StartsWith("{") && text.EndsWith("}"))
             {
@@ -343,7 +344,7 @@ Scripted Events Contributors:
                 }
 
                 return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
-            }
+            }*/
 
             // Enum help
             EnumDefinition match = EnumDefinitions.Definitions.FirstOrDefault(def => def.EnumType.Name.ToUpper() == text);
