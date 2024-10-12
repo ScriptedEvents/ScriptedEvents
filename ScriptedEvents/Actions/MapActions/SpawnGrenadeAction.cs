@@ -59,7 +59,7 @@
             }
 
             if (Arguments.Length > 5)
-                gren.PreviousOwner = ((IPlayerVariable)Arguments[5]).Players.FirstOrDefault();
+                gren.PreviousOwner = ((IPlayerVariable)Arguments[5]).GetPlayers().FirstOrDefault();
 
             return new(true);
         }

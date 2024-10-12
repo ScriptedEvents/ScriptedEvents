@@ -43,7 +43,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            IEnumerable<Player> players = ((IPlayerVariable)Arguments[0]).Players;
+            IEnumerable<Player> players = ((IPlayerVariable)Arguments[0]).GetPlayers();
             int index = (int)Arguments[1];
 
             if (index > players.Count() - 1)

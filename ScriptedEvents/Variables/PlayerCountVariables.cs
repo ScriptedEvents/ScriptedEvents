@@ -27,25 +27,35 @@
     public class AllPlayers : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "@PLAYERS";
+        public string Name => "PLAYERS";
 
         /// <inheritdoc/>
         public string Description => "Returns all players on the server.";
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => Player.List;
+        IEnumerable<Player> IPlayerVariable.Players => Player.List;
+
+        public IEnumerable<Player> GetPlayers()
+        {
+            return ((IPlayerVariable)this).Players.Where(plr => plr is not null);
+        }
     }
 
     public class AllNpcs : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "@NPCS";
+        public string Name => "NPCS";
 
         /// <inheritdoc/>
         public string Description => "Returns all NPCs on the server.";
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => Npc.List;
+        IEnumerable<Player> IPlayerVariable.Players => Npc.List;
+
+        public IEnumerable<Player> GetPlayers()
+        {
+            return ((IPlayerVariable)this).Players.Where(plr => plr is not null);
+        }
     }
 
     public class PlayersAlive : IPlayerVariable
@@ -57,42 +67,62 @@
         public string Description => "Returns all alive players on the server.";
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => Player.List.Where(p => p.IsAlive);
+        IEnumerable<Player> IPlayerVariable.Players => Player.List.Where(p => p.IsAlive);
+
+        public IEnumerable<Player> GetPlayers()
+        {
+            return ((IPlayerVariable)this).Players.Where(plr => plr is not null);
+        }
     }
 
     public class Humans : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "@HUMANS";
+        public string Name => "HUMANS";
 
         /// <inheritdoc/>
         public string Description => "Returns all humans that are currently alive (humans as in a human role, not not NPCs).";
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => Player.List.Where(p => p.IsHuman);
+        IEnumerable<Player> IPlayerVariable.Players => Player.List.Where(p => p.IsHuman);
+
+        public IEnumerable<Player> GetPlayers()
+        {
+            return ((IPlayerVariable)this).Players.Where(plr => plr is not null);
+        }
     }
 
     public class Staff : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "@STAFF";
+        public string Name => "STAFF";
 
         /// <inheritdoc/>
         public string Description => "Returns all staff on the server (RA access)";
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => Player.Get(player => player.RemoteAdminAccess);
+        IEnumerable<Player> IPlayerVariable.Players => Player.Get(player => player.RemoteAdminAccess);
+
+        public IEnumerable<Player> GetPlayers()
+        {
+            return ((IPlayerVariable)this).Players.Where(plr => plr is not null);
+        }
     }
 
     public class NonePlayer : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "@NONE";
+        public string Name => "NONE";
 
         /// <inheritdoc/>
         public string Description => "Returns an empty player variable.";
 
         /// <inheritdoc/>
-        public IEnumerable<Player> Players => Enumerable.Empty<Player>();
+        IEnumerable<Player> IPlayerVariable.Players => Enumerable.Empty<Player>();
+
+        public IEnumerable<Player> GetPlayers()
+        {
+            return ((IPlayerVariable)this).Players.Where(plr => plr is not null);
+        }
     }
 }
