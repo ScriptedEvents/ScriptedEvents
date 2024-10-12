@@ -2,10 +2,10 @@
 {
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
 
     using Exiled.API.Features.Pools;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
+    using ScriptedEvents.API.Features;
 
     /// <summary>
     /// Contains useful extensions.
@@ -19,52 +19,34 @@
         /// <returns>The new string, without any whitespace characters.</returns>
         public static string RemoveWhitespace(this string input)
         {
-            // StackOverflow my beloved
-            string newString = string.Empty;
-            char[] chars = input.ToCharArray();
-            bool isCurrentlyInVariable = false;
-            foreach (char c in chars)
-            {
-                if (c == '{')
-                    isCurrentlyInVariable = true;
-                else if (c == '}')
-                    isCurrentlyInVariable = false;
-
-                if (isCurrentlyInVariable)
-                    newString += c;
-                else if (!char.IsWhiteSpace(c))
-                    newString += c;
-            }
-
-            return newString;
+            return Regex.Replace(input, @"\s+", string.Empty);
         }
 
-        public static bool IsBool(this string input, out bool value, Script source = null)
+        public static bool IsBool(this string input, out bool value, Script? script = null)
         {
-            if (input is null)
+            if (script is not null)
+                input = Parser.ReplaceContaminatedValueSyntax(input, script);
+
+            if (string.IsNullOrEmpty(input))
             {
-                value = false;
+                value = default;
                 return false;
             }
-            else if (bool.TryParse(input, out bool r))
+
+            if (bool.TryParse(input, out var r))
             {
                 value = r;
                 return true;
             }
-            else if (input.ToUpper() is "YES" or "Y" or "T")
-            {
-                value = true;
-                return true;
-            }
-            else if (input.ToUpper() is "NO" or "N" or "F")
-            {
-                value = false;
-                return true;
-            }
 
-            if (source is not null && VariableSystemV2.TryGetVariable(input, source, out VariableResult result) && result.ProcessorSuccess)
+            switch (input.ToUpper())
             {
-                return IsBool(result.String(), out value, source);
+                case "YES" or "Y" or "T":
+                    value = true;
+                    return true;
+                case "NO" or "N" or "F":
+                    value = false;
+                    return true;
             }
 
             value = false;
@@ -77,9 +59,9 @@
         /// <param name="input">The input string.</param>
         /// <param name="source">The script source.</param>
         /// <returns>The boolean.</returns>
-        public static bool AsBool(this string input, Script source = null)
+        public static bool AsBool(this string input, Script? source = null)
         {
-            IsBool(input, out bool v, source);
+            IsBool(input, out var v, source);
             return v;
         }
 
@@ -112,17 +94,18 @@
         {
             StringBuilder sb = StringBuilderPool.Pool.Get();
             var list = param.Skip(skipCount);
-            if (list.Count() == 0) return string.Empty;
+            var enumerable = list as object[] ?? list.ToArray();
+            if (!enumerable.Any()) return string.Empty;
 
-            foreach (object obj in list)
+            foreach (var obj in enumerable)
             {
                 if (obj is string s)
                     sb.Append(s + sep);
                 else
-                    sb.Append(obj.ToString() + sep);
+                    sb.Append(obj + sep);
             }
 
-            string str = StringBuilderPool.Pool.ToStringReturn(sb);
+            var str = StringBuilderPool.Pool.ToStringReturn(sb);
             return str.Substring(0, str.Length - sep.Length);
         }
 
