@@ -69,9 +69,9 @@
                 return false;
             }
 
-            if (CooldownMode == CommandCooldownMode.Global)
+            switch (CooldownMode)
             {
-                if ((DateTime.Now - globalCooldown).TotalSeconds < Cooldown)
+                case CommandCooldownMode.Global when (DateTime.Now - globalCooldown).TotalSeconds < Cooldown:
                 {
                     int cooldownLeft = (int)(Cooldown - (DateTime.Now - globalCooldown).TotalSeconds);
                     response = cooldownLeft == 1
@@ -80,21 +80,24 @@
                     return false;
                 }
 
-                globalCooldown = DateTime.Now;
-            }
+                case CommandCooldownMode.Global:
+                    globalCooldown = DateTime.Now;
+                    break;
 
-            if (CooldownMode == CommandCooldownMode.Player && Player.TryGet(sender, out Player ply))
-            {
-                if (playerCooldown.ContainsKey(ply.UserId) && (DateTime.Now - playerCooldown[ply.UserId]).TotalSeconds < Cooldown)
+                case CommandCooldownMode.Player when Player.TryGet(sender, out Player ply):
                 {
-                    int cooldownLeft = (int)(Cooldown - (DateTime.Now - playerCooldown[ply.UserId]).TotalSeconds);
-                    response = cooldownLeft == 1
-                        ? MainPlugin.Translations.CommandCooldown.Replace("{SECONDS}", cooldownLeft.ToString())
-                        : MainPlugin.Translations.CommandCooldownSingular.Replace("{SECONDS}", cooldownLeft.ToString());
-                    return false;
-                }
+                    if (playerCooldown.ContainsKey(ply.UserId) && (DateTime.Now - playerCooldown[ply.UserId]).TotalSeconds < Cooldown)
+                    {
+                        int cooldownLeft = (int)(Cooldown - (DateTime.Now - playerCooldown[ply.UserId]).TotalSeconds);
+                        response = cooldownLeft == 1
+                            ? MainPlugin.Translations.CommandCooldown.Replace("{SECONDS}", cooldownLeft.ToString())
+                            : MainPlugin.Translations.CommandCooldownSingular.Replace("{SECONDS}", cooldownLeft.ToString());
+                        return false;
+                    }
 
-                playerCooldown[ply.UserId] = DateTime.Now;
+                    playerCooldown[ply.UserId] = DateTime.Now;
+                    break;
+                }
             }
 
             Dictionary<string, string> failed = new();
@@ -122,7 +125,7 @@
 
                     if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
                     {
-                        body.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
+                        body.AddPlayerVariable("@SENDER", new[] { plr }, true);
                     }
 
                     for (int i = 1; i < 20; i++)
@@ -130,10 +133,10 @@
                         if (arguments.Count < i)
                             break;
 
-                        body.AddVariable($"{{ARG{i}}}", $"Argument #{i} of the command.", arguments.At(i - 1).ToString());
+                        body.AddLiteralVariable($"$ARG{i}", arguments.At(i - 1), true);
                     }
 
-                    body.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments));
+                    body.AddLiteralVariable("$ARGS", string.Join(" ", arguments), true);
 
                     MainPlugin.ScriptModule.RunScript(body);
                     success++;
