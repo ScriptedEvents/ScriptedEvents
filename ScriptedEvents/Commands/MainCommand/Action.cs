@@ -90,7 +90,7 @@
 
             if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
             {
-                mockScript.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
+                mockScript.AddPlayerVariable("@SENDER", new[] { plr }, true);
             }
 
             if (MainPlugin.Configs.Debug)
