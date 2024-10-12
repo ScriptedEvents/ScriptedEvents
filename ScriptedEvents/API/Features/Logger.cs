@@ -50,7 +50,7 @@
 
         public static void ScriptError(string message, Script source, bool fatal = false, int? printableLine = null)
         {
-            var formattedMessage = $"[Script: {source.ScriptName}] [L: {printableLine ?? source.CurrentLine + 1}]\n" + message;
+            var formattedMessage = $"[Script: {source.ScriptName}] [Line: {printableLine ?? source.CurrentLine + 1}] " + message;
             var broadcastMessage = $"<b><size=40>{(fatal ? "Fatal e" : "E")}rror when running the '{source.ScriptName}' script.\n<size=30>See the console for more details.";
             var sender = source.Sender;
 
@@ -78,7 +78,7 @@
                 case ExecuteContext.ServerConsole:
                 case ExecuteContext.None:
                 default:
-                    Error(message);
+                    Error(formattedMessage);
                     break;
             }
         }
