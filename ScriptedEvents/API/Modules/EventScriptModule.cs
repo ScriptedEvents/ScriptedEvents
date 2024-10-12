@@ -1,6 +1,7 @@
 ﻿namespace ScriptedEvents.API.Modules
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -16,7 +17,7 @@
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.Structures;
+    using Structures;
 
     public class EventScriptModule : SEModule
     {
@@ -57,7 +58,7 @@
             Singleton = this;
 
             HandlerTypes = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
-            .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
+            .Assembly.GetTypes().Where(t => t is not null && t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
 
             // Events
             Exiled.Events.Handlers.Server.RestartingRound += TerminateConnections;
@@ -82,14 +83,29 @@
             CurrentEventData = new();
             CurrentCustomEventData = new();
 
-            var scripts = MainPlugin.ScriptModule.ListScripts();
-            RegisterEventScripts(scripts);
-            MainPlugin.ScriptModule.RegisterAutorunScripts(scripts);
-            foreach (var script in scripts) script.Dispose();
+            var scripts = MainPlugin.ScriptModule.ListScripts().ToArray();
+            RegisterEventScripts(scripts, out var eventScripts);
+
+            scripts = scripts.Where(scr => !eventScripts.Contains(scr)).ToArray();
+
+            foreach (var script in eventScripts)
+            {
+                script.Dispose();
+            }
+
+            MainPlugin.ScriptModule.RegisterAutorunScripts(scripts, out var autoRunScripts);
+
+            foreach (var script in scripts.Where(scr => !autoRunScripts.Contains(scr)))
+            {
+                script.Dispose();
+            }
         }
 
-        public void RegisterEventScripts(List<Script> allScripts)
+        public void RegisterEventScripts(Script[] allScripts, out List<Script> activeScripts)
         {
+            activeScripts = new();
+            if (CurrentEventData is null || CurrentCustomEventData is null) throw new NullReferenceException();
+
             foreach (Script scr in allScripts)
             {
                 if (scr.HasFlag("EVENT", out Flag f))
@@ -104,6 +120,9 @@
                     {
                         CurrentEventData.Add(evName, new List<string>() { scr.ScriptName });
                     }
+
+                    activeScripts.Add(scr);
+                    continue;
                 }
 
                 if (scr.HasFlag("CUSTOMEVENT", out Flag cf))
@@ -117,6 +136,9 @@
                     {
                         CurrentCustomEventData.Add(cEvName, new List<string>() { scr.ScriptName });
                     }
+
+                    activeScripts.Add(scr);
+                    continue;
                 }
             }
 
@@ -257,18 +279,10 @@
                 }
             }
 
-            PropertyInfo[] properties = ev.GetType().GetProperties();
+            var properties = ev.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
             {
                 Log.Debug($"Managing property {property.Name}");
-                void AddVariable(string value)
-                {
-                    foreach (Script script in scripts)
-                    {
-                        script.AddVariable("@EV" + property.Name.ToUpper(), string.Empty, value);
-                        Log.Debug($"Adding variable @EV{property.Name.ToUpper()} to all scripts above.");
-                    }
-                }
 
                 var value = property.GetValue(ev);
                 if (value is null) continue;
@@ -276,7 +290,8 @@
                 switch (value)
                 {
                     case Player player:
-                        foreach (Script script in scripts) script.AddPlayerVariable($"@EV{property.Name.ToUpper()}", string.Empty, new[] { player });
+                        foreach (Script script in scripts)
+                            script.AddPlayerVariable($"EV{property.Name.ToUpper()}", new[] { player }, true);
                         Log.Debug($"Adding player variable @EV{property.Name.ToUpper()} to all scripts above.");
                         break;
 
@@ -296,9 +311,24 @@
                         AddVariable(@bool.ToUpper());
                         break;
 
+                    case IEnumerable enumerable:
+                        AddVariable(string.Join(",", enumerable.Cast<object>().Select(x => x.ToString())));
+                        break;
+
                     default:
                         AddVariable(value.ToString());
                         break;
+                }
+
+                continue;
+
+                void AddVariable(string val)
+                {
+                    foreach (Script script in scripts)
+                    {
+                        script.AddLiteralVariable("EV" + property.Name.ToUpper(), val, true);
+                        Log.Debug($"Adding variable @EV{property.Name.ToUpper()} to all scripts above.");
+                    }
                 }
             }
 
