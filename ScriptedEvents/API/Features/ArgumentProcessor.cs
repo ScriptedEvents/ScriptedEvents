@@ -107,7 +107,7 @@
                 }
                 else
                 {
-                    return SEParser.ReplaceContaminatedValueSyntax(arg, script);
+                    return Parser.ReplaceContaminatedValueSyntax(arg, script);
                 }
             }).ToArray());
 
@@ -159,6 +159,7 @@
                     var res = source.SmartArguments[actualAction][lastNum - 1]();
                     if (!res.Item1)
                     {
+                        Logger.ScriptError($"[Smart argument] " + res.Item2, source, true);
                         continue;
                     }
 
@@ -231,7 +232,7 @@
             }
 
             // smart action arguments
-            if (TryProcessSmartArgument(input, action, source, out string saResult))
+            if (TryProcessSmartArgument(input, action, source, out var saResult))
             {
                 input = saResult;
             }
@@ -240,69 +241,73 @@
             {
                 // Number Types:
                 case "Boolean":
-                    if (!input.IsBool(out bool result, source))
+                    if (!input.IsBool(out var result, source))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidBoolean, input));
 
                     success.NewParameters.Add(result);
                     break;
                 case "Int32": // int
-                    if (!SEParser.Cast<int>(int.TryParse, input, source, out var intRes))
+                    if (!Parser.Cast<int>(int.TryParse, input, source, out var intRes))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                     success.NewParameters.Add(intRes);
                     break;
                 case "Int64": // long
-                    if (!SEParser.Cast<long>(long.TryParse, input, source, out var longRes))
+                    if (!Parser.Cast<long>(long.TryParse, input, source, out var longRes))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
 
                     success.NewParameters.Add(longRes);
                     break;
                 case "Single": // float
-                    if (!SEParser.Cast<float>(float.TryParse, input, source, out var floatRes))
+                    if (!Parser.Cast<float>(float.TryParse, input, source, out var floatRes))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
 
                     success.NewParameters.Add(floatRes);
                     break;
                 case "Char":
-                    if (!SEParser.Cast<char>(char.TryParse, input, source, out var charRes))
+                    if (!Parser.Cast<char>(char.TryParse, input, source, out var charRes))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidCharacter, input));
 
                     success.NewParameters.Add(charRes);
                     break;
 
-                case "ILiteralVariable":
-                    if (!VariableSystemV2.TryGetVariable(input, source, out var variable2))
+                case "IVariable":
+                    if (!VariableSystemV2.TryGetVariable<IVariable>(input, source, out var someVar, false)
+                        || someVar is null)
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
 
-                    if (variable2.Variable is not ILiteralVariable strVar)
+                    success.NewParameters.Add(someVar);
+                    break;
+                case "ILiteralVariable":
+                    if (!VariableSystemV2.TryGetVariable<ILiteralVariable>(input, source, out var strVar, false)
+                        || strVar is null)
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidStringVariable, input));
 
                     success.NewParameters.Add(strVar);
                     break;
                 case "IPlayerVariable":
-                    if (!VariableSystemV2.TryGetVariable(input, source, out var variable3))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
-                    if (variable3.Variable is not IPlayerVariable playerVar)
+                    if (!VariableSystemV2.TryGetVariable<IPlayerVariable>(input, source, out var plrVar, false)
+                        || plrVar is null)
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
 
-                    success.NewParameters.Add(playerVar);
+                    success.NewParameters.Add(plrVar);
                     break;
 
                 // Array Types:
                 case "Room[]":
-                    if (!SEParser.TryGetRooms(input, out var rooms, source))
+                    if (!Parser.TryGetRooms(input, out var rooms, source))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
 
                     success.NewParameters.Add(rooms);
                     break;
                 case "Door[]":
-                    if (!SEParser.TryGetDoors(input, out var doors, source))
+                    if (!Parser.TryGetDoors(input, out var doors, source))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidDoor, input));
 
                     success.NewParameters.Add(doors);
                     break;
                 case "Lift[]":
-                    if (!SEParser.TryGetLifts(input, out var lifts, source))
+                    if (!Parser.TryGetLifts(input, out var lifts, source))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidLift, input));
 
                     success.NewParameters.Add(lifts);
@@ -310,14 +315,14 @@
 
                 // Special
                 case "PlayerCollection":
-                    if (!SEParser.TryGetPlayers(input, null, out var players, source))
+                    if (!Parser.TryGetPlayers(input, null, out var players, source))
                         return new(false, true, expected.ArgumentName, players.Message);
 
                     success.NewParameters.Add(players);
                     break;
 
                 case "Player":
-                    if (!SEParser.TryGetPlayers(input, null, out var players1, source))
+                    if (!Parser.TryGetPlayers(input, null, out var players1, source))
                         return new(false, true, expected.ArgumentName, players1.Message);
 
                     switch (players1.Length)
@@ -332,9 +337,9 @@
                     break;
 
                 case "RoleTypeIdOrTeam":
-                    if (SEParser.TryParseEnum(input, out RoleTypeId rtResult, source))
+                    if (Parser.TryParseEnum(input, out RoleTypeId rtResult, source))
                         success.NewParameters.Add(rtResult);
-                    else if (SEParser.TryParseEnum(input, out Team teamResult, source))
+                    else if (Parser.TryParseEnum(input, out Team teamResult, source))
                         success.NewParameters.Add(teamResult);
                     else
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidRoleTypeOrTeam, input));
@@ -345,7 +350,7 @@
                     // Handle all enum types
                     if (expected.Type.BaseType == typeof(Enum))
                     {
-                        object res = SEParser.ParseEnum(input, expected.Type, source);
+                        object res = Parser.ParseEnum(input, expected.Type, source);
                         if (res is null)
                             return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidEnumGeneric, input, expected.Type.Name));
 
@@ -353,7 +358,7 @@
                         break;
                     }
 
-                    success.NewParameters.Add(SEParser.ReplaceContaminatedValueSyntax(input, source));
+                    success.NewParameters.Add(Parser.ReplaceContaminatedValueSyntax(input, source));
                     break;
             }
 
@@ -399,7 +404,7 @@
             }
             else
             {
-                if (!SEParser.TryGetPlayers(playerVarNameLoopingThrough, null, out PlayerCollection outPlayers, script))
+                if (!Parser.TryGetPlayers(playerVarNameLoopingThrough, null, out PlayerCollection outPlayers, script))
                 {
                     return new(false, true, ErrorGenV2.InvalidPlayerVariable(playerVarNameLoopingThrough));
                 }
@@ -415,10 +420,10 @@
                 return new(false);
             }
 
-            Player player = playersToLoop.FirstOrDefault();
+            Player player = playersToLoop.First();
             playersToLoop.Remove(player);
 
-            script.AddPlayerVariable(newPlayerVarName, string.Empty, new[] { player });
+            script.AddPlayerVariable(newPlayerVarName, new[] { player }, false);
 
             script.PlayerLoopInfo = new(script.CurrentLine, playersToLoop);
 
