@@ -12,13 +12,6 @@
         public Flag(string key, IEnumerable<string> arguments)
         {
             Key = key;
-
-            if (arguments is null)
-            {
-                Arguments = Array.Empty<string>();
-                return;
-            }
-
             Arguments = arguments.Select(s => s.Trim()).ToArray();
         }
 
