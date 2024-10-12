@@ -33,7 +33,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Logger.Info(ConditionHelperV2.Evaluate(Arguments.JoinMessage(0), script).ToString(), script);
+            Logger.Info(ConditionHelper.Evaluate(Arguments.JoinMessage(0), script).ToString(), script);
             return new(true);
         }
     }

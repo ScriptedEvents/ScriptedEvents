@@ -1,9 +1,11 @@
-﻿namespace ScriptedEvents.Structures
+﻿using ScriptedEvents.API.Features;
+
+namespace ScriptedEvents.Structures
 {
     using System;
 
     /// <summary>
-    /// Represents the result of a call to <see cref="API.Features.ConditionHelperV2.TryMath(string, out MathResult)"/>.
+    /// Represents the result of a call to <see cref="ConditionHelper.TryMath(string, out MathResult)"/>.
     /// </summary>
     public class MathResult
     {

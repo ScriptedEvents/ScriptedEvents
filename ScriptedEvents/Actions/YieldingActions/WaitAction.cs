@@ -57,7 +57,7 @@
                 return Timing.WaitUntilDone(handle);
             }
 
-            if (!ConditionHelperV2.TryMath(formula, out MathResult result))
+            if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
                 message = new(MessageType.NotANumberOrCondition, this, "duration", null, formula, result);
                 return null;
@@ -77,7 +77,7 @@
         {
             while (true)
             {
-                ConditionResponse response = ConditionHelperV2.Evaluate(input, script);
+                ConditionResponse response = ConditionHelper.Evaluate(input, script);
                 if (response.Success)
                 {
                     if (response.Passed)

@@ -453,7 +453,7 @@
             string[] conditionArgs = inArgs.Skip(conditionSectionKeyword + 1).ToArray();
             outArgs = outArgs.Take(conditionSectionKeyword).ToArray();
 
-            ConditionResponse resp = ConditionHelperV2.Evaluate(string.Join(" ", conditionArgs), script);
+            ConditionResponse resp = ConditionHelper.Evaluate(string.Join(" ", conditionArgs), script);
 
             if (!resp.Success)
             {

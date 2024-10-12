@@ -52,7 +52,7 @@ namespace ScriptedEvents.Actions
         {
             while (true)
             {
-                ConditionResponse response = ConditionHelperV2.Evaluate(input, script);
+                ConditionResponse response = ConditionHelper.Evaluate(input, script);
                 Logger.Info($"CONDITION: {Parser.ReplaceContaminatedValueSyntax(input, script)} \\\\ SUCCESS: {response.Success} \\\\ PASSED: {response.Passed}", script);
                 if (response.Success)
                 {

@@ -40,13 +40,13 @@
             var input = Arguments.JoinMessage();
             input = Parser.ReplaceContaminatedValueSyntax(input, script);
 
-            var response = ConditionHelperV2.Evaluate(input, script);
+            var response = ConditionHelper.Evaluate(input, script);
             if (response.Success)
             {
                 return new ActionResponse(true, variablesToRet: new object[] { response.Passed.ToUpper() });
             }
 
-            return ConditionHelperV2.TryMath(input, out var res)
+            return ConditionHelper.TryMath(input, out var res)
                 ? new ActionResponse(true, variablesToRet: new object[] { res.Result.ToUpper() })
                 : new(true, variablesToRet: new object[] { Parser.ReplaceContaminatedValueSyntax(input, script) });
         }

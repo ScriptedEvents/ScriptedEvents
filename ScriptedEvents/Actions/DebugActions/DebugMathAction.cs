@@ -34,7 +34,7 @@
         public ActionResponse Execute(Script script)
         {
             string formula = Parser.ReplaceContaminatedValueSyntax(RawArguments.JoinMessage(), script);
-            if (!ConditionHelperV2.TryMath(formula, out MathResult result))
+            if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
                 return new(MessageType.NotANumberOrCondition, this, "condition", null, formula, result);
             }
