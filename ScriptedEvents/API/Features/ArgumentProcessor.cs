@@ -272,21 +272,21 @@
                     break;
 
                 case "IVariable":
-                    if (!VariableSystemV2.TryGetVariable<IVariable>(input, source, out var someVar, false)
+                    if (!VariableSystem.TryGetVariable<IVariable>(input, source, out var someVar, false)
                         || someVar is null)
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
 
                     success.NewParameters.Add(someVar);
                     break;
                 case "ILiteralVariable":
-                    if (!VariableSystemV2.TryGetVariable<ILiteralVariable>(input, source, out var strVar, false)
+                    if (!VariableSystem.TryGetVariable<ILiteralVariable>(input, source, out var strVar, false)
                         || strVar is null)
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidStringVariable, input));
 
                     success.NewParameters.Add(strVar);
                     break;
                 case "IPlayerVariable":
-                    if (!VariableSystemV2.TryGetVariable<IPlayerVariable>(input, source, out var plrVar, false)
+                    if (!VariableSystem.TryGetVariable<IPlayerVariable>(input, source, out var plrVar, false)
                         || plrVar is null)
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
 

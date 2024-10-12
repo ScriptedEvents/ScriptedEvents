@@ -171,7 +171,7 @@
                 Log($"Input {input.ToUpper()} specifies all players on the server.");
                 list = Player.List.ToList();
             }
-            else if (VariableSystemV2.TryGetPlayersFromVariable(input, source, out var result, false))
+            else if (VariableSystem.TryGetPlayersFromVariable(input, source, out var result, false))
             {
                 list = result.ToList();
                 Log($"Input {input} is a valid variable. Fetch got {list.Count} players.");
@@ -279,7 +279,7 @@
                     break;
             }
 
-            if (!VariableSystemV2.TryGetPlayersFromVariable(parts[0], source, out var plrRes, true))
+            if (!VariableSystem.TryGetPlayersFromVariable(parts[0], source, out var plrRes, true))
             {
                 Log("Fail. Player variable invalid.");
                 return false;
@@ -511,7 +511,7 @@
 
             foreach (Match varbl in values.variables)
             {
-                if (!VariableSystemV2.TryGetVariable<ILiteralVariable>(varbl.Value, script, out var res, false) || res is null)
+                if (!VariableSystem.TryGetVariable<ILiteralVariable>(varbl.Value, script, out var res, false) || res is null)
                 {
                     continue;
                 }

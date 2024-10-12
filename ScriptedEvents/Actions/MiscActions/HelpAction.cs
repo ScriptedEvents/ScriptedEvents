@@ -159,7 +159,7 @@ Scripted Events Contributors:
             // List Variables
             if (text is "LISTVAR" or "VARLIST" or "VARIABLES" or "VARS")
             {
-                var conditionList = VariableSystemV2.Groups.OrderBy(group => group.GroupName);
+                var conditionList = VariableSystem.Groups.OrderBy(group => group.GroupName);
 
                 StringBuilder sbList = StringBuilderPool.Pool.Get();
                 sbList.AppendLine();
@@ -308,7 +308,7 @@ Scripted Events Contributors:
                 StringBuilder sb = StringBuilderPool.Pool.Get();
                 sb.AppendLine();
 
-                if (VariableSystemV2.TryGetVariable(text, script, out VariableResult res2))
+                if (VariableSystem.TryGetVariable(text, script, out VariableResult res2))
                 {
                     valid = true;
                     IVariable variable = res2.Variable;

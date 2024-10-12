@@ -428,7 +428,7 @@
             }
 
             MainPlugin.ScriptModule.StopAllScripts();
-            VariableSystemV2.ClearVariables();
+            VariableSystem.ClearVariables();
             Kills.Clear();
             PlayerKills.Clear();
             LockedRadios.Clear();

@@ -42,11 +42,11 @@
 
             foreach (string varName in RawArguments)
             {
-                if (VariableSystemV2.TryGetPlayers(varName, script, out PlayerCollection players))
+                if (VariableSystem.TryGetPlayers(varName, script, out PlayerCollection players))
                 {
                     script.CallerScript.AddPlayerVariable(varName, "Created using the RETURN action.", players);
                 }
-                else if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult res))
+                else if (VariableSystem.TryGetVariable(varName, script, out VariableResult res))
                 {
                     if (!res.ProcessorSuccess)
                         return new(false, res.Message);

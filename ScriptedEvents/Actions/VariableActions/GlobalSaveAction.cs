@@ -38,7 +38,7 @@
         public ActionResponse Execute(Script script)
         {
             IVariable variable = (IVariable)Arguments[0];
-            VariableSystemV2.TryDefineVariable(variable);
+            VariableSystem.TryDefineVariable(variable);
 
             return new(true);
         }

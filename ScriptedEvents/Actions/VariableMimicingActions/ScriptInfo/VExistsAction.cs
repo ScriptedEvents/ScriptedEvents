@@ -38,7 +38,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(true, variablesToRet: new object[] { VariableSystemV2.TryGetVariable<IVariable>((string)Arguments[0], script, out _, false).ToUpper() });
+            return new(true, variablesToRet: new object[] { VariableSystem.TryGetVariable<IVariable>((string)Arguments[0], script, out _, false).ToUpper() });
         }
     }
 }

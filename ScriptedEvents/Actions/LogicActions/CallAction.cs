@@ -77,7 +77,7 @@
             foreach (string varName in args)
             {
                 arg++;
-                if (VariableSystemV2.TryGetPlayers(varName, script, out PlayerCollection val))
+                if (VariableSystem.TryGetPlayers(varName, script, out PlayerCollection val))
                 {
                     calledScript.AddPlayerVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", val);
 
@@ -85,7 +85,7 @@
                     continue;
                 }
 
-                if (VariableSystemV2.TryGetVariable(varName, script, out VariableResult result) && result.ProcessorSuccess)
+                if (VariableSystem.TryGetVariable(varName, script, out VariableResult result) && result.ProcessorSuccess)
                 {
                     calledScript.AddLiteralVariable($"{{ARG{arg}}}", "Variable created using the CALL action.", result.String());
 
