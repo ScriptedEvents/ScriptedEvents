@@ -55,7 +55,7 @@
                 "DURATION" => script.RunDuration.TotalSeconds.ToString(),
                 "NAME" => script.ScriptName,
                 "PATH" => script.FilePath ?? "N/A",
-                "VARIABLES" => script.UniqueVariables.Keys.Concat(script.UniquePlayerVariables.Keys).ToArray().Length != 0 ? string.Join(", ", script.UniqueVariables.Keys.Concat(script.UniquePlayerVariables.Keys)) : "NONE",
+                "VARIABLES" => script.UniqueLiteralVariables.Keys.Concat(script.UniquePlayerVariables.Keys).ToArray().Length != 0 ? string.Join(", ", script.UniqueLiteralVariables.Keys.Concat(script.UniquePlayerVariables.Keys)) : "NONE",
                 _ => throw new ArgumentException()
             };
             return new(true, variablesToRet: new[] { ret });
