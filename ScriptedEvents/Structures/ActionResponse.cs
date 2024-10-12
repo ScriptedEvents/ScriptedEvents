@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Structures
+﻿using System;
+
+namespace ScriptedEvents.Structures
 {
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
@@ -16,13 +18,13 @@
         /// <param name="message">Message to show (or an error message if <see cref="Success"/> is <see langword="false"/>).</param>
         /// <param name="flags">Flags that control what happens after the execution is complete.</param>
         /// <param name="variablesToRet">Variables to assign after successful action usage.</param>
-        public ActionResponse(bool success, string message = "", ActionFlags flags = ActionFlags.None, object[] variablesToRet = null)
+        public ActionResponse(bool success, string message = "", ActionFlags flags = ActionFlags.None, object[]? variablesToRet = null)
         {
             Success = success;
             Message = message;
             ResponseFlags = flags;
             MessageType = Success ? MessageType.OK : MessageType.Custom;
-            ResponseVariables = variablesToRet;
+            ResponseVariables = variablesToRet ?? Array.Empty<object>();
         }
 
         /// <summary>
@@ -46,12 +48,12 @@
         /// <see cref="MessageType.CassieCaptionNoAnnouncement"/> - Expects only parameter name. <br />
         /// <see cref="MessageType.Custom"/> - Doesn't need anything. Doesn't need parameter name. <br />
         /// </remarks>
-        public ActionResponse(MessageType responseType, IAction action, string paramName, object[] variablesToRet = null, params object[] arguments)
+        public ActionResponse(MessageType responseType, IAction action, string paramName, object[]? variablesToRet = null, params object[] arguments)
         {
             Success = responseType is MessageType.OK;
             MessageType = responseType;
             Message = MsgGen.Generate(responseType, action, paramName, arguments);
-            ResponseVariables = variablesToRet;
+            ResponseVariables = variablesToRet ?? Array.Empty<object>();
         }
 
         /// <summary>
