@@ -50,7 +50,7 @@
             }
 
             string arg0 = arguments.At(0);
-            Script scr = null;
+            Script? scr = default;
 
             try
             {
@@ -64,7 +64,7 @@
 
                 if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
                 {
-                    scr.AddPlayerVariable("{SENDER}", "The player who executed the script.", new[] { plr });
+                    scr.AddPlayerVariable("@SENDER", new[] { plr }, true);
                 }
 
                 for (int i = 1; i < 20; i++)
@@ -72,11 +72,11 @@
                     if (arguments.Count <= i)
                         break;
 
-                    scr.DebugLog($"Assigned {{ARG{i}}} variable to executed script.");
-                    scr.AddVariable($"{{ARG{i}}}", $"Argument #{i} of the command.", arguments.At(i).ToString());
+                    scr.DebugLog($"Assigned $ARG{i} variable to executed script.");
+                    scr.AddLiteralVariable($"$ARG{i}", arguments.At(i), true);
                 }
 
-                scr.AddVariable("{ARGS}", "All arguments of the command, separated by spaces.", string.Join(" ", arguments.Skip(1)));
+                scr.AddLiteralVariable("$ARGS", string.Join(" ", arguments.Skip(1)), true);
 
                 MainPlugin.ScriptModule.RunScript(scr);
 
@@ -84,8 +84,8 @@
             }
             catch (DisabledScriptException)
             {
-                response = $"Script '{scr.ScriptName}' is disabled.";
-                scr.Dispose();
+                response = $"Script '{scr?.ScriptName}' is disabled.";
+                scr?.Dispose();
                 return false;
             }
             catch (FileNotFoundException)
