@@ -1,4 +1,4 @@
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.MiscActions
 {
     using System;
     using System.Collections.Generic;
@@ -35,9 +35,9 @@ namespace ScriptedEvents.Actions
 
         /// <inheritdoc/>
         public string LongDescription => @"This action pauses the script until the request is complete. Upon completion, three variables will be created:
-- {HTTPSUCCESS} - True or false, depending on if the website returned HTTP Code 200.
-- {HTTPCODE} - The status code response.
-- {HTTPRESULT} - The body of information returned from the website.
+- $HTTPSUCCESS - True or false, depending on if the website returned HTTP Code 200.
+- $HTTPCODE - The status code response.
+- $HTTPRESULT - The body of information returned from the website.
 
 These variables are created as per-script variables, meaning they can only be used in the script that created them. If these variables already exist (such as a prior HTTPGET/HTTPPOST execution), they will be overwritten with new values.";
 
@@ -73,9 +73,9 @@ These variables are created as per-script variables, meaning they can only be us
             else
                 result = discordWWW.downloadHandler.text;
 
-            script.AddVariable("{HTTPCODE}", "The response code from the website.", discordWWW.responseCode.ToString());
-            script.AddVariable("{HTTPSUCCESS}", "Whether or not the result of an HTTP request was successful.", (discordWWW.responseCode == 200).ToString().ToUpper());
-            script.AddVariable("{HTTPRESULT}", "The result of a request through the HTTPGET or HTTPPOST actions.", result);
+            script.AddLiteralVariable("HTTPCODE", discordWWW.responseCode.ToString(), true);
+            script.AddLiteralVariable("HTTPSUCCESS", (discordWWW.responseCode == 200).ToString().ToUpper(), true);
+            script.AddLiteralVariable("HTTPRESULT", result, true);
         }
     }
 }
