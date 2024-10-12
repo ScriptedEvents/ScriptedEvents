@@ -10,6 +10,7 @@
     <RootNamespace>ScriptedEvents</RootNamespace>
     <AssemblyName>ScriptedEvents</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFramework>net4.8</TargetFramework>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <LangVersion>9</LangVersion>
@@ -112,6 +113,7 @@
     <Compile Include="Actions\MapActions\CleanupAction.cs" />
     <Compile Include="Actions\MapActions\ElevatorAction.cs" />
     <Compile Include="Actions\MapActions\SpawnRagdollAction.cs" />
+    <Compile Include="Actions\VariableActions\CopyAction.cs" />
     <Compile Include="Actions\VariableMimicingActions\AllInOne\GeneratorInfoAction.cs" />
     <Compile Include="Actions\VariableMimicingActions\AllInOne\IntercomInfoAction.cs" />
     <Compile Include="Actions\VariableMimicingActions\AllInOne\ItemInfoAction.cs" />
@@ -175,6 +177,7 @@
     <Compile Include="Actions\VariableMimicingActions\PlayerFetch\ZonePlayersAction.cs" />
     <Compile Include="Actions\VariableMimicingActions\PlayerVariableManipulation\FilterAction.cs" />
     <Compile Include="Actions\VariableMimicingActions\PlayerVariableManipulation\IndexPlayerAction.cs" />
+    <Compile Include="Actions\VariableMimicingActions\PlayerVariableManipulation\JoinAction.cs" />
     <Compile Include="Actions\VariableMimicingActions\PlayerVariableManipulation\LimitAction.cs" />
     <Compile Include="Actions\VariableMimicingActions\RandomEnums\RandomDoorAction.cs" />
     <Compile Include="Actions\VariableMimicingActions\RandomEnums\RandomItemAction.cs" />
@@ -187,10 +190,8 @@
     <Compile Include="Actions\VariableMimicingActions\Strings\StrRemoveAction.cs" />
     <Compile Include="Actions\VariableMimicingActions\Strings\StrReplaceAction.cs" />
     <Compile Include="Actions\VariableMimicingActions\Strings\StrUpperAction.cs" />
-    <Compile Include="Actions\VariableActions\AddToAction.cs" />
-    <Compile Include="Actions\VariableActions\BindAction.cs" />
+    <Compile Include="Actions\VariableActions\PopAction.cs" />
     <Compile Include="Actions\VariableActions\EvalAction.cs" />
-    <Compile Include="Actions\VariableActions\LocalPlayerVariableAction.cs" />
     <Compile Include="Actions\VariableActions\PlayerDataAction.cs" />
     <Compile Include="Actions\VariableActions\SaveAction.cs" />
     <Compile Include="Actions\MiscActions\HttpPostAction.cs" />
@@ -206,7 +207,7 @@
     <Compile Include="API\Extensions\InterfaceExtensions.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
     <Compile Include="API\Features\ArgumentProcessor.cs" />
-    <Compile Include="API\Features\ConditionHelperV2.cs" />
+    <Compile Include="API\Features\ConditionHelper.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Features\ErrorGen.cs" />
     <Compile Include="API\Features\ErrorGenV2.cs" />
@@ -249,7 +250,7 @@
     <Compile Include="API\Interfaces\IScriptComponent.cs" />
     <Compile Include="API\Modules\EventScriptModule.cs" />
     <Compile Include="API\Modules\SEModule.cs" />
-    <Compile Include="API\Modules\VariableSystemV2.cs" />
+    <Compile Include="API\Modules\VariableSystem.cs" />
     <Compile Include="Commands\CustomCommand.cs" />
     <Compile Include="Commands\HelpCommand\ScriptHelp.cs" />
     <Compile Include="Commands\MainCommand\Action.cs" />
@@ -334,10 +335,10 @@
     <Compile Include="Structures\ConditionResponse.cs" />
     <Compile Include="Structures\Countdown.cs" />
     <Compile Include="Structures\MathResult.cs" />
-    <Compile Include="Variables\CustomVariable.cs" />
+    <Compile Include="Variables\CustomLiteralVariable.cs" />
     <Compile Include="Variables\PlayerCountVariables.cs" />
     <Compile Include="Variables\RoleVariables.cs" />
-    <Compile Include="API\Features\SEParser.cs" />
+    <Compile Include="API\Features\Parser.cs" />
     <Compile Include="API\Modules\EventHandlingModule.cs" />
     <Compile Include="Actions\MapActions\WarheadAction.cs" />
     <Compile Include="MainPlugin.cs" />
