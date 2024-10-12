@@ -14,7 +14,7 @@
         /// <param name="success">Whether or not the argument processing was successful.</param>
         /// <param name="variable">The newly retrieved variable.</param>
         /// <param name="message">The error message, if <paramref name="success"/> is <see langword="false"/>.</param>
-        public VariableResult(bool success, IVariable variable, string message = "")
+        public VariableResult(bool success, IVariable? variable, string message = "")
         {
             ProcessorSuccess = success;
             Message = message;
@@ -27,15 +27,13 @@
         public bool ProcessorSuccess { get; }
 
         /// <summary>
-        /// Gets the error message, if <see cref="Success"/> is <see langword="false"/>.
+        /// Gets the error message, if <see cref="ProcessorSuccess"/> is <see langword="false"/>.
         /// </summary>
         public string Message { get; }
 
         /// <summary>
         /// Gets the variable. Will be null if variable was not found.
         /// </summary>
-        public IVariable Variable { get; }
-
-        public string String(Script source = null) => Variable.String(source);
+        public IVariable? Variable { get; }
     }
 }
