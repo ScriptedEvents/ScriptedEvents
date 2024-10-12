@@ -1,4 +1,7 @@
-﻿namespace ScriptedEvents
+﻿using ScriptedEvents.API.Modules;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents
 {
     using System;
     using System.Collections.Generic;
@@ -29,7 +32,7 @@
             Labels = DictionaryPool<string, int>.Pool.Get();
             FunctionLabels = DictionaryPool<string, int>.Pool.Get();
             Flags = ListPool<Flag>.Pool.Get();
-            UniqueVariables = DictionaryPool<string, CustomVariable>.Pool.Get();
+            UniqueLiteralVariables = DictionaryPool<string, CustomLiteralVariable>.Pool.Get();
             UniquePlayerVariables = DictionaryPool<string, CustomPlayerVariable>.Pool.Get();
             UniqueId = Guid.NewGuid();
 
@@ -172,7 +175,7 @@
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
         /// </summary>
-        public Dictionary<string, CustomVariable> UniqueVariables { get; private set; }
+        public Dictionary<string, CustomLiteralVariable> UniqueLiteralVariables { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables that are unique to this script.
@@ -187,7 +190,7 @@
         /// <summary>
         /// Gets or sets the info about an ongoing player loop.
         /// </summary>
-        public PlayerLoopInfo PlayerLoopInfo { get; set; } = null;
+        public PlayerLoopInfo? PlayerLoopInfo { get; set; } = null;
 
         /// <summary>
         /// Gets or sets the original action arguments from when the script was read for the first time.
@@ -210,13 +213,13 @@
             Logger.Debug($"Disposing script object | ID: {UniqueId}");
 
             Sender = null;
-            Actions = null;
-            RawText = null;
-            FilePath = null;
+            Actions = Array.Empty<IAction>();
+            RawText = string.Empty;
+            FilePath = string.Empty;
 
             DictionaryPool<string, int>.Pool.Return(Labels);
             ListPool<Flag>.Pool.Return(Flags);
-            DictionaryPool<string, CustomVariable>.Pool.Return(UniqueVariables);
+            DictionaryPool<string, CustomLiteralVariable>.Pool.Return(UniqueLiteralVariables);
             DictionaryPool<string, CustomPlayerVariable>.Pool.Return(UniquePlayerVariables);
             GC.SuppressFinalize(this);
         }
@@ -289,30 +292,63 @@
         /// Adds a variable.
         /// </summary>
         /// <param name="name">Name of the variable.</param>
-        /// <param name="desc">Description of the variable.</param>
         /// <param name="value">The value of the variable.</param>
-        public void AddVariable(string name, string desc, string value)
+        /// <param name="isVariableNameVerified">Whether variable name has already been verified to be valid.</param>
+        public void AddLiteralVariable(string name, string value, bool isVariableNameVerified)
         {
-            name = name.ToUpper();
-            if (UniqueVariables.ContainsKey(name))
-                UniqueVariables.Remove(name);
+            if (!VariableSystem.IsValidVariableSyntax<ILiteralVariable>(name, out var processedName) && !isVariableNameVerified)
+            {
+                throw new ArgumentException($"Variable '{name}' is not a valid variable name.");
+            }
 
-            UniqueVariables.Add(name, new(name, desc, value));
+            UniqueLiteralVariables[processedName] = new(processedName, string.Empty, value);
         }
 
         /// <summary>
         /// Adds a player variable.
         /// </summary>
         /// <param name="name">Name of the variable.</param>
-        /// <param name="desc">Description of the variable.</param>
         /// <param name="value">The <see cref="IEnumerable{T}"/> of Players for this variable.</param>
-        public void AddPlayerVariable(string name, string desc, IEnumerable<Player> value)
+        /// <param name="isVariableNameVerified">Whether variable name has already been verified to be valid.</param>
+        public void AddPlayerVariable(string name, IEnumerable<Player> value, bool isVariableNameVerified)
         {
-            name = name.ToUpper();
-            if (UniquePlayerVariables.ContainsKey(name))
-                UniquePlayerVariables.Remove(name);
+            if (!VariableSystem.IsValidVariableSyntax<IPlayerVariable>(name, out var processedName) && !isVariableNameVerified)
+            {
+                throw new ArgumentException($"Variable '{name}' is not a valid variable name.");
+            }
 
-            UniquePlayerVariables.Add(name, new(name, desc, value.ToList()));
+            UniquePlayerVariables[processedName] = new(processedName, string.Empty, value);
+        }
+
+        public void RemoveVariable<T>(T var)
+            where T : IVariable
+        {
+            switch (var)
+            {
+                case IPlayerVariable playerVariable:
+                {
+                    Logger.Info(string.Join(", ", UniquePlayerVariables.Keys));
+                    UniquePlayerVariables.Remove(playerVariable.Name);
+                    break;
+                }
+
+                case ILiteralVariable literalVariable:
+                {
+                    UniqueLiteralVariables.Remove(literalVariable.Name);
+                    break;
+                }
+
+                case IVariable variable:
+                {
+                    // funny nuke
+                    UniquePlayerVariables.Remove(variable.Name);
+                    UniqueLiteralVariables.Remove(variable.Name);
+                    break;
+                }
+
+                default:
+                    throw new ArgumentException($"Variable '{var}' is not a valid variable type.");
+            }
         }
 
         public bool HasFlag(string key, out Flag flag)
@@ -324,7 +360,7 @@
         public bool HasFlag(string key)
             => HasFlag(key, out _);
 
-        public void AddFlag(string key, IEnumerable<string> arguments = null)
-            => Flags.Add(new(key, arguments));
+        public void AddFlag(string key, IEnumerable<string>? arguments = null)
+            => Flags.Add(new(key, arguments ?? Array.Empty<string>()));
     }
 }
