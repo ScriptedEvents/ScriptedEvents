@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.VariableMimicingActions.ScriptInfo
 {
     using System;
 
@@ -7,8 +7,8 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Interfaces;
 
-    /// <inheritdoc/>
     public class VExistsAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
@@ -38,9 +38,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string ret = VariableSystemV2.TryGetVariable((string)Arguments[0], script, out VariableResult _).ToUpper();
-
-            return new(true, variablesToRet: new[] { ret });
+            return new(true, variablesToRet: new object[] { VariableSystemV2.TryGetVariable<IVariable>((string)Arguments[0], script, out _, false).ToUpper() });
         }
     }
 }
