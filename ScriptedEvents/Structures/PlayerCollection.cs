@@ -19,9 +19,9 @@
         /// <param name="newPlayers">The list of players.</param>
         /// <param name="success">Whether or not the player retrieval was successful.</param>
         /// <param name="message">The error message, if <paramref name="success"/> is <see langword="false"/>.</param>
-        public PlayerCollection(List<Player> newPlayers, bool success = true, string message = "")
+        public PlayerCollection(IEnumerable<Player> newPlayers, bool success = true, string message = "")
         {
-            players = newPlayers ?? new();
+            players = newPlayers.ToList();
 
             Success = success;
             Message = message;
