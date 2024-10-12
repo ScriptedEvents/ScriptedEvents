@@ -12,6 +12,8 @@
         /// <summary>
         /// Gets the list of players representing this variable.
         /// </summary>
-        public IEnumerable<Player> Players { get; }
+        internal IEnumerable<Player> Players { get; }
+
+        IEnumerable<Player> GetPlayers();
     }
 }
