@@ -298,175 +298,185 @@
             if (ply is null)
                 throw new NullReferenceException("Player not found.");
 
-            switch (parts[1])
+            try
             {
-                case "NAME":
-                    result = ply.Nickname;
-                    break;
-
-                case "DISPLAYNAME" or "DPNAME":
-                    result = ply.DisplayNickname;
-                    break;
-
-                case "USERID" or "UID":
-                    result = ply.UserId;
-                    break;
-
-                case "PLAYERID" or "PID":
-                    result = ply.Id.ToString();
-                    break;
-
-                case "ROLE":
-                    result = ply.Role.Type.ToString();
-                    break;
-
-                case "TEAM":
-                    result = ply.Role.Team.ToString();
-                    break;
-
-                case "ROOM":
-                    result = ply.CurrentRoom.Type.ToString();
-                    break;
-
-                case "ZONE":
-                    result = ply.Zone.ToString();
-                    break;
-
-                case "HP" or "HEALTH":
-                    result = ply.Health.ToString();
-                    break;
-
-                case "ITEMCOUNT":
-                    result = ply.Items.Count.ToString();
-                    break;
-
-                case "ITEMS":
-                    result = ply.Items.Count > 0
-                        ? string.Join("|", ply.Items.Select(item => CustomItem.TryGet(item, out var ci1) ? ci1?.Name : item.Type.ToString()))
-                        : "NONE";
-                    break;
-
-                case "HELDITEM":
-                    result = (CustomItem.TryGet(ply.CurrentItem, out var ci)
-                        ? ci?.Name ?? "NONE"
-                        : ply.CurrentItem?.Type.ToString()) ?? "NONE";
-                    break;
-
-                case "GOD":
-                    result = ply.IsGodModeEnabled.ToUpper();
-                    break;
-
-                case "POS":
-                    result = $"{ply.Position.x} {ply.Position.y} {ply.Position.z}";
-                    break;
-
-                case "POSX":
-                    result = ply.Position.x.ToString();
-                    break;
-
-                case "POSY":
-                    result = ply.Position.y.ToString();
-                    break;
-
-                case "POSZ":
-                    result = ply.Position.z.ToString();
-                    break;
-
-                case "TIER" when ply.Role is Scp079Role scp079Role:
-                    result = scp079Role.Level.ToString();
-                    break;
-
-                case "TIER":
-                    result = "NONE";
-                    break;
-
-                case "GROUP":
-                    result = ply.GroupName ?? "NONE";
-                    break;
-
-                case "CUFFED":
-                    result = ply.IsCuffed.ToUpper();
-                    break;
-
-                case "CUSTOMINFO" or "CINFO" or "CUSTOMI":
-                    result = !string.IsNullOrEmpty(ply.CustomInfo) ? ply.CustomInfo : "NONE";
-                    break;
-
-                case "XSIZE":
-                    result = ply.Scale.x.ToString();
-                    break;
-
-                case "YSIZE":
-                    result = ply.Scale.y.ToString();
-                    break;
-
-                case "ZSIZE":
-                    result = ply.Scale.z.ToString();
-                    break;
-
-                case "KILLS":
-                    result = MainPlugin.Handlers.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "0";
-                    break;
-
-                case "EFFECTS" when ply.ActiveEffects.Any():
-                    result = string.Join(", ", ply.ActiveEffects.Select(eff => eff.name));
-                    break;
-
-                case "EFFECTS":
-                    result = "NONE";
-                    break;
-
-                case "USINGNOCLIP" when ply.Role is FpcRole role:
-                    result = role.IsNoclipEnabled.ToUpper();
-                    break;
-
-                case "USINGNOCLIP":
-                    result = "FALSE";
-                    break;
-
-                case "CANNOCLIP":
-                    result = ply.IsNoclipPermitted.ToUpper();
-                    break;
-
-                case "STAMINA":
-                    result = ply.Stamina.ToString();
-                    break;
-
-                case "ISSTAFF":
-                    result = ply.RemoteAdminAccess.ToUpper();
-                    break;
-
-                case "AHP":
-                    result = ply.ArtificialHealth.ToString();
-                    break;
-
-                case "IS096TARGET":
-                    result = "FALSE";
-                    foreach (Player p in Player.Get(RoleTypeId.Scp096))
-                    {
-                        if (p.Role is not Scp096Role scp096 || !scp096.Targets.Contains(ply)) continue;
-                        result = "TRUE";
+                switch (parts[1])
+                {
+                    case "NAME":
+                        result = ply.Nickname;
                         break;
-                    }
 
-                    break;
-
-                case "ISWATCHING173":
-                    result = "FALSE";
-                    foreach (Player p in Player.Get(RoleTypeId.Scp173))
-                    {
-                        if (p.Role is not Scp173Role scp173 || !scp173.ObservingPlayers.Contains(ply)) continue;
-                        result = "TRUE";
+                    case "DISPLAYNAME" or "DPNAME":
+                        result = ply.DisplayNickname;
                         break;
-                    }
 
-                    break;
+                    case "USERID" or "UID":
+                        result = ply.UserId;
+                        break;
 
-                default:
-                    result = ply.SessionVariables.ContainsKey(parts[1])
-                        ? ply.SessionVariables[parts[1]].ToString()
-                        : "UNDEFINED";
-                    break;
+                    case "PLAYERID" or "PID":
+                        result = ply.Id.ToString();
+                        break;
+
+                    case "ROLE":
+                        result = ply.Role.Type.ToString();
+                        break;
+
+                    case "TEAM":
+                        result = ply.Role.Team.ToString();
+                        break;
+
+                    case "ROOM":
+                        result = ply.CurrentRoom.Type.ToString();
+                        break;
+
+                    case "ZONE":
+                        result = ply.Zone.ToString();
+                        break;
+
+                    case "HP" or "HEALTH":
+                        result = ply.Health.ToString();
+                        break;
+
+                    case "ITEMCOUNT":
+                        result = ply.Items.Count.ToString();
+                        break;
+
+                    case "ITEMS":
+                        result = ply.Items.Count > 0
+                            ? string.Join(
+                                "|",
+                                ply.Items.Select(item =>
+                                    CustomItem.TryGet(item, out var ci1) ? ci1?.Name : item.Type.ToString()))
+                            : "NONE";
+                        break;
+
+                    case "HELDITEM":
+                        result = (CustomItem.TryGet(ply.CurrentItem, out var ci)
+                            ? ci?.Name ?? "NONE"
+                            : ply.CurrentItem?.Type.ToString()) ?? "NONE";
+                        break;
+
+                    case "GOD":
+                        result = ply.IsGodModeEnabled.ToUpper();
+                        break;
+
+                    case "POS":
+                        result = $"{ply.Position.x} {ply.Position.y} {ply.Position.z}";
+                        break;
+
+                    case "POSX":
+                        result = ply.Position.x.ToString();
+                        break;
+
+                    case "POSY":
+                        result = ply.Position.y.ToString();
+                        break;
+
+                    case "POSZ":
+                        result = ply.Position.z.ToString();
+                        break;
+
+                    case "TIER" when ply.Role is Scp079Role scp079Role:
+                        result = scp079Role.Level.ToString();
+                        break;
+
+                    case "TIER":
+                        result = "NONE";
+                        break;
+
+                    case "GROUP":
+                        result = ply.GroupName ?? "NONE";
+                        break;
+
+                    case "CUFFED":
+                        result = ply.IsCuffed.ToUpper();
+                        break;
+
+                    case "CUSTOMINFO" or "CINFO" or "CUSTOMI":
+                        result = !string.IsNullOrEmpty(ply.CustomInfo) ? ply.CustomInfo : "NONE";
+                        break;
+
+                    case "XSIZE":
+                        result = ply.Scale.x.ToString();
+                        break;
+
+                    case "YSIZE":
+                        result = ply.Scale.y.ToString();
+                        break;
+
+                    case "ZSIZE":
+                        result = ply.Scale.z.ToString();
+                        break;
+
+                    case "KILLS":
+                        result = MainPlugin.Handlers.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "0";
+                        break;
+
+                    case "EFFECTS" when ply.ActiveEffects.Any():
+                        result = string.Join(", ", ply.ActiveEffects.Select(eff => eff.name));
+                        break;
+
+                    case "EFFECTS":
+                        result = "NONE";
+                        break;
+
+                    case "USINGNOCLIP" when ply.Role is FpcRole role:
+                        result = role.IsNoclipEnabled.ToUpper();
+                        break;
+
+                    case "USINGNOCLIP":
+                        result = "FALSE";
+                        break;
+
+                    case "CANNOCLIP":
+                        result = ply.IsNoclipPermitted.ToUpper();
+                        break;
+
+                    case "STAMINA":
+                        result = ply.Stamina.ToString();
+                        break;
+
+                    case "ISSTAFF":
+                        result = ply.RemoteAdminAccess.ToUpper();
+                        break;
+
+                    case "AHP":
+                        result = ply.ArtificialHealth.ToString();
+                        break;
+
+                    case "IS096TARGET":
+                        result = "FALSE";
+                        foreach (Player p in Player.Get(RoleTypeId.Scp096))
+                        {
+                            if (p.Role is not Scp096Role scp096 || !scp096.Targets.Contains(ply)) continue;
+                            result = "TRUE";
+                            break;
+                        }
+
+                        break;
+
+                    case "ISWATCHING173":
+                        result = "FALSE";
+                        foreach (Player p in Player.Get(RoleTypeId.Scp173))
+                        {
+                            if (p.Role is not Scp173Role scp173 || !scp173.ObservingPlayers.Contains(ply)) continue;
+                            result = "TRUE";
+                            break;
+                        }
+
+                        break;
+
+                    default:
+                        result = ply.SessionVariables.ContainsKey(parts[1])
+                            ? ply.SessionVariables[parts[1]].ToString()
+                            : "UNDEFINED";
+                        break;
+                }
+            }
+            catch (NullReferenceException)
+            {
+                result = "NONE";
             }
 
             Log("Success! Returning " + result);
@@ -489,41 +499,102 @@
             var values = IsolateValueSyntax(input, script);
             StringBuilder output = new(input);
 
-            foreach (Match accssr in values.accessors)
+            // variables can appear in dynActs and it can do some wonky stuff
+            // so remove variables if they are fully encapsulated in a dynact
+            List<Match> filteredVariables = new();
+            foreach (var variable in values.variables)
             {
+                bool isEnclosed = false;
+
+                foreach (var dynAct in values.dynamicActions)
+                {
+                    if (dynAct.Index > variable.Index || dynAct.Index + dynAct.Length < variable.Index + variable.Length)
+                        continue;
+
+                    isEnclosed = true;
+                    break;
+                }
+
+                if (!isEnclosed)
+                {
+                    filteredVariables.Add(variable);
+                }
+            }
+
+            // Handle accessors in reverse order
+            for (int i = values.accessors.Length - 1; i >= 0; i--)
+            {
+                var accssr = values.accessors[i];
+
                 if (!TryGetAccessor(accssr.Value, script, out var res))
                 {
                     continue;
                 }
 
-                output.Replace(accssr.Value, res, accssr.Index, accssr.Length);
+                // Perform the replacement if the index/length is valid
+                if (accssr.Index >= 0 && accssr.Index < output.Length &&
+                    accssr.Index + accssr.Length <= output.Length)
+                {
+                    output.Replace(accssr.Value, res, accssr.Index, accssr.Length);
+                }
+                else
+                {
+                    Logger.Warn($"Invalid index/length for accessor: Index={accssr.Index}, Length={accssr.Length}, OutputLength={output.Length}");
+                }
             }
 
-            foreach (Match dynact in values.dynamicActions)
+            // Handle dynamic actions in reverse order
+            for (int i = values.dynamicActions.Length - 1; i >= 0; i--)
             {
-                if (!TryGetDynamicActionResult<string>(dynact.Value, script, out var res))
+                var dynact = values.dynamicActions[i];
+
+                if (!TryGetDynamicActionResult<string>(dynact.Value, script, out var res, out var error))
                 {
+                    Logger.ScriptError($"[Dynamic action] {error}", script);
                     continue;
                 }
 
-                output.Replace(dynact.Value, res, dynact.Index, dynact.Length);
+                // Perform the replacement if the index/length is valid
+                if (dynact.Index >= 0 && dynact.Index < output.Length &&
+                    dynact.Index + dynact.Length <= output.Length)
+                {
+                    output.Replace(dynact.Value, res, dynact.Index, dynact.Length);
+                }
+                else
+                {
+                    Logger.Warn($"Invalid index/length for dynamic action: Index={dynact.Index}, Length={dynact.Length}, OutputLength={output.Length}");
+                }
             }
 
-            foreach (Match varbl in values.variables)
+            // Handle filtered variables in reverse order
+            for (int i = filteredVariables.Count - 1; i >= 0; i--)
             {
+                var varbl = filteredVariables[i];
+
                 if (!VariableSystem.TryGetVariable<ILiteralVariable>(varbl.Value, script, out var res, false) || res is null)
                 {
                     continue;
                 }
 
-                output.Replace(varbl.Value, res.String(), varbl.Index, varbl.Length);
+                // Perform the replacement if the index/length is valid
+                if (varbl.Index >= 0 && varbl.Index < output.Length &&
+                    varbl.Index + varbl.Length <= output.Length)
+                {
+                    output.Replace(varbl.Value, res.String(), varbl.Index, varbl.Length);
+                }
+                else
+                {
+                    Logger.Warn($"Invalid index/length for variable: Index={varbl.Index}, Length={varbl.Length}, OutputLength={output.Length}");
+                }
             }
 
             return output.ToString();
         }
 
-        private static bool TryGetDynamicActionResult<T>(string rawInput, Script script, out T output)
+        private static bool TryGetDynamicActionResult<T>(string rawInput, Script script, out T output, out string errorMessage)
         {
+            errorMessage = string.Empty;
+
             // "{LIMIT:@PLAYERS:2}"
             var input = rawInput.Trim();
             if (typeof(T) == typeof(string))
@@ -541,6 +612,7 @@
 
             if (!input.StartsWith("{") || !input.EndsWith("}"))
             {
+                errorMessage = $"Invalid input '{input}'";
                 return false;
             }
 
@@ -559,39 +631,37 @@
             var act = MainPlugin.ScriptModule.TryGetActionType(actionName);
             if (act is null)
             {
+                errorMessage = "Unknown action type: " + actionName;
                 return false;
             }
 
             var actionToExtract = Activator.CreateInstance(act) as IAction;
-
-            if (actionToExtract is ITimingAction)
+            switch (actionToExtract)
             {
-                // Logger.Log($"{actionToExtract.Name} is a timing action, which cannot be used with smart extractors.", LogType.Warning, script, currentline + 1);
-                return false;
+                case null:
+                    errorMessage = "Unknown action type: " + actionName;
+                    return false;
+
+                case ITimingAction:
+                    errorMessage = "Timing action cannot be used as a dynamic action: " + actionName;
+                    return false;
             }
 
             if (actionToExtract is not IReturnValueAction)
             {
-                // Logger.Log($"{actionToExtract.Name} action does not return any values, therefore can't be used with smart accessors.", LogType.Warning, script, currentline + 1);
+                errorMessage = $"{actionToExtract.Name} action does not return any values, therefore can't be used with smart accessors.";
                 return false;
             }
 
             if (!ScriptModule.TryRunAction(script, actionToExtract, out var resp, out _, arguments))
             {
-                if (resp?.Message is not null)
-                {
-                    Logger.ScriptError($"[Dynamic action: {rawInput}] " + resp.Message, script, true);
-                }
-                else
-                {
-                    Log.Error("wtf? ");
-                }
-
+                errorMessage = $"[Dynamic action: {actionToExtract.Name}] " + resp?.Message;
                 return false;
             }
 
             if (resp == null || resp.ResponseVariables.Length == 0)
             {
+                errorMessage = $"[Dynamic action: {rawInput}] Action didnt return any value.";
                 return false;
             }
 
@@ -604,6 +674,7 @@
 
             if (response is not T value)
             {
+                errorMessage = $"[Dynamic action: {rawInput}] Action returned a value of an incorrect type.";
                 return false;
             }
 

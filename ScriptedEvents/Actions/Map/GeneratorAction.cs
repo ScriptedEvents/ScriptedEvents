@@ -33,13 +33,13 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("OPEN", "Opens all generators."),
-                new("CLOSE", "Closes all generators."),
-                new("LOCK", "Locks all generators, requiring a keycard to use."),
-                new("UNLOCK", "Unlocks all generators, no longer requiring a keycard to use."),
-                new("OVERCHARGE", "Engages all generators, causing an overcharge."),
-                new("ACTIVATE", "Begins activating all generators."),
-                new("DEACTIVATE", "Deactivates all generators.")),
+                new("Open", "Opens all generators."),
+                new("Close", "Closes all generators."),
+                new("Lock", "Locks all generators, requiring a keycard to use."),
+                new("Unlock", "Unlocks all generators, no longer requiring a keycard to use."),
+                new("Overcharge", "Engages all generators, causing an overcharge."),
+                new("Activate", "Begins activating all generators."),
+                new("Deactivate", "Deactivates all generators.")),
         };
 
         /// <inheritdoc/>

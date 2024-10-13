@@ -35,9 +35,10 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SILENT", "Makes a silent announcement."),
-                new("LOUD", "Makes a loud announcement.")),
-            new Argument("message", typeof(string), "The message. Separate message with a | to specify a caption.", true),
+                new("Silent", "Makes a silent announcement."),
+                new("Loud", "Makes a loud announcement.")),
+            new Argument("message", typeof(string), "The message for cassie.", true),
+            new Argument("caption", typeof(string), "An optional caption for the announcement. Use NONE for no captions.", false),
         };
 
         /// <inheritdoc/>
@@ -47,27 +48,15 @@
         public ActionResponse Execute(Script script)
         {
             bool isNoisy = Arguments[0].ToUpper() == "LOUD";
-            string text = Arguments.JoinMessage(1);
+            string message = Arguments[1].ToString();
 
-            if (string.IsNullOrWhiteSpace(text))
-                return new(MessageType.InvalidUsage, this, null, null, (object)ExpectedArguments);
-
-            string[] cassieArgs = text.Split('|');
-
-            if (cassieArgs.Length == 1)
+            if (Arguments.Length > 2)
             {
-                Cassie.MessageTranslated(text, text, isNoisy: isNoisy);
+                Cassie.MessageTranslated(message, Arguments[2].ToString().ToUpper() == "NONE" ? string.Empty : Arguments[2].ToString(), isNoisy: isNoisy);
                 return new(true);
             }
 
-            if (string.IsNullOrWhiteSpace(cassieArgs[0]))
-                return new(MessageType.CassieCaptionNoAnnouncement, this, "message");
-
-            if (string.IsNullOrWhiteSpace(cassieArgs[1]))
-                Cassie.Message(cassieArgs[0], isNoisy: isNoisy);
-            else
-                Cassie.MessageTranslated(cassieArgs[0], cassieArgs[1], isNoisy: isNoisy);
-
+            Cassie.Message(message, isNoisy: isNoisy);
             return new(true);
         }
     }

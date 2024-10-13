@@ -39,6 +39,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
+             new Argument("players", typeof(PlayerCollection), "The players to filter.", true),
              new OptionsArgument("type", true,
                     new("ROLE", "Filters by role. Use a 'RoleTypeId' as the 'input' argument."),
                     new("TEAM", "Filters by team. Use a 'Team' type as the 'input' argument."),
@@ -50,7 +51,6 @@
                     new("GROUP", "Filters by group. Use a group name as the 'input' argument."),
                     new("ISSTAFF", "Filters by having RA access. Use a TRUE/FALSE value as the 'input' argument."),
                     new("EFFECT", "Filters by 'EffectType' the player has. Use a 'EffectType' as the 'input' argument.")),
-             new Argument("players", typeof(PlayerCollection), "The players to filter.", true),
              new Argument("input", typeof(string), "What to use as the filter (look at 'type' argument for guidance)", true),
         };
 
@@ -60,7 +60,7 @@
             var players = ((PlayerCollection)Arguments[0]).GetArray();
             var input = (string)Arguments[2];
 
-            var ret = Arguments[0].ToUpper() switch
+            var ret = Arguments[1].ToUpper() switch
             {
                 "ROLE" when Parser.TryParseEnum(input, out RoleTypeId rt, script) => players.Where(plr => plr.Role.Type == rt),
                 "TEAM" when Parser.TryParseEnum(input, out Team team, script) => players.Where(plr => plr.Role.Team == team),

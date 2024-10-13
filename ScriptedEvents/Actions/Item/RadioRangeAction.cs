@@ -37,8 +37,8 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SET", "Only sets the range of the radio."),
-                new("LOCK", "Sets the range and locks its value so it cannot be changed.")),
+                new("Set", "Only sets the range of the radio."),
+                new("Lock", "Sets the range and locks its value so it cannot be changed.")),
             new Argument("players", typeof(PlayerCollection), "The players to change the radio settings of.", true),
             new Argument("range", typeof(RadioRange), "The new radio range. Must be: Short, Medium, Long, or Ultra", true),
         };

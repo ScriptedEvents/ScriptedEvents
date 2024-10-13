@@ -34,7 +34,10 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("mode", typeof(string), "The action (ENABLE, DISABLE, FORCE). Default: FORCE", false),
+            new OptionsArgument("mode", true,
+                new("Disable", "Disables the decontamination."),
+                new("Enable", "Allows for decontamination"),
+                new("Force", "Forces the decontamination to happen asap.")),
         };
 
         /// <inheritdoc/>
@@ -50,9 +53,8 @@
                     // Todo: And this?
                     DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.None;
                     break;
-                case "FORCE":
                 default:
-                    Map.StartDecontamination();
+                    Exiled.API.Features.Map.StartDecontamination();
                     break;
             }
 

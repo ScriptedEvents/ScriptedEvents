@@ -38,8 +38,8 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("ITEMS", "Clean items."),
-                new("RAGDOLLS", "Clean ragdolls.")),
+                new("Items", "Clean items."),
+                new("Ragdolls", "Clean ragdolls.")),
             new Argument("filter", typeof(string), "Optionally, an ItemType/RoleTypeId of items/ragdolls to remove.", false),
         };
 

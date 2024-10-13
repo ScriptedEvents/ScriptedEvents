@@ -96,20 +96,29 @@ namespace ScriptedEvents.API.Modules
                 return true;
             }
 
-            if (originalActionArgs == null)
+            if (scr.SingleLineIfStatements.TryGetValue(action, out var predicate))
+            {
+                if (!predicate())
+                {
+                    return true;
+                }
+            }
+
+            if (originalActionArgs is null)
             {
                 // Process Arguments
-                if (scr.OriginalActionArgs.TryGetValue(action, out var xxx))
+                if (scr.OriginalActionArgs.TryGetValue(action, out var actionArgs) && actionArgs is not null)
                 {
-                    originalActionArgs = xxx;
+                    originalActionArgs = actionArgs;
                 }
                 else
                 {
                     Log("Action does not have any arguments provided.");
+                    originalActionArgs = Array.Empty<string>();
                 }
             }
 
-            ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalActionArgs, action, scr, true);
+            ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalActionArgs, action, scr);
             if (res.Errored)
             {
                 var message = (res.FailedArgument != string.Empty ? $"[Argument: {res.FailedArgument}] " : string.Empty) + res.Message;
@@ -329,6 +338,7 @@ namespace ScriptedEvents.API.Modules
             var array = allText.Split('\n');
 
             IAction? lastAction = null;
+            Func<bool>? singleLineIfStatement = null;
 
             for (var currentline = 0; currentline < array.Length; currentline++)
             {
@@ -375,6 +385,20 @@ namespace ScriptedEvents.API.Modules
                             Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
 
                         AddActionNoArgs(new StartFunctionAction());
+                        continue;
+                    }
+
+                    case "??" when actionList.Count < 2:
+                        Logger.Log("'??' (single line if statement) syntax can't be used without providing a conditon.", LogType.Warning, script, currentline + 1);
+                        continue;
+                    case "??":
+                    {
+                        bool SingleLineIfStatement()
+                        {
+                            return ConditionHelper.Evaluate(string.Join(" ", structureParts.Skip(1)).Trim(), script).Passed;
+                        }
+
+                        singleLineIfStatement = SingleLineIfStatement;
                         continue;
                     }
 
@@ -455,7 +479,7 @@ namespace ScriptedEvents.API.Modules
                         {
                             if (!TryRunAction(script, actionToExtract, out var resp, out _, actionArgs))
                             {
-                                return new(false, "[Smart extractor]" + (resp?.Message is null ? string.Empty : " " + resp.Message));
+                                return new(false, $"[Extractor] [Action: {actionName}]" + (resp?.Message is null ? string.Empty : " " + resp.Message));
                             }
 
                             if (resp == null || resp.ResponseVariables.Length == 0)
@@ -590,6 +614,12 @@ namespace ScriptedEvents.API.Modules
                 lastAction = newAction;
                 script.OriginalActionArgs[newAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
                 script.ResultVariableNames[newAction] = resultVariableNames;
+
+                if (singleLineIfStatement is not null)
+                {
+                    script.SingleLineIfStatements[newAction] = singleLineIfStatement;
+                    singleLineIfStatement = null;
+                }
 
                 Log($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}");
 

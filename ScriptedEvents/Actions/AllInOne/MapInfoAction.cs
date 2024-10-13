@@ -8,6 +8,8 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
+    using ServerMap = Exiled.API.Features.Map;
+
     /// <inheritdoc/>
     public class MapInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
@@ -45,9 +47,9 @@
         {
             string ret = Arguments[0].ToUpper() switch
             {
-                "SEED" => Map.Seed.ToString(),
+                "SEED" => ServerMap.Seed.ToString(),
                 "ISOVERCHARGED" => Recontainer.IsContainmentSequenceDone.ToUpper(),
-                "ISDECONTAMINATED" => Map.IsLczDecontaminated.ToUpper(),
+                "ISDECONTAMINATED" => ServerMap.IsLczDecontaminated.ToUpper(),
                 "IS914ACTIVE" => Scp914.IsWorking.ToUpper(),
                 "ISCASSIESPEAKING" => Cassie.IsSpeaking.ToUpper(),
                 _ => throw new ArgumentException()

@@ -44,8 +44,8 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("DETECT", "Make tesla gates detect specified players."),
-                new("IGNORE", "Make tesla gates ignore specified players.")),
+                new("Detect", "Make tesla gates detect specified players."),
+                new("Ignore", "Make tesla gates ignore specified players.")),
             new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
         };
 

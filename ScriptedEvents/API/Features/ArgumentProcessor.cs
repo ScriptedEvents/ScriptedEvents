@@ -28,43 +28,13 @@
         /// <param name="args">The provided arguments.</param>
         /// <param name="action">The action or variable performing the process.</param>
         /// <param name="script">The script source.</param>
-        /// <param name="processForDecorators">If brackets are required to convert variables.</param>
         /// <returns>The result of the process.</returns>
-        public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script script, bool processForDecorators = true)
+        public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script script)
         {
             void Log(string message)
             {
                 if (!script.IsDebug) return;
                 Logger.Debug($"[ArgumentProcessor] [Process] [{action.Name}] {message}", script);
-            }
-
-            if (args is { Length: > 0 } && processForDecorators)
-            {
-                Log($"Arguments to process: '{string.Join(", ", args)}'");
-
-                var handledForResult = HandleFORDecorator(args, script, out string[] strippedArgs);
-                if (!handledForResult.Success)
-                {
-                    return handledForResult;
-                }
-
-                args = strippedArgs;
-
-                var handledIfResult = HandleIFDecorator(args, script, out string[] strippedArgs2);
-                if (!handledIfResult.Success)
-                {
-                    return handledIfResult;
-                }
-
-                args = strippedArgs2;
-            }
-            else if (!processForDecorators)
-            {
-                Log("Action is not supposed to have decorators.");
-            }
-            else
-            {
-                Log("No arguments were provided.");
             }
 
             if (expectedArguments.Length == 0)

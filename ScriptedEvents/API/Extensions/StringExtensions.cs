@@ -109,6 +109,32 @@
             return str.Substring(0, str.Length - sep.Length);
         }
 
+        /// <summary>
+        /// Joins object parameters into a string message.
+        /// </summary>
+        /// <param name="param">The parameters.</param>
+        /// <param name="skipCount">Amount of parameters to skip.</param>
+        /// <param name="sep">The separator string.</param>
+        /// <returns>The new string.</returns>
+        public static string JoinMessage(this string[] param, int skipCount = 0, string sep = " ")
+        {
+            StringBuilder sb = StringBuilderPool.Pool.Get();
+            var list = param.Skip(skipCount);
+            var enumerable = list as object[] ?? list.ToArray();
+            if (!enumerable.Any()) return string.Empty;
+
+            foreach (var obj in enumerable)
+            {
+                if (obj is string s)
+                    sb.Append(s + sep);
+                else
+                    sb.Append(obj + sep);
+            }
+
+            var str = StringBuilderPool.Pool.ToStringReturn(sb);
+            return str.Substring(0, str.Length - sep.Length);
+        }
+
         public static int CountOccurrences(this string text, char character)
         {
             int count = 0;

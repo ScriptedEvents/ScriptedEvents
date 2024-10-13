@@ -35,11 +35,11 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("LOCK", "Lock doors."),
-                new("UNLOCK", "Unlock doors."),
-                new("OPEN", "Open doors."),
-                new("CLOSE", "Close doors."),
-                new("DESTROY", "Permanently destroy doors.")),
+                new("Lock", "Lock doors."),
+                new("Unlock", "Unlock doors."),
+                new("Open", "Open doors."),
+                new("Close", "Close doors."),
+                new("Destroy", "Permanently destroy doors.")),
             new Argument("doors", typeof(Door[]), "The doors to affect.", true),
         };
 

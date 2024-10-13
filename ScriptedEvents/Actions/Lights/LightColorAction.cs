@@ -39,8 +39,8 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SET", "Sets the light color. Red, Green and Blue values need to be provided when using."),
-                new("RESET", "Resets the light color.")),
+                new("Set", "Sets the light color. Red, Green and Blue values need to be provided when using."),
+                new("Reset", "Resets the light color.")),
             new Argument("room", typeof(Room[]), "The room to change the color of.", true),
             new Argument("red", typeof(float), "The red component of the color.", false),
             new Argument("green", typeof(float), "The green component of the color.", false),

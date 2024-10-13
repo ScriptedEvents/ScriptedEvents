@@ -175,12 +175,12 @@ namespace ScriptedEvents
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
         /// </summary>
-        public Dictionary<string, CustomLiteralVariable> UniqueLiteralVariables { get; private set; }
+        public Dictionary<string, CustomLiteralVariable> UniqueLiteralVariables { get; }
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables that are unique to this script.
         /// </summary>
-        public Dictionary<string, CustomPlayerVariable> UniquePlayerVariables { get; private set; }
+        public Dictionary<string, CustomPlayerVariable> UniquePlayerVariables { get; }
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> of coroutines run by this script.
@@ -193,19 +193,24 @@ namespace ScriptedEvents
         public PlayerLoopInfo? PlayerLoopInfo { get; set; } = null;
 
         /// <summary>
-        /// Gets or sets the original action arguments from when the script was read for the first time.
+        /// Gets the original action arguments from when the script was read for the first time.
         /// </summary>
-        public Dictionary<IAction, string[]> OriginalActionArgs { get; set; } = new();
+        public Dictionary<IAction, string[]> OriginalActionArgs { get; } = new();
 
         /// <summary>
-        /// Gets or sets the smart arguments for specified action.
+        /// Gets the smart arguments for specified action.
         /// </summary>
-        public Dictionary<IAction, Func<Tuple<bool, string>>[]> SmartArguments { get; set; } = new();
+        public Dictionary<IAction, Func<Tuple<bool, string>>[]> SmartArguments { get; } = new();
 
         /// <summary>
-        /// Gets or sets the names under which to create variables as result of an successful action.
+        /// Gets the names under which to create variables as result of an successful action.
         /// </summary>
-        public Dictionary<IAction, string[]> ResultVariableNames { get; set; } = new();
+        public Dictionary<IAction, string[]> ResultVariableNames { get; } = new();
+
+        /// <summary>
+        /// Gets the lambda method that checks if action is allowed to run.
+        /// </summary>
+        public Dictionary<IAction, Func<bool>> SingleLineIfStatements { get; } = new();
 
         /// <inheritdoc/>
         public void Dispose()

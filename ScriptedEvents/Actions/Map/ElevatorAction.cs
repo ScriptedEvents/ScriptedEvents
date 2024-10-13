@@ -33,9 +33,9 @@
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SEND", "Moves the elevator."),
-                new("LOCK", "Locks the elevator, preventing it from being used."),
-                new("UNLOCK", "Unlocks the previously-locked elevator, allowing it to be used again.")),
+                new("Send", "Moves the elevator."),
+                new("Lock", "Locks the elevator, preventing it from being used."),
+                new("Unlock", "Unlocks the previously-locked elevator, allowing it to be used again.")),
             new Argument("elevators", typeof(Lift[]), "The elevators to affect.", true),
         };
 
