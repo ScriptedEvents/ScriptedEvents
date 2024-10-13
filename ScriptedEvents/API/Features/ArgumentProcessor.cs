@@ -234,6 +234,13 @@
 
                     success.NewParameters.Add(floatRes);
                     break;
+
+                case "UInt16": // ushort
+                    if (!Parser.Cast<ushort>(ushort.TryParse, input, source, out var ushortRes))
+                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
+
+                    success.NewParameters.Add(ushortRes);
+                    break;
                 case "Char":
                     if (!Parser.Cast<char>(char.TryParse, input, source, out var charRes))
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidCharacter, input));
