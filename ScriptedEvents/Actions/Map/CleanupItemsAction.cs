@@ -14,10 +14,10 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class CleanupRagdollsAction : IScriptAction, IHelpInfo
+    public class CleanupItemsAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "CLEANUPRAGDOLLS";
+        public string Name => "CLEANUPITEMS";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -32,23 +32,26 @@
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
-        public string Description => "Cleans up ragdolls of specified players from the map.";
+        public string Description => "Clean up items/ragdolls.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players which ragdolls are to be removed.", true),
+            new Argument("filter", typeof(ItemType), "Optionally, an ItemType by which to remove the items.", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            foreach (var player in ((PlayerCollection)Arguments[0]).GetArray())
+            ItemType type = ItemType.None;
+            if (Arguments.Length > 0)
             {
-                foreach (var ragdoll in Ragdoll.Get(player))
-                {
-                    ragdoll.Destroy();
-                }
+                type = (ItemType)Arguments[0];
+            }
+
+            foreach (var item in Pickup.List.Where(p => type == ItemType.None || p.Type == type))
+            {
+                item.Destroy();
             }
 
             return new(true);

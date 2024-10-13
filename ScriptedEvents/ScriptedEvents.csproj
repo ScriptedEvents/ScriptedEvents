@@ -126,7 +126,7 @@
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Logic\StartFunctionAction.cs" />
     <Compile Include="Actions\Logic\TriggerAction.cs" />
-    <Compile Include="Actions\Map\CleanupAction.cs" />
+    <Compile Include="Actions\Map\CleanupItemsAction.cs" />
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
     <Compile Include="Actions\Math\Math_AbsAction.cs" />
