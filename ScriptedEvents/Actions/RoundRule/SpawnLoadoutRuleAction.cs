@@ -11,10 +11,10 @@
 
     using Rule = ScriptedEvents.Structures.DamageRule;
 
-    public class DamageRuleAction : IScriptAction, IHelpInfo
+    public class SpawnLoadoutRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "DAMAGERULE";
+        public string Name => "LOADOUTRULE";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -29,14 +29,13 @@
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
 
         /// <inheritdoc/>
-        public string Description => "Creates a new damage rule.";
+        public string Description => "Creates a spawn loadout rule, where you can modify which items are default for a certain class.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("attackerRule", typeof(string), "The rule for the attacker (either a role, team, or player variable)", true),
-            new Argument("receiverRule", typeof(string), "The rule for the receiver (either a role, team, or player variable)", true),
-            new Argument("multiplier", typeof(float), "The multiplier to apply to the damage rule.", true),
+            new Argument("role", typeof(RoleTypeId), "The role to set the default spawn inventory for.", true),
+            new Argument("items", typeof(ItemType[]), "The ItemType to ", true),
         };
 
         /// <inheritdoc/>

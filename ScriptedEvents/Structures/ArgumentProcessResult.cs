@@ -13,13 +13,13 @@
         /// <param name="success">Is action permitted to run.</param>
         /// <param name="errored">Did an error occur while processing.</param>
         /// <param name="argument">If unsuccessful, which argument failed.</param>
-        /// <param name="message">The error message.</param>
-        public ArgumentProcessResult(bool success, bool errored = false, string argument = "", string message = "")
+        /// <param name="error">The error message.</param>
+        public ArgumentProcessResult(bool success, bool errored = false, string argument = "", ErrorInfo? error = null)
         {
             Success = success;
             Errored = errored;
             FailedArgument = argument;
-            Message = message;
+            Error = error;
 
             NewParameters = new();
         }
@@ -42,7 +42,7 @@
         /// <summary>
         /// Gets a value indicating the message, if unsuccessful.
         /// </summary>
-        public string? Message { get; }
+        public ErrorInfo? Error { get; }
 
         /// <summary>
         /// Gets an <see cref="object"/> list of new parameters if the processing was successful.

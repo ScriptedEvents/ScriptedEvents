@@ -38,7 +38,7 @@
         /// <param name="source">The source script.</param>
         /// <typeparam name="T">The Enum type to cast to.</typeparam>
         /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryParseEnum<T>(string input, out T result, Script source)
+        public static bool TryGetEnum<T>(string input, out T result, Script source)
             where T : struct, Enum
         {
             input = input.Trim();
@@ -47,11 +47,26 @@
             return Enum.TryParse(input, true, out result);
         }
 
-        public static object? ParseEnum(string input, Type enumType, Script source)
+        public static bool TryGetEnumArray<T>(string input, out T[] result, Script source)
+            where T : struct, Enum
         {
+            input = input.Trim();
             input = ReplaceContaminatedValueSyntax(input, source);
-            var result = Enum.Parse(enumType, input, true);
-            return result;
+            IEnumerable<T> resInIEnumerable = Array.Empty<T>();
+
+            foreach (string item in input.Split('|'))
+            {
+                if (!Enum.TryParse(item, true, out T value))
+                {
+                    result = Array.Empty<T>();
+                    return false;
+                }
+
+                resInIEnumerable = resInIEnumerable.Append(value);
+            }
+
+            result = resInIEnumerable.ToArray();
+            return true;
         }
 
         /// <summary>
@@ -68,15 +83,15 @@
             {
                 doorList = Door.List;
             }
-            else if (TryParseEnum(input, out ZoneType zt, source))
+            else if (TryGetEnum(input, out ZoneType zt, source))
             {
                 doorList = Door.List.Where(d => d.Zone.HasFlag(zt));
             }
-            else if (TryParseEnum(input, out DoorType dt, source))
+            else if (TryGetEnum(input, out DoorType dt, source))
             {
                 doorList = Door.List.Where(d => d.Type == dt);
             }
-            else if (TryParseEnum(input, out RoomType rt, source))
+            else if (TryGetEnum(input, out RoomType rt, source))
             {
                 doorList = Door.List.Where(d => d.Room?.Type == rt);
             }
@@ -85,7 +100,7 @@
                 doorList = Door.List.Where(d => string.Equals(d.Name, input, StringComparison.CurrentCultureIgnoreCase));
             }
 
-            doors = doorList.ToArray().Where(d => d.IsElevator is false && d.Type is not DoorType.Scp914Door && d.Type is not DoorType.Scp079First && d.Type is not DoorType.Scp079Second && AirlockController.Get(d) is null).ToArray();
+            doors = doorList.ToArray().Where(d => d.IsElevator is false && AirlockController.Get(d) is null).ToArray();
             return doors.Length > 0;
         }
 
@@ -96,14 +111,14 @@
         /// <param name="lifts">The lift objects.</param>
         /// <param name="source">The script source.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetLifts(string input, out Lift[] lifts, Script source)
+        public static ErrorInfo TryGetLifts(string input, out Lift[] lifts, Script source)
         {
             IEnumerable<Lift> liftList;
             if (input is "*" or "ALL")
             {
                 liftList = Lift.List;
             }
-            else if (TryParseEnum(input, out ElevatorType et, source))
+            else if (TryGetEnum(input, out ElevatorType et, source))
             {
                 liftList = Lift.List.Where(l => l.Type == et);
             }
@@ -113,7 +128,7 @@
             }
 
             lifts = liftList.ToArray();
-            return lifts.Length > 0;
+            return new();
         }
 
         /// <summary>
@@ -130,11 +145,11 @@
             {
                 roomList = Room.List;
             }
-            else if (TryParseEnum(input, out ZoneType zt, source))
+            else if (TryGetEnum(input, out ZoneType zt, source))
             {
                 roomList = Room.List.Where(room => room.Zone.HasFlag(zt));
             }
-            else if (TryParseEnum(input, out RoomType rt, source))
+            else if (TryGetEnum(input, out RoomType rt, source))
             {
                 roomList = Room.List.Where(d => d.Type == rt);
             }

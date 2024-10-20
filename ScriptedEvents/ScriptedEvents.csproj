@@ -141,6 +141,7 @@
     <Compile Include="Actions\Player\DisplayPlayerAction.cs" />
     <Compile Include="Actions\Player\KillsAction.cs" />
     <Compile Include="Actions\Player\RaycastAction.cs" />
+    <Compile Include="Actions\RoundRule\SpawnLoadoutRuleAction.cs" />
     <Compile Include="Actions\ScriptInfo\IsRunningAction.cs" />
     <Compile Include="Actions\ScriptInfo\ThisAction.cs" />
     <Compile Include="Actions\ScriptInfo\VExistsAction.cs" />
@@ -215,7 +216,6 @@
     <Compile Include="API\Features\ConditionHelper.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Features\ErrorGen.cs" />
-    <Compile Include="API\Features\ErrorGenV2.cs" />
     <Compile Include="API\Features\Logger.cs" />
     <Compile Include="API\Features\Exceptions\ScriptedEventsException.cs" />
     <Compile Include="API\Features\Exceptions\VariableException.cs" />
@@ -264,6 +264,8 @@
     <Compile Include="Commands\MainCommand\StopScript.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
+    <Compile Include="ErrorSystem\ErrorGenV2.cs" />
+    <Compile Include="ErrorSystem\ErrorTrace.cs" />
     <Compile Include="Structures\ActionNameData.cs" />
     <Compile Include="Structures\ArgumentProcessResult.cs" />
     <Compile Include="Structures\Contributor.cs" />
@@ -373,6 +375,7 @@
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ErrorSystem\Structures\" />
     <Folder Include="Tutorials\Installation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

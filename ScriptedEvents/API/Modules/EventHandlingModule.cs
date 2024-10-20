@@ -1,4 +1,7 @@
-﻿namespace ScriptedEvents
+﻿using InventorySystem;
+using InventorySystem.Configs;
+
+namespace ScriptedEvents
 {
     using System;
     using System.Collections.Generic;
@@ -158,7 +161,7 @@
         public Dictionary<Team, List<Effect>> PermTeamEffects { get; } = new();
 
         /// <summary>
-        /// Gets a dictionary of permanent role-specific effects.
+        /// Gets a dictionary of permanent role-specific effects. <see cref="HumanRole"/>
         /// </summary>
         public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; } = new();
 
@@ -166,6 +169,11 @@
         /// Gets a dictionary of effect immunity for specific players.
         /// </summary>
         public Dictionary<Player, List<EffectType>> PlayerEffectImmunity { get; } = new();
+
+        /// <summary>
+        /// Gets a dictionary of itemTypes to add on role change.
+        /// </summary>
+        public Dictionary<RoleTypeId, List<ItemType>> SpawnLoadoutRule { get; } = new();
 
         public List<DamageRule> DamageRules { get; } = new();
 

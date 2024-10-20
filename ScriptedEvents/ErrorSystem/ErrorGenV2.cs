@@ -16,43 +16,36 @@
     /// </summary>
     public static class ErrorGenV2
     {
-        /// <summary>
-        /// Gets a <see cref="ErrorInfo"/> from the given <see cref="ErrorCode"/>.
-        /// </summary>
-        /// <param name="code">Error code.</param>
-        /// <returns>An <see cref="ErrorInfo"/> object. Its <see cref="ErrorInfo.Id"/> will be <c>0</c> if the operation was unsuccessful.</returns>
-        public static ErrorInfo GetError(ErrorCode code) =>
-            ErrorList.Errors.FirstOrDefault(err => err.Code == code);
-
-        /// <summary>
-        /// Generates an error string given an error code.
-        /// </summary>
-        /// <param name="errorCode">Error code.</param>
-        /// <param name="arguments">Arguments for the error.</param>
-        /// <returns>An error string.</returns>
-        public static string Generate(ErrorCode errorCode, params object[] arguments)
-        {
-            ErrorInfo err = GetError(errorCode);
-
-            if (err.Id == 0)
-                err = GetError(ErrorCode.UnknownError);
-
-            return string.Format(err.ToString(), arguments);
-        }
-
-        public static string IOPermissionError()
+        public static ErrorInfo IOPermissionError()
         {
             return Generate(ErrorCode.IOPermissionError);
         }
 
-        public static string IOError()
+        public static ErrorInfo IOError()
         {
             return Generate(ErrorCode.IOError);
         }
 
-        public static string InvalidPlayerVariable(string varName)
+        public static ErrorInfo InvalidLifts(string input)
         {
-            return Generate(ErrorCode.InvalidPlayerVariable, varName);
+            return new ErrorInfo(
+                "InvalidLifts")
+        }
+
+        public static ErrorInfo InvalidPlayerVariable(string varName)
+        {
+            return new(
+                "InvalidPlayerVariable",
+                $"Provided value '{varName}' is not a valid player variable.",
+                $"Maybe you are referencing a literal variable or a local variable from a different script? Or maybe you forgor the '@' prefix?");
+        }
+
+        public static ErrorInfo InvalidEnumList(string value, Type enumType)
+        {
+            return new(
+                "InvalidEnumList",
+                $"The {value} value is not a valid list of enums of type {enumType.Name}",
+                $"This error occurs when a list of enums failed while parsing. Please ensure that it looks similar to 'Enum1|Enum2|Enum3' etc. and all items are valid values from the {enumType.Name} enum.");
         }
     }
 

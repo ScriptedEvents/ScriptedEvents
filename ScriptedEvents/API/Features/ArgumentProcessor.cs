@@ -164,7 +164,8 @@
         /// <param name="action">The action or variable performing the process.</param>
         /// <param name="source">The script source.</param>
         /// <returns>The output of the process.</returns>
-        public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input, IScriptComponent action, Script source)
+        public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input,
+            IScriptComponent action, Script source)
         {
             void Log(string message)
             {
@@ -179,7 +180,9 @@
             // Extra magic for options
             if (expected is OptionsArgument options)
             {
-                if (options.Options.All(o => !string.Equals(o.Name, input, StringComparison.CurrentCultureIgnoreCase)) && options is not SuggestedOptionsArgument)
+                if (options.Options.All(o =>
+                        !string.Equals(o.Name, input, StringComparison.CurrentCultureIgnoreCase)) &&
+                    options is not SuggestedOptionsArgument)
                 {
                     return new(
                         false,
@@ -197,7 +200,8 @@
                 }
 
                 success.NewParameters.Add(input);
-                Log($"[OPTION ARG] Parameter '{expected.ArgumentName}' now has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
+                Log(
+                    $"[OPTION ARG] Parameter '{expected.ArgumentName}' now has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
                 return success;
             }
 
@@ -289,6 +293,15 @@
 
                     success.NewParameters.Add(lifts);
                     break;
+                case "ItemType[]":
+                {
+                    if (Parser.TryGetEnumArray<ItemType>(input, out var enumArray, source))
+                    {
+                        
+                    }
+                    
+                    break;
+                }
 
                 // Special
                 case "PlayerCollection":
@@ -305,18 +318,20 @@
                     switch (players1.Length)
                     {
                         case 0:
-                            return new(false, true, expected.ArgumentName, $"One player is required, but value '{input}' holds no players.");
+                            return new(false, true, expected.ArgumentName,
+                                $"One player is required, but value '{input}' holds no players.");
                         case > 1:
-                            return new(false, true, expected.ArgumentName, $"One player is required, but value '{input}' holds more than one player ({players1.Length} players).");
+                            return new(false, true, expected.ArgumentName,
+                                $"One player is required, but value '{input}' holds more than one player ({players1.Length} players).");
                     }
 
                     success.NewParameters.Add(players1.FirstOrDefault());
                     break;
 
                 case "RoleTypeIdOrTeam":
-                    if (Parser.TryParseEnum(input, out RoleTypeId rtResult, source))
+                    if (Parser.TryGetEnum(input, out RoleTypeId rtResult, source))
                         success.NewParameters.Add(rtResult);
-                    else if (Parser.TryParseEnum(input, out Team teamResult, source))
+                    else if (Parser.TryGetEnum(input, out Team teamResult, source))
                         success.NewParameters.Add(teamResult);
                     else
                         return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidRoleTypeOrTeam, input));
@@ -327,7 +342,7 @@
                     // Handle all enum types
                     if (expected.Type.BaseType == typeof(Enum))
                     {
-                        object res = Parser.ParseEnum(input, expected.Type, source);
+                        object? res = Parser.ParseEnum(input, expected.Type, source);
                         if (res is null)
                             return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidEnumGeneric, input, expected.Type.Name));
 
@@ -342,110 +357,6 @@
             Log($"Param '{expected.ArgumentName}' processed! STD value: '{success.NewParameters.Last()}' RAW value: '{input}'");
 
             return success;
-        }
-
-        private static ArgumentProcessResult HandleFORDecorator(string[] inArgs, Script script, out string[] args)
-        {
-            void Log(string message)
-            {
-                if (!script.IsDebug) return;
-                Logger.Debug("[ArgumentProcessor] [$FOR] " + message, script);
-            }
-
-            args = inArgs;
-            int loopSyntaxIndex = inArgs.IndexOf("$FOR");
-
-            if (loopSyntaxIndex == -1)
-            {
-                return new(true);
-            }
-
-            Log("Syntax found, continuing.");
-
-            string[] loopArgs = inArgs.Skip(loopSyntaxIndex + 1).ToArray();
-            args = inArgs.Take(loopSyntaxIndex).ToArray();
-
-            string newPlayerVarName = loopArgs[0];
-            string inKeyword = loopArgs[1];
-            string playerVarNameLoopingThrough = loopArgs[2];
-
-            if (inKeyword != "IN")
-                Logger.Warn($"[$FOR DECORATOR] $FOR statement requires the 'IN' keyword (e.g. $FOR {{PLR}} IN {{PLAYERS}}). Instead of 'IN', '{inKeyword}' was provided.", script);
-
-            List<Player> playersToLoop;
-
-            if (script.PlayerLoopInfo is not null && script.PlayerLoopInfo.Line == script.CurrentLine)
-            {
-                playersToLoop = script.PlayerLoopInfo.PlayersToLoopThrough;
-                Log("A loop for this action has already been initialized.");
-            }
-            else
-            {
-                if (!Parser.TryGetPlayers(playerVarNameLoopingThrough, null, out PlayerCollection outPlayers, script))
-                {
-                    return new(false, true, ErrorGenV2.InvalidPlayerVariable(playerVarNameLoopingThrough));
-                }
-
-                playersToLoop = outPlayers.GetInnerList();
-                Log($"A loop for this action has not yet been initalized. Saved '{playerVarNameLoopingThrough}' as the players to loop through.");
-            }
-
-            if (playersToLoop.Count == 0)
-            {
-                Log("No more players to loop through. Action will be skipped.");
-                script.PlayerLoopInfo = null;
-                return new(false);
-            }
-
-            Player player = playersToLoop.First();
-            playersToLoop.Remove(player);
-
-            script.AddPlayerVariable(newPlayerVarName, new[] { player }, false);
-
-            script.PlayerLoopInfo = new(script.CurrentLine, playersToLoop);
-
-            script.Jump(script.CurrentLine);
-
-            return new(true);
-        }
-
-        private static ArgumentProcessResult HandleIFDecorator(string[] inArgs, Script script, out string[] outArgs)
-        {
-            void Log(string message)
-            {
-                if (!script.IsDebug) return;
-                Logger.Debug("[ArgumentProcessor] [$IF] " + message, script);
-            }
-
-            outArgs = inArgs;
-
-            int conditionSectionKeyword = inArgs.IndexOf("$IF");
-            if (conditionSectionKeyword == -1)
-            {
-                return new(true);
-            }
-
-            Log($"Decorator was detected, continuing...");
-
-            string[] conditionArgs = inArgs.Skip(conditionSectionKeyword + 1).ToArray();
-            outArgs = outArgs.Take(conditionSectionKeyword).ToArray();
-
-            ConditionResponse resp = ConditionHelper.Evaluate(string.Join(" ", conditionArgs), script);
-
-            if (!resp.Success)
-            {
-                Log("Evaluation resulted in an error.");
-                return new(false, true, string.Empty, resp.Message);
-            }
-
-            if (!resp.Passed)
-            {
-                Log("Evaluation resulted in FALSE. Action will be skipped.");
-                return new(false, false);
-            }
-
-            Log($"Evaluation resulted in TRUE. Continuing...");
-            return new(true);
         }
     }
 }

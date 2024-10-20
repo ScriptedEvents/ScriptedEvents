@@ -62,18 +62,18 @@
 
             var ret = Arguments[1].ToUpper() switch
             {
-                "ROLE" when Parser.TryParseEnum(input, out RoleTypeId rt, script) => players.Where(plr => plr.Role.Type == rt),
-                "TEAM" when Parser.TryParseEnum(input, out Team team, script) => players.Where(plr => plr.Role.Team == team),
-                "ROOM" when Parser.TryParseEnum(input, out RoomType room, script) => players.Where(plr => plr.CurrentRoom?.Type == room),
+                "ROLE" when Parser.TryGetEnum(input, out RoleTypeId rt, script) => players.Where(plr => plr.Role.Type == rt),
+                "TEAM" when Parser.TryGetEnum(input, out Team team, script) => players.Where(plr => plr.Role.Team == team),
+                "ROOM" when Parser.TryGetEnum(input, out RoomType room, script) => players.Where(plr => plr.CurrentRoom?.Type == room),
                 "USERID" => players.Where(plr => plr.UserId == input),
                 "PLAYERID" => players.Where(plr => plr.Id.ToString() == input),
-                "ITEM" when Parser.TryParseEnum(input, out ItemType item, script) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
+                "ITEM" when Parser.TryGetEnum(input, out ItemType item, script) => players.Where(plr => plr.Items.Any(i => i.Type == item)),
                 "ITEM" when CustomItem.TryGet(input, out CustomItem? customItem) => players.Where(plr => plr.Items.Any(item => CustomItem.TryGet(item, out CustomItem? customItem2) && customItem == customItem2)),
-                "HELDITEM" when Parser.TryParseEnum(input, out ItemType item, script) => players.Where(plr => plr.CurrentItem?.Type == item),
+                "HELDITEM" when Parser.TryGetEnum(input, out ItemType item, script) => players.Where(plr => plr.CurrentItem?.Type == item),
                 "HELDITEM" when CustomItem.TryGet(input, out CustomItem? customItem) => players.Where(plr => CustomItem.TryGet(plr.CurrentItem, out CustomItem? customItem2) && customItem == customItem2),
                 "GROUP" => players.Where(plr => plr.GroupName == input),
                 "ISSTAFF" => players.Where(plr => plr.RemoteAdminAccess == input.AsBool()),
-                "EFFECT" when Parser.TryParseEnum(input, out EffectType et, script) => players.Where(plr => plr.TryGetEffect(et, out StatusEffectBase seb)),
+                "EFFECT" when Parser.TryGetEnum(input, out EffectType et, script) => players.Where(plr => plr.TryGetEffect(et, out StatusEffectBase seb)),
                 _ => throw new ArgumentException($"The provided value '{Arguments[1]}' is not a valid filter method, or the provided input '{input}' is not valid for the specified filter method."),
             };
 

@@ -66,11 +66,11 @@
             RoleTypeId rt = RoleTypeId.None;
             PlayerCollection players = null;
 
-            if (Parser.TryParseEnum(RawArguments[1], out team, script))
+            if (Parser.TryGetEnum(RawArguments[1], out team, script))
             {
                 list = 1;
             }
-            else if (Parser.TryParseEnum(RawArguments[1], out rt, script))
+            else if (Parser.TryGetEnum(RawArguments[1], out rt, script))
             {
                 list = 2;
             }
