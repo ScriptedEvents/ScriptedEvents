@@ -43,11 +43,8 @@
             int max = (int)Arguments[1];
             List<Player> list = ((PlayerCollection)Arguments[0]).GetInnerList();
 
-            for (int i = 0; i < max; i++)
+            while (list.Count > max && list.Count > 0)
             {
-                if (list.Count == 0)
-                    break;
-
                 list.PullRandomItem();
             }
 
