@@ -16,22 +16,12 @@
         /// <param name="errorTrace">The error trace if the action has failed.</param>
         /// <param name="flags">Flags that control what happens after the execution is complete.</param>
         /// <param name="variablesToRet">Variables to assign after successful action usage.</param>
-        public ActionResponse(bool success, ErrorTrace? errorTrace = null, ActionFlags flags = ActionFlags.None, object[]? variablesToRet = null)
+        public ActionResponse(bool success, ActionReturnValues? values = null, ErrorTrace? errorTrace = null, ActionFlags flags = ActionFlags.None)
         {
             Success = success;
             ErrorTrace = errorTrace;
             ResponseFlags = flags;
-            MessageType = Success ? MessageType.OK : MessageType.Custom;
-            ResponseVariables = variablesToRet ?? Array.Empty<object>();
-        }
-
-        public ActionResponse(bool success, string message)
-        {
-            Success = success;
-            ErrorTrace = new ErrorInfo(message, message, "action not implemented").ToTrace();
-            ResponseFlags = default;
-            MessageType = Success ? MessageType.OK : MessageType.Custom;
-            ResponseVariables = Array.Empty<object>();
+            ResponseVariables = values?.Values ?? Array.Empty<object>();
         }
 
         /// <summary>
@@ -43,11 +33,6 @@
         /// Gets the error trace if the action failed.
         /// </summary>
         public ErrorTrace? ErrorTrace { get; }
-
-        /// <summary>
-        /// Gets the <see cref="MessageType"/> of the response.
-        /// </summary>
-        public MessageType MessageType { get; }
 
         /// <summary>
         /// Gets flags that control what happens after the execution is complete.
