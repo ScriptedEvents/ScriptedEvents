@@ -211,6 +211,7 @@
     <Compile Include="API\Enums\ErrorCode.cs" />
     <Compile Include="API\Enums\LogType.cs" />
     <Compile Include="API\Extensions\InterfaceExtensions.cs" />
+    <Compile Include="API\Extensions\TypeExtensions.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
     <Compile Include="API\Features\ArgumentProcessor.cs" />
     <Compile Include="API\Features\ConditionHelper.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="API\Interfaces\ILongDescription.cs" />
     <Compile Include="API\Interfaces\IScriptComponent.cs" />
     <Compile Include="API\Modules\EventScriptModule.cs" />
+    <Compile Include="API\Modules\ObjectReferenceModule.cs" />
     <Compile Include="API\Modules\SEModule.cs" />
     <Compile Include="API\Modules\VariableSystem.cs" />
     <Compile Include="Commands\CustomCommand.cs" />
@@ -264,6 +266,7 @@
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
     <Compile Include="Structures\ActionNameData.cs" />
+    <Compile Include="Structures\ActionReturnValues.cs" />
     <Compile Include="Structures\ArgumentProcessResult.cs" />
     <Compile Include="Structures\Contributor.cs" />
     <Compile Include="Structures\CoroutineData.cs" />
