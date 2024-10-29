@@ -1,20 +1,18 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.Broadcast
 {
     using System;
 
     using Exiled.API.Features;
-
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Modules;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class CountdownAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "COUNTDOWN";
+        public string Name => "Countdown";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -29,13 +27,13 @@ namespace ScriptedEvents.Actions
         public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
 
         /// <inheritdoc/>
-        public string Description => "Displays a countdown on the player(s) screens (using broadcasts).";
+        public string Description => "Creates a countdown for specified players using broadcasts.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(PlayerCollection), "The players to show the countdown to.", true),
-            new Argument("durationSeconds", typeof(long), "The duration of the countdown.", true),
+            new Argument("duration", typeof(TimeSpan), "The duration of the countdown.", true),
             new Argument("text", typeof(string), "The text to show on the broadcast.", true),
         };
 
@@ -46,17 +44,12 @@ The text of the broadcast will be formatted using the countdown_string Exiled co
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-
-            long duration = (long)Arguments[1];
-
-            string text = null;
-
-            if (Arguments.Length > 2)
-                text = Arguments.JoinMessage(2);
+            var players = (PlayerCollection)Arguments[0];
+            var duration = (TimeSpan)Arguments[1];
+            var text = (string)Arguments[2];
 
             foreach (Player ply in players)
-                MainPlugin.GetModule<CountdownModule>().AddCountdown(ply, text, TimeSpan.FromSeconds(duration), script);
+                MainPlugin.GetModule<CountdownModule>().AddCountdown(ply, text, duration, script);
 
             return new(true);
         }
