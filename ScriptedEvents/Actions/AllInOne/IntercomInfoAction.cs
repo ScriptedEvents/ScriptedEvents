@@ -46,7 +46,7 @@
 
             if (mode == "SPEAKER")
             {
-                return new(true, variablesToRet: new[] { Intercom.Speaker is not null ? new[] { Intercom.Speaker } : Array.Empty<Player>() });
+                return new(true, variablesToRet: new[] { Intercom.Speaker.ToNotNullArrayObject() });
             }
 
             string ret = mode switch
@@ -58,7 +58,7 @@
                 _ => throw new ArgumentException()
             };
 
-            return new(true, variablesToRet: new[] { ret });
+            return new(true, variablesToRet: new[] { ret.ToNotNullArrayObject() });
         }
     }
 }

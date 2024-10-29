@@ -55,7 +55,7 @@
                 _ => throw new ArgumentException()
             };
 
-            return new(true, variablesToRet: new[] { ret.ToString() });
+            return new(true, variablesToRet: new[] { ret.ToStringObject() });
         }
     }
 }
