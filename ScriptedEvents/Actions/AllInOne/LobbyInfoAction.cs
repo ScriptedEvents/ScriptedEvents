@@ -1,12 +1,11 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions.AllInOne
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class LobbyInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
@@ -21,9 +20,9 @@ namespace ScriptedEvents.Actions.AllInOne
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("WaitTime", "Returns a number saying how many seconds are left until the round start."),
-                new("IsActive", "Returns a TRUE/FALSE value saying if the lobby is active."),
-                new("IsLocked", "Returns a TRUE/FALSE value saying if the lobby is locked.")),
+                new OptionValueDepending("WaitTime", "How many seconds are left until the round start.", typeof(short)),
+                new OptionValueDepending("IsActive", "Is the lobby is active.", typeof(bool)),
+                new OptionValueDepending("IsLocked", "Is the lobby is locked.", typeof(bool))),
         };
 
         /// <inheritdoc/>
@@ -49,7 +48,7 @@ namespace ScriptedEvents.Actions.AllInOne
                 _ => throw new ArgumentException()
             };
 
-            return new(true, variablesToRet: new[] { ret });
+            return new(true, new(ret));
         }
     }
 }

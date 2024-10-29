@@ -1,12 +1,11 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions.AllInOne
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class IntercomInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
@@ -20,11 +19,11 @@ namespace ScriptedEvents.Actions.AllInOne
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                    new("Speaker", "Returns the player who is speaking on the intercom."),
-                    new("IsReady", "Returns a TRUE/FALSE value saying if intercom ready to detonate."),
-                    new("CooldownLeft", "Returns the amount of seconds of the cooldown remaining."),
-                    new("TimeLeft", "Returns the amount of seconds left for speaking."),
-                    new("InUse", "Returns a TRUE/FALSE value saying if intercom is in use already.")),
+                    new OptionValueDepending("Speaker", "Player who is speaking on the intercom. Empty if no player is speaking.", typeof(Player)),
+                    new OptionValueDepending("IsReady", "Is the intercom is ready.", typeof(bool)),
+                    new OptionValueDepending("CooldownLeft", "Amount of seconds of the cooldown remaining.", typeof(double)),
+                    new OptionValueDepending("TimeLeft", "Amount of seconds left for speaking.", typeof(float)),
+                    new OptionValueDepending("InUse", "Is intercom in use already.", typeof(bool))),
         };
 
         /// <inheritdoc/>

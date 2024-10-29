@@ -1,13 +1,15 @@
 ﻿namespace ScriptedEvents.Structures
 {
+    using ScriptedEvents.Interfaces;
+
     public class OptionsArgument : Argument
     {
-        public OptionsArgument(string argumentName, bool required, params Option[] options)
+        public OptionsArgument(string argumentName, bool required, params IOption[] options)
             : base(argumentName, typeof(string), $"The {argumentName} to use.", required)
         {
             Options = options;
         }
 
-        public Option[] Options { get; }
+        public IOption[] Options { get; }
     }
 }

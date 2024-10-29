@@ -23,11 +23,11 @@ namespace ScriptedEvents.Actions.AllInOne
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("Engaged", "Returns the amount of engaged generators."),
-                new("Activating", "Returns the amount of activating generators."),
-                new("Unlocked", "Returns the amount of unlocked generators."),
-                new("Opened", "Returns the amount of open generators."),
-                new("Closed", "Returns the amount of closed generators.")),
+                new OptionValueDepending("Engaged", "Amount of engaged generators.", typeof(int)),
+                new OptionValueDepending("Activating", "Amount of activating generators.", typeof(int)),
+                new OptionValueDepending("Unlocked", "Amount of unlocked generators.", typeof(int)),
+                new OptionValueDepending("Opened", "Amount of open generators.", typeof(int)),
+                new OptionValueDepending("Closed", "Amount of closed generators.", typeof(int))),
         };
 
         /// <inheritdoc/>

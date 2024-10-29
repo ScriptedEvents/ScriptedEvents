@@ -1,17 +1,15 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     using ServerMap = Exiled.API.Features.Map;
 
-    /// <inheritdoc/>
     public class MapInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
@@ -24,11 +22,11 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("Seed", "Returns the map seed."),
-                new("IsOvercharged", "Returns a TRUE/FALSE value saying if the overcharge happened."),
-                new("IsDecontaminated", "Returns a TRUE/FALSE value saying if the LightContainment is decontaminated."),
-                new("Is914Active", "Returns a TRUE/FALSE value saying if SCP-914 is currently active."),
-                new("IsCassieSpeaking", "Returns a TRUE/FALSE value saying if the cassie is currently speaking.")),
+                new OptionValueDepending("Seed", "Map seed.", typeof(int)),
+                new OptionValueDepending("IsOvercharged", "Returns a TRUE/FALSE value saying if the overcharge happened."),
+                new OptionValueDepending("IsDecontaminated", "Returns a TRUE/FALSE value saying if the LightContainment is decontaminated."),
+                new OptionValueDepending("Is914Active", "Returns a TRUE/FALSE value saying if SCP-914 is currently active."),
+                new OptionValueDepending("IsCassieSpeaking", "Returns a TRUE/FALSE value saying if the cassie is currently speaking.")),
         };
 
         /// <inheritdoc/>
@@ -51,7 +49,7 @@ namespace ScriptedEvents.Actions
                 "SEED" => ServerMap.Seed.ToString(),
                 "ISOVERCHARGED" => Recontainer.IsContainmentSequenceSuccessful.ToUpper(),
                 "ISDECONTAMINATED" => ServerMap.IsLczDecontaminated.ToUpper(),
-                "IS914ACTIVE" => Scp914.IsWorking.ToUpper(),
+                "IS914ACTIVE" => Exiled.API.Features.Scp914.IsWorking.ToUpper(),
                 "ISCASSIESPEAKING" => Cassie.IsSpeaking.ToUpper(),
                 _ => throw new ArgumentException()
             };

@@ -23,11 +23,11 @@ namespace ScriptedEvents.Actions.AllInOne
         public Argument[] ExpectedArguments => new[]
         {
              new OptionsArgument("mode", true,
-                    new("IsCarried", "Is item is in owner's inventory."),
-                    new("Scale", "Item's scale."),
-                    new("Weight", "Item's weight."),
-                    new("Owner", "Item's owner."),
-                    new("Type", "Item's type.")),
+                    new OptionValueDepending("IsCarried", "Is item is in owner's inventory.", typeof(bool)),
+                    new OptionValueDepending("Scale", "Item's scale.", typeof(string)),
+                    new OptionValueDepending("Weight", "Item's weight.", typeof(float)),
+                    new OptionValueDepending("Owner", "Item's owner. Empty if there is no owner.", typeof(Player)),
+                    new OptionValueDepending("Type", "Item's type.", typeof(ItemType))),
              new Argument("item", typeof(Item), "The item to use.", true),
         };
 

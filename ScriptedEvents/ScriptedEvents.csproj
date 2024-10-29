@@ -267,6 +267,7 @@
     <Compile Include="Interfaces\ILogicAction.cs" />
     <Compile Include="Interfaces\ILongDescription.cs" />
     <Compile Include="Interfaces\IMimicsVariableAction.cs" />
+    <Compile Include="Interfaces\IOption.cs" />
     <Compile Include="Interfaces\IReturnValueAction.cs" />
     <Compile Include="Interfaces\IScriptAction.cs" />
     <Compile Include="Interfaces\IScriptComponent.cs" />
@@ -283,13 +284,13 @@
     <Compile Include="Structures\ErrorTrace.cs" />
     <Compile Include="Structures\Flag.cs" />
     <Compile Include="Structures\Option.cs" />
+    <Compile Include="Structures\OptionValueDepending.cs" />
     <Compile Include="Structures\SuggestedOptionsArgument.cs" />
     <Compile Include="Structures\OptionsArgument.cs" />
     <Compile Include="Structures\PlayerCollection.cs" />
     <Compile Include="Structures\PlayerDisable.cs" />
     <Compile Include="Structures\PlayerLoopInfo.cs" />
     <Compile Include="Structures\RoleTypeIdOrTeam.cs" />
-    <Compile Include="Structures\ValueReturingOption.cs" />
     <Compile Include="Structures\VariableResult.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="Tutorials\Actions\KillActionTutorial.cs" />
