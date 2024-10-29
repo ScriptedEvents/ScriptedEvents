@@ -59,8 +59,16 @@
             base.Init();
             Singleton = this;
 
-            HandlerTypes = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
-            .Assembly.GetTypes().Where(t => t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
+            try
+            {
+                HandlerTypes = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
+                    .Assembly.GetTypes()
+                    .Where(t => t is not null && t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Fetching HandlerTypes failed! Exiled.Events does not exist in loaded plugins:\n{string.Join(", ", Loader.Plugins.Select(x => x.Name))}");
+            }
 
             // Events
             Exiled.Events.Handlers.Server.RestartingRound += TerminateConnections;
