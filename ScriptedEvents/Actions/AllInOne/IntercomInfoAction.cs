@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
@@ -8,11 +8,10 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    /// <inheritdoc/>
     public class IntercomInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "INTERCOMINFO";
+        public string Name => "IntercomInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting intercom related information.";
@@ -46,7 +45,7 @@
 
             if (mode == "SPEAKER")
             {
-                return new(true, variablesToRet: new[] { Intercom.Speaker.ToNotNullArrayObject() });
+                return new(true, new(Intercom.Speaker));
             }
 
             string ret = mode switch
@@ -58,7 +57,7 @@
                 _ => throw new ArgumentException()
             };
 
-            return new(true, variablesToRet: new[] { ret.ToNotNullArrayObject() });
+            return new(true, new(ret));
         }
     }
 }
