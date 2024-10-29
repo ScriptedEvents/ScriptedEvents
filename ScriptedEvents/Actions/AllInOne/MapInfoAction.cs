@@ -13,7 +13,7 @@
     public class MapInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "MAPINFO";
+        public string Name => "MapInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting map related information.";
@@ -23,10 +23,10 @@
         {
             new OptionsArgument("mode", true,
                 new OptionValueDepending("Seed", "Map seed.", typeof(int)),
-                new OptionValueDepending("IsOvercharged", "Returns a TRUE/FALSE value saying if the overcharge happened."),
-                new OptionValueDepending("IsDecontaminated", "Returns a TRUE/FALSE value saying if the LightContainment is decontaminated."),
-                new OptionValueDepending("Is914Active", "Returns a TRUE/FALSE value saying if SCP-914 is currently active."),
-                new OptionValueDepending("IsCassieSpeaking", "Returns a TRUE/FALSE value saying if the cassie is currently speaking.")),
+                new OptionValueDepending("IsOvercharged", "Did the overcharge happen.", typeof(bool)),
+                new OptionValueDepending("IsLczDecontaminated", "Is Light Containment decontaminated.", typeof(bool)),
+                new OptionValueDepending("Is914Active", "Is SCP-914 is currently active.", typeof(bool)),
+                new OptionValueDepending("IsCassieSpeaking", "Is C.A.S.S.I.E speaking on the entire map.", typeof(bool))),
         };
 
         /// <inheritdoc/>
@@ -48,13 +48,13 @@
             {
                 "SEED" => ServerMap.Seed.ToString(),
                 "ISOVERCHARGED" => Recontainer.IsContainmentSequenceSuccessful.ToUpper(),
-                "ISDECONTAMINATED" => ServerMap.IsLczDecontaminated.ToUpper(),
+                "ISLCZDECONTAMINATED" => ServerMap.IsLczDecontaminated.ToUpper(),
                 "IS914ACTIVE" => Exiled.API.Features.Scp914.IsWorking.ToUpper(),
                 "ISCASSIESPEAKING" => Cassie.IsSpeaking.ToUpper(),
                 _ => throw new ArgumentException()
             };
 
-            return new(true, variablesToRet: new[] { ret });
+            return new(true, new(ret));
         }
     }
 }
