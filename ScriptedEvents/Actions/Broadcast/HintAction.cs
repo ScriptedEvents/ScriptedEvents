@@ -1,20 +1,17 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.Broadcast
 {
     using System;
 
     using Exiled.API.Features;
-
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Modules;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class HintAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "HINT";
+        public string Name => "Hint";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -29,26 +26,26 @@ namespace ScriptedEvents.Actions
         public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
 
         /// <inheritdoc/>
-        public string Description => "Broadcasts a hint to specific player(s).";
+        public string Description => "Broadcasts a hint to specified players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(PlayerCollection), "The players to show the hint for.", true),
-            new Argument("durationSeconds", typeof(float), "The duration of the hint.", true),
+            new Argument("duration", typeof(TimeSpan), "The duration of the hint.", true),
             new Argument("message", typeof(string), "The hint content.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-            float duration = (float)Arguments[1];
-            string message = Arguments.JoinMessage(2);
+            var players = (PlayerCollection)Arguments[0];
+            var duration = (TimeSpan)Arguments[1];
+            var message = (string)Arguments[2];
 
             foreach (Player plr in players)
             {
-                plr.ShowHint(message, duration);
+                plr.ShowHint(message, duration.Seconds);
             }
 
             return new(true);
