@@ -1,9 +1,10 @@
-﻿namespace ScriptedEvents.Actions.Strings
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.Strings
 {
     using System;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     /// <inheritdoc/>

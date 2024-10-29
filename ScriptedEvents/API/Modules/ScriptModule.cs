@@ -1,3 +1,5 @@
+using ScriptedEvents.Interfaces;
+
 namespace ScriptedEvents.API.Modules
 {
     using System;
@@ -19,8 +21,6 @@ namespace ScriptedEvents.API.Modules
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.API.Interfaces;
-
     using ScriptedEvents.DemoScripts;
 
     using ScriptedEvents.Structures;

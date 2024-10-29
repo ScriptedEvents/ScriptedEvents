@@ -1,11 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions
 {
     using System;
     using System.Linq;
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class EndFunctionAction : IScriptAction, IHiddenAction

@@ -1,7 +1,7 @@
-﻿namespace ScriptedEvents.Variables.Interfaces
-{
-    using ScriptedEvents.API.Interfaces;
+﻿using ScriptedEvents.Interfaces;
 
+namespace ScriptedEvents.Variables.Interfaces
+{
     /// <summary>
     /// Represents a variable that can be used in scripts.
     /// </summary>

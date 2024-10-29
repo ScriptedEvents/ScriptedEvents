@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.Item
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.Item
 {
     using System;
     using System.Linq;
@@ -9,7 +11,6 @@
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class ItemAction : IScriptAction, IHelpInfo, ILongDescription

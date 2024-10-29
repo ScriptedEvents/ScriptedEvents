@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions
 {
     using System;
     using System.Linq;
@@ -6,7 +8,6 @@
     using Exiled.API.Features;
     using PlayerRoles;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     /// <inheritdoc/>

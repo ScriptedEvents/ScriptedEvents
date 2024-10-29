@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.API.Interfaces
+﻿namespace ScriptedEvents.Interfaces
 {
     /// <summary>
     /// Represents an action that returns a value.

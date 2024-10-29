@@ -1,11 +1,12 @@
-﻿namespace ScriptedEvents.Actions.Item
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.Item
 {
     using System;
     using System.Collections.Generic;
 
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class DropItemAction : IScriptAction, IHelpInfo, ILongDescription

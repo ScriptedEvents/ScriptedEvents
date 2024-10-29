@@ -13,7 +13,6 @@
     using ScriptedEvents.Actions;
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Tutorials;

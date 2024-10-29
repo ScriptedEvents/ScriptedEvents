@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.MapActions
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.MapActions
 {
     using System;
     using System.Collections.Generic;
@@ -14,7 +16,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     using Tesla = Exiled.API.Features.TeslaGate;

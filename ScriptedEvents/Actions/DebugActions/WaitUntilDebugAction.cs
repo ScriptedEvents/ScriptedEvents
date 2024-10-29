@@ -1,3 +1,5 @@
+using ScriptedEvents.Interfaces;
+
 namespace ScriptedEvents.Actions
 {
     using System;
@@ -8,7 +10,6 @@ namespace ScriptedEvents.Actions
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class WaitUntilDebugAction : ITimingAction, IHiddenAction, IHelpInfo

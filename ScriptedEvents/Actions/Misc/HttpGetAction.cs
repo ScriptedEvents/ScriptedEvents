@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.MiscActions
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.MiscActions
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +9,6 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using UnityEngine.Networking;

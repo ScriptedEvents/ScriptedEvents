@@ -1,11 +1,12 @@
-﻿namespace ScriptedEvents.Actions.AllInOne
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class IntercomInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction

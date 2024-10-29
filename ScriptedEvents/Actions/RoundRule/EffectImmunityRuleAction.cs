@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +9,6 @@
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class EffectImmunityRuleAction : IScriptAction, IHelpInfo

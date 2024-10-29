@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.API.Features
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.API.Features
 {
     using System;
     using System.Collections.Generic;
@@ -13,7 +15,6 @@
     using Exiled.CustomItems.API.Features;
     using PlayerRoles;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;

@@ -1,10 +1,11 @@
-﻿namespace ScriptedEvents.API.Extensions
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.API.Extensions
 {
     using System;
     using System.Linq;
 
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Variables.Interfaces;
 
     public static class InterfaceExtensions

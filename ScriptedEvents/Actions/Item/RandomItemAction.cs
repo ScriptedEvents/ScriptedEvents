@@ -1,11 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions
 {
     using System;
 
     using Exiled.API.Extensions;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     /// <inheritdoc/>

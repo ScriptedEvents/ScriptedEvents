@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions
 {
     using System;
 
@@ -6,7 +8,6 @@
     using Exiled.API.Features.Roles;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     using UnityEngine;

@@ -1,18 +1,18 @@
-﻿namespace ScriptedEvents.Actions
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    /// <inheritdoc/>
     public class LobbyInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "LOBBYINFO";
+        public string Name => "LobbyInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting lobby related information.";

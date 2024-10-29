@@ -1,11 +1,11 @@
-﻿namespace ScriptedEvents.Actions.VariableActions
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.VariableActions
 {
     using System;
     using System.Linq;
 
     using ScriptedEvents.API.Enums;
-
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 

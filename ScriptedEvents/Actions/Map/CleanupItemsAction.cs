@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.Map
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.Map
 {
     using System;
     using System.Linq;
@@ -11,7 +13,6 @@
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class CleanupItemsAction : IScriptAction, IHelpInfo

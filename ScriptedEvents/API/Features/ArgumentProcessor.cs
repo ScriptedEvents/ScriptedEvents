@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.API.Features
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.API.Features
 {
     using System;
     using System.Collections.Generic;
@@ -11,7 +13,6 @@
 
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;

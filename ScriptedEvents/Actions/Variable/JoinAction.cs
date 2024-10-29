@@ -1,9 +1,10 @@
-﻿namespace ScriptedEvents.Actions.VariableMimicingActions.PlayerVariableManipulation
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.VariableMimicingActions.PlayerVariableManipulation
 {
     using System;
 
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
     public class JoinAction : IScriptAction, IHelpInfo, IMimicsVariableAction

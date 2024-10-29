@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.Item
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents.Actions.Item
 {
     using System;
 
@@ -10,7 +12,6 @@
     using Actions.Samples.Providers;
     using API.Enums;
     using API.Extensions;
-    using API.Interfaces;
     using Structures;
 
     public class RadioRangeAction : IScriptAction, IHelpInfo, ISampleAction

@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents
+﻿using ScriptedEvents.Interfaces;
+
+namespace ScriptedEvents
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +12,6 @@
     using Exiled.API.Features.Pools;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
