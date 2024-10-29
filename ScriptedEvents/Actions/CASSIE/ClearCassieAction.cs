@@ -1,18 +1,16 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.CASSIE
 {
     using System;
 
     using Exiled.API.Features;
-
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class ClearCassieAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "CLEARCASSIE";
+        public string Name => "CassieClear";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -27,7 +25,7 @@ namespace ScriptedEvents.Actions
         public ActionSubgroup Subgroup => ActionSubgroup.Cassie;
 
         /// <inheritdoc/>
-        public string Description => "Clears cassie queue.";
+        public string Description => "Clears the queue for cassie announcements.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => Array.Empty<Argument>();

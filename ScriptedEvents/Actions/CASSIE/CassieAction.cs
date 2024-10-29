@@ -1,21 +1,17 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.CASSIE
 {
     using System;
 
     using Exiled.API.Features;
-
-    using ScriptedEvents.Actions.Samples.Interfaces;
-    using ScriptedEvents.Actions.Samples.Providers;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class CassieAction : IScriptAction, IHelpInfo, ISampleAction
+    public class CassieAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "CASSIE";
+        public string Name => "Cassie";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -36,14 +32,11 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("Silent", "Makes a silent announcement."),
-                new("Loud", "Makes a loud announcement.")),
+                new Option("Silent", "Makes a silent announcement."),
+                new Option("Loud", "Makes a loud announcement.")),
             new Argument("message", typeof(string), "The message for cassie.", true),
             new Argument("caption", typeof(string), "An optional caption for the announcement. Use NONE for no captions.", false),
         };
-
-        /// <inheritdoc/>
-        public ISampleProvider Samples { get; } = new CassieSamples();
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
