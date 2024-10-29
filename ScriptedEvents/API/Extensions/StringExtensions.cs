@@ -1,6 +1,4 @@
-﻿using ScriptedEvents.Structures;
-
-namespace ScriptedEvents.API.Extensions
+﻿namespace ScriptedEvents.API.Extensions
 {
     using System.Linq;
     using System.Text;
@@ -8,6 +6,7 @@ namespace ScriptedEvents.API.Extensions
 
     using Exiled.API.Features.Pools;
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.Structures;
 
     /// <summary>
     /// Contains useful extensions.
