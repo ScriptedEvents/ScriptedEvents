@@ -331,6 +331,10 @@ namespace ScriptedEvents.API.Features
                     success.NewParameters.Add(charRes);
                     break;
 
+                case "Item": throw new NotImplementedException();
+
+                case "TimeSpan": throw new NotImplementedException();
+
                 case "IVariable":
                     if (!VariableSystem.TryGetVariable<IVariable>(input, source, out var someVar, false, out var someVarTrace))
                     {
