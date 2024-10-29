@@ -3,6 +3,7 @@
     using System;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
@@ -19,14 +20,14 @@
         {
             new OptionsArgument("mode", true,
                 new OptionValueDepending("Ticks", "Amount of seconds since 1970.", typeof(long)),
-                new OptionValueDepending("Second", "Returns a number in range 0-59"),
-                new OptionValueDepending("Minute", "Returns a number in range 0-59"),
-                new OptionValueDepending("Hour", "Returns a number in range 0-23"),
-                new OptionValueDepending("Month", "Returns a number in range 1-12"),
-                new OptionValueDepending("Year", "Returns the amount of years since the birth of Christ"),
-                new OptionValueDepending("DayOfWeek", "Returns a number in range 1-7 (Warning! This follows the US system, where Sunday is the first day of the week)"),
-                new OptionValueDepending("DayOfMonth", "Returns a number in range 0-31"),
-                new OptionValueDepending("DayOfYear", "Returns a number in range 0-366")),
+                new OptionValueDepending("Second", "Current second, in range 0-59.", typeof(int)),
+                new OptionValueDepending("Minute", "Current minute, in range 0-59.", typeof(int)),
+                new OptionValueDepending("Hour", "Current hour, in range 0-23.", typeof(int)),
+                new OptionValueDepending("Month", "Current month, in range 1-12.", typeof(int)),
+                new OptionValueDepending("Year", "Current year.", typeof(int)),
+                new OptionValueDepending("DayOfWeek", "Current day of week, in range 1-7, where 1 is Monday and 7 is Sunday.", typeof(int)),
+                new OptionValueDepending("DayOfMonth", "Current day of month, in range 0-31.", typeof(int)),
+                new OptionValueDepending("DayOfYear", "Current day of year, in range 0-366.", typeof(int))),
         };
 
         /// <inheritdoc/>
@@ -52,7 +53,7 @@
                     : str;
             }
 
-            string ret = Arguments[0].ToString().ToUpper() switch
+            string ret = Arguments[0].ToUpper() switch
             {
                 "TICK" => ((long)(DateTime.Now - MainPlugin.Epoch).TotalSeconds).ToString(),
                 "SECOND" => Format(DateTime.Now.Second),
@@ -60,13 +61,13 @@
                 "HOUR" => Format(DateTime.Now.Hour),
                 "MONTH" => DateTime.Now.Month.ToString(),
                 "YEAR" => DateTime.Now.Year.ToString(),
-                "DAYOFWEEK" => (((int)DateTime.Now.DayOfWeek) + 1).ToString(),
+                "DAYOFWEEK" => ((((int)DateTime.Now.DayOfWeek + 6) % 7) + 1).ToString(),
                 "DAYOFMONTH" => DateTime.Now.Day.ToString(),
                 "DAYOFYEAR" => DateTime.Now.DayOfYear.ToString(),
                 _ => throw new ArgumentException(),
             };
 
-            return new(true, variablesToRet: new[] { ret });
+            return new(true, new(ret));
         }
     }
 }
