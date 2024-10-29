@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
     using System.Linq;
@@ -10,11 +10,10 @@
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;
 
-    /// <inheritdoc/>
     public class GeneratorInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "GENERATORINFO";
+        public string Name => "GeneratorInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting generator related information.";
@@ -55,7 +54,7 @@
                 _ => throw new ArgumentException()
             };
 
-            return new(true, variablesToRet: new[] { ret.ToStringObject() });
+            return new(true, new(ret.ToString()));
         }
     }
 }
