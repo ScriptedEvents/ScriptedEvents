@@ -48,6 +48,8 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            return new(false, new ErrorTrace(new ErrorInfo("action not implemented", "action not implemented", "action not implemented")));
+            /*
             PlayerCollection plys = (PlayerCollection)Arguments[0];
             float damage = (float)Arguments[1];
 
@@ -80,6 +82,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
                 player.Hurt(damage, DamageType.Unknown);
 
             return new(true);
+            */
         }
     }
 }

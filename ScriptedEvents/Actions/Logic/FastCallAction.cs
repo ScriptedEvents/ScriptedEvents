@@ -46,7 +46,7 @@
 
             try
             {
-                calledScript = MainPlugin.ScriptModule.ReadScript(scriptName, script.Sender, false);
+                calledScript = MainPlugin.ScriptModule.TryParseScript(scriptName, script.Sender, false);
                 calledScript.CallerScript = script;
             }
             catch (DisabledScriptException)

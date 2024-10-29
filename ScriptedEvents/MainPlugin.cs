@@ -211,19 +211,19 @@
 
                 if (custom.Name == string.Empty)
                 {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.CustomCommand_NoName));
+                    Logger.Error("One of your custom commands doesnt have a name!");
                     continue;
                 }
 
                 if (custom.Run is null || custom.Run.Count == 0)
                 {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.CustomCommand_NoScripts, custom.Name, custom.Type));
+                    Logger.Error($"Your custom command '{custom.Name}' doesnt have an action to run!");
                     continue;
                 }
 
                 if (custom.Cooldown != -1 && custom.PlayerCooldown != -1)
                 {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.CustomCommand_MultCooldowns, custom.Name, custom.Type));
+                    Logger.Error($"Your custom command '{custom.Name}' has misconfigured cooldown! Both cooldown and player cooldown can't be set to -1.");
                     continue;
                 }
 
@@ -244,7 +244,7 @@
                 {
                     Command = custom.Name,
                     Description = custom.Description,
-                    Aliases = new string[0],
+                    Aliases = Array.Empty<string>(),
                     Type = custom.Type,
                     CooldownMode = cooldownMode,
                     Cooldown = cooldown,

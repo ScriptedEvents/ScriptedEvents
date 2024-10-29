@@ -47,7 +47,7 @@
             int index = (int)Arguments[1];
 
             if (index > players.Count() - 1)
-                throw new IndexOutOfRangeException(ErrorGen.Get(ErrorCode.IndexTooLarge, index));
+                throw new IndexOutOfRangeException();
 
             return new(true, variablesToRet: new[] { new[] { players.ElementAt(index) } });
         }

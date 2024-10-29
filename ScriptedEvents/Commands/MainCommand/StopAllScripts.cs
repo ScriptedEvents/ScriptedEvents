@@ -36,7 +36,7 @@
 
             if (!Directory.Exists(ScriptModule.BasePath))
             {
-                response = ErrorGen.Get(ErrorCode.IOMissing);
+                response = "Base script directory does not exist";
                 return false;
             }
 

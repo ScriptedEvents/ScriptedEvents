@@ -39,7 +39,7 @@
         {
             ConditionResponse outcome = ConditionHelper.Evaluate(RawArguments.JoinMessage(), script);
             if (!outcome.Success)
-                return new(false, $"IF execution error: {outcome.Message}", ActionFlags.FatalError);
+                return new(false, $"IF execution error: {outcome.Message}");
 
             script.IfActionBlocksExecution = !outcome.Passed;
 

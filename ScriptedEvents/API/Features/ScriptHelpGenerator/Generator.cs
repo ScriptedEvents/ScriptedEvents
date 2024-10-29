@@ -112,7 +112,7 @@
                     return false;
                 }
 
-                if (!sections[1].IsBool(out bool doGenerate))
+                if (!sections[1].IsBool(out bool doGenerate, out _))
                 {
                     message = $"Malformed file. Line {i} does not have proper y/n value.";
                     return false;
@@ -163,6 +163,7 @@
                 Directory.Delete(TutorialsPath, true);
             }
 
+            /*
             if (config.generate_actions)
             {
                 Directory.CreateDirectory(ActionPath);
@@ -190,6 +191,7 @@
 
                 Logger.Info($"Completed generating documentation for actions. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
+
 
             if (config.generate_variables)
             {
@@ -243,30 +245,7 @@
 
                 Logger.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
             }
-
-            if (config.generate_error_codes)
-            {
-                Directory.CreateDirectory(ErrorsPath);
-
-                Stopwatch watch = Stopwatch.StartNew();
-                foreach (ErrorInfo errorInfo in ErrorList.Errors)
-                {
-                    Logger.Debug("Creating documentation for error: " + errorInfo.Id);
-
-                    ActionResponse text = HelpAction.GenerateText(errorInfo.Id.ToString());
-
-                    if (text.Success)
-                    {
-                        string path = Path.Combine(ErrorsPath, "SE-" + errorInfo.Id.ToString() + ".txt");
-                        File.WriteAllText(path, text.Message);
-                    }
-                }
-
-                watch.Stop();
-
-                Logger.Info($"Completed generating documentation for enums. Elapsed time: {watch.ElapsedMilliseconds}ms");
-            }
-
+            */
             if (config.generate_tutorials)
             {
                 Directory.CreateDirectory(TutorialsPath);

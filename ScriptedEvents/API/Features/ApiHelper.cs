@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.API.Features
+﻿using System.Linq;
+
+namespace ScriptedEvents.API.Features
 {
     using System;
     using System.Reflection;
@@ -132,8 +134,8 @@
                 return null;
             }
 
-            Parser.TryGetPlayers(input, max, out PlayerCollection list, actualScript);
-            return list.GetInnerList().ToArray();
+            Parser.TryGetPlayers(input, max, out var list, actualScript, out _);
+            return list.ToArray();
         }
 
         /// <summary>

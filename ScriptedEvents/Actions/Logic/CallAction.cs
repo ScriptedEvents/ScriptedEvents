@@ -49,7 +49,7 @@
 
             try
             {
-                calledScript = MainPlugin.ScriptModule.ReadScript(scriptName, script.Sender, false);
+                calledScript = MainPlugin.ScriptModule.TryParseScript(scriptName, script.Sender, false);
                 calledScript.CallerScript = script;
             }
             catch (DisabledScriptException)
@@ -99,10 +99,12 @@
             message = new(true);
             return Timing.WaitUntilDone(RunScript(calledScript, script));
             */
-            message = new(false, "Action not implemented.");
+            message = new(false,
+                new ErrorInfo("action not implemented", "action not implemented", "action not implemented").ToTrace());
             return 0;
         }
 
+        /*
         private CoroutineHandle RunScript(Script scriptToCall, Script script)
         {
             scriptToCall.Execute();
@@ -119,5 +121,6 @@
                 yield return Timing.WaitForSeconds(1 / MainPlugin.Configs.WaitUntilFrequency);
             }
         }
+        */
     }
 }

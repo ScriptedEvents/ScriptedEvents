@@ -2,32 +2,32 @@
 {
     using System.Collections.Generic;
 
+    using ScriptedEvents.API.Features;
+
     /// <summary>
-    /// Contains the result of a call to <see cref="API.Features.ArgumentProcessor.Process"/>.
+    /// Contains the result of a call to <see cref="ArgumentProcessor.ProcessActionArguments"/>.
     /// </summary>
     public class ArgumentProcessResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ArgumentProcessResult"/> class.
         /// </summary>
-        /// <param name="success">Is action permitted to run.</param>
+        /// <param name="shouldExecute">Is action permitted to run.</param>
         /// <param name="errored">Did an error occur while processing.</param>
-        /// <param name="argument">If unsuccessful, which argument failed.</param>
-        /// <param name="error">The error message.</param>
-        public ArgumentProcessResult(bool success, bool errored = false, string argument = "", ErrorInfo? error = null)
+        /// <param name="errorTrace">The error trace if the processing failed.</param>
+        public ArgumentProcessResult(bool shouldExecute, bool errored = false, ErrorTrace? errorTrace = null)
         {
-            Success = success;
+            ShouldExecute = shouldExecute;
             Errored = errored;
-            FailedArgument = argument;
-            Error = error;
+            ErrorTrace = errorTrace;
 
             NewParameters = new();
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the processing was successful.
+        /// Gets a value indicating whether or not the action should execute based on the result.
         /// </summary>
-        public bool Success { get; }
+        public bool ShouldExecute { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the processing was successful.
@@ -35,14 +35,9 @@
         public bool Errored { get; }
 
         /// <summary>
-        /// Gets a value indicating the name of the failed argument, if unsuccessful.
-        /// </summary>
-        public string FailedArgument { get; }
-
-        /// <summary>
         /// Gets a value indicating the message, if unsuccessful.
         /// </summary>
-        public ErrorInfo? Error { get; }
+        public ErrorTrace? ErrorTrace { get; }
 
         /// <summary>
         /// Gets an <see cref="object"/> list of new parameters if the processing was successful.

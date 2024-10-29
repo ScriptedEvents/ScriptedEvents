@@ -9,33 +9,6 @@
 
     public static class InterfaceExtensions
     {
-        public static string String(this IVariable variable, Script? source = null)
-        {
-            try
-            {
-                switch (variable)
-                {
-                    case IPlayerVariable player:
-                        return variable.Name;
-                    case ILiteralVariable @string:
-                        return @string.Value;
-                    default: // Shouldn't be possible
-                        throw new InvalidCastException($"{variable.Name} tried to cast to string, which resulted in an error.");
-                }
-            }
-            catch (InvalidCastException e)
-            {
-                Logger.Warn(source?.IsDebug == true ? e.ToString() : e.Message, source);
-            }
-            catch (Exception e)
-            {
-                Logger.Warn(source?.IsDebug == true ? e.ToString() : e.Message, source);
-                return source?.IsDebug == true ? e.ToString() : e.Message;
-            }
-
-            return "ERROR";
-        }
-
         /// <summary>
         /// Determines if an action is obsolete.
         /// </summary>

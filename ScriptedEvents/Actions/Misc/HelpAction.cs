@@ -61,7 +61,7 @@
             if (Arguments[0].ToUpper() is "GENERATE")
             {
                 if (script.Context != ExecuteContext.ServerConsole)
-                    return new(false, "The 'GENERATE' subcommand must be executed from the server console.");
+                    return new(false, Err("The 'GENERATE' subcommand must be executed from the server console."));
                 bool generatorResult = API.Features.ScriptHelpGenerator.Generator.GenerateConfig(out string message);
                 return new(generatorResult, message);
             }
@@ -69,7 +69,7 @@
             if (Arguments[0].ToUpper() is "GDONE")
             {
                 if (script.Context != ExecuteContext.ServerConsole)
-                    return new(false, "The 'GDONE' subcommand must be executed from the server console.");
+                    return new(false, Err("The 'GDONE' subcommand must be executed from the server console."));
                 bool generatorResult = API.Features.ScriptHelpGenerator.Generator.CreateDocumentation(out string message);
                 return new(generatorResult, message);
             }
@@ -85,11 +85,12 @@
             if (script.Sender is ServerConsoleSender) IsFile = true;
             if (Arguments.Length > 1 && Arguments[1].ToUpper() == "NOFILE" && script.Sender is ServerConsoleSender) IsFile = false;
 
-            ActionResponse text = GenerateText(Arguments[0].ToUpper(), script, IsFile);
-            return Display(text);
+            //ActionResponse text = GenerateText(Arguments[0].ToUpper(), script, IsFile);
+            //return Display(text);
+            return new(true);
         }
 
-        public static ActionResponse GenerateText(string text, Script? script = null, bool nofile = false)
+        public static (bool success, string message) GenerateText(string text, Script? script = null, bool nofile = false)
         {
             if (text is "USE-WELCOME-TEXT")
             {
@@ -199,6 +200,7 @@ Scripted Events Contributors:
                 return new(true, StringBuilderPool.Pool.ToStringReturn(sbEnumList));
             }
 
+            /*
             // Action Help
             var actType = MainPlugin.ScriptModule.TryGetActionType(text);
             if (actType != null)
@@ -344,7 +346,7 @@ Scripted Events Contributors:
                 }
 
                 return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
-            }*/
+            }
 
             // Enum help
             EnumDefinition match = EnumDefinitions.Definitions.FirstOrDefault(def => def.EnumType.Name.ToUpper() == text);
@@ -388,7 +390,7 @@ Scripted Events Contributors:
 
                 return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
             }
-
+            */
             // Nope
             return new(false, "Invalid argument provided for the HELP action.");
         }
@@ -402,7 +404,7 @@ Scripted Events Contributors:
         {
             if (IsFile)
             {
-                string message = $"Auto Generated At: {DateTime.Now:f}\nExpires: {DateTime.Now.AddMinutes(5):f}\n{response.Message}";
+                string message = $"Auto Generated At: {DateTime.Now:f}\nExpires: {DateTime.Now.AddMinutes(5):f}";
                 string path = Path.Combine(MainPlugin.BaseFilePath, "HelpCommandResponse.txt");
 
                 if (File.Exists(path))
@@ -414,12 +416,12 @@ Scripted Events Contributors:
                 }
                 catch (UnauthorizedAccessException)
                 {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.IOHelpPermissionError));
+                    Logger.Warn("error");
                     return new(false, "HELP action error shown in server logs.");
                 }
                 catch (Exception e)
                 {
-                    Logger.Warn($"{ErrorGen.Get(ErrorCode.IOHelpError)}: {e}");
+                    Logger.Warn($"error");
                     return new(false, "HELP action error shown in server logs.");
                 }
 
@@ -455,5 +457,7 @@ Scripted Events Contributors:
                 return response;
             }
         }
+
+        private ErrorTrace Err(string content) => new(new ErrorInfo("Help action error", content, "Help action"));
     }
 }

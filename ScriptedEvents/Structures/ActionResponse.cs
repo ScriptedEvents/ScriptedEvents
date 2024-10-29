@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace ScriptedEvents.Structures
+﻿namespace ScriptedEvents.Structures
 {
+    using System;
+
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
 
     /// <summary>
     /// Represents a response to an action execution.
@@ -15,45 +13,25 @@ namespace ScriptedEvents.Structures
         /// Initializes a new instance of the <see cref="ActionResponse"/> class.
         /// </summary>
         /// <param name="success">Whether or not the execution of the action was successful.</param>
-        /// <param name="message">Message to show (or an error message if <see cref="Success"/> is <see langword="false"/>).</param>
+        /// <param name="errorTrace">The error trace if the action has failed.</param>
         /// <param name="flags">Flags that control what happens after the execution is complete.</param>
         /// <param name="variablesToRet">Variables to assign after successful action usage.</param>
-        public ActionResponse(bool success, string message = "", ActionFlags flags = ActionFlags.None, object[]? variablesToRet = null)
+        public ActionResponse(bool success, ErrorTrace? errorTrace = null, ActionFlags flags = ActionFlags.None, object[]? variablesToRet = null)
         {
             Success = success;
-            Message = message;
+            ErrorTrace = errorTrace;
             ResponseFlags = flags;
             MessageType = Success ? MessageType.OK : MessageType.Custom;
             ResponseVariables = variablesToRet ?? Array.Empty<object>();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActionResponse"/> class.
-        /// </summary>
-        /// <param name="responseType">The <see cref="MessageType"/>.</param>
-        /// <param name="action">The action creating the response. Usually <see langword="this"/>.</param>
-        /// <param name="paramName">The name of the parameter having a problem.</param>
-        /// <param name="arguments">Additional arguments. See remarks.</param>
-        /// <param name="variablesToRet">Variables to assign after successful action usage.</param>
-        /// <remarks>
-        /// This section details each <see cref="MessageType"/> and the arguments it expects.
-        /// <see cref="MessageType.OK"/> - Doesn't need anything. Doesn't need parameter name.<br />
-        /// <see cref="MessageType.GeneratorError"/> - Doesn't need anything. Doesn't need parameter name.<br />
-        /// <see cref="MessageType.InvalidUsage"/> - Expects a List of <see cref="Argument"/>. Doesn't need parameter name.<br />
-        /// <see cref="MessageType.NotANumber"/> - Expects the provided string that is not a number.<br />
-        /// <see cref="MessageType.NotANumberOrCondition"/> - Expects a string formula and the <see cref="MathResult"/>.<br />
-        /// <see cref="MessageType.LessThanZeroNumber"/> - Expects the provided number that is negative.<br />
-        /// <see cref="MessageType.InvalidRole"/> - Expects the provided string. <br />
-        /// <see cref="MessageType.NoPlayersFound"/> - Expects only parameter name. <br />
-        /// <see cref="MessageType.CassieCaptionNoAnnouncement"/> - Expects only parameter name. <br />
-        /// <see cref="MessageType.Custom"/> - Doesn't need anything. Doesn't need parameter name. <br />
-        /// </remarks>
-        public ActionResponse(MessageType responseType, IAction action, string paramName, object[]? variablesToRet = null, params object[] arguments)
+        public ActionResponse(bool success, string message)
         {
-            Success = responseType is MessageType.OK;
-            MessageType = responseType;
-            Message = MsgGen.Generate(responseType, action, paramName, arguments);
-            ResponseVariables = variablesToRet ?? Array.Empty<object>();
+            Success = success;
+            ErrorTrace = new ErrorInfo(message, message, "action not implemented").ToTrace();
+            ResponseFlags = default;
+            MessageType = Success ? MessageType.OK : MessageType.Custom;
+            ResponseVariables = Array.Empty<object>();
         }
 
         /// <summary>
@@ -62,9 +40,9 @@ namespace ScriptedEvents.Structures
         public bool Success { get; }
 
         /// <summary>
-        /// Gets message to show (or an error message if <see cref="Success"/> is <see langword="false"/>).
+        /// Gets the error trace if the action failed.
         /// </summary>
-        public string Message { get; }
+        public ErrorTrace? ErrorTrace { get; }
 
         /// <summary>
         /// Gets the <see cref="MessageType"/> of the response.

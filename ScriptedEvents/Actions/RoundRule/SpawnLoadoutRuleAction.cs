@@ -41,6 +41,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            /*
             float multiplier = (float)Arguments[2];
             Rule rule = null;
 
@@ -114,6 +115,8 @@
             MainPlugin.Handlers.DamageRules.Add(rule);
 
             return new(true);
+            */
+            return new(false, "not implemented");
         }
     }
 }

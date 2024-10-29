@@ -47,6 +47,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            /*
             string mode = Arguments[0].ToUpper();
             EffectType effect = (EffectType)Arguments[2];
 
@@ -142,8 +143,8 @@
 
                     break;
             }
-
-            return new(true);
+            */
+            return new(false, "not implemented");
         }
     }
 }

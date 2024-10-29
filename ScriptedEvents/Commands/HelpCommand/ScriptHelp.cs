@@ -1,10 +1,9 @@
-﻿namespace ScriptedEvents.Commands.MainCommand
+﻿namespace ScriptedEvents.Commands.HelpCommand
 {
     using System;
     using System.Linq;
 
     using CommandSystem;
-
     using ScriptedEvents.Actions;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
@@ -27,6 +26,9 @@
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            response = "this is not supported";
+            return false;
+            /*
             HelpAction help = new()
             {
                 Arguments = arguments.ToArray(),
@@ -48,6 +50,7 @@
 
             mockScript.Dispose();
             return actionResponse.Success;
+            */
         }
     }
 }

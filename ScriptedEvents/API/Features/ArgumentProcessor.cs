@@ -29,12 +29,12 @@
         /// <param name="action">The action or variable performing the process.</param>
         /// <param name="script">The script source.</param>
         /// <returns>The result of the process.</returns>
-        public static ArgumentProcessResult Process(Argument[] expectedArguments, string[] args, IScriptComponent action, Script script)
+        public static ArgumentProcessResult ProcessActionArguments(Argument[] expectedArguments, string[] args, IAction action, Script script)
         {
             void Log(string message)
             {
                 if (!script.IsDebug) return;
-                Logger.Debug($"[ArgumentProcessor] [Process] [{action.Name}] {message}", script);
+                Logger.Debug($"[ArgumentProcessor] [ProcessActionArguments] [{action.Name}] {message}", script);
             }
 
             if (expectedArguments.Length == 0)
@@ -46,8 +46,14 @@
             int requiredArguments = expectedArguments.Count(arg => arg.Required);
             if (args.Length < requiredArguments)
             {
-                IEnumerable<string> args2 = expectedArguments.Select(arg => $"{(arg.Required ? "<" : "[")}{arg.ArgumentName}{(arg.Required ? ">" : "]")}");
-                return new(false, true, string.Empty, ErrorGen.Get(ErrorCode.MissingArguments, action.Name, action is IAction ? "action" : "variable", requiredArguments, string.Join(", ", args2)));
+                IEnumerable<string> labeledArgs = expectedArguments.Select(arg => $"[{(arg.Required ? "Required" : "Optional")} argument '{arg.ArgumentName}']");
+                return new(
+                    false,
+                    true,
+                    Error(
+                        $"Action '{action.Name}' is missing {requiredArguments - args.Length} arguments.",
+                        $"Action defines these arguments: {string.Join(", ", labeledArgs)}, of which {requiredArguments - args.Length} required arguments were not provided.")
+                        .ToTrace());
             }
 
             ArgumentProcessResult success = new(true)
@@ -64,21 +70,19 @@
                 string input = args[i];
 
                 ArgumentProcessResult res = ProcessIndividualParameter(argument, input, action, script);
-                if (!res.Success) return res; // Throw issue to end-user
+                if (!res.ShouldExecute) return res; // Throw issue to end-user
 
                 success.NewParameters.AddRange(res.NewParameters);
             }
 
             success.NewParameters.AddRange(args.Skip(expectedArguments.Length).Select(arg =>
             {
-                if (TryProcessSmartArgument(arg, action, script, out string saRes))
+                if (TryProcessSmartArgumentsInContaminatedString(arg, action, script, out string saRes))
                 {
                     return saRes;
                 }
-                else
-                {
-                    return Parser.ReplaceContaminatedValueSyntax(arg, script);
-                }
+
+                return Parser.ReplaceContaminatedValueSyntax(arg, script);
             }).ToArray());
 
             Log($"Processed action parameters: '{string.Join(", ", success.NewParameters.Select(x => x.ToString()))}'");
@@ -94,15 +98,9 @@
         /// <param name="source">The script source.</param>
         /// <param name="result">The resulting string. Empty if method returns false.</param>
         /// <returns>The output of the process.</returns>
-        public static bool TryProcessSmartArgument(string input, IScriptComponent action, Script source, out string result)
+        public static bool TryProcessSmartArgumentsInContaminatedString(string input, IAction action, Script source, out string result)
         {
-            result = string.Empty;
             bool didSomething = false;
-
-            if (action is not IAction actualAction)
-            {
-                return false;
-            }
 
             // Regex pattern to match '#' followed by a digit
             Regex regex = new(@"#(\d)");
@@ -126,14 +124,23 @@
                 try
                 {
                     // Fetch smart argument based on index
-                    var res = source.SmartArguments[actualAction][lastNum - 1]();
-                    if (!res.Item1)
+                    var res = source.SmartArguments[action][lastNum - 1]();
+                    if (res.Item1 is not null)
                     {
-                        Logger.ScriptError($"[Smart argument] " + res.Item2, source, true);
+                        Logger.ScriptError(res.Item1!, source);
                         continue;
                     }
 
-                    argument = res.Item2;
+                    if (res.Item3 != typeof(string))
+                    {
+                        var trace = Error(
+                            "Invalid type returned from a smart argument",
+                            $"The value under the smart argument '{match.Value}' is not a literal value, but value of type '{res.Item3!.Name}'.")
+                            .ToTrace();
+                        Logger.ScriptError(trace, source);
+                    }
+
+                    argument = (string)res.Item2!;
                 }
                 catch (IndexOutOfRangeException)
                 {
@@ -157,6 +164,68 @@
         }
 
         /// <summary>
+        /// Tries to process the argument for a quick argument.
+        /// </summary>
+        /// <param name="input">The provided input.</param>
+        /// <param name="action">The action or variable performing the process.</param>
+        /// <param name="source">The script source.</param>
+        /// <param name="result">The resulting string. Empty if method returns false.</param>
+        /// <returns>The output of the process.</returns>
+        public static bool TryProcessSmartArgument(string input, IAction action, Script source, out object? result, out Type? type)
+        {
+            result = null;
+            type = null;
+
+            // Regex pattern to match '#' followed by a digit
+            Regex regex = new(@"#(\d)");
+            result = input; // Start with input as the base result
+
+            var matches = regex.Matches(input);
+
+            if (matches.Count != 1)
+            {
+                return false;
+            }
+
+            var match = matches[0];
+
+            if (match.Length != input.Length)
+            {
+                return false;
+            }
+
+            // Try to parse the number after '#'
+            if (!int.TryParse(match.Groups[1].Value, out int lastNum) || lastNum < 1)
+            {
+                return false;
+            }
+
+            try
+            {
+                // Fetch smart argument based on index
+                var res = source.SmartArguments[action][lastNum - 1]();
+                if (res.Item1 is not null)
+                {
+                    Logger.ScriptError(res.Item1, source);
+                    return false;
+                }
+
+                result = res.Item2!;
+                type = res.Item3!;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
+            catch (KeyNotFoundException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Processes an individual argument.
         /// </summary>
         /// <param name="expected">The expected argument.</param>
@@ -164,15 +233,8 @@
         /// <param name="action">The action or variable performing the process.</param>
         /// <param name="source">The script source.</param>
         /// <returns>The output of the process.</returns>
-        public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input,
-            IScriptComponent action, Script source)
+        public static ArgumentProcessResult ProcessIndividualParameter(Argument expected, string input, IAction action, Script source)
         {
-            void Log(string message)
-            {
-                if (!source.IsDebug) return;
-                Logger.Debug($"[ArgumentProcessor] [PIP] [{action.Name}] " + message, source);
-            }
-
             ArgumentProcessResult success = new(true);
 
             Log($"Parameter '{expected.ArgumentName}' needs a '{expected.Type.Name}' type.");
@@ -180,33 +242,33 @@
             // Extra magic for options
             if (expected is OptionsArgument options)
             {
-                if (options.Options.All(o =>
-                        !string.Equals(o.Name, input, StringComparison.CurrentCultureIgnoreCase)) &&
-                    options is not SuggestedOptionsArgument)
+                if (options.Options.All(o => !string.Equals(o.Name, input, StringComparison.CurrentCultureIgnoreCase))
+                    && options is not SuggestedOptionsArgument)
                 {
                     return new(
                         false,
                         true,
-                        expected.ArgumentName,
-                        ErrorGen.Get(
-                            ErrorCode.ParameterError_Option,
-                            input,
-                            expected.ArgumentName,
-                            action.Name,
-                            string.Join(
-                                ", ",
-                                options.Options.Select(
-                                    x => x.Name))));
+                        Error(
+                            $"Input '{input}' is not recongnized by option argument '{options.ArgumentName}' of action '{action.Name}'",
+                            $"This argument only supports one of the following: '{string.Join("', '", options.Options.Select(o => o.Name))}'.")
+                            .ToTrace());
                 }
 
                 success.NewParameters.Add(input);
-                Log(
-                    $"[OPTION ARG] Parameter '{expected.ArgumentName}' now has a processed value '{success.NewParameters.Last()}' and raw value '{input}'");
+                Log($"[OPTION ARG] Parameter '{expected.ArgumentName}' now has a value '{input}'");
                 return success;
             }
 
+            if (TryProcessSmartArgument(input, action, source, out var smartArgRes, out var type))
+            {
+                if (expected.Type == type)
+                {
+                    success.NewParameters.Add(smartArgRes!);
+                }
+            }
+
             // smart action arguments
-            if (TryProcessSmartArgument(input, action, source, out var saResult))
+            if (TryProcessSmartArgumentsInContaminatedString(input, action, source, out var saResult))
             {
                 input = saResult;
             }
@@ -215,126 +277,154 @@
             {
                 // Number Types:
                 case "Boolean":
-                    if (!input.IsBool(out var result, source))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidBoolean, input));
+                    if (!input.IsBool(out var result, out var boolErr, source))
+                    {
+                        return ErrorByInfo(boolErr!);
+                    }
 
                     success.NewParameters.Add(result);
                     break;
+
                 case "Int32": // int
-                    if (!Parser.Cast<int>(int.TryParse, input, source, out var intRes))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
+                    if (!Parser.TryCast<int>(int.TryParse, input, source, out var intRes, out var intErr))
+                    {
+                        ErrorByInfo(intErr!);
+                    }
 
                     success.NewParameters.Add(intRes);
                     break;
+
                 case "Int64": // long
-                    if (!Parser.Cast<long>(long.TryParse, input, source, out var longRes))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidInteger, input));
+                    if (!Parser.TryCast<long>(long.TryParse, input, source, out var longRes, out var longErr))
+                    {
+                        ErrorByInfo(longErr!);
+                    }
 
                     success.NewParameters.Add(longRes);
                     break;
+
                 case "Single": // float
-                    if (!Parser.Cast<float>(float.TryParse, input, source, out var floatRes))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
+                    if (!Parser.TryCast<float>(float.TryParse, input, source, out var floatRes, out var floatErr))
+                    {
+                        ErrorByInfo(floatErr!);
+                    }
 
                     success.NewParameters.Add(floatRes);
                     break;
 
                 case "UInt16": // ushort
-                    if (!Parser.Cast<ushort>(ushort.TryParse, input, source, out var ushortRes))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidNumber, input));
+                    if (!Parser.TryCast<ushort>(ushort.TryParse, input, source, out var ushortRes, out var ushortErr))
+                    {
+                        ErrorByInfo(ushortErr!);
+                    }
 
                     success.NewParameters.Add(ushortRes);
                     break;
+
                 case "Char":
-                    if (!Parser.Cast<char>(char.TryParse, input, source, out var charRes))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidCharacter, input));
+                    if (!Parser.TryCast<char>(char.TryParse, input, source, out var charRes, out var charErr))
+                    {
+                        ErrorByInfo(charErr!);
+                    }
 
                     success.NewParameters.Add(charRes);
                     break;
 
                 case "IVariable":
-                    if (!VariableSystem.TryGetVariable<IVariable>(input, source, out var someVar, false)
-                        || someVar is null)
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidVariable, input));
+                    if (!VariableSystem.TryGetVariable<IVariable>(input, source, out var someVar, false, out var someVarTrace))
+                    {
+                        return ErrorByTrace(someVarTrace!);
+                    }
 
-                    success.NewParameters.Add(someVar);
+                    success.NewParameters.Add(someVar!);
                     break;
+
                 case "ILiteralVariable":
-                    if (!VariableSystem.TryGetVariable<ILiteralVariable>(input, source, out var strVar, false)
-                        || strVar is null)
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidStringVariable, input));
+                    if (!VariableSystem.TryGetVariable<ILiteralVariable>(input, source, out var strVar, false,
+                            out var strVarTrace))
+                    {
+                        return ErrorByTrace(strVarTrace!);
+                    }
 
-                    success.NewParameters.Add(strVar);
+                    success.NewParameters.Add(strVar!);
                     break;
+
                 case "IPlayerVariable":
-                    if (!VariableSystem.TryGetVariable<IPlayerVariable>(input, source, out var plrVar, false)
-                        || plrVar is null)
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidPlayerVariable, input));
+                    if (!VariableSystem.TryGetVariable<IPlayerVariable>(input, source, out var plrVar, false,
+                            out var plrVarTrace))
+                    {
+                        return ErrorByTrace(plrVarTrace!);
+                    }
 
-                    success.NewParameters.Add(plrVar);
+                    success.NewParameters.Add(plrVar!);
                     break;
 
-                // Array Types:
                 case "Room[]":
-                    if (!Parser.TryGetRooms(input, out var rooms, source))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.ParameterError_Rooms, input, expected.ArgumentName));
+                    if (!Parser.TryGetRooms(input, out var rooms, source, out var roomError))
+                    {
+                        return ErrorByInfo(roomError!);
+                    }
 
                     success.NewParameters.Add(rooms);
                     break;
+
                 case "Door[]":
-                    if (!Parser.TryGetDoors(input, out var doors, source))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidDoor, input));
+                    if (!Parser.TryGetDoors(input, out var doors, source, out var doorError))
+                    {
+                        return ErrorByInfo(doorError!);
+                    }
 
                     success.NewParameters.Add(doors);
                     break;
+
                 case "Lift[]":
-                    if (!Parser.TryGetLifts(input, out var lifts, source))
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidLift, input));
+                    if (!Parser.TryGetLifts(input, out var lifts, source, out var liftError))
+                    {
+                        return ErrorByInfo(liftError!);
+                    }
 
                     success.NewParameters.Add(lifts);
                     break;
-                case "ItemType[]":
-                {
-                    if (Parser.TryGetEnumArray<ItemType>(input, out var enumArray, source))
-                    {
-                        
-                    }
-                    
-                    break;
-                }
 
                 // Special
                 case "PlayerCollection":
-                    if (!Parser.TryGetPlayers(input, null, out var players, source))
-                        return new(false, true, expected.ArgumentName, players.Message);
+                    if (!Parser.TryGetPlayers(input, null, out var players, source, out var collectionError))
+                    {
+                        return ErrorByTrace(collectionError!);
+                    }
 
                     success.NewParameters.Add(players);
                     break;
 
                 case "Player":
-                    if (!Parser.TryGetPlayers(input, null, out var players1, source))
-                        return new(false, true, expected.ArgumentName, players1.Message);
-
-                    switch (players1.Length)
+                    if (!Parser.TryGetPlayers(input, null, out var players1, source, out var playerError))
                     {
-                        case 0:
-                            return new(false, true, expected.ArgumentName,
-                                $"One player is required, but value '{input}' holds no players.");
-                        case > 1:
-                            return new(false, true, expected.ArgumentName,
-                                $"One player is required, but value '{input}' holds more than one player ({players1.Length} players).");
+                        return ErrorByTrace(playerError!);
                     }
 
-                    success.NewParameters.Add(players1.FirstOrDefault());
+                    var enumerable = players1 as Player[] ?? players1.ToArray();
+                    switch (enumerable.Length)
+                    {
+                        case 0:
+                            return ErrorByInfo(Error(
+                                $"Provided variable '{input}' has no players.",
+                                $"There was one player expected, but no player is present."));
+                        case > 1:
+                            return ErrorByInfo(Error(
+                                $"Provided variable '{input}' has too many players.",
+                                $"There was one player expected, but {enumerable.Length} players are present."));
+                    }
+
+                    success.NewParameters.Add(enumerable.FirstOrDefault());
                     break;
 
                 case "RoleTypeIdOrTeam":
-                    if (Parser.TryGetEnum(input, out RoleTypeId rtResult, source))
+                    if (Parser.TryGetEnum(input, out RoleTypeId rtResult, source, out _))
                         success.NewParameters.Add(rtResult);
-                    else if (Parser.TryGetEnum(input, out Team teamResult, source))
+                    else if (Parser.TryGetEnum(input, out Team teamResult, source, out _))
                         success.NewParameters.Add(teamResult);
                     else
-                        return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidRoleTypeOrTeam, input));
+                        return ErrorByInfo(Error($"Can't cast value '{input}' to RoleTypeIdOrTeam", "Provided value is not a RoleTypeId or Team."));
 
                     break;
 
@@ -342,12 +432,19 @@
                     // Handle all enum types
                     if (expected.Type.BaseType == typeof(Enum))
                     {
-                        object? res = Parser.ParseEnum(input, expected.Type, source);
-                        if (res is null)
-                            return new(false, true, expected.ArgumentName, ErrorGen.Get(ErrorCode.InvalidEnumGeneric, input, expected.Type.Name));
+                        var genericMethod = typeof(ArgumentProcessor).GetMethod("TryGetEnum")
+                            !.MakeGenericMethod(expected.Type);
 
-                        success.NewParameters.Add(res);
-                        break;
+                        object?[] arguments = { input, null, source, null };
+
+                        genericMethod.Invoke(null, arguments);
+
+                        if (arguments[3] is ErrorInfo errorInfo)
+                        {
+                            return ErrorByInfo(errorInfo);
+                        }
+
+                        success.NewParameters.Add((arguments[1] as Enum) !);
                     }
 
                     success.NewParameters.Add(Parser.ReplaceContaminatedValueSyntax(input, source));
@@ -357,6 +454,34 @@
             Log($"Param '{expected.ArgumentName}' processed! STD value: '{success.NewParameters.Last()}' RAW value: '{input}'");
 
             return success;
+
+            ArgumentProcessResult ErrorByTrace(ErrorTrace trace)
+            {
+                trace.Append(Error(
+                    $"Failed to process argument '{expected.ArgumentName}' for action '{action.Name}'",
+                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Type}'."));
+                return new(false, true, trace);
+            }
+
+            ArgumentProcessResult ErrorByInfo(ErrorInfo error)
+            {
+                var trace = error.ToTrace();
+                trace.Append(Error(
+                    $"Failed to process argument '{expected.ArgumentName}' for action '{action.Name}'",
+                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Type}'."));
+                return new(false, true, trace);
+            }
+
+            void Log(string message)
+            {
+                if (!source.IsDebug) return;
+                Logger.Debug($"[ArgumentProcessor] [PIP] [{action.Name}] " + message, source);
+            }
+        }
+
+        private static ErrorInfo Error(string name, string desc)
+        {
+            return new ErrorInfo(name, desc, "ArgumentProcessor");
         }
     }
 }

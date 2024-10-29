@@ -1,7 +1,7 @@
 ﻿namespace ScriptedEvents.API.Enums
 {
 #pragma warning disable SA1602
-    public enum ErrorCode
+    public enum rrorCode
     {
         AutoRun_Disabled = 100,
         AutoRun_NotFound,

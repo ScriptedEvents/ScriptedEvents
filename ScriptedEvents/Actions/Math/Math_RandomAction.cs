@@ -66,7 +66,7 @@ If 'type' is set to 'FLOAT':
                     }
                     catch
                     {
-                        throw new InvalidCastException(ErrorGen.Get(API.Enums.ErrorCode.InvalidNumber, Arguments[1]));
+                        throw new InvalidCastException();
                     }
 
                     try
@@ -75,7 +75,7 @@ If 'type' is set to 'FLOAT':
                     }
                     catch
                     {
-                        throw new InvalidCastException(ErrorGen.Get(API.Enums.ErrorCode.InvalidNumber, Arguments[2]));
+                        throw new InvalidCastException();
                     }
 
                     result = UnityEngine.Random.Range(r1i, r2i);
@@ -91,7 +91,7 @@ If 'type' is set to 'FLOAT':
                     }
                     catch
                     {
-                        throw new InvalidCastException(ErrorGen.Get(API.Enums.ErrorCode.InvalidNumber, Arguments[1]));
+                        throw new InvalidCastException();
                     }
 
                     try
@@ -100,7 +100,7 @@ If 'type' is set to 'FLOAT':
                     }
                     catch
                     {
-                        throw new InvalidCastException(ErrorGen.Get(API.Enums.ErrorCode.InvalidNumber, Arguments[2]));
+                        throw new InvalidCastException();
                     }
 
                     result = UnityEngine.Random.Range(r1f, r2f);

@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Commands.MainCommand
+﻿using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Commands.MainCommand
 {
     using System;
     using System.Linq;
@@ -48,25 +50,12 @@
                 return false;
             }
 
-            IAction action;
-            var actType = MainPlugin.ScriptModule.TryGetActionType(actionName);
-
-            if (actType != null && Activator.CreateInstance(actType) is IAction resAct)
+            if (!MainPlugin.ScriptModule.TryGetActionType(actionName, out var actionType, out var err))
             {
-                action = resAct;
-            }
-            else if (MainPlugin.ScriptModule.CustomActions.TryGetValue(actionName.ToUpper(), out var customAction))
-            {
-                response = "This action cannot be executed using the command.";
-                return false;
-            }
-            else
-            {
-                response = "Invalid argument name provided.";
-                return false;
+                response = $"Action {actionName} is not a valid action type.";
             }
 
-            if (action is not IScriptAction scriptAction)
+            if (actionType is not IScriptAction scriptAction)
             {
                 response = "This action cannot be executed using the command.";
                 return false;
@@ -98,15 +87,10 @@
 
             mockScript.AddFlag("ACTIONCOMMANDEXECUTION");
 
-            try
+            if (!MainPlugin.ScriptModule.TryRunScript(mockScript, out var trace))
             {
-                MainPlugin.ScriptModule.RunScript(mockScript);
-            }
-            catch (Exception ex)
-            {
-                response = $"Error while running action: {ex.Message}";
+                response = $"Failed to run the action.\n{trace!.Format()}";
                 mockScript.Dispose();
-                return false;
             }
 
             response = "Done";

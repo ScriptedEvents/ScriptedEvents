@@ -43,6 +43,8 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            return new(false, new ErrorTrace(new ErrorInfo("action not implemented", "action not implemented", "action not implemented")));
+            /*
             PlayerCollection plys = (PlayerCollection)Arguments[0];
             float hp = (float)Arguments[1];
 
@@ -84,6 +86,7 @@
                 ply.AddAhp(hp, limit, decay, efficacy, sustain, persistent);
 
             return new(true);
+            */
         }
     }
 }

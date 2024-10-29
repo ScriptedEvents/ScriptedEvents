@@ -44,7 +44,7 @@
             Door d = Door.Get(dt);
 
             return d is null
-                ? throw new ArgumentException(ErrorGen.Get(ErrorCode.InvalidEnumGeneric, dt.ToString(), nameof(DoorType)))
+                ? throw new ArgumentException()
                 : new(true, variablesToRet: new[] { (d.IsOpen ? "OPEN" : "CLOSED") });
         }
     }

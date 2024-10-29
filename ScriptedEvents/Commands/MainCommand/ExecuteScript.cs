@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Commands.MainCommand
+﻿using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Commands.MainCommand
 {
     using System;
     using System.IO;
@@ -52,47 +54,41 @@
             string arg0 = arguments.At(0);
             Script? scr = default;
 
-            try
+            if (!MainPlugin.ScriptModule.TryParseScript(arg0, sender, out var script, out var trace))
             {
-                scr = MainPlugin.ScriptModule.ReadScript(arg0, sender);
-
-                if (!sender.CheckPermission(scr.ExecutePermission))
-                {
-                    response = $"Missing permission: {scr.ExecutePermission}";
-                    return false;
-                }
-
-                if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
-                {
-                    scr.AddPlayerVariable("@SENDER", new[] { plr }, true);
-                }
-
-                for (int i = 1; i < 20; i++)
-                {
-                    if (arguments.Count <= i)
-                        break;
-
-                    scr.DebugLog($"Assigned $ARG{i} variable to executed script.");
-                    scr.AddLiteralVariable($"$ARG{i}", arguments.At(i), true);
-                }
-
-                scr.AddLiteralVariable("$ARGS", string.Join(" ", arguments.Skip(1)), true);
-
-                MainPlugin.ScriptModule.RunScript(scr);
-
-                response = $"Script '{scr.ScriptName}' executed successfully.";
+                response = trace!.Format();
             }
-            catch (DisabledScriptException)
+
+            scr = script!;
+
+            if (!sender.CheckPermission(scr.ExecutePermission))
             {
-                response = $"Script '{scr?.ScriptName}' is disabled.";
-                scr?.Dispose();
+                response = $"Missing permission: {scr.ExecutePermission}";
                 return false;
             }
-            catch (FileNotFoundException)
+
+            if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
             {
-                response = $"Script '{arg0}' not found.";
-                return false;
+                scr.AddPlayerVariable("@SENDER", new[] { plr }, true);
             }
+
+            for (int i = 1; i < 20; i++)
+            {
+                if (arguments.Count <= i)
+                    break;
+
+                scr.DebugLog($"Assigned $ARG{i} variable to executed script.");
+                scr.AddLiteralVariable($"$ARG{i}", arguments.At(i), true);
+            }
+
+            scr.AddLiteralVariable("$ARGS", string.Join(" ", arguments.Skip(1)), true);
+
+            if (!MainPlugin.ScriptModule.TryRunScript(scr, out var err))
+            {
+                response = err!.Format();
+            }
+
+            response = $"Script '{scr.ScriptName}' executed successfully.";
 
             return true;
         }

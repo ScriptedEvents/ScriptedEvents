@@ -47,6 +47,8 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            return new(false, new ErrorTrace(new ErrorInfo("action not implemented", "action not implemented", "action not implemented")));
+            /*
             PlayerCollection plys = (PlayerCollection)Arguments[0];
 
             if (Arguments.Length > 1)
@@ -76,6 +78,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
             foreach (Player player in plys) player.Kill(DamageType.Unknown);
 
             return new(true);
+            */
         }
     }
 }

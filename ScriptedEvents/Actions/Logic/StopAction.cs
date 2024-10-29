@@ -54,7 +54,7 @@
 
             if (!Directory.Exists(ScriptModule.BasePath))
             {
-                return new(false, ErrorGen.Get(ErrorCode.IOMissing));
+                return new(false, "lol errr");
             }
 
             MainPlugin.ScriptModule.StopScripts(scriptName);

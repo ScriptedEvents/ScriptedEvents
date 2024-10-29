@@ -49,7 +49,7 @@
             switch (mode)
             {
                 case "SET":
-                    if (Arguments.Length < 3) return new(MessageType.InvalidUsage, this, null, null, (object)ExpectedArguments);
+                    if (Arguments.Length < 3) return new(false);
                     string text = Arguments.JoinMessage(2)
                         .Replace("\\n", "\n")
                         .Replace("<br>", "\n");

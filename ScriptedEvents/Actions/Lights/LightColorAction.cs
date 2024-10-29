@@ -50,12 +50,13 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            return new(false, new ErrorInfo("action not implemented", "action not implemented", "action not implemented").ToTrace());
             Room[] rooms = (Room[])Arguments[1];
 
             switch (Arguments[0].ToUpper())
             {
                 case "SET":
-                    if (Arguments.Length < 5) return new(false, ErrorGen.Generate(ErrorCode.MissingArguments));
+                    if (Arguments.Length < 5) return new(false, "Not enough rooms specified");
 
                     float r = (float)Arguments[2];
                     float g = (float)Arguments[3];

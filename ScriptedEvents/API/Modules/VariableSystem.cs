@@ -5,8 +5,6 @@
     using System.Linq;
 
     using Exiled.API.Features;
-
-    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
@@ -25,60 +23,76 @@
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that were defined in run-time.
         /// </summary>
-        internal static Dictionary<string, CustomLiteralVariable> DefinedVariables { get; } = new();
+        private static Dictionary<string, CustomLiteralVariable> DefinedLiteralVariables { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables that were defined in run-time.
         /// </summary>
-        internal static Dictionary<string, CustomPlayerVariable> DefinedPlayerVariables { get; } = new();
+        private static Dictionary<string, CustomPlayerVariable> DefinedPlayerVariables { get; } = new();
 
-        public static bool IsValidVariableSyntax<T>(string name, out string processedName)
+        public static bool IsValidVariableSyntax<T>(string name, out string processedName, out ErrorInfo? errorInfo)
             where T : IVariable
         {
             processedName = name.ToUpper();
 
             if (processedName.Length < 2 || processedName.Contains(' '))
             {
+                errorInfo = Error(
+                    "Invalid variable syntax",
+                    $"Provided variable name '{processedName}' is too short or contains whitespace, and is therefore not valid.");
                 return false;
             }
 
             if (typeof(T) == typeof(IPlayerVariable) && processedName[0] != '@')
             {
+                errorInfo = Error(
+                    "Invalid player variable syntax",
+                    $"Provided variable name '{processedName}' doesn't have the starting '@' token, therefore is's not a valid player variable.");
                 return false;
             }
 
             if (typeof(T) == typeof(ILiteralVariable) && processedName[0] != '$')
             {
+                errorInfo = Error(
+                    "Invalid literal variable syntax",
+                    $"Provided variable name '{processedName}' doesn't have the starting '$' token, therefore is's not a valid literal variable.");
                 return false;
             }
 
+            errorInfo = null;
             processedName = processedName.Substring(1);
             return true;
         }
 
-        public static bool TryDefineLiteralVariable(string name, string value, bool isVariableNameVerified)
+        public static bool TryDefineLiteralVariable(string name, string value, bool isVariableNameVerified, out ErrorTrace? errorTrace)
         {
-            if (!isVariableNameVerified && !IsValidVariableSyntax<ILiteralVariable>(name, out name))
+            if (!isVariableNameVerified && !IsValidVariableSyntax<ILiteralVariable>(name, out name, out var err))
             {
+                errorTrace = new(err!);
+                errorTrace.Append(Error("Literal variable defining error", $"Literal variable '{name}' cant be defined since its syntax is invalid."));
                 return false;
             }
 
-            DefinedVariables[name] = new(name, string.Empty, value);
+            errorTrace = null;
+            DefinedLiteralVariables[name] = new(name, string.Empty, value);
             return true;
         }
 
-        public static bool TryDefinePlayerVariable(string name, IEnumerable<Player> value, bool isVariableNameVerified)
+        public static bool TryDefinePlayerVariable(string name, IEnumerable<Player> value, bool isVariableNameVerified, out ErrorTrace? errorTrace)
         {
-            if (!isVariableNameVerified && !IsValidVariableSyntax<IPlayerVariable>(name, out name))
+            if (!isVariableNameVerified && !IsValidVariableSyntax<IPlayerVariable>(name, out name, out var err))
             {
+                errorTrace = new(err!);
+                errorTrace.Append(Error("Player variable defining error", $"Player variable '{name}' cant be defined since its syntax is invalid."));
                 return false;
             }
 
+            errorTrace = null;
             DefinedPlayerVariables[name] = new(name, string.Empty, value);
             return true;
         }
 
-        public static bool TryDefineVariable<T>(T variable)
+        public static bool TryDefineVariable<T>(T variable, out ErrorInfo? errorInfo)
             where T : class, IVariable
         {
             switch (variable)
@@ -86,102 +100,122 @@
                 case CustomPlayerVariable playerVariable:
                 {
                     DefinedPlayerVariables[playerVariable.Name] = playerVariable;
+                    errorInfo = null;
                     return true;
                 }
 
                 case CustomLiteralVariable literalVariable:
                 {
-                    DefinedVariables[literalVariable.Name] = literalVariable;
+                    DefinedLiteralVariables[literalVariable.Name] = literalVariable;
+                    errorInfo = null;
                     return true;
                 }
 
                 default:
+                    errorInfo = Error(
+                        "Variable defining error",
+                        "If you see this error, report it to the dev team. This is not supposed to happen.");
                     return false;
             }
         }
 
-        public static VariableResult GetVariable<T>(string name, Script script, bool isVariableNameVerified)
+        public static IVariable? GetVariable<T>(string name, Script script, bool isVariableNameVerified, out ErrorTrace? trace)
             where T : IVariable
         {
-            if (!isVariableNameVerified && !IsValidVariableSyntax<T>(name, out name))
+            trace = null;
+            if (!isVariableNameVerified && !IsValidVariableSyntax<T>(name, out name, out var err))
             {
-                return new(false, null, $"Variable name '{name}' is invalid for specified {typeof(T).Name}.");
+                trace = new(err!);
+                trace.Append(Error("Variable fetch error", $"Variable '{name}' cannot be fetched since its syntax is invalid."));
+                return null;
             }
 
             foreach (var variable in from @group in Groups from variable in @group.Variables where variable.Name.ToUpper() == name where variable is T select variable)
             {
-                return new(true, variable);
+                return variable;
             }
 
-            var isIVariable = typeof(T) == typeof(IVariable);
+            var isAnyVariable = typeof(T) == typeof(IVariable);
+            var isLiteralVariable = typeof(T) == typeof(ILiteralVariable);
+            var isPlayerVariable = typeof(T) == typeof(IPlayerVariable);
 
-            if (typeof(T) == typeof(ILiteralVariable) || isIVariable)
+            if (isLiteralVariable || isAnyVariable)
             {
-                if (DefinedVariables.TryGetValue(name, out CustomLiteralVariable customValue))
+                if (DefinedLiteralVariables.TryGetValue(name, out CustomLiteralVariable literal))
                 {
-                    return new(true, customValue);
+                    return literal;
                 }
 
-                if (script.UniqueLiteralVariables.TryGetValue(name, out CustomLiteralVariable uniqueValue))
+                if (script.UniqueLiteralVariables.TryGetValue(name, out CustomLiteralVariable literal2))
                 {
-                    return new(true, uniqueValue);
+                    return literal2;
                 }
 
-                if (!isIVariable)
-                    return new(false, null, $"The variable name '{name}' does not match any SE predefined, global or local literal variable.");
+                if (isLiteralVariable)
+                {
+                    trace = Error(
+                        "Variable doesn't exist",
+                        $"There exists no literal variable under the name of '{name}'.").ToTrace();
+                    return null;
+                }
             }
 
-            if (typeof(T) == typeof(IPlayerVariable) || isIVariable)
+            if (isPlayerVariable || isAnyVariable)
             {
-                if (DefinedPlayerVariables.TryGetValue(name, out CustomPlayerVariable customValue))
+                if (DefinedPlayerVariables.TryGetValue(name, out CustomPlayerVariable player))
                 {
-                    return new(true, customValue);
+                    return player;
                 }
 
-                if (script.UniquePlayerVariables.TryGetValue(name, out CustomPlayerVariable uniqueValue))
+                if (script.UniquePlayerVariables.TryGetValue(name, out CustomPlayerVariable player2))
                 {
-                    return new(true, uniqueValue);
+                    return player2;
                 }
 
-                if (!isIVariable)
-                    return new(false, null, $"The variable name '{name}' does not match any SE predefined, global or local player variable.");
+                if (isPlayerVariable)
+                {
+                    trace = Error(
+                        "Variable doesn't exist",
+                        $"There exists no player variable under the name of '{name}' in the existing scope.").ToTrace();
+                    return null;
+                }
             }
 
-            if (isIVariable)
-                return new(false, null, $"The variable name '{name}' does not match any SE predefined, global or local variable.");
-
-            throw new Exception("Report to developer!");
+            trace = Error(
+                "Variable doesn't exist",
+                $"There exists no variable (either player or literal) under the name of '{name}'.").ToTrace();
+            return null;
         }
 
-        public static bool TryGetVariable<T>(string name, Script source, out T? result, bool isVariableNameVerified)
+        public static bool TryGetVariable<T>(string name, Script source, out T? result, bool isVariableNameVerified, out ErrorTrace? trace)
             where T : IVariable
         {
             result = default;
-            var variableResult = GetVariable<T>(name, source, isVariableNameVerified);
+            var variableResult = GetVariable<T>(name, source, isVariableNameVerified, out trace);
 
-            if (variableResult.Variable is null || !variableResult.ProcessorSuccess)
+            if (variableResult is null)
                 return false;
 
-            result = (T)variableResult.Variable;
+            result = (T)variableResult;
             return true;
         }
 
-        public static bool TryGetPlayersFromVariable(string name, Script source, out IEnumerable<Player> result, bool isVariableNameVerified)
+        public static bool TryGetPlayersFromVariable(string name, Script source, out IEnumerable<Player> result, bool isVariableNameVerified, out ErrorTrace? trace)
         {
             result = Array.Empty<Player>();
 
-            if (!TryGetVariable<IPlayerVariable>(name, source, out var variable, isVariableNameVerified) || variable is null)
+            if (!TryGetVariable<IPlayerVariable>(name, source, out var variable, isVariableNameVerified, out trace))
                 return false;
 
-            result = variable.GetPlayers();
+            result = variable!.GetPlayers();
             return true;
         }
 
-        public static bool TryGetStringFromVariable(string name, Script source, out string result, bool isVariableNameVerified)
+        public static bool TryGetStringFromVariable(string name, Script source, out string result, bool isVariableNameVerified, out ErrorTrace? trace)
         {
             result = string.Empty;
 
-            if (!TryGetVariable<ILiteralVariable>(name, source, out var variable, isVariableNameVerified) || variable is null)
+            if (!TryGetVariable<ILiteralVariable>(name, source, out var variable, isVariableNameVerified, out trace) || variable is null)
                 return false;
 
             result = variable.Value;
@@ -193,7 +227,7 @@
         /// </summary>
         public static void ClearVariables()
         {
-            DefinedVariables.Clear();
+            DefinedLiteralVariables.Clear();
             DefinedPlayerVariables.Clear();
         }
 
@@ -210,6 +244,11 @@
                     Groups.Add(temp);
                 }
             }
+        }
+
+        private static ErrorInfo Error(string name, string description)
+        {
+            return new(name, description, "VariableSystem");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.Actions.VariableMimicingActions.ScriptInfo
+﻿namespace ScriptedEvents.Actions.ScriptInfo
 {
     using System;
 
@@ -38,7 +38,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(true, variablesToRet: new object[] { VariableSystem.TryGetVariable<IVariable>((string)Arguments[0], script, out _, false).ToUpper() });
+            return new(true, variablesToRet: new object[] { VariableSystem.TryGetVariable<IVariable>(RawArguments[0], script, out _, false, out _).ToUpper() });
         }
     }
 }

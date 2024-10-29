@@ -1,7 +1,4 @@
-﻿using ScriptedEvents.API.Modules;
-using ScriptedEvents.Variables.Interfaces;
-
-namespace ScriptedEvents
+﻿namespace ScriptedEvents
 {
     using System;
     using System.Collections.Generic;
@@ -9,14 +6,15 @@ namespace ScriptedEvents
 
     using CommandSystem;
     using Discord;
-
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
+    using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables;
+    using ScriptedEvents.Variables.Interfaces;
 
     /// <summary>
     /// Represents a script.
@@ -200,7 +198,7 @@ namespace ScriptedEvents
         /// <summary>
         /// Gets the smart arguments for specified action.
         /// </summary>
-        public Dictionary<IAction, Func<Tuple<bool, string>>[]> SmartArguments { get; } = new();
+        public Dictionary<IAction, Func<Tuple<ErrorTrace?, object?, Type?>>[]> SmartArguments { get; } = new();
 
         /// <summary>
         /// Gets the names under which to create variables as result of an successful action.
@@ -288,12 +286,6 @@ namespace ScriptedEvents
         }
 
         /// <summary>
-        /// Execute the script.
-        /// </summary>
-        /// <param name="dispose">Whether or not to dispose at conclusion of execution.</param>
-        public void Execute(bool dispose = true) => MainPlugin.ScriptModule.RunScript(this, dispose);
-
-        /// <summary>
         /// Adds a variable.
         /// </summary>
         /// <param name="name">Name of the variable.</param>
@@ -301,9 +293,9 @@ namespace ScriptedEvents
         /// <param name="isVariableNameVerified">Whether variable name has already been verified to be valid.</param>
         public void AddLiteralVariable(string name, string value, bool isVariableNameVerified)
         {
-            if (!VariableSystem.IsValidVariableSyntax<ILiteralVariable>(name, out var processedName) && !isVariableNameVerified)
+            if (!VariableSystem.IsValidVariableSyntax<ILiteralVariable>(name, out var processedName, out var info) && !isVariableNameVerified)
             {
-                throw new ArgumentException($"Variable '{name}' is not a valid variable name.");
+                throw new ArgumentException(info!.ToTrace().Format());
             }
 
             UniqueLiteralVariables[processedName] = new(processedName, string.Empty, value);
@@ -317,9 +309,9 @@ namespace ScriptedEvents
         /// <param name="isVariableNameVerified">Whether variable name has already been verified to be valid.</param>
         public void AddPlayerVariable(string name, IEnumerable<Player> value, bool isVariableNameVerified)
         {
-            if (!VariableSystem.IsValidVariableSyntax<IPlayerVariable>(name, out var processedName) && !isVariableNameVerified)
+            if (!VariableSystem.IsValidVariableSyntax<IPlayerVariable>(name, out var processedName, out var info) && !isVariableNameVerified)
             {
-                throw new ArgumentException($"Variable '{name}' is not a valid variable name.");
+                throw new ArgumentException(info!.ToTrace().Format());
             }
 
             UniquePlayerVariables[processedName] = new(processedName, string.Empty, value);

@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Commands.MainCommand
+﻿using ScriptedEvents.API.Features;
+
+namespace ScriptedEvents.Commands.MainCommand
 {
     using System;
 
@@ -33,7 +35,14 @@
             string ranScripts = string.Empty;
             foreach (string scrName in MainPlugin.ScriptModule.AutoRunScripts)
             {
-                MainPlugin.ScriptModule.ReadAndRun(scrName, sender);
+                MainPlugin.ScriptModule.TryReadAndRun(scrName, sender, out var trace);
+
+                if (trace != null)
+                {
+                    Logger.Error(trace);
+                    continue;
+                }
+
                 ranScripts += scrName + ", ";
             }
 

@@ -46,7 +46,7 @@
                 max = (int)Arguments[1];
 
                 if (max < 0)
-                    return new(MessageType.LessThanZeroNumber, this, "max", null, max);
+                    return new(false);
             }
 
             MainPlugin.Handlers.SpawnRules.Remove(roleType);

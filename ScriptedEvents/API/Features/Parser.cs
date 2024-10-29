@@ -25,9 +25,17 @@
     {
         public delegate bool TryParseDelegate<T>(string input, out T result);
 
-        public static bool Cast<T>(TryParseDelegate<T> tryParseFunc, string input, Script source, out T result)
+        public static bool TryCast<T>(TryParseDelegate<T> tryParseFunc, string input, Script source, out T result, out ErrorInfo? errorInfo)
         {
-            return tryParseFunc(ReplaceContaminatedValueSyntax(input, source), out result);
+            var success = tryParseFunc(ReplaceContaminatedValueSyntax(input, source), out result);
+
+            errorInfo = success
+                ? null
+                : Error(
+                    $"Invalid cast attempt for type {typeof(T).Name}'",
+                    $"Value '{input}' is not convertable to a value of type '{typeof(T).Name}'");
+
+            return success;
         }
 
         /// <summary>
@@ -38,13 +46,20 @@
         /// <param name="source">The source script.</param>
         /// <typeparam name="T">The Enum type to cast to.</typeparam>
         /// <returns>Whether or not the parse was successful.</returns>
-        public static bool TryGetEnum<T>(string input, out T result, Script source)
+        public static bool TryGetEnum<T>(string input, out T result, Script source, out ErrorInfo? errorInfo)
             where T : struct, Enum
         {
             input = input.Trim();
             input = ReplaceContaminatedValueSyntax(input, source);
+            var success = Enum.TryParse(input, true, out result);
 
-            return Enum.TryParse(input, true, out result);
+            errorInfo = success
+                ? null
+                : Error(
+                    $"Invalid input for enum '{typeof(T).Name}'",
+                    $"Provided input '{input}' could not be converted to the enum '{typeof(T).Name}'");
+
+            return success;
         }
 
         public static bool TryGetEnumArray<T>(string input, out T[] result, Script source)
@@ -76,22 +91,22 @@
         /// <param name="doors">The doors.</param>
         /// <param name="source">The script source.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetDoors(string input, out Door[] doors, Script source)
+        public static bool TryGetDoors(string input, out Door[] doors, Script source, out ErrorInfo? errorInfo)
         {
             IEnumerable<Door> doorList;
             if (input is "*" or "ALL")
             {
                 doorList = Door.List;
             }
-            else if (TryGetEnum(input, out ZoneType zt, source))
+            else if (TryGetEnum(input, out ZoneType zt, source, out _))
             {
                 doorList = Door.List.Where(d => d.Zone.HasFlag(zt));
             }
-            else if (TryGetEnum(input, out DoorType dt, source))
+            else if (TryGetEnum(input, out DoorType dt, source, out _))
             {
                 doorList = Door.List.Where(d => d.Type == dt);
             }
-            else if (TryGetEnum(input, out RoomType rt, source))
+            else if (TryGetEnum(input, out RoomType rt, source, out _))
             {
                 doorList = Door.List.Where(d => d.Room?.Type == rt);
             }
@@ -101,7 +116,13 @@
             }
 
             doors = doorList.ToArray().Where(d => d.IsElevator is false && AirlockController.Get(d) is null).ToArray();
-            return doors.Length > 0;
+
+            var found = doors.Length > 0;
+            errorInfo = found
+                ? null
+                : Error("Invalid door list input", $"Specified input '{input}' is not a valid representation of a list of doors.");
+
+            return found;
         }
 
         /// <summary>
@@ -111,24 +132,30 @@
         /// <param name="lifts">The lift objects.</param>
         /// <param name="source">The script source.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public static ErrorInfo TryGetLifts(string input, out Lift[] lifts, Script source)
+        public static bool TryGetLifts(string input, out Lift[] lifts, Script source, out ErrorInfo? errorInfo)
         {
             IEnumerable<Lift> liftList;
             if (input is "*" or "ALL")
             {
                 liftList = Lift.List;
             }
-            else if (TryGetEnum(input, out ElevatorType et, source))
+            else if (TryGetEnum(input, out ElevatorType et, source, out _))
             {
                 liftList = Lift.List.Where(l => l.Type == et);
             }
             else
             {
-                liftList = Lift.List.Where(l => l.Name.ToLower() == input.ToLower());
+                liftList = Lift.List.Where(l => string.Equals(l.Name, input, StringComparison.CurrentCultureIgnoreCase));
             }
 
             lifts = liftList.ToArray();
-            return new();
+
+            var found = lifts.Length > 0;
+            errorInfo = found
+                ? null
+                : Error("Invalid lift list input", $"Specified input '{input}' is not a valid representation of a list of lifts.");
+
+            return found;
         }
 
         /// <summary>
@@ -138,18 +165,18 @@
         /// <param name="rooms">The rooms.</param>
         /// <param name="source">The script source.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public static bool TryGetRooms(string input, out Room[] rooms, Script source)
+        public static bool TryGetRooms(string input, out Room[] rooms, Script source, out ErrorInfo? errorInfo)
         {
             IEnumerable<Room> roomList;
             if (input is "*" or "ALL")
             {
                 roomList = Room.List;
             }
-            else if (TryGetEnum(input, out ZoneType zt, source))
+            else if (TryGetEnum(input, out ZoneType zt, source, out _))
             {
                 roomList = Room.List.Where(room => room.Zone.HasFlag(zt));
             }
-            else if (TryGetEnum(input, out RoomType rt, source))
+            else if (TryGetEnum(input, out RoomType rt, source, out _))
             {
                 roomList = Room.List.Where(d => d.Type == rt);
             }
@@ -159,7 +186,13 @@
             }
 
             rooms = roomList.ToArray();
-            return rooms.Length > 0;
+
+            var found = rooms.Length > 0;
+            errorInfo = found
+                ? null
+                : Error("Invalid room list input", $"Specified input '{input}' is not a valid representation of a list of rooms.");
+
+            return found;
         }
 
         /// <summary>
@@ -171,29 +204,25 @@
         /// <param name="source">The script using the API. Used for per-script variables.</param>
         /// <param name="brecketsRequired">Are brackets required.</param>
         /// <returns>Whether or not the process errored.</returns>
-        public static bool TryGetPlayers(string input, int? amount, out PlayerCollection collection, Script source)
+        public static bool TryGetPlayers(string input, int? amount, out IEnumerable<Player> players, Script source, out ErrorTrace? trace)
         {
-            void Log(string msg)
-            {
-                Logger.Debug($"[SEParser] [TryGetPlayers] {msg}", source);
-            }
-
             input = input.RemoveWhitespace();
-            List<Player> list = new();
+            List<Player> list;
 
             if (input.ToUpper() is "*" or "ALL")
             {
                 Log($"Input {input.ToUpper()} specifies all players on the server.");
                 list = Player.List.ToList();
             }
-            else if (VariableSystem.TryGetPlayersFromVariable(input, source, out var result, false))
+            else if (VariableSystem.TryGetPlayersFromVariable(input, source, out var result, false, out trace))
             {
                 list = result.ToList();
                 Log($"Input {input} is a valid variable. Fetch got {list.Count} players.");
             }
             else
             {
-                collection = new PlayerCollection(Array.Empty<Player>(), false, $"Input value '{input}' is not a valid player variable nor does it specify all players,");
+                trace!.Append(Error("Invalid player reference", $"Input '{input}' is not a valid reference to a list of players (like '*') and is not a variable."));
+                players = Array.Empty<Player>();
                 return false;
             }
 
@@ -211,8 +240,14 @@
 
             // Return
             Log($"Complete! Returning {list.Count} players.");
-            collection = new(list);
+            players = list;
+            trace = default;
             return true;
+
+            void Log(string msg)
+            {
+                Logger.Debug($"[SEParser] [TryGetPlayers] {msg}", source);
+            }
         }
 
         /// <summary>
@@ -252,7 +287,7 @@
             return (variables, dynamicActions, accessors);
         }
 
-        public static bool TryGetAccessor(string input, Script source, out string result)
+        public static bool TryGetAccessor(string initialInput, Script source, out string result, out ErrorTrace? error)
         {
             void Log(string msg)
             {
@@ -263,21 +298,9 @@
             // "<PLR>"
             result = string.Empty;
 
-            if (!input.StartsWith("<") || !input.EndsWith(">"))
-            {
-                Log("Fail. Accessor definers not present.");
-                return false;
-            }
-
             // "PLR:ROLE"
             // "PLR"
-            input = input.Substring(1, input.Length - 2);
-
-            if (input.Contains(' ') || input.Contains('<') || input.Contains('>'))
-            {
-                Log("Fail. After processing, accessor contains whitespace or definers.");
-                return false;
-            }
+            string input = initialInput.Substring(1, initialInput.Length - 2);
 
             // ["PLR", "ROLE"]
             // ["PLR"]
@@ -286,7 +309,10 @@
             switch (parts.Length)
             {
                 case > 2:
-                    Log("Fail. After splitting, more than 2 parts defined.");
+                    error = Error(
+                        $"Failed parsing the '{initialInput}' accessor",
+                        $"Accessor structure looks like '<PlayerVariable:Property>', where parts of it are 'PlayerVariable' and 'Property', but provided input '{initialInput}' defines an accessor with more than 2 parts ('{string.Join("', '", parts)}').")
+                        .ToTrace();
                     return false;
                 case 1:
                     // ["PLR"] -> ["PLR", "NAME"]
@@ -294,9 +320,10 @@
                     break;
             }
 
-            if (!VariableSystem.TryGetPlayersFromVariable(parts[0], source, out var plrRes, true))
+            if (!VariableSystem.TryGetPlayersFromVariable(parts[0], source, out var plrRes, true, out var trace))
             {
-                Log("Fail. Player variable invalid.");
+                trace!.Append(Error($"Failed parsing the '{initialInput}' accessor", $"Can't retreive a player from variable {parts[0]}."));
+                error = trace;
                 return false;
             }
 
@@ -304,14 +331,17 @@
 
             if (players.Length != 1)
             {
-                Log("Fail. Player amount not equal 1.");
+                error = Error(
+                    $"Failed parsing the '{initialInput}' accessor",
+                    $"Provided player variable '{parts[0]}' contains {players.Length} players, but accessors require a variable with exactly 1 player.")
+                    .ToTrace();
                 return false;
             }
 
-            var ply = players[0];
+            var ply = players.First();
 
             if (ply is null)
-                throw new NullReferenceException("Player not found.");
+                throw new ArgumentException("Invalid player variable", nameof(initialInput));
 
             try
             {
@@ -495,6 +525,7 @@
             }
 
             Log("Success! Returning " + result);
+            error = default;
             return true;
         }
 
@@ -541,8 +572,9 @@
             {
                 var accssr = values.accessors[i];
 
-                if (!TryGetAccessor(accssr.Value, script, out var res))
+                if (!TryGetAccessor(accssr.Value, script, out var res, out var errorTrace))
                 {
+                    Logger.ScriptError(errorTrace!, script);
                     continue;
                 }
 
@@ -586,8 +618,9 @@
             {
                 var varbl = filteredVariables[i];
 
-                if (!VariableSystem.TryGetVariable<ILiteralVariable>(varbl.Value, script, out var res, false) || res is null)
+                if (!VariableSystem.TryGetVariable<ILiteralVariable>(varbl.Value, script, out var res, false, out var errorTrace) || res is null)
                 {
+                    Logger.ScriptError(errorTrace!, script);
                     continue;
                 }
 
@@ -606,10 +639,8 @@
             return output.ToString();
         }
 
-        private static bool TryGetDynamicActionResult<T>(string rawInput, Script script, out T output, out string errorMessage)
+        private static bool TryGetDynamicActionResult<T>(string rawInput, Script script, out T output, out ErrorTrace? errorTrace)
         {
-            errorMessage = string.Empty;
-
             // "{LIMIT:@PLAYERS:2}"
             var input = rawInput.Trim();
             if (typeof(T) == typeof(string))
@@ -627,7 +658,10 @@
 
             if (!input.StartsWith("{") || !input.EndsWith("}"))
             {
-                errorMessage = $"Invalid input '{input}'";
+                errorTrace = Error(
+                    "Dynamic action parsing error",
+                    $"Provided dynamic action '{rawInput}' is not surrounded by '{{}}' brackets.")
+                    .ToTrace();
                 return false;
             }
 
@@ -643,40 +677,53 @@
             // ["@PLAYERS", "2"]
             var arguments = parts.Skip(1).ToArray();
 
-            var act = MainPlugin.ScriptModule.TryGetActionType(actionName);
-            if (act is null)
+            if (!MainPlugin.ScriptModule.TryGetActionType(actionName, out var actionToExtract, out var error))
             {
-                errorMessage = "Unknown action type: " + actionName;
+                errorTrace = Error(
+                        "Dynamic action parsing error",
+                        $"Provided action '{actionName}' is not a valid action.")
+                    .ToTrace();
                 return false;
             }
 
-            var actionToExtract = Activator.CreateInstance(act) as IAction;
             switch (actionToExtract)
             {
                 case null:
-                    errorMessage = "Unknown action type: " + actionName;
-                    return false;
+                    throw new ArgumentNullException(nameof(actionToExtract));
 
                 case ITimingAction:
-                    errorMessage = "Timing action cannot be used as a dynamic action: " + actionName;
+                    errorTrace = Error(
+                        "Dynamic action logic error",
+                        $"Provided action '{actionName}' is a timing action, which is not supported.")
+                        .ToTrace();
                     return false;
             }
 
             if (actionToExtract is not IReturnValueAction)
             {
-                errorMessage = $"{actionToExtract.Name} action does not return any values, therefore can't be used with smart accessors.";
+                errorTrace = Error(
+                    $"Dynamic action '{actionToExtract.Name}' does not return any values",
+                    $"Provided action is not designated as an action returning values, which is required for dynamic actions.")
+                    .ToTrace();
                 return false;
             }
 
             if (!ScriptModule.TryRunAction(script, actionToExtract, out var resp, out _, arguments))
             {
-                errorMessage = $"[Dynamic action: {actionToExtract.Name}] " + resp?.Message;
+                resp!.ErrorTrace!.Append(Error(
+                    $"Dynamic action '{actionToExtract.Name}' failed while running",
+                    "Provided action failed while running, see inner exception for details."));
+
+                errorTrace = resp.ErrorTrace;
                 return false;
             }
 
             if (resp == null || resp.ResponseVariables.Length == 0)
             {
-                errorMessage = $"[Dynamic action: {rawInput}] Action didnt return any value.";
+                errorTrace = Error(
+                        $"Dynamic action '{actionToExtract.Name}' did not return any values",
+                        "Provied action did not return any values, which is required for dynamic actions.")
+                    .ToTrace();
                 return false;
             }
 
@@ -689,12 +736,21 @@
 
             if (response is not T value)
             {
-                errorMessage = $"[Dynamic action: {rawInput}] Action returned a value of an incorrect type.";
+                errorTrace = Error(
+                        $"Dynamic action '{actionToExtract}' returned an invalid value",
+                        $"Action returned a value of type {response.GetType().Name}, which does not match the expected type {typeof(T).Name}.")
+                    .ToTrace();
                 return false;
             }
 
             output = value;
+            errorTrace = null;
             return true;
+        }
+
+        private static ErrorInfo Error(string name, string description)
+        {
+            return new(name, description, "Parser");
         }
     }
 }

@@ -56,7 +56,9 @@
                 if (mode == "ISVALID")
                     return new(true, variablesToRet: new[] { "FALSE" });
 
-                return new(false, $"Provided item ID '{id}' is not valid. Use the 'ISVALID' mode to verify the ID before accessing item info.");
+                return new(
+                    false,
+                    new ErrorTrace(new ErrorInfo("Item reference error", $"Provided item ID '{id}' is not valid. Use the 'ISVALID' mode to verify the ID before accessing item info.", "ITEMINFO action")));
             }
 
             if (mode is "OWNER")

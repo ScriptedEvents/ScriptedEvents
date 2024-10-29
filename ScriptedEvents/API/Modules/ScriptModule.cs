@@ -25,8 +25,8 @@ namespace ScriptedEvents.API.Modules
 
     using ScriptedEvents.Structures;
 
-    using Logger = Features.Logger;
-    using LogType = Enums.LogType;
+    using Logger = ScriptedEvents.API.Features.Logger;
+    using LogType = ScriptedEvents.API.Enums.LogType;
 
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.
@@ -106,7 +106,6 @@ namespace ScriptedEvents.API.Modules
 
             if (originalActionArgs is null)
             {
-                // Process Arguments
                 if (scr.OriginalActionArgs.TryGetValue(action, out var actionArgs) && actionArgs is not null)
                 {
                     originalActionArgs = actionArgs;
@@ -118,17 +117,19 @@ namespace ScriptedEvents.API.Modules
                 }
             }
 
-            ArgumentProcessResult res = ArgumentProcessor.Process(action.ExpectedArguments, originalActionArgs, action, scr);
+            ArgumentProcessResult res = ArgumentProcessor.ProcessActionArguments(action.ExpectedArguments, originalActionArgs, action, scr);
             if (res.Errored)
             {
-                var message = (res.FailedArgument != string.Empty ? $"[Argument: {res.FailedArgument}] " : string.Empty) + res.Message;
-                actResp = new(false, message);
+                res.ErrorTrace!.Append(Error(
+                    $"Execution of action '{action.Name}' failed.",
+                    "Action argument processing failed, see inner exception for details."));
+                actResp = new(false, res.ErrorTrace);
                 return false;
             }
 
-            if (!res.Success)
+            if (!res.ShouldExecute)
             {
-                Log("Action will not be ran. " + (res.Message ?? string.Empty));
+                Log("The action will not run, because the 'ShouldExecute' property from 'ArgumentProcessResult' is set to false.");
                 return true;
             }
 
@@ -146,19 +147,17 @@ namespace ScriptedEvents.API.Modules
                     actResp = scriptAction.Execute(scr);
                     break;
                 default:
-                    Log($"Action is not runnable.");
-                    return true;
+                    throw new VariableException("Unknown action type");
+            }
+
+            if (!actResp.Success)
+            {
+                return false;
             }
 
             if (delay.HasValue)
             {
                 Log($"Action '{action.Name}' is delaying the script. Length of delay: {delay.Value}");
-            }
-
-            if (!actResp.Success)
-            {
-                actResp = new(false, actResp.Message);
-                return false;
             }
 
             Log($"{action.Name} has successfully executed.");
@@ -183,7 +182,7 @@ namespace ScriptedEvents.API.Modules
             }
             catch (Exception e)
             {
-                Logger.Error(ErrorGenV2.IOError() + $": {e}");
+                Logger.Error(Error("File generation error", $"There was an error generating the README and demo scripts: {e.Message}").ToTrace());
             }
         }
 
@@ -221,38 +220,22 @@ namespace ScriptedEvents.API.Modules
 
                 Logger.Debug($"Script '{scr.ScriptName}' set to run automatically.");
 
-                try
+                if (!TryRunScript(scr, out var trace))
                 {
-                    if (scr.AdminEvent)
-                    {
-                        Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, scr.ScriptName));
-                        continue;
-                    }
+                    trace!.Append(Error(
+                        "Autorun execution failed",
+                        "Provided script was not able to run, see trace below for details."));
+                    Logger.Error(trace!);
+                }
 
-                    RunScript(scr);
-                    autoRunScripts.Add(scr);
-                    AutoRunScripts.Add(scr.ScriptName);
-                }
-                catch (DisabledScriptException)
-                {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, scr.ScriptName));
-                }
-                catch (FileNotFoundException)
-                {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, scr.ScriptName));
-                }
-            }
-
-            if (ShouldGenerateFiles)
-            {
-                Logger.Info($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(MainPlugin.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
+                autoRunScripts.Add(scr);
+                AutoRunScripts.Add(scr.ScriptName);
             }
         }
 
         /// <summary>
         /// Retrieves a list of all scripts in the server.
         /// </summary>
-        /// <param name="sender">Optional sender.</param>
         /// <returns>A list of all scripts.</returns>
         /// <remarks>WARNING: Scripts created through this method are NOT DISPOSED!!! Call <see cref="Script.Dispose"/> when done with them.</remarks>
         public List<Script> ListScripts(ICommandSender? sender = null)
@@ -260,17 +243,16 @@ namespace ScriptedEvents.API.Modules
             List<Script> scripts = new();
             string[] files = Directory.GetFiles(BasePath, "*.txt", SearchOption.AllDirectories);
 
-            foreach (string file in files)
+            foreach (string x in files)
             {
-                try
+                var file = Path.GetFileName(x);
+                if (!TryParseScript(file, sender, out var script, out var trace))
                 {
-                    Script scr = ReadScript(Path.GetFileNameWithoutExtension(file), sender, true);
-                    scripts.Add(scr);
+                    Logger.Error(trace!);
+                    continue;
                 }
-                catch (Exception e)
-                {
-                    Logger.Error(e.ToString());
-                }
+
+                scripts.Add(script!);
             }
 
             return scripts;
@@ -281,15 +263,39 @@ namespace ScriptedEvents.API.Modules
         /// </summary>
         /// <param name="name">The name of the action.</param>
         /// <returns>Whether or not the try-get was successful.</returns>
-        public Type? TryGetActionType(string name)
+        public bool TryGetActionType(string name, out IAction? action, out ErrorInfo? errorInfo)
         {
+            // TODO: implement for external actions
+            action = null;
+            errorInfo = null;
+
             name = name.ToUpper();
-            return ActionTypes
+            var type = ActionTypes
                 .Where(actionData =>
                     actionData.Key.Name == name ||
                     actionData.Key.Aliases.Contains(name))
                 .Select(actionData => actionData.Value)
                 .FirstOrDefault();
+
+            if (type is null)
+            {
+                errorInfo = Error(
+                    $"Provided action '{name}' does not exist.",
+                    "Perhaps you've made a typo?");
+                return false;
+            }
+
+            if (Activator.CreateInstance(type) is IAction act)
+            {
+                action = act;
+                errorInfo = null;
+                return true;
+            }
+
+            errorInfo = Error(
+                $"Provided action '{name}' does not exist.",
+                "Perhaps you've made a typo?");
+            return false;
         }
 
         /// <summary>
@@ -300,45 +306,48 @@ namespace ScriptedEvents.API.Modules
         /// <param name="suppressWarnings">Do not show warnings in the console.</param>
         /// <returns>The <see cref="Script"/> fully filled out, if the script was found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        public Script ReadScript(string scriptName, ICommandSender? executor, bool suppressWarnings = false)
+        public bool TryParseScript(string scriptName, ICommandSender? executor, out Script? script, out ErrorTrace? errorTrace, bool suppressWarnings = false)
         {
-            var allText = ReadScriptText(scriptName);
-            var inMultilineComment = false;
-            Script script = new();
-            var scriptPath = GetFilePath(scriptName);
+            script = default;
 
-            if (scriptPath is null)
+            if (!InternalTryReadScript(scriptName, out var content, out var path, out var errorInfo))
             {
-                throw new Exception($"Script '{scriptName}' could not be found.");
+                errorTrace = errorInfo!.ToTrace().Append(Error(
+                    $"Failed to parse the script '{scriptName}'",
+                    "See the trace below for details."));
+                return false;
             }
 
-            // Fill out script data
-            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out var perm2))
-            {
-                script.ReadPermission += $".{perm2}";
-                script.ExecutePermission += $".{perm2}";
-            }
+            if (content is null || path is null)
+                throw new ArgumentNullException();
 
-            script.ScriptName = scriptName;
-            script.RawText = allText;
-            script.FilePath = scriptPath;
-            script.LastRead = File.GetLastAccessTimeUtc(scriptPath);
-            script.LastEdited = File.GetLastWriteTimeUtc(scriptPath);
-
-            script.Context = executor switch
+            Script innerScript = new();
+            innerScript.ScriptName = scriptName;
+            innerScript.RawText = content;
+            innerScript.FilePath = path;
+            innerScript.LastRead = File.GetLastAccessTimeUtc(path);
+            innerScript.LastEdited = File.GetLastWriteTimeUtc(path);
+            innerScript.Sender = executor;
+            innerScript.Context = executor switch
             {
                 null => ExecuteContext.Automatic,
                 ServerConsoleSender _ => ExecuteContext.ServerConsole,
                 PlayerCommandSender _ => ExecuteContext.RemoteAdmin,
-                _ => script.Context
+                _ => innerScript.Context
             };
 
-            script.Sender = executor;
-            var actionList = ListPool<IAction>.Pool.Get();
-            var array = allText.Split('\n');
+            // Fill out script data
+            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out var perm2))
+            {
+                innerScript.ReadPermission += $".{perm2}";
+                innerScript.ExecutePermission += $".{perm2}";
+            }
 
+            var actionList = ListPool<IAction>.Pool.Get();
+            var array = content.Split('\n');
             IAction? lastAction = null;
             Func<bool>? singleLineIfStatement = null;
+            var inMultilineComment = false;
 
             for (var currentline = 0; currentline < array.Length; currentline++)
             {
@@ -373,118 +382,129 @@ namespace ScriptedEvents.API.Modules
                 {
                     // function labels
                     case "->" when structureParts.Count < 2:
-                        Logger.ScriptError($"A function label syntax has been used, but no name has been provided.", script, printableLine: currentline + 1);
+                        Logger.ScriptError($"A function label syntax has been used, but no name has been provided.", innerScript, printableLine: currentline + 1);
                         continue;
                     case "->":
                     {
                         var labelName = structureParts[1].RemoveWhitespace();
 
-                        if (!script.FunctionLabels.ContainsKey(labelName))
-                            script.FunctionLabels.Add(labelName, currentline);
+                        if (!innerScript.FunctionLabels.ContainsKey(labelName))
+                        {
+                            innerScript.FunctionLabels.Add(labelName, currentline);
+                        }
                         else if (!suppressWarnings)
-                            Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
+                        {
+                            Logger.ScriptError(
+                                Error(
+                                    $"Multiple label definitions in script '{scriptName}'",
+                                    $"Label '{labelName}' is already defined")
+                                    .ToTrace(),
+                                innerScript,
+                                printableLine: currentline + 1);
+                            continue;
+                        }
 
                         AddActionNoArgs(new StartFunctionAction());
                         continue;
                     }
 
                     case "??" when actionList.Count < 2:
-                        Logger.Log("'??' (single line if statement) syntax can't be used without providing a conditon.", LogType.Warning, script, currentline + 1);
+                        Logger.Log("'??' (single line if statement) syntax can't be used without providing a conditon.", LogType.Warning, innerScript, currentline + 1);
                         continue;
                     case "??":
                     {
-                        bool SingleLineIfStatement()
-                        {
-                            return ConditionHelper.Evaluate(string.Join(" ", structureParts.Skip(1)).Trim(), script).Passed;
-                        }
-
-                        singleLineIfStatement = SingleLineIfStatement;
+                        singleLineIfStatement = () => ConditionHelper.Evaluate(string.Join(" ", structureParts.Skip(1)).Trim(), innerScript).Passed;
                         continue;
                     }
 
                     // smart args
                     case "//" when actionList.Count == 0 || lastAction is null:
-                        Logger.Log("'//' (smart argument) syntax can't be used if there isn't any action above it.", LogType.Warning, script, currentline + 1);
+                        Logger.Log("'//' (smart argument) syntax can't be used if there isn't any action above it.", LogType.Warning, innerScript, currentline + 1);
                         continue;
                     case "//":
                     {
                         var value = string.Join(" ", structureParts.Skip(1)).Trim();
 
-                        if (script.SmartArguments.ContainsKey(lastAction))
+                        if (innerScript.SmartArguments.ContainsKey(lastAction))
                         {
-                            script.SmartArguments[lastAction] = script.SmartArguments[lastAction].Append(Lambda).ToArray();
+                            innerScript.SmartArguments[lastAction] = innerScript.SmartArguments[lastAction].Append(Lambda).ToArray();
                         }
                         else
                         {
-                            script.SmartArguments[lastAction] = new Func<Tuple<bool, string>>[] { Lambda };
+                            innerScript.SmartArguments[lastAction] = new Func<Tuple<ErrorTrace?, object?, Type?>>[] { Lambda };
                         }
 
-                        AddActionNoArgs(new NullAction($"SMART ARG"));
+                        AddActionNoArgs(new NullAction("SMART ARG"));
                         continue;
 
-                        Tuple<bool, string> Lambda()
+                        Tuple<ErrorTrace?, object?, Type?> Lambda()
                         {
-                            return new(true, Parser.ReplaceContaminatedValueSyntax(value, script));
+                            return new(default, Parser.ReplaceContaminatedValueSyntax(value, innerScript), typeof(string));
                         }
                     }
 
                     case "//::" when actionList.Count == 0 || lastAction is null:
-                        Logger.Log("'//::' (smart extractor) syntax can't be used if there isn't any action above it.", LogType.Warning, script, currentline + 1);
+                        Logger.Log("'//::' (smart extractor) syntax can't be used if there isn't any action above it.", LogType.Warning, innerScript, currentline + 1);
                         continue;
-
                     case "//::":
                     {
                         var actionName = structureParts[1];
                         var actionArgs = structureParts.Skip(2).ToArray();
 
-                        // TODO: implement for external actions
-                        var extractorActType = TryGetActionType(actionName);
-                        if (extractorActType is null)
+                        if (!TryGetActionType(actionName, out var actionToExtract, out var info))
                         {
-                            Logger.Warn(ErrorGen.Get(ErrorCode.InvalidAction, actionName, scriptName), script);
+                            var trace = info!.ToTrace().Append(Error(
+                                "Failed to parse the smart extractor",
+                                "See traceback below for more info"));
+                            Logger.ScriptError(trace, innerScript, printableLine: currentline + 1);
                             continue;
                         }
 
-                        if (Activator.CreateInstance(extractorActType) is not IAction actionToExtract)
+                        switch (actionToExtract)
                         {
-                            Logger.Warn(ErrorGen.Get(ErrorCode.InvalidAction, actionName, scriptName), script);
-                            continue;
+                            case null:
+                                throw new ArgumentException();
+
+                            case ITimingAction:
+                                Logger.ScriptError($"{actionToExtract.Name} is a timing action, which cannot be used with smart extractors.", innerScript, false, currentline + 1);
+                                continue;
+
+                            case IReturnValueAction:
+                                break;
+
+                            default:
+                                Logger.ScriptError($"{actionToExtract.Name} action does not return any values, therefore can't be used with smart accessors.", innerScript, false, currentline + 1);
+                                continue;
                         }
 
-                        if (actionToExtract is ITimingAction)
+                        if (innerScript.SmartArguments.ContainsKey(lastAction))
                         {
-                            Logger.Log($"{actionToExtract.Name} is a timing action, which cannot be used with smart extractors.", LogType.Warning, script, currentline + 1);
-                            continue;
-                        }
-
-                        if (actionToExtract is not IReturnValueAction)
-                        {
-                            Logger.Log($"{actionToExtract.Name} action does not return any values, therefore can't be used with smart accessors.", LogType.Warning, script, currentline + 1);
-                            continue;
-                        }
-
-                        if (script.SmartArguments.ContainsKey(lastAction))
-                        {
-                            script.SmartArguments[lastAction] = script.SmartArguments[lastAction].Append(ActionWrapper).ToArray();
+                            innerScript.SmartArguments[lastAction] = innerScript.SmartArguments[lastAction].Append(SmartExtractor).ToArray();
                         }
                         else
                         {
-                            script.SmartArguments[lastAction] = new Func<Tuple<bool, string>>[] { ActionWrapper };
+                            innerScript.SmartArguments[lastAction] = new Func<Tuple<ErrorTrace?, object?, Type?>>[] { SmartExtractor };
                         }
 
                         AddActionNoArgs(new NullAction("SMART EXTR"));
                         continue;
 
-                        Tuple<bool, string> ActionWrapper()
+                        Tuple<ErrorTrace?, object?, Type?> SmartExtractor()
                         {
-                            if (!TryRunAction(script, actionToExtract, out var resp, out _, actionArgs))
+                            if (!TryRunAction(innerScript, actionToExtract, out var resp, out _, actionArgs))
                             {
-                                return new(false, $"[Extractor] [Action: {actionName}]" + (resp?.Message is null ? string.Empty : " " + resp.Message));
+                                resp!.ErrorTrace!.Append(Error(
+                                    $"Smart extractor for action '{actionToExtract.Name}' failed",
+                                    "Provided action failed while running, see trace below for more info."));
+                                return new(resp.ErrorTrace, default, default);
                             }
 
                             if (resp == null || resp.ResponseVariables.Length == 0)
                             {
-                                return new(false, "Action did not return any values to use.");
+                                var err = Error(
+                                    $"Smart extractor for action '{actionToExtract.Name}' failed",
+                                    $"The action did not return any values for the extractor to use.");
+                                return new(err.ToTrace(), default, default);
                             }
 
                             if (resp.ResponseVariables.Length > 1)
@@ -494,12 +514,20 @@ namespace ScriptedEvents.API.Modules
 
                             var value = resp.ResponseVariables[0];
 
-                            if (value is not string stringValue)
+                            switch (value)
                             {
-                                return new(false, "Action returned a value that is not a string.");
+                                case string stringValue:
+                                    return new(default, stringValue, typeof(string));
+                                case Player[] playerValue:
+                                    return new(default, playerValue, typeof(Player[]));
+                                default:
+                                {
+                                    var err1 = Error(
+                                        $"Smart extractor for action '{actionToExtract.Name}' failed",
+                                        $"Provided action returned a value which is of an incompatible type {value.GetType().Name}.");
+                                    return new(err1.ToTrace(), default, default);
+                                }
                             }
-
-                            return new(true, stringValue);
                         }
                     }
 
@@ -508,14 +536,21 @@ namespace ScriptedEvents.API.Modules
                     {
                         var flag = structureParts[1].Trim();
 
-                        if (!script.HasFlag(flag))
+                        if (!innerScript.HasFlag(flag))
                         {
                             Flag fl = new(flag, structureParts.Skip(2));
-                            script.Flags.Add(fl);
+                            innerScript.Flags.Add(fl);
                         }
                         else if (!suppressWarnings)
                         {
-                            Logger.Warn(ErrorGen.Get(ErrorCode.MultipleFlagDefs, flag, scriptName));
+                            Logger.ScriptError(
+                                Error(
+                                    $"Provided flag '{flag}' is already used.",
+                                    $"The script '{innerScript.ScriptName}' already uses the '{flag}' flag.")
+                                    .ToTrace(),
+                                innerScript,
+                                false,
+                                currentline + 1);
                         }
 
                         AddActionNoArgs(new NullAction("FLAG DEFINE"));
@@ -528,13 +563,20 @@ namespace ScriptedEvents.API.Modules
                 {
                     var labelName = line.Remove(keyword.Length - 1, 1).RemoveWhitespace();
 
-                    if (!script.Labels.ContainsKey(labelName))
+                    if (!innerScript.Labels.ContainsKey(labelName))
                     {
-                        script.Labels.Add(labelName, currentline);
+                        innerScript.Labels.Add(labelName, currentline);
                     }
                     else if (!suppressWarnings)
                     {
-                        Logger.Warn(ErrorGen.Get(ErrorCode.MultipleLabelDefs, labelName, scriptName));
+                        Logger.ScriptError(
+                            Error(
+                                    $"Provided label '{labelName}' is already used.",
+                                    $"The script '{innerScript.ScriptName}' already uses the '{labelName}' label. Remove or rename the duplicate label.")
+                                .ToTrace(),
+                            innerScript,
+                            false,
+                            currentline + 1);
                     }
 
                     AddActionNoArgs(new NullAction($"{labelName} LABEL"));
@@ -553,7 +595,7 @@ namespace ScriptedEvents.API.Modules
                     Log($"[ExtractorSyntax] Variables section: {variablesSection}");
                     Log($"[ExtractorSyntax] Action section: {actionSection}");
 
-                    resultVariableNames = Parser.IsolateValueSyntax(variablesSection, script, true, false, false).variables.Select(arg => arg.Value).ToArray();
+                    resultVariableNames = Parser.IsolateValueSyntax(variablesSection, innerScript, true, false, false).variables.Select(arg => arg.Value).ToArray();
                     if (resultVariableNames.Length != 0)
                     {
                         Log($"[ExtractorSyntax] Variables found before the syntax: {string.Join(", ", resultVariableNames)}");
@@ -563,91 +605,59 @@ namespace ScriptedEvents.API.Modules
                     }
                     else
                     {
-                        Logger.Warn("The extraction operator `::` has been used, but no variable names were specified to contain extracted values.", script);
+                        Logger.Warn("The extraction operator `::` has been used, but no variable names were specified to contain extracted values.", innerScript);
                     }
                 }
 
                 keyword = keyword.ToUpper();
-                var actType = TryGetActionType(keyword);
-                if (actType is null)
+                if (!TryGetActionType(keyword, out var actionType, out var errorMessage))
                 {
-                    /*
-                    if (CustomActions.TryGetValue(keyword, out CustomAction customAction))
-                    {
-                        List<string> customActArgs = ListPool<string>.Pool.Get();
-                        CustomAction customAction1 = new(customAction.Name, customAction.Action);
-
-                        foreach (string part in structureParts.Skip(1))
-                        {
-                            if (ArgumentProcessor.TryProcessSmartArgument(part, customAction1, script, out string result, false))
-                            {
-                                customActArgs.Add(result);
-                            }
-                            else
-                            {
-                                customActArgs.Add(part);
-                            }
-                        }
-
-                        customAction1.RawArguments = customActArgs.ToArray();
-                        actionList.Add(customAction1);
-                        script.ResultVariableNames[customAction1] = resultVariableNames;
-
-                        ListPool<string>.Pool.Return(customActArgs);
-                        ListPool<string>.Pool.Return(structureParts);
-                        continue;
-                    }
-
-                    if (!suppressWarnings)
-                        Logger.Warn(ErrorGen.Get(ErrorCode.InvalidAction, keyword.RemoveWhitespace(), scriptName), script);
-
-                    */
-                    AddActionNoArgs(new NullAction("ERROR"));
-                    continue;
+                    Logger.ScriptError(
+                        errorMessage!.ToTrace(),
+                        innerScript,
+                        false,
+                        currentline + 1);
                 }
 
-                if (Activator.CreateInstance(actType) is not IAction newAction)
-                {
-                    continue;
-                }
-
-                lastAction = newAction;
-                script.OriginalActionArgs[newAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
-                script.ResultVariableNames[newAction] = resultVariableNames;
+                lastAction = actionType ?? throw new ArgumentException();
+                innerScript.OriginalActionArgs[lastAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                innerScript.ResultVariableNames[lastAction] = resultVariableNames;
 
                 if (singleLineIfStatement is not null)
                 {
-                    script.SingleLineIfStatements[newAction] = singleLineIfStatement;
+                    innerScript.SingleLineIfStatements[lastAction] = singleLineIfStatement;
                     singleLineIfStatement = null;
                 }
 
-                Log($"Queuing action {keyword}, {string.Join(", ", script.OriginalActionArgs[newAction])}");
+                Log($"Queuing action {keyword}, {string.Join(", ", innerScript.OriginalActionArgs[lastAction])}");
 
                 // Obsolete check
-                if (newAction.IsObsolete(out var obsoleteReason) && !suppressWarnings && !script.SuppressWarnings)
+                if (lastAction.IsObsolete(out var obsoleteReason) && !suppressWarnings && !innerScript.SuppressWarnings)
                 {
-                    Logger.Warn($"Action {newAction.Name} is obsolete; {obsoleteReason}", script);
+                    Logger.Warn($"Action {lastAction.Name} is obsolete; {obsoleteReason}", innerScript);
                 }
 
-                actionList.Add(newAction);
+                actionList.Add(lastAction);
                 ListPool<string>.Pool.Return(structureParts);
             }
 
-            script.Actions = ListPool<IAction>.Pool.ToArrayReturn(actionList);
+            innerScript.Actions = ListPool<IAction>.Pool.ToArrayReturn(actionList);
 
-            Log($"DebugActions script read successfully. Name: {script.ScriptName} | Actions: {script.Actions.Count(act => act is not NullAction)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Count(action => action is NullAction @null && @null.Type is "COMMENT")}");
+            Log($"DebugActions script read successfully. Name: {innerScript.ScriptName} | Actions: {innerScript.Actions.Count(act => act is not NullAction)} | Flags: {string.Join(" ", innerScript.Flags)} | Labels: {string.Join(" ", innerScript.Labels)} | Comments: {innerScript.Actions.Count(action => action is NullAction @null && @null.Type is "COMMENT")}");
 
-            return script;
+            script = innerScript;
+            errorTrace = null;
+            return true;
 
             void AddActionNoArgs(IAction action)
             {
-                script.OriginalActionArgs[action] = Array.Empty<string>();
+                innerScript.OriginalActionArgs[action] = Array.Empty<string>();
                 actionList.Add(action);
             }
 
             void Log(string message)
             {
-                Logger.Debug($"[ScriptModule] [ReadScript] {message}", script);
+                Logger.Debug($"[ScriptModule] [TryParseScript] {message}", innerScript);
             }
         }
 
@@ -657,12 +667,22 @@ namespace ScriptedEvents.API.Modules
         /// <param name="scriptName">The name of the script.</param>
         /// <param name="executor">The executor that is running the script. Can be null.</param>
         /// <param name="dispose">Whether to dispose of the script as soon as execution is finished.</param>
-        /// <exception cref="FileNotFoundException">The script was not found.</exception>
-        /// <exception cref="DisabledScriptException">If <see cref="Script.IsDisabled"/> is <see langword="true"/>.</exception>
-        public void ReadAndRun(string scriptName, ICommandSender executor, bool dispose = true)
+        public bool TryReadAndRun(string scriptName, ICommandSender executor, out ErrorTrace? errorTrace, bool dispose = true)
         {
-            var scr = ReadScript(scriptName, executor);
-            RunScript(scr, dispose);
+            if (!TryParseScript(scriptName, executor, out var parsedScript, out var trace1))
+            {
+                errorTrace = trace1;
+                return false;
+            }
+
+            if (!TryRunScript(parsedScript!, out var trace2, dispose))
+            {
+                errorTrace = trace2;
+                return false;
+            }
+
+            errorTrace = null;
+            return true;
         }
 
         /// <summary>
@@ -690,19 +710,21 @@ namespace ScriptedEvents.API.Modules
             MainPlugin.Info($"Assembly '{assembly.GetName().Name}' has registered {i} actions.");
         }
 
-        /// <summary>
-        /// Runs the script and disposes of it as soon as the script execution is complete.
-        /// </summary>
-        /// <param name="scr">The script to run.</param>
-        /// <param name="dispose">If <see langword="true"/>, the script will be disposed after finishing execution.</param>
-        /// <exception cref="DisabledScriptException">If <see cref="Script.IsDisabled"/> is <see langword="true"/>.</exception>
-        public void RunScript(Script scr, bool dispose = true)
+        public bool TryRunScript(Script scr, out ErrorTrace? errorTrace, bool dispose = true)
         {
             if (scr.IsDisabled)
-                throw new DisabledScriptException(scr.ScriptName);
+            {
+                errorTrace = Error(
+                        $"Script '{scr.ScriptName}' is disabled",
+                        "This script is probably marked by the '!-- DISABLED' flag.")
+                    .ToTrace();
+                return false;
+            }
 
             CoroutineHandle handle = Timing.RunCoroutine(SafeRunCoroutine(RunScriptInternal(scr, dispose)), $"SCRIPT_{scr.UniqueId}");
             RunningScripts.Add(scr, handle);
+            errorTrace = null;
+            return true;
         }
 
         /// <summary>
@@ -765,55 +787,34 @@ namespace ScriptedEvents.API.Modules
         /// Reads a script.
         /// </summary>
         /// <param name="scriptName">The name of the script.</param>
-        /// <param name="fileDirectory">The directory of the script, if it is found.</param>
+        /// <param name="filePath">The directory of the script, if it is found.</param>
         /// <returns>The contents of the script, if it is found.</returns>
         /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        private static string InternalRead(string scriptName, out string? fileDirectory)
+        private static bool InternalTryReadScript(string scriptName, out string? fileContent, out string? filePath, out ErrorInfo? errorInfo)
         {
-            fileDirectory = default;
-            string? text = default;
+            filePath = default;
+            fileContent = default;
+            var fileNames = Directory.GetFiles(BasePath, scriptName.EndsWith(".txt") ? scriptName : $"{scriptName}.txt", SearchOption.AllDirectories);
 
-            var mainFolderFile = Path.Combine(BasePath, scriptName + ".txt");
-            string[] fileNames = Directory.GetFiles(BasePath, $"{scriptName}.txt", SearchOption.AllDirectories);
-
-            if (File.Exists(mainFolderFile))
+            switch (fileNames.Length)
             {
-                fileDirectory = mainFolderFile;
-                text = File.ReadAllText(mainFolderFile);
+                case 0:
+                    errorInfo = Error(
+                        $"Script '{scriptName}' does not exist",
+                        "Search revealed 0 scripts available.");
+                    return false;
+                case > 1:
+                    errorInfo = Error(
+                        $"Multiple definitions of script '{scriptName}'",
+                        $"Search revealed {fileNames.Length} scripts under the '{scriptName}' name.");
+                    return false;
             }
-            else if (fileNames.Length == 1)
-            {
-                var fullFilePath = fileNames.First();
 
-                fileDirectory = fullFilePath;
-                text = File.ReadAllText(fullFilePath);
-            }
-
-            if (text is not null && fileDirectory is not null)
-                return text;
-
-            throw new FileNotFoundException($"Script {scriptName} does not exist.");
+            filePath = fileNames[0];
+            fileContent = File.ReadAllText(filePath);
+            errorInfo = null;
+            return true;
         }
-
-        /// <summary>
-        /// Returns the file path of a script.
-        /// </summary>
-        /// <param name="scriptName">The name of the script.</param>
-        /// <returns>The directory of the script, if it is found.</returns>
-        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        private static string? GetFilePath(string scriptName)
-        {
-            InternalRead(scriptName, out var path);
-            return path;
-        }
-
-        /// <summary>
-        /// Reads and returns the text of a script.
-        /// </summary>
-        /// <param name="scriptName">The name of the script.</param>
-        /// <returns>The contents of the script, if it is found.</returns>
-        /// <exception cref="FileNotFoundException">Thrown if the script is not found.</exception>
-        private string ReadScriptText(string scriptName) => InternalRead(scriptName, out _);
 
         /// <summary>
         /// Internal coroutine to run the script.
@@ -852,11 +853,7 @@ namespace ScriptedEvents.API.Modules
                 if (!TryRunAction(scr, action, out var resp, out var delay))
                 {
                     Log("Action failed.");
-                    if (resp is { Message: { Length: > 0 } })
-                    {
-                        Logger.ScriptError(resp.Message, scr, true);
-                    }
-
+                    Logger.ScriptError(resp!.ErrorTrace!, scr);
                     continue;
                 }
 
@@ -945,12 +942,17 @@ namespace ScriptedEvents.API.Modules
                 }
                 catch (Exception e)
                 {
-                    Logger.Error($"A coroutine error has been caught!\n{e.Message}\n{e.StackTrace}");
+                    Logger.Error($"A coroutine error has been caught!\nError: '{e.Message}'\n{e.StackTrace}");
                     yield break;
                 }
 
                 yield return (float)current;
             }
+        }
+
+        private static ErrorInfo Error(string name, string desc)
+        {
+            return new(name, desc, "ScriptModule");
         }
     }
 }

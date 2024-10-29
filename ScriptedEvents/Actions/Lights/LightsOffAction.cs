@@ -46,9 +46,9 @@
             float duration = (float)Arguments[1];
 
             foreach (Room room in rooms)
-                if (room is not null) room.TurnOffLights(duration);
+                room.TurnOffLights(duration);
 
-            return new(true, string.Empty);
+            return new(true);
         }
     }
 }

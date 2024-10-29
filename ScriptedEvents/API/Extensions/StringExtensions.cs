@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.API.Extensions
+﻿using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.API.Extensions
 {
     using System.Linq;
     using System.Text;
@@ -22,7 +24,7 @@
             return Regex.Replace(input, @"\s+", string.Empty);
         }
 
-        public static bool IsBool(this string input, out bool value, Script? script = null)
+        public static bool IsBool(this string input, out bool value, out ErrorInfo? errorInfo, Script? script = null)
         {
             if (script is not null)
                 input = Parser.ReplaceContaminatedValueSyntax(input, script);
@@ -30,12 +32,17 @@
             if (string.IsNullOrEmpty(input))
             {
                 value = default;
+                errorInfo = new(
+                    "Empty value cannot be intrpreted as a true/false value",
+                    "The provided value is null or empty, which does not qualify for a true/false value.",
+                    "IsBool Extension");
                 return false;
             }
 
             if (bool.TryParse(input, out var r))
             {
                 value = r;
+                errorInfo = null;
                 return true;
             }
 
@@ -43,13 +50,19 @@
             {
                 case "YES" or "Y" or "T":
                     value = true;
+                    errorInfo = null;
                     return true;
                 case "NO" or "N" or "F":
                     value = false;
+                    errorInfo = null;
                     return true;
             }
 
             value = false;
+            errorInfo = new(
+                $"Value '{input}' cannot be interpreted as a true/false value",
+                "The provided value does not match any criteria by which it could be assigned a true/false value.",
+                "IsBool Extension");
             return false;
         }
 
@@ -61,7 +74,7 @@
         /// <returns>The boolean.</returns>
         public static bool AsBool(this string input, Script? source = null)
         {
-            IsBool(input, out var v, source);
+            IsBool(input, out var v, out _, source);
             return v;
         }
 

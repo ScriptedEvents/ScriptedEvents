@@ -45,7 +45,7 @@
 
             foreach (string scriptName in ESModule.CurrentCustomEventData[ev])
             {
-                MainPlugin.ScriptModule.ReadAndRun(scriptName, script.Sender);
+                //MainPlugin.ScriptModule.ReadAndRun(scriptName, script.Sender);
             }
 
             return new(true);

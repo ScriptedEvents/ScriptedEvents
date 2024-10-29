@@ -215,7 +215,6 @@
     <Compile Include="API\Features\ArgumentProcessor.cs" />
     <Compile Include="API\Features\ConditionHelper.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
-    <Compile Include="API\Features\ErrorGen.cs" />
     <Compile Include="API\Features\Logger.cs" />
     <Compile Include="API\Features\Exceptions\ScriptedEventsException.cs" />
     <Compile Include="API\Features\Exceptions\VariableException.cs" />
@@ -264,8 +263,6 @@
     <Compile Include="Commands\MainCommand\StopScript.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
-    <Compile Include="ErrorSystem\ErrorGenV2.cs" />
-    <Compile Include="ErrorSystem\ErrorTrace.cs" />
     <Compile Include="Structures\ActionNameData.cs" />
     <Compile Include="Structures\ArgumentProcessResult.cs" />
     <Compile Include="Structures\Contributor.cs" />
@@ -274,6 +271,7 @@
     <Compile Include="Structures\DamageRule.cs" />
     <Compile Include="Structures\EnumDefinition.cs" />
     <Compile Include="Structures\ErrorInfo.cs" />
+    <Compile Include="Structures\ErrorTrace.cs" />
     <Compile Include="Structures\Flag.cs" />
     <Compile Include="Structures\Option.cs" />
     <Compile Include="Structures\SuggestedOptionsArgument.cs" />
@@ -363,7 +361,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ExMod.Exiled">
-      <Version>8.12.2</Version>
+      <Version>8.13.1</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>
@@ -375,7 +373,6 @@
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ErrorSystem\Structures\" />
     <Folder Include="Tutorials\Installation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

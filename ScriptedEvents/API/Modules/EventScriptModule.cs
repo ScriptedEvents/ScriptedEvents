@@ -99,6 +99,11 @@
             {
                 script.Dispose();
             }
+
+            if (ShouldGenerateFiles)
+            {
+                Logger.Info($"Thank you for installing Scripted Events! View the README file located at {Path.Combine(MainPlugin.BaseFilePath, "README.txt")} for information on how to use and get the most out of this plugin.");
+            }
         }
 
         public void RegisterEventScripts(Script[] allScripts, out List<Script> activeScripts)
@@ -260,23 +265,15 @@
 
             foreach (string scrName in scriptNames)
             {
-                try
+                if (!MainPlugin.ScriptModule.TryParseScript(scrName, null, out var script, out var error))
                 {
-                    scripts.Add(MainPlugin.ScriptModule.ReadScript(scrName, null));
-                    Log.Debug($"- {scrName}.txt");
+                    Logger.Error(error!.Append(Error(
+                        "Event script failed to parse",
+                        "There was an error while the script was getting ready for executuion, see inner exception.")));
+                    continue;
                 }
-                catch (DisabledScriptException)
-                {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.On_DisabledScript, eventName, scrName));
-                }
-                catch (FileNotFoundException)
-                {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.On_NotFoundScript, eventName, scrName));
-                }
-                catch (Exception ex)
-                {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.On_UnknownError, eventName) + $": {ex}");
-                }
+
+                scripts.Add(script!);
             }
 
             var properties = ev.GetType().GetProperties();
@@ -333,10 +330,16 @@
             }
 
             foreach (Script script in scripts)
-                script.Execute();
+            {
+                MainPlugin.ScriptModule.TryRunScript(script, out var trace);
+
+                if (trace != null) Logger.ScriptError(trace, script);
+            }
 
             stopwatch.Stop();
             Log.Debug($"Handling event '{name}' cost {stopwatch.ElapsedMilliseconds} ms");
         }
+
+        private ErrorInfo Error(string name, string description) => new(name, description, "Event Script Module");
     }
 }

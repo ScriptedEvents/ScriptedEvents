@@ -29,7 +29,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(false, "A function can only work when called using the GOTO action.", ActionFlags.FatalError);
+            return new(false, "A function can only work when called using the GOTO action.");
         }
     }
 }

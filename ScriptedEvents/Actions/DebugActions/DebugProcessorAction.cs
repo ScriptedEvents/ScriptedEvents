@@ -38,8 +38,11 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            ArgumentProcessResult result = ArgumentProcessor.Process(ExpectedArguments, RawArguments, this, script);
+            return new(false, new ErrorTrace(new ErrorInfo("action not implemented", "action not implemented", "action not implemented")));
+            /*
+            ArgumentProcessResult result = ArgumentProcessor.ProcessActionArguments(ExpectedArguments, RawArguments, this, script);
             return new(true, result.Message.ToString());
+            */
         }
     }
 }

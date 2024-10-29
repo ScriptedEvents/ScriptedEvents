@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Commands
+﻿using ScriptedEvents.API.Features;
+
+namespace ScriptedEvents.Commands
 {
     using System;
     using System.Collections.Generic;
@@ -103,29 +105,33 @@
             Dictionary<string, string> failed = new();
             int success = 0;
 
-            foreach (string scr in Scripts)
+            foreach (string scrName in Scripts)
             {
                 try
                 {
-                    Script body = MainPlugin.ScriptModule.ReadScript(scr, sender);
+                    if (!MainPlugin.ScriptModule.TryParseScript(scrName, sender, out var script, out var err) || script == null)
+                    {
+                        Logger.Error(err!);
+                        continue;
+                    }
 
                     // Override default script context for custom commands
                     switch (Type)
                     {
                         case CommandType.PlayerConsole:
-                            body.Context = ExecuteContext.PlayerConsole;
+                            script.Context = ExecuteContext.PlayerConsole;
                             break;
                         case CommandType.ServerConsole:
-                            body.Context = ExecuteContext.ServerConsole;
+                            script.Context = ExecuteContext.ServerConsole;
                             break;
                         case CommandType.RemoteAdmin:
-                            body.Context = ExecuteContext.RemoteAdmin;
+                            script.Context = ExecuteContext.RemoteAdmin;
                             break;
                     }
 
                     if (sender is PlayerCommandSender playerSender && Player.TryGet(playerSender, out Player plr))
                     {
-                        body.AddPlayerVariable("@SENDER", new[] { plr }, true);
+                        script.AddPlayerVariable("@SENDER", new[] { plr }, true);
                     }
 
                     for (int i = 1; i < 20; i++)
@@ -133,21 +139,28 @@
                         if (arguments.Count < i)
                             break;
 
-                        body.AddLiteralVariable($"$ARG{i}", arguments.At(i - 1), true);
+                        script.AddLiteralVariable($"$ARG{i}", arguments.At(i - 1), true);
                     }
 
-                    body.AddLiteralVariable("$ARGS", string.Join(" ", arguments), true);
+                    script.AddLiteralVariable("$ARGS", string.Join(" ", arguments), true);
 
-                    MainPlugin.ScriptModule.RunScript(body);
-                    success++;
+                    MainPlugin.ScriptModule.TryRunScript(script, out var err1);
+                    if (err1 != null)
+                    {
+                        Logger.Error(err1);
+                    }
+                    else
+                    {
+                        success++;
+                    }
                 }
                 catch (DisabledScriptException)
                 {
-                    failed.Add(scr, MainPlugin.Translations.DisabledScript);
+                    failed.Add(scrName, MainPlugin.Translations.DisabledScript);
                 }
                 catch (FileNotFoundException)
                 {
-                    failed.Add(scr, MainPlugin.Translations.MissingScript);
+                    failed.Add(scrName, MainPlugin.Translations.MissingScript);
                 }
             }
 

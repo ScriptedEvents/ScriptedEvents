@@ -33,6 +33,8 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            return new(false, new ErrorTrace(new ErrorInfo("action not implemented", "action not implemented", "action not implemented")));
+            /*
             string formula = Parser.ReplaceContaminatedValueSyntax(RawArguments.JoinMessage(), script);
             if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
@@ -40,6 +42,7 @@
             }
 
             return new(true, result.Result.ToString());
+            */
         }
     }
 }

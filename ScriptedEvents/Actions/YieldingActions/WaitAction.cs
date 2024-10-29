@@ -59,13 +59,13 @@
 
             if (!ConditionHelper.TryMath(formula, out MathResult result))
             {
-                message = new(MessageType.NotANumberOrCondition, this, "duration", null, formula, result);
+                message = new(false, "diot");
                 return null;
             }
 
             if (result.Result < 0)
             {
-                message = new(MessageType.LessThanZeroNumber, this, "duration", null, result.Result);
+                message = new(false, "diot");
                 return null;
             }
 
