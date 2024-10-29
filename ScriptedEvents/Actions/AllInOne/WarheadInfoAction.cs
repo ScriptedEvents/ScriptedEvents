@@ -1,19 +1,17 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
-    /// <inheritdoc/>
     public class WarheadInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "WARHEADINFO";
+        public string Name => "WarheadInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting warhead related information.";
@@ -22,11 +20,11 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("IsDetonated", "Returns a TRUE/FALSE value saying if the warhead is detonated."),
-                new("IsOpen", "Returns a TRUE/FALSE value saying if the warhead is open."),
-                new("IsArmed", "Returns a TRUE/FALSE value saying if the warhead is armed."),
-                new("IsCounting", "Returns a TRUE/FALSE value saying if the warhead is detonating."),
-                new("TimeLeft", "Returns the amount of seconds remaining to the explosion.")),
+                new OptionValueDepending("HasDetonated", "Has the warhead detonated.", typeof(bool)),
+                new OptionValueDepending("IsOpen", "Is the warhead control panel open.", typeof(bool)),
+                new OptionValueDepending("IsArmed", "IS the warhead armed.", typeof(bool)),
+                new OptionValueDepending("IsInProgress", "Is the warhead explosion in progress (counting to detonation).", typeof(bool)),
+                new OptionValueDepending("TimeLeft", "Returns the amount of seconds remaining to the explosion.", typeof(float))),
         };
 
         /// <inheritdoc/>
@@ -54,7 +52,7 @@ namespace ScriptedEvents.Actions
                 _ => throw new ArgumentException("Invalid mode."),
             };
 
-            return new(true, variablesToRet: new[] { ret });
+            return new(true, new(ret));
         }
     }
 }
