@@ -76,10 +76,10 @@
         public override string Author => "Thunder and Elektryk_Andrzej";
 
         /// <inheritdoc/>
-        public override Version Version => new(3, 1, 9);
+        public override Version Version => new(3, 2, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new(8, 7, 0);
+        public override Version RequiredExiledVersion => new(8, 13, 1);
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;

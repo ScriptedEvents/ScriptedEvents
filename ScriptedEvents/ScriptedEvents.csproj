@@ -342,8 +342,8 @@
     <Compile Include="DemoScripts\DemoScript.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EXILED">
-      <Version>8.9.11</Version>
+    <PackageReference Include="ExMod.Exiled">
+      <Version>8.13.1</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>
