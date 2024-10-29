@@ -1,19 +1,17 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
-    /// <inheritdoc/>
     public class RoundInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "ROUNDINFO";
+        public string Name => "RoundInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting round related information.";
@@ -22,12 +20,12 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("IsLocked", "Returns the TRUE/FALSE value of the roundlock status."),
-                new("HasStarted", "Returns the TRUE/FALSE value saying if the round has started."),
-                new("IsInProgress", "Returns a TRUE/FALSE value saying if the round is in progress."),
-                new("HasEnded", "Returns a TRUE/FALSE value saying if the round has ended."),
-                new("ElapsedRounds", "Returns the amount of rounds that have progressed since the server has started."),
-                new("Duration", "Returns the amount of seconds since the round started.")),
+                new OptionValueDepending("IsLocked", "Is the roundlock on.", typeof(bool)),
+                new OptionValueDepending("HasStarted", "Has the round started.", typeof(bool)),
+                new OptionValueDepending("IsInProgress", "Is the round in progress.", typeof(bool)),
+                new OptionValueDepending("HasEnded", "Has the round ended.", typeof(bool)),
+                new OptionValueDepending("ElapsedRounds", "Amount of rounds that have progressed since the server has started.", typeof(int)),
+                new OptionValueDepending("Duration", "Amount of seconds since the round started.", typeof(double))),
         };
 
         /// <inheritdoc/>
@@ -56,7 +54,7 @@ namespace ScriptedEvents.Actions
                 _ => throw new ArgumentException()
             };
 
-            return new(true, variablesToRet: new[] { ret });
+            return new(true, new(ret));
         }
     }
 }
