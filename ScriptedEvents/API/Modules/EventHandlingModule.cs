@@ -419,7 +419,7 @@
                 cmd.ResetCooldowns();
             }
 
-            MainPlugin.ScriptModule.StopAllScripts();
+            MainPlugin.ScriptModule?.StopAllScripts();
             VariableSystemV2.ClearVariables();
             Kills.Clear();
             PlayerKills.Clear();
