@@ -1,19 +1,17 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
     using Exiled.API.Features;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
-    /// <inheritdoc/>
     public class ServerInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "SERVERINFO";
+        public string Name => "ServerInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting server related information.";
@@ -22,11 +20,11 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("IP", "Returns the IP of the server."),
-                new("Port", "Returns the port of the server."),
-                new("Name", "Returns the name of the server."),
-                new("MaxPlayers", "Returns the maximum amount of players the server is set to."),
-                new("TPS", "Returns the amount of ticks per second the server is running on.")),
+                new OptionValueDepending("IP", "Server IP.", typeof(string)),
+                new OptionValueDepending("Port", "Server port.", typeof(ushort)),
+                new OptionValueDepending("Name", "Server name.", typeof(string)),
+                new OptionValueDepending("MaxPlayers", "Maximum amount of players the server is set to.", typeof(int)),
+                new OptionValueDepending("TPS", "Amount of ticks per second the server is currently running on. Changes over time.", typeof(double))),
         };
 
         /// <inheritdoc/>
@@ -54,7 +52,7 @@ namespace ScriptedEvents.Actions
                 _ => throw new ArgumentException("No mode provided")
             };
 
-            return new(true, variablesToRet: new[] { ret });
+            return new(true, new(ret));
         }
     }
 }
