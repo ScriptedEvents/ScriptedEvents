@@ -1,18 +1,16 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.Broadcast
 {
     using System;
 
     using Exiled.API.Features;
-
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class ClearBroadcastsAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "CLEARBROADCASTS";
+        public string Name => "ClearBroadcasts";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -27,7 +25,7 @@ namespace ScriptedEvents.Actions
         public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
 
         /// <inheritdoc/>
-        public string Description => "Clears all broadcasts for specified player(s).";
+        public string Description => "Clears broadcasts for specified players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
