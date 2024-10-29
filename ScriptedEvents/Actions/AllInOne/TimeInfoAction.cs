@@ -1,17 +1,15 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
     using ScriptedEvents.API.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
-    /// <inheritdoc/>
     public class TimeInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "TIMEINFO";
+        public string Name => "TimeInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting current time related information.";
@@ -20,15 +18,15 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("Ticks", "Returns the amount of seconds since 1970."),
-                new("Second", "Returns a number in range 0-59"),
-                new("Minute", "Returns a number in range 0-59"),
-                new("Hour", "Returns a number in range 0-23"),
-                new("Month", "Returns a number in range 1-12"),
-                new("Year", "Returns the amount of years since the birth of Christ"),
-                new("DayOfWeek", "Returns a number in range 1-7 (Warning! This follows the US system, where Sunday is the first day of the week)"),
-                new("DayOfMonth", "Returns a number in range 0-31"),
-                new("DayOfYear", "Returns a number in range 0-366")),
+                new OptionValueDepending("Ticks", "Amount of seconds since 1970.", typeof(long)),
+                new OptionValueDepending("Second", "Returns a number in range 0-59"),
+                new OptionValueDepending("Minute", "Returns a number in range 0-59"),
+                new OptionValueDepending("Hour", "Returns a number in range 0-23"),
+                new OptionValueDepending("Month", "Returns a number in range 1-12"),
+                new OptionValueDepending("Year", "Returns the amount of years since the birth of Christ"),
+                new OptionValueDepending("DayOfWeek", "Returns a number in range 1-7 (Warning! This follows the US system, where Sunday is the first day of the week)"),
+                new OptionValueDepending("DayOfMonth", "Returns a number in range 0-31"),
+                new OptionValueDepending("DayOfYear", "Returns a number in range 0-366")),
         };
 
         /// <inheritdoc/>
