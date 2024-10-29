@@ -2,8 +2,8 @@
 {
     using System;
 
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Enums;
     using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 

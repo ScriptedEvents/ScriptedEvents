@@ -1,12 +1,11 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions
 {
     using System;
 
     using PlayerRoles;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class SpawnRuleAction : IScriptAction, IHelpInfo

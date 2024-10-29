@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions
 {
@@ -10,7 +11,6 @@ namespace ScriptedEvents.Actions
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     /// <inheritdoc/>

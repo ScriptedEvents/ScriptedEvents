@@ -1,3 +1,4 @@
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.API.Modules
@@ -17,7 +18,6 @@ namespace ScriptedEvents.API.Modules
     using RemoteAdmin;
 
     using ScriptedEvents.Actions;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;
@@ -26,7 +26,7 @@ namespace ScriptedEvents.API.Modules
     using ScriptedEvents.Structures;
 
     using Logger = ScriptedEvents.API.Features.Logger;
-    using LogType = ScriptedEvents.API.Enums.LogType;
+    using LogType = LogType;
 
     /// <summary>
     /// A helper class to read and execute scripts, and register actions, as well as providing useful API for individual actions.

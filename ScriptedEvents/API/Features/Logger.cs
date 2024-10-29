@@ -1,7 +1,8 @@
-﻿namespace ScriptedEvents.API.Features
+﻿using ScriptedEvents.Enums;
+
+namespace ScriptedEvents.API.Features
 {
     using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     using LogInternal = Exiled.API.Features.Log;

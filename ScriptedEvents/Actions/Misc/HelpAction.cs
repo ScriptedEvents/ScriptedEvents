@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions
 {
@@ -15,7 +16,6 @@ namespace ScriptedEvents.Actions
     using ScriptedEvents.Actions.Samples;
     using ScriptedEvents.Actions.Samples.Interfaces;
     using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Modules;

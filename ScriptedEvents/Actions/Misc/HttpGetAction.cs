@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions.MiscActions
 {
@@ -6,8 +7,6 @@ namespace ScriptedEvents.Actions.MiscActions
     using System.Collections.Generic;
 
     using MEC;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;

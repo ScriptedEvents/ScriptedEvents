@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents
+﻿using ScriptedEvents.Enums;
+
+namespace ScriptedEvents
 {
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -50,7 +52,7 @@
                 Name = "example",
                 Enabled = false,
                 Description = "An example custom command!",
-                Type = API.Enums.CommandType.PlayerConsole,
+                Type = CommandType.PlayerConsole,
                 Permission = "example",
                 DefaultResponse = true,
                 Cooldown = -1,

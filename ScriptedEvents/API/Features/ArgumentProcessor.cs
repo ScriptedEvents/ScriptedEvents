@@ -10,8 +10,6 @@ namespace ScriptedEvents.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using PlayerRoles;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
@@ -238,7 +236,7 @@ namespace ScriptedEvents.API.Features
         {
             ArgumentProcessResult success = new(true);
 
-            Log($"Parameter '{expected.ArgumentName}' needs a '{expected.Type.Name}' type.");
+            Log($"Parameter '{expected.ArgumentName}' needs a '{expected.Predicate.Name}' type.");
 
             // Extra magic for options
             if (expected is OptionsArgument options)
@@ -262,7 +260,7 @@ namespace ScriptedEvents.API.Features
 
             if (TryProcessSmartArgument(input, action, source, out var smartArgRes, out var type))
             {
-                if (expected.Type == type)
+                if (expected.Predicate == type)
                 {
                     success.NewParameters.Add(smartArgRes!);
                 }
@@ -274,7 +272,7 @@ namespace ScriptedEvents.API.Features
                 input = saResult;
             }
 
-            switch (expected.Type.Name)
+            switch (expected.Predicate.Name)
             {
                 // Number Types:
                 case "Boolean":
@@ -435,10 +433,10 @@ namespace ScriptedEvents.API.Features
 
                 default:
                     // Handle all enum types
-                    if (expected.Type.BaseType == typeof(Enum))
+                    if (expected.Predicate.BaseType == typeof(Enum))
                     {
                         var genericMethod = typeof(ArgumentProcessor).GetMethod("TryGetEnum")
-                            !.MakeGenericMethod(expected.Type);
+                            !.MakeGenericMethod(expected.Predicate);
 
                         object?[] arguments = { input, null, source, null };
 
@@ -464,7 +462,7 @@ namespace ScriptedEvents.API.Features
             {
                 trace.Append(Error(
                     $"Failed to process argument '{expected.ArgumentName}' for action '{action.Name}'",
-                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Type}'."));
+                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Predicate}'."));
                 return new(false, true, trace);
             }
 
@@ -473,7 +471,7 @@ namespace ScriptedEvents.API.Features
                 var trace = error.ToTrace();
                 trace.Append(Error(
                     $"Failed to process argument '{expected.ArgumentName}' for action '{action.Name}'",
-                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Type}'."));
+                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Predicate}'."));
                 return new(false, true, trace);
             }
 

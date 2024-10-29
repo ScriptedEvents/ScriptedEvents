@@ -1,11 +1,11 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions.MapActions
 {
     using System.Linq;
 
     using Exiled.API.Features.Items;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
     using UnityEngine;

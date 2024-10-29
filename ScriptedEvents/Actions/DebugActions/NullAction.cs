@@ -1,10 +1,9 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions
 {
     using System;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     // Represents a line in a file that does not have any actions.

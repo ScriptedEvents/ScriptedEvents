@@ -11,7 +11,6 @@ namespace ScriptedEvents.Commands.MainCommand
 
     using Exiled.API.Features.Pools;
     using Exiled.Permissions.Extensions;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Modules;
 

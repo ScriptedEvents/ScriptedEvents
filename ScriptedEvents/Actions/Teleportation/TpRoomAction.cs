@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions
 {
@@ -6,8 +7,6 @@ namespace ScriptedEvents.Actions
 
     using Exiled.API.Features;
     using Exiled.API.Features.Roles;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class TpRoomAction : IScriptAction, IHelpInfo

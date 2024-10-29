@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents
 {
@@ -10,7 +11,6 @@ namespace ScriptedEvents
     using Discord;
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;

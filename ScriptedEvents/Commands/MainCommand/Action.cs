@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Commands.MainCommand
@@ -11,7 +12,6 @@ namespace ScriptedEvents.Commands.MainCommand
     using Exiled.Permissions.Extensions;
     using RemoteAdmin;
     using ScriptedEvents.Actions;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]

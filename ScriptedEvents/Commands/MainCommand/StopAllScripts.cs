@@ -6,7 +6,6 @@
     using CommandSystem;
 
     using Exiled.Permissions.Extensions;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Modules;
 

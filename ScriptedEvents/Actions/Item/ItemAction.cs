@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions.Item
 {
@@ -9,7 +10,6 @@ namespace ScriptedEvents.Actions.Item
     using Exiled.API.Features.Items;
 
     using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.Structures;
 

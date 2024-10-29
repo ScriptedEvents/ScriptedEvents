@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions
 {
@@ -7,8 +8,6 @@ namespace ScriptedEvents.Actions
     using Exiled.API.Features;
 
     using PlayerRoles;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class SetRoleAction : IScriptAction, IHelpInfo

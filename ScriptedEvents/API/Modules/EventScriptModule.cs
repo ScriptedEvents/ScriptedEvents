@@ -14,8 +14,6 @@ namespace ScriptedEvents.API.Modules
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.Features;
     using Exiled.Loader;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Features.Exceptions;

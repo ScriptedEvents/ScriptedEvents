@@ -1,14 +1,13 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions.AllInOne
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
     using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class GeneratorInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction

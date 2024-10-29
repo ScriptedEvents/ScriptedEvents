@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Structures
+﻿using ScriptedEvents.Enums;
+
+namespace ScriptedEvents.Structures
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -6,7 +8,6 @@
     using Exiled.API.Features;
 
     using PlayerRoles;
-    using ScriptedEvents.API.Enums;
 
     public class DamageRule
     {

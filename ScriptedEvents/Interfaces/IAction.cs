@@ -1,6 +1,7 @@
-﻿namespace ScriptedEvents.Interfaces
+﻿using ScriptedEvents.Enums;
+
+namespace ScriptedEvents.Interfaces
 {
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     /// <summary>

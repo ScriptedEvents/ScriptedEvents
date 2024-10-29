@@ -1,4 +1,5 @@
 ﻿using ScriptedEvents.API.Features;
+using ScriptedEvents.Enums;
 
 namespace ScriptedEvents.Commands
 {
@@ -12,8 +13,6 @@ namespace ScriptedEvents.Commands
     using Exiled.Permissions.Extensions;
 
     using RemoteAdmin;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features.Exceptions;
 
     public class CustomCommand : ICommand

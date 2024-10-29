@@ -1,12 +1,11 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions.AllInOne
+﻿namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
     using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     using Item = Exiled.API.Features.Items.Item;

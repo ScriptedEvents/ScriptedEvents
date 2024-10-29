@@ -1,11 +1,11 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions
 {
     using System;
 
     using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using UnityEngine;
 

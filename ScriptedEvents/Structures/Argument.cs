@@ -3,6 +3,7 @@
     using System;
 
     using ScriptedEvents.API.Features;
+    using ScriptedEvents.Enums;
 
     /// <summary>
     /// Represents an argument for an action.
@@ -16,18 +17,23 @@
         /// <param name="type">The type of the argument.</param>
         /// <param name="description">The description of the argument.</param>
         /// <param name="required">Whether or not the argument is required.</param>
-        public Argument(string argumentName, Type type, string description, bool required)
+        /// <param name="flag">Additional flag.</param>
+        public Argument(string argumentName, Type type, string description, bool required, ArgPredicate flag = ArgPredicate.None)
         {
             ArgumentName = argumentName;
             Type = type;
             Description = description;
             Required = required;
+            Predicate = flag;
         }
 
         /// <summary>
         /// Gets the name of the argument.
         /// </summary>
         public string ArgumentName { get; }
+
+        /// <inheritdoc cref="ArgPredicate"/>
+        public ArgPredicate Predicate { get; }
 
         /// <summary>
         /// Gets the type of the argument.

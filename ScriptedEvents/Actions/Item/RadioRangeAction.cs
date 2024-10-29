@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions.Item
 {
@@ -10,7 +11,6 @@ namespace ScriptedEvents.Actions.Item
 
     using Actions.Samples.Interfaces;
     using Actions.Samples.Providers;
-    using API.Enums;
     using API.Extensions;
     using Structures;
 

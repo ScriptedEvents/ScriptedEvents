@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents
+﻿using ScriptedEvents.Enums;
+
+namespace ScriptedEvents
 {
     using System;
     using System.Collections.Generic;
@@ -11,7 +13,6 @@
     using MEC;
     using RemoteAdmin;
     using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.DemoScripts;

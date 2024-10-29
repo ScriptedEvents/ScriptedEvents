@@ -207,9 +207,6 @@
     <Compile Include="API\Constants\Constants.cs" />
     <Compile Include="API\Constants\ConstMessages.cs" />
     <Compile Include="API\Constants\EnumDefinitions.cs" />
-    <Compile Include="API\Enums\CommandCooldownMode.cs" />
-    <Compile Include="API\Enums\ErrorCode.cs" />
-    <Compile Include="API\Enums\LogType.cs" />
     <Compile Include="API\Extensions\InterfaceExtensions.cs" />
     <Compile Include="API\Extensions\TypeExtensions.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
@@ -240,11 +237,6 @@
     <Compile Include="Actions\Teleportation\TpRoomAction.cs" />
     <Compile Include="Actions\Teleportation\TpxAction.cs" />
     <Compile Include="Actions\YieldingActions\WaitAction.cs" />
-    <Compile Include="API\Enums\ActionSubgroup.cs" />
-    <Compile Include="API\Enums\CommandType.cs" />
-    <Compile Include="API\Enums\DamageRuleType.cs" />
-    <Compile Include="API\Enums\ExecuteContext.cs" />
-    <Compile Include="API\Enums\MessageType.cs" />
     <Compile Include="API\Modules\CountdownModule.cs" />
     <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="API\Modules\EventScriptModule.cs" />
@@ -259,6 +251,16 @@
     <Compile Include="Commands\MainCommand\StopScript.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
+    <Compile Include="Enums\ActionFlags.cs" />
+    <Compile Include="Enums\ActionSubgroup.cs" />
+    <Compile Include="Enums\ArgPredicate.cs" />
+    <Compile Include="Enums\CommandCooldownMode.cs" />
+    <Compile Include="Enums\CommandType.cs" />
+    <Compile Include="Enums\DamageRuleType.cs" />
+    <Compile Include="Enums\ErrorCode.cs" />
+    <Compile Include="Enums\ExecuteContext.cs" />
+    <Compile Include="Enums\LogType.cs" />
+    <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Interfaces\IAction.cs" />
     <Compile Include="Interfaces\ICustomReadDisplay.cs" />
     <Compile Include="Interfaces\IHelpInfo.cs" />
@@ -275,6 +277,7 @@
     <Compile Include="Structures\ActionNameData.cs" />
     <Compile Include="Structures\ActionReturnValues.cs" />
     <Compile Include="Structures\ArgumentProcessResult.cs" />
+    <Compile Include="Structures\ArgValuePredicate.cs" />
     <Compile Include="Structures\Contributor.cs" />
     <Compile Include="Structures\CoroutineData.cs" />
     <Compile Include="Structures\CustomCommand.cs" />
@@ -297,7 +300,6 @@
     <Compile Include="Tutorials\ITutorial.cs" />
     <Compile Include="Variables\Interfaces\ILiteralVariable.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
-    <Compile Include="API\Enums\ActionFlags.cs" />
     <Compile Include="API\Features\Exceptions\DisabledScriptException.cs" />
     <Compile Include="Conditions\Floats\GreaterThanOrEqualTo.cs" />
     <Compile Include="Conditions\Floats\LessThanOrEqualTo.cs" />

@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.API.Features
+﻿using ScriptedEvents.Enums;
+
+namespace ScriptedEvents.API.Features
 {
     using System;
     using System.Collections.Generic;
@@ -11,8 +13,6 @@
 
     using PlayerRoles;
     using Respawning;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
     using ScriptedEvents.Variables.Interfaces;
 

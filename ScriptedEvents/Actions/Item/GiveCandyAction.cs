@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions
 {
@@ -8,8 +9,6 @@ namespace ScriptedEvents.Actions
     using Exiled.API.Features;
 
     using InventorySystem.Items.Usables.Scp330;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class GiveCandyAction : IScriptAction, IHelpInfo, ILongDescription

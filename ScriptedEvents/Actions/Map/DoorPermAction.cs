@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Interfaces;
+﻿using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions.Map
 {
@@ -7,8 +8,6 @@ namespace ScriptedEvents.Actions.Map
     using Exiled.API.Enums;
 
     using Exiled.API.Features.Doors;
-
-    using ScriptedEvents.API.Enums;
     using ScriptedEvents.Structures;
 
     public class DoorPermAction : IScriptAction, IHelpInfo

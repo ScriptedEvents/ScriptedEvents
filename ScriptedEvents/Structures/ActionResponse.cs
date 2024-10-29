@@ -1,8 +1,8 @@
-﻿namespace ScriptedEvents.Structures
+﻿using ScriptedEvents.Enums;
+
+namespace ScriptedEvents.Structures
 {
     using System;
-
-    using ScriptedEvents.API.Enums;
 
     /// <summary>
     /// Represents a response to an action execution.

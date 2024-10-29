@@ -1,4 +1,4 @@
-﻿namespace ScriptedEvents.API.Enums
+﻿namespace ScriptedEvents.Enums
 {
     public enum LogType
     {

@@ -1,22 +1,18 @@
-﻿using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.Health
 {
     using System;
     using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class DamageAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "DAMAGE";
+        public string Name => "Damage";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -36,54 +32,51 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public string LongDescription => $@"A base-game DamageType may be used to provide a base-game death message. Alternatively, a custom message may be used instead of a DamageType.
 A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
-{string.Join("\n", ((DamageType[])Enum.GetValues(typeof(DamageType))).Select(r => $"- [{r:d}] {r}"))}";
+{string.Join("\n", ((DamageType[])Enum.GetValues(typeof(DamageType))).Select(r => $"- [{r:D}] {r}"))}";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(PlayerCollection), "The players to damage.", true),
-            new Argument("damage", typeof(float), "The amount of damage to apply.", true),
-            new Argument("damageType", typeof(string), $"The type of damage to apply. If a {nameof(DamageType)} is not matched, this will act as a custom message instead. Default: Unknown", false),
+            new Argument("damage", typeof(float), "The amount of damage to apply.", true, ArgPredicate.BiggerThan0),
+            new Argument(
+                "damageType",
+                typeof(DamageType),
+                $"The type of damage to apply. If a {nameof(DamageType)} is not matched, this will act as a custom message instead. Default: Unknown",
+                false,
+                ArgPredicate.ParseToStringOnFail),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(false, new ErrorTrace(new ErrorInfo("action not implemented", "action not implemented", "action not implemented")));
-            /*
             PlayerCollection plys = (PlayerCollection)Arguments[0];
             float damage = (float)Arguments[1];
 
-            if (damage < 0)
-                return new(MessageType.LessThanZeroNumber, this, "damage", null, damage);
-
-            if (Arguments.Length > 2)
+            if (Arguments.Length < 3)
             {
-                bool useDeathType = true;
-                string customDeath = null;
+                foreach (Player player in plys)
+                    player.Hurt(damage);
 
-                if (!Parser.TryGetEnum((string)Arguments[2], out DamageType damageType, script))
-                {
-                    useDeathType = false;
-                    customDeath = RawArguments.JoinMessage(2);
-                }
+                return new(true);
+            }
 
+            if (Arguments[2] is DamageType damageType)
+            {
                 foreach (Player player in plys)
                 {
-                    if (useDeathType)
-                        player.Hurt(damage, damageType);
-                    else
-                        player.Hurt(damage, string.IsNullOrWhiteSpace(customDeath) ? "Unknown" : customDeath);
+                    player.Hurt(damage, damageType);
                 }
 
                 return new(true);
             }
 
             foreach (Player player in plys)
-                player.Hurt(damage, DamageType.Unknown);
+            {
+                player.Hurt(damage, Arguments[2].ToString());
+            }
 
             return new(true);
-            */
         }
     }
 }

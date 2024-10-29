@@ -1,8 +1,8 @@
-﻿namespace ScriptedEvents.Structures
+﻿using ScriptedEvents.Enums;
+
+namespace ScriptedEvents.Structures
 {
     using System.Collections.Generic;
-
-    using ScriptedEvents.API.Enums;
 
     public struct CustomCommand
     {
