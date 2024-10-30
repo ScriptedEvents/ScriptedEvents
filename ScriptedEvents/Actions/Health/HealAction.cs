@@ -7,10 +7,10 @@
     using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class SetMaxHpAction : IScriptAction, IHelpInfo
+    public class HealAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "SetMaxHP";
+        public string Name => "Heal";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -25,20 +25,20 @@
         public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public string Description => "Sets maximum HP for specified players.";
+        public string Description => "Heals specified players. Players will not be healed past their MaxHP.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
-            new Argument("maxHealthPoints", typeof(float), "The amount of max health points to set", true, ArgFlag.BiggerThan0),
+            new Argument("health", typeof(float), "The amount of health to heal.", true, ArgFlag.BiggerThan0),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             foreach (Player ply in (PlayerCollection)Arguments[0]!)
-                ply.MaxHealth = (float)Arguments[1]!;
+                ply.Heal((float)Arguments[1]!);
 
             return new(true);
         }
