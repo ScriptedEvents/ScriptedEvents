@@ -1,17 +1,16 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.Item
 {
     using System;
 
     using Exiled.API.Features;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class ClearInventoryAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "CLEARINVENTORY";
+        public string Name => "ClearInventory";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -20,13 +19,13 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Item;
 
         /// <inheritdoc/>
-        public string Description => "Clears inventory of the targeted players.";
+        public string Description => "Clears inventory of the specified players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -37,9 +36,7 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection plys = (PlayerCollection)Arguments[0];
-
-            foreach (Player player in plys)
+            foreach (Player player in (PlayerCollection)Arguments[0]!)
             {
                 player.Inventory.UserInventory.ReserveAmmo.Clear();
                 player.Inventory.SendAmmoNextFrame = true;

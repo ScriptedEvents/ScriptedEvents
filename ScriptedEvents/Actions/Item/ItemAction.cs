@@ -16,7 +16,7 @@ namespace ScriptedEvents.Actions.Item
     public class ItemAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "ITEM";
+        public string Name => "Item";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();

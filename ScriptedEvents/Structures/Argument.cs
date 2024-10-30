@@ -18,13 +18,13 @@
         /// <param name="description">The description of the argument.</param>
         /// <param name="required">Whether or not the argument is required.</param>
         /// <param name="flag">Additional flag.</param>
-        public Argument(string argumentName, Type type, string description, bool required, ArgPredicate flag = ArgPredicate.None)
+        public Argument(string argumentName, Type type, string description, bool required, ArgFlag flag = ArgFlag.None)
         {
             ArgumentName = argumentName;
             Type = type;
             Description = description;
             Required = required;
-            Predicate = flag;
+            Flag = flag;
         }
 
         /// <summary>
@@ -32,8 +32,8 @@
         /// </summary>
         public string ArgumentName { get; }
 
-        /// <inheritdoc cref="ArgPredicate"/>
-        public ArgPredicate Predicate { get; }
+        /// <inheritdoc cref="ArgFlag"/>
+        public ArgFlag Flag { get; }
 
         /// <summary>
         /// Gets the type of the argument.

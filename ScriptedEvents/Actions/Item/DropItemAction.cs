@@ -1,18 +1,18 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions.Item
+﻿namespace ScriptedEvents.Actions.Item
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using ScriptedEvents.API.Constants;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class DropItemAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "DROPITEM";
+        public string Name => "Drop";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +21,7 @@ namespace ScriptedEvents.Actions.Item
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Item;
@@ -36,21 +36,31 @@ namespace ScriptedEvents.Actions.Item
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(PlayerCollection), "The players to drop items for.", true),
-            new Argument("item", typeof(ItemType), "The item to drop.", true),
+            new Argument("item", typeof(ItemObjectOrType), "The item to drop. The 'amount' argument will be ignored if you provide an item object instead of a type.", true),
             new Argument("amount", typeof(int), "The amount to drop. Default: 1", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var plys = (PlayerCollection)Arguments[0];
-            var itemType = (ItemType)Arguments[1];
-            var amt = 1;
+            var plys = (PlayerCollection)Arguments[0]!;
+            object theItem = Arguments[1]!;
 
-            if (Arguments.Length >= 3)
+            if (theItem is Exiled.API.Features.Items.Item actualItem)
             {
-                amt = (int)Arguments[2];
+                foreach (var plr in plys)
+                {
+                    if (plr.Items.Contains(actualItem))
+                    {
+                        plr.DropItem(actualItem);
+                    }
+                }
+
+                return new(true);
             }
+
+            int amt = (int?)Arguments[2] ?? 1;
+            var itemType = (ItemType)theItem;
 
             foreach (var player in plys)
             {

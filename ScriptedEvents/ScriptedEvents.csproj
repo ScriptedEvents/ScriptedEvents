@@ -108,6 +108,7 @@
     <Compile Include="Actions\CASSIE\ClearCassieAction.cs" />
     <Compile Include="Actions\DebugActions\DebugExtractAction.cs" />
     <Compile Include="Actions\DebugActions\DebugProcessorAction.cs" />
+    <Compile Include="Actions\Health\HealAction.cs" />
     <Compile Include="Actions\Item\DropItemAction.cs" />
     <Compile Include="Actions\Item\RandomItemAction.cs" />
     <Compile Include="Actions\Map\CleanupRagdollsAction.cs" />
@@ -226,9 +227,9 @@
     <Compile Include="Actions\Samples\Providers\IfSamples.cs" />
     <Compile Include="Actions\Samples\Providers\RadioRangeSamples.cs" />
     <Compile Include="Actions\Samples\Sample.cs" />
-    <Compile Include="Actions\Health\SetAHPAction.cs" />
+    <Compile Include="Actions\Health\AddAhpAction.cs" />
     <Compile Include="Actions\Health\SetMaxHPAction.cs" />
-    <Compile Include="Actions\Health\SetHPAction.cs" />
+    <Compile Include="Actions\Health\SetHpAction.cs" />
     <Compile Include="Actions\Player\ReskinAction.cs" />
     <Compile Include="Actions\Player\SetRoleAction.cs" />
     <Compile Include="Actions\Round\TicketAction.cs" />
@@ -253,7 +254,7 @@
     <Compile Include="Conditions\Strings\StringContains.cs" />
     <Compile Include="Enums\ActionFlags.cs" />
     <Compile Include="Enums\ActionSubgroup.cs" />
-    <Compile Include="Enums\ArgPredicate.cs" />
+    <Compile Include="Enums\ArgFlag.cs" />
     <Compile Include="Enums\CommandCooldownMode.cs" />
     <Compile Include="Enums\CommandType.cs" />
     <Compile Include="Enums\DamageRuleType.cs" />
@@ -286,6 +287,7 @@
     <Compile Include="Structures\ErrorInfo.cs" />
     <Compile Include="Structures\ErrorTrace.cs" />
     <Compile Include="Structures\Flag.cs" />
+    <Compile Include="Structures\ItemObjectOrType.cs" />
     <Compile Include="Structures\Option.cs" />
     <Compile Include="Structures\OptionValueDepending.cs" />
     <Compile Include="Structures\SuggestedOptionsArgument.cs" />

@@ -3,10 +3,10 @@
     /// <summary>
     /// An additional setting for the arg which will change its behavior.
     /// </summary>
-    public enum ArgPredicate
+    public enum ArgFlag
     {
         /// <summary>
-        /// No predicate.
+        /// No flag.
         /// </summary>
         None,
 
@@ -14,6 +14,11 @@
         /// Value must be bigger than 0.
         /// </summary>
         BiggerThan0,
+
+        /// <summary>
+        /// Value must be bigger or equal to 0.
+        /// </summary>
+        BiggerOrEqual0,
 
         /// <summary>
         /// With this setting, if the original type fails to parse, the input will be parsed into a string.

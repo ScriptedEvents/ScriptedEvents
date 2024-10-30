@@ -62,16 +62,23 @@ namespace ScriptedEvents.API.Features
 
             for (int i = 0; i < expectedArguments.Length; i++)
             {
-                // break when we run out of args
-                if (args.Length <= i) break;
+                // assign null to the expected argument if there are no more raw arguments
+                if (args.Length <= i)
+                {
+                    success.NewParameters.Add(null);
+                    continue;
+                }
 
                 Argument argument = expectedArguments[i];
                 string input = args[i];
 
                 ArgumentProcessResult res = ProcessIndividualParameter(argument, input, action, script);
-                if (!res.ShouldExecute) return res; // Throw issue to end-user
+                if (!res.ShouldExecute)
+                {
+                    return res; // Throw issue to end-user
+                }
 
-                success.NewParameters.AddRange(res.NewParameters);
+                success.NewParameters.Add(res.NewParameters.First());
             }
 
             success.NewParameters.AddRange(args.Skip(expectedArguments.Length).Select(arg =>
@@ -236,7 +243,7 @@ namespace ScriptedEvents.API.Features
         {
             ArgumentProcessResult success = new(true);
 
-            Log($"Parameter '{expected.ArgumentName}' needs a '{expected.Predicate.Name}' type.");
+            Log($"Parameter '{expected.ArgumentName}' needs a '{expected.Flag.Name}' type.");
 
             // Extra magic for options
             if (expected is OptionsArgument options)
@@ -260,7 +267,7 @@ namespace ScriptedEvents.API.Features
 
             if (TryProcessSmartArgument(input, action, source, out var smartArgRes, out var type))
             {
-                if (expected.Predicate == type)
+                if (expected.Flag == type)
                 {
                     success.NewParameters.Add(smartArgRes!);
                 }
@@ -272,7 +279,7 @@ namespace ScriptedEvents.API.Features
                 input = saResult;
             }
 
-            switch (expected.Predicate.Name)
+            switch (expected.Flag.Name)
             {
                 // Number Types:
                 case "Boolean":
@@ -433,10 +440,10 @@ namespace ScriptedEvents.API.Features
 
                 default:
                     // Handle all enum types
-                    if (expected.Predicate.BaseType == typeof(Enum))
+                    if (expected.Flag.BaseType == typeof(Enum))
                     {
                         var genericMethod = typeof(ArgumentProcessor).GetMethod("TryGetEnum")
-                            !.MakeGenericMethod(expected.Predicate);
+                            !.MakeGenericMethod(expected.Flag);
 
                         object?[] arguments = { input, null, source, null };
 
@@ -462,7 +469,7 @@ namespace ScriptedEvents.API.Features
             {
                 trace.Append(Error(
                     $"Failed to process argument '{expected.ArgumentName}' for action '{action.Name}'",
-                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Predicate}'."));
+                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Flag}'."));
                 return new(false, true, trace);
             }
 
@@ -471,7 +478,7 @@ namespace ScriptedEvents.API.Features
                 var trace = error.ToTrace();
                 trace.Append(Error(
                     $"Failed to process argument '{expected.ArgumentName}' for action '{action.Name}'",
-                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Predicate}'."));
+                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Flag}'."));
                 return new(false, true, trace);
             }
 
