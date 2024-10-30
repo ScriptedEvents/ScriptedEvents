@@ -21,7 +21,7 @@
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
@@ -44,9 +44,9 @@ The text of the broadcast will be formatted using the countdown_string Exiled co
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var players = (PlayerCollection)Arguments[0];
-            var duration = (TimeSpan)Arguments[1];
-            var text = (string)Arguments[2];
+            var players = (PlayerCollection)Arguments[0]!;
+            var duration = (TimeSpan)Arguments[1]!;
+            var text = (string)Arguments[2]!;
 
             foreach (Player ply in players)
                 MainPlugin.GetModule<CountdownModule>().AddCountdown(ply, text, duration, script);

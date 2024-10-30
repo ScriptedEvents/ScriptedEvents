@@ -19,7 +19,7 @@
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
@@ -38,13 +38,11 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var players = (PlayerCollection)Arguments[0];
-            var duration = (TimeSpan)Arguments[1];
-            var message = (string)Arguments[2];
-
-            foreach (Player player in players)
+            foreach (Player player in (PlayerCollection)Arguments[0]!)
             {
-                player.Broadcast((ushort)duration.Seconds, message);
+                player.Broadcast(
+                    (ushort)((TimeSpan)Arguments[1]!).Seconds,
+                    (string)Arguments[2]!);
             }
 
             return new(true);

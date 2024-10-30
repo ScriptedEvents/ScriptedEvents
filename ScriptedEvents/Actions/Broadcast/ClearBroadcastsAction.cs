@@ -19,7 +19,7 @@
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Broadcast;
@@ -36,7 +36,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            foreach (Player player in (PlayerCollection)Arguments[0])
+            foreach (Player player in (PlayerCollection)Arguments[0]!)
                 player.ClearBroadcasts();
 
             return new(true);
