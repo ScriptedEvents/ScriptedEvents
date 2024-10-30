@@ -20,7 +20,7 @@
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Cassie;
@@ -41,12 +41,16 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            bool isNoisy = Arguments[0].ToUpper() == "LOUD";
-            string message = Arguments[1].ToString();
+            bool isNoisy = Arguments[0]!.ToUpper() == "LOUD";
+            string message = Arguments[1]!.ToString();
 
             if (Arguments.Length > 2)
             {
-                Cassie.MessageTranslated(message, Arguments[2].ToString().ToUpper() == "NONE" ? string.Empty : Arguments[2].ToString(), isNoisy: isNoisy);
+                string translation =
+                    (Arguments[2]?.ToUpper() ?? "NONE") == "NONE"
+                        ? string.Empty
+                        : Arguments[2]!.ToString();
+                Cassie.MessageTranslated(message, translation, isNoisy: isNoisy);
                 return new(true);
             }
 

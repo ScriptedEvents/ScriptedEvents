@@ -20,7 +20,7 @@
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Cassie;
@@ -48,17 +48,22 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[1];
-            bool isNoisy = Arguments[0].ToUpper() == "LOUD";
-            string message = Arguments[2].ToString();
+            var isNoisy = Arguments[0]!.ToUpper() == "LOUD";
+            var players = (PlayerCollection)Arguments[1]!;
+            var message = Arguments[2]!.ToString();
 
             if (Arguments.Length > 3)
             {
+                string translation =
+                    (Arguments[2]?.ToUpper() ?? "NONE") == "NONE"
+                        ? string.Empty
+                        : Arguments[2]!.ToString();
+
                 foreach (var player in players)
                 {
                     player.MessageTranslated(
                         message,
-                        Arguments[3].ToString().ToUpper() == "NONE" ? string.Empty : Arguments[3].ToString(),
+                        translation,
                         makeNoise: isNoisy);
                 }
 
