@@ -32,7 +32,7 @@
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -43,7 +43,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string ret = Arguments[0].ToUpper() switch
+            string ret = Arguments[0]!.ToUpper() switch
             {
                 "ISLOCKED" => Round.IsLocked.ToUpper(),
                 "HASSTARTED" => Round.IsStarted.ToUpper(),

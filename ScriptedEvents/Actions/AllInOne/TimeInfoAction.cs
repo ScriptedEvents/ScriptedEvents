@@ -34,7 +34,7 @@
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -53,7 +53,7 @@
                     : str;
             }
 
-            string ret = Arguments[0].ToUpper() switch
+            string ret = Arguments[0]!.ToUpper() switch
             {
                 "TICK" => ((long)(DateTime.Now - MainPlugin.Epoch).TotalSeconds).ToString(),
                 "SECOND" => Format(DateTime.Now.Second),

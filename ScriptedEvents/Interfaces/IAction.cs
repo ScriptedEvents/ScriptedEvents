@@ -1,7 +1,6 @@
-﻿using ScriptedEvents.Enums;
-
-namespace ScriptedEvents.Interfaces
+﻿namespace ScriptedEvents.Interfaces
 {
+    using ScriptedEvents.Enums;
     using ScriptedEvents.Structures;
 
     /// <summary>
@@ -22,7 +21,7 @@ namespace ScriptedEvents.Interfaces
         /// <summary>
         /// Gets or sets the arguments that this action instance will run with.
         /// </summary>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <summary>
         /// Gets or sets the raw arguments.

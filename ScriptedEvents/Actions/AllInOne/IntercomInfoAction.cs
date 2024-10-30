@@ -30,7 +30,7 @@
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -41,7 +41,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string mode = Arguments[0].ToUpper();
+            string mode = Arguments[0]!.ToUpper();
 
             if (mode == "SPEAKER")
             {
