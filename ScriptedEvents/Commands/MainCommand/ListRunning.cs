@@ -54,7 +54,7 @@
                 i++;
 
                 Script script = scriptPair.Key;
-                bldr.AppendLine($"[{i}] {script.ScriptName} | Executed by: {script.Sender?.LogName ?? "Automatic"} | {script.RunDate:g}");
+                bldr.AppendLine($"[{i}] {script.Name} | Executed by: {script.Sender?.LogName ?? "Automatic"} | {script.RunDate:g}");
             }
 
             response = $"All running scripts: \n\n{StringBuilderPool.Pool.ToStringReturn(bldr)}";
@@ -69,7 +69,7 @@
                     {
                         if (item.IsKilled || !item.IsRunning) continue;
                         i++;
-                        corobldr.AppendLine($"[{i}] TYPE: {data.Key} \\\\ TAG: {item.Key ?? "N/A"} \\\\ SOURCE: {item.Source?.ScriptName ?? "N/A"}");
+                        corobldr.AppendLine($"[{i}] TYPE: {data.Key} \\\\ TAG: {item.Key ?? "N/A"} \\\\ SOURCE: {item.Source?.Name ?? "N/A"}");
                     }
                 }
 

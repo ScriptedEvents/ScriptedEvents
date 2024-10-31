@@ -80,7 +80,7 @@
                 Context = sender is ServerConsoleSender ? ExecuteContext.ServerConsole : ExecuteContext.RemoteAdmin,
                 Sender = sender,
                 RawText = string.Join(" ", arguments),
-                ScriptName = "ACTION COMMAND",
+                Name = "ACTION COMMAND",
                 Actions = new[] { scriptAction },
             };
 

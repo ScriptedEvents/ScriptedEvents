@@ -10,13 +10,13 @@
 
         /// <inheritdoc/>
         public string Contents => @"!-- DISABLE
-#Wait until 10 seconds after the round started.
+# Wait until 10 seconds after the round started.
 WAIT UNTIL {TIME:ROUNDSECONDS} > 10
 
-#End the script immediately if there are more than 5 players alive.
+# End the script immediately if there are more than 5 players alive.
 STOP $IF {PLAYERSALIVE} > 5
 
-#Wait anywhere from 100 to 500 seconds (CHANCE always generates a random value from 0-1).
+# Wait anywhere from 100 to 500 seconds.
 WAIT SEC {RANDOM:INT:100:500}
 
 # Lights off for anywhere from 10 to 20 seconds, plus 1 second for each player.

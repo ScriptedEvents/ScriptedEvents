@@ -5,8 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="update workspace.xml">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/CoroutineHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/CoroutineHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/Logger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/Logger.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Samples/Providers/IfSamples.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Samples/Providers/IfSamples.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/HelpCommand/ScriptHelp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/HelpCommand/ScriptHelp.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/Action.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/Action.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListRunning.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListRunning.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ReadScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ReadScript.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/About.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/About.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/ConditionSamples.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/ConditionSamples.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Script.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Script.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/ScriptInfoVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/ScriptInfoVariables.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,6 +196,7 @@
       <workItem from="1728243714121" duration="795000" />
       <workItem from="1728317283353" duration="795000" />
       <workItem from="1728318097067" duration="3422000" />
+      <workItem from="1730373260449" duration="775000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
@@ -220,7 +237,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="encoding issue" />
     <MESSAGE value="update workspace.xml" />

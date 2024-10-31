@@ -51,7 +51,7 @@
             foreach (Script scr in scripts)
             {
                 i++;
-                bldr.AppendLine($"[{i}] {scr.ScriptName} (perm: {scr.ExecutePermission}) (last ran: {scr.LastRead:g}) (edited: {scr.LastEdited:g})");
+                bldr.AppendLine($"[{i}] {scr.Name} (perm: {scr.ExecutePermission}) (last ran: {scr.LastRead:g}) (edited: {scr.LastEdited:g})");
                 scr.Dispose();
             }
 

@@ -80,11 +80,11 @@
 
                 MainPlugin.ScriptModule.RunScript(scr);
 
-                response = $"Script '{scr.ScriptName}' executed successfully.";
+                response = $"Script '{scr.Name}' executed successfully.";
             }
             catch (DisabledScriptException)
             {
-                response = $"Script '{scr.ScriptName}' is disabled.";
+                response = $"Script '{scr.Name}' is disabled.";
                 scr.Dispose();
                 return false;
             }

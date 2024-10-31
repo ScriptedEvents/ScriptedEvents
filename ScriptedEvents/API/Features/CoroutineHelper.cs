@@ -29,7 +29,7 @@
 
             data.Source = source;
 
-            Logger.Debug($"Added new coroutine TYPE: {type} TAG: {coroutine.Tag ?? "N/A"} SOURCE: {source?.ScriptName ?? "N/A"} (BY HANDLE)", source);
+            Logger.Debug($"Added new coroutine TYPE: {type} TAG: {coroutine.Tag ?? "N/A"} SOURCE: {source?.Name ?? "N/A"} (BY HANDLE)", source);
         }
 
         public static void AddCoroutine(string type, string tag, Script source = null)
@@ -43,7 +43,7 @@
 
             data.Source = source;
 
-            Logger.Debug($"Added new coroutine TYPE: {type} TAG: {tag} SOURCE: {source?.ScriptName ?? "N/A"} (BY TAG)", source);
+            Logger.Debug($"Added new coroutine TYPE: {type} TAG: {tag} SOURCE: {source?.Name ?? "N/A"} (BY TAG)", source);
         }
 
         public static void KillAll()

@@ -51,17 +51,17 @@
         {
             get
             {
-                if (Arguments.Length == 0) return Source.ScriptName;
+                if (Arguments.Length == 0) return Source.Name;
 
                 string mode = Arguments[0].ToUpper();
                 return mode switch
                 {
                     "AUTORUN" => Source.HasFlag("AUTORUN").ToUpper(),
-                    "CALLER" => Source.CallerScript is not null ? Source.CallerScript.ScriptName : "NONE",
+                    "CALLER" => Source.CallerScript is not null ? Source.CallerScript.Name : "NONE",
                     "CONTEXT" => Source.Context.ToString(),
                     "DEBUG" => Source.Debug.ToUpper(),
                     "DURATION" => Source.RunDuration.TotalSeconds.ToString(),
-                    "NAME" => Source.ScriptName,
+                    "NAME" => Source.Name,
                     "PATH" => Source.FilePath ?? "N/A",
                     "VARIABLES" => Source.UniqueVariables.Keys.Concat(Source.UniquePlayerVariables.Keys).ToArray().Length != 0 ? string.Join(", ", Source.UniqueVariables.Keys.Concat(Source.UniquePlayerVariables.Keys)) : "NONE",
                     _ => throw new ArgumentException("Invalid mode.", mode)
@@ -152,7 +152,7 @@
             get
             {
                 string scriptName = (string)Arguments[0];
-                return MainPlugin.ScriptModule.RunningScripts.Any(scr => scr.Key.ScriptName == scriptName && scr.Value.IsRunning);
+                return MainPlugin.ScriptModule.RunningScripts.Any(scr => scr.Key.Name == scriptName && scr.Value.IsRunning);
             }
         }
     }

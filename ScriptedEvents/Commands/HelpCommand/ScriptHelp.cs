@@ -38,7 +38,7 @@
                 Context = ExecuteContext.ServerConsole,
                 Sender = sender,
                 RawText = $"HELP {string.Join(" ", arguments)}",
-                ScriptName = "HELP COMMAND EXECUTION",
+                Name = "HELP COMMAND EXECUTION",
             };
 
             mockScript.AddFlag("HELPCOMMANDEXECUTION");

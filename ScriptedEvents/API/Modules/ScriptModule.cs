@@ -126,13 +126,13 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                Logger.Debug($"Script '{scr.ScriptName}' set to run automatically.");
+                Logger.Debug($"Script '{scr.Name}' set to run automatically.");
 
                 try
                 {
                     if (scr.AdminEvent)
                     {
-                        Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, scr.ScriptName));
+                        Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_AdminEvent, scr.Name));
                         continue;
                     }
 
@@ -140,11 +140,11 @@ namespace ScriptedEvents.API.Modules
                 }
                 catch (DisabledScriptException)
                 {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, scr.ScriptName));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_Disabled, scr.Name));
                 }
                 catch (FileNotFoundException)
                 {
-                    Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, scr.ScriptName));
+                    Logger.Warn(ErrorGen.Get(ErrorCode.AutoRun_NotFound, scr.Name));
                 }
             }
         }
@@ -420,7 +420,7 @@ namespace ScriptedEvents.API.Modules
                 script.ExecutePermission += $".{perm2}";
             }
 
-            script.ScriptName = scriptName;
+            script.Name = scriptName;
             script.RawText = allText;
             script.FilePath = scriptDirectory;
             script.LastRead = File.GetLastAccessTimeUtc(scriptDirectory);
@@ -442,7 +442,7 @@ namespace ScriptedEvents.API.Modules
 
             script.Sender = executor;
 
-            script.DebugLog($"Debug script read successfully. Name: {script.ScriptName} | Actions: {script.Actions.Count(act => act is not NullAction)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Count(action => action is NullAction @null && @null.Type is "COMMENT")}");
+            script.DebugLog($"Debug script read successfully. Name: {script.Name} | Actions: {script.Actions.Count(act => act is not NullAction)} | Flags: {string.Join(" ", script.Flags)} | Labels: {string.Join(" ", script.Labels)} | Comments: {script.Actions.Count(action => action is NullAction @null && @null.Type is "COMMENT")}");
 
             return script;
         }
@@ -456,7 +456,7 @@ namespace ScriptedEvents.API.Modules
         public void RunScript(Script scr, bool dispose = true)
         {
             if (scr.Disabled)
-                throw new DisabledScriptException(scr.ScriptName);
+                throw new DisabledScriptException(scr.Name);
 
             CoroutineHandle handle = Timing.RunCoroutine(RunScriptInternal(scr, dispose), $"SCRIPT_{scr.UniqueId}");
             RunningScripts.Add(scr, handle);
@@ -729,7 +729,7 @@ namespace ScriptedEvents.API.Modules
             int amount = 0;
             foreach (KeyValuePair<Script, CoroutineHandle> kvp in RunningScripts)
             {
-                if (kvp.Key.ScriptName == name && StopScript(kvp.Key))
+                if (kvp.Key.Name == name && StopScript(kvp.Key))
                     amount++;
             }
 
@@ -811,7 +811,7 @@ namespace ScriptedEvents.API.Modules
         /// <returns>Coroutine iterator.</returns>
         private IEnumerator<float> RunScriptInternal(Script scr, bool dispose = true)
         {
-            MainPlugin.Info($"Started running the '{scr.ScriptName}' script.");
+            MainPlugin.Info($"Started running the '{scr.Name}' script.");
 
             yield return Timing.WaitForOneFrame;
 
@@ -892,14 +892,14 @@ namespace ScriptedEvents.API.Modules
                 }
                 catch (ScriptedEventsException seException)
                 {
-                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {seException.Message}";
+                    string message = $"[Script: {scr.Name}] [L: {scr.CurrentLine + 1}] {seException.Message}";
                     Logger.ScriptError(message, scr);
 
                     continue;
                 }
                 catch (Exception e)
                 {
-                    string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(ErrorCode.UnknownActionError, action.Name)}:\n{e}";
+                    string message = $"[Script: {scr.Name}] [L: {scr.CurrentLine + 1}] {ErrorGen.Get(ErrorCode.UnknownActionError, action.Name)}:\n{e}";
                     Logger.ScriptError(message, scr);
 
                     continue;
@@ -959,7 +959,7 @@ namespace ScriptedEvents.API.Modules
 
                     if (!string.IsNullOrEmpty(resp.Message))
                     {
-                        string message = $"[Script: {scr.ScriptName}] [L: {scr.CurrentLine + 1}] [{action.Name}] Response: {resp.Message}";
+                        string message = $"[Script: {scr.Name}] [L: {scr.CurrentLine + 1}] [{action.Name}] Response: {resp.Message}";
                         switch (scr.Context)
                         {
                             case ExecuteContext.RemoteAdmin:
@@ -990,15 +990,15 @@ namespace ScriptedEvents.API.Modules
             }
 
             scr.DebugLog("-----------");
-            scr.DebugLog($"Script {scr.ScriptName} concluded. Total time '{runTime.Elapsed:mm':'ss':'fff}', Executed '{successfulLines}/{lines}' ({Math.Round((float)successfulLines / lines * 100)}%) actions successfully");
-            MainPlugin.Info($"Finished running script {scr.ScriptName}.");
+            scr.DebugLog($"Script {scr.Name} concluded. Total time '{runTime.Elapsed:mm':'ss':'fff}', Executed '{successfulLines}/{lines}' ({Math.Round((float)successfulLines / lines * 100)}%) actions successfully");
+            MainPlugin.Info($"Finished running script {scr.Name}.");
             scr.DebugLog("-----------");
             scr.IsRunning = false;
 
             if (scr.HasFlag("LOOP"))
             {
                 scr.DebugLog("Re-running looped script.");
-                ReadAndRun(scr.ScriptName, scr.Sender); // so that it re-reads the content of the text file.
+                ReadAndRun(scr.Name, scr.Sender); // so that it re-reads the content of the text file.
             }
 
             scr.DebugLog("Removing script from running scripts.");

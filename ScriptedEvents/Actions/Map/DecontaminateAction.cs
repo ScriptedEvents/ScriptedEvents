@@ -50,7 +50,6 @@
                     // Todo: And this?
                     DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.None;
                     break;
-                case "FORCE":
                 default:
                     Map.StartDecontamination();
                     break;

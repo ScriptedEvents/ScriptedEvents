@@ -104,11 +104,11 @@
 
                     if (CurrentEventData.ContainsKey(evName))
                     {
-                        CurrentEventData[evName].Add(scr.ScriptName);
+                        CurrentEventData[evName].Add(scr.Name);
                     }
                     else
                     {
-                        CurrentEventData.Add(evName, new List<string>() { scr.ScriptName });
+                        CurrentEventData.Add(evName, new List<string>() { scr.Name });
                     }
                 }
 
@@ -117,11 +117,11 @@
                     string cEvName = cf.Arguments[0];
                     if (CurrentCustomEventData.ContainsKey(cEvName))
                     {
-                        CurrentCustomEventData[cEvName].Add(scr.ScriptName);
+                        CurrentCustomEventData[cEvName].Add(scr.Name);
                     }
                     else
                     {
-                        CurrentCustomEventData.Add(cEvName, new List<string>() { scr.ScriptName });
+                        CurrentCustomEventData.Add(cEvName, new List<string>() { scr.Name });
                     }
                 }
 
