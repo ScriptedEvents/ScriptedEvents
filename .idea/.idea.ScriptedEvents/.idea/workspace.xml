@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="update workspace.xml">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

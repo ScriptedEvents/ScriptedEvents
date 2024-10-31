@@ -68,7 +68,7 @@
             }
             catch (Exception)
             {
-                message = $"Config file was created successfully, but an error occurred when opening external text editor (likely due to permissions). File is located at: {ConfigPath}.";
+                message = $"Config file was created successfully, but an error occurred when opening external text editor (likely due to permissions). File is located at: {ConfigPath}. Please fill out the generated config file using 'y' for yes and 'n' for no. When done, run the 'shelp GDONE' command.\"";
                 return false;
             }
 
