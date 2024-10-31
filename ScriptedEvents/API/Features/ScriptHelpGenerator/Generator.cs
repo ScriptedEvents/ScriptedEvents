@@ -360,10 +360,16 @@
                 }
 
                 Version version = new(contents.Substring(versionIndex + 3));
+                Version pluginVersion = MainPlugin.Singleton.Version;
 
-                if (version < MainPlugin.Singleton.Version)
+                if (pluginVersion == new Version(6, 6, 6))
                 {
-                    message = $"Your local ScriptedEvents documentation is NOT UP TO DATE!! Consider re-generating your local documentation using the 'shelp GENERATE' command. Plugin Version: {MainPlugin.Singleton.Version} Doc Version: {version}";
+                    pluginVersion = new Version(3, 2, 0);
+                }
+
+                if (version != pluginVersion)
+                {
+                    message = $"Your local ScriptedEvents documentation is NOT SYNCED! Consider re-generating your local documentation using the 'shelp GENERATE' command. Plugin Version: {pluginVersion} Doc Version: {version}";
                     return false;
                 }
 

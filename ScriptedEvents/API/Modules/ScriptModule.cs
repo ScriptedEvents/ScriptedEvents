@@ -59,7 +59,7 @@ namespace ScriptedEvents.API.Modules
         /// </summary>
         public Dictionary<string, CustomAction> CustomActions { get; } = new();
 
-        public List<string> AutoRunScripts { get; set; }
+        public List<string> AutoRunScripts { get; set; } = new();
 
         /// <inheritdoc/>
         public override string Name { get; } = "ScriptModule";
@@ -129,7 +129,7 @@ namespace ScriptedEvents.API.Modules
                 }
 
                 Logger.Debug($"Script '{scr.Name}' set to run automatically.");
-
+                AutoRunScripts.Add(scr.Name);
                 try
                 {
                     if (scr.AdminEvent)
@@ -196,7 +196,7 @@ namespace ScriptedEvents.API.Modules
                     Logger.Error($"Duplicate script name '{duplicate}' found! Please ensure all script names are unique.");
                 }
 
-                throw new ArgumentException("The collection contains duplicate items, which is not allowed.");
+                throw new ArgumentException($"There are {duplicates.Count} scripts of which the names are not unique. Please ensure all script names are unique to avoid conflicts.");
             }
 
             foreach (string file in files)

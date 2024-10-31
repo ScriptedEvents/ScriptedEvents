@@ -43,7 +43,17 @@
                 return false;
             }
 
-            List<Script> scripts = MainPlugin.ScriptModule.ListScripts(sender);
+            List<Script> scripts;
+            try
+            {
+                 scripts = MainPlugin.ScriptModule.ListScripts(sender);
+            }
+            catch (ArgumentException)
+            {
+                response =
+                    "Error! There are multiple scripts with the same name. See server console for more information.";
+                return false;
+            }
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
             int i = 0;

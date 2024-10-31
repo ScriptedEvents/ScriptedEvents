@@ -76,7 +76,7 @@
         public override string Author => "Elektryk_Andrzej and Thunder";
 
         /// <inheritdoc/>
-        public override Version Version => new(3, 2, 0);
+        public override Version Version => new(6,6, 6);
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion => new(8, 13, 1);
@@ -122,6 +122,20 @@
                     module.Init();
                     modules.Add(module);
                 }
+            }
+            
+            if (Version == new Version(6, 6, 6) && DateTime.Now.Month == 10 && DateTime.Now.Day == 31)
+            {
+                Logger.Error(@"
+         \\                \\                \\
+    .-'```^```'-.     .-'```^```'-.     .-'```^```'-.
+   /   /\ __ /\  \   /   (\ __ /)  \   /   /) __ (\  \
+   |   ^^ \/ ^^  |   |    ` \/ `   |   |   ^  \/  ^  |
+   \   \_.__._/  /   \    \____/   /   \    `'=='`   /
+    `'-.......-'`     `'-.......-'`     `'-.......-'` ldb        
+                     Happy Halloween!     
+               by v6.6.6 of ScriptedEvents
+");
             }
 
             Timing.CallDelayed(6f, () =>
