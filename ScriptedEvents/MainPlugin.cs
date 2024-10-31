@@ -39,7 +39,7 @@ namespace ScriptedEvents
         /// </summary>
         public const string GitHub = "https://github.com/Thundermaker300/ScriptedEvents";
 
-        private static List<SEModule> modules = new();
+        private static readonly List<SEModule> InternalModules = new();
 
         /// <summary>
         /// Gets the plugin singleton.
@@ -89,7 +89,7 @@ namespace ScriptedEvents
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
 
-        public static IEnumerable<SEModule> Modules => modules.Where(mod => mod.IsActive);
+        public static IEnumerable<SEModule> Modules => InternalModules.Where(mod => mod.IsActive);
 
         public static ScriptModule ScriptModule => GetModule<ScriptModule>();
 
@@ -125,7 +125,7 @@ namespace ScriptedEvents
                         module.GenerateFiles();
 
                     module.Init();
-                    modules.Add(module);
+                    InternalModules.Add(module);
                 }
             }
 
