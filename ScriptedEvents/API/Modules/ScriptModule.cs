@@ -1,3 +1,5 @@
+using System.Data;
+
 namespace ScriptedEvents.API.Modules
 {
     using System;
@@ -180,6 +182,22 @@ namespace ScriptedEvents.API.Modules
         {
             List<Script> scripts = new();
             string[] files = Directory.GetFiles(BasePath, "*.txt", SearchOption.AllDirectories);
+            var duplicates = files
+                .Select(Path.GetFileNameWithoutExtension)
+                .GroupBy(s => s)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+
+            if (duplicates.Count > 0)
+            {
+                foreach (var duplicate in duplicates)
+                {
+                    Logger.Error($"Duplicate script name '{duplicate}' found! Please ensure all script names are unique.");
+                }
+
+                throw new ArgumentException("The collection contains duplicate items, which is not allowed.");
+            }
 
             foreach (string file in files)
             {

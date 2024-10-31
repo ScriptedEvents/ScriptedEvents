@@ -5,24 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="update workspace.xml">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/CoroutineHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/CoroutineHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/Logger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/Logger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Samples/Providers/IfSamples.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Samples/Providers/IfSamples.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/HelpCommand/ScriptHelp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/HelpCommand/ScriptHelp.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/Action.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/Action.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListRunning.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListRunning.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ReadScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ReadScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/About.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/About.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/ConditionSamples.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/ConditionSamples.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Script.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Script.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/ScriptInfoVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/ScriptInfoVariables.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,6 +93,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/a5/ebffca01/Dictionary`2.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/db/666fceeb/Enum.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/cb10811cc64f416ea6a2a6f713d9c0aa17a868/38/6f41e577/Enumerable.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/cc5db45973834e0395821fdfb9e6ad5035f220/bf/33ba6ef9/DuplicateNameException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d493b05aea3341789b433174d05949e235f448/c6/a3cbb8e2/Process.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f43b9823b4df441faedb45bf5476220d75400/0f/3ac7f142/Ragdoll.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f43b9823b4df441faedb45bf5476220d75400/34/9287260b/RoleExtensions.cs" root0="SKIP_HIGHLIGHTING" />
@@ -196,7 +182,7 @@
       <workItem from="1728243714121" duration="795000" />
       <workItem from="1728317283353" duration="795000" />
       <workItem from="1728318097067" duration="3422000" />
-      <workItem from="1730373260449" duration="775000" />
+      <workItem from="1730373260449" duration="1912000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
