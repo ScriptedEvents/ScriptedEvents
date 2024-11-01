@@ -1,16 +1,12 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions.Item
+﻿namespace ScriptedEvents.Actions.Item
 {
     using System;
     using System.Linq;
-
     using Exiled.API.Features;
-    using Exiled.API.Features.Items;
-
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class ItemAction : IScriptAction, IHelpInfo, ILongDescription
@@ -25,7 +21,7 @@ namespace ScriptedEvents.Actions.Item
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Item;
@@ -40,8 +36,9 @@ namespace ScriptedEvents.Actions.Item
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("Add", "Add an item to the player's inventory."),
-                new("Remove", "Remove an item from the player's inventory.")),
+                new Option("Add", "Adds an item to the player's inventory."),
+                new Option("Drop", "Drops an item from the player's inventory."),
+                new Option("Remove", "Removes an item from the player's inventory.")),
             new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
             new Argument("item", typeof(ItemType), "The item to add/remove.", true),
             new Argument("amount", typeof(int), "The amount of items to add/remove. Default: 1", false),
@@ -50,16 +47,12 @@ namespace ScriptedEvents.Actions.Item
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var plys = (PlayerCollection)Arguments[1];
-            var itemType = (ItemType)Arguments[2];
-            var amt = 1;
+            var mode = Arguments[0]!.ToUpper();
+            var plys = (PlayerCollection)Arguments[1]!;
+            var itemType = (ItemType)Arguments[2]!;
+            var amt = (int?)Arguments[3] ?? 1;
 
-            if (Arguments.Length >= 4)
-            {
-                amt = (int)Arguments[3];
-            }
-
-            Action<Player> action = Arguments[0].ToUpper() switch
+            Action<Player> action = mode switch
             {
                 "REMOVE" => (player) =>
                 {
@@ -70,6 +63,14 @@ namespace ScriptedEvents.Actions.Item
                     }
                 },
                 "ADD" => (player) => { player.AddItem(itemType); },
+                "DROP" => player =>
+                {
+                    var item = player.Items.FirstOrDefault(r => r.Type == itemType);
+                    if (item is not null)
+                    {
+                        player.DropItem(item);
+                    }
+                },
                 _ => throw new Exception($"Unknown mode: {Arguments[0]}"),
             };
 

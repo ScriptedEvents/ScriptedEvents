@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.API.Constants
+﻿using PlayerRoles;
+
+namespace ScriptedEvents.API.Constants
 {
     using System;
     using System.Linq;
@@ -50,12 +52,15 @@ The following keys can ONLY be used in DISABLE and ENABLE. They cannot be tied t
 - 'HeavyContainment' - Targets heavy containment rooms
 - 'Entrance' - Targets entrance rooms
 
-Alternatively, a Room ID can be used. A full list of valid Room IDs (as of {DateTime.Now:g}) follows:
+Alternatively, a Room ID can be used. A full list of valid RoomType inputs (as of {DateTime.Now:g}) follows:
 {string.Join("\n", ((RoomType[])Enum.GetValues(typeof(RoomType))).Where(r => r is not RoomType.Unknown).Select(r => $"- [{r:d}] {r}"))}";
 
-        public static readonly string ItemInput = $@" A full list of valid Item IDs (as of {DateTime.Now:g}) follows:
+        public static readonly string ItemInput = $@" A full list of valid ItemType inputs (as of {DateTime.Now:g}) follows:
 {string.Join("\n", ((ItemType[])Enum.GetValues(typeof(ItemType))).Where(r => r is not ItemType.None).Select(r => $"- [{r:d}] {r}"))}
 
 Alternatively, the ID of a CustomItem can be used.";
+
+        public static readonly string RoleTypeInput = $@" A full list of valid RoleTypeId inputs (as of {DateTime.Now:g}) follows:
+{string.Join("\n", ((RoleTypeId[])Enum.GetValues(typeof(ItemType))).Where(r => r is not RoleTypeId.None).Select(r => $"- [{r:d}] {r}"))}";
     }
 }

@@ -1,23 +1,20 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions.Item
+﻿namespace ScriptedEvents.Actions.Item
 {
     using System;
-
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-
-    using Actions.Samples.Interfaces;
-    using Actions.Samples.Providers;
-    using API.Extensions;
-    using Structures;
+    using ScriptedEvents.Actions.Samples.Interfaces;
+    using ScriptedEvents.Actions.Samples.Providers;
+    using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
+    using ScriptedEvents.Structures;
 
     public class RadioRangeAction : IScriptAction, IHelpInfo, ISampleAction
     {
         /// <inheritdoc/>
-        public string Name => "RADIORANGE";
+        public string Name => "RadioRange";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -26,7 +23,7 @@ namespace ScriptedEvents.Actions.Item
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Item;
@@ -38,8 +35,8 @@ namespace ScriptedEvents.Actions.Item
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("Set", "Only sets the range of the radio."),
-                new("Lock", "Sets the range and locks its value so it cannot be changed.")),
+                new Option("Set", "Only sets the range of the radio."),
+                new Option("Lock", "Sets the range and locks its value so it cannot be changed.")),
             new Argument("players", typeof(PlayerCollection), "The players to change the radio settings of.", true),
             new Argument("range", typeof(RadioRange), "The new radio range. Must be: Short, Medium, Long, or Ultra", true),
         };
@@ -50,27 +47,25 @@ namespace ScriptedEvents.Actions.Item
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[1];
-            RadioRange range = (RadioRange)Arguments[2];
+            var mode = Arguments[0]!.ToUpper();
+            var players = (PlayerCollection)Arguments[1]!;
+            var range = (RadioRange)Arguments[2]!;
 
             foreach (Player ply in players)
             {
-                foreach (Item item in ply.Items)
+                foreach (var item in ply.Items)
                 {
-                    if (item is Radio radio)
-                    {
-                        radio.Range = range;
-                        radio.Base.SendStatusMessage();
-                    }
+                    if (item is not Radio radio) continue;
+                    radio.Range = range;
+                    radio.Base.SendStatusMessage();
                 }
             }
 
-            if (Arguments[0].ToUpper() is "LOCK")
+            if (mode is not "LOCK") return new(true);
+
+            foreach (Player ply in players)
             {
-                foreach (Player ply in players)
-                {
-                    MainPlugin.Handlers.LockedRadios[ply] = range;
-                }
+                MainPlugin.Handlers.LockedRadios[ply] = range;
             }
 
             return new(true);

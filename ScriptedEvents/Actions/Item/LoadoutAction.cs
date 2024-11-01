@@ -1,19 +1,18 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.Item
 {
     using System;
-
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using PlayerRoles;
+    using ScriptedEvents.API.Constants;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
-    public class LoadoutAction : IScriptAction, IHelpInfo
+    public class LoadoutAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "GIVELOADOUT";
+        public string Name => "GiveLoadout";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -22,13 +21,16 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Item;
 
         /// <inheritdoc/>
         public string Description => "Grants a class loadout to the targeted players.";
+
+        /// <inheritdoc/>
+        public string LongDescription => ConstMessages.RoleTypeInput;
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -40,8 +42,8 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection plys = (PlayerCollection)Arguments[0];
-            RoleTypeId role = (RoleTypeId)Arguments[1];
+            PlayerCollection plys = (PlayerCollection)Arguments[0]!;
+            RoleTypeId role = (RoleTypeId)Arguments[1]!;
 
             foreach (Player player in plys)
             {

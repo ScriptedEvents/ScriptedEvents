@@ -109,7 +109,6 @@
     <Compile Include="Actions\DebugActions\DebugExtractAction.cs" />
     <Compile Include="Actions\DebugActions\DebugProcessorAction.cs" />
     <Compile Include="Actions\Health\HealAction.cs" />
-    <Compile Include="Actions\Item\DropItemAction.cs" />
     <Compile Include="Actions\Item\RandomItemAction.cs" />
     <Compile Include="Actions\Map\CleanupRagdollsAction.cs" />
     <Compile Include="Actions\Map\DoorPermAction.cs" />
