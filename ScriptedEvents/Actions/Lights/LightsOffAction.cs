@@ -1,19 +1,16 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.Lights
 {
     using System;
-
     using Exiled.API.Features;
-
     using ScriptedEvents.API.Constants;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class LightsOffAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "LIGHTSOFF";
+        public string Name => "LightsOff";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -22,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Lights;
@@ -37,14 +34,14 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("room", typeof(Room[]), "The room to flicker the lights off.", true),
-            new Argument("duration", typeof(float), "The duration of the lights out.", true),
+            new Argument("duration", typeof(TimeSpan), "The duration of the lights out.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Room[] rooms = (Room[])Arguments[0];
-            float duration = (float)Arguments[1];
+            var rooms = (Room[])Arguments[0]!;
+            var duration = (float)Arguments[1]!;
 
             foreach (Room room in rooms)
                 room.TurnOffLights(duration);
