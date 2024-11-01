@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="update workspace.xml">
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,6 +184,7 @@
       <workItem from="1728317283353" duration="795000" />
       <workItem from="1728318097067" duration="3422000" />
       <workItem from="1730373260449" duration="1912000" />
+      <workItem from="1730412462914" duration="877000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
