@@ -113,6 +113,8 @@
     <Compile Include="Actions\Map\CleanupRagdollsAction.cs" />
     <Compile Include="Actions\Map\DoorPermAction.cs" />
     <Compile Include="Actions\Map\DoorStateAction.cs" />
+    <Compile Include="Actions\Map\LightColorAction.cs" />
+    <Compile Include="Actions\Map\LightsOffAction.cs" />
     <Compile Include="Actions\Map\RandomDoorAction.cs" />
     <Compile Include="Actions\Map\RandomRoomAction.cs" />
     <Compile Include="Actions\Map\SpawnGrenadeAction.cs" />
@@ -219,7 +221,6 @@
     <Compile Include="API\Features\ScriptHelpGenerator\Generator.cs" />
     <Compile Include="API\Features\ScriptHelpGenerator\GeneratorConfig.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
-    <Compile Include="Actions\Lights\LightColorAction.cs" />
     <Compile Include="Actions\Samples\Providers\CassieSamples.cs" />
     <Compile Include="Actions\Samples\Interfaces\ISampleAction.cs" />
     <Compile Include="Actions\Samples\Interfaces\ISampleProvider.cs" />
@@ -332,7 +333,6 @@
     <Compile Include="Actions\Map\DecontaminateAction.cs" />
     <Compile Include="Actions\Map\DoorAction.cs" />
     <Compile Include="Actions\Player\EffectAction.cs" />
-    <Compile Include="Actions\Lights\LightsOffAction.cs" />
     <Compile Include="Actions\Server\LogAction.cs" />
     <Compile Include="Actions\Logic\StopAction.cs" />
     <Compile Include="Actions\Variable\GlobalSaveAction.cs" />

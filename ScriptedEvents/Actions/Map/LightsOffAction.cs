@@ -22,7 +22,7 @@
         public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Lights;
+        public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
         public string Description => "Turns all the lights off for a given period of time.";

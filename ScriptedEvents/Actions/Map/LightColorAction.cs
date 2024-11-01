@@ -24,7 +24,7 @@
         public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.Lights;
+        public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
         public string Description => "Sets the lights in the provided room(s) to the given RGB color, from 0 to 255, but can be set higher.";
