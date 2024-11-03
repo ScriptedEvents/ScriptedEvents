@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="update workspace.xml">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/CallAction.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +53,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/ILViewer/cb10811cc64f416ea6a2a6f713d9c0aa17a868/1b/59e1842e/0200014C.il" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/ILViewer/f43b9823b4df441faedb45bf5476220d75400/75/d441da3c/02000093.il" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/ILViewer/f43b9823b4df441faedb45bf5476220d75400/9c/3462f4b1/020000DC.il" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0594d213d02e488398c476c559e1ee8e27c400/57/0826fd67/RespawnEffectsController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0be654b589bd49f9a9b7c57c547f76f4f600/a9/9061b9b3/CustomItem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0da8a94897c945419a9935a75f4e9b6a531020/50/d058f84b/List`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0da8a94897c945419a9935a75f4e9b6a531020/52/51170bf9/Tuple`3.cs" root0="FORCE_HIGHLIGHTING" />
@@ -82,6 +86,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/88dd616239b04a74adbfcfb4428481f81c018/2c/120a32c7/PhysicsScene.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/88dd616239b04a74adbfcfb4428481f81c018/79/d90d0b50/RaycastHit.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/88dd616239b04a74adbfcfb4428481f81c018/7f/56e6cc39/Physics.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4874c55835646f488db4a97ac142ed62d200/b2/a4a2f72b/NetworkBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/af8acf00cf074a9d8c2f2190d6bd1428532bc0/68/e5d9ce58/Enum.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/af8acf00cf074a9d8c2f2190d6bd1428532bc0/f4/9c63e980/Int32.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/aff3a905bea14cbeaf316593b3097008136218/ae/5ee18d30/Vector3.cs" root0="FORCE_HIGHLIGHTING" />
@@ -105,6 +110,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f43b9823b4df441faedb45bf5476220d75400/dd/d28aeb4a/KeycardPermissions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/b0/e248cf81/Item.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/d0/b5a87337/Intercom.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/d1/11359881/Cassie.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/f9/2bea4ae0/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
@@ -185,6 +191,11 @@
       <workItem from="1728318097067" duration="3422000" />
       <workItem from="1730373260449" duration="1912000" />
       <workItem from="1730412462914" duration="877000" />
+      <workItem from="1730489860572" duration="1163000" />
+      <workItem from="1730491328925" duration="962000" />
+      <workItem from="1730494526771" duration="3329000" />
+      <workItem from="1730555525730" duration="319000" />
+      <workItem from="1730560551625" duration="761000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
