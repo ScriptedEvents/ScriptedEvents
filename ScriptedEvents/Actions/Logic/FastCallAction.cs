@@ -40,7 +40,7 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            /*
+            
             string scriptName = (string)Arguments[0];
             Script calledScript;
 
@@ -92,7 +92,7 @@ namespace ScriptedEvents.Actions
             }
 
             calledScript.Execute();
-            */
+            
             return new(false, "Action not implemented.");
         }
     }

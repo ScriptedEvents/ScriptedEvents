@@ -710,7 +710,7 @@ namespace ScriptedEvents.API.Modules
             MainPlugin.Info($"Assembly '{assembly.GetName().Name}' has registered {i} actions.");
         }
 
-        public bool TryRunScript(Script scr, out ErrorTrace? errorTrace, bool dispose = true)
+        public bool TryRunScript(Script scr, out ErrorTrace? errorTrace, out CoroutineHandle? handle, bool dispose = true)
         {
             if (scr.IsDisabled)
             {
@@ -718,11 +718,13 @@ namespace ScriptedEvents.API.Modules
                         $"Script '{scr.ScriptName}' is disabled",
                         "This script is probably marked by the '!-- DISABLED' flag.")
                     .ToTrace();
+                handle = default;
                 return false;
             }
 
-            CoroutineHandle handle = Timing.RunCoroutine(SafeRunCoroutine(RunScriptInternal(scr, dispose)), $"SCRIPT_{scr.UniqueId}");
-            RunningScripts.Add(scr, handle);
+            CoroutineHandle currHandle = Timing.RunCoroutine(SafeRunCoroutine(RunScriptInternal(scr, dispose)), $"SCRIPT_{scr.UniqueId}");
+            RunningScripts.Add(scr, currHandle);
+            handle = currHandle;
             errorTrace = null;
             return true;
         }

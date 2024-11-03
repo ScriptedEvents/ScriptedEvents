@@ -102,11 +102,13 @@
         /// <param name="skipCount">Amount of parameters to skip.</param>
         /// <param name="sep">The separator string.</param>
         /// <returns>The new string.</returns>
-        public static string JoinMessage(this object[] param, int skipCount = 0, string sep = " ")
+        public static string JoinMessage(this object?[] param, int skipCount = 0, string sep = " ")
         {
             StringBuilder sb = StringBuilderPool.Pool.Get();
             var list = param.Skip(skipCount);
-            var enumerable = list as object[] ?? list.ToArray();
+
+            // ReSharper disable once CanReplaceCastWithVariableType
+            var enumerable = list.Where(x => x is not null).ToArray() as object[];
             if (!enumerable.Any()) return string.Empty;
 
             foreach (var obj in enumerable)

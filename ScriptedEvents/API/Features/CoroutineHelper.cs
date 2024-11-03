@@ -19,7 +19,7 @@
             if (Coroutines.ContainsKey(type))
                 Coroutines[type].Add(data);
             else
-                Coroutines.Add(type, new List<CoroutineData>() { data });
+                Coroutines.Add(type, new List<CoroutineData> { data });
 
             if (coroutine.Tag is not null)
                 data.Key = coroutine.Tag;

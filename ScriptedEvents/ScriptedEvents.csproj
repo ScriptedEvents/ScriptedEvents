@@ -119,7 +119,7 @@
     <Compile Include="Actions\Map\RandomRoomAction.cs" />
     <Compile Include="Actions\Map\SpawnGrenadeAction.cs" />
     <Compile Include="Actions\Item\LoadoutAction.cs" />
-    <Compile Include="Actions\Logic\CallAction.cs" />
+    <Compile Include="Actions\Logic\RunScriptAction.cs" />
     <Compile Include="Actions\Logic\EndIfAction.cs" />
     <Compile Include="Actions\Logic\FastCallAction.cs" />
     <Compile Include="Actions\Logic\EndFunctionAction.cs" />

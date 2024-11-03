@@ -294,12 +294,12 @@ namespace ScriptedEvents
         /// <param name="isVariableNameVerified">Whether variable name has already been verified to be valid.</param>
         public void AddLiteralVariable(string name, string value, bool isVariableNameVerified)
         {
-            if (!VariableSystem.IsValidVariableSyntax<ILiteralVariable>(name, out var processedName, out var info) && !isVariableNameVerified)
+            if (!VariableSystem.IsValidVariableSyntax<ILiteralVariable>(name, out name, out var info) && !isVariableNameVerified)
             {
                 throw new ArgumentException(info!.ToTrace().Format());
             }
 
-            UniqueLiteralVariables[processedName] = new(processedName, string.Empty, value);
+            UniqueLiteralVariables[name] = new(name, string.Empty, value);
         }
 
         /// <summary>
