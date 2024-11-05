@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
+    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="raaxxxx">
+      <change afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/DogHideAndSeek.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/PeanutRun.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/MiscVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/MiscVariables.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Examples/Added Event Example Script - Hitmarker.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Examples/Added Event Example Script - Hitmarker.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Examples/DogHideAndSeek.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Examples/DogHideAndSeek.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Examples/PeanutRun.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Examples/PeanutRun.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -238,7 +243,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="encoding issue" />
     <MESSAGE value="update workspace.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="raaxxxx" />
+    <option name="LAST_COMMIT_MESSAGE" value="raaxxxx" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
