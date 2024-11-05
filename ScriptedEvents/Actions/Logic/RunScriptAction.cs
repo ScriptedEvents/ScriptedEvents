@@ -36,7 +36,7 @@ namespace ScriptedEvents.Actions.Logic
         {
             new OptionsArgument("mode", true,
                 new Option("NoWait", "Action will not wait until the script stops running."),
-                new Option("WaitForFinish", "Action will wait until the called script stops running before proceeding.")),
+                new Option("WaitForFinish", "Action will wait until the called script stops running before allowing the current script to proceed.")),
             new Argument("script", typeof(Script), "The script to call.", true),
             new Argument("arguments", typeof(string), "The optional arguments to provide for the called script. Arguments are provided in the same way as with custom commands.", false),
         };
