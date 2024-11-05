@@ -54,10 +54,14 @@
         /// <summary>
         /// Gets a list of demo scripts.
         /// </summary>
-        public static IDemoScript[] DemoScripts { get; } = new IDemoScript[]
+        public static IDemoScript[] DemoScripts { get; } =
         {
+            new About(),
             new DemoScript(),
             new ConditionSamples(),
+            new DogHideAndSeek(),
+            new HitMarker(),
+            new PeanutRun(),
         };
 
         public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
