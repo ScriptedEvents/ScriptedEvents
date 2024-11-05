@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="update workspace.xml">
+    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/CallAction.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/MiscVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/MiscVariables.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +84,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/88dd616239b04a74adbfcfb4428481f81c018/2c/120a32c7/PhysicsScene.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/88dd616239b04a74adbfcfb4428481f81c018/79/d90d0b50/RaycastHit.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/88dd616239b04a74adbfcfb4428481f81c018/7f/56e6cc39/Physics.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4874c55835646f488db4a97ac142ed62d200/b2/a4a2f72b/NetworkBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4874c55835646f488db4a97ac142ed62d200/b2/a4a2f72b/NetworkBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/af8acf00cf074a9d8c2f2190d6bd1428532bc0/68/e5d9ce58/Enum.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/af8acf00cf074a9d8c2f2190d6bd1428532bc0/f4/9c63e980/Int32.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/aff3a905bea14cbeaf316593b3097008136218/ae/5ee18d30/Vector3.cs" root0="FORCE_HIGHLIGHTING" />
@@ -196,6 +194,7 @@
       <workItem from="1730494526771" duration="3329000" />
       <workItem from="1730555525730" duration="319000" />
       <workItem from="1730560551625" duration="761000" />
+      <workItem from="1730662416688" duration="1179000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
@@ -239,7 +238,7 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="encoding issue" />
     <MESSAGE value="update workspace.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="update workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
