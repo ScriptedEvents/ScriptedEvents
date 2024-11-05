@@ -43,6 +43,11 @@
         {
             string ev = (string)Arguments[0];
 
+            if (!ESModule.CurrentCustomEventData.ContainsKey(ev))
+            {
+                return new(false, $"Provided custom event '{ev}' is not used in any scripts. Please ensure that there are scripts assigned to this event using the !-- CUSTOMEVENT flag.");
+            }
+
             foreach (string scriptName in ESModule.CurrentCustomEventData[ev])
             {
                 MainPlugin.ScriptModule.ReadAndRun(scriptName, script.Sender);

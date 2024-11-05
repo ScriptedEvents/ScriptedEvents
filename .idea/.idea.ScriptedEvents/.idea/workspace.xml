@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="raaxxxx">
-      <change afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/DogHideAndSeek.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/PeanutRun.cs" afterDir="false" />
+    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/Added Event Example Script - Hitmarker.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Examples/Added Event Example Script - Hitmarker.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/DogHideAndSeek.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Examples/DogHideAndSeek.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Examples/PeanutRun.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Examples/PeanutRun.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/TriggerAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/TriggerAction.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,6 +113,7 @@
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Logic/TriggerAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Samples/Providers/TeslaSamples.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteAutorunScript.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" root0="FORCE_HIGHLIGHTING" />
@@ -200,6 +196,7 @@
       <workItem from="1730555525730" duration="319000" />
       <workItem from="1730560551625" duration="761000" />
       <workItem from="1730662416688" duration="1179000" />
+      <workItem from="1730835257742" duration="302000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
