@@ -21,16 +21,13 @@
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.EventArgs.Warhead;
-
     using MapGeneration.Distributors;
     using MEC;
     using PlayerRoles;
-
     using Respawning;
-
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
-
     using UnityEngine;
 
     using MapHandler = Exiled.Events.Handlers.Map;
@@ -181,6 +178,7 @@
             PlayerHandler.InteractingElevator += OnInteractingElevator;
             PlayerHandler.Escaping += OnEscaping;
             PlayerHandler.Spawned += OnSpawned;
+            PlayerHandler.Verified += OnVerified;
 
             PlayerHandler.PickingUpItem += OnPickingUpItem;
             PlayerHandler.ChangingRadioPreset += OnChangingRadioPreset;
@@ -267,6 +265,7 @@
             PlayerHandler.InteractingElevator -= OnInteractingElevator;
             PlayerHandler.Escaping -= OnEscaping;
             PlayerHandler.Spawned -= OnSpawned;
+            PlayerHandler.Verified += OnVerified;
 
             PlayerHandler.PickingUpItem -= OnPickingUpItem;
             PlayerHandler.ChangingRadioPreset -= OnChangingRadioPreset;
@@ -523,6 +522,11 @@
             {
                 effects3.ForEach(eff => ev.Player.SyncEffect(eff));
             }
+        }
+
+        private void OnVerified(VerifiedEventArgs ev)
+        {
+            CreditHandler.AddCreditTagIfApplicable(ev.Player);
         }
 
         // Infection
