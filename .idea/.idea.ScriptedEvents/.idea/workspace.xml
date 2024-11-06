@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="add Credits">
-      <change afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/x.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/JoinBroadcast.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/HitMarker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/HitMarker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/CreditHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/CreditHandler.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -221,7 +215,7 @@
       <workItem from="1730835257742" duration="575000" />
       <workItem from="1730837405421" duration="1212000" />
       <workItem from="1730908106315" duration="5430000" />
-      <workItem from="1730913599517" duration="7704000" />
+      <workItem from="1730913599517" duration="8141000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
