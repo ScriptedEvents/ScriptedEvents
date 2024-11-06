@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="add Credits">
+      <change afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/x.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/JoinBroadcast.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Constants/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Constants/Constants.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/HitMarker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/HitMarker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +58,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/ILViewer/f43b9823b4df441faedb45bf5476220d75400/9c/3462f4b1/020000DC.il" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0594d213d02e488398c476c559e1ee8e27c400/0b/7775c77d/ServerRoles.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0594d213d02e488398c476c559e1ee8e27c400/57/0826fd67/RespawnEffectsController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0594d213d02e488398c476c559e1ee8e27c400/70/fd2d75b2/GameConsoleCommandHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0594d213d02e488398c476c559e1ee8e27c400/cd/03c029d8/ClientCommandHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0be654b589bd49f9a9b7c57c547f76f4f600/a9/9061b9b3/CustomItem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0da8a94897c945419a9935a75f4e9b6a531020/50/d058f84b/List`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0da8a94897c945419a9935a75f4e9b6a531020/52/51170bf9/Tuple`3.cs" root0="FORCE_HIGHLIGHTING" />
@@ -214,7 +221,7 @@
       <workItem from="1730835257742" duration="575000" />
       <workItem from="1730837405421" duration="1212000" />
       <workItem from="1730908106315" duration="5430000" />
-      <workItem from="1730913599517" duration="2019000" />
+      <workItem from="1730913599517" duration="7704000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />

@@ -219,11 +219,13 @@
     <Compile Include="Commands\MainCommand\ExecuteAutorunScript.cs" />
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
     <Compile Include="Commands\MainCommand\StopScript.cs" />
+    <Compile Include="Commands\MainCommand\GenerateDemoScripts.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
     <Compile Include="DemoScripts\DogHideAndSeek.cs" />
     <Compile Include="DemoScripts\HitMarker.cs" />
     <Compile Include="DemoScripts\PeanutRun.cs" />
+    <Compile Include="DemoScripts\JoinBroadcast.cs" />
     <Compile Include="Structures\ActionNameData.cs" />
     <Compile Include="Structures\ArgumentProcessResult.cs" />
     <Compile Include="Structures\Contributor.cs" />
