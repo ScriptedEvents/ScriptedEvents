@@ -71,27 +71,7 @@ namespace ScriptedEvents.API.Modules
         {
             base.GenerateFiles();
 
-            try
-            {
-                DirectoryInfo info = Directory.CreateDirectory(BasePath);
-                DirectoryInfo demoScriptFolder = Directory.CreateDirectory(Path.Combine(info.FullName, "DemoScripts"));
-                foreach (IDemoScript demo in MainPlugin.DemoScripts)
-                {
-                    File.WriteAllText(Path.Combine(demoScriptFolder.FullName, $"{demo.FileName}.txt"), demo.Contents);
-                }
-
-                File.WriteAllText(Path.Combine(MainPlugin.BaseFilePath, "README.txt"), new About().Contents);
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                Logger.Error(ErrorGen.Get(ErrorCode.IOPermissionError) + $": {e}");
-                return;
-            }
-            catch (Exception e)
-            {
-                Logger.Error(ErrorGen.Get(ErrorCode.IOError) + $": {e}");
-                return;
-            }
+            GenerateDemoScripts();
 
             // Welcome message :)
             // 3s delay to show after other console spam
@@ -117,6 +97,29 @@ namespace ScriptedEvents.API.Modules
             ActionTypes.Clear();
 
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+        }
+
+        public static void GenerateDemoScripts()
+        {
+            try
+            {
+                DirectoryInfo info = Directory.CreateDirectory(BasePath);
+                DirectoryInfo demoScriptFolder = Directory.CreateDirectory(Path.Combine(info.FullName, "DemoScripts"));
+                foreach (IDemoScript demo in MainPlugin.DemoScripts)
+                {
+                    File.WriteAllText(Path.Combine(demoScriptFolder.FullName, $"{demo.FileName}.txt"), demo.Contents);
+                }
+
+                File.WriteAllText(Path.Combine(MainPlugin.BaseFilePath, "README.txt"), new About().Contents);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Logger.Error(ErrorGen.Get(ErrorCode.IOPermissionError) + $": {e}");
+            }
+            catch (Exception e)
+            {
+                Logger.Error(ErrorGen.Get(ErrorCode.IOError) + $": {e}");
+            }
         }
 
         public void OnWaitingForPlayers()
@@ -567,7 +570,7 @@ namespace ScriptedEvents.API.Modules
             if (MainPlugin.Configs.IgnoreOverwatch)
                 list.RemoveAll(p => p.Role.Type is RoleTypeId.Overwatch);
 
-            if (amount.HasValue && amount.Value > 0 && list.Count > 0)
+            if (amount is > 0 && list.Count > 0)
             {
                 Log("Removing players");
                 while (list.Count > amount.Value)
