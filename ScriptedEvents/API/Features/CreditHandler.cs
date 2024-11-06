@@ -11,12 +11,14 @@ namespace ScriptedEvents.API.Features
     {
         private static readonly CreditTag BetatesterRank = new("ScriptedEvents Betatester", "yellow");
         private static readonly CreditTag DeveloperRank = new("ScriptedEvents Developer", "orange");
+        private static readonly CreditTag SupportRank = new("ScriptedEvents Support", "aqua");
 
         private static readonly Dictionary<string, CreditTag> RegisteredCreditTags = new()
         {
             { "76561199476313529@steam", DeveloperRank },
             { "76561198073944082@steam", BetatesterRank },
             { "76561198308107750@steam", BetatesterRank },
+            { "76561198980842957@steam", SupportRank },
         };
 
         /// <summary>
