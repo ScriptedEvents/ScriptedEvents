@@ -80,7 +80,7 @@
         public override string Author => "Elektryk_Andrzej and Thunder";
 
         /// <inheritdoc/>
-        public override Version Version => new(6,6, 6);
+        public override Version Version => new(3, 2, 1);
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion => new(8, 13, 1);
@@ -110,94 +110,108 @@
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            base.OnEnabled();
-
-            Singleton = this;
-
-            foreach (Type type in Assembly.GetTypes())
+            try
             {
-                if (type.BaseType == typeof(SEModule) && type.IsClass && type.GetConstructors().Length > 0)
+                Log.Info("Initalizing plugin...");
+                DoEverything();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{ex.Message}\n{ex.StackTrace}\n{ex.Data}");
+            }
+
+            return;
+
+            void DoEverything()
+            {
+                Singleton = this;
+
+                foreach (Type type in Assembly.GetTypes())
                 {
-                    SEModule module = (SEModule)Activator.CreateInstance(type);
+                    if (type.BaseType == typeof(SEModule) && type.IsClass && type.GetConstructors().Length > 0)
+                    {
+                        SEModule module = (SEModule)Activator.CreateInstance(type);
 
-                    if (module.ShouldGenerateFiles)
-                        module.GenerateFiles();
+                        if (module.ShouldGenerateFiles)
+                            module.GenerateFiles();
 
-                    module.Init();
-                    modules.Add(module);
+                        module.Init();
+                        modules.Add(module);
+                    }
                 }
-            }
 
-            if (Version == new Version(6, 6, 6) && DateTime.Now.Month == 10 && DateTime.Now.Day == 31)
-            {
-                Logger.Error(@"
-         \\                \\                \\
-    .-'```^```'-.     .-'```^```'-.     .-'```^```'-.
-   /   /\ __ /\  \   /   (\ __ /)  \   /   /) __ (\  \
-   |   ^^ \/ ^^  |   |    ` \/ `   |   |   ^  \/  ^  |
-   \   \_.__._/  /   \    \____/   /   \    `'=='`   /
-    `'-.......-'`     `'-.......-'`     `'-.......-'` ldb        
-                     Happy Halloween!     
-               by v6.6.6 of ScriptedEvents
-");
-            }
-
-            Timing.CallDelayed(6f, () =>
-            {
-                if (IsExperimental)
+                if (Version == new Version(6, 6, 6) && DateTime.Now.Month == 10 && DateTime.Now.Day == 31)
                 {
+                    Logger.Error(@"
+             \\                \\                \\
+        .-'```^```'-.     .-'```^```'-.     .-'```^```'-.
+       /   /\ __ /\  \   /   (\ __ /)  \   /   /) __ (\  \
+       |   ^^ \/ ^^  |   |    ` \/ `   |   |   ^  \/  ^  |
+       \   \_.__._/  /   \    \____/   /   \    `'=='`   /
+        `'-.......-'`     `'-.......-'`     `'-.......-'` ldb        
+                         Happy Halloween!     
+                   by v6.6.6 of ScriptedEvents
+    ");
+                }
+
+                Timing.CallDelayed(6f, () =>
+                {
+                    if (IsExperimental)
+                    {
 #if ADEBUG
-                    Logger.Warn($"You are using a pre-release version of {Name} by Elektryk_Andrzej. Please report any issues encountered, thank you.");
+                        Logger.Warn($"You are using a pre-release version of {Name} by Elektryk_Andrzej. Please report any issues encountered, thank you.");
 #else
-                    Logger.Warn($"You are using a pre-release version of {Name}. Please report any issues encountered, thank you.");
+                        Logger.Warn($"You are using a pre-release version of {Name}. Please report any issues encountered, thank you.");
 #endif
+                    }
+
+                    if (DateTime.Now.Month == 1 && DateTime.Now.Day == 25)
+                    {
+                        Logger.Info(Constants.ItsMyBirthday);
+                    }
+
+                    bool isUpdated = API.Features.ScriptHelpGenerator.Generator.CheckUpdated(out string docMessage);
+                    if (docMessage != "SKIP")
+                    {
+                        if (isUpdated)
+                            Logger.Info("[DOCUMENTATION GENERATOR]: " + docMessage);
+                        else
+                            Logger.Warn("[DOCUMENTATION GENERATOR]: " + docMessage);
+                    }
+                });
+
+                // Delete help file on startup
+                string helpPath = Path.Combine(BaseFilePath, "HelpCommandResponse.txt");
+                if (File.Exists(helpPath))
+                {
+                    try
+                    {
+                        File.Delete(helpPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Warn($"The removal of the '{helpPath}' file has failed. Reason: {ex}");
+                    }
                 }
 
-                if (DateTime.Now.Month == 1 && DateTime.Now.Day == 25)
+                // Delete leftover doc config on startup
+                if (File.Exists(API.Features.ScriptHelpGenerator.Generator.ConfigPath))
                 {
-                    Logger.Info(Constants.ItsMyBirthday);
+                    try
+                    {
+                        File.Delete(API.Features.ScriptHelpGenerator.Generator.ConfigPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Warn($"The removal of the '{API.Features.ScriptHelpGenerator.Generator.ConfigPath}' file has failed. Reason: {ex}");
+                    }
                 }
-
-                bool isUpdated = API.Features.ScriptHelpGenerator.Generator.CheckUpdated(out string docMessage);
-                if (docMessage != "SKIP")
-                {
-                    if (isUpdated)
-                        Logger.Info("[DOCUMENTATION GENERATOR]: " + docMessage);
-                    else
-                        Logger.Warn("[DOCUMENTATION GENERATOR]: " + docMessage);
-                }
-            });
-
-            // Delete help file on startup
-            string helpPath = Path.Combine(BaseFilePath, "HelpCommandResponse.txt");
-            if (File.Exists(helpPath))
-            {
-                try
-                {
-                    File.Delete(helpPath);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Warn($"The removal of the '{helpPath}' file has failed. Reason: {ex}");
-                }
-            }
-
-            // Delete leftover doc config on startup
-            if (File.Exists(API.Features.ScriptHelpGenerator.Generator.ConfigPath))
-            {
-                try
-                {
-                    File.Delete(API.Features.ScriptHelpGenerator.Generator.ConfigPath);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Warn($"The removal of the '{API.Features.ScriptHelpGenerator.Generator.ConfigPath}' file has failed. Reason: {ex}");
-                }
-            }
 
 #if ADEBUG
-            API.ScriptedEventsIntegration.RegisterCustomActions();
+                API.ScriptedEventsIntegration.RegisterCustomActions();
 #endif
+                base.OnEnabled();
+            }
         }
 
         /// <inheritdoc/>
