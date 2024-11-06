@@ -171,6 +171,7 @@
     <Compile Include="API\Features\ArgumentProcessor.cs" />
     <Compile Include="API\Features\ConditionHelperV2.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
+    <Compile Include="API\Features\CreditHandler.cs" />
     <Compile Include="API\Features\ErrorGen.cs" />
     <Compile Include="API\Features\Logger.cs" />
     <Compile Include="API\Features\Exceptions\ScriptedEventsException.cs" />
@@ -346,7 +347,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ExMod.Exiled">
-      <Version>8.13.1</Version>
+      <Version>8.13.2</Version>
     </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>
