@@ -63,7 +63,7 @@
             {
                 HandlerTypes = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
                     .Assembly.GetTypes()
-                    .Where(t => t is not null && t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
+                    .Where(t => t.FullName?.Equals($"Exiled.Events.Handlers.{t.Name}") is true).ToArray();
             }
             catch (Exception ex)
             {
