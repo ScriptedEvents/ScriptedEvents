@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/CreditHandler.cs" afterDir="false" />
+    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="add Credits">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Constants/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Constants/Constants.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,12 +123,15 @@
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/CreditHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/CreditHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/CreditHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventHandlingModule.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventHandlingModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Samples/Providers/TeslaSamples.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteAutorunScript.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Script.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/Interfaces/IPlayerVariable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/PlayerCountVariables.cs" root0="FORCE_HIGHLIGHTING" />
@@ -215,7 +214,7 @@
       <workItem from="1730835257742" duration="575000" />
       <workItem from="1730837405421" duration="1212000" />
       <workItem from="1730908106315" duration="5430000" />
-      <workItem from="1730913599517" duration="455000" />
+      <workItem from="1730913599517" duration="2019000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
@@ -257,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730908204617</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add Credits">
+      <option name="closed" value="true" />
+      <created>1730914171865</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1730914171865</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -287,7 +294,8 @@
     <MESSAGE value="fix TRIGGER no event found error" />
     <MESSAGE value="add all demo scripts to the array" />
     <MESSAGE value="add and update example scripts" />
-    <option name="LAST_COMMIT_MESSAGE" value="add and update example scripts" />
+    <MESSAGE value="add Credits" />
+    <option name="LAST_COMMIT_MESSAGE" value="add Credits" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

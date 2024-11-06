@@ -13,13 +13,14 @@
 
         public static readonly Contributor[] Contributors =
         {
-            new("Thunder", "Lead Developer"),
-            new("Elektryk_Andrzej", "Developer, Discord Support"),
-
+            new("Elektryk_Andrzej", "Lead Developer, Discord Support"),
+            new("Krzysiu Wojownik", "Betatester"),
+            new("Kataro", "Betatester"),
             new("Saskyc", "Discord Support"),
-            new("Jraylor", "Discord Support"),
-            new("YourHolinessVonGustav", "Discord Support"),
 
+            new("Jraylor", "Former Discord Support"),
+            new("YourHolinessVonGustav", "Former Discord Support"),
+            new("Thunder", "Former Lead Developer"),
             new("Yamato", "Former Developer"),
             new("Johnodon", "Former EasyEvents Developer"),
             new("PintTheDragon", "Former EasyEvents Developer"),
