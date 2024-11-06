@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/TriggerAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/TriggerAction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/DogHideAndSeek.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/DogHideAndSeek.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/PeanutRun.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/DemoScripts/PeanutRun.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,14 +108,17 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f43b9823b4df441faedb45bf5476220d75400/d2/e90272c0/Item.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f43b9823b4df441faedb45bf5476220d75400/d8/172a4e55/Door.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f43b9823b4df441faedb45bf5476220d75400/dd/d28aeb4a/KeycardPermissions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/2d/13cab0a5/Door.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/74/a6e03429/DoorType.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/b0/e248cf81/Item.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/b2/ac8986c4/DamageType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/c2/003c747e/RoomType.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/d0/b5a87337/Intercom.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/d1/11359881/Cassie.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/f9/2bea4ae0/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Logic/TriggerAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Samples/Providers/TeslaSamples.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteAutorunScript.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" root0="FORCE_HIGHLIGHTING" />
@@ -196,7 +201,8 @@
       <workItem from="1730555525730" duration="319000" />
       <workItem from="1730560551625" duration="761000" />
       <workItem from="1730662416688" duration="1179000" />
-      <workItem from="1730835257742" duration="302000" />
+      <workItem from="1730835257742" duration="575000" />
+      <workItem from="1730837405421" duration="1212000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
@@ -214,7 +220,23 @@
       <option name="project" value="LOCAL" />
       <updated>1728322904259</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix TRIGGER no event found error">
+      <option name="closed" value="true" />
+      <created>1730835669639</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1730835669639</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add all demo scripts to the array">
+      <option name="closed" value="true" />
+      <created>1730835684895</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730835684895</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -241,7 +263,9 @@
     <MESSAGE value="encoding issue" />
     <MESSAGE value="update workspace.xml" />
     <MESSAGE value="raaxxxx" />
-    <option name="LAST_COMMIT_MESSAGE" value="raaxxxx" />
+    <MESSAGE value="fix TRIGGER no event found error" />
+    <MESSAGE value="add all demo scripts to the array" />
+    <option name="LAST_COMMIT_MESSAGE" value="add all demo scripts to the array" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

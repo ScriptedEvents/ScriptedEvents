@@ -35,7 +35,7 @@ WAIT UNTIL {ROUND:STARTED} = TRUE
 WAIT SEC 2
 
 # Give every Class-D an O5 keycard.
-GIVE {CLASSD} KeycardO5
+ITEM ADD {CLASSD} KeycardO5
 
 # Extra fun: Start the warhead (optional)
 # If you start the warhead, giving O5 keycards is probably optional. This is just an example, after all.

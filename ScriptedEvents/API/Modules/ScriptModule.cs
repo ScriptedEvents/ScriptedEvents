@@ -596,15 +596,15 @@ namespace ScriptedEvents.API.Modules
             {
                 doorList = Door.List.ToList();
             }
-            else if (SEParser.TryParse<ZoneType>(input, out ZoneType zt, source))
+            else if (SEParser.TryParse(input, out ZoneType zt, source))
             {
                 doorList = Door.List.Where(d => d.Zone.HasFlag(zt)).ToList();
             }
-            else if (SEParser.TryParse<DoorType>(input, out DoorType dt, source))
+            else if (SEParser.TryParse(input, out DoorType dt, source))
             {
                 doorList = Door.List.Where(d => d.Type == dt).ToList();
             }
-            else if (SEParser.TryParse<RoomType>(input, out RoomType rt, source))
+            else if (SEParser.TryParse(input, out RoomType rt, source))
             {
                 doorList = Door.List.Where(d => d.Room?.Type == rt).ToList();
             }
@@ -669,7 +669,7 @@ namespace ScriptedEvents.API.Modules
             }
             else
             {
-                roomList = Room.List.Where(d => d.Name.ToLower() == input.ToLower()).ToList();
+                roomList = Room.List.Where(d => string.Equals(d.Name, input, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
             rooms = ListPool<Room>.Pool.ToArrayReturn(roomList);

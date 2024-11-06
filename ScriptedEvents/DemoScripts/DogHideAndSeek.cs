@@ -37,13 +37,12 @@ So we'll just have them off for a very very long time instead.
 LIGHTSOFF * 9999
 
 # Give every Class-D a Flashlight.
-GIVE {CLASSD} Flashlight
+ITEM ADD {CLASSD} Flashlight
 
 # Open and lock every door
 # * Indicates ALL doors open and lock.
 DOOR OPEN *
 DOOR LOCK *
-
 
 # 65-second countdown
 # * Indicates to show the countdown to EVERY player.
@@ -55,11 +54,11 @@ WARHEAD BLASTDOORS
 
 # Teleport SCP-939 to Gate A and close the gate temporarily, giving players a chance to hide.
 DOOR CLOSE GateA
-WAITSEC 2
-TPROOM {SCP939} GateA
+WAIT SEC 2
+TPROOM {SCP939} EzGateA
 
 # After 65 seconds, release the beast
-WAITSEC 65
+WAIT SEC 65
 DOOR OPEN GateA";
     }
 }
