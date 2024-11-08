@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="add Credits">
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/CreditHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/CreditHandler.cs" afterDir="false" />
+    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,6 +216,7 @@
       <workItem from="1730837405421" duration="1212000" />
       <workItem from="1730908106315" duration="5430000" />
       <workItem from="1730913599517" duration="8141000" />
+      <workItem from="1731090006458" duration="312000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
@@ -296,7 +297,7 @@
     <MESSAGE value="add all demo scripts to the array" />
     <MESSAGE value="add and update example scripts" />
     <MESSAGE value="add Credits" />
-    <option name="LAST_COMMIT_MESSAGE" value="add Credits" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
