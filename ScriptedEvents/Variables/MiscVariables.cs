@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Variables.Misc
+﻿using ScriptedEvents.Variables.PlayerCount;
+
+namespace ScriptedEvents.Variables.Misc
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -19,9 +21,9 @@
         /// <inheritdoc/>
         public IVariable[] Variables { get; } = new IVariable[]
         {
+            new Cuffer(),
             new Storage(),
             new Log(),
-            new Cuffer(),
         };
     }
 
@@ -60,7 +62,7 @@
         }
     }
 
-    public class Cuffer : IPlayerVariable, IArgumentVariable, INeedSourceVariable
+    public class Cuffer : IPlayerVariable, IArgumentVariable, IFloatVariable
     {
         /// <inheritdoc/>
         public string Name => "{CUFFER}";
@@ -75,13 +77,12 @@
         public object[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public Script Source { get; set; }
-
-        /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("player", typeof(Player), "The player which is cuffed.", true),
         };
+
+        public float Value => Players.Count();
 
         public IEnumerable<Player> Players
         {
@@ -114,13 +115,7 @@
         };
 
         /// <inheritdoc/>
-        public string Value
-        {
-            get
-            {
-                return VariableStorage.Read(RawArguments[0]);
-            }
-        }
+        public string Value => VariableStorage.Read(RawArguments[0]);
     }
 #pragma warning restore SA1402 // File may only contain a single type.
 }
