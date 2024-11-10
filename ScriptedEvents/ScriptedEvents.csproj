@@ -120,10 +120,6 @@
     <Compile Include="Actions\Map\SpawnGrenadeAction.cs" />
     <Compile Include="Actions\Item\LoadoutAction.cs" />
     <Compile Include="Actions\Logic\RunScriptAction.cs" />
-    <Compile Include="Actions\Logic\EndIfAction.cs" />
-    <Compile Include="Actions\Logic\FastCallAction.cs" />
-    <Compile Include="Actions\Logic\EndFunctionAction.cs" />
-    <Compile Include="Actions\Logic\FlipIfAction.cs" />
     <Compile Include="Actions\Logic\StartIfAction.cs" />
     <Compile Include="Actions\Logic\ReturnAction.cs" />
     <Compile Include="Actions\Logic\StartFunctionAction.cs" />
@@ -320,7 +316,6 @@
     <Compile Include="Commands\MainCommand\ScriptedEventsParent.cs" />
     <Compile Include="Actions\Broadcast\BroadcastAction.cs" />
     <Compile Include="Actions\Item\ItemAction.cs" />
-    <Compile Include="Actions\Logic\GotoAction.cs" />
     <Compile Include="Actions\Misc\HelpAction.cs" />
     <Compile Include="Actions\RoundRule\InfectRuleAction.cs" />
     <Compile Include="Actions\Player\SizeAction.cs" />
