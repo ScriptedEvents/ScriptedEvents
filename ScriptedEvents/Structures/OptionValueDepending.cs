@@ -16,12 +16,12 @@
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="description">The description.</param>
-        /// <param name="type">The type the action will return based on this option.</param>
-        public OptionValueDepending(string name, string returns, Type type)
+        /// <param name="returnType">The type the action will return based on this option.</param>
+        public OptionValueDepending(string name, string returns, Type returnType)
         {
             Name = name;
             Description = returns;
-            Type = type;
+            ReturnType = returnType;
         }
 
         /// <inheritdoc/>
@@ -30,6 +30,6 @@
         /// <inheritdoc/>
         public string Description { get; }
 
-        public Type Type { get; }
+        public Type ReturnType { get; }
     }
 }
