@@ -32,7 +32,20 @@
             new RandomDoor(),
             new InRoom(),
             new CassieSpeaking(),
+            new MapSeed(),
         };
+    }
+
+    public class MapSeed : IStringVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{MAPSEED}";
+
+        /// <inheritdoc/>
+        public string Description => "Returns the current map seed.";
+
+        /// <inheritdoc/>
+        public string Value => Map.Seed.ToString();
     }
 
     public class CassieSpeaking : IBoolVariable
