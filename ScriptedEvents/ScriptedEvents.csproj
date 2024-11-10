@@ -210,8 +210,7 @@
     <Compile Include="API\Features\ConditionHelper.cs" />
     <Compile Include="API\Features\CoroutineHelper.cs" />
     <Compile Include="API\Features\Logger.cs" />
-    <Compile Include="API\Features\Exceptions\ScriptedEventsException.cs" />
-    <Compile Include="API\Features\Exceptions\VariableException.cs" />
+    <Compile Include="API\Features\Exceptions\ImpossibleException.cs" />
     <Compile Include="API\Features\ScriptHelpGenerator\Generator.cs" />
     <Compile Include="API\Features\ScriptHelpGenerator\GeneratorConfig.cs" />
     <Compile Include="Actions\Health\KillAction.cs" />
@@ -296,7 +295,6 @@
     <Compile Include="Tutorials\ITutorial.cs" />
     <Compile Include="Variables\Interfaces\ILiteralVariable.cs" />
     <Compile Include="Structures\ActionResponse.cs" />
-    <Compile Include="API\Features\Exceptions\DisabledScriptException.cs" />
     <Compile Include="Conditions\Floats\GreaterThanOrEqualTo.cs" />
     <Compile Include="Conditions\Floats\LessThanOrEqualTo.cs" />
     <Compile Include="Conditions\Floats\NotEqual.cs" />
