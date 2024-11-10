@@ -113,6 +113,7 @@
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
     <Compile Include="Actions\Player\PrintPlayersAction.cs" />
     <Compile Include="Actions\Player\StaminaAction.cs" />
+    <Compile Include="Actions\RoundRule\EffectImmunityAction.cs" />
     <Compile Include="Actions\RoundRule\EventAction.cs" />
     <Compile Include="Actions\RoundRule\GeneratorRuleAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
