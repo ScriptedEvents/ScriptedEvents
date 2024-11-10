@@ -1,11 +1,14 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.Logic
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.API.Modules;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
+    using ScriptedEvents.Variables.Interfaces;
 
     public class ReturnAction : IScriptAction, ILogicAction, IHelpInfo
     {
@@ -19,7 +22,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
@@ -30,38 +33,57 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("variables", typeof(object), "The variables to return. These variables will be copied to the original caller with the same name and value.", true),
+            new Argument("variables", typeof(object), "The values to return. These values will be able to be accessed using the extraction operator.", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            /*
             if (script.CallerScript == null)
-                return new(false, "You cannot return to a script; this script was not called by another script using the CALL action.", ActionFlags.FatalError);
+            {
+                return new(
+                    false,
+                    null,
+                    new ErrorInfo(
+                        "Script was not called",
+                        "You cannot return to a script; this script was not called by another script using the CALL action.",
+                        $"{Name} action")
+                        .ToTrace());
+            }
 
+            var returns = new List<object>();
             foreach (string varName in RawArguments)
             {
-                if (VariableSystem.TryGetPlayers(varName, script, out PlayerCollection players))
+                if (!VariableSystem.IsValidVariableSyntax<IVariable>(varName, out string processedName, out _))
                 {
-                    script.CallerScript.AddPlayerVariable(varName, "Created using the RETURN action.", players);
+                    returns.Add(varName);
+                    continue;
                 }
-                else if (VariableSystem.TryGetVariable(varName, script, out VariableResult res))
+                
+                if (!VariableSystem.TryGetVariable(
+                        processedName,
+                        script,
+                        out IVariable? variable,
+                        true,
+                        out var error))
                 {
-                    if (!res.ProcessorSuccess)
-                        return new(false, res.Message);
+                    return new(false, null, error);
+                }
 
-                    script.CallerScript.AddLiteralVariable(varName, "Created using the RETURN action.", res.String(script));
-                }
-                else
+                switch (variable!)
                 {
-                    return new(false, $"Return variable '{varName}' is invalid.");
+                    case IPlayerVariable playerVariable:
+                        returns.Add(playerVariable.Players.ToArray());
+                        break;
+                    case ILiteralVariable literalVariable:
+                        returns.Add(literalVariable.Value);
+                        break;
+                    default:
+                        throw new ImpossibleException();
                 }
             }
 
-            return new(true, flags: ActionFlags.StopEventExecution);
-            */
-            return new(false, "Action not implemented.");
+            return new(true, new ActionReturnValues(returns));
         }
     }
 }
