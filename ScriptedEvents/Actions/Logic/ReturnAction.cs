@@ -13,7 +13,7 @@
     public class ReturnAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "RETURN";
+        public string Name => "Return";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -83,7 +83,7 @@
                 }
             }
 
-            return new(true, new ActionReturnValues(returns));
+            return new(true, new ActionReturnValues(returns), null, ActionFlags.StopScriptAndSendReturnedValues);
         }
     }
 }

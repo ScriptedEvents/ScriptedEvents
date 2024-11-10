@@ -34,7 +34,7 @@ namespace ScriptedEvents.API.Modules
 
         public Dictionary<string, List<string>>? CurrentEventData { get; set; } = new();
 
-        public Dictionary<string, List<string>>? CurrentCustomEventData { get; set; }
+        public Dictionary<string, List<string>> CurrentCustomEventData { get; private set; } = new();
 
         public List<string> DynamicallyConnectedEvents { get; set; } = new();
 

@@ -1,17 +1,15 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.Logic
 {
     using System;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Modules;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class TriggerAction : IScriptAction, ILogicAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "TRIGGER";
+        public string Name => "Trigger";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -20,7 +18,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Logic;
@@ -41,11 +39,11 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string ev = (string)Arguments[0];
+            string ev = (string)Arguments[0]!;
 
             foreach (string scriptName in ESModule.CurrentCustomEventData[ev])
             {
-                //MainPlugin.ScriptModule.ReadAndRun(scriptName, script.Sender);
+                MainPlugin.ScriptModule.TryReadAndRun(scriptName, null, out _);
             }
 
             return new(true);

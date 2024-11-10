@@ -667,7 +667,7 @@ namespace ScriptedEvents.API.Modules
         /// <param name="scriptName">The name of the script.</param>
         /// <param name="executor">The executor that is running the script. Can be null.</param>
         /// <param name="dispose">Whether to dispose of the script as soon as execution is finished.</param>
-        public bool TryReadAndRun(string scriptName, ICommandSender executor, out ErrorTrace? errorTrace, bool dispose = true)
+        public bool TryReadAndRun(string scriptName, ICommandSender? executor, out ErrorTrace? errorTrace, bool dispose = true)
         {
             if (!TryParseScript(scriptName, executor, out var parsedScript, out var trace1))
             {
@@ -675,7 +675,7 @@ namespace ScriptedEvents.API.Modules
                 return false;
             }
 
-            if (!TryRunScript(parsedScript!, out var trace2, dispose))
+            if (!TryRunScript(parsedScript!, out var trace2, out _, dispose))
             {
                 errorTrace = trace2;
                 return false;

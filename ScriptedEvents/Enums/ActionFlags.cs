@@ -11,16 +11,21 @@
         /// <summary>
         /// No actions to take place.
         /// </summary>
-        None = 0,
+        None,
 
         /// <summary>
         /// Fatal error. Stops execution of the script.
         /// </summary>
-        FatalError = 1,
+        FatalError,
 
         /// <summary>
         /// No error. Stops execution of the script.
         /// </summary>
-        StopEventExecution = 2,
+        StopEventExecution,
+        
+        /// <summary>
+        /// No error. Stops execution of the script and gets the values returned by the action to add to the script that first executed this script.
+        /// </summary>
+        StopScriptAndSendReturnedValues,
     }
 }
