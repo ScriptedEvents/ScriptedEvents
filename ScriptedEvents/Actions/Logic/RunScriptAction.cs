@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using MEC;
-using ScriptedEvents.API.Extensions;
-using ScriptedEvents.API.Features;
-using ScriptedEvents.API.Modules;
-
-namespace ScriptedEvents.Actions.Logic
+﻿namespace ScriptedEvents.Actions.Logic
 {
     using System;
+    using System.Collections.Generic;
+    using MEC;
+    using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.API.Features;
     using ScriptedEvents.Enums;
     using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
