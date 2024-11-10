@@ -164,7 +164,7 @@ namespace ScriptedEvents
         /// <summary>
         /// Gets the original script which ran this script using the CALL action.
         /// </summary>
-        public Script CallerScript { get; internal set; }
+        public Script? CallerScript { get; internal set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether an IF statement is blocking the execution of actions.
