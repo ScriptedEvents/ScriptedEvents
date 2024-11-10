@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents
+﻿using Exiled.API.Extensions;
+
+namespace ScriptedEvents
 {
     using System;
     using System.Collections.Generic;
@@ -158,6 +160,11 @@
         /// </summary>
         public Dictionary<RoleTypeId, List<Effect>> PermRoleEffects { get; } = new();
 
+        /// <summary>
+        /// Gets a dictionary of effect immunity for specific players.
+        /// </summary>
+        public Dictionary<Player, List<EffectType>> PlayerEffectImmunity { get; } = new();
+
         public List<DamageRule> DamageRules { get; } = new();
 
         public override void Init()
@@ -179,6 +186,7 @@
             PlayerHandler.Escaping += OnEscaping;
             PlayerHandler.Spawned += OnSpawned;
             PlayerHandler.Verified += OnVerified;
+            PlayerHandler.ReceivingEffect += OnReceivingEffect;
 
             PlayerHandler.PickingUpItem += OnPickingUpItem;
             PlayerHandler.ChangingRadioPreset += OnChangingRadioPreset;
@@ -265,7 +273,8 @@
             PlayerHandler.InteractingElevator -= OnInteractingElevator;
             PlayerHandler.Escaping -= OnEscaping;
             PlayerHandler.Spawned -= OnSpawned;
-            PlayerHandler.Verified += OnVerified;
+            PlayerHandler.Verified -= OnVerified;
+            PlayerHandler.ReceivingEffect -= OnReceivingEffect;
 
             PlayerHandler.PickingUpItem -= OnPickingUpItem;
             PlayerHandler.ChangingRadioPreset -= OnChangingRadioPreset;
@@ -347,6 +356,23 @@
             }
 
             return null;
+        }
+
+        public void OnReceivingEffect(ReceivingEffectEventArgs ev)
+        {
+            if (ev.Player == null) return;
+
+            if (!PlayerEffectImmunity.TryGetValue(ev.Player, out var effects))
+            {
+                return;
+            }
+
+            if (!effects.Contains(ev.Effect.GetEffectType()))
+            {
+                return;
+            }
+
+            ev.IsAllowed = false;
         }
 
         public PlayerDisable? GetPlayerDisableRule(string key, Player player)
