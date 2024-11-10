@@ -14,7 +14,7 @@
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 
-    public class EffectRuleAction : IScriptAction, IHelpInfo
+    public class klEffectRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "EFFECTRULE";
