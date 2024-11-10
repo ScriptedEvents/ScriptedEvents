@@ -9,7 +9,7 @@
     public class RandomItemAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "Random-Item";
+        public string Name => "RandomItem";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
