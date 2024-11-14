@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EffectImmunityAction.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EffectRuleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EffectRuleAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/MapVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/MapVariables.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,6 +94,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/89/d0074f41/Int32.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/8f/9bab9c0b/Tuple`2.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/a4/20bf8956/List`1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/a4/66a5fc7c/Exception.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/a5/ebffca01/Dictionary`2.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/c7/16d95770/DateTime.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/db/666fceeb/Enum.cs" root0="FORCE_HIGHLIGHTING" />
@@ -123,80 +119,16 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/d0/b5a87337/Intercom.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/d1/11359881/Cassie.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f6be1a2fd433440380e1ae49fb36f30876800/f9/2bea4ae0/Server.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/APITestLab/ScriptedEventsIntegration.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/APITestLab/ScriptedEventsIntegration.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/APITestLab/ScriptedEventsIntegration.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/APITestLab/ScriptedEventsIntegration.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/APITestLab/ScriptedEventsIntegration.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/APITestLab/ScriptedEventsIntegration.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Interfaces/IHelpInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Interfaces/IHelpInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Interfaces/IHelpInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Interfaces/IHelpInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventHandlingModule.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventHandlingModule.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventHandlingModule.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventHandlingModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Broadcast/BroadcastAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Broadcast/BroadcastAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Broadcast/BroadcastAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/GeneratorAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/GeneratorAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/GeneratorAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/GeneratorAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/GeneratorAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/GeneratorAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/RoundRule/GeneratorRuleAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/RoundRule/GeneratorRuleAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/RoundRule/GeneratorRuleAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/RoundRule/GeneratorRuleAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/RoundRule/InfectRuleAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/RoundRule/InfectRuleAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Samples/Providers/TeslaSamples.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Server/ErrorAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Server/ErrorAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Yielding/WaitAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Yielding/WaitAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteAutorunScript.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Commands/MainCommand/ListScripts.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Commands/MainCommand/ListScripts.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Script.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/Interfaces/IPlayerVariable.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MapVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MapVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MapVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MapVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MapVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MapVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MapVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MapVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MapVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MapVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/MiscVariables.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/PlayerCountVariables.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/RoundVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/RoundVariables.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -280,6 +212,8 @@
       <workItem from="1731090006458" duration="312000" />
       <workItem from="1731152272404" duration="2743000" />
       <workItem from="1731169322540" duration="1339000" />
+      <workItem from="1731449206842" duration="1167000" />
+      <workItem from="1731522754082" duration="1538000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
