@@ -1,18 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Math
 {
-    using System;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-    using UnityEngine;
-
-    /// <inheritdoc/>
-    public class Math_RoundAction : IScriptAction, IHelpInfo, IMimicsVariableAction
+    public class MathRoundAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "MATH-ROUND";
+        public string Name => "MathRound";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Math;
@@ -32,19 +30,19 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new OptionsArgument("mode", true,
-                new("UP"),
-                new("DOWN"),
-                new("NEAR")),
+            new OptionsArgument("roundMode", true,
+                new Option("Up", "Rounds up to a full integer."),
+                new Option("Down", "Rounds down to a full integer."),
+                new Option("Near", "Rounds to the nearest integer.")),
             new Argument("value", typeof(float), "The number to round.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            float value = (float)Arguments[1];
+            float value = (float)Arguments[1]!;
 
-            string res = Arguments[0].ToUpper() switch
+            string res = Arguments[0]!.ToUpper() switch
             {
                 "UP" => Mathf.Ceil(value).ToString(),
                 "DOWN" => Mathf.Floor(value).ToString(),
@@ -52,7 +50,7 @@ namespace ScriptedEvents.Actions
                 _ => throw new ArgumentException(),
             };
 
-            return new(true, variablesToRet: new[] { res });
+            return new(true, new(res));
         }
     }
 }
