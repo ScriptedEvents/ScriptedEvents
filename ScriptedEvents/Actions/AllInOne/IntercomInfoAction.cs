@@ -11,7 +11,7 @@
     public class IntercomInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "IntercomInfo";
+        public string Name => "GetIntercomInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting intercom related information.";

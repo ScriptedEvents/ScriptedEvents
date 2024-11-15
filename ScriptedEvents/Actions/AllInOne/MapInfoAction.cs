@@ -13,7 +13,7 @@
     public class MapInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "MapInfo";
+        public string Name => "GetMapInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting map related information.";

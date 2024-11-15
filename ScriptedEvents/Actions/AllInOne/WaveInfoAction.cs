@@ -12,7 +12,7 @@
     public class WaveInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "WaveInfo";
+        public string Name => "GetWaveInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting wave related information.";

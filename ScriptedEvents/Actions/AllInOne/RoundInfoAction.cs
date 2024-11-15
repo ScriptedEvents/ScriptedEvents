@@ -11,7 +11,7 @@
     public class RoundInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "RoundInfo";
+        public string Name => "GetRoundInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting round related information.";

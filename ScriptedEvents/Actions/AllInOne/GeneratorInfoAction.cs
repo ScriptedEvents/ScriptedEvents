@@ -13,7 +13,7 @@
     public class GeneratorInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "GeneratorInfo";
+        public string Name => "GetGeneratorInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting generator related information.";
