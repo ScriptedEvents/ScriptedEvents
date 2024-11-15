@@ -1,19 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine.Networking;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Misc
 {
-    using System;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
-    using UnityEngine.Networking;
-
     public class FastHttpPostAction : IHelpInfo, IScriptAction
     {
         /// <inheritdoc/>
-        public string Name => "FASTHTTPPOST";
+        public string Name => "FastHTTPPost";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -22,13 +19,13 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
 
         /// <inheritdoc/>
-        public string Description => "Works the same as HTTPPOST, but does not create variables and does not yield the script execution until the request is finished.";
+        public string Description => "Works the same as HTTPPost, but does not create variables and does not yield the script execution until the request is finished.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -42,7 +39,7 @@ namespace ScriptedEvents.Actions
         {
             string body = Arguments.JoinMessage(1);
 
-            UnityWebRequest discordWWW = UnityWebRequest.Put((string)Arguments[0], body);
+            UnityWebRequest discordWWW = UnityWebRequest.Put((string)Arguments[0]!, body);
             discordWWW.method = "POST";
             discordWWW.SetRequestHeader("Content-Type", "application/json");
             discordWWW.SendWebRequest();
