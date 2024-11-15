@@ -1,19 +1,18 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Map
 {
-    using System;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class ElevatorAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "ELEVATOR";
+        public string Name => "Elevator";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -22,70 +21,56 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
-        public string Description => "Controls map elevators.";
+        public string Description => "Controls facility elevators.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("Send", "Moves the elevator."),
-                new("Lock", "Locks the elevator, preventing it from being used."),
-                new("Unlock", "Unlocks the previously-locked elevator, allowing it to be used again.")),
+                new Option("Send", "Moves the elevator."),
+                new Option("Lock", "Locks the elevator, preventing it from being used."),
+                new Option("Unlock", "Unlocks the previously-locked elevator, allowing it to be used again.")),
             new Argument("elevators", typeof(Lift[]), "The elevators to affect.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Lift[] lifts = (Lift[])Arguments[1];
-
-            Action<Lift> action = null;
-            switch (Arguments[0].ToUpper())
+            Action<Lift> action = Arguments[0]!.ToUpper() switch
             {
-                case "SEND":
-                    action = (lift) => lift.TryStart(lift.CurrentLevel == 0 ? 1 : 0, true);
-                    break;
+                "SEND" => lift => lift.TryStart(lift.CurrentLevel == 0 ? 1 : 0, true),
+                "LOCK" => lift =>
+                {
+                    if (lift.IsLocked) return;
 
-                case "LOCK":
-                    action = (lift) =>
+                    foreach (var door in lift.Doors)
                     {
-                        if (lift.IsLocked)
-                            return;
+                        door.ChangeLock(DoorLockType.AdminCommand);
+                        lift.Base.RefreshLocks(lift.Group, door.Base);
+                    }
+                },
+                "UNLOCK" => lift =>
+                {
+                    if (!lift.IsLocked) return;
 
-                        foreach (var door in lift.Doors)
-                        {
-                            door.ChangeLock(DoorLockType.AdminCommand);
-                            lift.Base.RefreshLocks(lift.Group, door.Base);
-                        }
-                    };
-                    break;
-
-                case "UNLOCK":
-                    action = (lift) =>
+                    foreach (var door in lift.Doors)
                     {
-                        if (!lift.IsLocked)
-                        {
-                            return;
-                        }
+                        door.DoorLockType = DoorLockType.None;
+                        door.ChangeLock(DoorLockType.None);
 
-                        foreach (var door in lift.Doors)
-                        {
-                            door.DoorLockType = DoorLockType.None;
-                            door.ChangeLock(DoorLockType.None);
+                        lift.Base.RefreshLocks(lift.Group, door.Base);
+                    }
+                },
+                _ => throw new ImpossibleException()
+            };
 
-                            lift.Base.RefreshLocks(lift.Group, door.Base);
-                        }
-                    };
-                    break;
-            }
-
-            foreach (Lift lift in lifts)
+            foreach (Lift lift in (Lift[])Arguments[1]!)
             {
                 action(lift);
             }
