@@ -1,16 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Math
 {
-    using System;
-    using ScriptedEvents.Structures;
-
-    /// <inheritdoc/>
-    public class Math_RootAction : IScriptAction, IHelpInfo, IMimicsVariableAction
+    public class MathRootAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "MATH-ROOT";
+        public string Name => "MathRoot";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -19,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Math;
@@ -37,7 +37,7 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(true, variablesToRet: new[] { (object)(float)Math.Pow((float)Arguments[0], 1 / (Arguments.Length > 1 ? (float)Arguments[1] : 2)) });
+            return new(true, new(Mathf.Pow((float)Arguments[0]!, 1 / ((float?)Arguments[1] ?? 2)).ToUpper()));
         }
     }
 }

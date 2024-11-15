@@ -128,7 +128,7 @@
     <Compile Include="Actions\Math\MathAbsAction.cs" />
     <Compile Include="Actions\Math\MathPowerAction.cs" />
     <Compile Include="Actions\Math\GetRandomNumberAction.cs" />
-    <Compile Include="Actions\Math\Math_RootAction.cs" />
+    <Compile Include="Actions\Math\MathRootAction.cs" />
     <Compile Include="Actions\Math\Math_RoundAction.cs" />
     <Compile Include="Actions\PlayerFetch\EscapesAction.cs" />
     <Compile Include="Actions\PlayerFetch\RolePlayersAction.cs" />
