@@ -1,18 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Map
 {
-    using System;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class GeneratorAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "GENERATORS";
+        public string Name => "Generators";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
@@ -33,13 +31,13 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("Open", "Opens all generators."),
-                new("Close", "Closes all generators."),
-                new("Lock", "Locks all generators, requiring a keycard to use."),
-                new("Unlock", "Unlocks all generators, no longer requiring a keycard to use."),
-                new("Overcharge", "Engages all generators, causing an overcharge."),
-                new("Activate", "Begins activating all generators."),
-                new("Deactivate", "Deactivates all generators.")),
+                new Option("Open", "Opens all generators."),
+                new Option("Close", "Closes all generators."),
+                new Option("Lock", "Locks all generators, requiring a keycard to use."),
+                new Option("Unlock", "Unlocks all generators, no longer requiring a keycard to use."),
+                new Option("Overcharge", "Engages all generators, causing an overcharge."),
+                new Option("Activate", "Begins activating all generators."),
+                new Option("Deactivate", "Deactivates all generators.")),
         };
 
         /// <inheritdoc/>
@@ -47,7 +45,7 @@ namespace ScriptedEvents.Actions
         {
             foreach (Generator generator in Generator.List)
             {
-                switch (Arguments[0].ToUpper())
+                switch (Arguments[0]!.ToUpper())
                 {
                     case "OPEN":
                         generator.IsOpen = true;
