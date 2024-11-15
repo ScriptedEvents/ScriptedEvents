@@ -126,7 +126,7 @@
     <Compile Include="Actions\Map\ElevatorAction.cs" />
     <Compile Include="Actions\Map\SpawnRagdollAction.cs" />
     <Compile Include="Actions\Math\MathAbsAction.cs" />
-    <Compile Include="Actions\Math\Math_PowerAction.cs" />
+    <Compile Include="Actions\Math\MathPowerAction.cs" />
     <Compile Include="Actions\Math\Math_RandomAction.cs" />
     <Compile Include="Actions\Math\Math_RootAction.cs" />
     <Compile Include="Actions\Math\Math_RoundAction.cs" />
