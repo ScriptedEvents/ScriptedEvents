@@ -112,7 +112,7 @@
     <Compile Include="Actions\Item\RandomItemAction.cs" />
     <Compile Include="Actions\Map\CleanupRagdollsAction.cs" />
     <Compile Include="Actions\Map\DoorPermAction.cs" />
-    <Compile Include="Actions\Map\DoorStateAction.cs" />
+    <Compile Include="Actions\Map\GetDoorStateAction.cs" />
     <Compile Include="Actions\Map\LightColorAction.cs" />
     <Compile Include="Actions\Map\LightsOffAction.cs" />
     <Compile Include="Actions\Map\RandomDoorAction.cs" />
@@ -280,7 +280,7 @@
     <Compile Include="Structures\ErrorInfo.cs" />
     <Compile Include="Structures\ErrorTrace.cs" />
     <Compile Include="Structures\Flag.cs" />
-    <Compile Include="Structures\ItemObjectOrType.cs" />
+    <Compile Include="Structures\MultiTypeArgument.cs" />
     <Compile Include="Structures\Option.cs" />
     <Compile Include="Structures\OptionValueDepending.cs" />
     <Compile Include="Structures\SuggestedOptionsArgument.cs" />
@@ -288,7 +288,6 @@
     <Compile Include="Structures\PlayerCollection.cs" />
     <Compile Include="Structures\PlayerDisable.cs" />
     <Compile Include="Structures\PlayerLoopInfo.cs" />
-    <Compile Include="Structures\RoleTypeIdOrTeam.cs" />
     <Compile Include="Structures\VariableResult.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="Tutorials\Actions\KillActionTutorial.cs" />
