@@ -1,28 +1,26 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using PlayerRoles;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Map
 {
-    using Exiled.API.Features;
-
-    using PlayerRoles;
-    using ScriptedEvents.Structures;
-
-    using UnityEngine;
-
     public class SpawnRagdollAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "RAGDOLL";
+        public string Name => "SpawnRagdoll";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "SPAWNRAGDOLL" };
+        public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
@@ -45,12 +43,17 @@ namespace ScriptedEvents.Actions
         public ActionResponse Execute(Script script)
         {
             Vector3 pos = new(
-                (float)Arguments[0],
-                (float)Arguments[1],
-                (float)Arguments[2]);
-
-            // RoleTypeId roleType, string name, string deathReason, Vector3 position, Quaternion rotation, Player owner = null
-            Ragdoll.CreateAndSpawn((RoleTypeId)Arguments[3], (string)Arguments[4], (string)Arguments[5], pos, default);
+                (float)Arguments[0]!,
+                (float)Arguments[1]!,
+                (float)Arguments[2]!
+            );
+            
+            Ragdoll.CreateAndSpawn(
+                (RoleTypeId)Arguments[3]!, 
+                (string)Arguments[4]!, 
+                (string)Arguments[5]!, 
+                pos, default
+            );
 
             return new(true);
         }
