@@ -1,20 +1,16 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions
+﻿namespace ScriptedEvents.Actions.Map
 {
     using System;
-
-    using Exiled.API.Features;
-
     using LightContainmentZoneDecontamination;
     using ScriptedEvents.API.Extensions;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class DecontaminateAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "DECONTAMINATE";
+        public string Name => "Decontaminate";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -23,27 +19,27 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
-        public string Description => "Enables, disables, or forces decontamination.";
+        public string Description => "Manages LCZ decontamination.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("Disable", "Disables the decontamination."),
-                new("Enable", "Allows for decontamination"),
-                new("Force", "Forces the decontamination to happen asap.")),
+                new Option("Disable", "Disables the decontamination."),
+                new Option("Enable", "Allows for decontamination"),
+                new Option("Force", "Forces the decontamination to happen asap.")),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            switch (Arguments[0].ToUpper())
+            switch (Arguments[0]!.ToUpper())
             {
                 case "DISABLE":
                     // Todo: Is there an Exiled API for this?
