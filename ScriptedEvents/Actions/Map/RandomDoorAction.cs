@@ -1,23 +1,20 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features.Doors;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Map
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
-    using Exiled.API.Features.Doors;
-    using ScriptedEvents.Structures;
-
-    /// <inheritdoc/>
     public class RandomDoorAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "RANDOM-DOOR";
+        public string Name => "GetRandomDoor";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -26,36 +23,40 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
-        public ActionSubgroup Subgroup => ActionSubgroup.RandomEnums;
+        public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
-        public string Description => "Returns a random 'DoorType'. Can be filtered by zone.";
+        public string Description => $"Returns a random {nameof(DoorType)} or {nameof(Door)}. Can be filtered by zone.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("zone", typeof(ZoneType), "A ZoneType to filter by (optional).", false),
+            new OptionsArgument("returnType", true,
+                new OptionValueDepending("DoorType", "A random DoorType.", typeof(DoorType)),
+                new OptionValueDepending("Door", "A random Door object.", typeof(Door))),
+            new Argument("zone", typeof(ZoneType), "An optional ZoneType to filter by.", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            ZoneType filter = ZoneType.Unspecified;
-
-            if (Arguments.Length > 0)
-                filter = (ZoneType)Arguments[0];
-
+            ZoneType filter = (ZoneType?)Arguments[1] ?? ZoneType.Unspecified;
+            
             IEnumerable<Door> validDoors = Door.List;
-
             if (filter is not ZoneType.Unspecified)
             {
                 validDoors = validDoors.Where(door => door.Zone.HasFlag(filter));
             }
 
-            return new(true, variablesToRet: new[] { validDoors.GetRandomValue().Type.ToString() });
+            return Arguments[0] switch
+            {
+                DoorType => new(true, new(validDoors.GetRandomValue().Type.ToString())),
+                Door => new(true, new(MainPlugin.ObjectReferenceModule.ToReference(validDoors.GetRandomValue()))),
+                _ => throw new ImpossibleException()
+            };
         }
     }
 }
