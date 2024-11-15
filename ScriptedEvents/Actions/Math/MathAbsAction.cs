@@ -1,17 +1,15 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Math
 {
-    using System;
-    using ScriptedEvents.Structures;
-    using UnityEngine;
-
-    /// <inheritdoc/>
-    public class Math_AbsAction : IScriptAction, IHelpInfo, IMimicsVariableAction
+    public class MathAbsAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "MATH-ABS";
+        public string Name => "MathAbs";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -20,7 +18,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Math;
@@ -37,7 +35,7 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(true, variablesToRet: new[] { (object)Mathf.Abs((float)Arguments[0]).ToString() });
+            return new(true, new(Mathf.Abs((float)Arguments[0]!).ToString()));
         }
     }
 }
