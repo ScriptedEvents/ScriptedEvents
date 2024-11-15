@@ -94,6 +94,8 @@ namespace ScriptedEvents
         public static ScriptModule ScriptModule => GetModule<ScriptModule>();
 
         public static EventHandlingModule Handlers => GetModule<EventHandlingModule>();
+        
+        public static ObjectReferenceModule ObjectReferenceModule => GetModule<ObjectReferenceModule>();
 
         /// <summary>
         /// Equivalent to <see cref="Logger.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
