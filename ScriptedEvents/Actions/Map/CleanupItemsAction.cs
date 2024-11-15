@@ -1,23 +1,17 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions.Map
+﻿namespace ScriptedEvents.Actions.Map
 {
     using System;
     using System.Linq;
-
-    using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
-
-    using PlayerRoles;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
+    using Item = Exiled.API.Features.Items.Item;
 
     public class CleanupItemsAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "CLEANUPITEMS";
+        public string Name => "CleanupItems";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -26,35 +20,49 @@ namespace ScriptedEvents.Actions.Map
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
-        public string Description => "Clean up items/ragdolls.";
+        public string Description => "Cleans up items.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("filter", typeof(ItemType), "Optionally, an ItemType by which to remove the items.", false),
+            new MultiTypeArgument(
+                "filter", 
+                new[] { typeof(ItemType), typeof(Item) }, 
+                "Optionally, an ItemType by which to remove the items OR a valid item object.",
+                false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            ItemType type = ItemType.None;
-            if (Arguments.Length > 0)
+            switch (Arguments.Length)
             {
-                type = (ItemType)Arguments[0];
-            }
+                case > 0 when Arguments[0] is ItemType type:
+                    foreach (var x in Pickup.List.Where(p => p.Type == type))
+                    {
+                        x.Destroy();
+                    }
+                
+                    return new(true);
+                
+                case > 0 when Arguments[0] is Item item:
+                    item.Destroy();
+                    return new(true);
+                
+                default:
+                    foreach (var y in Pickup.List)
+                    {
+                        y.Destroy();
+                    }
 
-            foreach (var item in Pickup.List.Where(p => type == ItemType.None || p.Type == type))
-            {
-                item.Destroy();
+                    return new(true);
             }
-
-            return new(true);
         }
     }
 }
