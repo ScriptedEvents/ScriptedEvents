@@ -1,14 +1,16 @@
-﻿namespace ScriptedEvents.Actions.Lights
-{
-    using System;
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Enums;
-    using ScriptedEvents.Interfaces;
-    using ScriptedEvents.Structures;
-    using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using Exiled.API.Features;
+using ScriptedEvents.API.Constants;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Enums;
+using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine;
 
+namespace ScriptedEvents.Actions.Map
+{
     public class LightColorAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
@@ -38,7 +40,15 @@
             new OptionsArgument("mode", true,
                 new Option("Set", "Sets the light color. Red, Green and Blue values need to be provided when using."),
                 new Option("Reset", "Resets the light color. No need to provide RGB values.")),
-            new Argument("room", typeof(Room[]), "The room to change the color of.", true),
+            new MultiTypeArgument(
+                "room", 
+                new []
+                {
+                    typeof(Room),
+                    typeof(Room[])
+                }, 
+                "The room to change the color of.",
+                true),
             new Argument("red", typeof(float), "The red component of the color.", false, ArgFlag.BiggerOrEqual0),
             new Argument("green", typeof(float), "The green component of the color.", false, ArgFlag.BiggerOrEqual0),
             new Argument("blue", typeof(float), "The blue component of the color.", false, ArgFlag.BiggerOrEqual0),
@@ -47,7 +57,12 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var rooms = (Room[])Arguments[1]!;
+            var rooms = Arguments[1]! switch
+            {
+                Room room => new List<Room>(new[] { room }),
+                Room[] roomArray => new List<Room>(roomArray),
+                _ => throw new ImpossibleException()
+            };
 
             switch (Arguments[0]!.ToUpper())
             {
