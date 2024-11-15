@@ -1,23 +1,15 @@
-﻿using ScriptedEvents.Enums;
-using ScriptedEvents.Interfaces;
-
-namespace ScriptedEvents.Actions.Map
+﻿namespace ScriptedEvents.Actions.Map
 {
     using System;
-    using System.Linq;
-
     using Exiled.API.Features;
-    using Exiled.API.Features.Pickups;
-
-    using PlayerRoles;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
+    using ScriptedEvents.Enums;
+    using ScriptedEvents.Interfaces;
     using ScriptedEvents.Structures;
 
     public class CleanupRagdollsAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "CLEANUPRAGDOLLS";
+        public string Name => "CleanupRagdolls";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -26,18 +18,22 @@ namespace ScriptedEvents.Actions.Map
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
-        public string Description => "Cleans up ragdolls of specified players from the map.";
+        public string Description => "Cleans up ragdolls.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players which ragdolls are to be removed. Dont provide this argument if you want to remove every ragdoll from the map.", false),
+            new Argument(
+                "players", 
+                typeof(PlayerCollection), 
+                "The players which ragdolls are to be removed. Dont provide this argument if you want to remove every ragdoll from the map.", 
+                false),
         };
 
         /// <inheritdoc/>
@@ -53,7 +49,7 @@ namespace ScriptedEvents.Actions.Map
                 return new(true);
             }
 
-            foreach (var player in ((PlayerCollection)Arguments[0]).GetArray())
+            foreach (var player in ((PlayerCollection)Arguments[0]!).GetArray())
             {
                 foreach (var ragdoll in Ragdoll.Get(player))
                 {
