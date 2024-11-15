@@ -10,10 +10,10 @@ namespace ScriptedEvents.Actions.Map
     using Exiled.API.Features.Doors;
     using ScriptedEvents.Structures;
 
-    public class DoorPermAction : IScriptAction, IHelpInfo
+    public class DoorPermAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "DOORPERM";
+        public string Name => "DoorPerm";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -22,13 +22,13 @@ namespace ScriptedEvents.Actions.Map
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Map;
 
         /// <inheritdoc/>
-        public string Description => "Allows for setting custom keycard permissions on doors. If a door already has permissions, those will be overwritten.";
+        public string Description => "Manages permissions of facility doors.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -40,12 +40,15 @@ namespace ScriptedEvents.Actions.Map
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            foreach (Door door in (Door[])Arguments[0])
+            foreach (Door door in (Door[])Arguments[0]!)
             {
-                door.KeycardPermissions = (KeycardPermissions)Arguments[1];
+                door.KeycardPermissions = (KeycardPermissions)Arguments[1]!;
             }
 
             return new(true);
         }
+
+        public string LongDescription =>
+            "Allows for setting custom keycard permissions on doors. If a door already has permissions, those will be overwritten.";
     }
 }
