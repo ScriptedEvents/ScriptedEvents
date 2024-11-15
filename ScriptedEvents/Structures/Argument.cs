@@ -18,7 +18,7 @@
         /// <param name="description">The description of the argument.</param>
         /// <param name="required">Whether or not the argument is required.</param>
         /// <param name="flag">Additional flag.</param>
-        public Argument(string argumentName, Type type, string description, bool required, ArgFlag flag = ArgFlag.None)
+        public Argument(string argumentName, Type? type, string description, bool required, ArgFlag flag = ArgFlag.None)
         {
             ArgumentName = argumentName;
             Type = type;
@@ -38,7 +38,7 @@
         /// <summary>
         /// Gets the type of the argument.
         /// </summary>
-        public Type Type { get; }
+        public Type? Type { get; }
 
         /// <summary>
         /// Gets the description of the argument.
