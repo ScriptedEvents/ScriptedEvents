@@ -27,20 +27,21 @@ namespace ScriptedEvents.API.Features
         /// Adds a credit tag if applicable.
         /// </summary>
         /// <param name="player">Player.</param>
-        internal static void AddCreditTagIfApplicable(Player player)
+        internal static bool AddCreditTagIfApplicable(Player player)
         {
             bool hasGlobalBadge = player.GlobalBadge.HasValue;
             bool hasRank = !string.IsNullOrEmpty(player.RankName);
             bool hasHiddenRank = !string.IsNullOrEmpty(player.ReferenceHub.serverRoles.HiddenBadge);
 
             if (hasGlobalBadge || hasRank || hasHiddenRank)
-                return;
+                return false;
 
             if (!RegisteredCreditTags.TryGetValue(player.UserId, out var creditTag))
-                return;
+                return false;
 
             player.RankName = creditTag.Name;
             player.RankColor = creditTag.Color;
+            return true;
         }
 
         private struct CreditTag
