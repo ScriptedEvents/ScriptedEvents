@@ -227,6 +227,7 @@
     <Compile Include="DemoScripts\HitMarker.cs" />
     <Compile Include="DemoScripts\PeanutRun.cs" />
     <Compile Include="DemoScripts\JoinBroadcast.cs" />
+    <Compile Include="DemoScripts\ScpLeftServerInfo.cs" />
     <Compile Include="Structures\ActionNameData.cs" />
     <Compile Include="Structures\ArgumentProcessResult.cs" />
     <Compile Include="Structures\Contributor.cs" />
@@ -350,12 +351,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ExMod.Exiled">
-      <Version>8.13.2</Version>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.1.118</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
+      <Version>8.14.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
