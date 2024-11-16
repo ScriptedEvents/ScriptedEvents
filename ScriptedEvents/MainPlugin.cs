@@ -63,6 +63,7 @@
             new HitMarker(),
             new PeanutRun(),
             new JoinBroadcast(),
+            new ScpLeftServerInfo()
         };
 
         public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -81,7 +82,7 @@
         public override string Author => "Elektryk_Andrzej and Thunder";
 
         /// <inheritdoc/>
-        public override Version Version => new(3, 2, 2);
+        public override Version Version => new(3, 2, 3);
 
         /// <inheritdoc/>
         public override Version RequiredExiledVersion => new(8, 13, 1);
