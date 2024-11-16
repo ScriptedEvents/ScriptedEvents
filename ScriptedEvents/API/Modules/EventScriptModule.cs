@@ -218,7 +218,7 @@ namespace ScriptedEvents.API.Modules
         public void OnAnyEvent(string eventName, IExiledEvent? ev = null)
         {
             if (ev == null) return;
-            Log.Info($"Handling {eventName} event");
+            
             Stopwatch stopwatch = new();
 
             stopwatch.Start();
@@ -277,7 +277,6 @@ namespace ScriptedEvents.API.Modules
             {
                 case "Left":
                 case "ChangingRole":
-                    Log.Error(reference!.Player is null);
                     LastPlayerState state = new(reference!.Player!);
                     properties.Add(new(state, "ShouldNotHappen"));
                     break;
