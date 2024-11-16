@@ -221,6 +221,7 @@
     <Compile Include="Commands\MainCommand\ListRunning.cs" />
     <Compile Include="Commands\MainCommand\StopScript.cs" />
     <Compile Include="Commands\MainCommand\GenerateDemoScripts.cs" />
+    <Compile Include="Commands\SeShowTag.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
     <Compile Include="DemoScripts\DogHideAndSeek.cs" />
@@ -356,6 +357,9 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\OtherCommands\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
