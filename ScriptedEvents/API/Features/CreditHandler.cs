@@ -12,13 +12,15 @@ namespace ScriptedEvents.API.Features
         private static readonly CreditTag BetatesterRank = new("ScriptedEvents Betatester", "yellow");
         private static readonly CreditTag DeveloperRank = new("ScriptedEvents Developer", "orange");
         private static readonly CreditTag SupportRank = new("ScriptedEvents Support", "aqua");
+        private static readonly CreditTag QualityAssuranceRank = new("ScriptedEvents Quality Assurance", "deep_pink");
 
         private static readonly Dictionary<string, CreditTag> RegisteredCreditTags = new()
         {
             { "76561199476313529@steam", DeveloperRank },
-            { "76561198073944082@steam", BetatesterRank },
+            { "76561198073944082@steam", QualityAssuranceRank },
             { "76561198308107750@steam", BetatesterRank },
             { "76561198980842957@steam", SupportRank },
+            { "76561198145306256@steam", new("ScriptedEvents Betatester", "cyan") }
         };
 
         /// <summary>
@@ -27,9 +29,6 @@ namespace ScriptedEvents.API.Features
         /// <param name="player">Player.</param>
         internal static void AddCreditTagIfApplicable(Player player)
         {
-            if (player.DoNotTrack)
-                return;
-
             bool hasGlobalBadge = player.GlobalBadge.HasValue;
             bool hasRank = !string.IsNullOrEmpty(player.RankName);
             bool hasHiddenRank = !string.IsNullOrEmpty(player.ReferenceHub.serverRoles.HiddenBadge);
