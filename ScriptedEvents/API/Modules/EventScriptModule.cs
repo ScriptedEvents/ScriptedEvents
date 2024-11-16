@@ -1,9 +1,9 @@
-﻿#nullable enable
-using System.Reflection.Emit;
-using Exiled.API.Features.Roles;
+﻿using Exiled.API.Enums;
+using PlayerRoles;
 
 namespace ScriptedEvents.API.Modules
 {
+#nullable enable
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -14,6 +14,7 @@ namespace ScriptedEvents.API.Modules
     using Exiled.API.Features;
     using Exiled.API.Features.Doors;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.Features;
     using Exiled.Loader;
@@ -55,7 +56,7 @@ namespace ScriptedEvents.API.Modules
 
         public static void OnNonArgumentedEvent()
         {
-            Singleton.OnAnyEvent(new StackFrame(2).GetMethod().Name);
+            Singleton.OnAnyEvent(new StackFrame(2).GetMethod().Name.Replace("EventArgs", string.Empty));
         }
 
         public override void Init()
@@ -214,10 +215,10 @@ namespace ScriptedEvents.API.Modules
         }
 
         // Code to run when connected event is executed
-        public void OnAnyEvent(string eventName, IExiledEvent ev = null)
+        public void OnAnyEvent(string eventName, IExiledEvent? ev = null)
         {
             if (ev == null) return;
-
+            Log.Info($"Handling {eventName} event");
             Stopwatch stopwatch = new();
 
             stopwatch.Start();
@@ -271,23 +272,17 @@ namespace ScriptedEvents.API.Modules
                 where value is not null 
                 select new Tuple<object, string>(value, prop.Name)).ToList();
 
-            IPlayerEvent? reference = (IPlayerEvent?)ev;
+            IPlayerEvent? reference = ev as IPlayerEvent;
             switch (eventName)
             {
                 case "Left":
-                {
-                    properties.Add(new(reference!.Player.Nickname, "PlayerName"));
-                    properties.Add(new(reference.Player.Role, "PlayerRole"));
-                    break;
-                }
                 case "ChangingRole":
-                {
-                    properties.Add(new(reference!.Player.Role, "LastRole"));
+                    Log.Error(reference!.Player is null);
+                    LastPlayerState state = new(reference!.Player!);
+                    properties.Add(new(state, "ShouldNotHappen"));
                     break;
-                }
             }
-
-
+            
             foreach (var (propValue, propName) in properties)
             {
                 switch (propValue)
@@ -316,13 +311,27 @@ namespace ScriptedEvents.API.Modules
                     case Role role:
                         AddVariable(role.Type.ToString());
                         break;
+                    
+                    case Enum anyEnum:
+                        AddVariable(anyEnum.ToString());
+                        break;
 
                     case bool @bool:
                         AddVariable(@bool.ToUpper());
                         break;
-
-                    case SpawnableTeamType spawnableTeam:
-                        AddVariable(spawnableTeam.ToString());
+                    
+                    case LastPlayerState lastPlayerState:
+                        foreach (FieldInfo field in typeof(LastPlayerState).GetFields(BindingFlags.Public | BindingFlags.Instance))
+                        {
+                            string fieldName = field.Name;
+                            object value = field.GetValue(lastPlayerState);
+                        
+                            foreach (Script script in scripts)
+                            {
+                                script.AddVariable($"{{EV{fieldName.ToUpper()}}}", string.Empty, value.ToString());
+                                Log.Debug($"Adding variable {{EV{fieldName.ToUpper()}}} to all scripts above.");
+                            }
+                        }
                         break;
 
                     default:
@@ -332,11 +341,11 @@ namespace ScriptedEvents.API.Modules
 
                 continue;
 
-                void AddVariable(string varName)
+                void AddVariable(string varValue)
                 {
                     foreach (Script script in scripts)
                     {
-                        script.AddVariable($"{{EV{propName.ToUpper()}}}", string.Empty, varName);
+                        script.AddVariable($"{{EV{propName.ToUpper()}}}", string.Empty, varValue);
                         Log.Debug($"Adding variable {{EV{propName.ToUpper()}}} to all scripts above.");
                     }
                 }
@@ -347,6 +356,26 @@ namespace ScriptedEvents.API.Modules
 
             stopwatch.Stop();
             Log.Debug($"Handling event '{eventName}' cost {stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        private class LastPlayerState
+        {
+            public string LastName;
+            public string LastUserId;
+            public RoleTypeId LastRole;
+            public Team LastTeam;
+            public ZoneType LastZone;
+            public RoomType LastRoom;
+
+            public LastPlayerState(Player player)
+            {
+                LastName = player.Nickname;
+                LastUserId = player.UserId;
+                LastRole = player.Role.Type;
+                LastTeam = player.Role.Team;
+                LastZone = player.Zone;
+                LastRoom = player.CurrentRoom?.Type ?? RoomType.Unknown;
+            }
         }
     }
 }
