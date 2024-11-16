@@ -1,18 +1,15 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using PlayerRoles;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.PlayerActions
 {
-    using System;
-
-    using PlayerRoles;
-    using ScriptedEvents.Structures;
-
-    /// <inheritdoc/>
     public class KillsAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "KILLS";
+        public string Name => "Kills";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();

@@ -1,18 +1,15 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.PlayerActions
 {
-    using System;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class BanAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "BAN";
+        public string Name => "Ban";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +18,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
@@ -40,10 +37,10 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-            int duration = (int)Arguments[1];
+            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            int duration = (int)Arguments[1]!;
 
-            foreach (Player player in players)
+            foreach (Exiled.API.Features.Player player in players)
             {
                 player.Ban(duration, Arguments.JoinMessage(2).Replace("\\n", "\n"));
             }
