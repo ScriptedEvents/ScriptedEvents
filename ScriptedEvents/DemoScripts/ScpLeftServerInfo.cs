@@ -31,6 +31,6 @@ LOCAL {MSG} Player ""{EVLASTNAME}"" ({EVLASTUSERID}) playing as ""{EVLASTROLE}""
 
 # use the message variable to send info to the server staff and the server console 
 PRINT {MSG} 
-BROADCAST {STAFF} 10 <color=red>{MSG}</color>\nConsider getting a different player to replace the SCP.";
+BROADCAST {SERVERSTAFF} 10 <color=red>{MSG}</color>\nConsider getting a different player to replace the SCP.";
     }
 }
