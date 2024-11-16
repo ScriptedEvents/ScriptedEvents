@@ -1,4 +1,8 @@
-﻿namespace ScriptedEvents.API.Modules
+﻿#nullable enable
+using System.Reflection.Emit;
+using Exiled.API.Features.Roles;
+
+namespace ScriptedEvents.API.Modules
 {
     using System;
     using System.Collections.Generic;
@@ -218,17 +222,11 @@
 
             stopwatch.Start();
 
-            Type eventType = ev.GetType();
-
-            // remove EventArgs from the end
-            string name = eventType.Name.Substring(0, eventType.Name.Length - 9);
-            Log.Debug($"Event '{name}' is now running.");
-
-            if (ev is IDeniableEvent deniable and IPlayerEvent plr)
+            if (ev is IDeniableEvent deniable and IPlayerEvent playerEvent)
             {
-                bool playerIsNotNone = plr.Player is not null;
+                bool playerIsNotNone = playerEvent.Player is not null;
 
-                bool isRegisteredRule = MainPlugin.Handlers.GetPlayerDisableEvent(name, plr.Player).HasValue;
+                bool isRegisteredRule = MainPlugin.Handlers.GetPlayerDisableEvent(eventName, playerEvent.Player).HasValue;
 
                 if (playerIsNotNone && isRegisteredRule)
                 {
@@ -238,7 +236,7 @@
                 }
             }
 
-            if (CurrentEventData is null || !CurrentEventData.TryGetValue(eventName, out List<string> scriptNames))
+            if (CurrentEventData is null || !CurrentEventData.TryGetValue(eventName, out var scriptNames))
             {
                 return;
             }
@@ -267,23 +265,40 @@
                 }
             }
 
-            var properties = ev.GetType().GetProperties();
-            foreach (var property in properties)
+            var properties = (
+                from prop in ev.GetType().GetProperties() 
+                let value = prop.GetValue(ev) 
+                where value is not null 
+                select new Tuple<object, string>(value, prop.Name)).ToList();
+
+            IPlayerEvent? reference = (IPlayerEvent?)ev;
+            switch (eventName)
             {
-                Log.Debug($"Managing property {property.Name}");
+                case "Left":
+                {
+                    properties.Add(new(reference!.Player.Nickname, "PlayerName"));
+                    properties.Add(new(reference.Player.Role, "PlayerRole"));
+                    break;
+                }
+                case "ChangingRole":
+                {
+                    properties.Add(new(reference!.Player.Role, "LastRole"));
+                    break;
+                }
+            }
 
-                var value = property.GetValue(ev);
-                if (value is null) continue;
 
-                switch (value)
+            foreach (var (propValue, propName) in properties)
+            {
+                switch (propValue)
                 {
                     case Player player:
                         if (player is Npc) continue;
 
                         foreach (var script in scripts)
-                            script.AddPlayerVariable($"{{EV{property.Name.ToUpper()}}}", string.Empty, new[] { player });
+                            script.AddPlayerVariable($"{{EV{propName.ToUpper()}}}", string.Empty, new[] { player });
 
-                        Log.Debug($"Adding variable {{EV{property.Name.ToUpper()}}} to all scripts above.");
+                        Log.Debug($"Adding variable {{EV{propName.ToUpper()}}} to all scripts above.");
                         break;
 
                     case Item item:
@@ -297,6 +312,10 @@
                     case Scp079Generator gen:
                         AddVariable(gen.GetInstanceID().ToString());
                         break;
+                    
+                    case Role role:
+                        AddVariable(role.Type.ToString());
+                        break;
 
                     case bool @bool:
                         AddVariable(@bool.ToUpper());
@@ -307,18 +326,18 @@
                         break;
 
                     default:
-                        AddVariable(value.ToString());
+                        AddVariable(propValue.ToString());
                         break;
                 }
 
                 continue;
 
-                void AddVariable(string value)
+                void AddVariable(string varName)
                 {
                     foreach (Script script in scripts)
                     {
-                        script.AddVariable("{EV" + property.Name.ToUpper() + "}", string.Empty, value);
-                        Log.Debug($"Adding variable {{EV{property.Name.ToUpper()}}} to all scripts above.");
+                        script.AddVariable($"{{EV{propName.ToUpper()}}}", string.Empty, varName);
+                        Log.Debug($"Adding variable {{EV{propName.ToUpper()}}} to all scripts above.");
                     }
                 }
             }
@@ -327,7 +346,7 @@
                 script.Execute();
 
             stopwatch.Stop();
-            Log.Debug($"Handling event '{name}' cost {stopwatch.ElapsedMilliseconds} ms");
+            Log.Debug($"Handling event '{eventName}' cost {stopwatch.ElapsedMilliseconds} ms");
         }
     }
 }
