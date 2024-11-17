@@ -1,20 +1,17 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Linq;
+using Exiled.API.Features;
+using PlayerRoles;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.PlayerFetch
 {
-    using System;
-    using System.Linq;
-
-    using Exiled.API.Features;
-    using PlayerRoles;
-    using ScriptedEvents.Structures;
-
-    /// <inheritdoc/>
     public class RolePlayersAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "ROLEPLR";
+        public string Name => "GetByRole";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -23,7 +20,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.PlayerFetch;
@@ -40,7 +37,7 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(true, variablesToRet: new[] { Player.List.Where(ply => ply.Role == ((RoleTypeId)Arguments[0])).ToArray() });
+            return new(true, new(Player.List.Where(ply => ply.Role == ((RoleTypeId)Arguments[0]!)).ToArray()));
         }
     }
 }

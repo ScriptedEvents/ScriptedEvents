@@ -1,21 +1,18 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Linq;
+using Exiled.API.Features;
+using PlayerRoles;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.PlayerFetch
 {
-    using System;
-    using System.Linq;
-
-    using Exiled.API.Features;
-    using PlayerRoles;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
-    /// <inheritdoc/>
     public class EscapesAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "ESCAPES";
+        public string Name => "EscapedPlayers";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -24,7 +21,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.PlayerFetch;
@@ -36,15 +33,15 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
              new OptionsArgument("mode", true,
-                    new("ALL", "Scientists and ClassDs which have escaped."),
-                    new("SCIENTISTS", "Scientists which have escaped."),
-                    new("CLASSD", "ClassDs which have escaped.")),
+                    new Option("All", "Scientists and ClassDs which have escaped."),
+                    new Option("Scientists", "Scientists which have escaped."),
+                    new Option("ClassD", "ClassDs which have escaped.")),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Player[] ret = Arguments[0].ToUpper() switch
+            var ret = Arguments[0]!.ToUpper() switch
             {
                 "ALL" => MainPlugin.Handlers.Escapes[RoleTypeId.ClassD].Union(MainPlugin.Handlers.Escapes[RoleTypeId.Scientist]).ToArray(),
                 "SCIENTISTS" => MainPlugin.Handlers.Escapes[RoleTypeId.Scientist].ToArray(),
@@ -52,7 +49,7 @@ namespace ScriptedEvents.Actions
                 _ => throw new ArgumentException()
             };
 
-            return new(true, variablesToRet: new[] { ret });
+            return new(true, new(ret));
         }
     }
 }
