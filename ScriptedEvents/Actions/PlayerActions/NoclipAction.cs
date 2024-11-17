@@ -1,17 +1,15 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.PlayerActions
 {
-    using System;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.Structures;
-
     public class NoclipAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "NOCLIP";
+        public string Name => "NoClip";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -20,7 +18,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
@@ -38,8 +36,8 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-            bool mode = (bool)Arguments[1];
+            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            bool mode = (bool)Arguments[1]!;
 
             foreach (Player player in players)
             {

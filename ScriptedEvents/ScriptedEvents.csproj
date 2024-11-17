@@ -135,7 +135,6 @@
     <Compile Include="Actions\PlayerFetch\TeamPlayersAction.cs" />
     <Compile Include="Actions\PlayerFetch\ZonePlayersAction.cs" />
     <Compile Include="Actions\PlayerActions\DisplayPlayerAction.cs" />
-    <Compile Include="Actions\PlayerActions\KillsAction.cs" />
     <Compile Include="Actions\PlayerActions\RaycastAction.cs" />
     <Compile Include="Actions\RoundRule\SpawnLoadoutRuleAction.cs" />
     <Compile Include="Actions\ScriptInfo\IsRunningAction.cs" />

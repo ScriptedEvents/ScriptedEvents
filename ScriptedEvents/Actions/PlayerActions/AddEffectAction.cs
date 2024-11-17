@@ -34,11 +34,11 @@ namespace ScriptedEvents.Actions.PlayerActions
             new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
             new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Default: 1.", true),
-            new Argument("duration", typeof(float), "Duration of the effect.", false),
+            new Argument("duration", typeof(float), "Duration of the effect. Default: Infinity", false),
             new Argument(
                 "addDurationIfActive", 
                 typeof(bool), 
-                "If TRUE and a player already has this effect, the duration will increase by the provided duration amount. If FALSE, the effect duration will be overwritten.",
+                "If TRUE and a player already has this effect, the duration will increase by the provided duration amount. If FALSE, the effect duration will be overwritten. Default: FALSE.",
                 false
             ),
         };
@@ -50,23 +50,13 @@ namespace ScriptedEvents.Actions.PlayerActions
             EffectType effect = (EffectType)Arguments[1]!;
 
             byte intensity = (byte?)Arguments[2] ?? 1;
-            
-            if (Arguments[4] is float duration)
-            {
-                duration = (float)Arguments[4];
-                if (duration < 0)
-                    return new(false);
-            }
-
-            if (intensity > 255)
-                return new(false, "Effect intensity must be between 0-255.");
+            float duration = (float?)Arguments[3] ?? float.PositiveInfinity;
+            bool addDurationIfActive = (bool?)Arguments[4] ?? false;
 
             foreach (Player player in plys)
             {
-                Effect eff = new(effect, duration, (byte)intensity);
-                player.SyncEffect(eff);
+                player.SyncEffect(new(effect, duration, intensity, addDurationIfActive));
             }
-                    
 
             return new(true);
         }

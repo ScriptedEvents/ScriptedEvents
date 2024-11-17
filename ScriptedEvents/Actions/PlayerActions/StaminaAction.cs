@@ -1,18 +1,17 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.PlayerActions
 {
-    using System;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class StaminaAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "STAMINA";
+        public string Name => "Stamina";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +20,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
@@ -33,9 +32,9 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("ADD", "Adds stamina for players."),
-                new("SET", "Sets stamina for players."),
-                new("REMOVE", "Removes stamina from players.")),
+                new Option("Add", "Adds stamina for players."),
+                new Option("Set", "Sets stamina for players."),
+                new Option("Remove", "Removes stamina from players.")),
             new Argument("players", typeof(PlayerCollection), "Players to affect.", true),
             new Argument("amountPercent", typeof(float), "The amount of stamina percentage to add/set/remove.", true),
         };
@@ -43,37 +42,20 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[1];
-            float amount = (float)Arguments[2];
-            Action<Player, float> action = null;
+            PlayerCollection players = (PlayerCollection)Arguments[1]!;
+            float amount = (float)Arguments[2]!;
 
-            switch (Arguments[0].ToUpper())
+            Action<Player> action = Arguments[0]!.ToUpper() switch
             {
-                case "ADD":
-                    action = (player, amount) =>
-                    {
-                        player.Stamina += amount;
-                    };
-                    break;
-
-                case "SET":
-                    action = (player, amount) =>
-                    {
-                        player.Stamina = amount;
-                    };
-                    break;
-
-                case "REMOVE":
-                    action = (player, amount) =>
-                    {
-                        player.Stamina -= amount;
-                    };
-                    break;
-            }
+                "ADD" => player => { player.Stamina += amount; },
+                "SET" => player => { player.Stamina = amount; },
+                "REMOVE" => player => { player.Stamina -= amount; },
+                _ => throw new ImpossibleException()
+            };
 
             foreach (Player player in players)
             {
-                action(player, amount);
+                action(player);
             }
 
             return new(true);

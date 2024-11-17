@@ -1,18 +1,17 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.PlayerActions
 {
-    using System;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class MuteAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "MUTE";
+        public string Name => "Mute";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +20,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
@@ -33,8 +32,8 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SET", "Mute player(s)."),
-                new("REMOVE", "Unmute player(s).")),
+                new Option("Set", "Mute player(s)."),
+                new Option("Remove", "Unmute player(s).")),
             new Argument("players", typeof(PlayerCollection), "Players to change mute status for.", true),
             new Argument("longterm", typeof(bool), "If TRUE, player will be muted even after rejoining.", true),
         };
@@ -42,24 +41,27 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[1];
-            bool longTerm = (bool)Arguments[2];
+            PlayerCollection players = (PlayerCollection)Arguments[1]!;
+            bool longTerm = (bool)Arguments[2]!;
 
-            Action<Player> playerAction;
-
-            switch (Arguments[0].ToUpper())
+            Action<Player> playerAction = Arguments[0]!.ToUpper() switch
             {
-                case "SET":
-                    playerAction = (plr) => { if (longTerm) plr.Mute(); else plr.IsMuted = true; };
-                    break;
-
-                case "REMOVE":
-                    playerAction = (plr) => { if (longTerm) plr.UnMute(); else plr.IsMuted = false; };
-                    break;
-
-                default:
-                    return new(false, $"Invalid mode '{Arguments[0].ToUpper()}' provided.");
-            }
+                "SET" => (plr) =>
+                {
+                    if (longTerm)
+                        plr.Mute();
+                    else
+                        plr.IsMuted = true;
+                },
+                "REMOVE" => (plr) =>
+                {
+                    if (longTerm)
+                        plr.UnMute();
+                    else
+                        plr.IsMuted = false;
+                },
+                _ => throw new ImpossibleException()
+            };
 
             foreach (Player player in players)
             {

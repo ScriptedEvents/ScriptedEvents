@@ -1,18 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.PlayerActions
 {
-    using System;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.Structures;
-    using UnityEngine;
-
     public class RaycastAction : IScriptAction, IHelpInfo, IReturnValueAction
     {
         /// <inheritdoc/>
-        public string Name => "RAYCAST";
+        public string Name => "RayCast";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
@@ -39,8 +37,11 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Player plr = (Player)Arguments[0];
-            int distance = (int)Arguments[1];
+            // TODO: add fully
+            throw new System.NotImplementedException();
+            /*
+            Player plr = (Player)Arguments[0]!;
+            int distance = (int)Arguments[1]!;
             const int mask = ~(1 << 1 | 1 << 13 | 1 << 16 | 1 << 28);
 
             if (Physics.Raycast(plr.CameraTransform.position, plr.CameraTransform.forward, out RaycastHit raycastHit, distance, mask))
@@ -64,7 +65,7 @@ namespace ScriptedEvents.Actions
                 return new(true, variablesToRet: new object[] { "NONE" });
             }
 
-            return new(true, variablesToRet: new object[] { new Player[] { raycastedPlayer } });
+            return new(true, variablesToRet: new object[] { new Player[] { raycastedPlayer } });*/
         }
     }
 }

@@ -1,19 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using PlayerRoles;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.PlayerActions
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using PlayerRoles;
-    using ScriptedEvents.Structures;
-
     public class SetRoleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "SETROLE";
+        public string Name => "SetRole";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -22,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Player;
@@ -42,18 +39,14 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            RoleTypeId roleType = (RoleTypeId)Arguments[1];
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-
-            bool setSpawnpoint = Arguments.Length == 2 || (bool)Arguments[2];
-            bool setInventory = Arguments.Length <= 3 || (bool)Arguments[3];
-
+            RoleTypeId roleType = (RoleTypeId)Arguments[1]!;
+            PlayerCollection players = (PlayerCollection)Arguments[0]!;
             RoleSpawnFlags flags = RoleSpawnFlags.None;
 
-            if (setSpawnpoint)
+            if ((bool?)Arguments[2] ?? true)
                 flags |= RoleSpawnFlags.UseSpawnpoint;
 
-            if (setInventory)
+            if ((bool?)Arguments[3] ?? true)
                 flags |= RoleSpawnFlags.AssignInventory;
 
             foreach (Player player in players)
