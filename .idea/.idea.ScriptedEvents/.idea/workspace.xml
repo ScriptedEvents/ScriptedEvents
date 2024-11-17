@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/CreditHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/CreditHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Config.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Config.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -242,7 +244,7 @@
       <workItem from="1731522754082" duration="1538000" />
       <workItem from="1731618661033" duration="492000" />
       <workItem from="1731835429092" duration="1409000" />
-      <workItem from="1731847465518" duration="352000" />
+      <workItem from="1731847465518" duration="2263000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />

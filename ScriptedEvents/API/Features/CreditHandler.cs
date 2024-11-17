@@ -29,6 +29,9 @@ namespace ScriptedEvents.API.Features
         /// <param name="player">Player.</param>
         internal static bool AddCreditTagIfApplicable(Player player)
         {
+            if (!MainPlugin.Singleton.EnabledRanks)
+                return false;
+            
             bool hasGlobalBadge = player.GlobalBadge.HasValue;
             bool hasRank = !string.IsNullOrEmpty(player.RankName);
             bool hasHiddenRank = !string.IsNullOrEmpty(player.ReferenceHub.serverRoles.HiddenBadge);

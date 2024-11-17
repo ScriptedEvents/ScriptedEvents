@@ -58,5 +58,8 @@
                 Run = new() { "MyScript1", "MyScript2" },
             },
         };
+        
+        [Description("Whether or not to enable credit ranks for the Scripted Events contributors. Set to 'false' if you encounter issues with things like XP ranks.")]
+        public bool EnableCredits { get; } = true;
     }
 }
