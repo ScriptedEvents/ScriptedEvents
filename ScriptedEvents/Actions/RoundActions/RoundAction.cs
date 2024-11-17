@@ -1,17 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundActions
 {
-    using System;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.Structures;
-
     public class RoundAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "ROUND";
+        public string Name => "Round";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -20,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Round;
@@ -32,17 +31,17 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("START", "Starts the round."),
-                new("END", "Ends the round"),
-                new("LOCK", "Locks the round."),
-                new("UNLOCK", "Unlocks the round"),
-                new("RESTART", "Restarts the round.")),
+                new Option("Start", "Starts the round."),
+                new Option("End", "Ends the round"),
+                new Option("Lock", "Locks the round."),
+                new Option("Unlock", "Unlocks the round"),
+                new Option("Restart", "Restarts the round.")),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script scr)
         {
-            switch ((string)Arguments[0])
+            switch (Arguments[0]!.ToUpper())
             {
                 case "START":
                     Round.Start(); break;

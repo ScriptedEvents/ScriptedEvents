@@ -1,17 +1,15 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundActions
 {
-    using System;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.Structures;
-
     public class LobbyAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "LOBBY";
+        public string Name => "Lobby";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -32,20 +30,19 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("LOCK"),
-                new("UNLOCK")),
+                new Option("Lock"),
+                new Option("Unlock")),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            switch ((string)Arguments[0])
+            Exiled.API.Features.Round.IsLobbyLocked = (string)Arguments[0] switch
             {
-                case "LOCK":
-                    Round.IsLobbyLocked = true; break;
-                case "UNLOCK":
-                    Round.IsLobbyLocked = false; break;
-            }
+                "LOCK" => true,
+                "UNLOCK" => false,
+                _ => throw new ImpossibleException()
+            };
 
             return new(true);
         }

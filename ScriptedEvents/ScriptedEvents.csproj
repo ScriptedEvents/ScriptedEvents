@@ -154,8 +154,8 @@
     <Compile Include="Actions\RoundRule\EventAction.cs" />
     <Compile Include="Actions\RoundRule\GeneratorRuleAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
-    <Compile Include="Actions\Round\LobbyAction.cs" />
-    <Compile Include="Actions\Round\RoundAction.cs" />
+    <Compile Include="Actions\RoundActions\LobbyAction.cs" />
+    <Compile Include="Actions\RoundActions\RoundAction.cs" />
     <Compile Include="Actions\Server\ErrorAction.cs" />
     <Compile Include="Actions\Server\ServerNameAction.cs" />
     <Compile Include="Actions\Server\PluginAction.cs" />
@@ -222,7 +222,7 @@
     <Compile Include="Actions\Health\SetHpAction.cs" />
     <Compile Include="Actions\PlayerActions\ReskinAction.cs" />
     <Compile Include="Actions\PlayerActions\SetRoleAction.cs" />
-    <Compile Include="Actions\Round\TicketAction.cs" />
+    <Compile Include="Actions\RoundActions\TicketAction.cs" />
     <Compile Include="Actions\Teleportation\TpDoorAction.cs" />
     <Compile Include="Actions\Teleportation\TpSpawnAction.cs" />
     <Compile Include="Actions\Teleportation\TpRoomAction.cs" />
