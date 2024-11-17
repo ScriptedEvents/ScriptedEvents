@@ -277,7 +277,7 @@ namespace ScriptedEvents.API.Modules
             {
                 case "Left":
                 case "ChangingRole":
-                    LastPlayerState state = new(reference!.Player!);
+                    LastPlayerState state = new(reference!.Player);
                     properties.Add(new(state, "ShouldNotHappen"));
                     break;
             }
