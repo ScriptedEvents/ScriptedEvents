@@ -1,4 +1,8 @@
 ﻿using System;
+using Exiled.API.Features.Roles;
+using PlayerRoles;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Features.Exceptions;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -28,88 +32,53 @@ namespace ScriptedEvents.Actions.RoundRule
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("attackerRule", typeof(string), "The rule for the attacker (either a role, team, or player variable)", true),
-            new Argument("receiverRule", typeof(string), "The rule for the receiver (either a role, team, or player variable)", true),
-            new Argument("multiplier", typeof(float), "The multiplier to apply to the damage rule.", true),
+            new MultiTypeArgument(
+                "attackerRule", 
+                new[]
+                {
+                    typeof(RoleTypeId),
+                    typeof(Team),
+                    typeof(PlayerCollection)
+                }, 
+                "The rule for the attacker (either a role, team, or a player collection)",
+                true),
+            new MultiTypeArgument(
+                "receiverRule", 
+                new[]
+                {
+                    typeof(RoleTypeId),
+                    typeof(Team),
+                    typeof(PlayerCollection)
+                }, 
+                "The rule for the receiver (either a role, team, or player variable)",
+                true),
+            new Argument("multiplier", typeof(float), "The damage multiplier to apply when an attacker attacks a receiver. Default is 100%.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            float multiplier = (float)Arguments[2]!;
-            DamageRule rule;
+            object attackerRuleValue = Arguments[0] switch
+            {
+                RoleTypeId role => role,
+                Team team => team,
+                PlayerCollection playerCollection => playerCollection,
+                _ => throw new ImpossibleException()
+            };
 
-            // Roles
-            if (Parser.TryGetEnum((string)Arguments[0], out RoleTypeId attackerRole, script))
+            object receiverRuleValue = Arguments[1] switch
             {
-                if (Parser.TryGetEnum((string)Arguments[1], out RoleTypeId receiverRole, script))
-                {
-                    rule = new(attackerRole, receiverRole);
-                }
-                else if (Parser.TryGetEnum((string)Arguments[1], out Team receiverTeam, script))
-                {
-                    rule = new(attackerRole, receiverTeam);
-                }
-                else if (Parser.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
-                {
-                    rule = new(attackerRole, players);
-                }
-            }
-            else if (Parser.TryGetEnum((string)Arguments[1], out RoleTypeId attackerRole2, script))
-            {
-                if (Parser.TryGetEnum((string)Arguments[0], out Team receiverTeam2, script))
-                {
-                    rule = new(receiverTeam2, attackerRole2);
-                }
-                else if (Parser.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
-                {
-                    rule = new(players2, attackerRole2);
-                }
-            }
+                RoleTypeId role => role,
+                Team team => team,
+                PlayerCollection playerCollection => playerCollection,
+                _ => throw new ImpossibleException()
+            };
 
-            // Teams
-            if (Parser.TryGetEnum((string)Arguments[0], out Team attackerTeam, script))
-            {
-                if (Parser.TryGetEnum((string)Arguments[1], out Team receiverTeam, script))
-                {
-                    rule = new(attackerTeam, receiverTeam);
-                }
-                else if (Parser.TryGetEnum((string)Arguments[1], out RoleTypeId receiverRole, script))
-                {
-                    rule = new(attackerTeam, receiverRole);
-                }
-                else if (Parser.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
-                {
-                    rule = new(attackerTeam, players);
-                }
-            }
-            else if (Parser.TryGetEnum((string)Arguments[1], out Team attackerTeam2, script))
-            {
-                if (Parser.TryGetEnum((string)Arguments[0], out RoleTypeId receiverRole2, script))
-                {
-                    rule = new(receiverRole2, attackerTeam2);
-                }
-                else if (Parser.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
-                {
-                    rule = new(players2, attackerTeam2);
-                }
-            }
-            else if (Parser.TryGetPlayers(RawArguments[0], null, out PlayerCollection attackers, script) && Parser.TryGetPlayers(RawArguments[1], null, out PlayerCollection receivers, script))
-            {
-                rule = new(attackers, receivers);
-            }
-
-            if (rule == null)
-            {
-                return new(false, "Invalid rule provided in the DAMAGERULE action.");
-            }
-
-            rule.Multiplier = multiplier;
-
-            MainPlugin.Handlers.DamageRules.Add(rule);
+            MainPlugin.Handlers.DamageRules.Add(
+                new(attackerRuleValue, receiverRuleValue) { Multiplier = (float)Arguments[2]! }
+            );
 
             return new(true);
-            return new(false, "not implemented");
         }
     }
 }

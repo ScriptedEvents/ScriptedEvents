@@ -24,7 +24,7 @@
         {
             if (obj is null) throw new ArgumentNullException(nameof(obj));
 
-            var ident = $"[; {obj.GetType().Name} object {Guid.NewGuid():N} ;]";
+            var ident = $"[! {obj.GetType().Name} | {Guid.NewGuid():N} !]";
             _objectReferences[ident] = obj;
 
             return ident;

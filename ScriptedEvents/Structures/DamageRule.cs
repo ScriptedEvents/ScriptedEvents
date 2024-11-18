@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.Enums;
 
 namespace ScriptedEvents.Structures
 {
@@ -76,6 +77,58 @@ namespace ScriptedEvents.Structures
             AttackerPlayers = attacker.ToList();
             ReceiverPlayers = receiver.ToList();
         }
+
+        public DamageRule(object attacker, object receiver)
+        {
+            switch (attacker, receiver)
+            {
+                case (RoleTypeId aRole, RoleTypeId rRole):
+                    AttackerRole = aRole;
+                    ReceiverRole = rRole;
+                    Type = DamageRuleType.RoleToRole;
+                    break;
+
+                case (RoleTypeId aRole, Team rTeam):
+                    AttackerRole = aRole;
+                    ReceiverTeam = rTeam;
+                    Type = DamageRuleType.RoleToTeam;
+                    break;
+
+                case (Team aTeam, RoleTypeId rRole):
+                    AttackerTeam = aTeam;
+                    ReceiverRole = rRole;
+                    Type = DamageRuleType.TeamToRole;
+                    break;
+
+                case (Team aTeam, Team rTeam):
+                    AttackerTeam = aTeam;
+                    ReceiverTeam = rTeam;
+                    Type = DamageRuleType.TeamToTeam;
+                    break;
+
+                case (PlayerCollection aPlayers, RoleTypeId rRole):
+                    AttackerPlayers = aPlayers.GetInnerList();
+                    ReceiverRole = rRole;
+                    Type = DamageRuleType.PlayerToRole;
+                    break;
+
+                case (PlayerCollection aPlayers, Team rTeam):
+                    AttackerPlayers = aPlayers.GetInnerList();
+                    ReceiverTeam = rTeam;
+                    Type = DamageRuleType.PlayerToTeam;
+                    break;
+
+                case (PlayerCollection aPlayers, PlayerCollection rPlayers):
+                    AttackerPlayers = aPlayers.GetInnerList();
+                    ReceiverPlayers = rPlayers.GetInnerList();
+                    Type = DamageRuleType.PlayerToPlayer;
+                    break;
+
+                default:
+                    throw new ArgumentException($"Unsupported attacker and receiver types: {attacker.GetType()}, {receiver.GetType()}");
+            }
+        }
+
 
         public DamageRuleType Type { get; }
 
