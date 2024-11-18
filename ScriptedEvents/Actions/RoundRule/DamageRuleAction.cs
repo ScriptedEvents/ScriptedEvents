@@ -1,20 +1,14 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-
-    using PlayerRoles;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.Structures;
-
-    using Rule = ScriptedEvents.Structures.DamageRule;
-
     public class DamageRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "DAMAGERULE";
+        public string Name => "DamageRule";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -23,7 +17,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
@@ -42,9 +36,8 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            /*
-            float multiplier = (float)Arguments[2];
-            Rule rule = null;
+            float multiplier = (float)Arguments[2]!;
+            DamageRule rule;
 
             // Roles
             if (Parser.TryGetEnum((string)Arguments[0], out RoleTypeId attackerRole, script))
@@ -116,7 +109,6 @@ namespace ScriptedEvents.Actions
             MainPlugin.Handlers.DamageRules.Add(rule);
 
             return new(true);
-            */
             return new(false, "not implemented");
         }
     }
