@@ -1,18 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Linq;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.ScriptInfo
 {
-    using System;
-    using System.Linq;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
-    /// <inheritdoc/>
     public class IsRunningAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "ISRUNNING";
+        public string Name => "IsRunning";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.ScriptInfo;
@@ -32,14 +30,14 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("scriptName", typeof(string), "The name of the script.", true),
+             new Argument("scriptName", typeof(string), "The name of a script.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string ret = MainPlugin.ScriptModule.RunningScripts.Any(scr => scr.Key.ScriptName == (string)Arguments[0] && scr.Value.IsRunning).ToUpper();
-            return new(true, variablesToRet: new[] { ret });
+            string ret = MainPlugin.ScriptModule.RunningScripts.Any(scr => scr.Key.ScriptName == (string)Arguments[0]! && scr.Value.IsRunning).ToUpper();
+            return new(true, new(ret));
         }
     }
 }
