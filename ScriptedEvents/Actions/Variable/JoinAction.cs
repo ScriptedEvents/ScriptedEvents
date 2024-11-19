@@ -1,15 +1,15 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Linq;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions.VariableMimicingActions.PlayerVariableManipulation
+namespace ScriptedEvents.Actions.Variable
 {
-    using System;
-    using ScriptedEvents.Structures;
-
     public class JoinAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "JOIN";
+        public string Name => "Join";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -18,7 +18,7 @@ namespace ScriptedEvents.Actions.VariableMimicingActions.PlayerVariableManipulat
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.PlayerVariableManipualtion;
@@ -29,15 +29,15 @@ namespace ScriptedEvents.Actions.VariableMimicingActions.PlayerVariableManipulat
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players1", typeof(PlayerCollection), "First player reference.", true),
-            new Argument("players2", typeof(PlayerCollection), "Second player reference.", true),
+            new Argument("firstPlayers", typeof(PlayerCollection), "First player reference.", true),
+            new Argument("secondPlayers", typeof(PlayerCollection), "Second player reference.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var players = ((PlayerCollection)Arguments[0]).GetInnerList();
-            foreach (var plr in (PlayerCollection)Arguments[1])
+            var players = ((PlayerCollection)Arguments[0]!).GetArray().ToList();
+            foreach (var plr in (PlayerCollection)Arguments[1]!)
             {
                 if (!players.Contains(plr))
                 {
@@ -45,7 +45,7 @@ namespace ScriptedEvents.Actions.VariableMimicingActions.PlayerVariableManipulat
                 }
             }
 
-            return new(true, variablesToRet: new object[] { players.ToArray() });
+            return new(true, new(players));
         }
     }
 }

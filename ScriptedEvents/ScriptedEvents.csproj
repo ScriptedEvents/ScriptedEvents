@@ -139,6 +139,7 @@
     <Compile Include="Actions\PlayerActions\RaycastAction.cs" />
     <Compile Include="Actions\PlayerVariableManipulationActions\FilterAction.cs" />
     <Compile Include="Actions\PlayerVariableManipulationActions\IndexPlayerAction.cs" />
+    <Compile Include="Actions\PlayerVariableManipulationActions\MaxAction.cs" />
     <Compile Include="Actions\RoundRule\SpawnLoadoutRuleAction.cs" />
     <Compile Include="Actions\ScriptInfo\IsRunningAction.cs" />
     <Compile Include="Actions\ScriptInfo\VExistsAction.cs" />
@@ -188,7 +189,6 @@
     <Compile Include="Actions\RoundRule\DisableAction.cs" />
     <Compile Include="Actions\Teleportation\TpPlayerAction.cs" />
     <Compile Include="Actions\Variable\JoinAction.cs" />
-    <Compile Include="Actions\Variable\LimitAction.cs" />
     <Compile Include="Actions\Variable\PlayerLenAction.cs" />
     <Compile Include="Actions\Variable\PopAction.cs" />
     <Compile Include="Actions\Variable\EvalAction.cs" />
