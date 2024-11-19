@@ -1,16 +1,14 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Variable
 {
-    using System;
-    using ScriptedEvents.Structures;
-
-    /// <inheritdoc/>
     public class PlayerLenAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "LEN";
+        public string Name => "Len";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -19,7 +17,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
@@ -34,6 +32,6 @@ namespace ScriptedEvents.Actions
         };
 
         /// <inheritdoc/>
-        public ActionResponse Execute(Script script) => new(true, variablesToRet: new[] { ((PlayerCollection)Arguments[0]).Length.ToString() });
+        public ActionResponse Execute(Script script) => new(true, new(((PlayerCollection)Arguments[0]!).Length.ToString()));
     }
 }
