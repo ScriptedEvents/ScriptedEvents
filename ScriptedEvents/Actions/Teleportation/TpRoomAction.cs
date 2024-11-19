@@ -1,18 +1,21 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Linq;
+using System.Security.Policy;
+using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Exiled.API.Features.Roles;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Teleportation
 {
-    using System;
-
-    using Exiled.API.Features;
-    using Exiled.API.Features.Roles;
-    using ScriptedEvents.Structures;
-
     public class TpRoomAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "TPROOM";
+        public string Name => "TPRoom";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +24,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Teleportation;
@@ -33,19 +36,32 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(PlayerCollection), "The players to teleport", true),
-            new Argument("room", typeof(Room[]), "The room to teleport to. Alternatively, a zone can be provided to teleport players to a random room in the zone (random for each player). Do NOT use Scp173 room!!!", true),
+            new MultiTypeArgument(
+                "room", 
+                new[]
+                {
+                    typeof(RoomType),
+                    typeof(ZoneType)
+                }, 
+                "The room to teleport to. Alternatively, a zone can be provided to teleport players to a random room in the zone (random for each player). Do NOT use Scp173 room!!!",
+                true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-            Room[] rooms = (Room[])Arguments[1];
-
+            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            Action<Player> act = Arguments[1]! switch
+            {
+                RoomType roomType => p => p.Teleport(Room.List.Where(r => r.Type == roomType).GetRandomValue()),
+                ZoneType zoneType => p => p.Teleport(Room.List.Where(r => r.Zone == zoneType).GetRandomValue()),
+                _ => throw new ImpossibleException()
+            };
+            
             foreach (Player ply in players)
             {
                 if (ply.Role is not FpcRole || !ply.IsConnected) continue;
-                ply.Teleport(rooms.RandomItem());
+                act(ply);
             }
 
             return new(true);
