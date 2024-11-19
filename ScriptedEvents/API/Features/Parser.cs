@@ -456,7 +456,7 @@ namespace ScriptedEvents.API.Features
                         break;
 
                     case "KILLS":
-                        result = MainPlugin.Handlers.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "0";
+                        result = MainPlugin.EventHandlingModule.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "0";
                         break;
 
                     case "EFFECTS" when ply.ActiveEffects.Any():

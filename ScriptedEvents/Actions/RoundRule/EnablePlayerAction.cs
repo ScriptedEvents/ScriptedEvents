@@ -1,30 +1,24 @@
-﻿using ScriptedEvents.Enums;
+﻿using ScriptedEvents.API.Constants;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class EnablePlayerAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "ENABLEPLAYER";
+        public string Name => "EnablePlayerRule";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "ENABLEPLR" };
+        public string[] Aliases => new[] { "EnablePlrRule" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
@@ -44,16 +38,14 @@ namespace ScriptedEvents.Actions
 
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-
-            string key = Arguments[1].ToUpper();
-            var rule = MainPlugin.Handlers.GetPlayerDisableRule(key);
-
-            if (rule.HasValue)
-            {
-                List<Player> inner = players.GetInnerList();
-                rule.Value.Players.RemoveAll(ply => inner.Contains(ply));
-            }
+            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            string key = Arguments[1]!.ToUpper();
+            
+            var rule = MainPlugin.EventHandlingModule.GetPlayerDisableRule(key);
+            if (!rule.HasValue) 
+                return new(true);
+            
+            rule.Value.Players.RemoveAll(ply => players.GetInnerList().Contains(ply));
 
             return new(true);
         }

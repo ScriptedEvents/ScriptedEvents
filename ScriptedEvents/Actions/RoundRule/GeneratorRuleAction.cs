@@ -1,18 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class GeneratorRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "GENERATORRULE";
+        public string Name => "GeneratorRule";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
@@ -33,21 +31,21 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                    new("ACTIVATIONTIME", "The amount of time for generators to activate."),
-                    new("DEACTIVATIONTIME", "The amount of time for generators to deactivate."),
-                    new("LEVERDELAY", "The delay to change generator levers."),
-                    new("INTERACTIONCOOLDOWN", "The cooldown for interacting with generators.")),
+                    new Option("ActivationTime", "The amount of time for generators to activate."),
+                    new Option("DeactivationTime", "The amount of time for generators to deactivate."),
+                    new Option("LeverDelay", "The delay to change generator levers."),
+                    new Option("InteractionCooldown", "The cooldown for interacting with generators.")),
             new Argument("value", typeof(int), "The value to set as the rule.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            int value = (int)Arguments[1];
+            int value = (int)Arguments[1]!;
 
             foreach (Generator generator in Generator.List)
             {
-                switch (Arguments[0].ToUpper())
+                switch (Arguments[0]!.ToUpper())
                 {
                     case "ACTIVATIONTIME":
                         generator.ActivationTime = value;

@@ -65,7 +65,7 @@
 
             foreach (Player ply in players)
             {
-                MainPlugin.Handlers.LockedRadios[ply] = range;
+                MainPlugin.EventHandlingModule.LockedRadios[ply] = range;
             }
 
             return new(true);

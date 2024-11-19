@@ -1,18 +1,18 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Linq;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-    using System.Linq;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class EventAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "EVENT";
+        public string Name => "Event";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,20 +21,20 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
 
         /// <inheritdoc/>
-        public string Description => "Enables or disables an Exiled event for specified players.";
+        public string Description => "Enables or disables a 'IDeniable' Exiled event for specified players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("ENABLE", "Enables an event."),
-                new("DISABLE", "Disables an event.")),
+                new Option("Enable", "Enables an event."),
+                new Option("Disable", "Disables an event.")),
             new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
             new Argument("eventName", typeof(string), "The event name to manage.", true),
         };
@@ -63,13 +63,17 @@ It's completely fine if this is too much for you, you can always join our discor
 
         public ActionResponse Execute(Script script)
         {
-            bool disable = Arguments[0].ToUpper() == "DISABLE";
-            PlayerCollection players = (PlayerCollection)Arguments[1];
-            string key = Arguments[2].ToString();
+            bool disable = Arguments[0]!.ToUpper() == "DISABLE";
+            PlayerCollection players = (PlayerCollection)Arguments[1]!;
+            string key = Arguments[2]!.ToString();
 
-            PlayerDisable? rule = MainPlugin.Handlers.GetPlayerDisableEvent(key);
+            var rule = MainPlugin.EventHandlingModule.GetPlayerDisableEvent(key);
 
-            EventScriptModule eventHandler = MainPlugin.Modules.Where(mod => mod is EventScriptModule).FirstOrDefault() as EventScriptModule;
+            if (MainPlugin.Modules.FirstOrDefault(mod => mod is EventScriptModule) is not EventScriptModule eventHandler)
+            {
+                throw new ImpossibleException();
+            }
+            
             eventHandler.ConnectDynamicExiledEvent(key);
 
             if (disable)
@@ -80,16 +84,15 @@ It's completely fine if this is too much for you, you can always join our discor
                 }
                 else
                 {
-                    MainPlugin.Handlers.DisabledPlayerEvents.Add(new(key, players.GetInnerList()));
+                    MainPlugin.EventHandlingModule.DisabledPlayerEvents.Add(new(key, players.GetInnerList()));
                 }
             }
             else
             {
-                if (rule.HasValue)
-                {
-                    var inner = players.GetInnerList();
-                    rule.Value.Players.RemoveAll(ply => inner.Contains(ply));
-                }
+                if (!rule.HasValue) return new(true);
+                
+                var inner = players.GetInnerList();
+                rule.Value.Players.RemoveAll(ply => inner.Contains(ply));
             }
 
             return new(true);

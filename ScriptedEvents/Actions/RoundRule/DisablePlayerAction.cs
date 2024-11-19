@@ -1,27 +1,24 @@
-﻿using ScriptedEvents.Enums;
+﻿using ScriptedEvents.API.Constants;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-
-    using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class DisablePlayerAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "DISABLEPLAYER";
+        public string Name => "DisablePlayerRule";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "DISABLEPLR" };
+        public string[] Aliases => new[] { "DisablePlrRule" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
@@ -41,10 +38,9 @@ namespace ScriptedEvents.Actions
 
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-
-            string key = Arguments[1].ToUpper();
-            var rule = MainPlugin.Handlers.GetPlayerDisableRule(key);
+            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            string key = Arguments[1]!.ToUpper();
+            var rule = MainPlugin.EventHandlingModule.GetPlayerDisableRule(key);
 
             if (rule.HasValue)
             {
@@ -52,7 +48,7 @@ namespace ScriptedEvents.Actions
             }
             else
             {
-                MainPlugin.Handlers.DisabledPlayerKeys.Add(new(key, players.GetInnerList()));
+                MainPlugin.EventHandlingModule.DisabledPlayerKeys.Add(new(key, players.GetInnerList()));
             }
 
             return new(true);

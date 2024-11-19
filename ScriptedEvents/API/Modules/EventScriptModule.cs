@@ -201,7 +201,7 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                subscribe.Invoke(propertyInfo.GetValue(MainPlugin.Handlers), new object[] { @delegate });
+                subscribe.Invoke(propertyInfo.GetValue(MainPlugin.EventHandlingModule), new object[] { @delegate });
                 StoredDelegates.Add(new Tuple<PropertyInfo, Delegate>(propertyInfo, @delegate));
 
                 made = true;
@@ -225,7 +225,7 @@ namespace ScriptedEvents.API.Modules
                 EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
                 MethodInfo unSubscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Unsubscribe");
 
-                unSubscribe.Invoke(propertyInfo.GetValue(MainPlugin.Handlers), new[] { handler });
+                unSubscribe.Invoke(propertyInfo.GetValue(MainPlugin.EventHandlingModule), new[] { handler });
                 Logger.Debug($"Removed dynamic connection for event '{propertyInfo.Name}'");
             }
 
@@ -253,7 +253,7 @@ namespace ScriptedEvents.API.Modules
             if (ev is IDeniableEvent deniable and IPlayerEvent plr)
             {
                 var playerIsNotNone = plr.Player is not null;
-                var isRegisteredRule = MainPlugin.Handlers.GetPlayerDisableEvent(name, plr.Player).HasValue;
+                var isRegisteredRule = MainPlugin.EventHandlingModule.GetPlayerDisableEvent(name, plr.Player).HasValue;
 
                 if (playerIsNotNone && isRegisteredRule)
                 {

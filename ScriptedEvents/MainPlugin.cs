@@ -93,7 +93,7 @@ namespace ScriptedEvents
 
         public static ScriptModule ScriptModule => GetModule<ScriptModule>();
 
-        public static EventHandlingModule Handlers => GetModule<EventHandlingModule>();
+        public static EventHandlingModule EventHandlingModule => GetModule<EventHandlingModule>();
         
         public static ObjectReferenceModule ObjectReferenceModule => GetModule<ObjectReferenceModule>();
 
@@ -191,7 +191,7 @@ namespace ScriptedEvents
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            Handlers.OnRestarting();
+            EventHandlingModule.OnRestarting();
             base.OnDisabled();
 
             foreach (SEModule module in Modules)

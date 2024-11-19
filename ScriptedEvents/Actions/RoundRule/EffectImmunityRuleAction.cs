@@ -1,20 +1,17 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Collections.Generic;
+using Exiled.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class EffectImmunityRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "EFFECTIMMUNITYRULE";
+        public string Name => "EffectImmunityRule";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -26,7 +23,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string Description => "Action for setting rules to apply immunity to effects to specific roles/teams/players on-spawn.";
@@ -35,8 +32,8 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SET", "Rule to give effect immunity."),
-                new("REMOVE", "Removes a previously-established immunity.")),
+                new Option("Set", "Rule to give effect immunity."),
+                new Option("Remove", "Removes a previously-established immunity.")),
             new Argument("target", typeof(PlayerCollection), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect give or remove immunity to.", true),
         };
@@ -44,11 +41,11 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var mode = Arguments[0].ToUpper();
-            var players = (PlayerCollection)Arguments[1];
-            var effectType = (EffectType)Arguments[2];
+            var mode = Arguments[0]!.ToUpper();
+            var players = (PlayerCollection)Arguments[1]!;
+            var effectType = (EffectType)Arguments[2]!;
+            
             var dict = MainPlugin.GetModule<EventHandlingModule>().PlayerEffectImmunity;
-
             foreach (var plr in players)
             {
                 switch (mode)

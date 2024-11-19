@@ -1,17 +1,15 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using PlayerRoles;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-
-    using PlayerRoles;
-    using ScriptedEvents.Structures;
-
     public class DeleteInfectRule : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "DELINFECTRULE";
+        public string Name => "DelInfectRule";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -20,7 +18,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
@@ -37,9 +35,9 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            RoleTypeId oldRole = (RoleTypeId)Arguments[0];
+            RoleTypeId oldRole = (RoleTypeId)Arguments[0]!;
 
-            MainPlugin.Handlers.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
+            MainPlugin.EventHandlingModule.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
 
             return new(true);
         }

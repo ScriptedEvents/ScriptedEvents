@@ -1,7 +1,5 @@
 ﻿using System;
-using Exiled.API.Features.Roles;
 using PlayerRoles;
-using ScriptedEvents.API.Features;
 using ScriptedEvents.API.Features.Exceptions;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
@@ -74,7 +72,7 @@ namespace ScriptedEvents.Actions.RoundRule
                 _ => throw new ImpossibleException()
             };
 
-            MainPlugin.Handlers.DamageRules.Add(
+            MainPlugin.EventHandlingModule.DamageRules.Add(
                 new(attackerRuleValue, receiverRuleValue) { Multiplier = (float)Arguments[2]! }
             );
 

@@ -38,14 +38,14 @@ namespace ScriptedEvents.Actions
         {
             if (Arguments[0].ToUpper() == "CLEAR")
             {
-                MainPlugin.Handlers.DamageRules.Clear();
+                MainPlugin.EventHandlingModule.DamageRules.Clear();
                 return new(true);
             }
 
             Player attacker = Player.Get((string)Arguments[0]);
             Player receiver = Player.Get((string)Arguments[1]);
 
-            foreach (var rule in MainPlugin.Handlers.DamageRules)
+            foreach (var rule in MainPlugin.EventHandlingModule.DamageRules)
             {
                 foreach (Player ply in Player.List)
                     ply.RemoteAdminMessage($"{attacker.DisplayNickname} will deal {rule.DetermineMultiplier(attacker, receiver)}x damage to {receiver.DisplayNickname} (TYPE: {rule.Type})");

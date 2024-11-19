@@ -1,20 +1,19 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Linq;
+using Exiled.Events.EventArgs.Player;
+using PlayerRoles;
+using PluginAPI.Roles;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-
-    using PlayerRoles;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.Structures;
-
-    using Rule = ScriptedEvents.Structures.DamageRule;
-
     public class SpawnLoadoutRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "LOADOUTRULE";
+        public string Name => "LoadoutRule";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -23,100 +22,50 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
 
         /// <inheritdoc/>
-        public string Description => "Creates a spawn loadout rule, where you can modify which items are default for a certain class.";
+        public string Description => "Creates a spawn loadout rule, where you can modify which items are default for a certain ROLE.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
+            new OptionsArgument("mode", true, 
+                new Option("Set", "Sets a loadout rule, where 'items' argument needs to be provided."),
+                new Option("Remove", "Removes a loadout rule for a given role. Argument 'items' does not need to be provided.")),
             new Argument("role", typeof(RoleTypeId), "The role to set the default spawn inventory for.", true),
-            new Argument("items", typeof(ItemType[]), "The ItemType to ", true),
+            new Argument("items", typeof(ItemType[]), "The ItemTypes to add on spawn as the specified role.", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            /*
-            float multiplier = (float)Arguments[2];
-            Rule rule = null;
-
-            // Roles
-            if (Parser.TryGetEnum((string)Arguments[0], out RoleTypeId attackerRole, script))
+            var role = (RoleTypeId)Arguments[1]!;
+            var items = Arguments[2] as ItemType[];
+            
+            if (string.Equals("set", (string)Arguments[0]!, StringComparison.OrdinalIgnoreCase))
             {
-                if (Parser.TryGetEnum((string)Arguments[1], out RoleTypeId receiverRole, script))
+                if (items is null)
                 {
-                    rule = new(attackerRole, receiverRole);
+                    var err = new ErrorInfo(
+                        "Missing arguments",
+                        "When using the 'Set' mode, items must be provided.",
+                        Name
+                    ).ToTrace();
+                    return new(false, null, err);
                 }
-                else if (Parser.TryGetEnum((string)Arguments[1], out Team receiverTeam, script))
-                {
-                    rule = new(attackerRole, receiverTeam);
-                }
-                else if (Parser.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
-                {
-                    rule = new(attackerRole, players);
-                }
+                
+                MainPlugin.EventHandlingModule.SpawnLoadoutRule[role] = items.ToList();
             }
-            else if (Parser.TryGetEnum((string)Arguments[1], out RoleTypeId attackerRole2, script))
+            else
             {
-                if (Parser.TryGetEnum((string)Arguments[0], out Team receiverTeam2, script))
-                {
-                    rule = new(receiverTeam2, attackerRole2);
-                }
-                else if (Parser.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
-                {
-                    rule = new(players2, attackerRole2);
-                }
+                MainPlugin.EventHandlingModule.SpawnLoadoutRule.Remove(role);
             }
-
-            // Teams
-            if (Parser.TryGetEnum((string)Arguments[0], out Team attackerTeam, script))
-            {
-                if (Parser.TryGetEnum((string)Arguments[1], out Team receiverTeam, script))
-                {
-                    rule = new(attackerTeam, receiverTeam);
-                }
-                else if (Parser.TryGetEnum((string)Arguments[1], out RoleTypeId receiverRole, script))
-                {
-                    rule = new(attackerTeam, receiverRole);
-                }
-                else if (Parser.TryGetPlayers(RawArguments[1], null, out PlayerCollection players, script))
-                {
-                    rule = new(attackerTeam, players);
-                }
-            }
-            else if (Parser.TryGetEnum((string)Arguments[1], out Team attackerTeam2, script))
-            {
-                if (Parser.TryGetEnum((string)Arguments[0], out RoleTypeId receiverRole2, script))
-                {
-                    rule = new(receiverRole2, attackerTeam2);
-                }
-                else if (Parser.TryGetPlayers(RawArguments[0], null, out PlayerCollection players2, script))
-                {
-                    rule = new(players2, attackerTeam2);
-                }
-            }
-            else if (Parser.TryGetPlayers(RawArguments[0], null, out PlayerCollection attackers, script) && Parser.TryGetPlayers(RawArguments[1], null, out PlayerCollection receivers, script))
-            {
-                rule = new(attackers, receivers);
-            }
-
-            if (rule == null)
-            {
-                return new(false, "Invalid rule provided in the DAMAGERULE action.");
-            }
-
-            rule.Multiplier = multiplier;
-
-            MainPlugin.Handlers.DamageRules.Add(rule);
 
             return new(true);
-            */
-            return new(false, "not implemented");
         }
     }
 }

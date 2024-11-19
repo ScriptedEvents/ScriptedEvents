@@ -1,18 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.API.Constants;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-
-    using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class EnableAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "ENABLE";
+        public string Name => "EnableRule";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.RoundRule;
@@ -40,10 +38,10 @@ namespace ScriptedEvents.Actions
 
         public ActionResponse Execute(Script script)
         {
-            string key = Arguments[0].ToUpper();
+            string key = Arguments[0]!.ToUpper();
 
-            if (MainPlugin.Handlers.DisabledKeys.Contains(key))
-                MainPlugin.Handlers.DisabledKeys.Remove(key);
+            if (MainPlugin.EventHandlingModule.DisabledKeys.Contains(key))
+                MainPlugin.EventHandlingModule.DisabledKeys.Remove(key);
 
             return new(true);
         }

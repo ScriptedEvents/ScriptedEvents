@@ -51,19 +51,19 @@
 
             if (mode is "RESPAWNEDPLAYERS")
             {
-                return new(true, new(MainPlugin.Handlers.RecentlyRespawned));
+                return new(true, new(MainPlugin.EventHandlingModule.RecentlyRespawned));
             }
 
             string ret = mode switch
             {
                 "NEXTTEAM" => Respawn.NextKnownTeam.ToString(),
-                "LASTTEAM" => MainPlugin.Handlers.MostRecentSpawn.ToString(),
-                "LASTUNIT" => MainPlugin.Handlers.MostRecentSpawnUnit,
-                "TOTALWAVES" => MainPlugin.Handlers.RespawnWaves.ToString(),
+                "LASTTEAM" => MainPlugin.EventHandlingModule.MostRecentSpawn.ToString(),
+                "LASTUNIT" => MainPlugin.EventHandlingModule.MostRecentSpawnUnit,
+                "TOTALWAVES" => MainPlugin.EventHandlingModule.RespawnWaves.ToString(),
                 "NTFTICKETS" => Respawn.NtfTickets.ToString(),
                 "CHAOSTICKETS" => Respawn.ChaosTickets.ToString(),
                 "TIMEUNTILNEW" => Respawn.TimeUntilSpawnWave.TotalSeconds.ToString(),
-                "TIMESINCELAST" => MainPlugin.Handlers.TimeSinceWave.TotalSeconds.ToString(),
+                "TIMESINCELAST" => MainPlugin.EventHandlingModule.TimeSinceWave.TotalSeconds.ToString(),
                 _ => throw new ArgumentException(),
             };
 
