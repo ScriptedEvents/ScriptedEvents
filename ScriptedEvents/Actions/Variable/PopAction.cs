@@ -1,18 +1,15 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Variable
 {
-    using System;
-    using System.Linq;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class PopAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "POP";
+        public string Name => "Pop";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,13 +18,13 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => "Deletes the provided local variable and returns its value.";
+        public string Description => "Deletes the provided local variable and returns its value. Can be used for renaming local variables.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -38,23 +35,27 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            object toRet;
+            var variable = (IVariable)Arguments[0]!;
+            if (!script.IsVariableLocal(variable))
+            {
+                var err = new ErrorInfo(
+                    "Not a local variable.",
+                    $"Provided variable {variable.Name} is not a local variable.",
+                    Name).ToTrace();
+                return new(false, null, err);
+            }
 
-            switch ((IVariable)Arguments[0])
+            switch (variable)
             {
                 case IPlayerVariable plrVar:
                     script.RemoveVariable(plrVar);
-                    toRet = plrVar.GetPlayers().ToArray();
-                    break;
+                    return new(true, new(plrVar.GetPlayers()));
                 case ILiteralVariable lvVar:
                     script.RemoveVariable(lvVar);
-                    toRet = lvVar.Value;
-                    break;
+                    return new(true, new(lvVar.Value));
                 default:
                     throw new ArgumentException("Variable is not a valid variable type");
             }
-
-            return new(true, variablesToRet: new[] { toRet });
         }
     }
 }
