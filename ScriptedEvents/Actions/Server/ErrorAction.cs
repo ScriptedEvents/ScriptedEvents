@@ -1,17 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Server
 {
-    using System;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.Structures;
-
     public class ErrorAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "ERROR";
+        public string Name => "Error";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -20,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Server;
@@ -37,7 +36,7 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Logger.ScriptError(Arguments.JoinMessage(0), script, true);
+            Logger.ScriptError(Arguments.JoinMessage(), script, true);
             return new(true);
         }
     }
