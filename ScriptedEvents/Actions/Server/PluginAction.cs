@@ -1,23 +1,22 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using Exiled.API.Features;
+using Exiled.API.Interfaces;
+using Exiled.Loader;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Server
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-
-    using Exiled.API.Features;
-    using Exiled.API.Interfaces;
-    using Exiled.Loader;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class PluginAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "PLUGIN";
+        public string Name => "Plugin";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -26,7 +25,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Server;
@@ -38,28 +37,31 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("ENABLE", "Enables a plugin. Requires the name of the plugin DLL."),
-                new("DISABLE", "Disables a previously-enabled plugin. Requires the name of the plugin.")),
+                new Option("Enable", "Enables a plugin. Requires the name of the plugin DLL."),
+                new Option("Disable", "Disables a previously-enabled plugin. Requires the name of the plugin.")),
             new Argument("plugin", typeof(string), "The plugin to toggle.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            switch (Arguments[0].ToUpper())
+            switch (Arguments[0]!.ToUpper())
             {
                 case "ENABLE":
-
-                    string assemblyPath = Path.Combine(Paths.Plugins, $"{Arguments.JoinMessage(1)}.dll");
+                    string assemblyPath = Path.Combine(Paths.Plugins, $"{Arguments[1]}.dll");
                     Assembly assembly = Loader.LoadAssembly(assemblyPath);
                     if (assembly is null)
                     {
-                        return new(false, "Plugin not found.");
+                        var err = new ErrorInfo(
+                            "Failed to load plugin.",
+                            $"Failed to load assembly found at '{assemblyPath}'",
+                            Name).ToTrace();
+                        return new(false, null, err);
                     }
 
                     if (Loader.Plugins.Any(pl => pl.Assembly == assembly))
                     {
-                        return new(false, "Plugin already enabled.");
+                        return new(true);
                     }
 
                     Loader.Locations[assembly] = assemblyPath;
@@ -67,14 +69,14 @@ namespace ScriptedEvents.Actions
                     IPlugin<IConfig> plugin = Loader.CreatePlugin(assembly);
                     if (plugin is null)
                     {
-                        return new(false, "Plugin is null!");
+                        throw new ImpossibleException();
                     }
 
                     AssemblyInformationalVersionAttribute attribute = plugin.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
 
                     Log.Info($"Loaded plugin {plugin.Name}@{(plugin.Version is not null ? $"{plugin.Version.Major}.{plugin.Version.Minor}.{plugin.Version.Build}" : attribute is not null ? attribute.InformationalVersion : string.Empty)}");
-
-                    Server.PluginAssemblies.Add(assembly, plugin);
+                    
+                    Exiled.API.Features.Server.PluginAssemblies.Add(assembly, plugin);
                     if (plugin.Config.Debug)
                         Log.DebugEnabled.Add(assembly);
 
@@ -83,10 +85,14 @@ namespace ScriptedEvents.Actions
                     plugin.OnRegisteringCommands();
                     break;
                 case "DISABLE":
-                    IPlugin<IConfig> plugin2 = Loader.GetPlugin((string)Arguments[1]);
+                    IPlugin<IConfig> plugin2 = Loader.GetPlugin((string)Arguments[1]!);
                     if (plugin2 is null)
                     {
-                        return new(false, "Plugin not enabled or not found.");
+                        var err = new ErrorInfo(
+                            "Failed to find the plugin.",
+                            $"Plugin '{Arguments[1]}' is not present in the running plugins dictionary.",
+                            Name).ToTrace();
+                        return new(false, null, err);
                     }
 
                     plugin2.OnUnregisteringCommands();
