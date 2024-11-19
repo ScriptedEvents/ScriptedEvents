@@ -1,25 +1,24 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Strings
 {
-    using System;
-    using ScriptedEvents.Structures;
-
-    /// <inheritdoc/>
     public class StrUpperAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "STR-UPPER";
+        public string Name => "StrToUpper";
 
         /// <inheritdoc/>
-        public string Description => "Returns the provided string where all lowercase letters are replaced with UPPERCASE ones.";
+        public string Description => "Returns the provided string where all 'lowercase' letters are replaced with 'UPPERCASE' ones.";
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -30,13 +29,13 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("string", typeof(string), "The string to UPPERCASE.", true),
+            new Argument("subjectString", typeof(string), "The string to UPPERCASE.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(true, variablesToRet: new[] { Arguments[0].ToString().ToUpper() });
+            return new(true, new(Arguments[0]!.ToUpper()));
         }
     }
 }
