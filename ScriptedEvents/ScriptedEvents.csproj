@@ -100,6 +100,7 @@
     <Compile Include="Actions\AllInOne\MapInfoAction.cs" />
     <Compile Include="Actions\AllInOne\RoundInfoAction.cs" />
     <Compile Include="Actions\AllInOne\ServerInfoAction.cs" />
+    <Compile Include="Actions\AllInOne\ScriptInfoAction.cs" />
     <Compile Include="Actions\AllInOne\TimeInfoAction.cs" />
     <Compile Include="Actions\AllInOne\WarheadInfoAction.cs" />
     <Compile Include="Actions\AllInOne\WaveInfoAction.cs" />
@@ -138,7 +139,6 @@
     <Compile Include="Actions\PlayerActions\RaycastAction.cs" />
     <Compile Include="Actions\RoundRule\SpawnLoadoutRuleAction.cs" />
     <Compile Include="Actions\ScriptInfo\IsRunningAction.cs" />
-    <Compile Include="Actions\ScriptInfo\ThisAction.cs" />
     <Compile Include="Actions\ScriptInfo\VExistsAction.cs" />
     <Compile Include="Actions\Strings\StrCountAction.cs" />
     <Compile Include="Actions\Strings\StrLenAction.cs" />
