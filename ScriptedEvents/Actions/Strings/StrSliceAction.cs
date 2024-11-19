@@ -1,16 +1,14 @@
 ﻿using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using System;
+using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions.Strings
 {
-    using System;
-    using ScriptedEvents.Structures;
-
-    /// <inheritdoc/>
     public class StrSliceAction : IScriptAction, IHelpInfo, IReturnValueAction
     {
         /// <inheritdoc/>
-        public string Name => "STR-SLICE";
+        public string Name => "StrSlice";
 
         /// <inheritdoc/>
         public string Description => "Slices the provided string using custom rules.";
@@ -19,7 +17,7 @@ namespace ScriptedEvents.Actions.Strings
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -30,38 +28,29 @@ namespace ScriptedEvents.Actions.Strings
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("string", typeof(string), "The string to perform the operation on.", true),
-            new Argument("startSlice", typeof(int), "The amount of characters to slice off from the START of the string. Value cannot be negative!", true),
-            new Argument("endSlice", typeof(int), "The amount of characters to slice off from the END of the string. Value cannot be negative!", true),
+            new Argument("subjectString", typeof(string), "The string to perform the operation on.", true),
+            new Argument("startSliceAmount", typeof(int), "The amount of characters to slice off from the START of the string.", true, ArgFlag.BiggerOrEqual0),
+            new Argument("endSliceAmount", typeof(int), "The amount of characters to slice off from the END of the string.", true, ArgFlag.BiggerOrEqual0),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var @string = (string)Arguments[0];
-            var startSlice = (int)Arguments[1];
-            var endSlice = (int)Arguments[2];
+            var subject = (string)Arguments[0]!;
+            var startSlice = (int)Arguments[1]!;
+            var endSlice = (int)Arguments[2]!;
 
-            if (startSlice < 0)
+            if (subject.Length - startSlice - endSlice <= 0)
             {
-                return new(false,
-                    $"Argument 'startSlice' must be a non-negative value, but was '{startSlice}'.");
+                var err = new ErrorInfo(
+                    "Slicing not possible",
+                    $"The provided string '{subject}' doesnt contain enough characters to slice it with values 'startSlice {startSlice}' and endSlice '{endSlice}'.",
+                    Name).ToTrace();
+                return new(false, null, err);
             }
 
-            if (endSlice < 0)
-            {
-                return new(false,
-                    $"Argument 'endSlice' must be a non-negative value, but was '{endSlice}'.");
-            }
-
-            if (@string.Length - startSlice - endSlice <= 0)
-            {
-                return new(false,
-                    $"The provided string '{@string}' doesnt contain enough characters to slice it with values 'startSlice {startSlice}' and endSlice '{endSlice}'.");
-            }
-
-            var toRet = @string.Substring(startSlice, @string.Length - startSlice - endSlice);
-            return new(true, variablesToRet: new object[] { toRet });
+            var toRet = subject.Substring(startSlice, subject.Length - startSlice - endSlice);
+            return new(true, new(toRet));
         }
     }
 }
