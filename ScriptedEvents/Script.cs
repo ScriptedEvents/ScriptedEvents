@@ -325,7 +325,17 @@ namespace ScriptedEvents
             {
                 IPlayerVariable playerVariable => LocalPlayerVariables.Remove(playerVariable.Name),
                 ILiteralVariable literalVariable => LocalLiteralVariables.Remove(literalVariable.Name),
-                IVariable variable => LocalPlayerVariables.Remove(variable.Name) || LocalLiteralVariables.Remove(variable.Name),
+                _ => throw new ArgumentException($"Variable '{var}' is not a valid variable type.")
+            };
+        }
+        
+        public bool IsVariableLocal<T>(T var)
+            where T : IVariable
+        {
+            return var switch
+            {
+                IPlayerVariable playerVariable => LocalPlayerVariables.ContainsKey(playerVariable.Name),
+                ILiteralVariable literalVariable => LocalLiteralVariables.ContainsKey(literalVariable.Name),
                 _ => throw new ArgumentException($"Variable '{var}' is not a valid variable type.")
             };
         }
