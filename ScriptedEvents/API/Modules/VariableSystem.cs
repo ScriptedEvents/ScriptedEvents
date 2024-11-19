@@ -29,6 +29,8 @@
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables that were defined in run-time.
         /// </summary>
         private static Dictionary<string, CustomPlayerVariable> GlobalPlayerVariables { get; } = new();
+        
+        public static Dictionary<Player, Dictionary<string, string>> PlayerDataVariables { get; set; } = new();
 
         public static bool IsValidVariableSyntax<T>(string name, out string processedName, out ErrorInfo? errorInfo)
             where T : IVariable

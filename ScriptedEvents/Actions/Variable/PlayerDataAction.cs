@@ -1,39 +1,37 @@
-﻿using ScriptedEvents.Enums;
+﻿using Exiled.API.Features;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Variable
 {
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class PlayerDataAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "PLAYERDATA";
+        public string Name => "PlrData";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "PDATA" };
+        public string[] Aliases => new[] { "PData" };
 
         /// <inheritdoc/>
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => "Allows manipulation of variables specific to players.";
+        public string Description => "Allows manipulation of values tied to specific players.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
             new OptionsArgument("mode", true,
-                new("SET", "Sets the player data."),
-                new("DELETE", "Deletes the player data.")),
+                new Option("Set", "Sets the player data."),
+                new Option("Remove", "Deletes the player data.")),
             new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
             new Argument("keyName", typeof(string), "The name of the key.", true),
             new Argument("value", typeof(string), "The new value of the key. Not used when using mode 'DELETE'.", false),
@@ -42,32 +40,30 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[1];
-
-            switch (((string)Arguments[0]).ToUpper())
+            PlayerCollection players = (PlayerCollection)Arguments[1]!;
+            string keyName = (string)Arguments[2]!;
+            switch (((string)Arguments[0]!).ToUpper())
             {
                 case "SET" when Arguments.Length < 4:
-                    return new(false, "guh");
+                    var err = new ErrorInfo(
+                        "Value not provided",
+                        "When using 'Set' mode, value needs to be provided.",
+                        Name).ToTrace();
+                    return new(false, null, err);
+                
 
                 case "SET":
-                    string keyName = (string)Arguments[2];
                     foreach (Player ply in players)
                     {
-                        if (ply.SessionVariables.ContainsKey(keyName))
-                            ply.SessionVariables[keyName] = Arguments.JoinMessage(3);
-                        else
-                            ply.SessionVariables.Add(keyName, Arguments.JoinMessage(3));
+                        ply.PlayerDataVariables()[keyName] = Arguments.JoinMessage(3);
                     }
-
                     break;
+                
                 case "DELETE":
-                    keyName = (string)Arguments[2];
                     foreach (Player ply in players)
                     {
-                        if (ply.SessionVariables.ContainsKey(keyName))
-                            ply.SessionVariables.Remove(keyName);
+                        ply.PlayerDataVariables().Remove(keyName);
                     }
-
                     break;
             }
 

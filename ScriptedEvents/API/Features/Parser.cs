@@ -514,8 +514,8 @@ namespace ScriptedEvents.API.Features
                         break;
 
                     default:
-                        result = ply.SessionVariables.ContainsKey(parts[1])
-                            ? ply.SessionVariables[parts[1]].ToString()
+                        result = ply.PlayerDataVariables().ContainsKey(parts[1])
+                            ? ply.PlayerDataVariables()[parts[1]]
                             : "UNDEFINED";
                         break;
                 }

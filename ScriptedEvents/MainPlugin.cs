@@ -92,6 +92,8 @@ namespace ScriptedEvents
         public static IEnumerable<SEModule> Modules => InternalModules.Where(mod => mod.IsActive);
 
         public static ScriptModule ScriptModule => GetModule<ScriptModule>();
+        
+        public static VariableSystem VariableSystem => GetModule<VariableSystem>();
 
         public static EventHandlingModule EventHandlingModule => GetModule<EventHandlingModule>();
         
