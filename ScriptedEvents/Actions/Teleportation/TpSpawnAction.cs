@@ -1,19 +1,17 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.API.Features.Roles;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Teleportation
 {
-    using System;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using Exiled.API.Features.Roles;
-    using ScriptedEvents.Structures;
-
     public class TpSpawnAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "TPSPAWN";
+        public string Name => "TPSpawn";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -22,7 +20,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Teleportation;
@@ -40,8 +38,8 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-            SpawnLocationType rt = (SpawnLocationType)Arguments[1];
+            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            SpawnLocationType rt = (SpawnLocationType)Arguments[1]!;
 
             foreach (Player ply in players)
             {
