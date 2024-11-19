@@ -23,12 +23,12 @@
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that were defined in run-time.
         /// </summary>
-        private static Dictionary<string, CustomLiteralVariable> DefinedLiteralVariables { get; } = new();
+        private static Dictionary<string, CustomLiteralVariable> GlobalLiteralVariables { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables that were defined in run-time.
         /// </summary>
-        private static Dictionary<string, CustomPlayerVariable> DefinedPlayerVariables { get; } = new();
+        private static Dictionary<string, CustomPlayerVariable> GlobalPlayerVariables { get; } = new();
 
         public static bool IsValidVariableSyntax<T>(string name, out string processedName, out ErrorInfo? errorInfo)
             where T : IVariable
@@ -74,7 +74,7 @@
             }
 
             errorTrace = null;
-            DefinedLiteralVariables[name] = new(name, string.Empty, value);
+            GlobalLiteralVariables[name] = new(name, string.Empty, value);
             return true;
         }
 
@@ -88,34 +88,29 @@
             }
 
             errorTrace = null;
-            DefinedPlayerVariables[name] = new(name, string.Empty, value);
+            GlobalPlayerVariables[name] = new(name, string.Empty, value);
             return true;
         }
 
-        public static bool TryDefineVariable<T>(T variable, out ErrorInfo? errorInfo)
+        public static void DefineGlobalVariable<T>(T variable)
             where T : class, IVariable
         {
             switch (variable)
             {
                 case CustomPlayerVariable playerVariable:
                 {
-                    DefinedPlayerVariables[playerVariable.Name] = playerVariable;
-                    errorInfo = null;
-                    return true;
+                    GlobalPlayerVariables[playerVariable.Name] = playerVariable;
+                    return;
                 }
 
                 case CustomLiteralVariable literalVariable:
                 {
-                    DefinedLiteralVariables[literalVariable.Name] = literalVariable;
-                    errorInfo = null;
-                    return true;
+                    GlobalLiteralVariables[literalVariable.Name] = literalVariable;
+                    return;
                 }
 
                 default:
-                    errorInfo = Error(
-                        "Variable defining error",
-                        "If you see this error, report it to the dev team. This is not supposed to happen.");
-                    return false;
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -141,12 +136,12 @@
 
             if (isLiteralVariable || isAnyVariable)
             {
-                if (DefinedLiteralVariables.TryGetValue(name, out CustomLiteralVariable literal))
+                if (GlobalLiteralVariables.TryGetValue(name, out CustomLiteralVariable literal))
                 {
                     return literal;
                 }
 
-                if (script.UniqueLiteralVariables.TryGetValue(name, out CustomLiteralVariable literal2))
+                if (script.LocalLiteralVariables.TryGetValue(name, out CustomLiteralVariable literal2))
                 {
                     return literal2;
                 }
@@ -162,12 +157,12 @@
 
             if (isPlayerVariable || isAnyVariable)
             {
-                if (DefinedPlayerVariables.TryGetValue(name, out CustomPlayerVariable player))
+                if (GlobalPlayerVariables.TryGetValue(name, out CustomPlayerVariable player))
                 {
                     return player;
                 }
 
-                if (script.UniquePlayerVariables.TryGetValue(name, out CustomPlayerVariable player2))
+                if (script.LocalPlayerVariables.TryGetValue(name, out CustomPlayerVariable player2))
                 {
                     return player2;
                 }
@@ -227,8 +222,8 @@
         /// </summary>
         public static void ClearVariables()
         {
-            DefinedLiteralVariables.Clear();
-            DefinedPlayerVariables.Clear();
+            GlobalLiteralVariables.Clear();
+            GlobalPlayerVariables.Clear();
         }
 
         public override void Init()

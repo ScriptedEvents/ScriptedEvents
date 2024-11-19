@@ -78,7 +78,7 @@ namespace ScriptedEvents.Actions.AllInOne
                 "DURATION" => script.RunDuration.TotalSeconds.ToString(),
                 "NAME" => script.ScriptName,
                 "PATH" => script.FilePath,
-                "VARIABLES" => script.UniqueLiteralVariables.Keys.Concat(script.UniquePlayerVariables.Keys).ToArray().Length != 0 ? string.Join(", ", script.UniqueLiteralVariables.Keys.Concat(script.UniquePlayerVariables.Keys)) : "NONE",
+                "VARIABLES" => script.LocalLiteralVariables.Keys.Concat(script.LocalPlayerVariables.Keys).ToArray().Length != 0 ? string.Join(", ", script.LocalLiteralVariables.Keys.Concat(script.LocalPlayerVariables.Keys)) : "NONE",
                 _ => throw new ArgumentException()
             };
             return new(true, new(ret));

@@ -895,7 +895,7 @@ namespace ScriptedEvents.API.Modules
 
                         default:
                             Logger.ScriptError($"Action '{action.Name}' returned a value of an illegal type '{zipped.variable.GetType()}', which is not supported. Report this error to the developers.", scr);
-                            scr.UniqueLiteralVariables.Add(zipped.name, new(zipped.name, string.Empty, zipped.variable.ToString()));
+                            scr.LocalLiteralVariables.Add(zipped.name, new(zipped.name, string.Empty, zipped.variable.ToString()));
                             break;
                     }
                 }

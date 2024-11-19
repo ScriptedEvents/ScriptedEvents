@@ -31,8 +31,8 @@ namespace ScriptedEvents
             Labels = DictionaryPool<string, int>.Pool.Get();
             FunctionLabels = DictionaryPool<string, int>.Pool.Get();
             Flags = ListPool<Flag>.Pool.Get();
-            UniqueLiteralVariables = DictionaryPool<string, CustomLiteralVariable>.Pool.Get();
-            UniquePlayerVariables = DictionaryPool<string, CustomPlayerVariable>.Pool.Get();
+            LocalLiteralVariables = DictionaryPool<string, CustomLiteralVariable>.Pool.Get();
+            LocalPlayerVariables = DictionaryPool<string, CustomPlayerVariable>.Pool.Get();
             UniqueId = Guid.NewGuid();
 
             Logger.Debug($"Created new script object | ID: {UniqueId}");
@@ -174,12 +174,12 @@ namespace ScriptedEvents
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
         /// </summary>
-        public Dictionary<string, CustomLiteralVariable> UniqueLiteralVariables { get; }
+        public Dictionary<string, CustomLiteralVariable> LocalLiteralVariables { get; }
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of player variables that are unique to this script.
         /// </summary>
-        public Dictionary<string, CustomPlayerVariable> UniquePlayerVariables { get; }
+        public Dictionary<string, CustomPlayerVariable> LocalPlayerVariables { get; }
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> of coroutines run by this script.
@@ -223,8 +223,8 @@ namespace ScriptedEvents
 
             DictionaryPool<string, int>.Pool.Return(Labels);
             ListPool<Flag>.Pool.Return(Flags);
-            DictionaryPool<string, CustomLiteralVariable>.Pool.Return(UniqueLiteralVariables);
-            DictionaryPool<string, CustomPlayerVariable>.Pool.Return(UniquePlayerVariables);
+            DictionaryPool<string, CustomLiteralVariable>.Pool.Return(LocalLiteralVariables);
+            DictionaryPool<string, CustomPlayerVariable>.Pool.Return(LocalPlayerVariables);
             GC.SuppressFinalize(this);
         }
 
@@ -299,7 +299,7 @@ namespace ScriptedEvents
                 throw new ArgumentException(info!.ToTrace().Format());
             }
 
-            UniqueLiteralVariables[name] = new(name, string.Empty, value);
+            LocalLiteralVariables[name] = new(name, string.Empty, value);
         }
 
         /// <summary>
@@ -315,38 +315,19 @@ namespace ScriptedEvents
                 throw new ArgumentException(info!.ToTrace().Format());
             }
 
-            UniquePlayerVariables[processedName] = new(processedName, string.Empty, value);
+            LocalPlayerVariables[processedName] = new(processedName, string.Empty, value);
         }
 
-        public void RemoveVariable<T>(T var)
+        public bool RemoveVariable<T>(T var)
             where T : IVariable
         {
-            switch (var)
+            return var switch
             {
-                case IPlayerVariable playerVariable:
-                {
-                    Logger.Info(string.Join(", ", UniquePlayerVariables.Keys));
-                    UniquePlayerVariables.Remove(playerVariable.Name);
-                    break;
-                }
-
-                case ILiteralVariable literalVariable:
-                {
-                    UniqueLiteralVariables.Remove(literalVariable.Name);
-                    break;
-                }
-
-                case IVariable variable:
-                {
-                    // funny nuke
-                    UniquePlayerVariables.Remove(variable.Name);
-                    UniqueLiteralVariables.Remove(variable.Name);
-                    break;
-                }
-
-                default:
-                    throw new ArgumentException($"Variable '{var}' is not a valid variable type.");
-            }
+                IPlayerVariable playerVariable => LocalPlayerVariables.Remove(playerVariable.Name),
+                ILiteralVariable literalVariable => LocalLiteralVariables.Remove(literalVariable.Name),
+                IVariable variable => LocalPlayerVariables.Remove(variable.Name) || LocalLiteralVariables.Remove(variable.Name),
+                _ => throw new ArgumentException($"Variable '{var}' is not a valid variable type.")
+            };
         }
 
         public bool HasFlag(string key, out Flag flag)
