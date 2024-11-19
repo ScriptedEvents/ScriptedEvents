@@ -1,4 +1,5 @@
 using ScriptedEvents.Actions.DebugActions;
+using ScriptedEvents.API.Features.Exceptions;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 
@@ -21,7 +22,6 @@ namespace ScriptedEvents.API.Modules
     using ScriptedEvents.Actions;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Features.Exceptions;
     using ScriptedEvents.DemoScripts;
 
     using ScriptedEvents.Structures;
@@ -61,7 +61,7 @@ namespace ScriptedEvents.API.Modules
         public List<string> AutoRunScripts { get; } = new();
 
         /// <inheritdoc/>
-        public override string Name { get; protected set; } = "ScriptModule";
+        public override string Name => "ScriptModule";
 
         /// <inheritdoc/>
         public override bool ShouldGenerateFiles
@@ -127,7 +127,7 @@ namespace ScriptedEvents.API.Modules
                 res.ErrorTrace!.Append(Error(
                     $"Execution of action '{action.Name}' failed.",
                     "Action argument processing failed, see inner exception for details."));
-                actResp = new(false, res.ErrorTrace);
+                actResp = new(false, null, res.ErrorTrace);
                 return false;
             }
 
@@ -151,7 +151,7 @@ namespace ScriptedEvents.API.Modules
                     actResp = scriptAction.Execute(scr);
                     break;
                 default:
-                    throw new VariableException("Unknown action type");
+                    throw new ImpossibleException();
             }
 
             if (!actResp.Success)
@@ -196,7 +196,7 @@ namespace ScriptedEvents.API.Modules
             Singleton = this;
             base.Init();
 
-            RegisterActions(MainPlugin.Singleton.Assembly);
+            RegisterActions(MainPlugin.Singleton!.Assembly);
         }
 
         /// <inheritdoc/>
@@ -226,7 +226,7 @@ namespace ScriptedEvents.API.Modules
 
                 Logger.Debug($"Script '{scr.ScriptName}' set to run automatically.");
 
-                if (!TryRunScript(scr, out var trace))
+                if (!TryRunScript(scr, out var trace, out _))
                 {
                     trace!.Append(Error(
                         "Autorun execution failed",
@@ -386,34 +386,6 @@ namespace ScriptedEvents.API.Modules
 
                 switch (keyword)
                 {
-                    // function labels
-                    case "->" when structureParts.Count < 2:
-                        Logger.ScriptError($"A function label syntax has been used, but no name has been provided.", innerScript, printableLine: currentline + 1);
-                        continue;
-                    case "->":
-                    {
-                        var labelName = structureParts[1].RemoveWhitespace();
-
-                        if (!innerScript.FunctionLabels.ContainsKey(labelName))
-                        {
-                            innerScript.FunctionLabels.Add(labelName, currentline);
-                        }
-                        else if (!suppressWarnings)
-                        {
-                            Logger.ScriptError(
-                                Error(
-                                    $"Multiple label definitions in script '{scriptName}'",
-                                    $"Label '{labelName}' is already defined")
-                                    .ToTrace(),
-                                innerScript,
-                                printableLine: currentline + 1);
-                            continue;
-                        }
-
-                        AddActionNoArgs(new StartFunctionAction());
-                        continue;
-                    }
-
                     case "??" when actionList.Count < 2:
                         Logger.Log("'??' (single line if statement) syntax can't be used without providing a conditon.", LogType.Warning, innerScript, currentline + 1);
                         continue;

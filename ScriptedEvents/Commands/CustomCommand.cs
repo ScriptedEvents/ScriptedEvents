@@ -1,4 +1,5 @@
 ﻿using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 
 namespace ScriptedEvents.Commands
@@ -143,7 +144,7 @@ namespace ScriptedEvents.Commands
 
                     script.AddLiteralVariable("$ARGS", string.Join(" ", arguments), true);
 
-                    ScriptModule.Singleton!.TryRunScript(script, out var err1);
+                    ScriptModule.Singleton!.TryRunScript(script, out var err1, out _);
                     if (err1 != null)
                     {
                         Logger.Error(err1);
@@ -152,10 +153,6 @@ namespace ScriptedEvents.Commands
                     {
                         success++;
                     }
-                }
-                catch (DisabledScriptException)
-                {
-                    failed.Add(scrName, MainPlugin.Translations.DisabledScript);
                 }
                 catch (FileNotFoundException)
                 {

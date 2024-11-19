@@ -1,27 +1,22 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Exiled.API.Features.Pools;
+using MEC;
+using ScriptedEvents.API.Constants;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Misc
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-
-    using Exiled.API.Features.Pools;
-
-    using MEC;
-
-    using ScriptedEvents.Actions.Samples;
-    using ScriptedEvents.Actions.Samples.Interfaces;
-    using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class HelpAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -56,6 +51,8 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
+            throw new NotImplementedException();
+            /*
             if (Arguments.Length < 1)
                 Arguments = new[] { "USE-WELCOME-TEXT" };
 
@@ -88,11 +85,13 @@ namespace ScriptedEvents.Actions
 
             //ActionResponse text = GenerateText(Arguments[0].ToUpper(), script, IsFile);
             //return Display(text);
-            return new(true);
+            return new(true);*/
         }
 
         public static (bool success, string message) GenerateText(string text, Script? script = null, bool nofile = false)
         {
+            throw new NotImplementedException();
+            /*
             if (text is "USE-WELCOME-TEXT")
             {
                 string newText = $@"
@@ -391,9 +390,9 @@ Scripted Events Contributors:
 
                 return new(true, StringBuilderPool.Pool.ToStringReturn(sb));
             }
-            */
+
             // Nope
-            return new(false, "Invalid argument provided for the HELP action.");
+            return new(false, "Invalid argument provided for the HELP action.");*/
         }
 
         /// <summary>
@@ -403,6 +402,8 @@ Scripted Events Contributors:
         /// <returns>A new response to show to the user.</returns>
         public ActionResponse Display(ActionResponse response)
         {
+            throw new NotImplementedException();
+            /*
             if (IsFile)
             {
                 string message = $"Auto Generated At: {DateTime.Now:f}\nExpires: {DateTime.Now.AddMinutes(5):f}";
@@ -457,6 +458,7 @@ Scripted Events Contributors:
             {
                 return response;
             }
+            */
         }
 
         private ErrorTrace Err(string content) => new(new ErrorInfo("Help action error", content, "Help action"));

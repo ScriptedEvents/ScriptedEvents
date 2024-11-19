@@ -243,7 +243,7 @@ namespace ScriptedEvents.API.Features
         {
             ArgumentProcessResult success = new(true);
 
-            Log($"Parameter '{expected.ArgumentName}' needs a '{expected.Flag.Name}' type.");
+            Log($"Parameter '{expected.ArgumentName}' needs a '{expected.Type}' type.");
 
             // Extra magic for options
             if (expected is OptionsArgument options)
@@ -267,7 +267,7 @@ namespace ScriptedEvents.API.Features
 
             if (TryProcessSmartArgument(input, action, source, out var smartArgRes, out var type))
             {
-                if (expected.Flag == type)
+                if (expected.Type == type)
                 {
                     success.NewParameters.Add(smartArgRes!);
                 }
@@ -279,7 +279,7 @@ namespace ScriptedEvents.API.Features
                 input = saResult;
             }
 
-            switch (expected.Flag.Name)
+            switch (expected.Type.Name)
             {
                 case "Boolean":
                     if (!input.IsBool(out var result, out var boolErr, source))
@@ -432,10 +432,11 @@ namespace ScriptedEvents.API.Features
 
                 default:
                     // Handle all enum types
-                    if (expected.Flag.BaseType == typeof(Enum))
+                    if (expected.Type.BaseType == typeof(Enum))
                     {
-                        var genericMethod = typeof(ArgumentProcessor).GetMethod("TryGetEnum")
-                            !.MakeGenericMethod(expected.Flag);
+                        var genericMethod = typeof(ArgumentProcessor)
+                            .GetMethod("TryGetEnum")!
+                            .MakeGenericMethod(expected.Type);
 
                         object?[] arguments = { input, null, source, null };
 
@@ -446,7 +447,7 @@ namespace ScriptedEvents.API.Features
                             return ErrorByInfo(errorInfo);
                         }
 
-                        success.NewParameters.Add((arguments[1] as Enum) !);
+                        success.NewParameters.Add((arguments[1] as Enum)!);
                     }
 
                     success.NewParameters.Add(Parser.ReplaceContaminatedValueSyntax(input, source));

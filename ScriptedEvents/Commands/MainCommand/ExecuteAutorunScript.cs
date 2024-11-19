@@ -1,4 +1,5 @@
 ﻿using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Modules;
 
 namespace ScriptedEvents.Commands.MainCommand
 {

@@ -41,7 +41,6 @@ namespace ScriptedEvents.API.Features
             { typeof(IVariable), "Variable" },
             { typeof(IPlayerVariable), "Player Variable" },
             { typeof(ILiteralVariable), "Literal (Raw Text) Variable" },
-            { typeof(RoleTypeIdOrTeam), "RoleTypeId (ID / Number) OR Team (ID / Number)" },
             { typeof(object), "Any Type" },
         };
 

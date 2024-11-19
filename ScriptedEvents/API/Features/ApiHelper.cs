@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using ScriptedEvents.Actions.DebugActions;
+using ScriptedEvents.API.Modules;
 
 namespace ScriptedEvents.API.Features
 {
@@ -17,7 +18,7 @@ namespace ScriptedEvents.API.Features
     {
         public static bool IsModuleLoaded()
         {
-            return ScriptModule.Singleton! is not null;
+            return ScriptModule.Singleton is not null;
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="name">The name of the action.</param>
         /// <param name="action">The function to execute when the action is used. An array string of parameters is provided, and the action must return a tuple with a bool (successful?) and a string message (optional, can be set to string.Empty).</param>
         /// <returns>A string message representing whether or not the unregister process was successful.</returns>
-        public static string RegisterCustomAction(string name, Func<Tuple<string[], object>, Tuple<bool, string, object[]>> action)
+        public static string RegisterCustomAction(string? name, Func<Tuple<string[], object>, Tuple<bool, string, object[]>>? action)
         {
             if (!IsModuleLoaded())
             {
@@ -79,7 +80,7 @@ namespace ScriptedEvents.API.Features
         /// </summary>
         /// <param name="name">The name of the action.</param>
         /// <returns>A string message representing whether or not the unregister process was successful.</returns>
-        public static string UnregisterCustomAction(string name)
+        public static string UnregisterCustomAction(string? name)
         {
             if (name is null)
             {
@@ -102,7 +103,7 @@ namespace ScriptedEvents.API.Features
         /// </summary>
         /// <param name="actionNames">A string array of action names.</param>
         /// <returns>A string message representing whether or not the unregister process was successful.</returns>
-        public static string UnregisterCustomActions(string[] actionNames)
+        public static string UnregisterCustomActions(string[]? actionNames)
         {
             if (actionNames is null)
             {
@@ -128,7 +129,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="script">Script object.</param>
         /// <param name="max">Maximum amount of players to get. Leave below zero for unlimited.</param>
         /// <returns>An array of players.</returns>
-        public static Player[] GetPlayers(string input, object script, int max = -1)
+        public static Player[]? GetPlayers(string input, object script, int max = -1)
         {
             if (script is Script actualScript == false)
             {

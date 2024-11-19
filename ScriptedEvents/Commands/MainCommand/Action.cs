@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Enums;
+﻿using ScriptedEvents.API.Modules;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
 
@@ -87,7 +88,7 @@ namespace ScriptedEvents.Commands.MainCommand
 
             mockScript.AddFlag("ACTIONCOMMANDEXECUTION");
 
-            if (!ScriptModule.Singleton!.TryRunScript(mockScript, out var trace))
+            if (!ScriptModule.Singleton!.TryRunScript(mockScript, out var trace, out _))
             {
                 response = $"Failed to run the action.\n{trace!.Format()}";
                 mockScript.Dispose();

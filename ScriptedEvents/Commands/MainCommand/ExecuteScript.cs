@@ -26,8 +26,7 @@ namespace ScriptedEvents.Commands.MainCommand
 
         /// <inheritdoc/>
         public string Description => "Start a script.";
-
-        /// <inheritdoc/>
+        
         public bool SanitizeResponse => true;
 
         /// <inheritdoc/>
@@ -83,7 +82,7 @@ namespace ScriptedEvents.Commands.MainCommand
 
             scr.AddLiteralVariable("$ARGS", string.Join(" ", arguments.Skip(1)), true);
 
-            if (!ScriptModule.Singleton!.TryRunScript(scr, out var err))
+            if (!ScriptModule.Singleton!.TryRunScript(scr, out var err, out _))
             {
                 response = err!.Format();
             }
