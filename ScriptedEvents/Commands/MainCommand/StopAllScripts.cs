@@ -39,13 +39,13 @@
                 return false;
             }
 
-            if (MainPlugin.ScriptModule.RunningScripts.Count == 0)
+            if (ScriptModule.Singleton!.RunningScripts.Count == 0)
             {
                 response = "Zero scripts are currently running.";
                 return true;
             }
 
-            int amount = MainPlugin.ScriptModule.StopAllScripts();
+            int amount = ScriptModule.Singleton!.StopAllScripts();
 
             response = $"Done! Stopped execution of {amount} scripts.";
             return true;

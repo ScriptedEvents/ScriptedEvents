@@ -1,6 +1,4 @@
-﻿using Exiled.API.Extensions;
-
-namespace ScriptedEvents.API.Modules
+﻿namespace ScriptedEvents.API.Modules
 {
     using System;
     using System.Collections;
@@ -16,7 +14,6 @@ namespace ScriptedEvents.API.Modules
     using Exiled.Loader;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Features.Exceptions;
     using Structures;
 
     public class EventScriptModule : SEModule
@@ -24,32 +21,31 @@ namespace ScriptedEvents.API.Modules
         /// <summary>
         /// Gets an array of Event "Handler" types defined by Exiled.
         /// </summary>
-        public static Type[] HandlerTypes { get; private set; }
+        private static Type[] HandlerTypes { get; set; }
 
-        public static EventScriptModule Singleton { get; private set; }
+        public static EventScriptModule? Singleton { get; private set; }
 
         public override string Name => "EventScriptModule";
 
-        public List<Tuple<PropertyInfo, Delegate>> StoredDelegates { get; } = new();
+        private List<Tuple<PropertyInfo, Delegate>> StoredDelegates { get; } = new();
 
-        public Dictionary<string, List<string>>? CurrentEventData { get; set; } = new();
+        private Dictionary<string, List<string>> CurrentEventData { get; set; } = new();
 
         public Dictionary<string, List<string>> CurrentCustomEventData { get; private set; } = new();
 
-        public List<string> DynamicallyConnectedEvents { get; set; } = new();
-
-        // Connection methods
-        public static void OnArgumentedEvent<T>(T ev)
+        private List<string> DynamicallyConnectedEvents { get; set; } = new();
+        
+        private void OnArgumentedEvent<T>(T ev)
             where T : IExiledEvent
         {
             Type evType = typeof(T);
             string evName = evType.Name.Replace("EventArgs", string.Empty);
-            Singleton.OnAnyEvent(evName, ev);
+            Singleton!.OnAnyEvent(evName, ev);
         }
 
-        public static void OnNonArgumentedEvent()
+        private void OnNonArgumentedEvent()
         {
-            Singleton.OnAnyEvent(new StackFrame(2).GetMethod().Name);
+            Singleton!.OnAnyEvent(new StackFrame(2).GetMethod().Name);
         }
 
         public override void Init()
@@ -61,9 +57,9 @@ namespace ScriptedEvents.API.Modules
             {
                 HandlerTypes = Loader.Plugins.First(plug => plug.Name == "Exiled.Events")
                     .Assembly.GetTypes()
-                    .Where(t => t is not null && t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
+                    .Where(t => t?.FullName != null && t.FullName.Equals($"Exiled.Events.Handlers.{t.Name}")).ToArray();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Logger.Error($"Fetching HandlerTypes failed! Exiled.Events does not exist in loaded plugins:\n{string.Join(", ", Loader.Plugins.Select(x => x.Name))}");
             }
@@ -86,12 +82,12 @@ namespace ScriptedEvents.API.Modules
         }
 
         // Methods to make and destroy connections
-        public void BeginConnections()
+        private void BeginConnections()
         {
             CurrentEventData = new();
             CurrentCustomEventData = new();
 
-            var scripts = MainPlugin.ScriptModule.ListScripts().ToArray();
+            var scripts = ScriptModule.Singleton!.ListScripts().ToArray();
             RegisterEventScripts(scripts, out var eventScripts);
 
             scripts = scripts.Where(scr => !eventScripts.Contains(scr)).ToArray();
@@ -101,7 +97,7 @@ namespace ScriptedEvents.API.Modules
                 script.Dispose();
             }
 
-            MainPlugin.ScriptModule.RegisterAutorunScripts(scripts, out var autoRunScripts);
+            ScriptModule.Singleton.RegisterAutorunScripts(scripts, out var autoRunScripts);
 
             foreach (var script in scripts.Where(scr => !autoRunScripts.Contains(scr)))
             {
@@ -114,7 +110,7 @@ namespace ScriptedEvents.API.Modules
             }
         }
 
-        public void RegisterEventScripts(Script[] allScripts, out List<Script> activeScripts)
+        private void RegisterEventScripts(Script[] allScripts, out List<Script> activeScripts)
         {
             activeScripts = new();
             if (CurrentEventData is null || CurrentCustomEventData is null) throw new NullReferenceException();
@@ -138,24 +134,22 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                if (scr.HasFlag("CUSTOMEVENT", out Flag cf))
+                if (!scr.HasFlag("CUSTOMEVENT", out Flag cf)) continue;
+                
+                string cEvName = cf.Arguments[0];
+                if (CurrentCustomEventData.ContainsKey(cEvName))
                 {
-                    string cEvName = cf.Arguments[0];
-                    if (CurrentCustomEventData.ContainsKey(cEvName))
-                    {
-                        CurrentCustomEventData[cEvName].Add(scr.ScriptName);
-                    }
-                    else
-                    {
-                        CurrentCustomEventData.Add(cEvName, new List<string>() { scr.ScriptName });
-                    }
-
-                    activeScripts.Add(scr);
-                    continue;
+                    CurrentCustomEventData[cEvName].Add(scr.ScriptName);
                 }
+                else
+                {
+                    CurrentCustomEventData.Add(cEvName, new List<string>() { scr.ScriptName });
+                }
+
+                activeScripts.Add(scr);
             }
 
-            foreach (KeyValuePair<string, List<string>> ev in CurrentEventData)
+            foreach (var ev in CurrentEventData)
             {
                 Logger.Debug("Setting up new 'on' event");
                 Logger.Debug($"Event: {ev.Key}");
@@ -174,13 +168,14 @@ namespace ScriptedEvents.API.Modules
             foreach (Type handler in HandlerTypes)
             {
                 // Credit to DevTools & Yamato for below code.
-                Delegate @delegate = null;
-                PropertyInfo propertyInfo = handler.GetProperty(key);
+                Delegate? @delegate;
+                PropertyInfo? propertyInfo = handler.GetProperty(key);
 
                 if (propertyInfo is null)
                     continue;
 
-                EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
+                EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1)) 
+                                      ?? throw new InvalidOperationException();
                 MethodInfo subscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Subscribe");
 
                 if (propertyInfo.PropertyType == typeof(Event))
@@ -191,7 +186,7 @@ namespace ScriptedEvents.API.Modules
                 {
                     @delegate = typeof(EventScriptModule)
                         .GetMethod(nameof(OnArgumentedEvent))
-                        .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
+                        ?.MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
                         .CreateDelegate(typeof(CustomEventHandler<>)
                         .MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments));
                 }
@@ -201,42 +196,42 @@ namespace ScriptedEvents.API.Modules
                     continue;
                 }
 
-                subscribe.Invoke(propertyInfo.GetValue(MainPlugin.EventHandlingModule), new object[] { @delegate });
+                if (@delegate is null)
+                    throw new NullReferenceException("delegate is null");
+                
+                subscribe.Invoke(propertyInfo.GetValue(EventHandlingModule.Singleton), new object[] { @delegate });
                 StoredDelegates.Add(new Tuple<PropertyInfo, Delegate>(propertyInfo, @delegate));
 
                 made = true;
             }
 
-            if (made)
-                Logger.Debug($"Dynamic event {key} connected successfully");
-            else
-                Logger.Debug($"Dynamic event {key} failed to be connected");
+            Logger.Debug(made
+                ? $"Dynamic event {key} connected successfully"
+                : $"Dynamic event {key} failed to be connected");
         }
 
-        public void TerminateConnections()
+        private void TerminateConnections()
         {
-            foreach (Tuple<PropertyInfo, Delegate> tuple in StoredDelegates)
+            foreach (var (propertyInfo, handler) in StoredDelegates)
             {
-                PropertyInfo propertyInfo = tuple.Item1;
-                Delegate handler = tuple.Item2;
-
                 Logger.Debug($"Removing dynamic connection for event '{propertyInfo.Name}'");
-
-                EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
                 MethodInfo unSubscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Unsubscribe");
 
-                unSubscribe.Invoke(propertyInfo.GetValue(MainPlugin.EventHandlingModule), new[] { handler });
+                unSubscribe.Invoke(propertyInfo.GetValue(EventHandlingModule.Singleton), new[]
+                {
+                    handler
+                });
                 Logger.Debug($"Removed dynamic connection for event '{propertyInfo.Name}'");
             }
 
             StoredDelegates.Clear();
-            CurrentEventData = null;
-            CurrentCustomEventData = null;
+            CurrentEventData = new();
+            CurrentCustomEventData = new();
             DynamicallyConnectedEvents = new();
         }
 
         // Code to run when connected event is executed
-        public void OnAnyEvent(string eventName, IExiledEvent? ev = null)
+        private void OnAnyEvent(string eventName, IExiledEvent? ev = null)
         {
             if (ev == null) return;
 
@@ -253,7 +248,7 @@ namespace ScriptedEvents.API.Modules
             if (ev is IDeniableEvent deniable and IPlayerEvent plr)
             {
                 var playerIsNotNone = plr.Player is not null;
-                var isRegisteredRule = MainPlugin.EventHandlingModule.GetPlayerDisableEvent(name, plr.Player).HasValue;
+                var isRegisteredRule = EventHandlingModule.Singleton!.GetPlayerDisableEvent(name, plr.Player).HasValue;
 
                 if (playerIsNotNone && isRegisteredRule)
                 {
@@ -263,7 +258,7 @@ namespace ScriptedEvents.API.Modules
                 }
             }
 
-            if (CurrentEventData is null || !CurrentEventData.TryGetValue(eventName, out List<string> scriptNames))
+            if (!CurrentEventData.TryGetValue(eventName, out var scriptNames))
             {
                 return;
             }
@@ -273,7 +268,7 @@ namespace ScriptedEvents.API.Modules
 
             foreach (string scrName in scriptNames)
             {
-                if (!MainPlugin.ScriptModule.TryParseScript(scrName, null, out var script, out var error))
+                if (!ScriptModule.Singleton!.TryParseScript(scrName, null, out var script, out var error))
                 {
                     Logger.Error(error!.Append(Error(
                         "Event script failed to parse",
@@ -339,9 +334,10 @@ namespace ScriptedEvents.API.Modules
 
             foreach (Script script in scripts)
             {
-                MainPlugin.ScriptModule.TryRunScript(script, out var trace);
+                ScriptModule.Singleton!.TryRunScript(script, out var trace, out _);
 
-                if (trace != null) Logger.ScriptError(trace, script);
+                if (trace != null) 
+                    Logger.ScriptError(trace, script);
             }
 
             stopwatch.Stop();

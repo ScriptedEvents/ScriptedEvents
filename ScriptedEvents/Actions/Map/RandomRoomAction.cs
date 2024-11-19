@@ -5,6 +5,7 @@ using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -54,7 +55,7 @@ namespace ScriptedEvents.Actions.Map
             return Arguments[0] switch
             {
                 RoomType => new(true, new(validRooms.GetRandomValue().Type.ToString())),
-                Room => new(true, new(MainPlugin.ObjectReferenceModule.ToReference(validRooms.GetRandomValue()))),
+                Room => new(true, new(ObjectReferenceModule.Singleton!.ToReference(validRooms.GetRandomValue()))),
                 _ => throw new ImpossibleException()
             };
         }

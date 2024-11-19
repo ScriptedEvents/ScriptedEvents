@@ -1,4 +1,5 @@
-﻿using ScriptedEvents.Enums;
+﻿using ScriptedEvents.API.Modules;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 
 namespace ScriptedEvents.Actions
@@ -38,14 +39,14 @@ namespace ScriptedEvents.Actions
         {
             if (Arguments[0].ToUpper() == "CLEAR")
             {
-                MainPlugin.EventHandlingModule.DamageRules.Clear();
+                EventHandlingModule.Singleton!.DamageRules.Clear();
                 return new(true);
             }
 
             Player attacker = Player.Get((string)Arguments[0]);
             Player receiver = Player.Get((string)Arguments[1]);
 
-            foreach (var rule in MainPlugin.EventHandlingModule.DamageRules)
+            foreach (var rule in EventHandlingModule.Singleton!.DamageRules)
             {
                 foreach (Player ply in Player.List)
                     ply.RemoteAdminMessage($"{attacker.DisplayNickname} will deal {rule.DetermineMultiplier(attacker, receiver)}x damage to {receiver.DisplayNickname} (TYPE: {rule.Type})");

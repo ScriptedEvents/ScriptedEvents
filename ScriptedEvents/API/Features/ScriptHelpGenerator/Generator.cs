@@ -168,7 +168,7 @@
                 Directory.CreateDirectory(ActionPath);
 
                 Stopwatch watch = Stopwatch.StartNew();
-                foreach (var actionData in MainPlugin.ScriptModule.ActionTypes)
+                foreach (var actionData in ScriptModule.Singleton!.ActionTypes)
                 {
                     IAction action = Activator.CreateInstance(actionData.Value) as IAction;
 

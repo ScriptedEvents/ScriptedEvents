@@ -108,7 +108,7 @@ namespace ScriptedEvents.Commands
             {
                 try
                 {
-                    if (!MainPlugin.ScriptModule.TryParseScript(scrName, sender, out var script, out var err) || script == null)
+                    if (!ScriptModule.Singleton!.TryParseScript(scrName, sender, out var script, out var err) || script == null)
                     {
                         Logger.Error(err!);
                         continue;
@@ -143,7 +143,7 @@ namespace ScriptedEvents.Commands
 
                     script.AddLiteralVariable("$ARGS", string.Join(" ", arguments), true);
 
-                    MainPlugin.ScriptModule.TryRunScript(script, out var err1);
+                    ScriptModule.Singleton!.TryRunScript(script, out var err1);
                     if (err1 != null)
                     {
                         Logger.Error(err1);

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using ScriptedEvents.Actions.DebugActions;
 
 namespace ScriptedEvents.API.Features
 {
@@ -16,7 +17,7 @@ namespace ScriptedEvents.API.Features
     {
         public static bool IsModuleLoaded()
         {
-            return MainPlugin.ScriptModule is not null;
+            return ScriptModule.Singleton! is not null;
         }
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="assembly">The assembly to search through.</param>
         public static void RegisterActions(Assembly assembly)
         {
-            MainPlugin.ScriptModule.RegisterActions(assembly);
+            ScriptModule.Singleton!.RegisterActions(assembly);
         }
 
         /// <summary>
@@ -62,13 +63,13 @@ namespace ScriptedEvents.API.Features
 
             name = name.ToUpper();
 
-            if (MainPlugin.ScriptModule.CustomActions.ContainsKey(name))
+            if (ScriptModule.Singleton!.CustomActions.ContainsKey(name))
             {
                 return "The custom action with the provided name already exists!";
             }
 
             CustomAction custom = new(name, action);
-            MainPlugin.ScriptModule.CustomActions.Add(name, custom);
+            ScriptModule.Singleton!.CustomActions.Add(name, custom);
             Logger.Info($"Assembly '{Assembly.GetCallingAssembly().GetName().Name}' has registered custom action: '{name}'.");
             return "Success";
         }
@@ -87,12 +88,12 @@ namespace ScriptedEvents.API.Features
 
             name = name.ToUpper();
 
-            if (!MainPlugin.ScriptModule.CustomActions.ContainsKey(name))
+            if (!ScriptModule.Singleton!.CustomActions.ContainsKey(name))
             {
                 return "The custom action with the provided name does not exist.";
             }
 
-            MainPlugin.ScriptModule.CustomActions.Remove(name);
+            ScriptModule.Singleton!.CustomActions.Remove(name);
             return "Success";
         }
 

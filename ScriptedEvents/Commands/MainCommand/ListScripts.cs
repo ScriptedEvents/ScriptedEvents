@@ -41,7 +41,7 @@
                 return false;
             }
 
-            List<Script> scripts = MainPlugin.ScriptModule.ListScripts(sender);
+            List<Script> scripts = ScriptModule.Singleton!.ListScripts(sender);
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
             int i = 0;

@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.AllInOne
+﻿using ScriptedEvents.API.Modules;
+
+namespace ScriptedEvents.Actions.AllInOne
 {
     using System;
 
@@ -51,19 +53,19 @@
 
             if (mode is "RESPAWNEDPLAYERS")
             {
-                return new(true, new(MainPlugin.EventHandlingModule.RecentlyRespawned));
+                return new(true, new(EventHandlingModule.Singleton!.RecentlyRespawned));
             }
 
             string ret = mode switch
             {
                 "NEXTTEAM" => Respawn.NextKnownTeam.ToString(),
-                "LASTTEAM" => MainPlugin.EventHandlingModule.MostRecentSpawn.ToString(),
-                "LASTUNIT" => MainPlugin.EventHandlingModule.MostRecentSpawnUnit,
-                "TOTALWAVES" => MainPlugin.EventHandlingModule.RespawnWaves.ToString(),
+                "LASTTEAM" => EventHandlingModule.Singleton!.MostRecentSpawn.ToString(),
+                "LASTUNIT" => EventHandlingModule.Singleton!.MostRecentSpawnUnit,
+                "TOTALWAVES" => EventHandlingModule.Singleton!.RespawnWaves.ToString(),
                 "NTFTICKETS" => Respawn.NtfTickets.ToString(),
                 "CHAOSTICKETS" => Respawn.ChaosTickets.ToString(),
                 "TIMEUNTILNEW" => Respawn.TimeUntilSpawnWave.TotalSeconds.ToString(),
-                "TIMESINCELAST" => MainPlugin.EventHandlingModule.TimeSinceWave.TotalSeconds.ToString(),
+                "TIMESINCELAST" => EventHandlingModule.Singleton!.TimeSinceWave.TotalSeconds.ToString(),
                 _ => throw new ArgumentException(),
             };
 

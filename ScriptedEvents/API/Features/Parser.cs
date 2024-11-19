@@ -456,7 +456,7 @@ namespace ScriptedEvents.API.Features
                         break;
 
                     case "KILLS":
-                        result = MainPlugin.EventHandlingModule.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "0";
+                        result = EventHandlingModule.Singleton!.PlayerKills.TryGetValue(ply, out int v) ? v.ToString() : "0";
                         break;
 
                     case "EFFECTS" when ply.ActiveEffects.Any():
@@ -678,7 +678,7 @@ namespace ScriptedEvents.API.Features
             // ["@PLAYERS", "2"]
             var arguments = parts.Skip(1).ToArray();
 
-            if (!MainPlugin.ScriptModule.TryGetActionType(actionName, out var actionToExtract, out var error))
+            if (!ScriptModule.Singleton!.TryGetActionType(actionName, out var actionToExtract, out var error))
             {
                 errorTrace = Error(
                         "Dynamic action parsing error",

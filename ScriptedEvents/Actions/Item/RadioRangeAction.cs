@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.Item
+﻿using ScriptedEvents.API.Modules;
+
+namespace ScriptedEvents.Actions.Item
 {
     using System;
     using Exiled.API.Enums;
@@ -65,7 +67,7 @@
 
             foreach (Player ply in players)
             {
-                MainPlugin.EventHandlingModule.LockedRadios[ply] = range;
+                EventHandlingModule.Singleton!.LockedRadios[ply] = range;
             }
 
             return new(true);

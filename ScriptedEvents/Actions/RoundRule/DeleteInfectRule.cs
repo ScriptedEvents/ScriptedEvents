@@ -1,5 +1,6 @@
 ﻿using System;
 using PlayerRoles;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -37,7 +38,7 @@ namespace ScriptedEvents.Actions.RoundRule
         {
             RoleTypeId oldRole = (RoleTypeId)Arguments[0]!;
 
-            MainPlugin.EventHandlingModule.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
+            EventHandlingModule.Singleton!.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
 
             return new(true);
         }

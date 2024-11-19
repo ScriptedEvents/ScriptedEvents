@@ -1,5 +1,6 @@
 ﻿using ScriptedEvents.API.Constants;
 using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -40,7 +41,7 @@ namespace ScriptedEvents.Actions.RoundRule
         {
             PlayerCollection players = (PlayerCollection)Arguments[0]!;
             string key = Arguments[1]!.ToUpper();
-            var rule = MainPlugin.EventHandlingModule.GetPlayerDisableRule(key);
+            var rule = EventHandlingModule.Singleton!.GetPlayerDisableRule(key);
 
             if (rule.HasValue)
             {
@@ -48,7 +49,7 @@ namespace ScriptedEvents.Actions.RoundRule
             }
             else
             {
-                MainPlugin.EventHandlingModule.DisabledPlayerKeys.Add(new(key, players.GetInnerList()));
+                EventHandlingModule.Singleton!.DisabledPlayerKeys.Add(new(key, players.GetInnerList()));
             }
 
             return new(true);

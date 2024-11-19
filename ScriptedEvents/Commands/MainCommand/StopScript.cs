@@ -47,7 +47,7 @@
 
             string arg0 = arguments.At(0);
 
-            int amount = MainPlugin.ScriptModule.StopScripts(arg0);
+            int amount = ScriptModule.Singleton!.StopScripts(arg0);
             if (amount == 0)
             {
                 response = "Done! No scripts were stopped.";

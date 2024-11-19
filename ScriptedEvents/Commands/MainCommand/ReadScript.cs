@@ -52,7 +52,7 @@ namespace ScriptedEvents.Commands.MainCommand
 
             string arg0 = arguments.At(0);
 
-            if (!MainPlugin.ScriptModule.TryParseScript(arg0, sender, out var script, out var err))
+            if (!ScriptModule.Singleton!.TryParseScript(arg0, sender, out var script, out var err))
             {
                 response = err!.Format();
             }

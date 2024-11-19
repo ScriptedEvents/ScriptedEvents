@@ -1,11 +1,10 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.DebugActions
 {
-    using System;
-    using ScriptedEvents.Structures;
-
     public class CustomAction : IScriptAction
     {
         /// <summary>
@@ -20,7 +19,7 @@ namespace ScriptedEvents.Actions
         }
 
         /// <inheritdoc/>
-        public string Name { get; } = "UNKNOWN";
+        public string Name { get; }
 
         /// <inheritdoc/>
         public string[] Aliases { get; } = Array.Empty<string>();
@@ -29,7 +28,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Misc;
@@ -46,7 +45,7 @@ namespace ScriptedEvents.Actions
         public ActionResponse Execute(Script script)
         {
             var result = Action(new(RawArguments, script));
-            return new(result.Item1, variablesToRet: result.Item3);
+            return new(result.Item1, new(result.Item3));
         }
     }
 }

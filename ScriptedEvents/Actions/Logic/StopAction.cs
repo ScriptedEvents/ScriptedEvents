@@ -45,15 +45,15 @@ namespace ScriptedEvents.Actions.Logic
 
             if (scriptName == "*")
             {
-                foreach (var toStop in MainPlugin.ScriptModule.RunningScripts.Keys.Where(toStop => toStop != script))
+                foreach (var toStop in ScriptModule.Singleton!.RunningScripts.Keys.Where(toStop => toStop != script))
                 {
-                    MainPlugin.ScriptModule.StopScript(toStop);
+                    ScriptModule.Singleton!.StopScript(toStop);
                 }
 
                 return new(true);
             }
             
-            MainPlugin.ScriptModule.StopScripts(scriptName);
+            ScriptModule.Singleton!.StopScripts(scriptName);
             return new(true);
         }
     }

@@ -54,7 +54,7 @@ namespace ScriptedEvents.Commands.MainCommand
             string arg0 = arguments.At(0);
             Script? scr = default;
 
-            if (!MainPlugin.ScriptModule.TryParseScript(arg0, sender, out var script, out var trace))
+            if (!ScriptModule.Singleton!.TryParseScript(arg0, sender, out var script, out var trace))
             {
                 response = trace!.Format();
             }
@@ -83,7 +83,7 @@ namespace ScriptedEvents.Commands.MainCommand
 
             scr.AddLiteralVariable("$ARGS", string.Join(" ", arguments.Skip(1)), true);
 
-            if (!MainPlugin.ScriptModule.TryRunScript(scr, out var err))
+            if (!ScriptModule.Singleton!.TryRunScript(scr, out var err))
             {
                 response = err!.Format();
             }

@@ -4,6 +4,7 @@ using Exiled.Events.EventArgs.Player;
 using PlayerRoles;
 using PluginAPI.Roles;
 using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -58,11 +59,11 @@ namespace ScriptedEvents.Actions.RoundRule
                     return new(false, null, err);
                 }
                 
-                MainPlugin.EventHandlingModule.SpawnLoadoutRule[role] = items.ToList();
+                EventHandlingModule.Singleton!.SpawnLoadoutRule[role] = items.ToList();
             }
             else
             {
-                MainPlugin.EventHandlingModule.SpawnLoadoutRule.Remove(role);
+                EventHandlingModule.Singleton!.SpawnLoadoutRule.Remove(role);
             }
 
             return new(true);

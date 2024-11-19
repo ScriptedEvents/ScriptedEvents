@@ -67,7 +67,7 @@ It's completely fine if this is too much for you, you can always join our discor
             PlayerCollection players = (PlayerCollection)Arguments[1]!;
             string key = Arguments[2]!.ToString();
 
-            var rule = MainPlugin.EventHandlingModule.GetPlayerDisableEvent(key);
+            var rule = EventHandlingModule.Singleton!.GetPlayerDisableEvent(key);
 
             if (MainPlugin.Modules.FirstOrDefault(mod => mod is EventScriptModule) is not EventScriptModule eventHandler)
             {
@@ -84,7 +84,7 @@ It's completely fine if this is too much for you, you can always join our discor
                 }
                 else
                 {
-                    MainPlugin.EventHandlingModule.DisabledPlayerEvents.Add(new(key, players.GetInnerList()));
+                    EventHandlingModule.Singleton!.DisabledPlayerEvents.Add(new(key, players.GetInnerList()));
                 }
             }
             else

@@ -47,7 +47,7 @@ The text of the broadcast will be formatted using the countdown_string Exiled co
             var players = (PlayerCollection)Arguments[0]!;
             var duration = (TimeSpan)Arguments[1]!;
             var text = (string)Arguments[2]!;
-
+            
             foreach (Player ply in players)
                 MainPlugin.GetModule<CountdownModule>().AddCountdown(ply, text, duration, script);
 

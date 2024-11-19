@@ -4,6 +4,7 @@ using Exiled.API.Features;
 using PlayerRoles;
 using ScriptedEvents.API.Extensions;
 using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -56,7 +57,8 @@ namespace ScriptedEvents.Actions.RoundRule
             string mode = Arguments[0]!.ToUpper();
             EffectType effect = (EffectType)Arguments[2]!;
             byte intensity = (byte?)Arguments[3] ?? 1;
-            
+
+            EventHandlingModule module = EventHandlingModule.Singleton!;
             Effect eff = new(effect, 0, intensity);
 
             switch (mode, Arguments[1])
@@ -64,43 +66,43 @@ namespace ScriptedEvents.Actions.RoundRule
                 case ("SET", PlayerCollection players):
                     foreach (Player ply in players)
                     {
-                        if (MainPlugin.EventHandlingModule.PermPlayerEffects.ContainsKey(ply))
-                            MainPlugin.EventHandlingModule.PermPlayerEffects[ply].Add(eff);
+                        if (module.PermPlayerEffects.ContainsKey(ply))
+                            module.PermPlayerEffects[ply].Add(eff);
                         else
-                            MainPlugin.EventHandlingModule.PermPlayerEffects.Add(ply, new() { eff });
+                            module.PermPlayerEffects.Add(ply, new() { eff });
                     }
                     break;
                 
                 case ("SET", Team team):    
-                    if (MainPlugin.EventHandlingModule.PermTeamEffects.ContainsKey(team))
-                        MainPlugin.EventHandlingModule.PermTeamEffects[team].Add(eff);
+                    if (module.PermTeamEffects.ContainsKey(team))
+                        module.PermTeamEffects[team].Add(eff);
                     else
-                        MainPlugin.EventHandlingModule.PermTeamEffects.Add(team, new() { eff });
+                        module.PermTeamEffects.Add(team, new() { eff });
                     break;
                     
                 case ("SET", RoleTypeId role):
-                    if (MainPlugin.EventHandlingModule.PermRoleEffects.ContainsKey(role))
-                        MainPlugin.EventHandlingModule.PermRoleEffects[role].Add(eff);
+                    if (module.PermRoleEffects.ContainsKey(role))
+                        module.PermRoleEffects[role].Add(eff);
                     else
-                        MainPlugin.EventHandlingModule.PermRoleEffects.Add(role, new() { eff });
+                        module.PermRoleEffects.Add(role, new() { eff });
                     break;
                 
                 case ("REMOVE", PlayerCollection players):
                     foreach (Player ply in players)
                     {
-                        if (MainPlugin.EventHandlingModule.PermPlayerEffects.ContainsKey(ply))
-                            MainPlugin.EventHandlingModule.PermPlayerEffects[ply].RemoveAll(e => e == eff);
+                        if (module.PermPlayerEffects.ContainsKey(ply))
+                            module.PermPlayerEffects[ply].RemoveAll(e => e == eff);
                     }
                     break;
                 
                 case ("REMOVE", Team team):    
-                    if (MainPlugin.EventHandlingModule.PermTeamEffects.ContainsKey(team))
-                        MainPlugin.EventHandlingModule.PermTeamEffects[team].RemoveAll(e => e == eff);
+                    if (module.PermTeamEffects.ContainsKey(team))
+                        module.PermTeamEffects[team].RemoveAll(e => e == eff);
                     break;
                     
                 case ("REMOVE", RoleTypeId role):
-                    if (MainPlugin.EventHandlingModule.PermRoleEffects.ContainsKey(role))
-                        MainPlugin.EventHandlingModule.PermRoleEffects[role].RemoveAll(e => e == eff);
+                    if (module.PermRoleEffects.ContainsKey(role))
+                        module.PermRoleEffects[role].RemoveAll(e => e == eff);
                     break;
                 
                 default:

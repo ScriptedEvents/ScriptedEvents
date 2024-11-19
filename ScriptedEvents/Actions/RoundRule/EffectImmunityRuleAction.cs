@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Exiled.API.Enums;
 using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;

@@ -3,6 +3,7 @@ using System.Linq;
 using Exiled.API.Features;
 using PlayerRoles;
 using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -43,9 +44,9 @@ namespace ScriptedEvents.Actions.PlayerFetch
         {
             var ret = Arguments[0]!.ToUpper() switch
             {
-                "ALL" => MainPlugin.EventHandlingModule.Escapes[RoleTypeId.ClassD].Union(MainPlugin.EventHandlingModule.Escapes[RoleTypeId.Scientist]).ToArray(),
-                "SCIENTISTS" => MainPlugin.EventHandlingModule.Escapes[RoleTypeId.Scientist].ToArray(),
-                "CLASSD" => MainPlugin.EventHandlingModule.Escapes[RoleTypeId.ClassD].ToArray(),
+                "ALL" => EventHandlingModule.Singleton!.Escapes[RoleTypeId.ClassD].Union(EventHandlingModule.Singleton!.Escapes[RoleTypeId.Scientist]).ToArray(),
+                "SCIENTISTS" => EventHandlingModule.Singleton!.Escapes[RoleTypeId.Scientist].ToArray(),
+                "CLASSD" => EventHandlingModule.Singleton!.Escapes[RoleTypeId.ClassD].ToArray(),
                 _ => throw new ArgumentException()
             };
 

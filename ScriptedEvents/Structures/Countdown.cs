@@ -16,7 +16,7 @@
         /// <param name="text">The text of the countdown.</param>
         /// <param name="time">The time of the countdown, in seconds.</param>
         /// <param name="source">The script that executed the countdown.</param>
-        public Countdown(Player target, string text, int time, Script source = null)
+        public Countdown(Player target, string text, int time, Script? source = null)
         {
             Target = target;
             Text = string.IsNullOrWhiteSpace(text) ? "Countdown" : text;
@@ -58,6 +58,6 @@
         /// <summary>
         /// Gets the source script that executed the countdown timer.
         /// </summary>
-        public Script Source { get; }
+        public Script? Source { get; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.Logic
+﻿using ScriptedEvents.API.Modules;
+
+namespace ScriptedEvents.Actions.Logic
 {
     using System;
     using System.Collections.Generic;
@@ -49,7 +51,7 @@
             {
                 case true when !shouldWait:
                 {
-                    if (!MainPlugin.ScriptModule.TryRunScript(calledScript, out var err, out _))
+                    if (!ScriptModule.Singleton!.TryRunScript(calledScript, out var err, out _))
                     {
                         message = new(false, null, err);
                     }
@@ -63,7 +65,7 @@
 
                 case true when shouldWait:
                 {
-                    if (!MainPlugin.ScriptModule.TryRunScript(calledScript, out var err, out _))
+                    if (!ScriptModule.Singleton!.TryRunScript(calledScript, out var err, out _))
                     {
                         message = new(false, null, err);
                         return 0;
@@ -85,7 +87,7 @@
                 calledScript.AddLiteralVariable($"ARG{argCount}", arg, true);
             }
 
-            if (!MainPlugin.ScriptModule.TryRunScript(calledScript, out var err1, out _))
+            if (!ScriptModule.Singleton!.TryRunScript(calledScript, out var err1, out _))
             {
                 message = new(false, null, err1);
                 return 0;
@@ -107,7 +109,7 @@
 
         private IEnumerator<float> InternalWaitUntil(Script calledScript)
         {
-            while (MainPlugin.ScriptModule.RunningScripts.ContainsKey(calledScript))
+            while (ScriptModule.Singleton!.RunningScripts.ContainsKey(calledScript))
             {
                 yield return Timing.WaitForSeconds(1 / MainPlugin.Configs.WaitUntilFrequency);
             }

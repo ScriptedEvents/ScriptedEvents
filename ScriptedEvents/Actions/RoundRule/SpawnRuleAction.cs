@@ -1,5 +1,6 @@
 ﻿using System;
 using PlayerRoles;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -45,8 +46,8 @@ namespace ScriptedEvents.Actions.RoundRule
             RoleTypeId roleType = (RoleTypeId)Arguments[0]!;
             int max = (int?)Arguments[1] ?? -1;
 
-            MainPlugin.EventHandlingModule.SpawnRules.Remove(roleType);
-            MainPlugin.EventHandlingModule.SpawnRules.Add(roleType, max);
+            EventHandlingModule.Singleton!.SpawnRules.Remove(roleType);
+            EventHandlingModule.Singleton!.SpawnRules.Add(roleType, max);
 
             return new(true);
         }

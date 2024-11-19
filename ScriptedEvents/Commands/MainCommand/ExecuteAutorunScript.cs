@@ -33,9 +33,9 @@ namespace ScriptedEvents.Commands.MainCommand
             }
 
             string ranScripts = string.Empty;
-            foreach (string scrName in MainPlugin.ScriptModule.AutoRunScripts)
+            foreach (string scrName in ScriptModule.Singleton!.AutoRunScripts)
             {
-                MainPlugin.ScriptModule.TryReadAndRun(scrName, sender, out var trace);
+                ScriptModule.Singleton!.TryReadAndRun(scrName, sender, out var trace);
 
                 if (trace != null)
                 {
@@ -46,7 +46,7 @@ namespace ScriptedEvents.Commands.MainCommand
                 ranScripts += scrName + ", ";
             }
 
-            if (MainPlugin.ScriptModule.AutoRunScripts.Count > 0)
+            if (ScriptModule.Singleton!.AutoRunScripts.Count > 0)
             {
                 response = $"Running scripts: {ranScripts.Remove(ranScripts.Length - 2)}";
                 return true;

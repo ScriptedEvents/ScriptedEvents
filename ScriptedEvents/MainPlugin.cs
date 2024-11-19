@@ -44,17 +44,17 @@ namespace ScriptedEvents
         /// <summary>
         /// Gets the plugin singleton.
         /// </summary>
-        public static MainPlugin Singleton { get; private set; }
+        public static MainPlugin? Singleton { get; private set; }
 
         /// <summary>
         /// Gets the plugin Config singleton.
         /// </summary>
-        public static Config Configs => Singleton?.Config;
+        public static Config Configs => Singleton!.Config;
 
         /// <summary>
         /// Gets the plugin Translations singleton.
         /// </summary>
-        public static Translations Translations => Singleton?.Translation;
+        public static Translations Translations => Singleton!.Translation;
 
         /// <summary>
         /// Gets a list of demo scripts.
@@ -91,14 +91,6 @@ namespace ScriptedEvents
 
         public static IEnumerable<SEModule> Modules => InternalModules.Where(mod => mod.IsActive);
 
-        public static ScriptModule ScriptModule => GetModule<ScriptModule>();
-        
-        public static VariableSystem VariableSystem => GetModule<VariableSystem>();
-
-        public static EventHandlingModule EventHandlingModule => GetModule<EventHandlingModule>();
-        
-        public static ObjectReferenceModule ObjectReferenceModule => GetModule<ObjectReferenceModule>();
-
         /// <summary>
         /// Equivalent to <see cref="Logger.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
         /// </summary>
@@ -109,8 +101,8 @@ namespace ScriptedEvents
                 Logger.Info(message);
         }
 
-        public static T GetModule<T>()
-            where T : SEModule => (T)Modules.FirstOrDefault(m => m.GetType() == typeof(T));
+        public static T? GetModule<T>()
+            where T : SEModule => Modules.FirstOrDefault(m => m.GetType() == typeof(T)) as T;
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -193,7 +185,7 @@ namespace ScriptedEvents
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            EventHandlingModule.OnRestarting();
+            EventHandlingModule.Singleton!.OnRestarting();
             base.OnDisabled();
 
             foreach (SEModule module in Modules)

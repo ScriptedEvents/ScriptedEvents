@@ -50,7 +50,7 @@ namespace ScriptedEvents.Commands.MainCommand
                 return false;
             }
 
-            if (!MainPlugin.ScriptModule.TryGetActionType(actionName, out var actionType, out var err))
+            if (!ScriptModule.Singleton!.TryGetActionType(actionName, out var actionType, out var err))
             {
                 response = $"Action {actionName} is not a valid action type.";
             }
@@ -87,7 +87,7 @@ namespace ScriptedEvents.Commands.MainCommand
 
             mockScript.AddFlag("ACTIONCOMMANDEXECUTION");
 
-            if (!MainPlugin.ScriptModule.TryRunScript(mockScript, out var trace))
+            if (!ScriptModule.Singleton!.TryRunScript(mockScript, out var trace))
             {
                 response = $"Failed to run the action.\n{trace!.Format()}";
                 mockScript.Dispose();

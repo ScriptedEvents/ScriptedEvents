@@ -127,7 +127,7 @@ Scripted Events Contributors:
                 sbList.AppendLine($"List of all actions. For more information on each action, run the HELP <ACTIONNAME> action (or shelp <ACTIONNAME> in the server console).");
 
                 List<IAction> temp = ListPool<IAction>.Pool.Get();
-                foreach (KeyValuePair<ActionNameData, Type> kvp in MainPlugin.ScriptModule.ActionTypes)
+                foreach (KeyValuePair<ActionNameData, Type> kvp in ScriptModule.Singleton!.ActionTypes)
                 {
                     IAction lAction = Activator.CreateInstance(kvp.Value) as IAction;
                     temp.Add(lAction);
@@ -203,7 +203,7 @@ Scripted Events Contributors:
 
             /*
             // Action Help
-            var actType = MainPlugin.ScriptModule.TryGetActionType(text);
+            var actType = ScriptModule.Singleton!.TryGetActionType(text);
             if (actType != null)
             {
                 if (Activator.CreateInstance(actType) is not IAction action)

@@ -43,7 +43,7 @@
 
             foreach (string scriptName in ESModule.CurrentCustomEventData[ev])
             {
-                MainPlugin.ScriptModule.TryReadAndRun(scriptName, null, out _);
+                ScriptModule.Singleton!.TryReadAndRun(scriptName, null, out _);
             }
 
             return new(true);

@@ -1,6 +1,7 @@
 ﻿using System;
 using ScriptedEvents.API.Constants;
 using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -40,8 +41,8 @@ namespace ScriptedEvents.Actions.RoundRule
         {
             string key = Arguments[0]!.ToUpper();
 
-            if (!MainPlugin.EventHandlingModule.DisabledKeys.Contains(key))
-                MainPlugin.EventHandlingModule.DisabledKeys.Add(key);
+            if (!EventHandlingModule.Singleton!.DisabledKeys.Contains(key))
+                EventHandlingModule.Singleton!.DisabledKeys.Add(key);
 
             return new(true);
         }

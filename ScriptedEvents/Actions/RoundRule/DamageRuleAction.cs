@@ -1,6 +1,7 @@
 ﻿using System;
 using PlayerRoles;
 using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -72,7 +73,7 @@ namespace ScriptedEvents.Actions.RoundRule
                 _ => throw new ImpossibleException()
             };
 
-            MainPlugin.EventHandlingModule.DamageRules.Add(
+            EventHandlingModule.Singleton!.DamageRules.Add(
                 new(attackerRuleValue, receiverRuleValue) { Multiplier = (float)Arguments[2]! }
             );
 

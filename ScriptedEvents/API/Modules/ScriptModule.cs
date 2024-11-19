@@ -1,3 +1,4 @@
+using ScriptedEvents.Actions.DebugActions;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 
@@ -37,6 +38,7 @@ namespace ScriptedEvents.API.Modules
         /// The base path to the script folder.
         /// </summary>
         public static readonly string BasePath = Path.Combine(MainPlugin.BaseFilePath, "Scripts");
+        
 
         /// <summary>
         /// Gets a dictionary of action names and their respective types.
@@ -59,11 +61,13 @@ namespace ScriptedEvents.API.Modules
         public List<string> AutoRunScripts { get; } = new();
 
         /// <inheritdoc/>
-        public override string Name { get; } = "ScriptModule";
+        public override string Name { get; protected set; } = "ScriptModule";
 
         /// <inheritdoc/>
         public override bool ShouldGenerateFiles
             => !Directory.Exists(BasePath);
+
+        public static ScriptModule? Singleton { get; private set; }
 
         /// <summary>
         /// Tries to run the provided action.
@@ -189,6 +193,7 @@ namespace ScriptedEvents.API.Modules
         /// <inheritdoc/>
         public override void Init()
         {
+            Singleton = this;
             base.Init();
 
             RegisterActions(MainPlugin.Singleton.Assembly);
@@ -198,6 +203,7 @@ namespace ScriptedEvents.API.Modules
         public override void Kill()
         {
             base.Kill();
+            Singleton = null;
             StopAllScripts();
             ActionTypes.Clear();
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -36,7 +37,7 @@ namespace ScriptedEvents.Actions.ScriptInfo
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            string ret = MainPlugin.ScriptModule.RunningScripts.Any(scr => scr.Key.ScriptName == (string)Arguments[0]! && scr.Value.IsRunning).ToUpper();
+            string ret = ScriptModule.Singleton!.RunningScripts.Any(scr => scr.Key.ScriptName == (string)Arguments[0]! && scr.Value.IsRunning).ToUpper();
             return new(true, new(ret));
         }
     }

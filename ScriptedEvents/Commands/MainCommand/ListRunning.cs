@@ -46,7 +46,7 @@
             StringBuilder bldr = StringBuilderPool.Pool.Get();
 
             int i = 0;
-            foreach (var scriptPair in MainPlugin.ScriptModule.RunningScripts)
+            foreach (var scriptPair in ScriptModule.Singleton!.RunningScripts)
             {
                 if (!scriptPair.Key.IsRunning)
                     continue;

@@ -13,10 +13,19 @@
         private readonly Dictionary<string, object> _objectReferences = new();
 
         public override string Name => "ObjectReferenceModule";
+        
+        public static ObjectReferenceModule? Singleton { get; private set; }
+
+        public override void Init()
+        {
+            base.Init();
+            Singleton = this;
+        }
 
         public override void Kill()
         {
             base.Kill();
+            Singleton = null;
             _objectReferences.Clear();
         }
 

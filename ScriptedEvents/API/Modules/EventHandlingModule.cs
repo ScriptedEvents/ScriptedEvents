@@ -1,42 +1,32 @@
-﻿using InventorySystem;
-using InventorySystem.Configs;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Exiled.API.Features.Pickups;
+using Exiled.Events.EventArgs.Interfaces;
+using Exiled.Events.EventArgs.Map;
+using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Scp049;
+using Exiled.Events.EventArgs.Scp0492;
+using Exiled.Events.EventArgs.Scp079;
+using Exiled.Events.EventArgs.Scp096;
+using Exiled.Events.EventArgs.Scp106;
+using Exiled.Events.EventArgs.Scp173;
+using Exiled.Events.EventArgs.Scp3114;
+using Exiled.Events.EventArgs.Scp939;
+using Exiled.Events.EventArgs.Server;
+using Exiled.Events.EventArgs.Warhead;
+using MapGeneration.Distributors;
+using MEC;
+using PlayerRoles;
+using Respawning;
+using ScriptedEvents.Structures;
+using UnityEngine;
 
-namespace ScriptedEvents
+namespace ScriptedEvents.API.Modules
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
-    using Exiled.API.Features.Pickups;
-    using Exiled.Events.EventArgs.Interfaces;
-    using Exiled.Events.EventArgs.Map;
-    using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.EventArgs.Scp049;
-    using Exiled.Events.EventArgs.Scp0492;
-    using Exiled.Events.EventArgs.Scp079;
-    using Exiled.Events.EventArgs.Scp096;
-    using Exiled.Events.EventArgs.Scp106;
-    using Exiled.Events.EventArgs.Scp173;
-    using Exiled.Events.EventArgs.Scp3114;
-    using Exiled.Events.EventArgs.Scp939;
-    using Exiled.Events.EventArgs.Server;
-    using Exiled.Events.EventArgs.Warhead;
-
-    using MapGeneration.Distributors;
-    using MEC;
-    using PlayerRoles;
-
-    using Respawning;
-
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
-    using UnityEngine;
-
     using MapHandler = Exiled.Events.Handlers.Map;
     using PlayerHandler = Exiled.Events.Handlers.Player;
     using Scp0492Handler = Exiled.Events.Handlers.Scp0492;
@@ -53,19 +43,22 @@ namespace ScriptedEvents
 
     public class EventHandlingModule : SEModule
     {
-        private DateTime lastRespawnWave = DateTime.MinValue;
+        private DateTime _lastRespawnWave = DateTime.MinValue;
+        private readonly Dictionary<RoleTypeId, List<ItemType>> _spawnLoadoutRule = new();
 
         public override string Name => "EventHandlingModule";
+        
+        public static EventHandlingModule? Singleton { get; private set; }
 
         /// <summary>
         /// Gets or sets the amount of respawn waves since the round started.
         /// </summary>
-        public int RespawnWaves { get; set; } = 0;
+        public int RespawnWaves { get; private set; } = 0;
 
         /// <summary>
         /// Gets the amount of time since the last wave.
         /// </summary>
-        public TimeSpan TimeSinceWave => DateTime.Now - lastRespawnWave;
+        public TimeSpan TimeSinceWave => DateTime.Now - _lastRespawnWave;
 
         /// <summary>
         /// Gets a value indicating whether or not a wave just spawned.
@@ -75,7 +68,7 @@ namespace ScriptedEvents
         /// <summary>
         /// Gets or sets the most recent respawn type.
         /// </summary>
-        public SpawnableTeamType MostRecentSpawn { get; set; }
+        public SpawnableTeamType MostRecentSpawn { get; private set; }
 
         /// <summary>
         /// Gets or sets the spawns by team.
@@ -173,13 +166,14 @@ namespace ScriptedEvents
         /// <summary>
         /// Gets a dictionary of itemTypes to add on role change.
         /// </summary>
-        public Dictionary<RoleTypeId, List<ItemType>> SpawnLoadoutRule { get; } = new();
+        public Dictionary<RoleTypeId, List<ItemType>> SpawnLoadoutRule => _spawnLoadoutRule;
 
         public List<DamageRule> DamageRules { get; } = new();
 
         public override void Init()
         {
             base.Init();
+            Singleton = this;
             PlayerHandler.ChangingRole += OnChangingRole;
             PlayerHandler.Hurting += OnHurting;
             PlayerHandler.Died += OnDied;
@@ -267,6 +261,7 @@ namespace ScriptedEvents
         public override void Kill()
         {
             base.Kill();
+            Singleton = null;
             PlayerHandler.ChangingRole -= OnChangingRole;
             PlayerHandler.Hurting -= OnHurting;
             PlayerHandler.Died -= OnDied;
@@ -355,28 +350,22 @@ namespace ScriptedEvents
         // Helpful method
         public PlayerDisable? GetPlayerDisableRule(string key)
         {
-            foreach (PlayerDisable playerDisable in DisabledPlayerKeys)
+            foreach (var playerDisable in DisabledPlayerKeys.Where(playerDisable => key.Equals(playerDisable.Key)))
             {
-                if (key.Equals(playerDisable.Key))
-                {
-                    return playerDisable;
-                }
+                return playerDisable;
             }
 
             return null;
         }
 
-        public PlayerDisable? GetPlayerDisableRule(string key, Player player)
+        private PlayerDisable? GetPlayerDisableRule(string key, Player? player)
         {
             if (player is null)
                 return null;
 
-            foreach (PlayerDisable playerDisable in DisabledPlayerKeys)
+            foreach (var playerDisable in DisabledPlayerKeys.Where(playerDisable => key.Equals(playerDisable.Key) && playerDisable.Players.Contains(player)))
             {
-                if (key.Equals(playerDisable.Key) && playerDisable.Players.Contains(player))
-                {
-                    return playerDisable;
-                }
+                return playerDisable;
             }
 
             return null;
@@ -384,12 +373,9 @@ namespace ScriptedEvents
 
         public PlayerDisable? GetPlayerDisableEvent(string key)
         {
-            foreach (PlayerDisable playerDisable in DisabledPlayerEvents)
+            foreach (var playerDisable in DisabledPlayerEvents.Where(playerDisable => key == playerDisable.Key))
             {
-                if (key == playerDisable.Key)
-                {
-                    return playerDisable;
-                }
+                return playerDisable;
             }
 
             return null;
@@ -399,18 +385,15 @@ namespace ScriptedEvents
         {
             if (player is null) return null;
 
-            foreach (PlayerDisable playerDisable in DisabledPlayerEvents)
+            foreach (var playerDisable in DisabledPlayerEvents.Where(playerDisable => key == playerDisable.Key && playerDisable.Players.Contains(player)))
             {
-                if (key == playerDisable.Key && playerDisable.Players.Contains(player))
-                {
-                    return playerDisable;
-                }
+                return playerDisable;
             }
 
             return null;
         }
 
-        public bool DisabledForPlayer(string key, Player player)
+        private bool DisabledForPlayer(string key, Player player)
         {
             return GetPlayerDisableRule(key, player).HasValue;
         }
@@ -418,7 +401,7 @@ namespace ScriptedEvents
         public void OnRestarting()
         {
             RespawnWaves = 0;
-            lastRespawnWave = DateTime.MinValue;
+            _lastRespawnWave = DateTime.MinValue;
             TeslasDisabled = false;
             MostRecentSpawnUnit = string.Empty;
 
@@ -435,7 +418,7 @@ namespace ScriptedEvents
                 cmd.ResetCooldowns();
             }
 
-            MainPlugin.ScriptModule.StopAllScripts();
+            ScriptModule.Singleton!.StopAllScripts();
             VariableSystem.ClearVariables();
             Kills.Clear();
             PlayerKills.Clear();
@@ -509,11 +492,11 @@ namespace ScriptedEvents
         }
 
         // effect immunity action
-        public void OnReceivingEffect(ReceivingEffectEventArgs ev)
+        private void OnReceivingEffect(ReceivingEffectEventArgs ev)
         {
             if (ev.Player == null) return;
 
-            if (!PlayerEffectImmunity.TryGetValue(ev.Player, out List<EffectType> effects))
+            if (!PlayerEffectImmunity.TryGetValue(ev.Player, out var effects))
             {
                 return;
             }
@@ -524,17 +507,16 @@ namespace ScriptedEvents
             }
 
             ev.IsAllowed = false;
-            return;
         }
 
-        public void OnRespawningTeam(RespawningTeamEventArgs ev)
+        private void OnRespawningTeam(RespawningTeamEventArgs ev)
         {
             if (DisabledKeys.Contains("RESPAWNS")) ev.IsAllowed = false;
 
             if (!ev.IsAllowed) return;
 
             RespawnWaves++;
-            lastRespawnWave = DateTime.Now;
+            _lastRespawnWave = DateTime.Now;
 
             MostRecentSpawn = ev.NextKnownTeam;
             SpawnsByTeam[ev.NextKnownTeam]++;
@@ -544,7 +526,7 @@ namespace ScriptedEvents
         }
 
         // Perm Effects: Spawned
-        public void OnSpawned(SpawnedEventArgs ev)
+        private void OnSpawned(SpawnedEventArgs ev)
         {
             if (PermPlayerEffects.TryGetValue(ev.Player, out var effects))
             {
@@ -563,12 +545,12 @@ namespace ScriptedEvents
         }
 
         // Infection
-        public void OnDied(DiedEventArgs ev)
+        private void OnDied(DiedEventArgs ev)
         {
             if (ev.Player is null || ev.Attacker is null || ev.DamageHandler.Attacker is null)
                 return;
 
-            if (!InfectionRules.Any(r => r.OldRole == ev.TargetOldRole))
+            if (InfectionRules.All(r => r.OldRole != ev.TargetOldRole))
                 return;
 
             InfectRule? ruleNullable = InfectionRules.FirstOrDefault(r => r.OldRole == ev.TargetOldRole);
@@ -586,7 +568,7 @@ namespace ScriptedEvents
         }
 
         // Tesla
-        public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
+        private void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
         {
             if (TeslasDisabled || DisabledKeys.Contains("TESLAS") || DisabledForPlayer("TESLAS", ev.Player))
             {
@@ -595,7 +577,7 @@ namespace ScriptedEvents
         }
 
         // Locked Radios
-        public void OnChangingRole(ChangingRoleEventArgs ev)
+        private void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (!ev.IsAllowed) return;
 
@@ -606,7 +588,7 @@ namespace ScriptedEvents
         }
 
         // Disable Stuff
-        public void OnDying(DyingEventArgs ev)
+        private void OnDying(DyingEventArgs ev)
         {
             if (DisabledKeys.Contains("DYING") || DisabledForPlayer("DYING", ev.Player))
                 ev.IsAllowed = false;
@@ -614,21 +596,20 @@ namespace ScriptedEvents
             if (!ev.IsAllowed)
                 return;
 
-            if (ev.Attacker is not null)
-            {
-                if (Kills.ContainsKey(ev.Attacker.Role.Type))
-                    Kills[ev.Attacker.Role.Type]++;
-                else
-                    Kills.Add(ev.Attacker.Role.Type, 1);
+            if (ev.Attacker is null) return;
+            
+            if (Kills.ContainsKey(ev.Attacker.Role.Type))
+                Kills[ev.Attacker.Role.Type]++;
+            else
+                Kills.Add(ev.Attacker.Role.Type, 1);
 
-                if (PlayerKills.ContainsKey(ev.Attacker))
-                    PlayerKills[ev.Attacker]++;
-                else
-                    PlayerKills.Add(ev.Attacker, 1);
-            }
+            if (PlayerKills.ContainsKey(ev.Attacker))
+                PlayerKills[ev.Attacker]++;
+            else
+                PlayerKills.Add(ev.Attacker, 1);
         }
 
-        public void OnHurting(HurtingEventArgs ev)
+        private void OnHurting(HurtingEventArgs ev)
         {
             if (DisabledKeys.Contains("HURTING") || DisabledForPlayer("HURTING", ev.Player))
                 ev.IsAllowed = false;
@@ -647,31 +628,29 @@ namespace ScriptedEvents
                 ev.IsAllowed = false;
 
             // Damage Rules
-            foreach (DamageRule rule in DamageRules)
+            foreach (var multiplier in DamageRules.Select(rule => rule.DetermineMultiplier(ev.Attacker, ev.Player)))
             {
-                float multiplier = rule.DetermineMultiplier(ev.Attacker, ev.Player);
                 ev.Amount *= multiplier;
             }
         }
 
-        public void GeneratorEvent(IGeneratorEvent ev)
+        private void GeneratorEvent(IGeneratorEvent ev)
         {
-            if (ev is IDeniableEvent deniable)
-            {
-                if (DisabledKeys.Contains("GENERATORS"))
-                    deniable.IsAllowed = false;
-                if (ev is IPlayerEvent plrEvent && DisabledForPlayer("GENERATORS", plrEvent.Player))
-                    deniable.IsAllowed = false;
-            }
+            if (ev is not IDeniableEvent deniable) return;
+            
+            if (DisabledKeys.Contains("GENERATORS"))
+                deniable.IsAllowed = false;
+            if (ev is IPlayerEvent plrEvent && DisabledForPlayer("GENERATORS", plrEvent.Player))
+                deniable.IsAllowed = false;
         }
 
-        public void OnShooting(ShootingEventArgs ev)
+        private void OnShooting(ShootingEventArgs ev)
         {
             if (DisabledKeys.Contains("SHOOTING") || DisabledForPlayer("SHOOTING", ev.Player))
                 ev.IsAllowed = false;
         }
 
-        public void OnDroppingItem(IDeniableEvent ev)
+        private void OnDroppingItem(IDeniableEvent ev)
         {
             if (DisabledKeys.Contains("DROPPING"))
                 ev.IsAllowed = false;
@@ -679,7 +658,7 @@ namespace ScriptedEvents
                 ev.IsAllowed = false;
         }
 
-        public void OnSearchingPickup(SearchingPickupEventArgs ev)
+        private void OnSearchingPickup(SearchingPickupEventArgs ev)
         {
             if (DisabledKeys.Contains("ITEMPICKUPS") || DisabledForPlayer("ITEMPICKUPS", ev.Player))
                 ev.IsAllowed = false;
@@ -688,19 +667,19 @@ namespace ScriptedEvents
                 ev.IsAllowed = false;
         }
 
-        public void OnInteractingDoor(InteractingDoorEventArgs ev)
+        private void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
             if (DisabledKeys.Contains("DOORS") || DisabledForPlayer("DOORS", ev.Player))
                 ev.IsAllowed = false;
         }
 
-        public void OnHandcuffing(HandcuffingEventArgs ev)
+        private void OnHandcuffing(HandcuffingEventArgs ev)
         {
             if (DisabledKeys.Contains("CUFFING") || DisabledForPlayer("CUFFING", ev.Player))
                 ev.IsAllowed = false;
         }
 
-        public void OnInteractingLocker(InteractingLockerEventArgs ev)
+        private void OnInteractingLocker(InteractingLockerEventArgs ev)
         {
             if (ev.Locker is PedestalScpLocker && (DisabledKeys.Contains("PEDESTALS") || DisabledForPlayer("PEDESTALS", ev.Player)))
             {
@@ -712,7 +691,7 @@ namespace ScriptedEvents
             }
         }
 
-        public void OnEscaping(EscapingEventArgs ev)
+        private void OnEscaping(EscapingEventArgs ev)
         {
             if (DisabledKeys.Contains("ESCAPING") || DisabledForPlayer("ESCAPING", ev.Player))
                 ev.IsAllowed = false;
@@ -726,7 +705,7 @@ namespace ScriptedEvents
         }
 
         // Radio locks
-        public void OnPickingUpItem(PickingUpItemEventArgs ev)
+        private void OnPickingUpItem(PickingUpItemEventArgs ev)
         {
             if (!ev.IsAllowed) return;
 
@@ -736,19 +715,19 @@ namespace ScriptedEvents
             }
         }
 
-        public void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev)
+        private void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev)
         {
             if (LockedRadios.ContainsKey(ev.Player))
                 ev.IsAllowed = false;
         }
 
-        public void OnInteractingElevator(InteractingElevatorEventArgs ev)
+        private void OnInteractingElevator(InteractingElevatorEventArgs ev)
         {
             if (DisabledKeys.Contains("ELEVATORS") || DisabledForPlayer("ELEVATORS", ev.Player))
                 ev.IsAllowed = false;
         }
 
-        public void OnHazardEvent(IHazardEvent ev)
+        private void OnHazardEvent(IHazardEvent ev)
         {
             if (ev is IDeniableEvent deny)
             {
@@ -759,7 +738,7 @@ namespace ScriptedEvents
             }
         }
 
-        public void OnWorkStationEvent(IDeniableEvent ev)
+        private void OnWorkStationEvent(IDeniableEvent ev)
         {
             if (DisabledKeys.Contains("WORKSTATIONS"))
                 ev.IsAllowed = false;
@@ -767,7 +746,7 @@ namespace ScriptedEvents
                 ev.IsAllowed = false;
         }
 
-        public void OnScp330Event(IDeniableEvent ev)
+        private void OnScp330Event(IDeniableEvent ev)
         {
             if (DisabledKeys.Contains("SCP330"))
                 ev.IsAllowed = false;
@@ -775,7 +754,7 @@ namespace ScriptedEvents
                 ev.IsAllowed = false;
         }
 
-        public void OnScp914Event(IDeniableEvent ev)
+        private void OnScp914Event(IDeniableEvent ev)
         {
             if (DisabledKeys.Contains("SCP914"))
                 ev.IsAllowed = false;

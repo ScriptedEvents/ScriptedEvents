@@ -1,5 +1,6 @@
 ﻿using System;
 using PlayerRoles;
+using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -41,8 +42,8 @@ namespace ScriptedEvents.Actions.RoundRule
             RoleTypeId newRole = (RoleTypeId)Arguments[1]!;
             bool movePlayer = (bool?)Arguments[2] ?? false;
 
-            MainPlugin.EventHandlingModule.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
-            MainPlugin.EventHandlingModule.InfectionRules.Add(new(oldRole, newRole, movePlayer));
+            EventHandlingModule.Singleton!.InfectionRules.RemoveAll(rule => rule.OldRole == oldRole);
+            EventHandlingModule.Singleton!.InfectionRules.Add(new(oldRole, newRole, movePlayer));
 
             return new(true);
         }
