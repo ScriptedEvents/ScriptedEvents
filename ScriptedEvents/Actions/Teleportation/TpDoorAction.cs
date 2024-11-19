@@ -1,19 +1,20 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Linq;
+using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Exiled.API.Features.Doors;
+using Exiled.API.Features.Roles;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Teleportation
 {
-    using System;
-
-    using Exiled.API.Features;
-    using Exiled.API.Features.Doors;
-    using Exiled.API.Features.Roles;
-    using ScriptedEvents.Structures;
-
     public class TpDoorAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "TPDOOR";
+        public string Name => "TPDoor";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -22,7 +23,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Teleportation;
@@ -34,19 +35,18 @@ namespace ScriptedEvents.Actions
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(PlayerCollection), "The players to teleport", true),
-            new Argument("door", typeof(Door[]), "The door type to teleport to.", true),
+            new Argument("door", typeof(DoorType), "The door type to teleport to. If there are multiple doors with the same doortype, a random door will be chosen for each player.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-            Door[] doors = (Door[])Arguments[1];
+            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            DoorType doorType = (DoorType)Arguments[1]!;
 
             foreach (Player ply in players)
             {
-                if (ply.Role is not FpcRole || !ply.IsConnected) continue;
-                ply.Teleport(doors[0]);
+                ply.Teleport(Door.List.Where(d => d.Type == doorType).GetRandomValue());
             }
 
             return new(true);
