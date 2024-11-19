@@ -12,7 +12,7 @@ namespace ScriptedEvents.Actions.ScriptInfo
     public class VExistsAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "VEXISTS";
+        public string Name => "VarExists";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +21,7 @@ namespace ScriptedEvents.Actions.ScriptInfo
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.ScriptInfo;
@@ -32,13 +32,13 @@ namespace ScriptedEvents.Actions.ScriptInfo
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("variableName", typeof(string), "The name of the variable.", true),
+             new Argument("variableName", typeof(string), "The name of the variable. ", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(true, variablesToRet: new object[] { VariableSystem.TryGetVariable<IVariable>(RawArguments[0], script, out _, false, out _).ToUpper() });
+            return new(true, new(VariableSystem.TryGetVariable<IVariable>(RawArguments[0], script, out _, false, out _).ToUpper()));
         }
     }
 }
