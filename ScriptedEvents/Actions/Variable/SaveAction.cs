@@ -1,16 +1,15 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Variable
 {
-    using System;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class SaveAction : IScriptAction, IHelpInfo, IReturnValueAction
     {
         /// <inheritdoc/>
-        public string Name => "SAVE";
+        public string Name => "Save";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -19,13 +18,13 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => "Returns the value that was provided, but in a variable form.";
+        public string Description => "Returns the value that was provided, but in a variable (local literal) form.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -34,11 +33,6 @@ namespace ScriptedEvents.Actions
         };
 
         /// <inheritdoc/>
-        public ActionResponse Execute(Script script)
-        {
-            string input = Arguments.JoinMessage();
-
-            return new(true, variablesToRet: new[] { input });
-        }
+        public ActionResponse Execute(Script script) => new(true, new(Arguments.JoinMessage()));
     }
 }
