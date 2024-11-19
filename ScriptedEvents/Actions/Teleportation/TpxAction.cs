@@ -1,20 +1,17 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using Exiled.API.Features.Roles;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Teleportation
 {
-    using System;
-
-    using Exiled.API.Features;
-    using Exiled.API.Features.Roles;
-    using ScriptedEvents.Structures;
-
-    using UnityEngine;
-
     public class TpxAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "TPX";
+        public string Name => "TPPos";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -23,7 +20,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Teleportation;
@@ -43,10 +40,10 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
-            float x = (float)Arguments[1];
-            float y = (float)Arguments[2];
-            float z = (float)Arguments[3];
+            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            float x = (float)Arguments[1]!;
+            float y = (float)Arguments[2]!;
+            float z = (float)Arguments[3]!;
 
             Vector3 vz = new(x, y, z);
 
