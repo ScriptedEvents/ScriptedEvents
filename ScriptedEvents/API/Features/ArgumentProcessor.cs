@@ -281,7 +281,6 @@ namespace ScriptedEvents.API.Features
 
             switch (expected.Flag.Name)
             {
-                // Number Types:
                 case "Boolean":
                     if (!input.IsBool(out var result, out var boolErr, source))
                     {
@@ -339,6 +338,10 @@ namespace ScriptedEvents.API.Features
                 case "Item": throw new NotImplementedException();
 
                 case "TimeSpan": throw new NotImplementedException();
+                
+                case "Script": throw new NotImplementedException();
+                
+                case "ItemType[]": throw new NotImplementedException();
 
                 case "IVariable":
                     if (!VariableSystem.TryGetVariable<IVariable>(input, source, out var someVar, false, out var someVarTrace))
@@ -395,8 +398,7 @@ namespace ScriptedEvents.API.Features
 
                     success.NewParameters.Add(lifts);
                     break;
-
-                // Special
+                
                 case "PlayerCollection":
                     if (!Parser.TryGetPlayers(input, null, out var players, source, out var collectionError))
                     {
@@ -425,17 +427,7 @@ namespace ScriptedEvents.API.Features
                                 $"There was one player expected, but {enumerable.Length} players are present."));
                     }
 
-                    success.NewParameters.Add(enumerable.FirstOrDefault());
-                    break;
-
-                case "RoleTypeIdOrTeam":
-                    if (Parser.TryGetEnum(input, out RoleTypeId rtResult, source, out _))
-                        success.NewParameters.Add(rtResult);
-                    else if (Parser.TryGetEnum(input, out Team teamResult, source, out _))
-                        success.NewParameters.Add(teamResult);
-                    else
-                        return ErrorByInfo(Error($"Can't cast value '{input}' to RoleTypeIdOrTeam", "Provided value is not a RoleTypeId or Team."));
-
+                    success.NewParameters.Add(enumerable.First());
                     break;
 
                 default:
