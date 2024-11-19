@@ -1,17 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions.VariableActions
+namespace ScriptedEvents.Actions.Variable
 {
-    using System;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.Structures;
-
     public class EvalAction : IScriptAction, IHelpInfo, IReturnValueAction
     {
         /// <inheritdoc/>
-        public string Name => "EVAL";
+        public string Name => "Eval";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -20,13 +19,13 @@ namespace ScriptedEvents.Actions.VariableActions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => "Returns an evaluated value that was provided (does math and boolean algebra if applicable).";
+        public string Description => "Returns an evaluated value that was provided (does math and conditions if applicable).";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -43,12 +42,12 @@ namespace ScriptedEvents.Actions.VariableActions
             var response = ConditionHelper.Evaluate(input, script);
             if (response.Success)
             {
-                return new ActionResponse(true, variablesToRet: new object[] { response.Passed.ToUpper() });
+                return new ActionResponse(true, new(response.Passed.ToUpper()));
             }
 
             return ConditionHelper.TryMath(input, out var res)
-                ? new ActionResponse(true, variablesToRet: new object[] { res.Result.ToUpper() })
-                : new(true, variablesToRet: new object[] { Parser.ReplaceContaminatedValueSyntax(input, script) });
+                ? new ActionResponse(true, new(res.Result.ToUpper()))
+                : new(true, new(Parser.ReplaceContaminatedValueSyntax(input, script)));
         }
     }
 }
