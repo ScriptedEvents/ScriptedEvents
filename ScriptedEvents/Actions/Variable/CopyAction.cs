@@ -1,17 +1,17 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using System.Linq;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
 
-namespace ScriptedEvents.Actions.VariableActions
+namespace ScriptedEvents.Actions.Variable
 {
-    using System;
-    using System.Linq;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
-    public class CopyAction : IScriptAction, IHelpInfo
+    public class CopyAction : IScriptAction, IHelpInfo, IReturnValueAction
     {
         /// <inheritdoc/>
-        public string Name => "COPY";
+        public string Name => "Copy";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -20,13 +20,13 @@ namespace ScriptedEvents.Actions.VariableActions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Variable;
 
         /// <inheritdoc/>
-        public string Description => "Returns the provided variable value.";
+        public string Description => "It just copies the variable you give to it.";
 
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
@@ -37,14 +37,12 @@ namespace ScriptedEvents.Actions.VariableActions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            object toRet = (IVariable)Arguments[0] switch
+            return (IVariable)Arguments[0]! switch
             {
-                IPlayerVariable plrVar => plrVar.Players.ToArray(),
-                ILiteralVariable lvVar => lvVar.Value,
-                _ => throw new ArgumentException("Variable is not a valid variable type")
+                IPlayerVariable plrVar => new(true, new(plrVar.Players.ToArray())),
+                ILiteralVariable lvVar => new(true, new(lvVar.Value)),
+                _ => throw new ImpossibleException()
             };
-
-            return new(true, variablesToRet: new[] { toRet });
         }
     }
 }
