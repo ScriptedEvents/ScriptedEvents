@@ -278,8 +278,8 @@ namespace ScriptedEvents.API.Modules
             name = name.ToUpper();
             var type = ActionTypes
                 .Where(actionData =>
-                    actionData.Key.Name == name ||
-                    actionData.Key.Aliases.Contains(name))
+                    string.Equals(actionData.Key.Name, name, StringComparison.OrdinalIgnoreCase) ||
+                    actionData.Key.Aliases.Select(x => x.ToUpper()).Contains(name.ToUpper()))
                 .Select(actionData => actionData.Value)
                 .FirstOrDefault();
 
@@ -343,7 +343,7 @@ namespace ScriptedEvents.API.Modules
             };
 
             // Fill out script data
-            if (MainPlugin.Singleton.Config.RequiredPermissions.TryGetValue(scriptName, out var perm2))
+            if (MainPlugin.Singleton!.Config.RequiredPermissions.TryGetValue(scriptName, out var perm2))
             {
                 innerScript.ReadPermission += $".{perm2}";
                 innerScript.ExecutePermission += $".{perm2}";
@@ -441,7 +441,7 @@ namespace ScriptedEvents.API.Modules
                         switch (actionToExtract)
                         {
                             case null:
-                                throw new ArgumentException();
+                                throw new NotImplementedException();
 
                             case ITimingAction:
                                 Logger.ScriptError($"{actionToExtract.Name} is a timing action, which cannot be used with smart extractors.", innerScript, false, currentline + 1);
@@ -597,7 +597,8 @@ namespace ScriptedEvents.API.Modules
                         currentline + 1);
                 }
 
-                lastAction = actionType ?? throw new ArgumentException();
+                lastAction = actionType;
+                if (lastAction is null) continue;
                 innerScript.OriginalActionArgs[lastAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
                 innerScript.ResultVariableNames[lastAction] = resultVariableNames;
 

@@ -375,7 +375,7 @@ namespace ScriptedEvents.API.Features
                 case "Room[]":
                     if (!Parser.TryGetRooms(input, out var rooms, source, out var roomError))
                     {
-                        return ErrorByInfo(roomError!);
+                        return ErrorByInfo((ErrorInfo)roomError!);
                     }
 
                     success.NewParameters.Add(rooms);
@@ -384,7 +384,7 @@ namespace ScriptedEvents.API.Features
                 case "Door[]":
                     if (!Parser.TryGetDoors(input, out var doors, source, out var doorError))
                     {
-                        return ErrorByInfo(doorError!);
+                        return ErrorByInfo((ErrorInfo)doorError!);
                     }
 
                     success.NewParameters.Add(doors);
@@ -393,7 +393,7 @@ namespace ScriptedEvents.API.Features
                 case "Lift[]":
                     if (!Parser.TryGetLifts(input, out var lifts, source, out var liftError))
                     {
-                        return ErrorByInfo(liftError!);
+                        return ErrorByInfo((ErrorInfo)liftError!);
                     }
 
                     success.NewParameters.Add(lifts);

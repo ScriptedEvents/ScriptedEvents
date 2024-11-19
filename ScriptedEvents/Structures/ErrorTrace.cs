@@ -49,6 +49,16 @@
             string msg;
             var errors = trace.Errors.ToArray();
 
+            for (int i = 0; i < errors.Length; i++)
+            {
+                var temp = errors[i];
+                if (temp.Name.EndsWith("."))
+                {
+                    temp.Name = temp.Name.Substring(0, temp.Name.Length - 1);
+                }
+                errors[i] = temp;
+            }
+
             if (errors.Length == 0)
             {
                 return "No errors to display. If you see this, report this to the developers of Scripted Events.";
@@ -57,9 +67,9 @@
             var firstError = errors.First();
             errors = errors.Skip(1).ToArray();
 
-            msg = $"{firstError.name}: [Initial error] [Source: {firstError.source}] \n    {firstError.description}";
+            msg = $"{firstError.Name}: [Initial error] [Source: {firstError.Source}] \n    {firstError.Description}";
 
-            return errors.Aggregate(msg, (current, err) => $"{err.name}: [Source: {err.source}] \n    {err.description}\n\n{current}");
+            return errors.Aggregate(msg, (current, err) => $"{err.Name}: [Source: {err.Source}] \n    {err.Description}\n\n{current}");
         }
     }
 }

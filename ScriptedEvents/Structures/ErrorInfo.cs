@@ -3,13 +3,26 @@
     /// <summary>
     /// Holds information about an SE error.
     /// </summary>
-    public record ErrorInfo(string name, string description, string source);
+    public struct ErrorInfo
+    {
+        public string Name;
+        public string Description;
+        public string Source;
+        
+        public ErrorInfo(string name, string description, string source)
+        {
+            Name = name;
+            Description = description;
+            Source = source;
+        }
+    }
 
     public static class ErrorInfoExtensions
     {
-        public static ErrorTrace ToTrace(this ErrorInfo error)
+        public static ErrorTrace ToTrace(this ErrorInfo? error)
         {
-            return new(error);
+            if (error is null) throw new System.ArgumentNullException(nameof(error));
+            return new ErrorTrace((ErrorInfo)error);
         }
     }
 }
