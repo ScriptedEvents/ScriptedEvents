@@ -1,18 +1,16 @@
-﻿using ScriptedEvents.Enums;
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using ScriptedEvents.Structures;
 
-namespace ScriptedEvents.Actions
+namespace ScriptedEvents.Actions.Server
 {
-    using System;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-
     public class LogAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
-        public string Name => "LOG";
+        public string Name => "Log";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -21,7 +19,7 @@ namespace ScriptedEvents.Actions
         public string[] RawArguments { get; set; }
 
         /// <inheritdoc/>
-        public object[] Arguments { get; set; }
+        public object?[] Arguments { get; set; }
 
         /// <inheritdoc/>
         public ActionSubgroup Subgroup => ActionSubgroup.Server;
@@ -38,7 +36,7 @@ namespace ScriptedEvents.Actions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Log.Info(Arguments.JoinMessage(0));
+            Log.Info(Arguments.JoinMessage());
             return new(true);
         }
     }
