@@ -196,6 +196,7 @@
     <Compile Include="Actions\Variable\SaveAction.cs" />
     <Compile Include="Actions\Misc\HttpPostAction.cs" />
     <Compile Include="Actions\Item\RadioRangeAction.cs" />
+    <Compile Include="Actions\YieldingActions\WaitAction.cs" />
     <Compile Include="API\APITestLab\ScriptedEventsIntegration.cs" />
     <Compile Include="API\Constants\Constants.cs" />
     <Compile Include="API\Constants\ConstMessages.cs" />
@@ -228,7 +229,7 @@
     <Compile Include="Actions\Teleportation\TpSpawnAction.cs" />
     <Compile Include="Actions\Teleportation\TpRoomAction.cs" />
     <Compile Include="Actions\Teleportation\TpxAction.cs" />
-    <Compile Include="Actions\YieldingActions\WaitAction.cs" />
+    <Compile Include="Actions\YieldingActions\WaitUntilAction.cs" />
     <Compile Include="API\Modules\CountdownModule.cs" />
     <Compile Include="API\Features\MsgGen.cs" />
     <Compile Include="API\Modules\EventScriptModule.cs" />
