@@ -84,6 +84,86 @@ namespace ScriptedEvents.API.Features
             result = resInIEnumerable.ToArray();
             return true;
         }
+        
+        internal static bool TryGetTimeSpan(string input, out TimeSpan result, out ErrorInfo? errorInfo)
+        {
+            input = input.ToLower();
+            result = default;
+            errorInfo = default;
+            
+            if (input.Contains(" "))
+            {
+                errorInfo = Error(
+                    "A time span cannot have white spaces",
+                    $"Provided input '{input}' cannot be converted to a time span, because time spans cannot contain spaces");
+                return false;
+            }
+
+            string numberPart = string.Empty;
+            foreach (var character in input)
+            {
+                switch (character)
+                {
+                    case '-':
+                        errorInfo = Error(
+                            "A time span cannot be negative",
+                            $"Provided input '{input}' uses '-', which is not allowed.");
+                        return false;
+                    case '.':
+                        errorInfo = Error(
+                            "A time span is not a float value",
+                            $"Provided input '{input}' uses '.', which is not allowed, because time spans dont support floating point numbers. If you want to do something like '0.5s', consider using '500ms'.");
+                        return false;
+                }
+
+                if (!int.TryParse(character.ToString(), out _))
+                {
+                    break;
+                }
+
+                numberPart += character;
+            }
+
+            if (numberPart.Length == 0)
+            {
+                errorInfo = Error(
+                    "A time span must have a valid number",
+                    $"Provided input '{input}' must have at least 1 digit at the beginning in order to specify a time span (e.g. '1s' instead of 'test')");
+                return false;
+            }
+
+            int length = int.Parse(numberPart);
+            string unitPart = input.Substring(numberPart.Length);
+
+            if (unitPart.Length == 0)
+            {
+                errorInfo = Error(
+                    "A time span must have a valid unit",
+                    $"Provided input '{input}' must have a time unit at the end in order to specify a time span (e.g. '1s' instead of '123')");
+                return false;
+            }
+
+            TimeSpan timeSpan = unitPart switch
+            {
+                "s" => TimeSpan.FromSeconds(length),
+                "ms" => TimeSpan.FromMilliseconds(length),
+                "m" => TimeSpan.FromMinutes(length),
+                "h" => TimeSpan.FromHours(length),
+                "d" => TimeSpan.FromDays(length),
+                _ => TimeSpan.MinValue
+            };
+
+            if (timeSpan == TimeSpan.MinValue)
+            {
+                errorInfo = Error(
+                    "A time span must have a valid unit",
+                    $"Provided time unit '{unitPart}' in the input '{input}' is not valid. Available time units: 's' (seconds), 'ms' (milliseconds), 'm' (minutes), 'h' (hours), 'd' (days)");
+                return false;
+            }
+            
+            result = timeSpan;
+            return true;
+        }
 
         /// <summary>
         /// Try-get a <see cref="Door"/> array given an input.
