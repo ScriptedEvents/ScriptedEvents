@@ -196,8 +196,7 @@
                     continue;
                 }
 
-                if (@delegate is null)
-                    throw new NullReferenceException("delegate is null");
+                if (@delegate is null) continue;
                 
                 subscribe.Invoke(propertyInfo.GetValue(EventHandlingModule.Singleton), new object[] { @delegate });
                 StoredDelegates.Add(new Tuple<PropertyInfo, Delegate>(propertyInfo, @delegate));
