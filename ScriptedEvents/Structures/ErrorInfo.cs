@@ -3,7 +3,7 @@
     /// <summary>
     /// Holds information about an SE error.
     /// </summary>
-    public struct ErrorInfo
+    public class ErrorInfo
     {
         public string Name;
         public string Description;
