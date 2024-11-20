@@ -930,6 +930,25 @@ namespace ScriptedEvents.API.Modules
                 yield return (float)current;
             }
         }
+        
+        public static void GenerateDemoScripts()
+        {
+            try
+            {
+                DirectoryInfo info = Directory.CreateDirectory(BasePath);
+                DirectoryInfo demoScriptFolder = Directory.CreateDirectory(Path.Combine(info.FullName, "DemoScripts"));
+                foreach (IDemoScript demo in MainPlugin.DemoScripts)
+                {
+                    File.WriteAllText(Path.Combine(demoScriptFolder.FullName, $"{demo.FileName}.txt"), demo.Contents);
+                }
+
+                File.WriteAllText(Path.Combine(MainPlugin.BaseFilePath, "README.txt"), new About().Contents);
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"Cannot create demo scripts: {e}");
+            }
+        }
 
         private static ErrorInfo Error(string name, string desc)
         {
