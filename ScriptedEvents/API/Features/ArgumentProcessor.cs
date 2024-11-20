@@ -337,7 +337,14 @@ namespace ScriptedEvents.API.Features
 
                 case "Item": throw new NotImplementedException();
 
-                case "TimeSpan": throw new NotImplementedException();
+                case "TimeSpan":
+                    if (!Parser.TryGetTimeSpan(input, out TimeSpan timeSpan, out ErrorInfo? timeSpanErr))
+                    {
+                        return ErrorByInfo(timeSpanErr!);
+                    }
+                    
+                    success.NewParameters.Add(timeSpan);
+                    break;
                 
                 case "Script": throw new NotImplementedException();
                 
@@ -375,7 +382,7 @@ namespace ScriptedEvents.API.Features
                 case "Room[]":
                     if (!Parser.TryGetRooms(input, out var rooms, source, out var roomError))
                     {
-                        return ErrorByInfo((ErrorInfo)roomError!);
+                        return ErrorByInfo(roomError!);
                     }
 
                     success.NewParameters.Add(rooms);
@@ -384,7 +391,7 @@ namespace ScriptedEvents.API.Features
                 case "Door[]":
                     if (!Parser.TryGetDoors(input, out var doors, source, out var doorError))
                     {
-                        return ErrorByInfo((ErrorInfo)doorError!);
+                        return ErrorByInfo(doorError!);
                     }
 
                     success.NewParameters.Add(doors);
@@ -462,7 +469,7 @@ namespace ScriptedEvents.API.Features
             {
                 trace.Append(Error(
                     $"Failed to process argument '{expected.ArgumentName}' for action '{action.Name}'",
-                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Flag}'."));
+                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Type.MemberType}'."));
                 return new(false, true, trace);
             }
 
@@ -471,7 +478,7 @@ namespace ScriptedEvents.API.Features
                 var trace = error.ToTrace();
                 trace.Append(Error(
                     $"Failed to process argument '{expected.ArgumentName}' for action '{action.Name}'",
-                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Flag}'."));
+                    $"Provided input '{input}' is not possible to be interpreted as value of type '{expected.Type.Name}'."));
                 return new(false, true, trace);
             }
 
