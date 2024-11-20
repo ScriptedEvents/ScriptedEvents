@@ -72,7 +72,12 @@ namespace ScriptedEvents.Actions.Map
                         return new(
                         false,
                         null,
-                        new(new ErrorInfo("RGB components missing", "When using the 'Set' mode, RGB values need to be provided.", $"{Name} action")));
+                        new ErrorInfo(
+                            "RGB components missing", 
+                            "When using the 'Set' mode, RGB values need to be provided.",
+                            Name)
+                            .ToTrace()
+                        );
                     }
 
                     float r = (float)Arguments[2]!;
