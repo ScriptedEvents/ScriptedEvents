@@ -17,7 +17,7 @@ using ScriptedEvents.Variables.Interfaces;
 
 namespace ScriptedEvents.Actions.Misc
 {
-    public class HelpAction : IScriptAction, IHelpInfo
+    public class NoneAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
         public string Name => "HELP";
@@ -116,45 +116,6 @@ Thanks for using our plugin. <3
 Scripted Events Contributors:
 {Constants.GenerateContributorList('-')}";
                 return new(true, newText);
-            }
-
-            // List Help
-            if (text is "LIST" or "ACTIONS" or "ACTS")
-            {
-                StringBuilder sbList = StringBuilderPool.Pool.Get();
-                sbList.AppendLine();
-                sbList.AppendLine($"List of all actions. For more information on each action, run the HELP <ACTIONNAME> action (or shelp <ACTIONNAME> in the server console).");
-
-                List<IAction> temp = ListPool<IAction>.Pool.Get();
-                foreach (KeyValuePair<ActionNameData, Type> kvp in ScriptModule.Singleton!.ActionTypes)
-                {
-                    IAction lAction = Activator.CreateInstance(kvp.Value) as IAction;
-                    temp.Add(lAction);
-                }
-
-                var grouped = temp.GroupBy(a => a.Subgroup);
-
-                foreach (IGrouping<ActionSubgroup, IAction> group in grouped.OrderBy(g => g.Key.Display()))
-                {
-                    if (group.Count() == 0 || (group.All(act => act is IHiddenAction || act.IsObsolete(out _)) && !MainPlugin.Configs.Debug))
-                        continue;
-
-                    sbList.AppendLine();
-                    sbList.AppendLine($"== {group.Key.Display()} Actions ==");
-
-                    foreach (IAction lAction in group)
-                    {
-                        IHelpInfo lhelpInfo = lAction as IHelpInfo;
-
-                        if ((lAction is IHiddenAction && !MainPlugin.Configs.Debug) || lAction.IsObsolete(out _))
-                            continue;
-
-                        sbList.AppendLine($"{lAction.Name} : {lhelpInfo?.Description ?? "No Description"}");
-                    }
-                }
-
-                ListPool<IAction>.Pool.Return(temp);
-                return new(true, StringBuilderPool.Pool.ToStringReturn(sbList));
             }
 
             // List Variables
