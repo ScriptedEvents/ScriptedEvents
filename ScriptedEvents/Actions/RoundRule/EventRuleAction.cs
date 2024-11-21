@@ -9,10 +9,10 @@ using ScriptedEvents.Structures;
 
 namespace ScriptedEvents.Actions.RoundRule
 {
-    public class EventAction : IScriptAction, IHelpInfo, ILongDescription
+    public class EventRuleAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
-        public string Name => "Event";
+        public string Name => "EventRule";
 
         /// <inheritdoc/>
         public string[] Aliases => Array.Empty<string>();
@@ -43,18 +43,18 @@ namespace ScriptedEvents.Actions.RoundRule
 
 Let's say you hate players flipping the coin and you want to disable this ability. How would you do it?
 
-1. Go to this web page: https://github.com/Exiled-Team/EXILED/blob/dev/Exiled.Events/Handlers/Player.cs
-2. On the right side you will find a window named 'Symbols' and inside it a search bar 'Filter symbols'.
-3. Search for 'coin' or 'flip'. First 2 results should be 'FlippingCoin' and 'OnFlippingCoin'. Click on 'FlippingCoin'.
-4. The highlighted portion is the name of the event.
+    1. Go to this web page: https://github.com/Exiled-Team/EXILED/blob/dev/Exiled.Events/Handlers/Player.cs
+    2. On the right side you will find a window named 'Symbols' and inside it a search bar 'Filter symbols'.
+    3. Search for 'coin' or 'flip'. First 2 results should be 'FlippingCoin' and 'OnFlippingCoin'. Click on 'FlippingCoin'.
+    4. The highlighted portion is the name of the event.
 
 You can now use 'EVENT DISABLE * FlippingCoin', which will not allow anyone to flip their coin.
 
 BUT! There is a caveat; not every event can be disabled. How can I check if 'FlippingCoin' event can be disabled?
 
-1. To the left of the highlighted 'FlippingCoin' you will find '<FlippingCoinEventArgs>'. Click on it.
-2. You will see that the right window now shows definitions of it, click 'class FlippingCoinEventArgs'.
-3. A line similar to this should be highlighted: 'public class FlippingCoinEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent'
+    1. To the left of the highlighted 'FlippingCoin' you will find '<FlippingCoinEventArgs>'. Click on it.
+    2. You will see that the right window now shows definitions of it, click 'class FlippingCoinEventArgs'.
+    3. A line similar to this should be highlighted: 'public class FlippingCoinEventArgs : IPlayerEvent, IDeniableEvent, IItemEvent'
 
 You see that 'IDeniableEvent' there? It means that you can enable and disable it. If it is not present then you can't enable and disable it.
 
