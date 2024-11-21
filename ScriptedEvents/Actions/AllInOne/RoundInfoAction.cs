@@ -25,7 +25,7 @@
                 new OptionValueDepending("IsInProgress", "Is the round in progress.", typeof(bool)),
                 new OptionValueDepending("HasEnded", "Has the round ended.", typeof(bool)),
                 new OptionValueDepending("ElapsedRounds", "Amount of rounds that have progressed since the server has started.", typeof(int)),
-                new OptionValueDepending("Duration", "Amount of seconds since the round started.", typeof(double))),
+                new OptionValueDepending("DurationSeconds", "Amount of seconds since the round started.", typeof(double))),
         };
 
         /// <inheritdoc/>
@@ -50,7 +50,7 @@
                 "ISINPROGRESS" => Round.InProgress.ToUpper(),
                 "HASENDED" => Round.IsEnded.ToUpper(),
                 "ELAPSEDROUNDS" => Round.UptimeRounds.ToString(),
-                "DURATION" => Round.ElapsedTime.TotalSeconds.ToString(),
+                "DURATIONSECONDS" => Round.ElapsedTime.TotalSeconds.ToString(),
                 _ => throw new ArgumentException()
             };
 
