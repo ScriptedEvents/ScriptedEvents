@@ -38,8 +38,6 @@
                     new Scps(),
                     new Mtf(),
                     new Chaos(),
-                    new SerpentsHand(),
-                    new UIU(),
                 });
 
                 variables = roleVars;
@@ -51,7 +49,7 @@
     public class Guards : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "GUARDS";
+        public string Name => "Guards";
 
         /// <inheritdoc/>
         public string Description => "Returns players playing as facility guards. Equivalent to @FACILITYGUARDS";
@@ -68,7 +66,7 @@
     public class MtfAndGuards : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "MTFANDGUARDS";
+        public string Name => "MTFAndGuards";
 
         /// <inheritdoc/>
         public string Description => "Returns players playing as facility guards & MTF.";
@@ -85,7 +83,7 @@
     public class Scps : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "SCPS";
+        public string Name => "SCPs";
 
         /// <inheritdoc/>
         public string Description => "Returns players playing as SCPs.";
@@ -133,40 +131,6 @@
         }
     }
 
-    public class SerpentsHand : IPlayerVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "SH";
-
-        /// <inheritdoc/>
-        public string Description => "Returns players playing as the Serpent's Hand (always 0 if the plugin is not installed).";
-
-        /// <inheritdoc/>
-        IEnumerable<Player> IPlayerVariable.Players => Player.Get(player => player.SessionVariables.ContainsKey("IsSH"));
-
-        public IEnumerable<Player> GetPlayers()
-        {
-            return ((IPlayerVariable)this).Players.Where(plr => plr is not null);
-        }
-    }
-
-    public class UIU : IPlayerVariable
-    {
-        /// <inheritdoc/>
-        public string Name => "UIU";
-
-        /// <inheritdoc/>
-        public string Description => "Returns players playing as the UIU squad (always 0 if the plugin is not installed).";
-
-        /// <inheritdoc/>
-        IEnumerable<Player> IPlayerVariable.Players => Player.Get(player => player.SessionVariables.ContainsKey("IsUIU"));
-
-        public IEnumerable<Player> GetPlayers()
-        {
-            return ((IPlayerVariable)this).Players.Where(plr => plr is not null);
-        }
-    }
-
     public class RoleTypeVariable : IPlayerVariable
     {
         public RoleTypeVariable()
@@ -186,22 +150,22 @@
         {
             get
             {
-                var role = RoleType.ToString().ToUpper();
+                var role = RoleType.ToString();
 
-                if (role.EndsWith("TCH"))
+                if (role.EndsWith("tch"))
                 {
-                    role += "ES";
+                    role += "es";
                 }
-                else if (role.EndsWith("MAN"))
+                else if (role.EndsWith("man"))
                 {
-                    role = role.Substring(0, role.Length - 3) + "MEN";
+                    role = role.Substring(0, role.Length - 3) + "men";
                 }
-                else if (role == "NONE")
+                else if (role == "None")
                 {
                 }
                 else
                 {
-                    role += "S";
+                    role += "s";
                 }
 
                 return role;
