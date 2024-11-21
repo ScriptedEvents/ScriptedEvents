@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Commands.HelpCommand
+﻿using ScriptedEvents.DocumentationGeneration;
+
+namespace ScriptedEvents.Commands.HelpCommand
 {
     using System;
     using System.Linq;
@@ -8,48 +10,26 @@
     using ScriptedEvents.Structures;
 
     [CommandHandler(typeof(GameConsoleCommandHandler))]
+    [CommandHandler(typeof(ClientCommandHandler))]
+    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class ScriptHelp : ICommand
     {
         /// <inheritdoc/>
-        public string Command => "scripthelp";
+        public string Command => "shelp";
 
         /// <inheritdoc/>
-        public string[] Aliases => new[] { "shelp", "scrhelp", "sehelp", "seh", "sch" };
+        public string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc/>
-        public string Description => "Get documentation for everything in Scripted Events.";
-
-        /// <inheritdoc/>
+        public string Description => "Get documentation for most things in Scripted Events.";
+        
         public bool SanitizeResponse => true;
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "this is not supported";
-            return false;
-            /*
-            HelpAction help = new()
-            {
-                Arguments = arguments.ToArray(),
-            };
-
-            // Fill out mock script info
-            Script mockScript = new()
-            {
-                Context = ExecuteContext.ServerConsole,
-                Sender = sender,
-                RawText = $"HELP {string.Join(" ", arguments)}",
-                ScriptName = "HELP COMMAND EXECUTION",
-            };
-
-            mockScript.AddFlag("HELPCOMMANDEXECUTION");
-            ActionResponse actionResponse = help.Execute(mockScript);
-
-            response = string.IsNullOrWhiteSpace(actionResponse.Message) ? "Done" : actionResponse.Message;
-
-            mockScript.Dispose();
-            return actionResponse.Success;
-            */
+            response = DocsGen.GenerateVariableList();
+            return true;
         }
     }
 }
