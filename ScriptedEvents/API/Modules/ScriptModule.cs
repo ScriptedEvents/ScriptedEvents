@@ -2,6 +2,7 @@ using ScriptedEvents.Actions.DebugActions;
 using ScriptedEvents.API.Features.Exceptions;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
+using Utils.NonAllocLINQ;
 
 namespace ScriptedEvents.API.Modules
 {
@@ -351,7 +352,6 @@ namespace ScriptedEvents.API.Modules
 
             var actionList = ListPool<IAction>.Pool.Get();
             var array = content.Split('\n');
-            IAction? lastAction = null;
             Func<bool>? singleLineIfStatement = null;
             var inMultilineComment = false;
 
@@ -386,30 +386,33 @@ namespace ScriptedEvents.API.Modules
 
                 switch (keyword)
                 {
-                    case "??" when actionList.Count < 2:
+                    case "??" when structureParts.Count == 1:
                         Logger.Log("'??' (single line if statement) syntax can't be used without providing a conditon.", LogType.Warning, innerScript, currentline + 1);
+                        AddActionNoArgs(new NullAction("IF STATEMENT"));
                         continue;
                     case "??":
                     {
                         singleLineIfStatement = () => ConditionHelper.Evaluate(string.Join(" ", structureParts.Skip(1)).Trim(), innerScript).Passed;
+                        AddActionNoArgs(new NullAction("IF STATEMENT"));
                         continue;
                     }
 
                     // smart args
-                    case "//" when actionList.Count == 0 || lastAction is null:
+                    case "//" when actionList.Count is 0:
                         Logger.Log("'//' (smart argument) syntax can't be used if there isn't any action above it.", LogType.Warning, innerScript, currentline + 1);
+                        AddActionNoArgs(new NullAction("SMART ARG"));
                         continue;
                     case "//":
                     {
                         var value = string.Join(" ", structureParts.Skip(1)).Trim();
 
-                        if (innerScript.SmartArguments.ContainsKey(lastAction))
+                        if (innerScript.SmartArguments.ContainsKey(actionList.Last()))
                         {
-                            innerScript.SmartArguments[lastAction] = innerScript.SmartArguments[lastAction].Append(Lambda).ToArray();
+                            innerScript.SmartArguments[actionList.Last()] = innerScript.SmartArguments[actionList.Last()].Append(Lambda).ToArray();
                         }
                         else
                         {
-                            innerScript.SmartArguments[lastAction] = new Func<Tuple<ErrorTrace?, object?, Type?>>[] { Lambda };
+                            innerScript.SmartArguments[actionList.Last()] = new Func<Tuple<ErrorTrace?, object?, Type?>>[] { Lambda };
                         }
 
                         AddActionNoArgs(new NullAction("SMART ARG"));
@@ -421,11 +424,13 @@ namespace ScriptedEvents.API.Modules
                         }
                     }
 
-                    case "//::" when actionList.Count == 0 || lastAction is null:
+                    case "//::" when actionList.Count is 0:
                         Logger.Log("'//::' (smart extractor) syntax can't be used if there isn't any action above it.", LogType.Warning, innerScript, currentline + 1);
+                        AddActionNoArgs(new NullAction("SMART EXTRACTOR"));
                         continue;
                     case "//::":
                     {
+                        AddActionNoArgs(new NullAction("SMART EXTRACTOR"));
                         var actionName = structureParts[1];
                         var actionArgs = structureParts.Skip(2).ToArray();
 
@@ -455,16 +460,15 @@ namespace ScriptedEvents.API.Modules
                                 continue;
                         }
 
-                        if (innerScript.SmartArguments.ContainsKey(lastAction))
+                        if (innerScript.SmartArguments.ContainsKey(actionList.Last()))
                         {
-                            innerScript.SmartArguments[lastAction] = innerScript.SmartArguments[lastAction].Append(SmartExtractor).ToArray();
+                            innerScript.SmartArguments[actionList.Last()] = innerScript.SmartArguments[actionList.Last()].Append(SmartExtractor).ToArray();
                         }
                         else
                         {
-                            innerScript.SmartArguments[lastAction] = new Func<Tuple<ErrorTrace?, object?, Type?>>[] { SmartExtractor };
+                            innerScript.SmartArguments[actionList.Last()] = new Func<Tuple<ErrorTrace?, object?, Type?>>[] { SmartExtractor };
                         }
-
-                        AddActionNoArgs(new NullAction("SMART EXTR"));
+                        
                         continue;
 
                         Tuple<ErrorTrace?, object?, Type?> SmartExtractor()
@@ -512,6 +516,8 @@ namespace ScriptedEvents.API.Modules
                     // flags
                     case "!--":
                     {
+                        AddActionNoArgs(new NullAction("FLAG"));
+                        
                         var flag = structureParts[1].Trim();
 
                         if (!innerScript.HasFlag(flag))
@@ -530,8 +536,6 @@ namespace ScriptedEvents.API.Modules
                                 false,
                                 currentline + 1);
                         }
-
-                        AddActionNoArgs(new NullAction("FLAG DEFINE"));
                         continue;
                     }
                 }
@@ -539,6 +543,8 @@ namespace ScriptedEvents.API.Modules
                 // labels
                 if (keyword.EndsWith(":"))
                 {
+                    AddActionNoArgs(new NullAction("LABEL"));
+                    
                     var labelName = line.Remove(keyword.Length - 1, 1).RemoveWhitespace();
 
                     if (!innerScript.Labels.ContainsKey(labelName))
@@ -556,8 +562,7 @@ namespace ScriptedEvents.API.Modules
                             false,
                             currentline + 1);
                     }
-
-                    AddActionNoArgs(new NullAction($"{labelName} LABEL"));
+                    
                     continue;
                 }
 
@@ -596,27 +601,21 @@ namespace ScriptedEvents.API.Modules
                         false,
                         currentline + 1);
                 }
+                
+                if (actionList.Count is 0 || actionType is null) continue;
+                innerScript.OriginalActionArgs[actionType] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
+                innerScript.ResultVariableNames[actionType] = resultVariableNames;
 
-                lastAction = actionType;
-                if (lastAction is null) continue;
-                innerScript.OriginalActionArgs[lastAction] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
-                innerScript.ResultVariableNames[lastAction] = resultVariableNames;
-
+                Log($"Queuing action {keyword}, {string.Join(", ", innerScript.OriginalActionArgs[actionType])}");
+                actionList.Add(actionType);
+                
                 if (singleLineIfStatement is not null)
                 {
-                    innerScript.SingleLineIfStatements[lastAction] = singleLineIfStatement;
+                    innerScript.SingleLineIfStatements[actionType] = singleLineIfStatement;
                     singleLineIfStatement = null;
+                    continue;
                 }
-
-                Log($"Queuing action {keyword}, {string.Join(", ", innerScript.OriginalActionArgs[lastAction])}");
-
-                // Obsolete check
-                if (lastAction.IsObsolete(out var obsoleteReason) && !suppressWarnings && !innerScript.SuppressWarnings)
-                {
-                    Logger.Warn($"Action {lastAction.Name} is obsolete; {obsoleteReason}", innerScript);
-                }
-
-                actionList.Add(lastAction);
+                
                 ListPool<string>.Pool.Return(structureParts);
             }
 
