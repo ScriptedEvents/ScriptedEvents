@@ -27,7 +27,7 @@
     public class AllPlayers : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "PLAYERS";
+        public string Name => "Players";
 
         /// <inheritdoc/>
         public string Description => "Returns all players on the server.";
@@ -44,7 +44,7 @@
     public class AllNpcs : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "NPCS";
+        public string Name => "NPCs";
 
         /// <inheritdoc/>
         public string Description => "Returns all NPCs on the server.";
@@ -61,7 +61,7 @@
     public class PlayersAlive : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "@PLAYERSALIVE";
+        public string Name => "PlayersAlive";
 
         /// <inheritdoc/>
         public string Description => "Returns all alive players on the server.";
@@ -78,7 +78,7 @@
     public class Humans : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "HUMANS";
+        public string Name => "Humans";
 
         /// <inheritdoc/>
         public string Description => "Returns all humans that are currently alive (humans as in a human role, not not NPCs).";
@@ -95,7 +95,7 @@
     public class Staff : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "STAFF";
+        public string Name => "ServerStaff";
 
         /// <inheritdoc/>
         public string Description => "Returns all staff on the server (RA access)";
@@ -112,7 +112,7 @@
     public class NonePlayer : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "NONE";
+        public string Name => "NonePlr";
 
         /// <inheritdoc/>
         public string Description => "Returns an empty player variable.";
