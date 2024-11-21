@@ -152,7 +152,7 @@
     <Compile Include="Actions\PlayerActions\PrintPlayersAction.cs" />
     <Compile Include="Actions\PlayerActions\StaminaAction.cs" />
     <Compile Include="Actions\RoundRule\EffectImmunityRuleAction.cs" />
-    <Compile Include="Actions\RoundRule\EventAction.cs" />
+    <Compile Include="Actions\RoundRule\EventRuleAction.cs" />
     <Compile Include="Actions\RoundRule\GeneratorRuleAction.cs" />
     <Compile Include="Actions\Map\GeneratorAction.cs" />
     <Compile Include="Actions\RoundActions\LobbyAction.cs" />
@@ -243,6 +243,7 @@
     <Compile Include="Commands\MainCommand\StopScript.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
+    <Compile Include="DocumentationGeneration\DocsGen.cs" />
     <Compile Include="Enums\ActionFlags.cs" />
     <Compile Include="Enums\ActionSubgroup.cs" />
     <Compile Include="Enums\ArgFlag.cs" />
