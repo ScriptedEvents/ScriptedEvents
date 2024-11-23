@@ -412,7 +412,7 @@ namespace ScriptedEvents.API.Features
                         return ErrorByTrace(collectionError!);
                     }
 
-                    success.NewParameters.Add(players.ToArray());
+                    success.NewParameters.Add(players as Player[] ?? players.ToArray());
                     break;
 
                 case "Player":
