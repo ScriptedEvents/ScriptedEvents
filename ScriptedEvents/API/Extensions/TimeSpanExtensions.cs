@@ -12,7 +12,7 @@
         {
             try
             {
-                return (T)Convert.ChangeType(input.Seconds, typeof(T));
+                return (T)Convert.ChangeType(input.TotalSeconds, typeof(T));
             }
             catch
             {
