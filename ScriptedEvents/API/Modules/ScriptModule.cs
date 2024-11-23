@@ -397,25 +397,25 @@ namespace ScriptedEvents.API.Modules
                         continue;
                     }
 
-                    // smart args
+                    // attached args
                     case "//" when actionList.Count is 0:
-                        Logger.Log("'//' (smart argument) syntax can't be used if there isn't any action above it.", LogType.Warning, innerScript, currentline + 1);
-                        AddActionNoArgs(new NullAction("SMART ARG"));
+                        Logger.Log("'//' (attached argument) syntax can't be used if there isn't any action above it.", LogType.Warning, innerScript, currentline + 1);
+                        AddActionNoArgs(new NullAction("ATTACHED ARG"));
                         continue;
                     case "//":
                     {
                         var value = string.Join(" ", structureParts.Skip(1)).Trim();
 
-                        if (innerScript.SmartArguments.ContainsKey(actionList.Last()))
+                        if (innerScript.AttachedArguments.ContainsKey(actionList.Last()))
                         {
-                            innerScript.SmartArguments[actionList.Last()] = innerScript.SmartArguments[actionList.Last()].Append(Lambda).ToArray();
+                            innerScript.AttachedArguments[actionList.Last()] = innerScript.AttachedArguments[actionList.Last()].Append(Lambda).ToArray();
                         }
                         else
                         {
-                            innerScript.SmartArguments[actionList.Last()] = new Func<Tuple<ErrorTrace?, object?, Type?>>[] { Lambda };
+                            innerScript.AttachedArguments[actionList.Last()] = new Func<Tuple<ErrorTrace?, object?, Type?>>[] { Lambda };
                         }
 
-                        AddActionNoArgs(new NullAction("SMART ARG"));
+                        AddActionNoArgs(new NullAction("ATTACHED ARG"));
                         continue;
 
                         Tuple<ErrorTrace?, object?, Type?> Lambda()
@@ -460,13 +460,13 @@ namespace ScriptedEvents.API.Modules
                                 continue;
                         }
 
-                        if (innerScript.SmartArguments.ContainsKey(actionList.Last()))
+                        if (innerScript.AttachedArguments.ContainsKey(actionList.Last()))
                         {
-                            innerScript.SmartArguments[actionList.Last()] = innerScript.SmartArguments[actionList.Last()].Append(SmartExtractor).ToArray();
+                            innerScript.AttachedArguments[actionList.Last()] = innerScript.AttachedArguments[actionList.Last()].Append(SmartExtractor).ToArray();
                         }
                         else
                         {
-                            innerScript.SmartArguments[actionList.Last()] = new Func<Tuple<ErrorTrace?, object?, Type?>>[] { SmartExtractor };
+                            innerScript.AttachedArguments[actionList.Last()] = new Func<Tuple<ErrorTrace?, object?, Type?>>[] { SmartExtractor };
                         }
                         
                         continue;
@@ -602,7 +602,7 @@ namespace ScriptedEvents.API.Modules
                         currentline + 1);
                 }
                 
-                if (actionList.Count is 0 || actionType is null) continue;
+                if (actionType is null) continue;
                 innerScript.OriginalActionArgs[actionType] = structureParts.Skip(1).Select(str => str.RemoveWhitespace()).ToArray();
                 innerScript.ResultVariableNames[actionType] = resultVariableNames;
 
