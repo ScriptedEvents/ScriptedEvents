@@ -284,6 +284,7 @@
     <Compile Include="Structures\ErrorInfo.cs" />
     <Compile Include="Structures\ErrorTrace.cs" />
     <Compile Include="Structures\Flag.cs" />
+    <Compile Include="Structures\MultiArgumentString.cs" />
     <Compile Include="Structures\MultiTypeArgument.cs" />
     <Compile Include="Structures\Option.cs" />
     <Compile Include="Structures\OptionValueDepending.cs" />
