@@ -30,12 +30,6 @@ namespace ScriptedEvents.API.Features
         /// <returns>The result of the process.</returns>
         public static ArgumentProcessResult ProcessActionArguments(Argument[] expectedArguments, string[] args, IAction action, Script script)
         {
-            void Log(string message)
-            {
-                if (!script.IsDebug) return;
-                Logger.Debug($"[ArgumentProcessor] [ProcessActionArguments] [{action.Name}] {message}", script);
-            }
-
             if (expectedArguments.Length == 0)
             {
                 Log("This action doesnt use arguments. Ending processing.");
@@ -45,7 +39,7 @@ namespace ScriptedEvents.API.Features
             int requiredArguments = expectedArguments.Count(arg => arg.Required);
             if (args.Length < requiredArguments)
             {
-                IEnumerable<string> labeledArgs = expectedArguments.Select(arg => $"[{(arg.Required ? "Required" : "Optional")} argument '{arg.ArgumentName}']");
+                IEnumerable<string> labeledArgs = expectedArguments.Select(arg => $"({(arg.Required ? "Required" : "Optional")} '{arg.ArgumentName}')");
                 return new(
                     false,
                     true,
@@ -60,9 +54,10 @@ namespace ScriptedEvents.API.Features
                 StrippedRawParameters = args.ToArray(),
             };
 
+            bool addNotExpectedArgsToParameters = true;
             for (int i = 0; i < expectedArguments.Length; i++)
             {
-                // assign null to the expected argument if there are no more raw arguments
+                // assign null to the expected argument (thats not required!) if there are no more raw arguments
                 if (args.Length <= i)
                 {
                     success.NewParameters.Add(null);
@@ -72,6 +67,14 @@ namespace ScriptedEvents.API.Features
                 Argument argument = expectedArguments[i];
                 string input = args[i];
 
+                // if parsing MultiArgumentString, join all left arguments into one and end processing
+                if (argument.Type == typeof(MultiArgumentString))
+                {
+                    success.NewParameters.Add(string.Join(" ", ParseForValueSyntax(args.Skip(i))));
+                    addNotExpectedArgsToParameters = false;
+                    break;
+                }
+                
                 ArgumentProcessResult res = ProcessIndividualParameter(argument, input, action, script);
                 if (!res.ShouldExecute)
                 {
@@ -81,19 +84,27 @@ namespace ScriptedEvents.API.Features
                 success.NewParameters.Add(res.NewParameters.First());
             }
 
-            success.NewParameters.AddRange(args.Skip(expectedArguments.Length).Select(arg =>
-            {
-                if (TryProcessSmartArgumentsInContaminatedString(arg, action, script, out string saRes))
-                {
-                    return saRes;
-                }
-
-                return Parser.ReplaceContaminatedValueSyntax(arg, script);
-            }).ToArray());
-
-            Log($"Processed action parameters: '{string.Join(", ", success.NewParameters.Select(x => x.ToString()))}'");
-
+            // arguments which are not defined as expected have their value syntax replaced before being added
+            // this should not happen if MultiArgumentString is used
+            if (addNotExpectedArgsToParameters)
+                success.NewParameters.AddRange(ParseForValueSyntax(args.Skip(expectedArguments.Length)));
+            
+            Log($"Processed action parameters: '{string.Join(", ", success.NewParameters.Select(x => x?.ToString()))}'");
             return success;
+
+            void Log(string message)
+            {
+                if (!script.IsDebug) return;
+                Logger.Debug($"[ArgumentProcessor] [ProcessActionArguments] [{action.Name}] {message}", script);
+            }
+
+            IEnumerable<string> ParseForValueSyntax(IEnumerable<string> value)
+            {
+                return value.Select(arg =>
+                    TryProcessAttachedArgumentsInContaminatedString(arg, action, script, out string saRes)
+                        ? Parser.ReplaceContaminatedValueSyntax(saRes, script)
+                        : Parser.ReplaceContaminatedValueSyntax(arg, script));
+            }
         }
 
         /// <summary>
@@ -104,7 +115,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="source">The script source.</param>
         /// <param name="result">The resulting string. Empty if method returns false.</param>
         /// <returns>The output of the process.</returns>
-        public static bool TryProcessSmartArgumentsInContaminatedString(string input, IAction action, Script source, out string result)
+        public static bool TryProcessAttachedArgumentsInContaminatedString(string input, IAction action, Script source, out string result)
         {
             bool didSomething = false;
 
@@ -124,13 +135,13 @@ namespace ScriptedEvents.API.Features
                     continue;
                 }
 
-                Logger.Debug($"[SMART ARG PROC] Found '#' syntax with index '{lastNum}' at position {index}", source);
+                Logger.Debug($"[ATTACHED ARG PROC] Found '#' syntax with index '{lastNum}' at position {index}", source);
 
                 string argument;
                 try
                 {
                     // Fetch smart argument based on index
-                    var res = source.SmartArguments[action][lastNum - 1]();
+                    var res = source.AttachedArguments[action][lastNum - 1]();
                     if (res.Item1 is not null)
                     {
                         Logger.ScriptError(res.Item1!, source);
@@ -140,7 +151,7 @@ namespace ScriptedEvents.API.Features
                     if (res.Item3 != typeof(string))
                     {
                         var trace = Error(
-                            "Invalid type returned from a smart argument",
+                            "Invalid type returned from a attached argument",
                             $"The value under the smart argument '{match.Value}' is not a literal value, but value of type '{res.Item3!.Name}'.")
                             .ToTrace();
                         Logger.ScriptError(trace, source);
@@ -177,7 +188,7 @@ namespace ScriptedEvents.API.Features
         /// <param name="source">The script source.</param>
         /// <param name="result">The resulting string. Empty if method returns false.</param>
         /// <returns>The output of the process.</returns>
-        public static bool TryProcessSmartArgument(string input, IAction action, Script source, out object? result, out Type? type)
+        public static bool TryProcessAttachedArgument(string input, IAction action, Script source, out object? result, out Type? type)
         {
             result = null;
             type = null;
@@ -209,7 +220,7 @@ namespace ScriptedEvents.API.Features
             try
             {
                 // Fetch smart argument based on index
-                var res = source.SmartArguments[action][lastNum - 1]();
+                var res = source.AttachedArguments[action][lastNum - 1]();
                 if (res.Item1 is not null)
                 {
                     Logger.ScriptError(res.Item1, source);
@@ -265,7 +276,7 @@ namespace ScriptedEvents.API.Features
                 return success;
             }
 
-            if (TryProcessSmartArgument(input, action, source, out var smartArgRes, out var type))
+            if (TryProcessAttachedArgument(input, action, source, out var smartArgRes, out var type))
             {
                 if (expected.Type == type)
                 {
@@ -274,7 +285,7 @@ namespace ScriptedEvents.API.Features
             }
 
             // smart action arguments
-            if (TryProcessSmartArgumentsInContaminatedString(input, action, source, out var saResult))
+            if (TryProcessAttachedArgumentsInContaminatedString(input, action, source, out var saResult))
             {
                 input = saResult;
             }
