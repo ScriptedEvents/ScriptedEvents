@@ -197,9 +197,9 @@ namespace ScriptedEvents
         public Dictionary<IAction, string[]> OriginalActionArgs { get; } = new();
 
         /// <summary>
-        /// Gets the smart arguments for specified action.
+        /// Gets the attached arguments for specified action.
         /// </summary>
-        public Dictionary<IAction, Func<Tuple<ErrorTrace?, object?, Type?>>[]> SmartArguments { get; } = new();
+        public Dictionary<IAction, Func<Tuple<ErrorTrace?, object?, Type?>>[]> AttachedArguments { get; } = new();
 
         /// <summary>
         /// Gets the names under which to create variables as result of an successful action.
