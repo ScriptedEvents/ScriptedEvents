@@ -34,7 +34,7 @@ namespace ScriptedEvents.Actions.Broadcast
         {
             new Argument("players", typeof(Player[]), "The players to show.", true),
             new Argument("duration", typeof(TimeSpan), "The duration of the message.", true),
-            new Argument("message", typeof(string), "The message.", true),
+            new Argument("message", typeof(MultiArgumentString), "The message.", true),
         };
 
         /// <inheritdoc/>
