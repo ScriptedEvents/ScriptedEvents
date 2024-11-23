@@ -201,7 +201,7 @@
     <Compile Include="API\Constants\EnumDefinitions.cs" />
     <Compile Include="API\Extensions\InterfaceExtensions.cs" />
     <Compile Include="API\Extensions\PlayerExtensions.cs" />
-    <Compile Include="API\Extensions\TypeExtensions.cs" />
+    <Compile Include="API\Extensions\TimeSpanExtensions.cs" />
     <Compile Include="API\Extensions\StringExtensions.cs" />
     <Compile Include="API\Features\ArgumentProcessor.cs" />
     <Compile Include="API\Features\ConditionHelper.cs" />

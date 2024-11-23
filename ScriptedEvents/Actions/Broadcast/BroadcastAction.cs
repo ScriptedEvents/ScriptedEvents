@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.Broadcast
+﻿using ScriptedEvents.API.Extensions;
+
+namespace ScriptedEvents.Actions.Broadcast
 {
     using System;
 
@@ -41,7 +43,7 @@
             foreach (Player player in (Player[])Arguments[0]!)
             {
                 player.Broadcast(
-                    (ushort)((TimeSpan)Arguments[1]!).Seconds,
+                    ((TimeSpan)Arguments[1]!).ToSeconds<ushort>(),
                     (string)Arguments[2]!);
             }
 
