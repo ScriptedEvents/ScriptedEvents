@@ -11,7 +11,7 @@
     public class LobbyInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "GetLobbyInfo";
+        public string Name => "LobbyInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting lobby related information.";

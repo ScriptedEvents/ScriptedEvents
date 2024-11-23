@@ -11,7 +11,7 @@
     public class WarheadInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "GetWarheadInfo";
+        public string Name => "WarheadInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting warhead related information.";

@@ -14,7 +14,7 @@ namespace ScriptedEvents.Actions.AllInOne
     public class WaveInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "GetWaveInfo";
+        public string Name => "WaveInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting wave related information.";

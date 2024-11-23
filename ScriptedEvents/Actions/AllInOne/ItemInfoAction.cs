@@ -13,7 +13,7 @@
     public class ItemInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "GetItemInfo";
+        public string Name => "ItemInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting item related information from the provided item object.";

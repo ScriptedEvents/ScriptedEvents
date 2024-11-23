@@ -11,7 +11,7 @@
     public class ServerInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "GetServerInfo";
+        public string Name => "ServerInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting server related information.";

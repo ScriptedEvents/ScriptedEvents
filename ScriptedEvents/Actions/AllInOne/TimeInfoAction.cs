@@ -10,7 +10,7 @@
     public class TimeInfoAction : IScriptAction, IHelpInfo, IMimicsVariableAction
     {
         /// <inheritdoc/>
-        public string Name => "GetTimeInfo";
+        public string Name => "TimeInfo";
 
         /// <inheritdoc/>
         public string Description => "All-in-one action for getting current time related information.";
