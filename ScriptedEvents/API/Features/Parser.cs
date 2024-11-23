@@ -175,7 +175,7 @@ namespace ScriptedEvents.API.Features
         public static bool TryGetDoors(string input, out Door[] doors, Script source, out ErrorInfo? errorInfo)
         {
             IEnumerable<Door> doorList;
-            if (input is "*" or "ALL")
+            if (input == "*")
             {
                 doorList = Door.List;
             }
@@ -216,7 +216,7 @@ namespace ScriptedEvents.API.Features
         public static bool TryGetLifts(string input, out Lift[] lifts, Script source, out ErrorInfo? errorInfo)
         {
             IEnumerable<Lift> liftList;
-            if (input is "*" or "ALL")
+            if (input == "*")
             {
                 liftList = Lift.List;
             }
@@ -249,7 +249,7 @@ namespace ScriptedEvents.API.Features
         public static bool TryGetRooms(string input, out Room[] rooms, Script source, out ErrorInfo? errorInfo)
         {
             IEnumerable<Room> roomList;
-            if (input is "*" or "ALL")
+            if (input == "*")
             {
                 roomList = Room.List;
             }
@@ -284,7 +284,7 @@ namespace ScriptedEvents.API.Features
             input = input.RemoveWhitespace();
             List<Player> list;
 
-            if (input.ToUpper() is "*" or "ALL")
+            if (input.ToUpper() == "*")
             {
                 Log($"Input {input.ToUpper()} specifies all players on the server.");
                 list = Player.List.ToList();
@@ -304,7 +304,7 @@ namespace ScriptedEvents.API.Features
             if (MainPlugin.Configs.IgnoreOverwatch)
                 list.RemoveAll(p => p.Role.Type is RoleTypeId.Overwatch);
 
-            if (amount.HasValue && amount.Value > 0 && list.Count > 0)
+            if (amount is > 0 && list.Count > 0)
             {
                 Log("Amount of fetched players bigger than limit, removing players.");
                 while (list.Count > amount.Value)
