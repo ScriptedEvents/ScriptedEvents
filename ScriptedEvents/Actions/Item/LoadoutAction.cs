@@ -35,14 +35,14 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to grant the loadout to.", true),
+            new Argument("players", typeof(Player[]), "The players to grant the loadout to.", true),
             new Argument("class", typeof(RoleTypeId), "The class of which the loadout will be granted.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection plys = (PlayerCollection)Arguments[0]!;
+            Player[] plys = (Player[])Arguments[0]!;
             RoleTypeId role = (RoleTypeId)Arguments[1]!;
 
             foreach (Player player in plys)

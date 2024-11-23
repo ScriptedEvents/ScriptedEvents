@@ -34,14 +34,14 @@ namespace ScriptedEvents.Actions.Teleportation
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to teleport", true),
+            new Argument("players", typeof(Player[]), "The players to teleport", true),
             new Argument("door", typeof(DoorType), "The door type to teleport to. If there are multiple doors with the same doortype, a random door will be chosen for each player.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            Player[] players = (Player[])Arguments[0]!;
             DoorType doorType = (DoorType)Arguments[1]!;
 
             foreach (Player ply in players)

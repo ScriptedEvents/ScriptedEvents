@@ -30,7 +30,7 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to set the role as.", true),
+            new Argument("players", typeof(Player[]), "The players to set the role as.", true),
             new Argument("role", typeof(RoleTypeId), "The role to set all the players as.", true),
             new Argument("spawnpoint", typeof(bool), "Use spawnpoint? default: true", false),
             new Argument("inventory", typeof(bool), "Use default inventory? default: true", false),
@@ -40,7 +40,7 @@ namespace ScriptedEvents.Actions.PlayerActions
         public ActionResponse Execute(Script script)
         {
             RoleTypeId roleType = (RoleTypeId)Arguments[1]!;
-            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            Player[] players = (Player[])Arguments[0]!;
             RoleSpawnFlags flags = RoleSpawnFlags.None;
 
             if ((bool?)Arguments[2] ?? true)

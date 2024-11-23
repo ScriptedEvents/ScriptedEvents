@@ -400,19 +400,19 @@ namespace ScriptedEvents.API.Features
                 case "Lift[]":
                     if (!Parser.TryGetLifts(input, out var lifts, source, out var liftError))
                     {
-                        return ErrorByInfo((ErrorInfo)liftError!);
+                        return ErrorByInfo(liftError!);
                     }
 
                     success.NewParameters.Add(lifts);
                     break;
                 
-                case "PlayerCollection":
+                case "Player[]":
                     if (!Parser.TryGetPlayers(input, null, out var players, source, out var collectionError))
                     {
                         return ErrorByTrace(collectionError!);
                     }
 
-                    success.NewParameters.Add(players);
+                    success.NewParameters.Add(players.ToArray());
                     break;
 
                 case "Player":

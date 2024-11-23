@@ -30,14 +30,14 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "Players to kick.", true),
+            new Argument("players", typeof(Player[]), "Players to kick.", true),
             new Argument("reason", typeof(string), "Kick reason.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            Player[] players = (Player[])Arguments[0]!;
 
             foreach (Player player in players)
             {

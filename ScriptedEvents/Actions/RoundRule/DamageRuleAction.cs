@@ -1,4 +1,5 @@
 ﻿using System;
+using Exiled.API.Features;
 using PlayerRoles;
 using ScriptedEvents.API.Features.Exceptions;
 using ScriptedEvents.API.Modules;
@@ -37,7 +38,7 @@ namespace ScriptedEvents.Actions.RoundRule
                 {
                     typeof(RoleTypeId),
                     typeof(Team),
-                    typeof(PlayerCollection)
+                    typeof(Player[])
                 }, 
                 "The rule for the attacker (either a role, team, or a player collection)",
                 true),
@@ -47,7 +48,7 @@ namespace ScriptedEvents.Actions.RoundRule
                 {
                     typeof(RoleTypeId),
                     typeof(Team),
-                    typeof(PlayerCollection)
+                    typeof(Player[])
                 }, 
                 "The rule for the receiver (either a role, team, or player variable)",
                 true),
@@ -59,17 +60,17 @@ namespace ScriptedEvents.Actions.RoundRule
         {
             object attackerRuleValue = Arguments[0] switch
             {
-                RoleTypeId role => role,
-                Team team => team,
-                PlayerCollection playerCollection => playerCollection,
+                RoleTypeId x => x,
+                Team x => x,
+                Player[] x => x,
                 _ => throw new ImpossibleException()
             };
 
             object receiverRuleValue = Arguments[1] switch
             {
-                RoleTypeId role => role,
-                Team team => team,
-                PlayerCollection playerCollection => playerCollection,
+                RoleTypeId x => x,
+                Team x => x,
+                Player[] x => x,
                 _ => throw new ImpossibleException()
             };
 

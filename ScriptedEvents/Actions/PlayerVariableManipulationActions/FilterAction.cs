@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Exiled.API.Enums;
+using Exiled.API.Features;
 using Exiled.CustomItems.API.Features;
 using PlayerRoles;
 using ScriptedEvents.API.Extensions;
@@ -34,7 +35,7 @@ namespace ScriptedEvents.Actions.PlayerVariableManipulationActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("players", typeof(PlayerCollection), "The players to filter.", true),
+             new Argument("players", typeof(Player[]), "The players to filter.", true),
              new OptionsArgument("type", true,
                     new Option("Role", "Filters by role. Use a 'RoleTypeId' as the 'input' argument."),
                     new Option("Team", "Filters by team. Use a 'Team' type as the 'input' argument."),
@@ -52,7 +53,7 @@ namespace ScriptedEvents.Actions.PlayerVariableManipulationActions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var players = ((PlayerCollection)Arguments[0]!).GetArray();
+            var players = (Player[])Arguments[0]!;
             var input = (string)Arguments[2]!;
 
             var ret = Arguments[1]!.ToUpper() switch

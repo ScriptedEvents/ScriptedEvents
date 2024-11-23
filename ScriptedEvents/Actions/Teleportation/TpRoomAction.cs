@@ -35,7 +35,7 @@ namespace ScriptedEvents.Actions.Teleportation
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to teleport", true),
+            new Argument("players", typeof(Player[]), "The players to teleport", true),
             new MultiTypeArgument(
                 "room", 
                 new[]
@@ -50,7 +50,7 @@ namespace ScriptedEvents.Actions.Teleportation
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            Player[] players = (Player[])Arguments[0]!;
             Action<Player> act = Arguments[1]! switch
             {
                 RoomType roomType => p => p.Teleport(Room.List.Where(r => r.Type == roomType).GetRandomValue()),

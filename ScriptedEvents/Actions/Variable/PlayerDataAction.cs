@@ -32,7 +32,7 @@ namespace ScriptedEvents.Actions.Variable
             new OptionsArgument("mode", true,
                 new Option("Set", "Sets the player data."),
                 new Option("Remove", "Deletes the player data.")),
-            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
+            new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("keyName", typeof(string), "The name of the key.", true),
             new Argument("value", typeof(string), "The new value of the key. Not used when using mode 'DELETE'.", false),
         };
@@ -40,7 +40,7 @@ namespace ScriptedEvents.Actions.Variable
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[1]!;
+            Player[] players = (Player[])Arguments[1]!;
             string keyName = (string)Arguments[2]!;
             switch (((string)Arguments[0]!).ToUpper())
             {

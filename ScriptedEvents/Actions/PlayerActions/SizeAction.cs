@@ -29,7 +29,7 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to resize.", true),
+            new Argument("players", typeof(Player[]), "The players to resize.", true),
             new Argument("x", typeof(float), "The X size to put on the player.", true),
             new Argument("y", typeof(float), "The Y size to put on the player.", true),
             new Argument("z", typeof(float), "The Z size to put on the player.", true),
@@ -42,7 +42,7 @@ namespace ScriptedEvents.Actions.PlayerActions
             float y = (float)Arguments[2]!;
             float z = (float)Arguments[3]!;
 
-            foreach (Player player in (PlayerCollection)Arguments[0]!)
+            foreach (Player player in (Player[])Arguments[0]!)
                 player.Scale = new(x, y, z);
 
             return new(true);

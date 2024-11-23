@@ -32,7 +32,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to show the countdown to.", true),
+            new Argument("players", typeof(Player[]), "The players to show the countdown to.", true),
             new Argument("duration", typeof(TimeSpan), "The duration of the countdown.", true),
             new Argument("text", typeof(string), "The text to show on the broadcast.", true),
         };
@@ -44,7 +44,7 @@ The text of the broadcast will be formatted using the countdown_string Exiled co
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var players = (PlayerCollection)Arguments[0]!;
+            var players = (Player[])Arguments[0]!;
             var duration = (TimeSpan)Arguments[1]!;
             var text = (string)Arguments[2]!;
             

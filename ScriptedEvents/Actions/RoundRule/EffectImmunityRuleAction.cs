@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Exiled.API.Enums;
+using Exiled.API.Features;
 using ScriptedEvents.API.Extensions;
 using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
@@ -35,7 +36,7 @@ namespace ScriptedEvents.Actions.RoundRule
             new OptionsArgument("mode", true,
                 new Option("Set", "Rule to give effect immunity."),
                 new Option("Remove", "Removes a previously-established immunity.")),
-            new Argument("target", typeof(PlayerCollection), "The players to affect.", true),
+            new Argument("target", typeof(Player[]), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect give or remove immunity to.", true),
         };
 
@@ -43,10 +44,10 @@ namespace ScriptedEvents.Actions.RoundRule
         public ActionResponse Execute(Script script)
         {
             var mode = Arguments[0]!.ToUpper();
-            var players = (PlayerCollection)Arguments[1]!;
+            var players = (Player[])Arguments[1]!;
             var effectType = (EffectType)Arguments[2]!;
             
-            var dict = MainPlugin.GetModule<EventHandlingModule>().PlayerEffectImmunity;
+            var dict = EventHandlingModule.Singleton!.PlayerEffectImmunity;
             foreach (var plr in players)
             {
                 switch (mode)

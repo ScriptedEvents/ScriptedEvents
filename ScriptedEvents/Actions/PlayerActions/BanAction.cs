@@ -1,4 +1,5 @@
 ﻿using System;
+using Exiled.API.Features;
 using ScriptedEvents.API.Extensions;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
@@ -29,7 +30,7 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "Players to ban.", true),
+            new Argument("players", typeof(Player[]), "Players to ban.", true),
             new Argument("duration", typeof(int), "Ban duration (in seconds).", true),
             new Argument("reason", typeof(string), "Ban reason.", true),
         };
@@ -37,7 +38,7 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            var players = (Player[])Arguments[0]!;
             int duration = (int)Arguments[1]!;
 
             foreach (Exiled.API.Features.Player player in players)

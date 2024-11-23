@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Exiled.API.Features;
 using ScriptedEvents.API.Extensions;
 using ScriptedEvents.API.Features.Exceptions;
 using ScriptedEvents.API.Modules;
@@ -35,7 +36,7 @@ namespace ScriptedEvents.Actions.RoundRule
             new OptionsArgument("mode", true,
                 new Option("Enable", "Enables an event."),
                 new Option("Disable", "Disables an event.")),
-            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
+            new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("eventName", typeof(string), "The event name to manage.", true),
         };
 
@@ -48,7 +49,7 @@ Let's say you hate players flipping the coin and you want to disable this abilit
     3. Search for 'coin' or 'flip'. First 2 results should be 'FlippingCoin' and 'OnFlippingCoin'. Click on 'FlippingCoin'.
     4. The highlighted portion is the name of the event.
 
-You can now use 'EVENT DISABLE * FlippingCoin', which will not allow anyone to flip their coin.
+You can now use 'EventRule Disable *@Players FlippingCoin', which will not allow anyone to flip their coin.
 
 BUT! There is a caveat; not every event can be disabled. How can I check if 'FlippingCoin' event can be disabled?
 
@@ -64,7 +65,7 @@ It's completely fine if this is too much for you, you can always join our discor
         public ActionResponse Execute(Script script)
         {
             bool disable = Arguments[0]!.ToUpper() == "DISABLE";
-            PlayerCollection players = (PlayerCollection)Arguments[1]!;
+            Player[] players = (Player[])Arguments[1]!;
             string key = Arguments[2]!.ToString();
 
             var rule = EventHandlingModule.Singleton!.GetPlayerDisableEvent(key);
@@ -80,18 +81,18 @@ It's completely fine if this is too much for you, you can always join our discor
             {
                 if (rule.HasValue)
                 {
-                    rule.Value.Players.AddRange(players.GetInnerList());
+                    rule.Value.Players.AddRange(players);
                 }
                 else
                 {
-                    EventHandlingModule.Singleton!.DisabledPlayerEvents.Add(new(key, players.GetInnerList()));
+                    EventHandlingModule.Singleton!.DisabledPlayerEvents.Add(new(key, players.ToList()));
                 }
             }
             else
             {
                 if (!rule.HasValue) return new(true);
                 
-                var inner = players.GetInnerList();
+                var inner = players;
                 rule.Value.Players.RemoveAll(ply => inner.Contains(ply));
             }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Exiled.API.Features;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -30,7 +31,7 @@ namespace ScriptedEvents.Actions.PlayerVariableManipulationActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to index.", true),
+            new Argument("players", typeof(Player[]), "The players to index.", true),
             new Argument("type", typeof(int), "The index from the player should be extracted.", true, ArgFlag.BiggerThan0),
         };
 

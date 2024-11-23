@@ -37,7 +37,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to kill.", true),
+            new Argument("players", typeof(Player[]), "The players to kill.", true),
             new Argument(
                 "damageType",
                 typeof(DamageType),
@@ -49,7 +49,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var plys = (PlayerCollection)Arguments[0]!;
+            var plys = (Player[])Arguments[0]!;
             Action<Player> act = Arguments[1] switch
             {
                 DamageType type => player => player.Kill(type),

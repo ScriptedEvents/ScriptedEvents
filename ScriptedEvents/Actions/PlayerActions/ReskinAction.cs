@@ -31,20 +31,20 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to set the role as.", true),
+            new Argument("players", typeof(Player[]), "The players to set the role as.", true),
             new Argument("role", typeof(RoleTypeId), "The role to set the appearance of all the players as.", true),
-            new Argument("targetPlayers", typeof(PlayerCollection), "The players that will see reskin taking place. Do not provide this argument if all players are to see the reskin.", false),
+            new Argument("targetPlayers", typeof(Player[]), "The players that will see reskin taking place. Do not provide this argument if all players are to see the reskin.", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection plys = (PlayerCollection)Arguments[0]!;
+            Player[] plys = (Player[])Arguments[0]!;
             RoleTypeId roleType = (RoleTypeId)Arguments[1]!;
 
             if (Arguments.Length >= 3)
             {
-                PlayerCollection targetPlys = (PlayerCollection)Arguments[2]!;
+                Player[] targetPlys = (Player[])Arguments[2]!;
                 foreach (Player player in plys)
                     player.ChangeAppearance(roleType, targetPlys);
 

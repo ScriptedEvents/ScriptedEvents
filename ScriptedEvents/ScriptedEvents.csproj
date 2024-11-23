@@ -243,6 +243,11 @@
     <Compile Include="Commands\MainCommand\StopScript.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
+    <Compile Include="DemoScripts\DogHideAndSeek.cs" />
+    <Compile Include="DemoScripts\HitMarker.cs" />
+    <Compile Include="DemoScripts\JoinBroadcast.cs" />
+    <Compile Include="DemoScripts\PeanutRun.cs" />
+    <Compile Include="DemoScripts\ScpLeftnfo.cs" />
     <Compile Include="DocumentationGeneration\DocsGen.cs" />
     <Compile Include="Enums\ActionFlags.cs" />
     <Compile Include="Enums\ActionSubgroup.cs" />
@@ -284,7 +289,6 @@
     <Compile Include="Structures\OptionValueDepending.cs" />
     <Compile Include="Structures\SuggestedOptionsArgument.cs" />
     <Compile Include="Structures\OptionsArgument.cs" />
-    <Compile Include="Structures\PlayerCollection.cs" />
     <Compile Include="Structures\PlayerDisable.cs" />
     <Compile Include="Structures\PlayerLoopInfo.cs" />
     <Compile Include="Structures\VariableResult.cs" />

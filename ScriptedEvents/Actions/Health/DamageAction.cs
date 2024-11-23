@@ -37,7 +37,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The player(s) to damage.", true),
+            new Argument("players", typeof(Player[]), "The player(s) to damage.", true),
             new Argument("damage", typeof(float), "The amount of damage to apply.", true, ArgFlag.BiggerThan0),
             new Argument(
                 "damageType",
@@ -50,7 +50,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var plys = (PlayerCollection)Arguments[0]!;
+            var plys = (Player[])Arguments[0]!;
             var damage = (float)Arguments[1]!;
 
             if (Arguments.Length < 3)

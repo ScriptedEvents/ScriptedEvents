@@ -29,7 +29,7 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to set the group for.", true),
+            new Argument("players", typeof(Player[]), "The players to set the group for.", true),
             new Argument("group", typeof(string), "The group to set. Use 'NONE' to remove the group.", true),
         };
 
@@ -38,7 +38,7 @@ namespace ScriptedEvents.Actions.PlayerActions
         {
             string group = (string)Arguments[1]! != "NONE" ? (string)Arguments[1]! : string.Empty;
 
-            foreach (Player player in (PlayerCollection)Arguments[0]!)
+            foreach (Player player in (Player[])Arguments[0]!)
             {
                 player.Group = ServerStatic.PermissionsHandler.GetGroup(group);
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Exiled.API.Features;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -29,15 +30,15 @@ namespace ScriptedEvents.Actions.Variable
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("firstPlayers", typeof(PlayerCollection), "First player reference.", true),
-            new Argument("secondPlayers", typeof(PlayerCollection), "Second player reference.", true),
+            new Argument("firstPlayers", typeof(Player[]), "First player reference.", true),
+            new Argument("secondPlayers", typeof(Player[]), "Second player reference.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var players = ((PlayerCollection)Arguments[0]!).GetArray().ToList();
-            foreach (var plr in (PlayerCollection)Arguments[1]!)
+            var players = ((Player[])Arguments[0]!).ToList();
+            foreach (var plr in (Player[])Arguments[1]!)
             {
                 if (!players.Contains(plr))
                 {

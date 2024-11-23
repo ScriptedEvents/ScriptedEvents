@@ -30,13 +30,13 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
+            new Argument("players", typeof(Player[]), "The players to affect.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            foreach (Player player in (PlayerCollection)Arguments[0]!)
+            foreach (Player player in (Player[])Arguments[0]!)
             {
                 player.Inventory.UserInventory.ReserveAmmo.Clear();
                 player.Inventory.SendAmmoNextFrame = true;

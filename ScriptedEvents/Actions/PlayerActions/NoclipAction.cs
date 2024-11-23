@@ -29,14 +29,14 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "Players to change noclip state.", true),
+            new Argument("players", typeof(Player[]), "Players to change noclip state.", true),
             new Argument("mode", typeof(bool), "Noclip mode.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            Player[] players = (Player[])Arguments[0]!;
             bool mode = (bool)Arguments[1]!;
 
             foreach (Player player in players)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Exiled.API.Features;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -29,13 +30,13 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("players", typeof(PlayerCollection), "The players to display.", true),
+             new Argument("players", typeof(Player[]), "The players to display.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            var players = (Player[])Arguments[0]!;
             if (players.Length == 0)
             {
                 return new(true, new("NONE"));

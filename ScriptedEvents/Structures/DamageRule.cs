@@ -106,21 +106,21 @@ namespace ScriptedEvents.Structures
                     Type = DamageRuleType.TeamToTeam;
                     break;
 
-                case (PlayerCollection aPlayers, RoleTypeId rRole):
-                    AttackerPlayers = aPlayers.GetInnerList();
+                case (Player[] aPlayers, RoleTypeId rRole):
+                    AttackerPlayers = aPlayers.ToList();
                     ReceiverRole = rRole;
                     Type = DamageRuleType.PlayerToRole;
                     break;
 
-                case (PlayerCollection aPlayers, Team rTeam):
-                    AttackerPlayers = aPlayers.GetInnerList();
+                case (Player[] aPlayers, Team rTeam):
+                    AttackerPlayers = aPlayers.ToList();
                     ReceiverTeam = rTeam;
                     Type = DamageRuleType.PlayerToTeam;
                     break;
 
-                case (PlayerCollection aPlayers, PlayerCollection rPlayers):
-                    AttackerPlayers = aPlayers.GetInnerList();
-                    ReceiverPlayers = rPlayers.GetInnerList();
+                case (Player[] aPlayers, Player[] rPlayers):
+                    AttackerPlayers = aPlayers.ToList();
+                    ReceiverPlayers = rPlayers.ToList();
                     Type = DamageRuleType.PlayerToPlayer;
                     break;
 

@@ -34,14 +34,14 @@ namespace ScriptedEvents.Actions.PlayerActions
             new OptionsArgument("mode", true,
                 new Option("Set", "Mute player(s)."),
                 new Option("Remove", "Unmute player(s).")),
-            new Argument("players", typeof(PlayerCollection), "Players to change mute status for.", true),
+            new Argument("players", typeof(Player[]), "Players to change mute status for.", true),
             new Argument("longterm", typeof(bool), "If TRUE, player will be muted even after rejoining.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[1]!;
+            Player[] players = (Player[])Arguments[1]!;
             bool longTerm = (bool)Arguments[2]!;
 
             Action<Player> playerAction = Arguments[0]!.ToUpper() switch

@@ -43,7 +43,7 @@ namespace ScriptedEvents.Actions.RoundRule
                 {
                     typeof(RoleTypeId),
                     typeof(Team),
-                    typeof(PlayerCollection),
+                    typeof(Player[]),
                 }, 
                 "The players to affect, or the RoleType/Team/Players to give the effect.", 
                 true),
@@ -63,7 +63,7 @@ namespace ScriptedEvents.Actions.RoundRule
 
             switch (mode, Arguments[1])
             {
-                case ("SET", PlayerCollection players):
+                case ("SET", Player[] players):
                     foreach (Player ply in players)
                     {
                         if (module.PermPlayerEffects.ContainsKey(ply))
@@ -87,7 +87,7 @@ namespace ScriptedEvents.Actions.RoundRule
                         module.PermRoleEffects.Add(role, new() { eff });
                     break;
                 
-                case ("REMOVE", PlayerCollection players):
+                case ("REMOVE", Player[] players):
                     foreach (Player ply in players)
                     {
                         if (module.PermPlayerEffects.ContainsKey(ply))

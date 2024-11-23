@@ -31,7 +31,7 @@ namespace ScriptedEvents.Actions.AllInOne
                 new OptionValueDepending("ChaosTickets", "Current CI tickets.", typeof(float)),
                 new OptionValueDepending("TimeUntilNew", "Amount of seconds remaining until the new spawn wave.", typeof(double)),
                 new OptionValueDepending("TimeSinceLast", "Returns the amount of seconds since the last spawn wave.", typeof(double)),
-                new OptionValueDepending("RespawnedPlayers", "Returns the players which have spawned with the last spawn wave.", typeof(PlayerCollection))),
+                new OptionValueDepending("RespawnedPlayers", "Returns the players which have spawned with the last spawn wave.", typeof(Player[]))),
         };
 
         /// <inheritdoc/>

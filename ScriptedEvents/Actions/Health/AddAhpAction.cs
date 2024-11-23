@@ -30,7 +30,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
+            new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("health", typeof(float), "The amount of artificial health to ADD to the player(s). Use a negative number to remove.", true),
             new Argument("limit", typeof(float), "The upper limit of AHP. Default: 75.", false, ArgFlag.BiggerOrEqual0),
             new Argument("decay", typeof(float), "The AHP decay rate (how much AHP is lost per second). Default: 1.2.", false, ArgFlag.BiggerOrEqual0),
@@ -42,7 +42,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var plys = (PlayerCollection)Arguments[0]!;
+            var plys = (Player[])Arguments[0]!;
             float amount = (float)Arguments[1]!;
             float limit = (float?)Arguments[2] ?? 75f;
             float decay = (float?)Arguments[3] ?? 1.2f;

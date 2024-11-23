@@ -30,14 +30,14 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
+            new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("health", typeof(float), "The amount of health to heal.", true, ArgFlag.BiggerThan0),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            foreach (Player ply in (PlayerCollection)Arguments[0]!)
+            foreach (Player ply in (Player[])Arguments[0]!)
                 ply.Heal((float)Arguments[1]!);
 
             return new(true);

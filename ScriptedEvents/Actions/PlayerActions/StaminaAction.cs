@@ -35,14 +35,14 @@ namespace ScriptedEvents.Actions.PlayerActions
                 new Option("Add", "Adds stamina for players."),
                 new Option("Set", "Sets stamina for players."),
                 new Option("Remove", "Removes stamina from players.")),
-            new Argument("players", typeof(PlayerCollection), "Players to affect.", true),
+            new Argument("players", typeof(Player[]), "Players to affect.", true),
             new Argument("amountPercent", typeof(float), "The amount of stamina percentage to add/set/remove.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[1]!;
+            Player[] players = (Player[])Arguments[1]!;
             float amount = (float)Arguments[2]!;
 
             Action<Player> action = Arguments[0]!.ToUpper() switch

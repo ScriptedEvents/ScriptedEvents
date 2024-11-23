@@ -31,7 +31,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to show the hint for.", true),
+            new Argument("players", typeof(Player[]), "The players to show the hint for.", true),
             new Argument("duration", typeof(TimeSpan), "The duration of the hint.", true),
             new Argument("message", typeof(string), "The hint content.", true),
         };
@@ -39,7 +39,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            var players = (PlayerCollection)Arguments[0]!;
+            var players = (Player[])Arguments[0]!;
             var duration = (TimeSpan)Arguments[1]!;
             var message = (string)Arguments[2]!;
 

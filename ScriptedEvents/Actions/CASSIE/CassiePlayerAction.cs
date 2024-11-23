@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Actions.CASSIE
+﻿using Exiled.API.Features;
+
+namespace ScriptedEvents.Actions.CASSIE
 {
     using System;
 
@@ -40,7 +42,7 @@
             new OptionsArgument("mode", true,
                 new Option("Silent", "Makes a silent announcement."),
                 new Option("Loud", "Makes a loud announcement.")),
-            new Argument("players", typeof(PlayerCollection), "The players to play the CASSIE announcement for.", true),
+            new Argument("players", typeof(Player[]), "The players to play the CASSIE announcement for.", true),
             new Argument("message", typeof(string), "The message for cassie.", true),
             new Argument("caption", typeof(string), "An optional caption for the announcement. Use NONE for no captions.", false),
         };
@@ -49,7 +51,7 @@
         public ActionResponse Execute(Script script)
         {
             var isNoisy = Arguments[0]!.ToUpper() == "LOUD";
-            var players = (PlayerCollection)Arguments[1]!;
+            var players = (Player[])Arguments[1]!;
             var message = Arguments[2]!.ToString();
 
             if (Arguments.Length > 3)

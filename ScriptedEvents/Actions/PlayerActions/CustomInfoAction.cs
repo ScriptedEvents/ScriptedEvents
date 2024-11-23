@@ -30,14 +30,14 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
+            new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("text", typeof(string), "The text to set custom info to. Only used if mode is SET.", false),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection plys = (PlayerCollection)Arguments[0]!;
+            Player[] plys = (Player[])Arguments[0]!;
             string text = Arguments.JoinMessage(1)
                 .Replace("\\n", "\n")
                 .Replace("<br>", "\n");

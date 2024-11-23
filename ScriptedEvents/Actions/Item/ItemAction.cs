@@ -39,7 +39,7 @@
                 new Option("Add", "Adds an item to the player's inventory."),
                 new Option("Drop", "Drops an item from the player's inventory."),
                 new Option("Remove", "Removes an item from the player's inventory.")),
-            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
+            new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("item", typeof(ItemType), "The item to add/remove.", true),
             new Argument("amount", typeof(int), "The amount of items to add/remove. Default: 1", false),
         };
@@ -48,7 +48,7 @@
         public ActionResponse Execute(Script script)
         {
             var mode = Arguments[0]!.ToUpper();
-            var plys = (PlayerCollection)Arguments[1]!;
+            var plys = (Player[])Arguments[1]!;
             var itemType = (ItemType)Arguments[2]!;
             var amt = (int?)Arguments[3] ?? 1;
 

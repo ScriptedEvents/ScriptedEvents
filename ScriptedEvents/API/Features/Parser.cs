@@ -279,12 +279,6 @@ namespace ScriptedEvents.API.Features
         /// <summary>
         /// Converts a string input into a player collection.
         /// </summary>
-        /// <param name="input">The input.</param>
-        /// <param name="amount">The maximum amount of players to give back, or <see langword="null"/> for unlimited.</param>
-        /// <param name="collection">A <see cref="PlayerCollection"/> representing the players.</param>
-        /// <param name="source">The script using the API. Used for per-script variables.</param>
-        /// <param name="brecketsRequired">Are brackets required.</param>
-        /// <returns>Whether or not the process errored.</returns>
         public static bool TryGetPlayers(string input, int? amount, out IEnumerable<Player> players, Script source, out ErrorTrace? trace)
         {
             input = input.RemoveWhitespace();

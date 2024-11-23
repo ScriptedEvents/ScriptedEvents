@@ -30,7 +30,7 @@
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to show.", true),
+            new Argument("players", typeof(Player[]), "The players to show.", true),
             new Argument("duration", typeof(TimeSpan), "The duration of the message.", true),
             new Argument("message", typeof(string), "The message.", true),
         };
@@ -38,7 +38,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            foreach (Player player in (PlayerCollection)Arguments[0]!)
+            foreach (Player player in (Player[])Arguments[0]!)
             {
                 player.Broadcast(
                     (ushort)((TimeSpan)Arguments[1]!).Seconds,

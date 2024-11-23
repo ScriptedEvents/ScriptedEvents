@@ -1,4 +1,6 @@
-﻿using ScriptedEvents.API.Constants;
+﻿using System.Linq;
+using Exiled.API.Features;
+using ScriptedEvents.API.Constants;
 using ScriptedEvents.API.Extensions;
 using ScriptedEvents.API.Modules;
 using ScriptedEvents.Enums;
@@ -33,23 +35,23 @@ namespace ScriptedEvents.Actions.RoundRule
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to disable for.", true),
+            new Argument("players", typeof(Player[]), "The players to disable for.", true),
             new Argument("key", typeof(string), "The key of the feature to disable. See documentation for a whole list of keys.", true),
         };
 
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            var players = (Player[])Arguments[0]!;
             string key = Arguments[1]!.ToUpper();
             var rule = EventHandlingModule.Singleton!.GetPlayerDisableRule(key);
 
             if (rule.HasValue)
             {
-                rule.Value.Players.AddRange(players.GetInnerList());
+                rule.Value.Players.AddRange(players);
             }
             else
             {
-                EventHandlingModule.Singleton!.DisabledPlayerKeys.Add(new(key, players.GetInnerList()));
+                EventHandlingModule.Singleton!.DisabledPlayerKeys.Add(new(key, players.ToList()));
             }
 
             return new(true);

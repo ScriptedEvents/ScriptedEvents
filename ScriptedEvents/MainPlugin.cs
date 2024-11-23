@@ -61,8 +61,14 @@ namespace ScriptedEvents
         /// </summary>
         public static IDemoScript[] DemoScripts { get; } = new IDemoScript[]
         {
-            new DemoScript(),
+            new About(),
             new ConditionSamples(),
+            new DemoScript(),
+            new DogHideAndSeek(),
+            new HitMarker(),
+            new JoinBroadcast(),
+            new PeanutRun(),
+            new ScpLeftInfo()
         };
 
         public static DateTime Epoch => new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);

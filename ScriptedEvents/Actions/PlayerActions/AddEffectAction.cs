@@ -31,7 +31,7 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to affect.", true),
+            new Argument("players", typeof(Player[]), "The players to affect.", true),
             new Argument("effect", typeof(EffectType), "The effect to give or remove.", true),
             new Argument("intensity", typeof(byte), "The intensity of the effect, between 0-255. Default: 1.", true),
             new Argument("duration", typeof(float), "Duration of the effect. Default: Infinity", false),
@@ -46,7 +46,7 @@ namespace ScriptedEvents.Actions.PlayerActions
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection plys = (PlayerCollection)Arguments[0]!;
+            Player[] plys = (Player[])Arguments[0]!;
             EffectType effect = (EffectType)Arguments[1]!;
 
             byte intensity = (byte?)Arguments[2] ?? 1;

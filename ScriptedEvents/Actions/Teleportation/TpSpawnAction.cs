@@ -31,14 +31,14 @@ namespace ScriptedEvents.Actions.Teleportation
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-            new Argument("players", typeof(PlayerCollection), "The players to teleport", true),
+            new Argument("players", typeof(Player[]), "The players to teleport", true),
             new Argument("spawn", typeof(SpawnLocationType), "The spawn to teleport to.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0]!;
+            Player[] players = (Player[])Arguments[0]!;
             SpawnLocationType rt = (SpawnLocationType)Arguments[1]!;
 
             foreach (Player ply in players)

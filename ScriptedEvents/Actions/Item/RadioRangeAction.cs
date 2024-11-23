@@ -39,7 +39,7 @@ namespace ScriptedEvents.Actions.Item
             new OptionsArgument("mode", true,
                 new Option("Set", "Only sets the range of the radio."),
                 new Option("Lock", "Sets the range and locks its value so it cannot be changed.")),
-            new Argument("players", typeof(PlayerCollection), "The players to change the radio settings of.", true),
+            new Argument("players", typeof(Player[]), "The players to change the radio settings of.", true),
             new Argument("range", typeof(RadioRange), "The new radio range. Must be: Short, Medium, Long, or Ultra", true),
         };
 
@@ -50,7 +50,7 @@ namespace ScriptedEvents.Actions.Item
         public ActionResponse Execute(Script script)
         {
             var mode = Arguments[0]!.ToUpper();
-            var players = (PlayerCollection)Arguments[1]!;
+            var players = (Player[])Arguments[1]!;
             var range = (RadioRange)Arguments[2]!;
 
             foreach (Player ply in players)

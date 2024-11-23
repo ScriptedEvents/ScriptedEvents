@@ -37,7 +37,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            PlayerCollection players = (PlayerCollection)Arguments[0];
+            Player[] players = (Player[])Arguments[0];
             foreach (Player player in players)
             {
                 player.ClearBroadcasts();

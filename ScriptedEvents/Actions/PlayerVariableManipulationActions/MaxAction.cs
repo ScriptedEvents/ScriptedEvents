@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Exiled.API.Features;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
@@ -30,7 +31,7 @@ namespace ScriptedEvents.Actions.PlayerVariableManipulationActions
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("players", typeof(PlayerCollection), "The players to cap.", true),
+             new Argument("players", typeof(Player[]), "The players to cap.", true),
              new Argument("max", typeof(int), "The maximum amount of players allowed.", true),
         };
 
@@ -38,7 +39,7 @@ namespace ScriptedEvents.Actions.PlayerVariableManipulationActions
         public ActionResponse Execute(Script script)
         {
             int max = (int)Arguments[1]!;
-            var list = ((PlayerCollection)Arguments[0]!).GetInnerList();
+            var list = ((Player[])Arguments[0]!).ToList();
 
             for (int i = 0; i <= max; i++)
             {

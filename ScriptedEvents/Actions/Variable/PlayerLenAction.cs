@@ -1,4 +1,5 @@
 ﻿using System;
+using Exiled.API.Features;
 using ScriptedEvents.Enums;
 using ScriptedEvents.Interfaces;
 using ScriptedEvents.Structures;
@@ -28,10 +29,10 @@ namespace ScriptedEvents.Actions.Variable
         /// <inheritdoc/>
         public Argument[] ExpectedArguments => new[]
         {
-             new Argument("players", typeof(PlayerCollection), "The players.", true),
+             new Argument("players", typeof(Player[]), "The players.", true),
         };
 
         /// <inheritdoc/>
-        public ActionResponse Execute(Script script) => new(true, new(((PlayerCollection)Arguments[0]!).Length.ToString()));
+        public ActionResponse Execute(Script script) => new(true, new(((Player[])Arguments[0]!).Length.ToString()));
     }
 }

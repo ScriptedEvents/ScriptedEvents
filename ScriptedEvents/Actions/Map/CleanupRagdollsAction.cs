@@ -31,7 +31,7 @@
         {
             new Argument(
                 "players", 
-                typeof(PlayerCollection), 
+                typeof(Player[]), 
                 "The players which ragdolls are to be removed. Dont provide this argument if you want to remove every ragdoll from the map.", 
                 false),
         };
@@ -49,7 +49,7 @@
                 return new(true);
             }
 
-            foreach (var player in ((PlayerCollection)Arguments[0]!).GetArray())
+            foreach (var player in (Player[])Arguments[0]!)
             {
                 foreach (var ragdoll in Ragdoll.Get(player))
                 {
