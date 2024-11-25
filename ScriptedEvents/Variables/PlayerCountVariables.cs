@@ -27,7 +27,7 @@
     public class AllPlayers : IPlayerVariable
     {
         /// <inheritdoc/>
-        public string Name => "Players";
+        public string Name => "All";
 
         /// <inheritdoc/>
         public string Description => "Returns all players on the server.";
