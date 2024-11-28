@@ -95,12 +95,6 @@ namespace ScriptedEvents.API.Modules
                 return true;
             }
 
-            if (scr.IfActionBlocksExecution && action is not IIgnoresIfActionBlock)
-            {
-                Log("Action was skipped; the IF block resulted in FALSE and action does not terminate IF blocks.");
-                return true;
-            }
-
             if (scr.SingleLineIfStatements.TryGetValue(action, out var predicate))
             {
                 if (!predicate())

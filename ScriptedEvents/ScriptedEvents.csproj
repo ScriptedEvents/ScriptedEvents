@@ -243,6 +243,11 @@
     <Compile Include="Commands\MainCommand\StopScript.cs" />
     <Compile Include="Conditions\Strings\StringNotContains.cs" />
     <Compile Include="Conditions\Strings\StringContains.cs" />
+    <Compile Include="ControlFlowModifiers\BaseKeyword.cs" />
+    <Compile Include="ControlFlowModifiers\IfKeyword.cs" />
+    <Compile Include="ControlFlowModifiers\Interfaces\IControlFlowModifier.cs" />
+    <Compile Include="ControlFlowModifiers\Interfaces\IRequiresContextBlock.cs" />
+    <Compile Include="ControlFlowModifiers\Interfaces\IStandaloneKeyword.cs" />
     <Compile Include="DemoScripts\DogHideAndSeek.cs" />
     <Compile Include="DemoScripts\HitMarker.cs" />
     <Compile Include="DemoScripts\JoinBroadcast.cs" />
@@ -263,7 +268,6 @@
     <Compile Include="Interfaces\ICustomReadDisplay.cs" />
     <Compile Include="Interfaces\IHelpInfo.cs" />
     <Compile Include="Interfaces\IHiddenAction.cs" />
-    <Compile Include="Interfaces\IIgnoresIfActionBlock.cs" />
     <Compile Include="Interfaces\ILogicAction.cs" />
     <Compile Include="Interfaces\ILongDescription.cs" />
     <Compile Include="Interfaces\IMimicsVariableAction.cs" />
@@ -366,6 +370,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ControlFlowModifiers\Structures\" />
     <Folder Include="Tutorials\Installation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

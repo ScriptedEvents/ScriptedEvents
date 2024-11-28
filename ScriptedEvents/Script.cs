@@ -167,11 +167,6 @@ namespace ScriptedEvents
         public Script? CallerScript { get; internal set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether an IF statement is blocking the execution of actions.
-        /// </summary>
-        public bool IfActionBlocksExecution { get; set; } = false;
-
-        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of variables that are unique to this script.
         /// </summary>
         public Dictionary<string, CustomLiteralVariable> LocalLiteralVariables { get; }
