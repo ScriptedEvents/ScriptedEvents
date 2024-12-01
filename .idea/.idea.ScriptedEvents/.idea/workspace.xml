@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Config.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Config.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,9 +71,13 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0da8a94897c945419a9935a75f4e9b6a531020/d7/fc377bfc/Dictionary`2.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1e9eda733cd44fc894689c0ee003727617a848/ce/a22368e6/Enumerable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3139dac20ad94811b71b84465c5f7a7276a00/05/3a4de1de/MirrorExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3ea9ee3da01540f4ae641055f11fb6b975c00/62/eb310d32/Round.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3ea9ee3da01540f4ae641055f11fb6b975c00/6b/666a9e88/Player.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3ea9ee3da01540f4ae641055f11fb6b975c00/79/d4100ff2/Plugin`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3ea9ee3da01540f4ae641055f11fb6b975c00/79/d4100ff2/Plugin`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3ea9ee3da01540f4ae641055f11fb6b975c00/8e/a97fa539/Role.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4a26704d10e145e2890fa38a6cc0df67531820/23/9585e22b/String.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4a26704d10e145e2890fa38a6cc0df67531820/39/981a8918/Type.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4a26704d10e145e2890fa38a6cc0df67531820/fd/b5aa14cf/IEnumerable`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/51c93dd38a424b19b31f2c5870220b04275400/13/1bf94c80/RoleSpawnFlags.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/51c93dd38a424b19b31f2c5870220b04275400/21/d48a97db/RandomElement.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/51c93dd38a424b19b31f2c5870220b04275400/69/d690f08f/HumanRole.cs" root0="SKIP_HIGHLIGHTING" />
@@ -93,6 +97,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/521e4a0ca9474ce0b160bcf99a6a1a1b6d600/a4/a3874801/TeslaGate.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/521e4a0ca9474ce0b160bcf99a6a1a1b6d600/ae/d3323f32/Log.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/521e4a0ca9474ce0b160bcf99a6a1a1b6d600/d8/2fb11bc6/Player.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5accb0ad74ac4bdb97c6e80298a4836cbbc00/bc/16707fdd/ShotEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5accb0ad74ac4bdb97c6e80298a4836cbbc00/de/6dd1c2eb/DiedEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/647dd2b4104c42e985627bd6f17cf86710200/50/e0244061/Loader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6cdc19398d5c4d3786f6e41084b91adaba600/95/e519cd70/ChangingRoleEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6cdc19398d5c4d3786f6e41084b91adaba600/a8/eafaeb48/Scp079.cs" root0="SKIP_HIGHLIGHTING" />
@@ -121,6 +127,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/c7/16d95770/DateTime.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bc4775c0ef484419a5c5e4041814e6dd5317b8/db/666fceeb/Enum.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/cb10811cc64f416ea6a2a6f713d9c0aa17a868/38/6f41e577/Enumerable.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/cc5db45973834e0395821fdfb9e6ad5035f220/7b/448d5113/Rule.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/cc5db45973834e0395821fdfb9e6ad5035f220/bf/33ba6ef9/DuplicateNameException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d44eeff5b9a74ea5be60086e65d791ad38800/16/e4751825/Timing.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d493b05aea3341789b433174d05949e235f448/c6/a3cbb8e2/Process.cs" root0="FORCE_HIGHLIGHTING" />
@@ -243,6 +250,7 @@
       <workItem from="1731835429092" duration="1409000" />
       <workItem from="1731847465518" duration="2263000" />
       <workItem from="1731853407935" duration="106000" />
+      <workItem from="1733041659112" duration="586000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
