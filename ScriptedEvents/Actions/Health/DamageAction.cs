@@ -1,17 +1,15 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Linq;
+using Exiled.API.Enums;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+using MessageType = ScriptedEvents.API.Enums.MessageType;
+
+namespace ScriptedEvents.Actions.Health
 {
-    using System;
-    using System.Linq;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class DamageAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
@@ -65,7 +63,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
                     customDeath = RawArguments.JoinMessage(2);
                 }
 
-                foreach (Player player in plys)
+                foreach (Exiled.API.Features.Player player in plys)
                 {
                     if (useDeathType)
                         player.Hurt(damage, damageType);
@@ -76,7 +74,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
                 return new(true);
             }
 
-            foreach (Player player in plys)
+            foreach (Exiled.API.Features.Player player in plys)
                 player.Hurt(damage, DamageType.Unknown);
 
             return new(true);

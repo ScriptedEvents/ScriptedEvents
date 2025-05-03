@@ -1,14 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables;
+
+namespace ScriptedEvents.Actions.Variable
 {
-    using System.Collections.Generic;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
-
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
-
     public class LocalPlayerVariableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>

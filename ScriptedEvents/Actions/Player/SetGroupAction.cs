@@ -1,13 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class SetGroupAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -40,7 +37,7 @@
         {
             string group = (string)Arguments[1] != "NONE" ? (string)Arguments[1] : null;
 
-            foreach (Player player in (PlayerCollection)Arguments[0])
+            foreach (Exiled.API.Features.Player player in (PlayerCollection)Arguments[0])
             {
                 player.Group = ServerStatic.PermissionsHandler.GetGroup(group);
             }

@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.API.Features
+﻿using ScriptedEvents.Actions.DebugActions;
+
+namespace ScriptedEvents.API.Features
 {
     using System;
     using System.Collections.Generic;

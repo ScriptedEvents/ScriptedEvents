@@ -1,15 +1,14 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+using MessageType = ScriptedEvents.API.Enums.MessageType;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using System;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class EffectAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -73,7 +72,7 @@
                     if (intensity > 255)
                         return new(false, "Effect intensity must be between 0-255.");
 
-                    foreach (Player player in plys)
+                    foreach (Exiled.API.Features.Player player in plys)
                     {
                         Effect eff = new(effect, duration, (byte)intensity);
                         player.SyncEffect(eff);
@@ -81,7 +80,7 @@
 
                     break;
                 case "REMOVE":
-                    foreach (Player player in plys)
+                    foreach (Exiled.API.Features.Player player in plys)
                     {
                         player.DisableEffect(effect);
                     }

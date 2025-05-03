@@ -1,13 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Actions.Logic
 {
-    using System;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class ReturnAction : IScriptAction, ILogicAction, IHelpInfo, IArgumentVariable
     {
         /// <inheritdoc/>

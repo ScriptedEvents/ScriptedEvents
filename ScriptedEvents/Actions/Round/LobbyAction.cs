@@ -1,13 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Round
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class LobbyAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -42,9 +39,9 @@
             switch ((string)Arguments[0])
             {
                 case "LOCK":
-                    Round.IsLobbyLocked = true; break;
+                    Exiled.API.Features.Round.IsLobbyLocked = true; break;
                 case "UNLOCK":
-                    Round.IsLobbyLocked = false; break;
+                    Exiled.API.Features.Round.IsLobbyLocked = false; break;
             }
 
             return new(true);

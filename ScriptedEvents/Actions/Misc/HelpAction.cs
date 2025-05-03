@@ -1,26 +1,23 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Exiled.API.Features.Pools;
+using MEC;
+using ScriptedEvents.Actions.Samples;
+using ScriptedEvents.Actions.Samples.Interfaces;
+using ScriptedEvents.API.Constants;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Actions.Misc
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-
-    using Exiled.API.Features.Pools;
-
-    using MEC;
-
-    using ScriptedEvents.Actions.Samples;
-    using ScriptedEvents.Actions.Samples.Interfaces;
-    using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class HelpAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>

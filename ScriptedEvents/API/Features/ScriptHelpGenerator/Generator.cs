@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.API.Features.ScriptHelpGenerator
+﻿using ScriptedEvents.Actions.Misc;
+
+namespace ScriptedEvents.API.Features.ScriptHelpGenerator
 {
     using System;
     using System.ComponentModel;

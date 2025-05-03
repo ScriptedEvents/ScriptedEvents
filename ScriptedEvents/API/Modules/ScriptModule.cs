@@ -1,4 +1,6 @@
 using System.Data;
+using ScriptedEvents.Actions.DebugActions;
+using ScriptedEvents.Actions.Logic;
 
 namespace ScriptedEvents.API.Modules
 {

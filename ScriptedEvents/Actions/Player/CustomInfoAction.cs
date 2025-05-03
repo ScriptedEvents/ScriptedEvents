@@ -1,15 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class CustomInfoAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -53,7 +49,7 @@
                     string text = Arguments.JoinMessage(2)
                         .Replace("\\n", "\n")
                         .Replace("<br>", "\n");
-                    foreach (Player ply in plys)
+                    foreach (Exiled.API.Features.Player ply in plys)
                     {
                         ply.CustomInfo = text;
                     }
@@ -61,7 +57,7 @@
                     break;
 
                 case "REMOVE":
-                    foreach (Player ply in plys)
+                    foreach (Exiled.API.Features.Player ply in plys)
                     {
                         ply.CustomInfo = string.Empty;
                     }

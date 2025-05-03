@@ -1,11 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Logic
 {
-    using System;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class FlipIfAction : IScriptAction, ILogicAction, IHelpInfo, IIgnoresIfActionBlock
     {
         /// <inheritdoc/>

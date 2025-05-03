@@ -1,14 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class MuteAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -45,7 +42,7 @@
             PlayerCollection players = (PlayerCollection)Arguments[1];
             bool longTerm = (bool)Arguments[2];
 
-            Action<Player> playerAction;
+            Action<Exiled.API.Features.Player> playerAction;
 
             switch (Arguments[0].ToUpper())
             {
@@ -61,7 +58,7 @@
                     return new(false, $"Invalid mode '{Arguments[0].ToUpper()}' provided.");
             }
 
-            foreach (Player player in players)
+            foreach (Exiled.API.Features.Player player in players)
             {
                 playerAction(player);
             }

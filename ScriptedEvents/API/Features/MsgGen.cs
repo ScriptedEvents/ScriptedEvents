@@ -37,7 +37,7 @@
             { typeof(Door[]), "Door List" },
             { typeof(Room[]), "Room List" },
             { typeof(RoleTypeId), "RoleTypeId (ID / Number)" },
-            { typeof(SpawnableTeamType), "Spawnable Team (ChaosInsurgency OR NineTailedFox)" },
+            { typeof(Faction), "Faction" },
             { typeof(RoomType), "RoomType (ID / Number)" },
             { typeof(IVariable), "Variable" },
             { typeof(IPlayerVariable), "Player Variable" },
@@ -57,14 +57,14 @@
         /// <param name="paramName">The name of the parameter that is causing a skill issue.</param>
         /// <param name="arguments">The arguments of the MessageType. See <see cref="ActionResponse.ActionResponse(MessageType, IAction, string, object[])"/> for documentation on what MessageTypes require what arguments.</param>
         /// <returns>The string to display to the user.</returns>
-        public static string Generate(MessageType type, IScriptComponent action, string paramName, params object[] arguments)
+        public static string Generate(Enums.MessageType type, IScriptComponent action, string paramName, params object[] arguments)
         {
             switch (type)
             {
-                case MessageType.OK:
+                case Enums.MessageType.OK:
                     return "OK";
 
-                case MessageType.InvalidUsage when arguments[0] is Argument[] argList:
+                case Enums.MessageType.InvalidUsage when arguments[0] is Argument[] argList:
                     StringBuilder sb = StringBuilderPool.Pool.Get();
                     foreach (Argument arg in argList)
                     {
@@ -74,28 +74,28 @@
 
                     return ErrorGen.Get(ErrorCode.InvalidActionUsage, action.Name, action.Name + StringBuilderPool.Pool.ToStringReturn(sb));
 
-                case MessageType.InvalidUsage:
+                case Enums.MessageType.InvalidUsage:
                     return ErrorGen.Get(ErrorCode.LEGACY_InvalidActionUsage, action.Name);
 
-                case MessageType.NotANumber when arguments[0] is not null:
+                case Enums.MessageType.NotANumber when arguments[0] is not null:
                     return ErrorGen.Get(ErrorCode.ParameterError_Number, arguments[0], paramName, action.Name);
 
-                case MessageType.NotANumberOrCondition when arguments[0] is not null && arguments[1] is MathResult result:
+                case Enums.MessageType.NotANumberOrCondition when arguments[0] is not null && arguments[1] is MathResult result:
                     return ErrorGen.Get(ErrorCode.ParameterError_Condition, paramName, action.Name, arguments[0], result.Exception.GetType().Name, result.Message);
 
-                case MessageType.LessThanZeroNumber when arguments[0] is not null:
+                case Enums.MessageType.LessThanZeroNumber when arguments[0] is not null:
                     return ErrorGen.Get(ErrorCode.ParameterError_LessThanZeroNumber, arguments[0], paramName, action.Name);
 
-                case MessageType.InvalidRole when arguments[0] is not null:
+                case Enums.MessageType.InvalidRole when arguments[0] is not null:
                     return ErrorGen.Get(ErrorCode.ParameterError_RoleType, paramName, action.Name, arguments[0]);
 
-                case MessageType.NoPlayersFound:
+                case Enums.MessageType.NoPlayersFound:
                     return ErrorGen.Get(ErrorCode.ParameterError_Players, paramName);
 
-                case MessageType.NoRoomsFound:
+                case Enums.MessageType.NoRoomsFound:
                     return ErrorGen.Get(ErrorCode.ParameterError_Rooms, arguments[0], paramName);
 
-                case MessageType.CassieCaptionNoAnnouncement:
+                case Enums.MessageType.CassieCaptionNoAnnouncement:
                     return ErrorGen.Get(ErrorCode.ParameterError_CassieNoAnnc);
             }
 

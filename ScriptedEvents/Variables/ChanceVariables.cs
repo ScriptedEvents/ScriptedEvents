@@ -1,13 +1,13 @@
-﻿namespace ScriptedEvents.Variables.Chance
-{
-    using System;
+﻿using System;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
 
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
+namespace ScriptedEvents.Variables
+{
 #pragma warning disable SA1402 // File may only contain a single type
-    using ScriptedEvents.Variables.Interfaces;
+    using Interfaces;
 
     public class ChanceVariables : IVariableGroup
     {

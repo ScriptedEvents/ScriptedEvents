@@ -1,13 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Broadcast
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class ClearBroadcastsAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -37,7 +34,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            foreach (Player player in (PlayerCollection)Arguments[0])
+            foreach (Exiled.API.Features.Player player in (PlayerCollection)Arguments[0])
                 player.ClearBroadcasts();
 
             return new(true);

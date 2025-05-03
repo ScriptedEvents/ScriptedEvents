@@ -1,13 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables;
+
+namespace ScriptedEvents.Actions.Variable
 {
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables;
-
     public class GlobalPlayerVariableAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>

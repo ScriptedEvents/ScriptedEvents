@@ -1,13 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class NoclipAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -41,7 +38,7 @@
             PlayerCollection players = (PlayerCollection)Arguments[0];
             bool mode = (bool)Arguments[1];
 
-            foreach (Player player in players)
+            foreach (Exiled.API.Features.Player player in players)
             {
                 player.IsNoclipPermitted = mode;
             }

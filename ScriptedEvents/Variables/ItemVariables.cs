@@ -1,17 +1,16 @@
-﻿namespace ScriptedEvents.Variables.Chance
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Features;
+using Exiled.API.Features.Items;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Structures;
 
-    using Exiled.API.Features;
-    using Exiled.API.Features.Items;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.Structures;
+namespace ScriptedEvents.Variables
+{
 #pragma warning disable SA1402 // File may only contain a single type
-    using ScriptedEvents.Variables.Interfaces;
+    using Interfaces;
 
     public class ItemVariables : IVariableGroup
     {

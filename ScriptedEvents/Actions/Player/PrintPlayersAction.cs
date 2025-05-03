@@ -1,13 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class PrintPLayersAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -41,7 +38,7 @@
             PlayerCollection players = (PlayerCollection)Arguments[0];
             string message = Arguments.JoinMessage(1).Replace("\\n", "\n");
 
-            foreach (Player player in players)
+            foreach (Exiled.API.Features.Player player in players)
             {
                 player.SendConsoleMessage(message, "green");
             }

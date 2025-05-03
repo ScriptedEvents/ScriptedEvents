@@ -1,37 +1,32 @@
-﻿using Exiled.API.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Exiled.API.Features.Pickups;
+using Exiled.Events.EventArgs.Interfaces;
+using Exiled.Events.EventArgs.Map;
+using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Scp049;
+using Exiled.Events.EventArgs.Scp0492;
+using Exiled.Events.EventArgs.Scp079;
+using Exiled.Events.EventArgs.Scp096;
+using Exiled.Events.EventArgs.Scp106;
+using Exiled.Events.EventArgs.Scp173;
+using Exiled.Events.EventArgs.Scp3114;
+using Exiled.Events.EventArgs.Scp939;
+using Exiled.Events.EventArgs.Server;
+using Exiled.Events.EventArgs.Warhead;
+using MapGeneration.Distributors;
+using MEC;
+using PlayerRoles;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.Structures;
+using UnityEngine;
 
-namespace ScriptedEvents
+namespace ScriptedEvents.API.Modules
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using Exiled.API.Features.Pickups;
-    using Exiled.Events.EventArgs.Interfaces;
-    using Exiled.Events.EventArgs.Map;
-    using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.EventArgs.Scp049;
-    using Exiled.Events.EventArgs.Scp0492;
-    using Exiled.Events.EventArgs.Scp079;
-    using Exiled.Events.EventArgs.Scp096;
-    using Exiled.Events.EventArgs.Scp106;
-    using Exiled.Events.EventArgs.Scp173;
-    using Exiled.Events.EventArgs.Scp3114;
-    using Exiled.Events.EventArgs.Scp939;
-    using Exiled.Events.EventArgs.Server;
-    using Exiled.Events.EventArgs.Warhead;
-    using MapGeneration.Distributors;
-    using MEC;
-    using PlayerRoles;
-    using Respawning;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-    using UnityEngine;
-
     using MapHandler = Exiled.Events.Handlers.Map;
     using PlayerHandler = Exiled.Events.Handlers.Player;
     using Scp0492Handler = Exiled.Events.Handlers.Scp0492;
@@ -70,15 +65,15 @@ namespace ScriptedEvents
         /// <summary>
         /// Gets or sets the most recent respawn type.
         /// </summary>
-        public SpawnableTeamType MostRecentSpawn { get; set; }
+        public Faction MostRecentSpawn { get; set; }
 
         /// <summary>
         /// Gets or sets the spawns by team.
         /// </summary>
-        public Dictionary<SpawnableTeamType, int> SpawnsByTeam { get; set; } = new()
+        public Dictionary<Faction, int> SpawnsByTeam { get; set; } = new()
         {
-            [SpawnableTeamType.ChaosInsurgency] = 0,
-            [SpawnableTeamType.NineTailedFox] = 0,
+            [Faction.FoundationEnemy] = 0,
+            [Faction.FoundationStaff] = 0,
         };
 
         /// <summary>
@@ -431,8 +426,8 @@ namespace ScriptedEvents
             TeslasDisabled = false;
             MostRecentSpawnUnit = string.Empty;
 
-            SpawnsByTeam[SpawnableTeamType.NineTailedFox] = 0;
-            SpawnsByTeam[SpawnableTeamType.ChaosInsurgency] = 0;
+            SpawnsByTeam[Faction.FoundationStaff] = 0;
+            SpawnsByTeam[Faction.FoundationEnemy] = 0;
 
             foreach (var escapedRole in Escapes)
             {
@@ -463,7 +458,7 @@ namespace ScriptedEvents
             SpawnRules.Clear();
             RecentlyRespawned.Clear();
 
-            MostRecentSpawn = SpawnableTeamType.None;
+            MostRecentSpawn = Faction.Unclassified;
         }
 
         public void OnRoundStarted()
@@ -695,11 +690,11 @@ namespace ScriptedEvents
 
         public void OnInteractingLocker(InteractingLockerEventArgs ev)
         {
-            if (ev.Locker is PedestalScpLocker && (DisabledKeys.Contains("PEDESTALS") || DisabledForPlayer("PEDESTALS", ev.Player)))
+            if (ev.InteractingLocker.Base is PedestalScpLocker && (DisabledKeys.Contains("PEDESTALS") || DisabledForPlayer("PEDESTALS", ev.Player)))
             {
                 ev.IsAllowed = false;
             }
-            else if (ev.Locker is not PedestalScpLocker && (DisabledKeys.Contains("LOCKERS") || DisabledForPlayer("LOCKERS", ev.Player)))
+            else if (ev.InteractingLocker.Base is not PedestalScpLocker && (DisabledKeys.Contains("LOCKERS") || DisabledForPlayer("LOCKERS", ev.Player)))
             {
                 ev.IsAllowed = false;
             }

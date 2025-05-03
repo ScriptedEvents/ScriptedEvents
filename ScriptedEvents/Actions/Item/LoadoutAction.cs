@@ -1,14 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Extensions;
+using PlayerRoles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Item
 {
-    using System;
-
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
-    using PlayerRoles;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class LoadoutAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -42,7 +40,7 @@
             PlayerCollection plys = (PlayerCollection)Arguments[0];
             RoleTypeId role = (RoleTypeId)Arguments[1];
 
-            foreach (Player player in plys)
+            foreach (Exiled.API.Features.Player player in plys)
             {
                 foreach (ItemType itemType in role.GetStartingInventory())
                 {

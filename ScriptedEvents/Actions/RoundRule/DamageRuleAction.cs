@@ -1,16 +1,14 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using PlayerRoles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-
-    using PlayerRoles;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
-    using Rule = ScriptedEvents.Structures.DamageRule;
+    using Rule = Structures.DamageRule;
 
     public class DamageRuleAction : IScriptAction, IHelpInfo
     {

@@ -1,15 +1,13 @@
-﻿namespace ScriptedEvents.API
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Exiled.API.Features;
+using Exiled.Loader;
+
+namespace ScriptedEvents.API.APITestLab
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading.Tasks;
-
-    using Exiled.API.Features;
-    using Exiled.Loader;
-    using UnityEngine;
-
     /// <summary>
     /// The class for Scripted Events custom action integration.
     /// </summary>

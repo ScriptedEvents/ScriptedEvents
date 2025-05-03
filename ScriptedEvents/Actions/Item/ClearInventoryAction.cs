@@ -1,13 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Item
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class ClearInventoryAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -39,7 +36,7 @@
         {
             PlayerCollection plys = (PlayerCollection)Arguments[0];
 
-            foreach (Player player in plys)
+            foreach (Exiled.API.Features.Player player in plys)
             {
                 player.Inventory.UserInventory.ReserveAmmo.Clear();
                 player.Inventory.SendAmmoNextFrame = true;

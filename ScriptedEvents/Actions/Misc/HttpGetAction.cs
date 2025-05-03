@@ -1,17 +1,15 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Collections.Generic;
+using MEC;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+using UnityEngine.Networking;
+
+namespace ScriptedEvents.Actions.Misc
 {
-    using System;
-    using System.Collections.Generic;
-
-    using MEC;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-    using UnityEngine.Networking;
-
     public class HttpGetAction : IHelpInfo, ITimingAction, ILongDescription
     {
         /// <inheritdoc/>

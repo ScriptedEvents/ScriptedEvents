@@ -1,15 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine.Networking;
+
+namespace ScriptedEvents.Actions.Misc
 {
-    using System;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
-    using UnityEngine.Networking;
-
     public class FastHttpPostAction : IHelpInfo, IScriptAction
     {
         /// <inheritdoc/>

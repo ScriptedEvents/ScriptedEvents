@@ -24,7 +24,7 @@
             new EnumDefinition<DoorType>("The list of valid in-game door types."),
             new EnumDefinition<ElevatorType>("The list of valid in-game elevator types."),
             new EnumDefinition<SpawnLocationType>("The list of valid in-game spawn location types."),
-            new EnumDefinition<SpawnableTeamType>("The list of valid in-game spawnable team types."),
+            new EnumDefinition<Faction>("The list of valid in-game factions."),
             new EnumDefinition<EffectType>("The list of valid in-game effects."),
         }.AsReadOnly();
     }

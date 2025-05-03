@@ -1,14 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.API.Constants;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Lights
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class LightsOffAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>

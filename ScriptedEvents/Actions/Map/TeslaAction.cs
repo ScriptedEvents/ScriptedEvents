@@ -1,23 +1,18 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Collections.Generic;
+using MEC;
+using PlayerRoles;
+using ScriptedEvents.Actions.Samples.Interfaces;
+using ScriptedEvents.Actions.Samples.Providers;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Map
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Exiled.API.Features;
-
-    using MEC;
-
-    using PlayerRoles;
-
-    using ScriptedEvents.Actions.Samples.Interfaces;
-    using ScriptedEvents.Actions.Samples.Providers;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     using Tesla = Exiled.API.Features.TeslaGate;
 
     // Todo: Needs reworked entirely
@@ -76,7 +71,7 @@
                     if (!ScriptModule.TryGetPlayers(target, null, out PlayerCollection players, script))
                         return new(false, players.Message);
 
-                    foreach (Player player in players)
+                    foreach (Exiled.API.Features.Player player in players)
                     {
                         if (!Tesla.IgnoredPlayers.Contains(player))
                             Tesla.IgnoredPlayers.Add(player);
@@ -126,7 +121,7 @@
                 switch (mode)
                 {
                     case "PLAYERS":
-                        foreach (Player player in (List<Player>)target)
+                        foreach (Exiled.API.Features.Player player in (List<Exiled.API.Features.Player>)target)
                         {
                             if (Tesla.IgnoredPlayers.Contains(player))
                                 Tesla.IgnoredPlayers.Remove(player);

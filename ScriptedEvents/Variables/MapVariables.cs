@@ -1,20 +1,19 @@
-﻿namespace ScriptedEvents.Variables.Map
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.API.Features.Doors;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Variables
 {
 #pragma warning disable SA1402 // File may only contain a single type.
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using Exiled.API.Features.Doors;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class MapVariables : IVariableGroup
     {
         /// <inheritdoc/>
@@ -281,7 +280,7 @@
         public string Description => "Whether or not SCP-914 is currently active.";
 
         /// <inheritdoc/>
-        public bool Value => Scp914.IsWorking;
+        public bool Value => Exiled.API.Features.Scp914.IsWorking;
     }
 
     public class DoorState : IStringVariable, IArgumentVariable, INeedSourceVariable

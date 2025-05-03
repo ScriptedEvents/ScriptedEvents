@@ -1,14 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Features.Roles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Teleportation
 {
-    using System;
-
-    using Exiled.API.Features;
-    using Exiled.API.Features.Roles;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class TpPlayerAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -33,16 +30,16 @@
         public Argument[] ExpectedArguments => new[]
         {
             new Argument("players", typeof(PlayerCollection), "The players to teleport", true),
-            new Argument("targetPlayer", typeof(Player), "The player to teleport to.", true),
+            new Argument("targetPlayer", typeof(Exiled.API.Features.Player), "The player to teleport to.", true),
         };
 
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
             PlayerCollection players = (PlayerCollection)Arguments[0];
-            Player targetPlayer = (Player)Arguments[1];
+            Exiled.API.Features.Player targetPlayer = (Exiled.API.Features.Player)Arguments[1];
 
-            foreach (Player ply in players)
+            foreach (Exiled.API.Features.Player ply in players)
             {
                 if (ply.Role is not FpcRole || !ply.IsConnected) continue;
                 ply.Teleport(targetPlayer.Position);

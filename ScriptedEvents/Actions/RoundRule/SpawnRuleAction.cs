@@ -1,13 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using PlayerRoles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-
-    using PlayerRoles;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class SpawnRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>

@@ -1,15 +1,13 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Linq;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Actions.Variable
 {
-    using System;
-    using System.Linq;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class BindAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>

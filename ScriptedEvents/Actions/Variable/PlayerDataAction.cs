@@ -1,13 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Variable
 {
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class PlayerDataAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -51,7 +48,7 @@
 
                 case "SET":
                     string keyName = (string)Arguments[2];
-                    foreach (Player ply in players)
+                    foreach (Exiled.API.Features.Player ply in players)
                     {
                         if (ply.SessionVariables.ContainsKey(keyName))
                             ply.SessionVariables[keyName] = Arguments.JoinMessage(3);
@@ -62,7 +59,7 @@
                     break;
                 case "DELETE":
                     keyName = (string)Arguments[2];
-                    foreach (Player ply in players)
+                    foreach (Exiled.API.Features.Player ply in players)
                     {
                         if (ply.SessionVariables.ContainsKey(keyName))
                             ply.SessionVariables.Remove(keyName);

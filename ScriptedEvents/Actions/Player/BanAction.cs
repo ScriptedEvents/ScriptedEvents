@@ -1,15 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class BanAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -44,7 +40,7 @@
             PlayerCollection players = (PlayerCollection)Arguments[0];
             int duration = (int)Arguments[1];
 
-            foreach (Player player in players)
+            foreach (Exiled.API.Features.Player player in players)
             {
                 player.Ban(duration, Arguments.JoinMessage(2).Replace("\\n", "\n"));
             }

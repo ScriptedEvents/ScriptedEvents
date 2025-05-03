@@ -1,13 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Linq;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.DebugActions
 {
-    using System;
-    using System.Linq;
-
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class DebugExtractAction : IScriptAction, IHiddenAction
     {
         /// <inheritdoc/>
@@ -30,7 +28,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            return new(true, variablesToRet: new[] { (object)Player.List.ToArray(), (object)"10" });
+            return new(true, variablesToRet: new[] { (object)Exiled.API.Features.Player.List.ToArray(), (object)"10" });
         }
     }
 }

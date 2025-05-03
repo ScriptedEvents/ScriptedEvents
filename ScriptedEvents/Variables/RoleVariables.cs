@@ -1,16 +1,13 @@
-﻿namespace ScriptedEvents.Variables.Roles
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Features;
+using PlayerRoles;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Variables
 {
 #pragma warning disable SA1402 // File may only contain a single type
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Exiled.API.Features;
-
-    using PlayerRoles;
-
-    using ScriptedEvents.Variables.Interfaces;
-
     public class RoleVariables : IVariableGroup
     {
         private List<IVariable> variables;

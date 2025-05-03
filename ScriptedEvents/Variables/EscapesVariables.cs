@@ -1,15 +1,14 @@
-﻿#pragma warning disable SA1402 // File may only contain a single type
-namespace ScriptedEvents.Variables.Escapes
+﻿using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Features;
+using PlayerRoles;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+#pragma warning disable SA1402 // File may only contain a single type
+namespace ScriptedEvents.Variables
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Exiled.API.Features;
-    using PlayerRoles;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class EscapesVariables : IVariableGroup
     {
         /// <inheritdoc/>

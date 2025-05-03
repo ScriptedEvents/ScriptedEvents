@@ -1,16 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Collections.Generic;
+using ScriptedEvents.API.Constants;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Item
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Exiled.API.Features;
-    using Exiled.API.Features.Items;
-
-    using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class DropItemAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
@@ -54,11 +50,11 @@
                 amt = (int)Arguments[2];
             }
 
-            foreach (Player player in plys)
+            foreach (Exiled.API.Features.Player player in plys)
             {
-                List<Item> itemsToDrop = new();
+                List<Exiled.API.Features.Items.Item> itemsToDrop = new();
 
-                foreach (Item item in player.Items)
+                foreach (Exiled.API.Features.Items.Item item in player.Items)
                 {
                     if (item.Type == itemType)
                     {
@@ -71,7 +67,7 @@
                     }
                 }
 
-                foreach (Item item in itemsToDrop)
+                foreach (Exiled.API.Features.Items.Item item in itemsToDrop)
                 {
                     player.DropItem(item);
                 }

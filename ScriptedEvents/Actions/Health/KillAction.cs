@@ -1,17 +1,14 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Linq;
+using Exiled.API.Enums;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Health
 {
-    using System;
-    using System.Linq;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class KillAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
@@ -60,7 +57,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
                     customDeath = RawArguments.JoinMessage(1);
                 }
 
-                foreach (Player player in plys)
+                foreach (Exiled.API.Features.Player player in plys)
                 {
                     if (customDeath is "VAPORIZE")
                         player.Vaporize();
@@ -73,7 +70,7 @@ A full list of valid DamageType IDs (as of {DateTime.Now:g}) follows:
                 return new(true);
             }
 
-            foreach (Player player in plys) player.Kill(DamageType.Unknown);
+            foreach (Exiled.API.Features.Player player in plys) player.Kill(DamageType.Unknown);
 
             return new(true);
         }

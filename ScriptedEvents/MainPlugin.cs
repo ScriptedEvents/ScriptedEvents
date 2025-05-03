@@ -66,7 +66,7 @@
             new ScpLeftServerInfo()
         };
 
-        public static DateTime Epoch => new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        public static DateTime Epoch => new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
         public static List<Commands.CustomCommand> CustomCommands { get; } = new();
 
@@ -82,10 +82,10 @@
         public override string Author => "Elektryk_Andrzej and Thunder";
 
         /// <inheritdoc/>
-        public override Version Version => new(3, 2, 3);
+        public override Version Version => new(3, 4, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new(8, 13, 1);
+        public override Version RequiredExiledVersion => new(9, 5, 2);
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
@@ -99,7 +99,7 @@
         public bool EnabledRanks => Configs.EnableCredits;
 
         /// <summary>
-        /// Equivalent to <see cref="Logger.Info(string)"/>, but checks the EnableLogs ScriptedEvents config first.
+        /// Equivalent to <see cref="Logger.Info(string,Script)"/>, but checks the EnableLogs ScriptedEvents config first.
         /// </summary>
         /// <param name="message">The message to Logger.</param>
         public static void Info(string message)
@@ -144,20 +144,6 @@
                     }
                 }
 
-                if (Version == new Version(6, 6, 6) && DateTime.Now.Month == 10 && DateTime.Now.Day == 31)
-                {
-                    Logger.Error(@"
-             \\                \\                \\
-        .-'```^```'-.     .-'```^```'-.     .-'```^```'-.
-       /   /\ __ /\  \   /   (\ __ /)  \   /   /) __ (\  \
-       |   ^^ \/ ^^  |   |    ` \/ `   |   |   ^  \/  ^  |
-       \   \_.__._/  /   \    \____/   /   \    `'=='`   /
-        `'-.......-'`     `'-.......-'`     `'-.......-'` ldb        
-                         Happy Halloween!     
-                   by v6.6.6 of ScriptedEvents
-    ");
-                }
-
                 Timing.CallDelayed(6f, () =>
                 {
                     if (IsExperimental)
@@ -175,13 +161,12 @@
                     }
 
                     bool isUpdated = API.Features.ScriptHelpGenerator.Generator.CheckUpdated(out string docMessage);
-                    if (docMessage != "SKIP")
-                    {
-                        if (isUpdated)
-                            Logger.Info("[DOCUMENTATION GENERATOR]: " + docMessage);
-                        else
-                            Logger.Warn("[DOCUMENTATION GENERATOR]: " + docMessage);
-                    }
+                    if (docMessage == "SKIP") return;
+                    
+                    if (isUpdated)
+                        Logger.Info("[DOCUMENTATION GENERATOR]: " + docMessage);
+                    else
+                        Logger.Warn("[DOCUMENTATION GENERATOR]: " + docMessage);
                 });
 
                 // Delete help file on startup

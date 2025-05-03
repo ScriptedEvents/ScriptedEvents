@@ -1,15 +1,14 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System.Linq;
+using Exiled.API.Features.Items;
+using Exiled.API.Features.Pickups.Projectiles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+using UnityEngine;
+
+namespace ScriptedEvents.Actions.Map
 {
-    using System.Linq;
-
-    using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pickups.Projectiles;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-    using UnityEngine;
-
     public class SpawnGrenadeAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -44,7 +43,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
+            ExplosiveGrenade grenade = (ExplosiveGrenade)Exiled.API.Features.Items.Item.Create(ItemType.GrenadeHE);
             Vector3 pos = new(
                 (float)Arguments[0],
                 (float)Arguments[1],

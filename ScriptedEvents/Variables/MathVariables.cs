@@ -1,11 +1,12 @@
-﻿namespace ScriptedEvents.Variables.Misc
+﻿using System;
+using ScriptedEvents.Variables.Interfaces;
+using UnityEngine;
+
+namespace ScriptedEvents.Variables
 {
-    using System;
 #pragma warning disable SA1402 // File may only contain a single type
 
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-    using UnityEngine;
+    using Structures;
 
     public class MathVariables : IVariableGroup
     {

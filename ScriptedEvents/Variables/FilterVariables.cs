@@ -1,22 +1,21 @@
-﻿namespace ScriptedEvents.Variables.Filters
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CustomPlayerEffects;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using Exiled.CustomItems.API.Features;
+using PlayerRoles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Variables
 {
 #pragma warning disable SA1402 // File may only contain a single type
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using CustomPlayerEffects;
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using Exiled.CustomItems.API.Features;
-    using PlayerRoles;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class FilterVariables : IVariableGroup
     {
         /// <inheritdoc/>

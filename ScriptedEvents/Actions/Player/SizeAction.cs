@@ -1,13 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class SizeAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -44,7 +41,7 @@
             float y = (float)Arguments[2];
             float z = (float)Arguments[3];
 
-            foreach (Player player in (PlayerCollection)Arguments[0])
+            foreach (Exiled.API.Features.Player player in (PlayerCollection)Arguments[0])
                 player.Scale = new(x, y, z);
 
             return new(true);

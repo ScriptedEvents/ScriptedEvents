@@ -1,14 +1,14 @@
-﻿namespace ScriptedEvents.Variables.Booleans
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Variables
 {
-    using System;
 #pragma warning disable SA1402 // File may only contain a single type
     using System.Linq;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
 
     public class ScriptInfoVariables : IVariableGroup
     {

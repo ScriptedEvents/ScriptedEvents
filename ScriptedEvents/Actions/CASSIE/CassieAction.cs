@@ -1,16 +1,14 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.Actions.Samples.Interfaces;
+using ScriptedEvents.Actions.Samples.Providers;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.CASSIE
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.Actions.Samples.Interfaces;
-    using ScriptedEvents.Actions.Samples.Providers;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class CassieAction : IScriptAction, IHelpInfo, ISampleAction
     {
         /// <inheritdoc/>

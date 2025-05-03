@@ -1,16 +1,13 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Collections.Generic;
+using ScriptedEvents.API.Constants;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class EnablePlayerAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
@@ -50,7 +47,7 @@
 
             if (rule.HasValue)
             {
-                List<Player> inner = players.GetInnerList();
+                List<Exiled.API.Features.Player> inner = players.GetInnerList();
                 rule.Value.Players.RemoveAll(ply => inner.Contains(ply));
             }
 

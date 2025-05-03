@@ -1,15 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using PlayerRoles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using PlayerRoles;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class SetRoleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -56,7 +52,7 @@
             if (setInventory)
                 flags |= RoleSpawnFlags.AssignInventory;
 
-            foreach (Player player in players)
+            foreach (Exiled.API.Features.Player player in players)
                 player.Role.Set(roleType, flags);
 
             return new(true);

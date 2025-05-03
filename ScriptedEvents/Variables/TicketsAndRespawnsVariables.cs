@@ -1,15 +1,16 @@
-﻿namespace ScriptedEvents.Variables.TicketsAndRespawns
+﻿using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Features;
+using Exiled.API.Features.Waves;
+using PlayerRoles;
+using Respawning;
+using Respawning.Waves;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Variables
 {
 #pragma warning disable SA1402 // File may only contain a single type
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Exiled.API.Features;
-    using PlayerRoles;
-    using Respawning;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class TicketsAndRespawnsVariables : IVariableGroup
     {
         /// <inheritdoc/>
@@ -51,10 +52,10 @@
         public string Name => "{NEXTWAVE}";
 
         /// <inheritdoc/>
-        public string Description => "The next team to spawn, either NineTailedFox, ChaosInsurgency, or None.";
+        public string Description => "The next team to spawn, either NtfWave, NtfMiniWave, ChaosWave, ChaosMiniWave or None.";
 
         /// <inheritdoc/>
-        public string Value => Respawn.NextKnownTeam.ToString();
+        public string Value => Respawn.NextKnownSpawnableFaction.ToString();
     }
 
     public class LastUnitName : IStringVariable
@@ -93,7 +94,7 @@
         public string Description => "The amount of NTF tickets.";
 
         /// <inheritdoc/>
-        public float Value => Respawn.NtfTickets;
+        public float Value => Respawn.FactionInfluence[Faction.FoundationStaff];
     }
 
     public class ChaosTickets : IFloatVariable
@@ -105,7 +106,7 @@
         public string Description => "The amount of Chaos Insurgency tickets.";
 
         /// <inheritdoc/>
-        public float Value => Respawn.ChaosTickets;
+        public float Value => Respawn.FactionInfluence[Faction.FoundationEnemy];
     }
 
     public class TotalWaves : IFloatVariable
@@ -129,7 +130,7 @@
         public string Description => "The amount of time until the next respawn wave, in seconds.";
 
         /// <inheritdoc/>
-        public float Value => (float)Respawn.TimeUntilSpawnWave.TotalSeconds;
+        public float Value => (WaveManager._nextWave as TimeBasedWave)?.Timer.TimeLeft ?? -1;
     }
 
     public class TimeSinceLastWave : IFloatVariable
@@ -195,7 +196,7 @@
         public string Description => "Total amount of Chaos Insurgency respawns.";
 
         /// <inheritdoc/>
-        public float Value => MainPlugin.Handlers.SpawnsByTeam[SpawnableTeamType.ChaosInsurgency];
+        public float Value => MainPlugin.Handlers.SpawnsByTeam[Faction.FoundationEnemy];
     }
 
     public class MtfSpawns : IFloatVariable
@@ -207,6 +208,6 @@
         public string Description => "Total amount of Mobile Task Force respawns.";
 
         /// <inheritdoc/>
-        public float Value => MainPlugin.Handlers.SpawnsByTeam[SpawnableTeamType.NineTailedFox];
+        public float Value => MainPlugin.Handlers.SpawnsByTeam[Faction.FoundationStaff];
     }
 }

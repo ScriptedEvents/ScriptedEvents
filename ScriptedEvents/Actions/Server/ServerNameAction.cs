@@ -1,14 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Server
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class ServerNameAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -38,7 +35,7 @@
         /// <inheritdoc/>
         public ActionResponse Execute(Script script)
         {
-            Server.Name = Arguments.JoinMessage();
+            Exiled.API.Features.Server.Name = Arguments.JoinMessage();
             return new(true);
         }
     }

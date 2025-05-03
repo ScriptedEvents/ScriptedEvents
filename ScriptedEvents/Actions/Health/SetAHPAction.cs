@@ -1,13 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Health
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class SetAHPAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -80,7 +77,7 @@
 
             bool persistent = Arguments.Length > 6 && (bool)Arguments[6];
 
-            foreach (Player ply in plys)
+            foreach (Exiled.API.Features.Player ply in plys)
                 ply.AddAhp(hp, limit, decay, efficacy, sustain, persistent);
 
             return new(true);

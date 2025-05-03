@@ -1,14 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using Exiled.API.Extensions;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.CASSIE
 {
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class CassiePlayerAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -50,7 +47,7 @@
 
             if (cassieArgs.Length == 1)
             {
-                foreach (Player ply in players)
+                foreach (Exiled.API.Features.Player ply in players)
                 {
                     ply.MessageTranslated(text, text, makeNoise: isNoisy);
                 }
@@ -63,7 +60,7 @@
 
             if (string.IsNullOrWhiteSpace(cassieArgs[1]))
             {
-                foreach (Player ply in players)
+                foreach (Exiled.API.Features.Player ply in players)
                 {
                     ply.PlayCassieAnnouncement(cassieArgs[0], makeNoise: isNoisy);
                 }
@@ -71,7 +68,7 @@
                 return new(true);
             }
 
-            foreach (Player ply in players)
+            foreach (Exiled.API.Features.Player ply in players)
             {
                 ply.MessageTranslated(cassieArgs[0], cassieArgs[1], makeNoise: isNoisy);
             }

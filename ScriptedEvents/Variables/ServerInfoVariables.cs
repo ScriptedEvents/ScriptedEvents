@@ -1,11 +1,12 @@
-﻿namespace ScriptedEvents.Variables.ServerInfo
+﻿using System;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Variables
 {
-    using System;
 #pragma warning disable SA1402 // File may only contain a single type
 
     using Exiled.API.Features;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
 
     public class ServerInfoVariables : IVariableGroup
     {

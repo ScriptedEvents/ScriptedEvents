@@ -1,15 +1,14 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.IO;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Logic
 {
-    using System;
-    using System.IO;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class FastCallAction : IHelpInfo, IScriptAction
     {
         /// <inheritdoc/>

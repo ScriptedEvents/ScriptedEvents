@@ -1,17 +1,13 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Linq;
+using ScriptedEvents.API.Constants;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Item
 {
-    using System;
-    using System.Linq;
-
-    using Exiled.API.Features;
-    using Exiled.API.Features.Items;
-
-    using ScriptedEvents.API.Constants;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class ItemAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
@@ -51,7 +47,7 @@
         {
             PlayerCollection plys = (PlayerCollection)Arguments[1];
             ItemType itemType = (ItemType)Arguments[2];
-            Action<Player> action = null;
+            Action<Exiled.API.Features.Player> action = null;
             int amt = 1;
 
             if (Arguments.Length >= 4)
@@ -64,7 +60,7 @@
                 case "REMOVE":
                     action = (player) =>
                     {
-                        Item item = player.Items.FirstOrDefault(r => r.Type == itemType);
+                        Exiled.API.Features.Items.Item item = player.Items.FirstOrDefault(r => r.Type == itemType);
                         if (item is not null)
                         {
                             player.RemoveItem(item);
@@ -80,7 +76,7 @@
                     break;
             }
 
-            foreach (Player player in plys)
+            foreach (Exiled.API.Features.Player player in plys)
             {
                 for (int i = 0; i < amt; i++)
                 {

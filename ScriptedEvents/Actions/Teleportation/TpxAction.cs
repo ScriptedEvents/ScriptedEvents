@@ -1,16 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Features.Roles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine;
+
+namespace ScriptedEvents.Actions.Teleportation
 {
-    using System;
-
-    using Exiled.API.Features;
-    using Exiled.API.Features.Roles;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
-    using UnityEngine;
-
     public class TpxAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -50,7 +46,7 @@
 
             Vector3 vz = new(x, y, z);
 
-            foreach (Player ply in players)
+            foreach (Exiled.API.Features.Player ply in players)
             {
                 if (ply.Role is not FpcRole || !ply.IsConnected) continue;
                 ply.Teleport(vz);

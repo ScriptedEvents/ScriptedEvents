@@ -1,14 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using Exiled.API.Features;
+using PlayerRoles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+using UnityEngine;
+
+namespace ScriptedEvents.Actions.Map
 {
-    using Exiled.API.Features;
-
-    using PlayerRoles;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
-    using UnityEngine;
-
     public class SpawnRagdollAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>

@@ -1,15 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Broadcast
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class CountdownAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
@@ -54,7 +51,7 @@ The text of the broadcast will be formatted using the countdown_string Exiled co
             if (Arguments.Length > 2)
                 text = Arguments.JoinMessage(2);
 
-            foreach (Player ply in players)
+            foreach (Exiled.API.Features.Player ply in players)
                 MainPlugin.GetModule<CountdownModule>().AddCountdown(ply, text, TimeSpan.FromSeconds(duration), script);
 
             return new(true);

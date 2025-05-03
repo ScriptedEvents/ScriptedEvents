@@ -1,19 +1,16 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Enums;
+using Exiled.API.Features;
+using PlayerRoles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-
-    using PlayerRoles;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class klEffectRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -97,7 +94,7 @@
                 case "SET":
                     if (list is 0)
                     {
-                        foreach (Player ply in players)
+                        foreach (Exiled.API.Features.Player ply in players)
                         {
                             if (MainPlugin.Handlers.PermPlayerEffects.ContainsKey(ply))
                                 MainPlugin.Handlers.PermPlayerEffects[ply].Add(eff);
@@ -124,7 +121,7 @@
                 case "REMOVE":
                     if (list is 0)
                     {
-                        foreach (Player ply in players)
+                        foreach (Exiled.API.Features.Player ply in players)
                         {
                             if (MainPlugin.Handlers.PermPlayerEffects.ContainsKey(ply))
                                 MainPlugin.Handlers.PermPlayerEffects[ply].RemoveAll(e => e == eff);

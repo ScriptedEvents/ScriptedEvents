@@ -1,14 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.DebugActions
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class DamageRuleDebug : IScriptAction, IHiddenAction
     {
         /// <inheritdoc/>
@@ -42,12 +39,12 @@
                 return new(true);
             }
 
-            Player attacker = Player.Get((string)Arguments[0]);
-            Player receiver = Player.Get((string)Arguments[1]);
+            Exiled.API.Features.Player attacker = Exiled.API.Features.Player.Get((string)Arguments[0]);
+            Exiled.API.Features.Player receiver = Exiled.API.Features.Player.Get((string)Arguments[1]);
 
             foreach (var rule in MainPlugin.Handlers.DamageRules)
             {
-                foreach (Player ply in Player.List)
+                foreach (Exiled.API.Features.Player ply in Exiled.API.Features.Player.List)
                     ply.RemoteAdminMessage($"{attacker.DisplayNickname} will deal {rule.DetermineMultiplier(attacker, receiver)}x damage to {receiver.DisplayNickname} (TYPE: {rule.Type})");
             }
 

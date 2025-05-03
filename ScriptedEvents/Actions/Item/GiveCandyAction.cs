@@ -1,16 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Linq;
+using InventorySystem.Items.Usables.Scp330;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Item
 {
-    using System;
-    using System.Linq;
-
-    using Exiled.API.Features;
-
-    using InventorySystem.Items.Usables.Scp330;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class GiveCandyAction : IScriptAction, IHelpInfo, ILongDescription
     {
         /// <inheritdoc/>
@@ -56,7 +52,7 @@
 
             PlayerCollection plys = (PlayerCollection)Arguments[0];
 
-            foreach (Player player in plys)
+            foreach (Exiled.API.Features.Player player in plys)
             {
                 for (int i = 0; i < amt; i++)
                 {

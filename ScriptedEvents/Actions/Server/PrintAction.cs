@@ -1,15 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Features;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Server
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class PrintAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -49,7 +46,7 @@
 
             if (script.Context is ExecuteContext.PlayerConsole)
             {
-                Player.Get(script.Sender)?.SendConsoleMessage(message, "green");
+                Exiled.API.Features.Player.Get(script.Sender)?.SendConsoleMessage(message, "green");
                 return new(true);
             }
 

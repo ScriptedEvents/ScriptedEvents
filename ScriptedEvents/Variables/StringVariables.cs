@@ -1,10 +1,10 @@
-﻿namespace ScriptedEvents.Variables.Strings
+﻿using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Variables
 {
 #pragma warning disable SA1402 // File may only contain a single type
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class StringVariables : IVariableGroup
     {
         /// <inheritdoc/>

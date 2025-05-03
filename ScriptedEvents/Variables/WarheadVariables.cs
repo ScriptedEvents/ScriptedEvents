@@ -1,11 +1,11 @@
-﻿namespace ScriptedEvents.Variables.Warhead
-{
-    using System;
+﻿using System;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.Structures;
 
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.Structures;
+namespace ScriptedEvents.Variables
+{
 #pragma warning disable SA1402 // File may only contain a single type.
-    using ScriptedEvents.Variables.Interfaces;
+    using Interfaces;
 
     using Warhead = Exiled.API.Features.Warhead;
 

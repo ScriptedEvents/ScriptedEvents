@@ -1,16 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Extensions;
+using PlayerRoles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using System;
-
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
-
-    using PlayerRoles;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class ReskinAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -48,13 +44,13 @@
             if (Arguments.Length >= 3)
             {
                 PlayerCollection targetPlys = (PlayerCollection)Arguments[2];
-                foreach (Player player in plys)
+                foreach (Exiled.API.Features.Player player in plys)
                     player.ChangeAppearance(roleType, targetPlys, false, 0);
 
                 return new(true);
             }
 
-            foreach (Player player in plys)
+            foreach (Exiled.API.Features.Player player in plys)
                 player.ChangeAppearance(roleType, false, 0);
 
             return new(true);

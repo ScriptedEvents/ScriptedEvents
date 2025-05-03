@@ -1,14 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Player
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class StaminaAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -45,7 +42,7 @@
         {
             PlayerCollection players = (PlayerCollection)Arguments[1];
             float amount = (float)Arguments[2];
-            Action<Player, float> action = null;
+            Action<Exiled.API.Features.Player, float> action = null;
 
             switch (Arguments[0].ToUpper())
             {
@@ -71,7 +68,7 @@
                     break;
             }
 
-            foreach (Player player in players)
+            foreach (Exiled.API.Features.Player player in players)
             {
                 action(player, amount);
             }

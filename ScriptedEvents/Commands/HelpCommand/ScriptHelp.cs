@@ -1,14 +1,12 @@
-﻿namespace ScriptedEvents.Commands.MainCommand
+﻿using System;
+using System.Linq;
+using CommandSystem;
+using ScriptedEvents.Actions.Misc;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Commands.HelpCommand
 {
-    using System;
-    using System.Linq;
-
-    using CommandSystem;
-
-    using ScriptedEvents.Actions;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.Structures;
-
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class ScriptHelp : ICommand
     {

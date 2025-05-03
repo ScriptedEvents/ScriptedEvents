@@ -1,15 +1,11 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Broadcast
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-
     public class HintAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -45,7 +41,7 @@
             float duration = (float)Arguments[1];
             string message = Arguments.JoinMessage(2);
 
-            foreach (Player plr in players)
+            foreach (Exiled.API.Features.Player plr in players)
             {
                 plr.ShowHint(message, duration);
             }

@@ -1,18 +1,15 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Enums;
+using Exiled.API.Features.Items;
+using ScriptedEvents.Actions.Samples.Interfaces;
+using ScriptedEvents.Actions.Samples.Providers;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Item
 {
-    using System;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using Exiled.API.Features.Items;
-
-    using ScriptedEvents.Actions.Samples.Interfaces;
-    using ScriptedEvents.Actions.Samples.Providers;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class RadioRangeAction : IScriptAction, IHelpInfo, ISampleAction
     {
         /// <inheritdoc/>
@@ -52,9 +49,9 @@
             PlayerCollection players = (PlayerCollection)Arguments[1];
             RadioRange range = (RadioRange)Arguments[2];
 
-            foreach (Player ply in players)
+            foreach (Exiled.API.Features.Player ply in players)
             {
-                foreach (Item item in ply.Items)
+                foreach (Exiled.API.Features.Items.Item item in ply.Items)
                 {
                     if (item is Radio radio)
                     {
@@ -66,7 +63,7 @@
 
             if (Arguments[0].ToUpper() is "LOCK")
             {
-                foreach (Player ply in players)
+                foreach (Exiled.API.Features.Player ply in players)
                 {
                     MainPlugin.Handlers.LockedRadios[ply] = range;
                 }

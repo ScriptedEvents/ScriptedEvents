@@ -1,19 +1,17 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using Exiled.API.Features;
+using Exiled.API.Interfaces;
+using Exiled.Loader;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Server
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-
-    using Exiled.API.Features;
-    using Exiled.API.Interfaces;
-    using Exiled.Loader;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class PluginAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -74,7 +72,7 @@
 
                     Log.Info($"Loaded plugin {plugin.Name}@{(plugin.Version is not null ? $"{plugin.Version.Major}.{plugin.Version.Minor}.{plugin.Version.Build}" : attribute is not null ? attribute.InformationalVersion : string.Empty)}");
 
-                    Server.PluginAssemblies.Add(assembly, plugin);
+                    Exiled.API.Features.Server.PluginAssemblies.Add(assembly, plugin);
                     if (plugin.Config.Debug)
                         Log.DebugEnabled.Add(assembly);
 

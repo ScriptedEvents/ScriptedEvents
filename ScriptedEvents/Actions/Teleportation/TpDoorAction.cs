@@ -1,15 +1,12 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using Exiled.API.Features.Doors;
+using Exiled.API.Features.Roles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Teleportation
 {
-    using System;
-
-    using Exiled.API.Features;
-    using Exiled.API.Features.Doors;
-    using Exiled.API.Features.Roles;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class TpDoorAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -43,7 +40,7 @@
             PlayerCollection players = (PlayerCollection)Arguments[0];
             Door[] doors = (Door[])Arguments[1];
 
-            foreach (Player ply in players)
+            foreach (Exiled.API.Features.Player ply in players)
             {
                 if (ply.Role is not FpcRole || !ply.IsConnected) continue;
                 ply.Teleport(doors[0]);

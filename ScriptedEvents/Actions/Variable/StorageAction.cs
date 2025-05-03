@@ -1,15 +1,14 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Linq;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Actions.Variable
 {
-    using System;
-    using System.Linq;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.API.Modules;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class StorageAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>

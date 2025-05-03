@@ -1,19 +1,16 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using System.Linq;
+using Exiled.API.Features;
+using Exiled.API.Features.Pickups;
+using PlayerRoles;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Map
 {
-    using System;
-    using System.Linq;
-
-    using Exiled.API.Features;
-    using Exiled.API.Features.Pickups;
-
-    using PlayerRoles;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class CleanupAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>

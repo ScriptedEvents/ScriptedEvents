@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents.Commands.MainCommand
+﻿using ScriptedEvents.Actions.DebugActions;
+
+namespace ScriptedEvents.Commands.MainCommand
 {
     using System;
     using System.Linq;

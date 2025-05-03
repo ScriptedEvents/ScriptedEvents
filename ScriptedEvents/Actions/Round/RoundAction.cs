@@ -1,13 +1,10 @@
-﻿namespace ScriptedEvents.Actions
+﻿using System;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.Round
 {
-    using System;
-
-    using Exiled.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class RoundAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -45,15 +42,15 @@
             switch ((string)Arguments[0])
             {
                 case "START":
-                    Round.Start(); break;
+                    Exiled.API.Features.Round.Start(); break;
                 case "END":
-                    Round.EndRound(true); break;
+                    Exiled.API.Features.Round.EndRound(true); break;
                 case "LOCK":
-                    Round.IsLocked = true; break;
+                    Exiled.API.Features.Round.IsLocked = true; break;
                 case "UNLOCK":
-                    Round.IsLocked = false; break;
+                    Exiled.API.Features.Round.IsLocked = false; break;
                 case "RESTART":
-                    Round.Restart(); break;
+                    Exiled.API.Features.Round.Restart(); break;
             }
 
             return new(true);

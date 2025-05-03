@@ -1,22 +1,21 @@
-﻿namespace ScriptedEvents.Variables.Strings
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Features;
+using Exiled.API.Features.Items;
+using Exiled.API.Features.Roles;
+using Exiled.CustomItems.API.Features;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Features;
+using ScriptedEvents.API.Features.Exceptions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.Structures;
+using ScriptedEvents.Variables.Interfaces;
+
+namespace ScriptedEvents.Variables
 {
 #pragma warning disable SA1402 // File may only contain a single type
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Exiled.API.Features;
-    using Exiled.API.Features.Roles;
-    using Exiled.CustomItems.API.Features;
-
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Features;
-    using ScriptedEvents.API.Features.Exceptions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-    using ScriptedEvents.Variables.Interfaces;
-
     public class PlayerInfoVariables : IVariableGroup
     {
         /// <inheritdoc/>
@@ -257,8 +256,20 @@
                     "ROOM" => ply.CurrentRoom.Type.ToString(),
                     "ZONE" => ply.Zone.ToString(),
                     "HP" or "HEALTH" => ply.Health.ToString(),
-                    "ITEMCOUNT" => ply.Items.Count.ToString(),
-                    "ITEMS" => ply.Items.Count > 0 ? string.Join("|", ply.Items.Select(item => CustomItem.TryGet(item, out CustomItem ci) ? ci.Name : item.Type.ToString())) : "NONE",
+                    "ITEMCOUNT" => ply.Items.Count(item => item is not Ammo).ToString(),
+                    "AMMOCOUNT" => ply.Items.Count(item => item is Ammo).ToString(),
+                    "ITEMS" => ply.Items.Count(item => item is not Ammo) > 0 
+                        ? string.Join("|", ply.Items
+                            .Where(item => item is not Ammo)
+                            .Select(item => CustomItem.TryGet(item, out CustomItem ci) 
+                                ? ci.Name 
+                                : item.Type.ToString())) 
+                        : "NONE",
+                    "AMMO" => ply.Items.Count(item => item is Ammo) > 0 
+                        ? string.Join("|", ply.Items
+                            .Where(item => item is Ammo)
+                            .Select(item => item.Type.ToString())) 
+                        : "NONE",
                     "HELDITEM" => (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci) ? ci.Name : ply.CurrentItem?.Type.ToString()) ?? "NONE",
                     "GOD" => ply.IsGodModeEnabled.ToUpper(),
                     "POS" => $"{ply.Position.x} {ply.Position.y} {ply.Position.z}",

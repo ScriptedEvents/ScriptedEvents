@@ -1,15 +1,14 @@
-namespace ScriptedEvents.Actions
+using System;
+using System.Collections.Generic;
+using Exiled.API.Enums;
+using ScriptedEvents.API.Enums;
+using ScriptedEvents.API.Extensions;
+using ScriptedEvents.API.Interfaces;
+using ScriptedEvents.API.Modules;
+using ScriptedEvents.Structures;
+
+namespace ScriptedEvents.Actions.RoundRule
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Extensions;
-    using ScriptedEvents.API.Interfaces;
-    using ScriptedEvents.Structures;
-
     public class EffectImmunityRuleAction : IScriptAction, IHelpInfo
     {
         /// <inheritdoc/>
@@ -48,7 +47,7 @@ namespace ScriptedEvents.Actions
             EffectType effectType = (EffectType)Arguments[2];
             var dict = MainPlugin.GetModule<EventHandlingModule>().PlayerEffectImmunity;
 
-            foreach (Player plr in players)
+            foreach (Exiled.API.Features.Player plr in players)
             {
                 switch (mode)
                 {
