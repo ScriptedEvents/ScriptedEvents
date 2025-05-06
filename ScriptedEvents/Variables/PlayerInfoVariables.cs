@@ -253,22 +253,16 @@ namespace ScriptedEvents.Variables
                     "PLAYERID" or "PID" => ply.Id.ToString(),
                     "ROLE" => ply.Role.Type.ToString(),
                     "TEAM" => ply.Role.Team.ToString(),
-                    "ROOM" => ply.CurrentRoom.Type.ToString(),
+                    "ROOM" => ply.CurrentRoom?.Type.ToString() ?? "NONE",
                     "ZONE" => ply.Zone.ToString(),
                     "HP" or "HEALTH" => ply.Health.ToString(),
                     "ITEMCOUNT" => ply.Items.Count(item => item is not Ammo).ToString(),
-                    "AMMOCOUNT" => ply.Items.Count(item => item is Ammo).ToString(),
                     "ITEMS" => ply.Items.Count(item => item is not Ammo) > 0 
                         ? string.Join("|", ply.Items
                             .Where(item => item is not Ammo)
                             .Select(item => CustomItem.TryGet(item, out CustomItem ci) 
-                                ? ci.Name 
-                                : item.Type.ToString())) 
-                        : "NONE",
-                    "AMMO" => ply.Items.Count(item => item is Ammo) > 0 
-                        ? string.Join("|", ply.Items
-                            .Where(item => item is Ammo)
-                            .Select(item => item.Type.ToString())) 
+                                ? ci!.Name 
+                                : item.Type.ToString()))
                         : "NONE",
                     "HELDITEM" => (CustomItem.TryGet(ply.CurrentItem, out CustomItem ci) ? ci.Name : ply.CurrentItem?.Type.ToString()) ?? "NONE",
                     "GOD" => ply.IsGodModeEnabled.ToUpper(),
@@ -276,7 +270,7 @@ namespace ScriptedEvents.Variables
                     "POSX" => ply.Position.x.ToString(),
                     "POSY" => ply.Position.y.ToString(),
                     "POSZ" => ply.Position.z.ToString(),
-                    "TIER" when ply.Role is Scp079Role scp079role => scp079role.Level.ToString(),
+                    "TIER" when ply.Role is Scp079Role scp079Role => scp079Role.Level.ToString(),
                     "TIER" => "NONE",
                     "GROUP" => ply.GroupName ?? "NONE",
                     "CUFFED" => ply.IsCuffed.ToUpper(),

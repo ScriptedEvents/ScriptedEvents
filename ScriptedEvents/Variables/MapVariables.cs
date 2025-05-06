@@ -88,13 +88,14 @@ namespace ScriptedEvents.Variables
         /// <inheritdoc/>
         public float Value => Players.Count();
 
+        
         /// <inheritdoc/>
         public IEnumerable<Player> Players
         {
             get
             {
                 RoomType rt = (RoomType)Arguments[0];
-                return Player.Get(plr => plr.CurrentRoom.Type == rt);
+                return Player.Get(plr => plr.CurrentRoom?.Type == rt);
             }
         }
     }
