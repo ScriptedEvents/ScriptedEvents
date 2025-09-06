@@ -1,4 +1,6 @@
-﻿namespace ScriptedEvents
+﻿using ScriptedEvents.API.APITestLab;
+
+namespace ScriptedEvents
 {
     using System;
     using System.Collections.Generic;
@@ -85,7 +87,7 @@
         public override Version Version => new(3, 4, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new(9, 5, 2);
+        public override Version RequiredExiledVersion => new(9, 6, 0);
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
@@ -197,7 +199,7 @@
                 }
 
 #if ADEBUG
-                API.ScriptedEventsIntegration.RegisterCustomActions();
+                ScriptedEventsIntegration.RegisterCustomActions();
 #endif
                 base.OnEnabled();
             }
@@ -217,7 +219,7 @@
             Singleton = null;
 
 #if ADEBUG
-            API.ScriptedEventsIntegration.UnregisterCustomActions();
+            ScriptedEventsIntegration.UnregisterCustomActions();
 #endif
         }
 

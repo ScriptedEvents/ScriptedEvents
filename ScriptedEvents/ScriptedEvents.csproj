@@ -61,6 +61,7 @@
     <DefineConstants>TRACE;DEBUG;ADEBUG</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Andrzej Debug|x64'">
     <OutputPath>bin\x64\Andrzej Debug\</OutputPath>
@@ -352,7 +353,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ExMod.Exiled">
-      <Version>9.5.2</Version>
+      <Version>9.8.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

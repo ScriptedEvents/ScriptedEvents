@@ -1,4 +1,3 @@
-using System.Data;
 using ScriptedEvents.Actions.DebugActions;
 using ScriptedEvents.Actions.Logic;
 
@@ -22,8 +21,6 @@ namespace ScriptedEvents.API.Modules
     using MEC;
     using PlayerRoles;
     using RemoteAdmin;
-
-    using ScriptedEvents.Actions;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;

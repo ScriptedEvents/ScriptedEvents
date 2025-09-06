@@ -9,9 +9,7 @@ namespace ScriptedEvents.Commands.MainCommand
     using Exiled.API.Features;
     using Exiled.Permissions.Extensions;
     using RemoteAdmin;
-    using ScriptedEvents.Actions;
     using ScriptedEvents.API.Enums;
-    using ScriptedEvents.API.Features;
     using ScriptedEvents.API.Interfaces;
 
     [CommandHandler(typeof(RemoteAdminCommandHandler))]

@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Enums;
 using PlayerRoles;
+using Utf8Json.Internal;
 
 namespace ScriptedEvents.API.Modules
 {
@@ -19,7 +20,6 @@ namespace ScriptedEvents.API.Modules
     using Exiled.Events.Features;
     using Exiled.Loader;
     using MapGeneration.Distributors;
-    using Respawning;
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Features;
@@ -37,7 +37,7 @@ namespace ScriptedEvents.API.Modules
 
         public override string Name => "EventScriptModule";
 
-        public List<Tuple<PropertyInfo, Delegate>> StoredDelegates { get; } = new();
+        public List<Tuple<IExiledEvent, Delegate>> StoredEvents { get; } = new();
 
         public Dictionary<string, List<string>> CurrentEventData { get; set; }
 
@@ -56,7 +56,7 @@ namespace ScriptedEvents.API.Modules
 
         public static void OnNonArgumentedEvent()
         {
-            Singleton.OnAnyEvent(new StackFrame(2).GetMethod().Name.Replace("EventArgs", string.Empty));
+            Singleton.OnAnyEvent(new StackFrame(3).GetMethod().Name.Replace("On", string.Empty));
         }
 
         public override void Init()
@@ -145,70 +145,92 @@ namespace ScriptedEvents.API.Modules
 
         public void ConnectDynamicExiledEvent(string key)
         {
+            var eventsAssembly = Exiled.Loader.Loader.Plugins.FirstOrDefault(x => x.Name == "Exiled.Events");
+
+			if (eventsAssembly == null)
+			{
+				Log.Error("Exiled.Events library was not found. Is your EXILED install corrupted?");
+				return;
+			}
+            
             if (DynamicallyConnectedEvents.Contains(key)) return;
 
             DynamicallyConnectedEvents.Add(key);
 
-            bool made = false;
-            foreach (Type handler in HandlerTypes)
+            var propertyInfo = eventsAssembly.Assembly
+                .GetTypes()
+                .Where(t => t.Namespace == "Exiled.Events.Handlers")
+                .Select(t => t.GetProperty(key))
+                .FirstOrDefault(p => p != null);
+
+            if (propertyInfo is null)
             {
-                // Credit to DevTools & Yamato for below code.
-                Delegate @delegate = null;
-                PropertyInfo propertyInfo = handler.GetProperty(key);
-
-                if (propertyInfo is null)
-                    continue;
-
-                EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
-                MethodInfo subscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Subscribe");
-
-                if (propertyInfo.PropertyType == typeof(Event))
-                {
-                    @delegate = new CustomEventHandler(OnNonArgumentedEvent);
-                }
-                else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
-                {
-                    @delegate = typeof(EventScriptModule)
-                        .GetMethod(nameof(OnArgumentedEvent))
-                        .MakeGenericMethod(eventInfo.EventHandlerType.GenericTypeArguments)
-                        .CreateDelegate(typeof(CustomEventHandler<>)
-                        .MakeGenericType(eventInfo.EventHandlerType.GenericTypeArguments));
-                }
-                else
-                {
-                    Logger.Warn(propertyInfo.Name);
-                    continue;
-                }
-
-                subscribe.Invoke(propertyInfo.GetValue(MainPlugin.Handlers), new object[] { @delegate });
-                StoredDelegates.Add(new Tuple<PropertyInfo, Delegate>(propertyInfo, @delegate));
-
-                made = true;
+                Log.Error($"There is no EXILED event named '{key}'");
+                return;
+            }
+            
+            Delegate handler;
+            if (propertyInfo.GetValue(null) is not IExiledEvent @event)
+            {
+                Log.Warn($"Properety find inside the events class but is not an event: {propertyInfo.Name}");
+                return;
             }
 
-            if (made)
-                Logger.Debug($"Dynamic event {key} connected successfully");
-            else
-                Logger.Debug($"Dynamic event {key} failed to be connected");
+            if (@event is Event simpleEvent)
+			{
+                // No idea if you can do a cast like (CustomEventHandler)MessageHandlerForEmptyArgs
+                CustomEventHandler customEvent = OnNonArgumentedEvent;
+                simpleEvent.Subscribe(customEvent);
+				handler = customEvent;
+            }
+			else if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Event<>))
+			{
+                // Need to use reflection, no non-genreic interface existe to subsribe non-generic event handler
+                handler = typeof(EventScriptModule)
+                    .GetMethod(nameof(OnArgumentedEvent))!
+                    .MakeGenericMethod(propertyInfo.PropertyType.GenericTypeArguments)
+                    .CreateDelegate(typeof(CustomEventHandler<>)
+                    .MakeGenericType(propertyInfo.PropertyType.GenericTypeArguments));
+
+                MethodInfo? subscribeMethod = propertyInfo.PropertyType.GetMethod(
+					nameof(Event</*dummy type*/int>.Subscribe),
+					new[] { handler.GetType() });
+
+                if (subscribeMethod is null)
+                {
+                    Log.Error($"Failed to create a valid subscribe method for event {propertyInfo.Name}.");
+                    return;
+                }
+
+                subscribeMethod.Invoke(@event, new[] { handler });
+			}
+			else
+			{
+				Log.Warn($"Unknown type of event: {propertyInfo.Name}");
+				return;
+			}
+
+            StoredEvents.Add(new(@event, handler));
         }
 
         public void TerminateConnections()
         {
-            foreach (Tuple<PropertyInfo, Delegate> tuple in StoredDelegates)
+            foreach ((IExiledEvent @event, Delegate handler) in StoredEvents)
             {
-                PropertyInfo propertyInfo = tuple.Item1;
-                Delegate handler = tuple.Item2;
-
-                Logger.Debug($"Removing dynamic connection for event '{propertyInfo.Name}'");
-
-                EventInfo eventInfo = propertyInfo.PropertyType.GetEvent("InnerEvent", (BindingFlags)(-1));
-                MethodInfo unSubscribe = propertyInfo.PropertyType.GetMethods().First(x => x.Name is "Unsubscribe");
-
-                unSubscribe.Invoke(propertyInfo.GetValue(MainPlugin.Handlers), new[] { handler });
-                Logger.Debug($"Removed dynamic connection for event '{propertyInfo.Name}'");
+                if (@event is Event simpleEvent)
+                {
+                    simpleEvent.Unsubscribe(handler as CustomEventHandler);
+                }
+                else
+                {
+                    MethodInfo unsubscribeMethod = @event.GetType().GetMethod(
+                        nameof(Event</*dummy type*/int>.Unsubscribe),
+                        new Type[] { handler.GetType() })!;
+                    unsubscribeMethod.Invoke(@event, new[] { handler });
+                }
             }
-
-            StoredDelegates.Clear();
+           
+            StoredEvents.Clear();
             CurrentEventData = null;
             CurrentCustomEventData = null;
             DynamicallyConnectedEvents = new();
@@ -217,8 +239,6 @@ namespace ScriptedEvents.API.Modules
         // Code to run when connected event is executed
         public void OnAnyEvent(string eventName, IExiledEvent? ev = null)
         {
-            if (ev == null) return;
-            
             Stopwatch stopwatch = new();
 
             stopwatch.Start();
@@ -267,7 +287,7 @@ namespace ScriptedEvents.API.Modules
             }
 
             var properties = (
-                from prop in ev.GetType().GetProperties() 
+                from prop in ev?.GetType().GetProperties() ?? new PropertyInfo[] {}
                 let value = prop.GetValue(ev) 
                 where value is not null 
                 select new Tuple<object, string>(value, prop.Name)).ToList();

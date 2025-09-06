@@ -7,7 +7,6 @@ namespace ScriptedEvents.API.Features
     using System.Reflection;
 
     using Exiled.API.Features;
-    using ScriptedEvents.Actions;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 

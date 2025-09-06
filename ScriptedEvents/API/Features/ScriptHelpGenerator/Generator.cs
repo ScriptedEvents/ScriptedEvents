@@ -9,10 +9,7 @@ namespace ScriptedEvents.API.Features.ScriptHelpGenerator
     using System.Linq;
     using System.Reflection;
     using System.Text;
-
-    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
-    using ScriptedEvents.Actions;
     using ScriptedEvents.API.Constants;
     using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Interfaces;

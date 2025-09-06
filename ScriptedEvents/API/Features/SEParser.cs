@@ -1,8 +1,6 @@
 ﻿namespace ScriptedEvents.API.Features
 {
     using System;
-
-    using ScriptedEvents.API.Extensions;
     using ScriptedEvents.API.Modules;
     using ScriptedEvents.Structures;
 

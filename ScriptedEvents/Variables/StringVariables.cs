@@ -19,6 +19,7 @@ namespace ScriptedEvents.Variables
             new StringToUpper(),
             new StringToLower(),
             new StringRemove(),
+            new FloorifyVariable()
         };
     }
 
@@ -172,6 +173,37 @@ namespace ScriptedEvents.Variables
             {
                 IStringVariable processedVar = (IStringVariable)Arguments[0];
                 return processedVar.String().Replace(Arguments[1].ToString(), Arguments[2].ToString());
+            }
+        }
+    }
+    
+    public class FloorifyVariable : IStringVariable, IArgumentVariable
+    {
+        /// <inheritdoc/>
+        public string Name => "{STR-FLOORIFY}";
+
+        /// <inheritdoc/>
+        public string Description => "Replaces every space ' ' character with a floor '_' character.";
+
+        /// <inheritdoc/>
+        public string[] RawArguments { get; set; }
+
+        /// <inheritdoc/>
+        public object[] Arguments { get; set; }
+
+        /// <inheritdoc/>
+        public Argument[] ExpectedArguments => new[]
+        {
+            new Argument("variable", typeof(IStringVariable), "The variable on which the operation will be performed.", true),
+        };
+
+        /// <inheritdoc/>
+        public string Value
+        {
+            get
+            {
+                IStringVariable processedVar = (IStringVariable)Arguments[0];
+                return processedVar.String().Replace(' ', '_');
             }
         }
     }

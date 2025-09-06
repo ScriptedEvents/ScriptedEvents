@@ -39,12 +39,11 @@ namespace ScriptedEvents.Actions.Map
             switch (Arguments[0].ToUpper())
             {
                 case "DISABLE":
-                    // Todo: Is there an Exiled API for this?
-                    DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.Disabled;
+                    DecontaminationController.Singleton.DecontaminationOverride  = DecontaminationController.DecontaminationStatus.Disabled;
                     break;
                 case "ENABLE":
                     // Todo: And this?
-                    DecontaminationController.Singleton.NetworkDecontaminationOverride = DecontaminationController.DecontaminationStatus.None;
+                    DecontaminationController.Singleton.DecontaminationOverride = DecontaminationController.DecontaminationStatus.None;
                     break;
                 default:
                     Exiled.API.Features.Map.StartDecontamination();

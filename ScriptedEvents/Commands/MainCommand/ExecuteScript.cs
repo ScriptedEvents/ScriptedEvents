@@ -31,7 +31,7 @@
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("script.execute"))
+            if (sender is PlayerCommandSender plrSender && !plrSender.CheckPermission("script.execute"))
             {
                 response = "Missing permission: script.execute";
                 return false;

@@ -7,7 +7,6 @@
 
     using InventorySystem.Items.Usables.Scp330;
     using PlayerRoles;
-    using Respawning;
     using ScriptedEvents.Structures;
 
     public static class EnumDefinitions

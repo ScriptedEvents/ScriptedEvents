@@ -10,8 +10,6 @@
     using Exiled.API.Features.Pools;
 
     using PlayerRoles;
-    using Respawning;
-
     using ScriptedEvents.API.Enums;
     using ScriptedEvents.API.Interfaces;
     using ScriptedEvents.Structures;

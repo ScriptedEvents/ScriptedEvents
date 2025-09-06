@@ -49,7 +49,7 @@ namespace ScriptedEvents.Actions.CASSIE
             {
                 foreach (Exiled.API.Features.Player ply in players)
                 {
-                    ply.MessageTranslated(text, text, makeNoise: isNoisy);
+                    ply.MessageTranslated(text, text, text, makeNoise: isNoisy);
                 }
 
                 return new(true);
@@ -70,7 +70,7 @@ namespace ScriptedEvents.Actions.CASSIE
 
             foreach (Exiled.API.Features.Player ply in players)
             {
-                ply.MessageTranslated(cassieArgs[0], cassieArgs[1], makeNoise: isNoisy);
+                ply.MessageTranslated(cassieArgs[0], cassieArgs[1], cassieArgs[1], makeNoise: isNoisy);
             }
 
             return new(true);

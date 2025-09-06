@@ -5,143 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/APITestLab/ScriptedEventsIntegration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/APITestLab/ScriptedEventsIntegration.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Constants/EnumDefinitions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Constants/EnumDefinitions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/ApiHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/ApiHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/CoroutineHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/CoroutineHelper.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/MsgGen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/MsgGen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/SEParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/SEParser.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Interfaces/IHelpInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Interfaces/IHelpInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Broadcast/BroadcastAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Broadcast/BroadcastAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Broadcast/ClearBroadcastsAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Broadcast/ClearBroadcastsAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Broadcast/CountdownAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Broadcast/CountdownAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Broadcast/HintAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Broadcast/HintAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/CassieAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/CassieAction.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/ClearCassieAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/ClearCassieAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/CustomAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/CustomAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/DamageRuleDebug.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/DamageRuleDebug.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/DebugConditionLogAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/DebugConditionLogAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/DebugExtractAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/DebugExtractAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/DebugMathAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/DebugMathAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/DebugProcessorAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/DebugProcessorAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/NullAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/NullAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/WaitUntilDebugAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/WaitUntilDebugAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Health/DamageAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Health/DamageAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Health/KillAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Health/KillAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Health/SetAHPAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Health/SetAHPAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Health/SetHPAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Health/SetHPAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Health/SetMaxHPAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Health/SetMaxHPAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/ClearInventoryAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/ClearInventoryAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/DropItemAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/DropItemAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/GiveCandyAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/GiveCandyAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/ItemAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/ItemAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/LoadoutAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/LoadoutAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/RadioRangeAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Item/RadioRangeAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Lights/LightColorAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Lights/LightColorAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Lights/LightsOffAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Lights/LightsOffAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/CallAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/CallAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/EndFunctionAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/EndFunctionAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/EndIfAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/EndIfAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/FastCallAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/FastCallAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/FlipIfAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/FlipIfAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/GotoAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/GotoAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/ReturnAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/ReturnAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/StartFunctionAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/StartFunctionAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/StartIfAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/StartIfAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/StopAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/StopAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/TriggerAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Logic/TriggerAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/CleanupAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/CleanupAction.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/DoorAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/DoorAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/ElevatorAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/ElevatorAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/GeneratorAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/GeneratorAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/SpawnGrenadeAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/SpawnGrenadeAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/SpawnRagdollAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/SpawnRagdollAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/TeslaAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/TeslaAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/WarheadAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/WarheadAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Misc/FastHttpPostAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Misc/FastHttpPostAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Misc/HelpAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Misc/HelpAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Misc/HttpGetAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Misc/HttpGetAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Misc/HttpPostAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Misc/HttpPostAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/AdvCustomInfoAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/AdvCustomInfoAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/BanAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/BanAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/BypassAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/BypassAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/CustomInfoAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/CustomInfoAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/EffectAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/EffectAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/GodmodeAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/GodmodeAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/KickAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/KickAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/MuteAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/MuteAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/NoclipAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/NoclipAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/PrintPlayersAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/PrintPlayersAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/ReskinAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/ReskinAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/SetGroupAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/SetGroupAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/SetNameAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/SetNameAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/SetRoleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/SetRoleAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/SizeAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/SizeAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/StaminaAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Player/StaminaAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Round/LobbyAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Round/LobbyAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Round/RoundAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Round/RoundAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Round/TicketAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Round/TicketAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/DamageRuleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/DamageRuleAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/DeleteInfectRule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/DeleteInfectRule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/DisableAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/DisableAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/DisablePlayerAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/DisablePlayerAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EffectImmunityAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EffectImmunityAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EffectRuleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EffectRuleAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EnableAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EnableAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EnablePlayerAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EnablePlayerAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EventAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EventAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/GeneratorRuleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/GeneratorRuleAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/InfectRuleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/InfectRuleAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/SpawnRuleAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/SpawnRuleAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/CommandAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/CommandAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/ErrorAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/ErrorAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/LogAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/LogAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/PluginAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/PluginAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/PrintAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/PrintAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/ServerNameAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Server/ServerNameAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpDoorAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpDoorAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpPlayerAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpPlayerAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpRoomAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpRoomAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpSpawnAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpSpawnAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpxAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpxAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/AddToAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/AddToAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/BindAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/BindAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/GlobalPlayerVariableAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/GlobalPlayerVariableAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/GlobalSaveAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/GlobalSaveAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/LocalPlayerVariableAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/LocalPlayerVariableAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/LocalSaveAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/LocalSaveAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/PlayerDataAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/PlayerDataAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/StorageAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/StorageAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/TempVariableAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Variable/TempVariableAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Yielding/WaitAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Yielding/WaitAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/HelpCommand/ScriptHelp.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/HelpCommand/ScriptHelp.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/Action.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/Action.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Script.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Script.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/ChanceVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/ChanceVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/EscapesVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/EscapesVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/FilterVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/FilterVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/IntercomVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/IntercomVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/ItemVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/ItemVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/KillsAndDeathsVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/KillsAndDeathsVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/MapVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/MapVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/MathVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/MathVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/MiscVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/MiscVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/PlayerCountVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/PlayerCountVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/PlayerInfoVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/PlayerInfoVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/RoleVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/RoleVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/RoundVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/RoundVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/ScriptInfoVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/ScriptInfoVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/ServerInfoVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/ServerInfoVariables.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/StringVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/StringVariables.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/TicketsAndRespawnsVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/TicketsAndRespawnsVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/TimeVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/TimeVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/WarheadVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/WarheadVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/ZoneVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/ZoneVariables.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,26 +54,109 @@
     <setting file="file://$USER_HOME$/AppData/Roaming/JetBrains/Rider2024.2/resharper-host/DecompilerCache/decompiler/3ea9ee3da01540f4ae641055f11fb6b975c00/79/d4100ff2/Plugin`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Roaming/JetBrains/Rider2024.2/resharper-host/DecompilerCache/decompiler/4a26704d10e145e2890fa38a6cc0df67531820/39/981a8918/Type.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Roaming/JetBrains/Rider2024.2/resharper-host/DecompilerCache/decompiler/4a26704d10e145e2890fa38a6cc0df67531820/fd/b5aa14cf/IEnumerable`1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0ebb80ee242247a3a1773aa9266594438ae00/45/c327d38b/Player.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0ebb80ee242247a3a1773aa9266594438ae00/62/bb9a1cae/Map.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0ebb80ee242247a3a1773aa9266594438ae00/ef/a68b6329/MirrorExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/13/6f01a4c0/Type.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/1b/07f7a561/DateTime.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/4d/c63e3f75/DayOfWeek.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/6b/d51a5cb5/BindingFlags.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/c6/646b1d94/ReadOnlyDictionary`2.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/cb/0cdacf62/File.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/11/201daac8/ServerConsoleSender.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/29/30b7efa4/DeathTranslations.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/35/33e0db14/QueryCommandSender.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/40/ac8dea16/StatusEffectBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/58/eea8b7d1/WaveManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/61/11c57727/RoomLightController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/6b/57d18e08/SpawnableWaveBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/70/4b5cc392/Scp096RageCycleAbility.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/9f/0eda7903/PlayerEffectsController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/a8/b1d355e7/ElevatorChamber.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/b1/e163a9e1/PlayerCommandSender.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/cc/6ae90be0/RelativePosition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/e0/0e2bedce/Faction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/e7/eebb43d6/Scp096RageManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/e8/d202fdac/AhpStat.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/f5/3ddef752/CommandSender.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/37238d04ef794a9aa235d3d93fe488fdd7000/7d/2b19d9cd/Player.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/37238d04ef794a9aa235d3d93fe488fdd7000/d5/a7a7de9a/FlippingCoinEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3ac8e90138f046759f2e93f736a8beea29c00/9b/8c9db325/RoomLight.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/1f/ff61fc01/Cassie.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/5b/d88e475a/Round.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/67/bbcc29f4/Player.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/6c/3c552113/TimedWave.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/6d/47209508/EffectTypeExtension.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/81/22d555e6/GenericDamageHandler.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/8f/21eb4c9c/Room.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/8f/41894678/MirrorExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/90/e938033d/Npc.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/96/1aeaaf38/Respawn.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/99/080609fb/DamageType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/9c/36e371e1/FpcRole.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/9c/79c2d800/SpawnableFaction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/a4/99b4432b/Scp096Role.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/ab/1a42d1ca/EffectType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/ce/32b410d3/CommonExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/d8/bf825f73/RoleExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/e3/182b4960/Role.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/e8/2fd49c62/DamageTypeExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4b66735d39f84bff971ced976c05c3d386400/4f/f4a0dae4/Player.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5af4b2553d4841239b11df979c090a902c200/73/c1c2213b/Timing.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/699977f56d734b07a24e20db00a39fcd5e00/37/d66b14c2/Permissions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9061329816ae4fe1815e0e65a8cd5e491a00/b3/7b0588ff/ICommandSender.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4874c55835646f488db4a97ac142ed62d200/14/ca9ad603/NetworkWriterPooled.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4874c55835646f488db4a97ac142ed62d200/57/5e81961b/NetworkBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/aff3a905bea14cbeaf316593b3097008136218/fd/f30749c5/AnimationCurve.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bd83d6009c394d05b0e4e2080b3f314db5a00/6c/34085433/Decontamination.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/23/7a2ce810/IAttackerEvent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/28/eb0de347/IExiledEvent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/2e/1052a521/IPlayerEvent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/62/f974844b/BlinkingEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/78/85fb0fd5/VerifiedEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/a3/03c40b8c/DiedEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/ba/b37c52e6/Event`1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/f1/5815e95a/Player.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ef5003fb8b51471483c2842b5238e29edfe00/21/6233e3bf/Event.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ef5003fb8b51471483c2842b5238e29edfe00/90/fc4d3946/Event`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f2b6204eed6b41348236173e8a2f539817a880/48/eafb4964/Enumerable.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f46d4d7de96941168027ebdae2c598a53d2e00/81/9a038279/DecontaminationController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/MsgGen.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/SEParser.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Interfaces/IHelpInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/WaitUntilDebugAction.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Health/DamageAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Map/CleanupAction.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/DecontaminateAction.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Player/EffectAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Player/ReskinAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EventAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Samples/Providers/TeslaSamples.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Server/PrintAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpDoorAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/CustomCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteAutorunScript.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/GenerateDemoScripts.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Script.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/Interfaces/IPlayerVariable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/PlayerCountVariables.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://diff.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/PlayerInfoVariables.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/StringVariables.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -208,20 +173,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;ml.llm.AIAssistantPromptsLibrary&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "RiderDotCoverPageId",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
@@ -286,6 +252,17 @@
       <workItem from="1731847465518" duration="2263000" />
       <workItem from="1731853407935" duration="106000" />
       <workItem from="1733041659112" duration="586000" />
+      <workItem from="1749708655605" duration="1119000" />
+      <workItem from="1749826418022" duration="1666000" />
+      <workItem from="1750869140925" duration="1041000" />
+      <workItem from="1751373247476" duration="29000" />
+      <workItem from="1752500098934" duration="259000" />
+      <workItem from="1754568416742" duration="11000" />
+      <workItem from="1755012120782" duration="2577000" />
+      <workItem from="1756909135865" duration="8156000" />
+      <workItem from="1757015586625" duration="9279000" />
+      <workItem from="1757079353511" duration="692000" />
+      <workItem from="1757143395481" duration="2801000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
@@ -396,6 +373,24 @@
     <MESSAGE value="add Credits" />
     <MESSAGE value="w" />
     <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.OperationCanceledException" breakIfHandledByOtherCode="false" displayValue="System.OperationCanceledException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.Tasks.TaskCanceledException" breakIfHandledByOtherCode="false" displayValue="System.Threading.Tasks.TaskCanceledException" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+        <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="3" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
