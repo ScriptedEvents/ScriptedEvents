@@ -87,7 +87,7 @@ namespace ScriptedEvents
         public override Version Version => new(3, 4, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new(9, 6, 0);
+        public override Version RequiredExiledVersion => new(9, 8, 0);
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;

@@ -353,7 +353,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ExMod.Exiled">
-      <Version>9.8.0</Version>
+      <Version>9.8.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

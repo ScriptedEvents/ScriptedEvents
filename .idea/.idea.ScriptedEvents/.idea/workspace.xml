@@ -4,27 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Constants/EnumDefinitions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Constants/EnumDefinitions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/ApiHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/ApiHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/CoroutineHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/CoroutineHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/MsgGen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/MsgGen.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/SEParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/SEParser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Interfaces/IHelpInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Interfaces/IHelpInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/Action.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/Action.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/StringVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/StringVariables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/TicketsAndRespawnsVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/TicketsAndRespawnsVariables.cs" afterDir="false" />
-    </list>
+    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -121,23 +101,35 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ef5003fb8b51471483c2842b5238e29edfe00/90/fc4d3946/Event`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f2b6204eed6b41348236173e8a2f539817a880/48/eafb4964/Enumerable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f46d4d7de96941168027ebdae2c598a53d2e00/81/9a038279/DecontaminationController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Constants/EnumDefinitions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/ApiHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/CoroutineHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/MsgGen.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/MsgGen.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/SEParser.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/SEParser.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Interfaces/IHelpInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Interfaces/IHelpInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/WaitUntilDebugAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Health/DamageAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Map/CleanupAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/DecontaminateAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/DecontaminateAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Player/EffectAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Player/ReskinAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EventAction.cs" root0="FORCE_HIGHLIGHTING" />
@@ -145,18 +137,25 @@
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Server/PrintAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpDoorAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/CustomCommand.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Commands/MainCommand/Action.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteAutorunScript.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/GenerateDemoScripts.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Script.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/Interfaces/IPlayerVariable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/PlayerCountVariables.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/PlayerInfoVariables.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/StringVariables.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/StringVariables.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/StringVariables.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/TicketsAndRespawnsVariables.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/TicketsAndRespawnsVariables.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -262,7 +261,7 @@
       <workItem from="1756909135865" duration="8156000" />
       <workItem from="1757015586625" duration="9279000" />
       <workItem from="1757079353511" duration="692000" />
-      <workItem from="1757143395481" duration="2801000" />
+      <workItem from="1757143395481" duration="3502000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
@@ -320,7 +319,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731619154291</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="fix events curtsy of DevTools, add STR-FLOORIFY variable">
+      <option name="closed" value="true" />
+      <created>1757146872058</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1757146872058</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -372,7 +379,8 @@
     <MESSAGE value="add and update example scripts" />
     <MESSAGE value="add Credits" />
     <MESSAGE value="w" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="fix events curtsy of DevTools, add STR-FLOORIFY variable" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix events curtsy of DevTools, add STR-FLOORIFY variable" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
