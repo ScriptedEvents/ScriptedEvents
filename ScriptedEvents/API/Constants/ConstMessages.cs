@@ -40,6 +40,7 @@
 
 The following keys can ONLY be used in DISABLE and ENABLE. They cannot be tied to specific players.
 - NTFANNOUNCEMENT * - Disables NTF spawn announcements.
+- CIANNOUNCEMENT * - Disables CI spawn announcements.
 - RESPAWNS - Prevents player(s) from respawning as Chaos/NTF.
 - SCPANNOUNCEMENT - Disables SCP termination announcements.
 ";

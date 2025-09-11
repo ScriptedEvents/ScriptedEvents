@@ -200,7 +200,10 @@ namespace ScriptedEvents.API.Modules
             PlayerHandler.ActivatingWorkstation += OnWorkStationEvent;
             PlayerHandler.DeactivatingWorkstation += OnWorkStationEvent;
 
+            
             MapHandler.AnnouncingNtfEntrance += OnAnnouncingNtfEntrance;
+            MapHandler.AnnouncingChaosEntrance += OnAnnouncingChaosEntrance;
+            
             MapHandler.AnnouncingScpTermination += OnAnnouncingScpTermination;
             Scp330Handler.InteractingScp330 += OnScp330Event;
 
@@ -770,10 +773,8 @@ namespace ScriptedEvents.API.Modules
             else if (ev is IPlayerEvent plrEv && DisabledForPlayer("SCP914", plrEv.Player))
                 ev.IsAllowed = false;
         }
-
-#pragma warning disable SA1201
+        
         public static Dictionary<Type, string> EventToDisableKey { get; } = new()
-#pragma warning restore SA1201
         {
             // SCP-049
             [typeof(ActivatingSenseEventArgs)] = "SCP049SENSE",
@@ -847,6 +848,12 @@ namespace ScriptedEvents.API.Modules
             MostRecentSpawnUnit = ev.UnitName;
 
             if (DisabledKeys.Contains("NTFANNOUNCEMENT"))
+                ev.IsAllowed = false;
+        }
+        
+        public void OnAnnouncingChaosEntrance(AnnouncingChaosEntranceEventArgs ev)
+        {
+            if (DisabledKeys.Contains("CIANNOUNCEMENT"))
                 ev.IsAllowed = false;
         }
 

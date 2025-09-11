@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="" />
+    <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/ZoneVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/ZoneVariables.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,7 +41,11 @@
     <setting file="file://$USER_HOME$/AppData/Roaming/JetBrains/Rider2024.2/resharper-host/DecompilerCache/decompiler/4a26704d10e145e2890fa38a6cc0df67531820/fd/b5aa14cf/IEnumerable`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0ebb80ee242247a3a1773aa9266594438ae00/45/c327d38b/Player.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0ebb80ee242247a3a1773aa9266594438ae00/62/bb9a1cae/Map.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0ebb80ee242247a3a1773aa9266594438ae00/ef/a68b6329/MirrorExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0ebb80ee242247a3a1773aa9266594438ae00/ef/a68b6329/MirrorExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/136b1f9472244c51ad1bb1d94878c14ddfe00/1b/8fb03217/Map.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/136b1f9472244c51ad1bb1d94878c14ddfe00/2a/2fdfb8e0/AnnouncingNtfEntranceEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/136b1f9472244c51ad1bb1d94878c14ddfe00/c1/e506fbee/Event`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/136b1f9472244c51ad1bb1d94878c14ddfe00/f1/4db6a29c/AnnouncingChaosEntranceEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/13/6f01a4c0/Type.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/1b/07f7a561/DateTime.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/4d/c63e3f75/DayOfWeek.cs" root0="FORCE_HIGHLIGHTING" />
@@ -81,6 +90,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/d8/bf825f73/RoleExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/e3/182b4960/Role.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/e8/2fd49c62/DamageTypeExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/41eda6d6da9c40679d04aa29488b88308ae00/6a/7762f83e/ZoneType.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4b66735d39f84bff971ced976c05c3d386400/4f/f4a0dae4/Player.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5af4b2553d4841239b11df979c090a902c200/73/c1c2213b/Timing.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/699977f56d734b07a24e20db00a39fcd5e00/37/d66b14c2/Permissions.cs" root0="FORCE_HIGHLIGHTING" />
@@ -95,41 +105,22 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/62/f974844b/BlinkingEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/78/85fb0fd5/VerifiedEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/a3/03c40b8c/DiedEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/ba/b37c52e6/Event`1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/ba/b37c52e6/Event`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/f1/5815e95a/Player.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ef5003fb8b51471483c2842b5238e29edfe00/21/6233e3bf/Event.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ef5003fb8b51471483c2842b5238e29edfe00/90/fc4d3946/Event`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f2b6204eed6b41348236173e8a2f539817a880/48/eafb4964/Enumerable.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f46d4d7de96941168027ebdae2c598a53d2e00/5a/51ef3c2b/WaveAnnouncementBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f46d4d7de96941168027ebdae2c598a53d2e00/81/9a038279/DecontaminationController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Constants/EnumDefinitions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/ApiHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/CoroutineHelper.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/MsgGen.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/MsgGen.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/SEParser.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/SEParser.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Features/ScriptHelpGenerator/Generator.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Interfaces/IHelpInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Interfaces/IHelpInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/ScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/API/Modules/ScriptModule.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/CASSIE/CassiePlayerAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/DebugActions/WaitUntilDebugAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Health/DamageAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Map/CleanupAction.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/DecontaminateAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Map/DecontaminateAction.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Actions/Map/DecontaminateAction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Player/EffectAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Player/ReskinAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/RoundRule/EventAction.cs" root0="FORCE_HIGHLIGHTING" />
@@ -137,25 +128,16 @@
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Server/PrintAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Actions/Teleportation/TpDoorAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/CustomCommand.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Commands/MainCommand/Action.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteAutorunScript.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ExecuteScript.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/GenerateDemoScripts.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Commands/MainCommand/ListScripts.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/MainPlugin.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/MainPlugin.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Script.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/Interfaces/IPlayerVariable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/PlayerCountVariables.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/PlayerInfoVariables.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/StringVariables.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/Variables/StringVariables.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/StringVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/TicketsAndRespawnsVariables.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/Olgie/source/repos/ScriptedEvents/ScriptedEvents/Variables/TicketsAndRespawnsVariables.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -172,21 +154,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "RiderDotCoverPageId",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;RiderDotCoverPageId&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
@@ -261,7 +243,11 @@
       <workItem from="1756909135865" duration="8156000" />
       <workItem from="1757015586625" duration="9279000" />
       <workItem from="1757079353511" duration="692000" />
-      <workItem from="1757143395481" duration="3502000" />
+      <workItem from="1757143395481" duration="3997000" />
+      <workItem from="1757150456683" duration="2360000" />
+      <workItem from="1757595447953" duration="2912000" />
+      <workItem from="1757598396095" duration="1244000" />
+      <workItem from="1757611906920" duration="1259000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
@@ -327,7 +313,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757146872058</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="update to exiled 9.8.1">
+      <option name="closed" value="true" />
+      <created>1757146986268</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1757146986268</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -380,7 +374,8 @@
     <MESSAGE value="add Credits" />
     <MESSAGE value="w" />
     <MESSAGE value="fix events curtsy of DevTools, add STR-FLOORIFY variable" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix events curtsy of DevTools, add STR-FLOORIFY variable" />
+    <MESSAGE value="update to exiled 9.8.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="update to exiled 9.8.1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
