@@ -1,6 +1,4 @@
-﻿using ScriptedEvents.API.APITestLab;
-
-namespace ScriptedEvents
+﻿namespace ScriptedEvents
 {
     using System;
     using System.Collections.Generic;
@@ -84,10 +82,10 @@ namespace ScriptedEvents
         public override string Author => "Elektryk_Andrzej and Thunder";
 
         /// <inheritdoc/>
-        public override Version Version => new(3, 4, 0);
+        public override Version Version => new(3, 5, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new(9, 8, 0);
+        public override Version RequiredExiledVersion => new(9, 10, 0);
 
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.High;
@@ -281,7 +279,7 @@ namespace ScriptedEvents
                         QueryProcessor.DotCommandHandler.RegisterCommand(command);
                         break;
                     case CommandType.ServerConsole:
-                        GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
+                        GameCore.Console.ConsoleCommandHandler.RegisterCommand(command);
                         break;
                     case CommandType.RemoteAdmin:
                         CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);

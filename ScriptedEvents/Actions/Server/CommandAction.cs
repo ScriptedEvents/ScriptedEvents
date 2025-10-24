@@ -40,7 +40,7 @@ Note: Player variables will be converted to the amount of players when used dire
         public ActionResponse Execute(Script script)
         {
             string text = Arguments.JoinMessage(0);
-            GameCore.Console.singleton.TypeCommand(text);
+            GameCore.Console.Singleton.TypeCommand(text);
             return new(true, string.Empty);
         }
     }

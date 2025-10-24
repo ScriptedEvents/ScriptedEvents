@@ -1,6 +1,5 @@
 ﻿using Exiled.API.Enums;
 using PlayerRoles;
-using Utf8Json.Internal;
 
 namespace ScriptedEvents.API.Modules
 {

@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ff61eb0c-7500-4f92-a94f-136798418a47" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ScriptedEvents/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/ScriptedEvents.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ScriptedEvents/Variables/ZoneVariables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptedEvents/Variables/ZoneVariables.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,79 +37,8 @@
     <setting file="file://$USER_HOME$/AppData/Roaming/JetBrains/Rider2024.2/resharper-host/DecompilerCache/decompiler/3ea9ee3da01540f4ae641055f11fb6b975c00/79/d4100ff2/Plugin`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Roaming/JetBrains/Rider2024.2/resharper-host/DecompilerCache/decompiler/4a26704d10e145e2890fa38a6cc0df67531820/39/981a8918/Type.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Roaming/JetBrains/Rider2024.2/resharper-host/DecompilerCache/decompiler/4a26704d10e145e2890fa38a6cc0df67531820/fd/b5aa14cf/IEnumerable`1.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0ebb80ee242247a3a1773aa9266594438ae00/45/c327d38b/Player.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0ebb80ee242247a3a1773aa9266594438ae00/62/bb9a1cae/Map.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0ebb80ee242247a3a1773aa9266594438ae00/ef/a68b6329/MirrorExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/136b1f9472244c51ad1bb1d94878c14ddfe00/1b/8fb03217/Map.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/136b1f9472244c51ad1bb1d94878c14ddfe00/2a/2fdfb8e0/AnnouncingNtfEntranceEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/136b1f9472244c51ad1bb1d94878c14ddfe00/c1/e506fbee/Event`1.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/136b1f9472244c51ad1bb1d94878c14ddfe00/f1/4db6a29c/AnnouncingChaosEntranceEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/13/6f01a4c0/Type.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/1b/07f7a561/DateTime.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/4d/c63e3f75/DayOfWeek.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/6b/d51a5cb5/BindingFlags.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/c6/646b1d94/ReadOnlyDictionary`2.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3020f90f960f433086d545c4e07afdfd531820/cb/0cdacf62/File.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/11/201daac8/ServerConsoleSender.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/29/30b7efa4/DeathTranslations.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/35/33e0db14/QueryCommandSender.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/40/ac8dea16/StatusEffectBase.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/58/eea8b7d1/WaveManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/61/11c57727/RoomLightController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/6b/57d18e08/SpawnableWaveBase.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/70/4b5cc392/Scp096RageCycleAbility.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/9f/0eda7903/PlayerEffectsController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/a8/b1d355e7/ElevatorChamber.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/b1/e163a9e1/PlayerCommandSender.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/cc/6ae90be0/RelativePosition.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/e0/0e2bedce/Faction.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/e7/eebb43d6/Scp096RageManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/e8/d202fdac/AhpStat.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/35a9db24741f426a95f2ae582bf171b2323000/f5/3ddef752/CommandSender.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/37238d04ef794a9aa235d3d93fe488fdd7000/7d/2b19d9cd/Player.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/37238d04ef794a9aa235d3d93fe488fdd7000/d5/a7a7de9a/FlippingCoinEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3ac8e90138f046759f2e93f736a8beea29c00/9b/8c9db325/RoomLight.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/1f/ff61fc01/Cassie.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/5b/d88e475a/Round.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/67/bbcc29f4/Player.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/6c/3c552113/TimedWave.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/6d/47209508/EffectTypeExtension.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/81/22d555e6/GenericDamageHandler.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/8f/21eb4c9c/Room.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/8f/41894678/MirrorExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/90/e938033d/Npc.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/96/1aeaaf38/Respawn.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/99/080609fb/DamageType.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/9c/36e371e1/FpcRole.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/9c/79c2d800/SpawnableFaction.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/a4/99b4432b/Scp096Role.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/ab/1a42d1ca/EffectType.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/ce/32b410d3/CommonExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/d8/bf825f73/RoleExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/e3/182b4960/Role.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/40c334c1f52346f384a932b1292f428b85400/e8/2fd49c62/DamageTypeExtensions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/41eda6d6da9c40679d04aa29488b88308ae00/6a/7762f83e/ZoneType.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4b66735d39f84bff971ced976c05c3d386400/4f/f4a0dae4/Player.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5af4b2553d4841239b11df979c090a902c200/73/c1c2213b/Timing.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/699977f56d734b07a24e20db00a39fcd5e00/37/d66b14c2/Permissions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9061329816ae4fe1815e0e65a8cd5e491a00/b3/7b0588ff/ICommandSender.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4874c55835646f488db4a97ac142ed62d200/14/ca9ad603/NetworkWriterPooled.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a4874c55835646f488db4a97ac142ed62d200/57/5e81961b/NetworkBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/aff3a905bea14cbeaf316593b3097008136218/fd/f30749c5/AnimationCurve.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bd83d6009c394d05b0e4e2080b3f314db5a00/6c/34085433/Decontamination.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/23/7a2ce810/IAttackerEvent.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/28/eb0de347/IExiledEvent.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/2e/1052a521/IPlayerEvent.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/62/f974844b/BlinkingEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/78/85fb0fd5/VerifiedEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/a3/03c40b8c/DiedEventArgs.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/ba/b37c52e6/Event`1.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/dec7204ce1954269b817ba527628b785d2600/f1/5815e95a/Player.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ef5003fb8b51471483c2842b5238e29edfe00/21/6233e3bf/Event.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ef5003fb8b51471483c2842b5238e29edfe00/90/fc4d3946/Event`1.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f2b6204eed6b41348236173e8a2f539817a880/48/eafb4964/Enumerable.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f46d4d7de96941168027ebdae2c598a53d2e00/5a/51ef3c2b/WaveAnnouncementBase.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f46d4d7de96941168027ebdae2c598a53d2e00/81/9a038279/DecontaminationController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/befed090bad3415ca7bb39be53a48b1d3d6800/27/1f6b6935/Console.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Features/ArgumentProcessor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventHandlingModule.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ScriptedEvents/API/Modules/EventScriptModule.cs" root0="FORCE_HIGHLIGHTING" />
@@ -247,7 +174,10 @@
       <workItem from="1757150456683" duration="2360000" />
       <workItem from="1757595447953" duration="2912000" />
       <workItem from="1757598396095" duration="1244000" />
-      <workItem from="1757611906920" duration="1259000" />
+      <workItem from="1757611906920" duration="1888000" />
+      <workItem from="1757626879122" duration="70000" />
+      <workItem from="1758391751442" duration="1287000" />
+      <workItem from="1761332536602" duration="635000" />
     </task>
     <task id="LOCAL-00001" summary="encoding issue">
       <option name="closed" value="true" />
@@ -321,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757146986268</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="add CIANNOUNCEMENT disable key">
+      <option name="closed" value="true" />
+      <created>1757616574012</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1757616574012</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -375,7 +313,8 @@
     <MESSAGE value="w" />
     <MESSAGE value="fix events curtsy of DevTools, add STR-FLOORIFY variable" />
     <MESSAGE value="update to exiled 9.8.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="update to exiled 9.8.1" />
+    <MESSAGE value="add CIANNOUNCEMENT disable key" />
+    <option name="LAST_COMMIT_MESSAGE" value="add CIANNOUNCEMENT disable key" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
