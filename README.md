@@ -2,7 +2,7 @@
 This version of Scripted Events is not developed anymore.
 From now on, [Scripted Events Reloaded](https://github.com/ScriptedEvents/ScriptedEventsReloaded) is the main plugin.
 
-Scripted Events Classic will only receive maintenance updates until the end of 2025, after which this repository will be archived.
+Scripted Events Classic will only receive maintenance updates, as the majority of resources are directed towards [Scripted Events Reloaded](https://github.com/ScriptedEvents/ScriptedEventsReloaded)
 
 ---
 
