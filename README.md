@@ -1,10 +1,18 @@
+# ⚠ You're viewing a legacy version of Scripted Events ⚠
+This version of Scripted Events is not developed anymore.
+From now on, [Scripted Events Reloaded](https://github.com/ScriptedEvents/ScriptedEventsReloaded) is the main plugin.
+
+Scripted Events Classic will only receive maintenance updates until the end of 2025, after which this repository will be archived.
+
+---
+
 ![VERSION](https://img.shields.io/github/v/release/Thundermaker300/ScriptedEvents?include_prereleases&logo=gitbook&style=for-the-badge)
 ![DOWNLOADS](https://img.shields.io/github/downloads/Thundermaker300/ScriptedEvents/total?logo=github&style=for-the-badge)
 ![COMMITS](https://img.shields.io/github/commit-activity/m/Thundermaker300/ScriptedEvents?logo=git&style=for-the-badge)
 [![DISCORD](https://img.shields.io/discord/1060274824330620979?label=Discord&logo=discord&style=for-the-badge)](https://discord.gg/3j54zBnbbD)
 
 
-# ScriptedEvents
+# Scripted Events (Classic version)
 SE is an SCP:SL Exiled plugin to create event "scripts". These scripts allow for automation of simple tasks. They can be set up to run once per round, multiple times per round, or by command only.
 
 
